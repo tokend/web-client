@@ -47,7 +47,7 @@
     </template>
 
     <template v-else>
-      <load-spinner message-id="create-sale-form.loading-msg" />
+      <skeleton-loader-step-form />
     </template>
   </div>
 </template>
@@ -59,9 +59,9 @@ import ManageSaleRequestMixin from './mixins/manage-sale-request.mixin'
 import InformationStepForm from './components/information-step-form'
 import ShortBlurbStepForm from './components/short-blurb-step-form'
 import FullDescriptionStepForm from './components/full-description-step-form'
+import SkeletonLoaderStepForm from './components/skeleton-loader-step-form'
 
 import FormStepper from '@/vue/common/FormStepper'
-import LoadSpinner from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import { Bus } from '@/js/helpers/event-bus'
@@ -93,11 +93,11 @@ export default {
   name: 'create-sale-form-module',
   components: {
     FormStepper,
-    LoadSpinner,
     NoDataMessage,
     InformationStepForm,
     ShortBlurbStepForm,
     FullDescriptionStepForm,
+    SkeletonLoaderStepForm,
   },
   mixins: [LoadAssetsMixin, ManageSaleRequestMixin],
   props: {

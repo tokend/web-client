@@ -54,6 +54,10 @@
               </td>
             </tr>
           </tbody>
+          <skeleton-loader-table-body
+            v-else-if="!isLoaded"
+            :cells="6"
+          />
           <empty-tbody-placeholder
             v-else
             :colspan="6"
@@ -68,6 +72,7 @@
 <script>
 import EmailGetter from '@/vue/common/EmailGetter'
 import RequestStateViewer from './request-state-viewer'
+import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 
 export default {
@@ -75,12 +80,17 @@ export default {
   components: {
     EmailGetter,
     RequestStateViewer,
+    SkeletonLoaderTableBody,
     EmptyTbodyPlaceholder,
   },
 
   props: {
     issuances: {
       type: Array, /** {@link Issuance} **/
+      required: true,
+    },
+    isLoaded: {
+      type: Boolean,
       required: true,
     },
   },

@@ -89,10 +89,6 @@
         </template>
       </drawer>
     </template>
-
-    <template v-else>
-      <loader message-id="dashboard.data-loading" />
-    </template>
   </div>
 </template>
 
@@ -102,7 +98,6 @@ import Transfer from '@/vue/forms/TransferForm'
 
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
@@ -120,7 +115,6 @@ export default {
   components: {
     AssetSelector,
     Transfer,
-    Loader,
     Drawer,
     SubmoduleImporter,
   },

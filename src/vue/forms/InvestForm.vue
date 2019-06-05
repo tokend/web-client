@@ -187,16 +187,16 @@
     </template>
 
     <template v-else>
-      <loader message-id="invest-form.loading-msg" />
+      <invest-form-skeleton-loader />
     </template>
   </div>
 </template>
 
 <script>
 import VueMarkdown from 'vue-markdown'
-import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import MessageBox from '@/vue/common/MessageBox'
+import InvestFormSkeletonLoader from './InvestFormSkeletonLoader'
 import FeesRenderer from '@/vue/common/fees/FeesRenderer'
 
 import FormMixin from '@/vue/mixins/form.mixin'
@@ -238,9 +238,9 @@ export default {
   name: 'invest-form',
   components: {
     VueMarkdown,
-    Loader,
     NoDataMessage,
     MessageBox,
+    InvestFormSkeletonLoader,
     FeesRenderer,
   },
   mixins: [FormMixin, FeesMixin],

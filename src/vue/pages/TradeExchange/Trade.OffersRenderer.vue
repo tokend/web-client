@@ -10,7 +10,6 @@
     </h3>
     <div
       class="trade-offers-wrapper"
-      :class="{'trade-offers-wrapper--loading': isLoading}"
     >
       <template>
         <div
@@ -36,7 +35,7 @@
               </tr>
             </thead>
             <tbody
-              v-if="offersList.length"
+              v-if="offersList.length && !isLoading"
             >
               <tr
                 v-for="(offer, o) in offersList"
@@ -49,9 +48,13 @@
               </tr>
             </tbody>
             <empty-tbody-placeholder
-              v-else
+              v-else-if="!offersList.length && !isLoading"
               :message="'trade-offers.no-data-title' | globalize"
               :colspan="3"
+            />
+            <skeleton-loader-table-body
+              v-else-if="isLoading"
+              :cells="3"
             />
           </table>
         </div>
@@ -83,6 +86,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import Drawer from '@/vue/common/Drawer'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
+import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 
 const EVENTS = {
@@ -94,6 +98,7 @@ export default {
   components: {
     Drawer,
     SubmitTradeOfferForm,
+    SkeletonLoaderTableBody,
     EmptyTbodyPlaceholder,
   },
   mixins: [

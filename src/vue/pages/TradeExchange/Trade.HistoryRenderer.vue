@@ -5,7 +5,6 @@
     </h2>
     <div
       class="trade-history__data-wrapper"
-      :class="{'trade-history__data-wrapper--loading': isLoading}"
     >
       <template>
         <div class="app__table app__table--with-shadow">
@@ -30,7 +29,7 @@
               </tr>
             </thead>
             <tbody
-              v-if="tradeHistory.length"
+              v-if="tradeHistory.length && !isLoading"
             >
               <tr
                 v-for="(item, i) in tradeHistory"
@@ -42,12 +41,16 @@
               </tr>
             </tbody>
             <empty-tbody-placeholder
-              v-else
+              v-else-if="!tradeHistory.length && !isLoading"
               :message="'trade-history.no-data-message' | globalize({
                 base: assetPair.base,
                 quote: assetPair.quote
               })"
               :colspan="4"
+            />
+            <skeleton-loader-table-body
+              v-else-if="isLoading"
+              :cells="4"
             />
           </table>
         </div>
@@ -57,11 +60,13 @@
 </template>
 
 <script>
+import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 
 export default {
   name: 'trade-history-renderer',
   components: {
+    SkeletonLoaderTableBody,
     EmptyTbodyPlaceholder,
   },
   props: {

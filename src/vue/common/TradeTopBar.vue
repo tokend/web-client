@@ -1,9 +1,10 @@
 <template>
   <div class="trade-top-bar">
-    <template v-if="isLoaded">
+    <template>
       <top-bar>
         <template slot="main">
           <router-link
+            v-if="isLoaded"
             :to="{
               name: vueRoutes.tradeExchange.name,
               query: { base: assetPair.base, quote: assetPair.quote }
@@ -13,7 +14,12 @@
               {{ 'trade-top-bar.exchange-view' | globalize }}
             </span>
           </router-link>
+          <skeleton-loader
+            v-else
+            template="smallString"
+          />
           <router-link
+            v-if="isLoaded"
             :to="{
               name: vueRoutes.tradeUserOffers.name,
               query: { base: assetPair.base, quote: assetPair.quote }
@@ -23,6 +29,10 @@
               {{ 'trade-top-bar.my-offers-view' | globalize }}
             </span>
           </router-link>
+          <skeleton-loader
+            v-else
+            template="smallString"
+          />
         </template>
         <template slot="extra">
           <button
@@ -44,7 +54,7 @@
 
       <div class="trade-asset-selector__wrapper">
         <select-field
-          v-if="formattedPairs.length"
+          v-if="formattedPairs.length && isLoaded"
           v-model="selectedPair"
           :key="selectedPair"
           class="trade-asset-selector__field app__select app__select--no-border"
@@ -57,14 +67,21 @@
             {{ assetPair }}
           </option>
         </select-field>
+        <skeleton-loader
+          v-else-if="!isLoaded"
+          template="bigString"
+        />
         <no-data-message
           v-else
           :title="'trade-top-bar.no-pairs-message' | globalize"
           :message="'trade-top-bar.here-will-pairs-list' | globalize"
         />
       </div>
-      <div class="trade-asset-selector__balances" v-if="formattedPairs.length">
-        <p class="trade-asset-selector__balances-value">
+      <div class="trade-asset-selector__balances">
+        <p
+          v-if="formattedPairs.length && isLoaded"
+          class="trade-asset-selector__balances-value"
+        >
           {{
             // eslint-disable-next-line
             { value: assetPairBalances.base, currency: assetPair.base } | formatMoney
@@ -75,9 +92,21 @@
             { value: assetPairBalances.quote, currency: assetPair.quote } | formatMoney
           }}
         </p>
-        <p class="trade-asset-selector__balances-label">
+        <skeleton-loader
+          v-else-if="!isLoaded"
+          template="bigString"
+        />
+        <p
+          v-if="formattedPairs.length && isLoaded"
+          class="trade-asset-selector__balances-label"
+        >
           {{ 'trade-top-bar.user-balances-label' | globalize }}
         </p>
+        <skeleton-loader
+          v-else-if="!isLoaded"
+          class="trade-asset-selector__balances-skeleton-loader--margin"
+          template="smallString"
+        />
       </div>
 
       <drawer :is-shown.sync="isCreateBuyOfferDrawerShown">
@@ -100,18 +129,14 @@
         />
       </drawer>
     </template>
-
-    <template v-else-if="!isLoadingFailed">
-      <loader message-id="trade-top-bar.loading-msg" />
-    </template>
   </div>
 </template>
 
 <script>
 import Drawer from '@/vue/common/Drawer'
-import Loader from '@/vue/common/Loader'
 import TopBar from '@/vue/common/TopBar'
 import NoDataMessage from '@/vue/common/NoDataMessage'
+import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
 
 import SelectField from '@/vue/fields/SelectField'
 import CreateTradeOfferForm from '@/vue/forms/market-orders/CreateTradeOfferForm'
@@ -139,9 +164,9 @@ export default {
     SelectField,
     CreateTradeOfferForm,
     Drawer,
-    Loader,
     TopBar,
     NoDataMessage,
+    SkeletonLoader,
   },
   data: () => ({
     assetPair: {
@@ -270,6 +295,10 @@ export default {
 @import '~@scss/variables';
 
 $media-custom-breakpoint: 450px;
+
+.trade-asset-selector__balances-skeleton-loader--margin {
+  margin-top: 0.8rem;
+}
 
 .trade-asset-selector__field {
   display: inline-block;

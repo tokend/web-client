@@ -1,6 +1,6 @@
 <template>
   <div class="assets-renderer">
-    <template v-if="!isLoadFailed">
+    <template>
       <drawer :is-shown.sync="isDrawerShown">
         <template v-if="isUpdateMode">
           <template slot="heading">
@@ -43,7 +43,6 @@
 
       <div class="assets-renderer__asset-list-wrp">
         <div
-          v-if="assets.length"
           class="assets-renderer__asset-list"
         >
           <template v-for="asset in assets">
@@ -53,10 +52,16 @@
               @click="selectAsset(asset)"
             />
           </template>
+          <template v-for="index in itemsPerSkeletonLoader">
+            <asset-skeleton-loader
+              v-if="!isLoaded && !assets.length"
+              :key="index"
+            />
+          </template>
         </div>
 
         <no-data-message
-          v-else
+          v-if="isLoaded && !assets.length"
           icon-name="trending-up"
           :title="'assets.no-assets-title' | globalize"
           :message="'assets.no-assets-msg' | globalize"
@@ -79,6 +84,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import CardViewer from '../../shared/components/card-viewer'
 import AssetAttributesViewer from '../../shared/components/asset-attributes-viewer'
 import AssetActions from './asset-actions'
+import AssetSkeletonLoader from './asset-skeleton-loader'
 
 import UpdateAssetFormModule from '@modules/update-asset-form'
 
@@ -97,6 +103,7 @@ export default {
     AssetAttributesViewer,
     AssetActions,
     UpdateAssetFormModule,
+    AssetSkeletonLoader,
   },
 
   props: {
@@ -123,11 +130,12 @@ export default {
   },
 
   data: _ => ({
-    isLoaded: true,
+    isLoaded: false,
     isLoadFailed: false,
     isDrawerShown: false,
     isUpdateMode: false,
     selectedAsset: {},
+    itemsPerSkeletonLoader: 3,
   }),
 
   computed: {
@@ -143,6 +151,7 @@ export default {
   async created () {
     try {
       await this.loadAssets()
+      this.isLoaded = true
     } catch (e) {
       this.isLoadFailed = true
       ErrorHandler.processWithoutFeedback()

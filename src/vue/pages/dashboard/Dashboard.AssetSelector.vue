@@ -1,26 +1,38 @@
 <template>
   <div class="asset-selector">
-    <template v-if="assets.length">
+    <template>
       <div
         class="asset-selector__wrapper"
-        v-if="currentAsset"
       >
         <div class="asset-selector__select">
-          <div class="asset-selector__select-picture">
+          <skeleton-loader
+            v-if="imgUrl === null || !currentAsset ||
+              assets.length === 0"
+            template="bigIcon"
+            class="asset-selector__select-picture"
+          />
+          <div v-else class="asset-selector__select-picture">
             <img
               v-if="imgUrl"
               class="asset-selector__select-picture-tag"
               :src="imgUrl"
             >
             <p
-              v-else
+              v-if="currentAsset && !imgUrl"
               class="asset-selector__asset-code-abbr"
             >
               {{ currentAsset | abbreviate }}
             </p>
           </div>
           <div>
+            <skeleton-loader
+              v-if="imgUrl === null || !currentAsset ||
+                assets.length === 0"
+              class="app__select"
+              template="bigString"
+            />
             <select-field
+              v-else
               :value="currentAssetForSelect.code"
               :key="currentAssetForSelect.code"
               @input="$emit(EVENTS.assetChange, $event)"
@@ -37,11 +49,18 @@
           </div>
         </div>
       </div>
-      <template v-if="currentAsset">
+      <template>
         <div class="asset-selector__wrapper asset-selector__wrapper--values">
           <div class="asset-selector__asset-available">
             <div class="asset-selector__asset-value">
-              <span class="asset-selector__asset-value-main">
+              <skeleton-loader
+                v-if="!currentAsset"
+                template="bigString"
+              />
+              <span
+                v-else
+                class="asset-selector__asset-value-main"
+              >
                 {{
                   {
                     value: currentAssetBalanceDetails.balance,
@@ -50,43 +69,45 @@
                 }}
               </span>
             </div>
-
-            <div
-              class="asset-selector__asset-converted"
-              v-if="currentAssetBalanceDetails.convertedBalance"
-            >
-              <span class="asset-selector__asset-value-secondary">
-                {{
-                  {
-                    value: currentAssetBalanceDetails.convertedBalance,
-                    currency: currentAssetBalanceDetails.convertedToAsset
-                  } | formatMoney
-                }}
-              </span>
+            <div class="asset-selector__asset-subvalue">
+              <skeleton-loader
+                v-if="!currentAsset &&
+                  currentAssetBalanceDetails.convertedBalance"
+                template="bigString"
+              />
+              <div
+                class="asset-selector__asset-converted"
+                v-else-if="currentAssetBalanceDetails.convertedBalance"
+              >
+                <span class="asset-selector__asset-value-secondary">
+                  {{
+                    {
+                      value: currentAssetBalanceDetails.convertedBalance,
+                      currency: currentAssetBalanceDetails.convertedToAsset
+                    } | formatMoney
+                  }}
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </template>
-      <template v-if="!currentAsset">
+      <template v-if="assets.length && !currentAsset">
         <no-data-message
           :title="'dashboard.no-assets-in-your-wallet' | globalize"
           :message="'dashboard.here-will-be-the-assets' | globalize"
         />
       </template>
     </template>
-    <template v-else-if="isLoadingFailed">
+    <template v-if="isLoadingFailed">
       <p>
         {{ 'dashboard.loading-error-msg' | globalize }}
       </p>
-    </template>
-    <template v-else>
-      <loader message-id="dashboard.loading-msg" />
     </template>
   </div>
 </template>
 
 <script>
-import Loader from '@/vue/common/Loader'
 import config from '@/config'
 import SelectField from '@/vue/fields/SelectField'
 import NoDataMessage from '@/vue/common/NoDataMessage'
@@ -96,6 +117,7 @@ import { vuexTypes } from '@/vuex'
 import { api, documentsManager } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetRecord } from '@/js/records/entities/asset.record'
+import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
 
 const EVENTS = {
   assetChange: 'asset-change',
@@ -106,7 +128,7 @@ export default {
   components: {
     SelectField,
     NoDataMessage,
-    Loader,
+    SkeletonLoader,
   },
   props: {
     currentAsset: {
@@ -153,9 +175,17 @@ export default {
         .find(i => i.asset.code === this.currentAsset) || {}
     },
     imgUrl () {
-      const balance = this.balances
-        .find(i => i.asset.code === this.currentAsset)
-      return documentsManager.getDocumentUrlByKey(balance.asset.logoKey)
+      if (this.balances.length && this.currentAsset) {
+        try {
+          const balance = this.balances
+            .find(i => i.asset.code === this.currentAsset)
+          return documentsManager.getDocumentUrlByKey(balance.asset.logoKey)
+        } catch {
+          return null
+        }
+      } else {
+        return null
+      }
     },
   },
   async created () {

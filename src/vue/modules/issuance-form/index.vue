@@ -19,18 +19,17 @@
       {{ 'issuance-form.load-failed-msg' | globalize }}
     </p>
 
-    <load-spinner
+    <issuance-form-skeleton-loader
       v-else
-      :message-id="'issuance-form.loading-msg'"
     />
   </div>
 </template>
 
 <script>
 import LoadOwnedAssetsMixin from './mixins/load-owned-assets.mixin'
+import IssuanceFormSkeletonLoader from './components/issuance-form-skeleton-loader'
 
 import NoDataMessage from '@/vue/common/NoDataMessage'
-import LoadSpinner from '@/vue/common/Loader'
 import CreateIssuanceForm from './components/create-issuance-form'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -46,8 +45,8 @@ export default {
   name: 'issuance-form-module',
   components: {
     NoDataMessage,
-    LoadSpinner,
     CreateIssuanceForm,
+    IssuanceFormSkeletonLoader,
   },
   mixins: [LoadOwnedAssetsMixin],
 

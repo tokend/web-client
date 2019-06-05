@@ -23,7 +23,7 @@
         </thead>
 
         <tbody
-          v-if="requests.length"
+          v-if="requests.length && isLoaded"
         >
           <tr
             v-for="request in requests"
@@ -47,9 +47,13 @@
           </tr>
         </tbody>
         <empty-tbody-placeholder
-          v-else
+          v-else-if="!requests.length && isLoaded"
           :colspan="4"
           :message="'pre-issuance-requests.no-request-history-desc' | globalize"
+        />
+        <skeleton-loader-table-body
+          v-else
+          :cells="4"
         />
       </table>
     </div>
@@ -58,6 +62,7 @@
 
 <script>
 import RequestStateViewer from '../../shared/components/request-state-viewer'
+import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 
 const EVENTS = {
@@ -68,12 +73,17 @@ export default {
   name: 'requests-table',
   components: {
     RequestStateViewer,
+    SkeletonLoaderTableBody,
     EmptyTbodyPlaceholder,
   },
 
   props: {
     requests: {
       type: Array,
+      required: true,
+    },
+    isLoaded: {
+      type: Boolean,
       required: true,
     },
   },

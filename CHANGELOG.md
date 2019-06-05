@@ -8,6 +8,7 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+
 #### Added
 - Placeholder of empty list for Trade, Issuance requests and Requests pages
 - Tooltip directive
@@ -25,6 +26,7 @@ for further information about branching and tagging conventions.
 - `AmountInputField`
 - Cap asset field to the create sale form
 - Display amount + fee in movements list
+- Added skeleton loader template by elements
 - "custom-select" package for displaying customized select field
 - Max button to amount input fields
 - "compare" & "format" methods to `MathUtil` class
@@ -56,6 +58,7 @@ for further information about branching and tagging conventions.
 - Now allowing the user to input birth date manually on general
   verification form
 - Now using "d3Format" and SI prefixes while formatting chart percent hints
+- Replaced spinner loader on skeleton loader in almost all templates
 - Now displaying asset for incoming withdrawal requests
 - Now passing values to select field using a slot and "option" tags
 - Now using `MathUtil.compare` method in validators
