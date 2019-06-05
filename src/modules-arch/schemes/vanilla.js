@@ -54,6 +54,9 @@ import { ShowNetworkPassphrasePseudoModule } from '@/modules-arch/pseudo-modules
 import { VerificationGeneralFormModule } from '@/vue/modules/verification/general-form/module'
 import { MyAssetsPageModule } from '@/vue/pages/my-assets-page-module'
 import { MyAssetsExplorerModule } from '@/vue/modules/assets/my-assets-explorer/module'
+import { SharesPageModule } from '@/vue/pages/shares-page-module'
+import { SharesTopBarModule } from '@modules/shares-top-bar/module'
+import { SharesHistoryModule } from '@/vue/modules/shares-history/module'
 
 export default {
   pages: [
@@ -185,6 +188,23 @@ export default {
             isCorporateOnly: true,
           }),
         ],
+      },
+    ),
+
+    new SharesPageModule(
+      {
+        routerEntry: {
+          path: '/register-of-shares',
+          name: vueRoutes.registerOfShares.name,
+          meta: { pageNameTranslationId: 'pages-names.register-of-shares' },
+        },
+        menuButtonTranslationId: 'pages-names.register-of-shares',
+        menuButtonMdiName: 'book-open',
+        submodules: [
+          new SharesHistoryModule(),
+          new SharesTopBarModule(),
+        ],
+        isCorporateOnly: true,
       },
     ),
 
