@@ -99,7 +99,7 @@ describe('incoming-withdrawals-requests.module', () => {
             {
               page: { order: 'desc' },
               filter: { reviewer: 'SOME_ACCOUNT_ID' },
-              include: ['request_details', 'request_details.balance'],
+              include: ['request_details'],
             }
           )
 
