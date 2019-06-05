@@ -68,11 +68,8 @@ export default {
 }
 
 .auth__titles {
-  background:
-    linear-gradient(
-      $col-auth-titles-background-light 0%,
-      $col-auth-titles-background-dark 65%
-    );
+  background-image: url('../../../static/Kernel_bg_2.png');
+  background-repeat: round;
   display: flex;
   flex-direction: column;
   justify-content: center;

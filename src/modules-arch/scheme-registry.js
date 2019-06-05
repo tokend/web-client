@@ -3,6 +3,7 @@ import { ModuleScheme } from './module-scheme'
 let currentScheme = {}
 const SCHEME_IMPORTERS = {
   vanilla: _ => import('@/modules-arch/schemes/vanilla'),
+  blockchainElevator: _ => import('@/modules-arch/schemes/blockchain-elevator'),
   healthcare: _ => import('@/modules-arch/schemes/healthcare'),
   reit: _ => import('@/modules-arch/schemes/reit'),
   loyaltyPointsMerchant: _ => import('@/modules-arch/schemes/loyalty-points-merchant'),
