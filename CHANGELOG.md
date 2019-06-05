@@ -34,6 +34,7 @@ for further information about branching and tagging conventions.
 - Emitted value normalizers for input field:
   - "normalizeRange"
   - "normalizeDecimalPrecision"
+- Asset code validator
 
 #### Changed
 - Now loading account converted balances in
