@@ -52,6 +52,8 @@ import { BalanceExplorerModule } from '@/vue/modules/assets/balance-explorer/mod
 import { ShowNetworkPassphrasePseudoModule } from '@/modules-arch/pseudo-modules/show-network-passphrase-pseudo-module'
 
 import { VerificationGeneralFormModule } from '@/vue/modules/verification/general-form/module'
+import { MyAssetsPageModule } from '@/vue/pages/my-assets-page-module'
+import { MyAssetsExplorerModule } from '@/vue/modules/assets/my-assets-explorer/module'
 
 export default {
   pages: [
@@ -167,6 +169,17 @@ export default {
             submodules: [
               new BalanceExplorerModule(),
             ],
+          }),
+          new MyAssetsPageModule({
+            routerEntry: {
+              path: '/assets/my-assets',
+              name: vueRoutes.myAssets.name,
+              meta: { pageNameTranslationId: 'pages-names.assets' },
+            },
+            submodules: [
+              new MyAssetsExplorerModule(),
+            ],
+            isCorporateOnly: true,
           }),
           new CreateAssetFormModule({
             isCorporateOnly: true,
