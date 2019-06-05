@@ -8,14 +8,21 @@
       <div class="app__form-field">
         <select-field
           name="deposit-fiat-card-asset"
-          v-model="form.asset"
-          :values="depositableFiatAssets"
-          key-as-value-text="nameAndCode"
+          :value="form.asset.code"
+          @input="setAssetByCode"
           :disabled="formMixin.isDisabled"
           @blur="touchField('form.asset')"
           :error-message="getFieldErrorMessage('form.asset')"
           :label="'deposit-fiat-card-module.asset' | globalize"
-        />
+        >
+          <option
+            v-for="asset in depositableFiatAssets"
+            :key="asset.code"
+            :value="asset.code"
+          >
+            {{ asset.nameAndCode }}
+          </option>
+        </select-field>
         <div class="deposit-fiat-card__form-field-description">
           <p>
             {{
@@ -322,6 +329,10 @@ export default {
       loadAssets: types.LOAD_ASSETS,
       loadFees: types.LOAD_FEES,
     }),
+    setAssetByCode (code) {
+      this.form.asset = this.depositableFiatAssets
+        .find(item => item.code === code)
+    },
     async getFees () {
       try {
         await this.loadFees({

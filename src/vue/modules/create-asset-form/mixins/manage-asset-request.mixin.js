@@ -35,7 +35,7 @@ export default {
       return {
         requestID: this.requestId || NEW_CREATE_ASSET_REQUEST_ID,
         code: this.informationStepForm.code,
-        assetType: String(this.informationStepForm.assetType.value),
+        assetType: String(this.informationStepForm.assetType),
         preissuedAssetSigner: this.preIssuanceAssetSigner,
         trailingDigitsCount: config.DECIMAL_POINTS,
         initialPreissuedAmount: this.initialPreissuedAmount,

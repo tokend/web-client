@@ -25,6 +25,7 @@ for further information about branching and tagging conventions.
 - `AmountInputField`
 - Cap asset field to the create sale form
 - Display amount + fee in movements list
+- "custom-select" package for displaying customized select field
 - Max button to amount input fields
 
 #### Changed
@@ -46,6 +47,12 @@ for further information about branching and tagging conventions.
 - Now displaying accepted investment assets as base assets of pairs where
   cap asset is quote asset on create sale form
 - Now displaying invest form on the sale state widget
+- Date format from 'yyyy-mm-dd' to 'dd/mm/yyyy' in date field
+- Now allowing the user to input birth date manually on general
+  verification form
+- Now using "d3Format" and SI prefixes while formatting chart percent hints
+- Now displaying asset for incoming withdrawal requests
+- Now passing values to select field using a slot and "option" tags
 
 #### Removed
 - Cursor pointer on disabled select
@@ -62,6 +69,8 @@ for further information about branching and tagging conventions.
 - Replace labels for submit general kyc button
 - Calendar related tests for win32 systems
 - Disabling invest form while submitting
+- Different borders with attribute of readonly on the field
+- Close transfer drawer on Dashboard after submitting form
 
 ## [1.7.0-rc.2] - 2019-05-21
 ### "Under the hood" changes
