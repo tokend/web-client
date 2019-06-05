@@ -10,6 +10,9 @@
             <th :title="'incoming-withdrawal-requests.requestor-header' | globalize">
               {{ 'incoming-withdrawal-requests.requestor-header' | globalize }}
             </th>
+            <th :title="'incoming-withdrawal-requests.asset-code-header' | globalize">
+              {{ 'incoming-withdrawal-requests.asset-code-header' | globalize }}
+            </th>
             <th :title="'incoming-withdrawal-requests.amount-header' | globalize">
               {{ 'incoming-withdrawal-requests.amount-header' | globalize }}
             </th>
@@ -32,6 +35,10 @@
           >
             <td :title="request.requestor">
               <email-getter :account-id="request.requestor" />
+            </td>
+
+            <td :title="request.assetCode">
+              {{ request.assetCode }}
             </td>
 
             <td :title="request.amount | formatMoney">
