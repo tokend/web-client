@@ -647,7 +647,8 @@
       "sale-details": "Sale details",
       "loyalty-points": "Loyalty points",
       "statistics": "Statistics",
-      "documents": "Documents"
+      "documents": "Documents",
+      "register-of-shares": "Register of shares"
     },
     "limits": {
       "explore-limits": "Explore limits",
@@ -931,7 +932,9 @@
       "source-pays-for-destination-lbl": "Source pays for destination",
       "subject-lbl": "Subject",
       "payment-sender-lbl": "Payment sender",
+      "payment-sender-id-lbl": "Payment sender ID",
       "payment-recipient-lbl": "Payment recipient",
+      "payment-recipient-id-lbl": "Payment recipient ID",
       "request-state-lbl": "Request state",
       "request-rejected-msg": "Request rejected",
       "request-approved-msg": "Request approved",
@@ -1077,7 +1080,8 @@
       "no-assets-msg": "There are no available assets",
       "no-balances-title": "No balances",
       "no-balances-msg": "You do not have any balances yet",
-      "create-btn": "Create"
+      "create-btn": "Create",
+      "my-assets-title": "My assets"
     },
     "create-asset-form": {
       "loading-msg": "Loading…",
@@ -1870,7 +1874,8 @@
       "terms-title": "Terms",
       "download-terms-btn": "Download terms",
       "already-in-your-balance-btn": "Already in your balances",
-      "owner-lbl": "Owner"
+      "owner-lbl": "Owner",
+      "view-shares-btn": "View shares"
     },
     "create-opportunity": {
       "maturity-date": "Maturity Date",
