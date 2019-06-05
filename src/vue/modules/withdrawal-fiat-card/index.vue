@@ -8,14 +8,21 @@
       <div class="app__form-field">
         <select-field
           name="withdrawal-fiat-card-asset"
-          v-model="form.asset"
-          :values="withdrawableFiatAssets"
-          key-as-value-text="nameAndCode"
+          :value="form.asset.code"
+          @input="setAssetByCode"
           :disabled="formMixin.isDisabled"
           @blur="touchField('form.asset')"
           :error-message="getFieldErrorMessage('form.asset')"
           :label="'withdrawal-fiat-card-module.asset' | globalize"
-        />
+        >
+          <option
+            v-for="asset in withdrawableFiatAssets"
+            :key="asset.code"
+            :value="asset.code"
+          >
+            {{ asset.nameAndCode }}
+          </option>
+        </select-field>
         <div class="withdrawal-fiat-card__form-field-description">
           <p>
             {{
@@ -34,6 +41,8 @@
         class="app__form-field"
         v-model.trim="form.amount"
         type="number"
+        :min="config.minAmount"
+        :max="form.asset.balance.value"
         :step="config.minAmount"
         name="withdrawal-fiat-card-amount"
         @blur="touchField('form.amount')"
@@ -277,6 +286,10 @@ export default {
       loadAssets: types.LOAD_ASSETS,
       loadFees: types.LOAD_FEES,
     }),
+    setAssetByCode (code) {
+      this.form.asset = this.withdrawableFiatAssets
+        .find(item => item.code === code)
+    },
     async getFees () {
       try {
         await this.loadFees({

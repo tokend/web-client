@@ -10,11 +10,18 @@
             {{ 'op-pages.filters-prefix' | globalize }}
           </span>
           <select-field
-            v-model="asset"
-            :values="assets"
-            key-as-value-text="nameAndCode"
+            :value="asset.code"
+            @input="setAssetByCode"
             class="app__select app__select--no-border"
-          />
+          >
+            <option
+              v-for="asset in assets"
+              :key="asset.code"
+              :value="asset.code"
+            >
+              {{ asset.nameAndCode }}
+            </option>
+          </select-field>
         </div>
       </template>
       <div
@@ -84,6 +91,7 @@
         {{ 'withdrawal-form.withdrawal' | globalize }}
       </template>
       <withdrawal-form
+        :asset-code="asset.code"
         @operation-submitted="$emit(EVENTS.movementsUpdateRequired)"
       />
     </drawer>
@@ -94,6 +102,7 @@
       </template>
       <submodule-importer
         :submodule="getModule().getSubmodule(DepositFormPseudoModule)"
+        :asset-code="asset.code"
       />
     </drawer>
 
@@ -103,6 +112,7 @@
       </template>
       <transfer-form
         @operation-submitted="$emit(EVENTS.movementsUpdateRequired)"
+        :asset-to-transfer="asset.code"
       />
     </drawer>
   </div>
@@ -183,6 +193,9 @@ export default {
     ...mapActions({
       loadAccountBalancesDetails: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
+    setAssetByCode (code) {
+      this.asset = this.assets.find(item => item.code === code)
+    },
     setDefaultAsset () {
       this.asset = this.assets
         .find(item => item.code === this.$route.query.asset) ||

@@ -56,10 +56,17 @@
         <select-field
           v-if="formattedPairs.length && isLoaded"
           v-model="selectedPair"
-          :values="formattedPairs"
           :key="selectedPair"
           class="trade-asset-selector__field app__select app__select--no-border"
-        />
+        >
+          <option
+            v-for="assetPair in formattedPairs"
+            :key="assetPair"
+            :value="assetPair"
+          >
+            {{ assetPair }}
+          </option>
+        </select-field>
         <skeleton-loader
           v-else-if="!isLoaded"
           template="bigString"

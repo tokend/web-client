@@ -15,6 +15,7 @@
               :label="'coinpayments-deposit.amount-lbl' | globalize"
               :asset="asset"
               :disabled="formMixin.isDisabled"
+              is-max-button-shown
             />
           </div>
           <div class="app__form-actions">

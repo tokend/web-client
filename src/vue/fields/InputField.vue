@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import { MathUtil } from '@/js/utils'
 
 const EVENTS = {
   input: 'input',
@@ -83,6 +84,7 @@ export default {
       return {
         ...this.$listeners,
         input: event => {
+          this.normalizeTargetValue(event.target)
           this.$emit(EVENTS.input, event.target.value)
         },
       }
@@ -108,6 +110,7 @@ export default {
         document.addEventListener('keyup', this.detectCapsLock)
       }
     },
+
     onBlur (event) {
       if (this.isPasswordType) {
         document.removeEventListener('keydown', this.detectCapsLock)
@@ -116,6 +119,7 @@ export default {
         if (!this.value) this.isCapsLockOn = false
       }
     },
+
     detectCapsLock (event) {
       /**
        * {KeyboardEvent} getModifierState
@@ -124,6 +128,53 @@ export default {
        */
       this.isCapsLockOn = event.getModifierState &&
         event.getModifierState('CapsLock')
+    },
+
+    normalizeTargetValue (target) {
+      if (this.type === 'number' && target.value !== '') {
+        target.value = this.normalizeDecimalPrecision(
+          this.normalizeRange(target.value)
+        )
+      }
+    },
+
+    normalizeRange (value) {
+      const max = this.$attrs.max
+      const min = this.$attrs.min
+
+      let result = value
+      if (max && MathUtil.compare(value, max) > 0) {
+        result = max
+      } else if (min && MathUtil.compare(min, value) > 0) {
+        result = min
+      }
+
+      return result
+    },
+
+    normalizeDecimalPrecision (value) {
+      const step = this.$attrs.step
+      if (!step) {
+        return value
+      }
+
+      let precision
+      try {
+        precision = step.match(/(?:\.|,)\d+$/)[0].slice(1).length
+      } catch (error) {
+        precision = 0
+      }
+
+      let result = value
+      if (precision) {
+        const detectRe = new RegExp(`(?:\\.|,)\\d{${precision + 1},}$`)
+        if (detectRe.test(value)) {
+          const replaceRe = new RegExp(`((?:\\.|,)\\d{${precision}})\\d*`)
+          result = value.replace(replaceRe, '$1')
+        }
+      }
+
+      return result
     },
   },
 }

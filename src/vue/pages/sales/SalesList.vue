@@ -2,13 +2,18 @@
   <div class="sales-list">
     <div class="sales__state-filter">
       <select-field
-        :is-value-translatable="true"
         :disabled="!isLoaded"
         v-model="filters.state"
-        :values="Object.values(SALE_STATES)"
-        key-as-value-text="labelTranslationId"
         class="sales-asset-selector__field app__select app__select--no-border"
-      />
+      >
+        <option
+          v-for="saleState in Object.values(SALE_STATES)"
+          :key="saleState.value"
+          :value="saleState.value"
+        >
+          {{ saleState.labelTranslationId | globalize }}
+        </option>
+      </select-field>
     </div>
     <template>
       <div class="sales__sale-cards">
@@ -113,7 +118,7 @@ export default {
     saleRecords: [],
     filters: {
       baseAsset: '',
-      state: SALE_STATES.live,
+      state: SALE_STATES.live.value,
     },
     isLoaded: false,
     isDetailsDrawerShown: false,
@@ -143,7 +148,7 @@ export default {
     },
 
     recordsLoader () {
-      const saleState = this.filters.state.value
+      const saleState = this.filters.state
 
       let opts = {
         page: { order: 'desc' },

@@ -8,12 +8,19 @@
         <div class="app__form-row">
           <div class="app__form-field">
             <select-field
-              v-model="form.asset"
-              :values="assetsInBalance"
-              key-as-value-text="nameAndCode"
+              :value="form.asset.code"
+              @input="setAssetByCode"
               class="app__select"
               :label="'redeem-form.opportunity-uniq-code-lbl' | globalize"
-            />
+            >
+              <option
+                v-for="asset in assetsInBalance"
+                :key="asset.code"
+                :value="asset.code"
+              >
+                {{ asset.nameAndCode }}
+              </option>
+            </select-field>
           </div>
         </div>
 
@@ -165,6 +172,10 @@ export default {
       createOffer: types.CREATE_OFFER,
       loadAccountBalances: types.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
+    setAssetByCode (code) {
+      this.form.asset = this.assetsInBalance
+        .find(item => item.code === code)
+    },
     async submit () {
       this.disableForm()
       this.isRedeemProcessing = true

@@ -5,7 +5,7 @@
         <asset-selector
           class="dashboard__asset-selector"
           :current-asset="currentAsset"
-          @asset-change="setCurrentAsset"
+          @asset-change="currentAsset = $event"
           :scale="scale"
         />
         <div class="dashboard__actions">
