@@ -50,6 +50,7 @@ for further information about branching and tagging conventions.
 - Now allowing the user to input birth date manually on general
   verification form
 - Now using "d3Format" and SI prefixes while formatting chart percent hints
+- Now displaying asset for incoming withdrawal requests
 - Now passing values to select field using a slot and "option" tags
 
 #### Removed

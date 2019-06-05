@@ -28,7 +28,7 @@ export const actions = {
       filter: {
         reviewer: rootGetters[vuexTypes.accountId],
       },
-      include: ['request_details', 'request_details.balance'],
+      include: ['request_details'],
     })
   },
 
