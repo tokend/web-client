@@ -135,7 +135,8 @@
       "upcoming-sale-msg": "Upcoming opportunities are not investable",
       "canceled-sale-msg": "Cancelled opportunities are not investable",
       "cap-exceeded-msg": "Investing amount has exceeded the opportunity cap **{{amount, money}}**",
-      "requires-verification-desc": "Investments in this opportunity requires verification"
+      "requires-verification-desc": "Investments in this opportunity requires verification",
+      "continue-btn": "Continue"
     },
     "create-sale-form": {
       "sale-name-lbl": "Opportunity name",

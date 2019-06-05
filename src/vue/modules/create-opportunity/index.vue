@@ -715,10 +715,12 @@ export default {
   methods: {
     moment,
     formatDate,
+    ...mapActions({
+      loadAssets: vuexTypes.LOAD_ASSETS,
+    }),
     ...mapActions('create-opportunity', {
       loadKvAssetTypeKycRequired: types.LOAD_KV_KYC_REQUIRED,
       getBlobId: types.LOAD_BLOB_ID,
-      loadAssets: types.LOAD_ASSETS,
       loadBaseAssetsPairs: types.LOAD_BASE_ASSETS_PAIRS_BY_STATS_QUOTE_ASSET,
     }),
     nextStep (formStep) {
