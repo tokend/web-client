@@ -29,7 +29,7 @@
         slot="extra"
       >
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(WithdrawalFiatModule)">
+        <template v-if="getModule().canRenderSubmodule(WithdrawalFiatModule) && asset.isFiat && asset.isWithdrawable">
           <button
             v-ripple
             class="app__button-raised movements-top-bar-reit__actions-btn"
@@ -45,7 +45,9 @@
         </template>
 
         <template
-          v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)"
+          v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)
+            && asset.isCoinpayments
+            && asset.isWithdrawable"
         >
           <button
             v-ripple
@@ -62,7 +64,7 @@
         </template>
 
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(DepositFiatModule)">
+        <template v-if="getModule().canRenderSubmodule(DepositFiatModule) && asset.isFiat && asset.isDepositable">
           <button
             v-ripple
             class="app__button-raised movements-top-bar-reit__actions-btn"
@@ -77,7 +79,7 @@
           </button>
         </template>
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(CoinpaymentsDepositModule)">
+        <template v-if="getModule().canRenderSubmodule(CoinpaymentsDepositModule) && asset.isCoinpayments">
           <button
             v-ripple
             class="app__button-raised movements-top-bar-reit__actions-btn"
@@ -117,7 +119,9 @@
         </template>
 
         <template
-          v-if="getModule().canRenderSubmodule(RedeemFormModule)"
+          v-if="getModule().canRenderSubmodule(RedeemFormModule)
+            && asset.isBond
+            && !isOwnedAsset"
         >
           <button
             v-ripple
@@ -247,14 +251,14 @@ const EVENTS = {
   deposited: 'deposited',
   redeemed: 'redeemed',
   assetUpdated: 'asset-updated',
-}
+};
 
 const ASSET_POLICIES_STR = {
   isDepositable: 'isDepositable',
   isWithdrawable: 'isWithdrawable',
   isTransferable: 'isTransferable',
   isBond: 'isBond',
-}
+};
 
 export default {
   name: 'movements-top-bar-reit',
@@ -317,17 +321,17 @@ export default {
     asset: {
       deep: true,
       handler (value) {
-        this.redeemConfig.defaultAssetCode = this.asset.code
+        this.redeemConfig.defaultAssetCode = this.asset.code;
         this.$emit(EVENTS.assetUpdated, value)
       },
     },
   },
   async created () {
-    this.setUpConfigs()
+    this.setUpConfigs();
 
-    await this.loadBalances()
-    await this.loadAssets()
-    this.setDefaultAsset()
+    await this.loadBalances();
+    await this.loadAssets();
+    this.setDefaultAsset();
     this.isInitialized = true
   },
   methods: {
@@ -342,27 +346,27 @@ export default {
       this.asset = this.assets[0]
     },
     withdrawalFiatModuleWithdrawn () {
-      this.isFiatWithdrawalFormShown = false
+      this.isFiatWithdrawalFormShown = false;
       this.$emit(EVENTS.withdrawn)
     },
     depositFiatModuleDeposited () {
-      this.isFiatDepositFormShown = false
+      this.isFiatDepositFormShown = false;
       this.$emit(EVENTS.deposited)
     },
     redeemModuleSubmitted () {
-      this.isReedemDrawerShown = false
+      this.isReedemDrawerShown = false;
       this.$emit(EVENTS.redeemed)
     },
     setUpConfigs () {
       this.withdrawalFiatConfig = {
         decimalPoints: this.config.decimalPoints,
         minAmount: this.config.minAmount,
-      }
+      };
       this.depositFiatConfig = {
         horizonURL: this.config.horizonURL,
         decimalPoints: this.config.decimalPoints,
         minAmount: this.config.minAmount,
-      }
+      };
       this.redeemConfig = {
         minAmount: this.config.minAmount,
         maxAmount: this.config.maxAmount,
@@ -370,7 +374,7 @@ export default {
       }
     },
     getMessageIdForPolicy (policy) {
-      let messageId = ''
+      let messageId = '';
       if (!this.asset[policy]) {
         if (policy === ASSET_POLICIES_STR.isDepositable) {
           messageId = 'op-pages.not-depositable-msg'
