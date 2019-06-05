@@ -9,6 +9,7 @@
             {{ 'sales.investable-sales' | globalize }}
           </span>
         </router-link>
+
         <template
           v-if="getModule().canRenderSubmodule(SalesListOwnedPageModule)"
         >
