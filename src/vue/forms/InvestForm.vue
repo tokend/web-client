@@ -48,7 +48,7 @@
               white-autofill
               type="number"
               :min="MIN_AMOUNT"
-              :max="availableAmount.value"
+              :max="availableBalance.value"
               :step="MIN_AMOUNT"
               v-model="form.amount"
               @input="touchField('form.amount')"
@@ -340,7 +340,6 @@ export default {
     availableBalance () {
       const quoteBalance = this.quoteAssetBalances
         .find(balance => balance.asset.code === this.form.asset.code)
-
       let availableBalance
       if (this.currentInvestment.quoteAmount) {
         const convertedAmount = MathUtil.add(

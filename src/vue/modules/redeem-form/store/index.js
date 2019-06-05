@@ -63,9 +63,8 @@ export const actions = {
       .find(i => i.baseAsset.id === baseAsset)
   },
 
-  async [types.LOAD_ACCOUNT_BALANCES_DETAILS] ({ commit, getters }) {
-    const accountId = getters.accountId
-    const endpoint = `/v3/accounts/${accountId}`
+  async [types.LOAD_ACCOUNT_BALANCES_DETAILS] ({ commit, rootGetters }) {
+    const endpoint = `/v3/accounts/${rootGetters[vuexTypes.accountId]}`
     const { data: account } = await api.getWithSignature(endpoint, {
       include: ['balances.asset', 'balances.state'],
     })
