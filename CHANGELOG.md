@@ -25,6 +25,7 @@ for further information about branching and tagging conventions.
 - `AmountInputField`
 - Cap asset field to the create sale form
 - Display amount + fee in movements list
+- "custom-select" package for displaying customized select field
 
 #### Changed
 - Now loading account converted balances in
@@ -49,6 +50,7 @@ for further information about branching and tagging conventions.
 - Now allowing the user to input birth date manually on general
   verification form
 - Now using "d3Format" and SI prefixes while formatting chart percent hints
+- Now passing values to select field using a slot and "option" tags
 
 #### Removed
 - Cursor pointer on disabled select
