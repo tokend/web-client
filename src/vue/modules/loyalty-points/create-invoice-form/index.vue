@@ -5,7 +5,7 @@
         v-if="!isTransactionSent"
         :amount="amount"
         :subject="subject"
-        :merchant-email="wallet.email"
+        :merchant-email="walletEmail"
         :merchant-system="horizonUrl"
         @submit="initConfirmation"
       />
@@ -45,6 +45,7 @@ import { config } from './_config'
 
 import { mapGetters, mapActions } from 'vuex'
 import { types } from './store/types'
+import { vuexTypes } from '@/vuex/types'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -86,6 +87,9 @@ export default {
   computed: {
     ...mapGetters('create-invoice-form', {
       assetPairs: types.assetPairs,
+    }),
+    ...mapGetters({
+      walletEmail: vuexTypes.walletEmail,
     }),
   },
 

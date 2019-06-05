@@ -313,14 +313,19 @@ export default {
         this.loyaltyAccount.accountId
       )
 
-      await api.withWallet(newWallet).postOperations(operation)
+      await api
+        .withBaseURL(this.systemIdentifier)
+        .withWallet(newWallet)
+        .postOperations(operation)
     },
 
     async getQuoteAssetBalanceId () {
       const endpoint = `/v3/accounts/${this.loyaltyAccount.accountId}`
-      const { data: account } = await api.get(endpoint, {
-        include: ['balances'],
-      })
+      const { data: account } = await api
+        .withBaseURL(this.systemIdentifier)
+        .get(endpoint, {
+          include: ['balances'],
+        })
 
       const balance = account.balances
         .find(b => b.asset.id === this.selectedQuoteAsset.code)
