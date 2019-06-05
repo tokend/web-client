@@ -64,6 +64,7 @@
                 :label="'transfer-form.amount-lbl' | globalize"
                 :asset="form.asset"
                 is-max-button-shown
+                :disabled="view.mode === VIEW_MODES.confirm"
               />
             </div>
           </div>

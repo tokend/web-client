@@ -43,7 +43,7 @@
         <input-field
           white-autofill
           type="number"
-          :min="MIN_AMOUNT"
+          :min="0"
           :max="MAX_AMOUNT"
           :step="MIN_AMOUNT"
           v-model="form.maxIssuanceAmount"

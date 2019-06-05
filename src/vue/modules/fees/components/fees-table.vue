@@ -26,9 +26,7 @@
             </th>
           </tr>
         </thead>
-        <tbody
-          v-if="fees.length"
-        >
+        <tbody v-if="isLoaded && fees.length">
           <tr
             v-for="(fee, i) in fees"
             :key="i"
@@ -61,13 +59,7 @@
             </td>
           </tr>
         </tbody>
-        <skeleton-loader-table-body
-          v-if="!isLoaded"
-          :cells="6"
-        />
-        <tbody
-          v-else
-        >
+        <tbody v-else-if="isLoaded">
           <tr>
             <td
               class="fees-table__empty-list-placeholder"
@@ -78,6 +70,11 @@
             </td>
           </tr>
         </tbody>
+
+        <skeleton-loader-table-body
+          v-else
+          :cells="6"
+        />
       </table>
     </div>
   </div>

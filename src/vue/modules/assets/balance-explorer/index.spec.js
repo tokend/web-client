@@ -23,7 +23,7 @@ describe('Balance explorer module', () => {
     sandbox = sinon.createSandbox()
     store = new Vuex.Store({
       getters: {
-        [vuexTypes.balancesAssets]: _ => [],
+        [vuexTypes.accountBalances]: _ => [],
       },
       modules: {
         'balance-explorer': balanceExplorerModule,

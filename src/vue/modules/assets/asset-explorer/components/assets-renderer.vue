@@ -48,6 +48,7 @@
           <template v-for="asset in assets">
             <card-viewer
               :asset="asset"
+              :balance="getAssetBalance(asset)"
               :key="asset.code"
               @click="selectAsset(asset)"
             />
@@ -141,6 +142,7 @@ export default {
   computed: {
     ...mapGetters({
       assets: vuexTypes.assets,
+      accountBalances: vuexTypes.accountBalances,
     }),
     ...mapGetters('asset-explorer', {
       kycRequiredAssetType: types.kycRequiredAssetType,
@@ -167,6 +169,12 @@ export default {
       this.selectedAsset = asset
       this.isUpdateMode = false
       this.isDrawerShown = true
+    },
+
+    getAssetBalance (asset) {
+      const balanceRecord = this.accountBalances
+        .find(b => b.asset.code === asset.code)
+      return balanceRecord ? balanceRecord.balance : ''
     },
   },
 }
