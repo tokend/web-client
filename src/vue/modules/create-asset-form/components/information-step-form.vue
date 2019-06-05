@@ -43,6 +43,9 @@
         <input-field
           white-autofill
           type="number"
+          :min="MIN_AMOUNT"
+          :max="MAX_AMOUNT"
+          :step="MIN_AMOUNT"
           v-model="form.maxIssuanceAmount"
           @blur="touchField('form.maxIssuanceAmount')"
           name="create-asset-max-issuance-amount"
@@ -60,15 +63,20 @@
         <select-field
           v-model="form.assetType"
           name="create-asset-type"
-          key-as-value-text="labelTranslationId"
-          :is-value-translatable="true"
-          :values="assetTypes"
           :label="'create-asset-form.asset-type-lbl' | globalize"
           @blur="touchField('form.assetType')"
           :error-message="getFieldErrorMessage(
             'form.assetType',
           )"
-        />
+        >
+          <option
+            v-for="assetType in assetTypes"
+            :key="assetType.value"
+            :value="assetType.value"
+          >
+            {{ assetType.labelTranslationId | globalize }}
+          </option>
+        </select-field>
       </div>
     </div>
 
@@ -220,8 +228,7 @@ export default {
       this.form = {
         name: this.request.assetName,
         code: this.request.assetCode,
-        assetType: this.assetTypes
-          .find(item => item.value === this.request.assetType),
+        assetType: this.request.assetType,
         maxIssuanceAmount: this.request.maxIssuanceAmount,
         logo: this.request.logoKey
           ? new DocumentContainer(this.request.logo)

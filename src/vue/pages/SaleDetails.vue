@@ -52,15 +52,15 @@
     </template>
 
     <template v-else>
-      <loader message-id="sale-details.loading-msg" />
+      <sale-details-skeleton-loader />
     </template>
   </div>
 </template>
 
 <script>
 import TopBar from '@/vue/common/TopBar'
-import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
+import SaleDetailsSkeletonLoader from './SaleDetailsSkeletonLoader'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
@@ -75,8 +75,8 @@ export default {
   name: 'sale-details',
   components: {
     TopBar,
-    Loader,
     NoDataMessage,
+    SaleDetailsSkeletonLoader,
   },
 
   props: {

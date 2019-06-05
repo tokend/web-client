@@ -1,14 +1,15 @@
 <template>
   <div class="pre-issuance-requests">
-    <template v-if="isLoaded">
-      <requests-table :requests="requests" />
+    <template>
+      <requests-table
+        :requests="requests"
+        :is-loaded="isLoaded"
+      />
     </template>
 
-    <p v-else-if="isLoadingFailed">
+    <p v-if="isLoadingFailed">
       {{ 'pre-issuance-requests.loading-error-msg' | globalize }}
     </p>
-
-    <load-spinner v-else message-id="pre-issuance-requests.loading-msg" />
 
     <collection-loader
       class="pre-issuance-requests__loader"
@@ -21,7 +22,6 @@
 </template>
 
 <script>
-import LoadSpinner from '@/vue/common/Loader'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 
 import RequestsTable from './components/requests-table'
@@ -34,7 +34,6 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 export default {
   name: 'pre-issuance-requests-module',
   components: {
-    LoadSpinner,
     CollectionLoader,
     RequestsTable,
   },

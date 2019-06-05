@@ -1,7 +1,6 @@
 <template>
   <div class="requests-table">
     <div
-      v-if="requests.length"
       class="app__table app__table--with-shadow"
     >
       <table>
@@ -10,6 +9,9 @@
             <!-- eslint-disable max-len -->
             <th :title="'incoming-withdrawal-requests.requestor-header' | globalize">
               {{ 'incoming-withdrawal-requests.requestor-header' | globalize }}
+            </th>
+            <th :title="'incoming-withdrawal-requests.asset-code-header' | globalize">
+              {{ 'incoming-withdrawal-requests.asset-code-header' | globalize }}
             </th>
             <th :title="'incoming-withdrawal-requests.amount-header' | globalize">
               {{ 'incoming-withdrawal-requests.amount-header' | globalize }}
@@ -24,13 +26,19 @@
           </tr>
         </thead>
 
-        <tbody>
+        <tbody
+          v-if="requests.length && isLoaded"
+        >
           <tr
             v-for="(request, index) in requests"
             :key="index"
           >
             <td :title="request.requestor">
               <email-getter :account-id="request.requestor" />
+            </td>
+
+            <td :title="request.assetCode">
+              {{ request.assetCode }}
             </td>
 
             <td :title="request.amount | formatMoney">
@@ -55,22 +63,25 @@
             </td>
           </tr>
         </tbody>
+        <empty-tbody-placeholder
+          v-else-if="!requests.length && isLoaded"
+          :colspan="5"
+          :message="'incoming-withdrawal-requests.no-history-desc' | globalize"
+        />
+        <skeleton-loader-table-body
+          v-else
+          :cells="5"
+        />
       </table>
     </div>
-
-    <no-data-message
-      v-else
-      icon-name="trending-up"
-      :title="'incoming-withdrawal-requests.no-history-title' | globalize"
-      :message="'incoming-withdrawal-requests.no-history-desc' | globalize"
-    />
   </div>
 </template>
 
 <script>
 import EmailGetter from '@/vue/common/EmailGetter'
-import NoDataMessage from '@/vue/common/NoDataMessage'
 import RequestStateViewer from '../../shared/components/request-state-viewer'
+import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
+import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 
 const EVENTS = {
   select: 'select',
@@ -80,12 +91,14 @@ export default {
   name: 'requests-table',
   components: {
     EmailGetter,
-    NoDataMessage,
     RequestStateViewer,
+    SkeletonLoaderTableBody,
+    EmptyTbodyPlaceholder,
   },
 
   props: {
     requests: { type: Array, required: true },
+    isLoaded: { type: Boolean, required: true },
   },
 
   data: _ => ({

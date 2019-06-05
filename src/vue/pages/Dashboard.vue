@@ -5,7 +5,7 @@
         <asset-selector
           class="dashboard__asset-selector"
           :current-asset="currentAsset"
-          @asset-change="setCurrentAsset"
+          @asset-change="currentAsset = $event"
           :scale="scale"
         />
         <div class="dashboard__actions">
@@ -83,15 +83,11 @@
             {{ 'transfer-form.form-heading' | globalize }}
           </template>
           <transfer
-            @operation-submitted="updateBalancesAndList()"
+            @operation-submitted="closeDrawerAndUpdateList()"
             :asset-to-transfer="currentAsset"
           />
         </template>
       </drawer>
-    </template>
-
-    <template v-else>
-      <loader message-id="dashboard.data-loading" />
     </template>
   </div>
 </template>
@@ -102,7 +98,6 @@ import Transfer from '@/vue/forms/TransferForm'
 
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
@@ -120,7 +115,6 @@ export default {
   components: {
     AssetSelector,
     Transfer,
-    Loader,
     Drawer,
     SubmoduleImporter,
   },
@@ -191,7 +185,12 @@ export default {
       return this.$refs[REFS.movementsHistory].$children[0]
         .reloadCollectionLoader()
     },
-
+    closeDrawerAndUpdateList () {
+      this.showDrawer = false
+      setTimeout(() => {
+        this.updateBalancesAndList()
+      }, 1000)
+    },
     updateBalancesAndList () {
       return Promise.all([
         this.loadBalances(),

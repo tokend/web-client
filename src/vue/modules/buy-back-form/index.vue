@@ -8,12 +8,19 @@
         <div class="app__form-row">
           <div class="app__form-field">
             <select-field
-              v-model="form.asset"
-              :values="assetsInBalance"
-              key-as-value-text="nameAndCode"
+              :value="form.asset.code"
+              @input="setAssetByCode"
               class="app__select"
               :label="'buy-back-form.opportunity-uniq-code-lbl' | globalize"
-            />
+            >
+              <option
+                v-for="asset in assetsInBalance"
+                :key="asset.code"
+                :value="asset.code"
+              >
+                {{ asset.nameAndCode }}
+              </option>
+            </select-field>
           </div>
         </div>
         <p class="app__form-field-description">
@@ -45,6 +52,8 @@
               v-model="form.amount"
               name="buy-back-amount"
               type="number"
+              :min="0"
+              :max="allowedToBuy(form.asset.code)"
               :step="config.minAmount"
               autocomplete="off"
               @blur="touchField('form.amount')"
@@ -220,6 +229,10 @@ export default {
       loadAssets: types.LOAD_ASSETS,
       loadSaleByBaseAsset: types.LOAD_SALE_BY_BASE_ASSET,
     }),
+    setAssetByCode (code) {
+      this.form.asset = this.assetsInBalance
+        .find(item => item.code === code)
+    },
     async submit () {
       this.disableForm()
       this.isSubmitting = true

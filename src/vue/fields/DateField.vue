@@ -71,7 +71,7 @@ export default {
     disabled: { type: Boolean, default: false },
     disableBefore: { type: String, default: '' },
     disableAfter: { type: String, default: '' },
-    placeholder: { type: String, default: 'yyyy-dd-m at HH:MM' },
+    placeholder: { type: String, default: 'dd/mm/yyyy at HH:MM' },
     label: { type: String, default: '' },
     errorMessage: { type: String, default: undefined },
   },
@@ -90,7 +90,7 @@ export default {
       return {
         altInput: true,
         allowInput: this.allowInput,
-        altFormat: this.enableTime ? 'Y-m-d at H:i' : 'F j, Y',
+        altFormat: this.enableTime ? 'd/m/Y at H:i' : 'd/m/Y',
         disableMobile: true,
         disable: [
           (date) => {

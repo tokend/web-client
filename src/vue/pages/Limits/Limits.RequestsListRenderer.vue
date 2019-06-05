@@ -1,7 +1,7 @@
 <template>
   <div class="limits-requests-list-renderer">
     <div
-      v-if="!isLoading && !isLoadingFailed"
+      v-if="!isLoadingFailed"
       class="limits-requests-list-renderer__table
             app__table
             app__table--with-shadow"
@@ -26,7 +26,7 @@
           </tr>
         </thead>
         <tbody
-          v-if="requests.length"
+          v-if="!isLoading && requests.length"
         >
           <tr
             v-for="(request, i) in requests"
@@ -60,7 +60,7 @@
           </tr>
         </tbody>
         <tbody
-          v-else
+          v-else-if="!isLoading && !requests.length"
         >
           <tr>
             <td
@@ -72,12 +72,12 @@
             </td>
           </tr>
         </tbody>
+        <skeleton-loader-table-body
+          :rows="1"
+          v-else
+        />
       </table>
     </div>
-
-    <template v-else-if="isLoading && !isLoadingFailed">
-      <loader :message-id="'limits-requests-table-renderer.data-loading'" />
-    </template>
 
     <template v-else-if="!isLoading && isLoadingFailed">
       <!-- eslint-disable max-len -->
@@ -120,7 +120,7 @@
 </template>
 
 <script>
-import Loader from '@/vue/common/Loader'
+import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 import LimitsDocumentsUploaderForm from '@/vue/forms/LimitsDocumentsUploaderForm.vue'
 import LimitsRequestDetailsViewer from './Limits.RequestDetailsViewer.vue'
 import Drawer from '@/vue/common/Drawer'
@@ -149,10 +149,10 @@ const LIMITS_REQUEST_TYPE_TRANSLATION_ID = Object.freeze({
 export default {
   name: 'limits-requests-list-renderer',
   components: {
-    Loader,
     Drawer,
     LimitsDocumentsUploaderForm,
     LimitsRequestDetailsViewer,
+    SkeletonLoaderTableBody,
   },
   props: {
     requests: { type: Array, required: true, default: () => [] },

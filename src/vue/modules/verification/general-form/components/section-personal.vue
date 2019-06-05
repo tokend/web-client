@@ -35,6 +35,8 @@
           v-model="dateOfBirth"
           name="verification-general-date-of-birth"
           :enable-time="false"
+          allow-input
+          :placeholder="'general-form.date-of-birth-placeholder' | globalize"
           :disable-after="moment().toString()"
           @input="touchField('dateOfBirth')"
           @blur="touchField('dateOfBirth')"

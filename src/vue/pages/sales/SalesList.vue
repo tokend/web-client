@@ -2,15 +2,20 @@
   <div class="sales-list">
     <div class="sales__state-filter">
       <select-field
-        :is-value-translatable="true"
         :disabled="!isLoaded"
         v-model="filters.state"
-        :values="Object.values(SALE_STATES)"
-        key-as-value-text="labelTranslationId"
         class="sales-asset-selector__field app__select app__select--no-border"
-      />
+      >
+        <option
+          v-for="saleState in Object.values(SALE_STATES)"
+          :key="saleState.value"
+          :value="saleState.value"
+        >
+          {{ saleState.labelTranslationId | globalize }}
+        </option>
+      </select-field>
     </div>
-    <template v-if="filteredSales.length">
+    <template>
       <div class="sales__sale-cards">
         <drawer :is-shown.sync="isDetailsDrawerShown">
           <template slot="heading">
@@ -26,19 +31,22 @@
             :sale="sale"
           />
         </template>
+        <template v-for="index in itemsPerSkeletonLoader">
+          <sale-skeleton-loader
+            class="sales__sale-card"
+            v-if="!isLoaded && !filteredSales.length"
+            :key="`skeleton-loader-${index}`"
+          />
+        </template>
       </div>
     </template>
 
-    <template v-else-if="isLoaded">
+    <template v-if="isLoaded && !filteredSales.length">
       <no-data-message
         icon-name="inbox"
         :title="'sales.no-sales-title' | globalize"
         :message="'sales.no-sales-desc' | globalize"
       />
-    </template>
-
-    <template v-else>
-      <loader :message-id="'sales.loading-msg'" />
     </template>
 
     <!--
@@ -57,13 +65,13 @@
 
 <script>
 import Drawer from '@/vue/common/Drawer'
-import Loader from '@/vue/common/Loader'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import SelectField from '@/vue/fields/SelectField'
 
 import SaleOverview from '@/vue/pages/sales/SaleOverview'
 import SaleCard from '@/vue/pages/sales/SaleCard'
+import SaleSkeletonLoader from './SaleSkeletonLoader'
 
 import { api } from '@/api'
 import { vueRoutes } from '@/vue-router/routes'
@@ -92,12 +100,12 @@ export default {
   name: 'sales-list',
   components: {
     Drawer,
-    Loader,
     CollectionLoader,
     NoDataMessage,
     SaleOverview,
     SaleCard,
     SelectField,
+    SaleSkeletonLoader,
   },
   props: {
     isUserSales: {
@@ -110,11 +118,12 @@ export default {
     saleRecords: [],
     filters: {
       baseAsset: '',
-      state: SALE_STATES.live,
+      state: SALE_STATES.live.value,
     },
     isLoaded: false,
     isDetailsDrawerShown: false,
     selectedSale: null,
+    itemsPerSkeletonLoader: 3,
     SALE_STATES,
     vueRoutes,
   }),
@@ -139,7 +148,7 @@ export default {
     },
 
     recordsLoader () {
-      const saleState = this.filters.state.value
+      const saleState = this.filters.state
 
       let opts = {
         page: { order: 'desc' },

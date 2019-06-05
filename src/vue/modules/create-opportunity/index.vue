@@ -91,6 +91,9 @@
             <input-field
               white-autofill
               type="number"
+              :min="MIN_ALLOWED_PERCENT"
+              :max="MAX_ALLOWED_PERCENT"
+              :step="1"
               v-model="form.saleInformation.annualReturn"
               @blur="touchField('form.saleInformation.annualReturn')"
               name="create-sale-anual-return"
@@ -116,6 +119,9 @@
             <input-field
               white-autofill
               type="number"
+              :min="minAmount"
+              :max="maxAmount"
+              :step="minAmount"
               v-model="form.information.maxIssuanceAmount"
               @blur="touchField('form.information.maxIssuanceAmount')"
               name="create-sale-max-issuance-amount"
@@ -257,6 +263,9 @@
               white-autofill
               type="number"
               v-model="form.saleInformation.softCap"
+              :min="minAmount"
+              :max="form.saleInformation.hardCap || maxAmount"
+              :step="minAmount"
               @blur="touchField('form.saleInformation.softCap')"
               name="create-sale-soft-cap"
               :label="'create-opportunity.soft-cap' | globalize({
@@ -278,6 +287,9 @@
               white-autofill
               type="number"
               v-model="form.saleInformation.hardCap"
+              :min="form.saleInformation.softCap"
+              :max="maxAmount"
+              :step="minAmount"
               @blur="touchField('form.saleInformation.hardCap')"
               name="create-sale-hard-cap"
               :label="'create-opportunity.hard-cap' | globalize({
@@ -297,10 +309,7 @@
           <div class="app__form-field">
             <select-field
               v-model="form.saleInformation.assetType"
-              :is-value-translatable="true"
               name="asset-create-asset-type"
-              key-as-value-text="label"
-              :values="assetTypes"
               :label="
                 'create-opportunity.investor-requirements' | globalize
               "
@@ -309,7 +318,15 @@
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.assetType',
               )"
-            />
+            >
+              <option
+                v-for="assetType in assetTypes"
+                :key="assetType.value"
+                :value="assetType.value"
+              >
+                {{ assetType.label | globalize }}
+              </option>
+            </select-field>
           </div>
         </div>
         <div class="app__form-row">
@@ -417,7 +434,7 @@ import OpportunityCard from './components/opportunity-card'
 
 import moment from 'moment'
 
-import { DocumentUploader } from '@/js/helpers/document-uploader'
+import { uploadDocuments } from '@/js/helpers/upload-documents'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
 import {
@@ -434,6 +451,7 @@ import { DateUtil } from '@/js/utils'
 import { mapActions, mapGetters } from 'vuex'
 import { MathUtil } from '@/js/utils/math.util'
 import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 import {
   required,
   amountRange,
@@ -643,11 +661,13 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      baseAssets: vuexTypes.balancesAssets,
+      assets: vuexTypes.assets,
+      statsQuoteAsset: vuexTypes.statsQuoteAsset,
+    }),
     ...mapGetters('create-opportunity', {
-      assets: types.assets,
       pairs: types.pairs,
-      baseAssets: types.baseAssets,
-      statsQuoteAsset: types.statsQuoteAsset,
     }),
     assetTypes () {
       return [
@@ -695,10 +715,12 @@ export default {
   methods: {
     moment,
     formatDate,
+    ...mapActions({
+      loadAssets: vuexTypes.LOAD_ASSETS,
+    }),
     ...mapActions('create-opportunity', {
       loadKvAssetTypeKycRequired: types.LOAD_KV_KYC_REQUIRED,
       getBlobId: types.LOAD_BLOB_ID,
-      loadAssets: types.LOAD_ASSETS,
       loadBaseAssetsPairs: types.LOAD_BASE_ASSETS_PAIRS_BY_STATS_QUOTE_ASSET,
     }),
     nextStep (formStep) {
@@ -711,7 +733,10 @@ export default {
       this.disableForm()
       this.isSubmitting = true
       try {
-        await this.uploadDocuments()
+        await uploadDocuments([
+          this.form.shortBlurb.saleLogo,
+          this.form.information.terms,
+        ])
         const blobId = await this.getBlobId({
           type: BLOB_TYPES.saleOverview,
           attributes: {
@@ -777,7 +802,7 @@ export default {
       const operation = {
         requestID: requestId,
         code: this.form.information.code,
-        assetType: this.form.saleInformation.assetType.value,
+        assetType: this.form.saleInformation.assetType,
         preissuedAssetSigner: this.accountId,
         trailingDigitsCount: this.decimalPints,
         initialPreissuedAmount: this.form.information.maxIssuanceAmount,
@@ -812,19 +837,6 @@ export default {
         operation.creatorDetails.logoUrl = ASSET_SUBTYPE_IMG_URL.shareLogo
       }
       return base.ManageAssetBuilder.assetCreationRequest(operation)
-    },
-    async uploadDocuments () {
-      const documents = [
-        this.form.shortBlurb.saleLogo,
-        this.form.information.terms,
-      ]
-      for (let document of documents) {
-        if (document && !document.key) {
-          document = await DocumentUploader.uploadSingleDocument(
-            document, this.accountId
-          )
-        }
-      }
     },
     formatSaleQuoteAssets () {
       if (this.isBond) {

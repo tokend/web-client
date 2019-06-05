@@ -1,6 +1,6 @@
 <template>
   <div class="assets-renderer">
-    <template v-if="isLoaded">
+    <template>
       <drawer :is-shown.sync="isDrawerShown">
         <template v-if="isUpdateMode">
           <template slot="heading">
@@ -35,7 +35,7 @@
               :kyc-required-asset-type="kycRequiredAssetType"
               :security-asset-type="securityAssetType"
               @update-click="isUpdateMode = true"
-              @balance-added="initFirstPageLoader() || (isDrawerShown = false)"
+              @balance-added="loadAssets() || (isDrawerShown = false)"
             />
           </div>
         </template>
@@ -43,7 +43,6 @@
 
       <div class="assets-renderer__asset-list-wrp">
         <div
-          v-if="assets.length"
           class="assets-renderer__asset-list"
         >
           <template v-for="asset in assets">
@@ -53,10 +52,16 @@
               @click="selectAsset(asset)"
             />
           </template>
+          <template v-for="index in itemsPerSkeletonLoader">
+            <asset-skeleton-loader
+              v-if="!isLoaded && !assets.length"
+              :key="index"
+            />
+          </template>
         </div>
 
         <no-data-message
-          v-else
+          v-if="isLoaded && !assets.length"
           icon-name="trending-up"
           :title="'assets.no-assets-title' | globalize"
           :message="'assets.no-assets-msg' | globalize"
@@ -64,58 +69,41 @@
       </div>
     </template>
 
-    <template v-else-if="isLoadFailed">
+    <template v-if="isLoadFailed">
       <p class="assets-renderer__error-msg">
         {{ 'assets.loading-error-msg' | globalize }}
       </p>
     </template>
-
-    <template v-else>
-      <load-spinner message-id="assets.assets-loading-msg" />
-    </template>
-
-    <div class="assets-renderer__collection-loader-wrp">
-      <collection-loader
-        v-show="isLoaded && assets.length"
-        :first-page-loader="firstPageLoader"
-        :page-limit="ASSETS_PER_PAGE"
-        @first-page-load="setAssets"
-        @next-page-load="concatAssets"
-      />
-    </div>
   </div>
 </template>
 
 <script>
 import Drawer from '@/vue/common/Drawer'
-import LoadSpinner from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
-import CollectionLoader from '@/vue/common/CollectionLoader'
 
 import CardViewer from '../../shared/components/card-viewer'
 import AssetAttributesViewer from '../../shared/components/asset-attributes-viewer'
 import AssetActions from './asset-actions'
+import AssetSkeletonLoader from './asset-skeleton-loader'
 
 import UpdateAssetFormModule from '@modules/update-asset-form'
 
-import { mapGetters, mapActions, mapMutations } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { types } from '../store/types'
+import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
-
-const ASSETS_PER_PAGE = 12
 
 export default {
   name: 'assets-renderer',
   components: {
     Drawer,
-    LoadSpinner,
     NoDataMessage,
-    CollectionLoader,
     CardViewer,
     AssetAttributesViewer,
     AssetActions,
     UpdateAssetFormModule,
+    AssetSkeletonLoader,
   },
 
   props: {
@@ -147,49 +135,33 @@ export default {
     isDrawerShown: false,
     isUpdateMode: false,
     selectedAsset: {},
-    firstPageLoader: _ => {},
-    ASSETS_PER_PAGE,
+    itemsPerSkeletonLoader: 3,
   }),
 
   computed: {
+    ...mapGetters({
+      assets: vuexTypes.assets,
+    }),
     ...mapGetters('asset-explorer', {
-      assets: types.assets,
       kycRequiredAssetType: types.kycRequiredAssetType,
       securityAssetType: types.securityAssetType,
     }),
   },
 
-  created () {
-    this.initFirstPageLoader()
+  async created () {
+    try {
+      await this.loadAssets()
+      this.isLoaded = true
+    } catch (e) {
+      this.isLoadFailed = true
+      ErrorHandler.processWithoutFeedback()
+    }
   },
 
   methods: {
-    ...mapMutations('asset-explorer', {
-      setAssets: types.SET_ASSETS,
-      concatAssets: types.CONCAT_ASSETS,
+    ...mapActions({
+      loadAssets: vuexTypes.LOAD_ASSETS,
     }),
-
-    ...mapActions('asset-explorer', {
-      loadAssets: types.LOAD_ASSETS,
-    }),
-
-    initFirstPageLoader () {
-      this.firstPageLoader = _ => this.loadAssetsPage()
-    },
-
-    async loadAssetsPage () {
-      this.isLoaded = false
-      try {
-        const response = await this.loadAssets({
-          page: { limit: ASSETS_PER_PAGE },
-        })
-        this.isLoaded = true
-        return response
-      } catch (e) {
-        this.isLoadFailed = true
-        ErrorHandler.processWithoutFeedback()
-      }
-    },
 
     selectAsset (asset) {
       this.selectedAsset = asset
@@ -205,10 +177,6 @@ export default {
 
 $asset-card-margin: 0.75rem;
 $media-small-height: 460px;
-
-.assets-renderer__collection-loader-wrp {
-  margin-top: 1.5rem;
-}
 
 .assets-renderer__actions {
   margin-top: 4.9rem;

@@ -8,14 +8,21 @@
       <div class="app__form-field">
         <select-field
           name="deposit-fiat-card-asset"
-          v-model="form.asset"
-          :values="depositableFiatAssets"
-          key-as-value-text="nameAndCode"
+          :value="form.asset.code"
+          @input="setAssetByCode"
           :disabled="formMixin.isDisabled"
           @blur="touchField('form.asset')"
           :error-message="getFieldErrorMessage('form.asset')"
           :label="'deposit-fiat-card-module.asset' | globalize"
-        />
+        >
+          <option
+            v-for="asset in depositableFiatAssets"
+            :key="asset.code"
+            :value="asset.code"
+          >
+            {{ asset.nameAndCode }}
+          </option>
+        </select-field>
         <div class="deposit-fiat-card__form-field-description">
           <p>
             {{
@@ -29,21 +36,16 @@
       </div>
     </div>
     <div class="app__form-row">
-      <input-field
-        white-autofill
-        class="app__form-field"
-        v-model.trim="form.amount"
-        type="number"
-        :step="config.minAmount"
+      <amount-input-field
+        v-model="form.amount"
         name="deposit-fiat-card-amount"
-        @blur="touchField('form.amount')"
-        :error-message="getFieldErrorMessage('form.amount', {
-          maxDecimalDigitsCount: form.asset.trailingDigitsCount
-        })"
+        validation-type="outgoing"
         :label="'deposit-fiat-card-module.amount' | globalize({
           asset: form.asset.code
         })"
         :disabled="formMixin.isDisabled"
+        :asset="form.asset"
+        is-max-button-shown
       />
     </div>
     <div class="app__form-row deposit-fiat-card__form-row">
@@ -201,7 +203,6 @@ import { api } from '@/api'
 import { MathUtil } from '@/js/utils'
 import {
   required,
-  maxDecimalDigitsCount,
   cardNumber,
   cardExpirationDate,
   cardCVV3,
@@ -293,12 +294,6 @@ export default {
     return {
       form: {
         asset: { required },
-        amount: {
-          required,
-          maxDecimalDigitsCount: maxDecimalDigitsCount(
-            this.config.decimalPoints
-          ),
-        },
         cardNumber: {
           required,
           cardNumber,
@@ -334,6 +329,10 @@ export default {
       loadAssets: types.LOAD_ASSETS,
       loadFees: types.LOAD_FEES,
     }),
+    setAssetByCode (code) {
+      this.form.asset = this.depositableFiatAssets
+        .find(item => item.code === code)
+    },
     async getFees () {
       try {
         await this.loadFees({

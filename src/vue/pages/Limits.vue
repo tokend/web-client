@@ -53,7 +53,15 @@
           :values="accountBalancesAssetsCodes"
           :key="`limits-asset-selector-${selectedAsset}`"
           class="limits__assets-select app__select--no-border"
-        />
+        >
+          <option
+            v-for="assetCode in accountBalancesAssetsCodes"
+            :key="assetCode"
+            :value="assetCode"
+          >
+            {{ assetCode }}
+          </option>
+        </select-field>
       </div>
 
       <limits-table-renderer

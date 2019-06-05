@@ -54,10 +54,6 @@ export class SaleRecord {
     }
   }
 
-  logoUrl (storageUrl) {
-    return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
-  }
-
   get isWhitelisted () {
     return this.definitionType === SALE_DEFINITION_TYPES.whitelist
   }
@@ -71,7 +67,8 @@ export class SaleRecord {
   get quoteAssetPrices () {
     return this.quoteAssets.reduce(
       (prices, asset) => {
-        prices[asset.id] = asset.price; return prices
+        prices[asset.asset.id] = asset.price
+        return prices
       }, {})
   }
 

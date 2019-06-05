@@ -1,15 +1,12 @@
-import UploadDocumentsMixin from './upload-documents.mixin'
 import ManageSaleDescriptionMixin from './manage-sale-description.mixin'
 
 import { base, SALE_TYPES } from '@tokend/js-sdk'
 
 import { api } from '@/api'
 
+import { uploadDocument } from '@/js/helpers/upload-documents'
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
 import { DateUtil } from '@/js/utils'
-
-import { vuexTypes } from '@/vuex'
-import { mapGetters } from 'vuex'
 
 const NEW_CREATE_SALE_REQUEST_ID = '0'
 const DEFAULT_SALE_TYPE = '0'
@@ -22,15 +19,12 @@ const EMPTY_DOCUMENT = {
 }
 
 export default {
-  mixins: [UploadDocumentsMixin, ManageSaleDescriptionMixin],
+  mixins: [ManageSaleDescriptionMixin],
   data: _ => ({
     saleDescriptionBlobId: '',
   }),
 
   computed: {
-    ...mapGetters([
-      vuexTypes.defaultQuoteAsset,
-    ]),
     saleRequestOpts () {
       const saleLogo = this.shortBlurbStepForm.saleLogo
 
@@ -41,15 +35,17 @@ export default {
         startTime: DateUtil.toTimestamp(this.informationStepForm.startTime),
         endTime: DateUtil.toTimestamp(this.informationStepForm.endTime),
         baseAsset: this.informationStepForm.baseAsset.code,
-        defaultQuoteAsset: this.defaultQuoteAsset,
+        defaultQuoteAsset: this.informationStepForm.capAsset.code,
         softCap: this.informationStepForm.softCap,
         hardCap: this.informationStepForm.hardCap,
         requiredBaseAssetForHardCap: this.informationStepForm.assetsToSell,
-        quoteAssets: this.informationStepForm.quoteAssets
-          .map((item) => ({
-            asset: item,
-            price: DEFAULT_QUOTE_ASSET_PRICE,
-          })),
+        quoteAssets: [
+          ...this.informationStepForm.quoteAssets,
+          this.informationStepForm.capAsset.code,
+        ].map((item) => ({
+          asset: item,
+          price: DEFAULT_QUOTE_ASSET_PRICE,
+        })),
         creatorDetails: {
           name: this.informationStepForm.name,
           short_description: this.shortBlurbStepForm.shortDescription,
@@ -78,18 +74,41 @@ export default {
     },
 
     async submitCreateSaleRequest (accountId) {
-      const saleDocuments = [
-        this.shortBlurbStepForm.saleLogo,
-      ]
-      await this.uploadDocuments(saleDocuments, accountId)
+      await uploadDocument(this.shortBlurbStepForm.saleLogo)
       this.saleDescriptionBlobId = await this.createSaleDescriptionBlob(
         this.fullDescriptionStepForm.description,
         accountId
       )
 
+      await this.createBalancesIfNotExist({
+        balanceAssets: this.assets.map(asset => asset.code),
+        quoteAssets: this.informationStepForm.quoteAssets,
+        accountId,
+      })
+
       const operation =
         base.SaleRequestBuilder.createSaleCreationRequest(this.saleRequestOpts)
       await api.postOperations(operation)
+    },
+
+    async createBalancesIfNotExist ({ balanceAssets, quoteAssets, accountId }) {
+      let operations = []
+
+      for (const asset of quoteAssets) {
+        if (!balanceAssets.includes(asset)) {
+          operations.push(
+            base.Operation.manageBalance({
+              asset: asset,
+              destination: accountId,
+              action: base.xdr.ManageBalanceAction.createUnique(),
+            })
+          )
+        }
+      }
+
+      if (operations.length) {
+        await api.postOperations(...operations)
+      }
     },
   },
 }

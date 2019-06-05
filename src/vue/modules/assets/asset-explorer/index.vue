@@ -1,6 +1,6 @@
 <template>
   <div class="asset-explorer">
-    <template v-if="isLoaded">
+    <template>
       <assets-renderer
         :is-account-unverified="isAccountUnverified"
         :is-account-us-accredited="isAccountUsAccredited"
@@ -10,32 +10,26 @@
       />
     </template>
 
-    <template v-else-if="isLoadFailed">
+    <template v-if="isLoadFailed">
       <p class="asset-explorer__error-msg">
         {{ 'assets.loading-error-msg' | globalize }}
       </p>
-    </template>
-
-    <template v-else>
-      <load-spinner message-id="assets.balances-loading-msg" />
     </template>
   </div>
 </template>
 
 <script>
-import LoadSpinner from '@/vue/common/Loader'
-
 import AssetsRenderer from './components/assets-renderer'
 
 import { mapActions } from 'vuex'
 import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
   name: 'asset-explorer',
   components: {
-    LoadSpinner,
     AssetsRenderer,
   },
 
@@ -72,8 +66,10 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      loadAccountBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+    }),
     ...mapActions('asset-explorer', {
-      loadAccountBalances: types.LOAD_ACCOUNT_BALANCES,
       loadKycRequiredAssetType: types.LOAD_KYC_REQUIRED_ASSET_TYPE,
       loadSecurityAssetType: types.LOAD_SECURITY_ASSET_TYPE,
     }),

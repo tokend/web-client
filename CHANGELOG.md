@@ -7,40 +7,110 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
-## [Unreleased]
+## [1.8.0-x.1] - 2019-06-05
+#### Added
+- Skeleton loading
+
+## [1.8.0-x.0] - 2019-06-05
+#### Added
+- Placeholder of empty list for Trade, Issuance requests and Requests pages
+- Browser compatibility check and unsupported browser page
+- Password toggle button for input fields with type="password"
+- Unify displaying of fees
+- Displaying fees on issuance form & trade forms
+- Display amount sum (amount + fee) in movements list
+- Max button to some input fields
+
+#### Changed
+- Route-to-route progress bar size and color
+- Status message slightly redesigned
+- Update "Learn more about pre-issuance" link style on sale creation form
+- Now top bar buttons in movements page are conditionally disabled, not hidden
+- Now including offer fees to account's balance on invest form
+- Create sale form improvements:
+  - Added cap asset field to the create sale form
+  - Now using cap asset as default quote asset for create sale request
+  - Now creating quote asset balances on create sale form if they don't exist
+  - Now displaying accepted investment assets as base assets of pairs where
+    cap asset is quote asset on create sale form
+- Now displaying invest form on the sale state widget
+- New using date format 'dd/mm/yyyy' instead of 'yyyy-mm-dd' in date fields
+- Now allowing the user to input birth date manually on general
+  verification form
+- Now displaying asset in incoming withdrawal requests list
+
+#### Removed
+- Cursor pointer on disabled select
+- Price history chart from sale overview page
+- "Required" validation for address line 2 on corporate KYC form
+- Displaying of Fixed fee from invest form
+
+#### Fixed
+- Don't show additional info title in kyc status message, if no additional
+  external information provided
+- Successful investment sale state update
+- Break words in sale description viewer
+- Fix labels for submit general kyc button
+- Disabling invest form while submitting
+- Closing of transfer drawer on Dashboard after submitting form
+- Auto-select of asset in drawers on movements page
+- Translations on sale details drawer
+- A bug when "My Sales" tab shown for non-corporate accounts
+
+### "Under the hood changes
 #### Added
 - Tooltip directive
 - Assets vuex module for loading and storing all the assets
-- Whitelisted detail on sale related modules
+- Whitelisted indicator on sale related modules
 - isTransferable policy getter to asset records
 - Usage of Unix line endings rule
-- Browser compatibiility check and unsupported browser page
-- Password toggle button for input fields with type="password"
+- `assets.module`
+- `AmountInputField`
+- "custom-select" package for displaying customized select field
+- "compare" & "format" methods to `MathUtil` class
+- `name` attributes to 2FA form inputs
+- Emitted value normalizers for input field:
+  - "normalizeRange"
+  - "normalizeDecimalPrecision"
 
 #### Changed
 - Now loading account converted balances in
   "LOAD_ACCOUNT_BALANCES_DETAILS" vuex action
 - Now calling "UPDATE_ASSET" mutation in the
   "LOAD_ACCOUNT_BALANCES_DETAILS" action
-- Now top bar buttons in movements page are conditionally disabled
-- Route-to-route progress bar size and color
-- Now hiding "My Sales" tab for non-corporate accounts
-- Update "Learn more about pre-issuance" link style on sale creation form
-- Now including offer fees to account's balance on invest form
+- Now using `DocumentsManager` from SDK to upload documents to the storage
+- Now getting document URL using documentsManager
+- Now using `MathUtil.compare` method in validators
+- Now using `MathUtil.format` for formatting money, numbers, and percents
+- Now passing values to select field using a slot and "option" tags
 
 #### Removed
-- Cursor pointer on disabled select
-- Price history chart from sale overview page
-- Validation for address line 2
-- Fixed fee from invest form
+- "numeral" package
+- Unused order number format & filter
 
 #### Fixed
-- Don't show title in kyc status message, if no additional external information
 - 'data' error in asset request list
-- Successful investment sale state update
-- Break words in sale description viewer
-- Replace labels for submit general kyc button
 - Calendar related tests for win32 systems
+- Different borders with attribute of readonly on the field
+
+## [1.7.0] - 2019-06-03
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.7.0
+
+## [1.7.0-rc.4] - 2019-05-30
+#### Fixed
+- Bug with unhidden "My sales"
+
+## [1.7.0-rc.3] - 2019-05-30
+#### Fixed
+- Hide "My sales" tab for non-corporate users
+- Fix Create/Update button text on general KYC verification form
+- Add missing asset type translation to sale asset details
+
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.7.0-rc.2
 
 ## [1.7.0-rc.2] - 2019-05-21
 ### "Under the hood" changes
@@ -593,7 +663,12 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.7.0-rc.2...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.8.0-x.1...HEAD
+[1.8.0-x.1]: https://github.com/tokend/web-client/compare/1.8.0-x.0...1.8.0-x.1
+[1.8.0-x.0]: https://github.com/tokend/web-client/compare/1.7.0...1.8.0-x.0
+[1.7.0]: https://github.com/tokend/web-client/compare/1.7.0-rc.4...1.7.0
+[1.7.0-rc.4]: https://github.com/tokend/web-client/compare/1.7.0-rc.3...1.7.0-rc.4
+[1.7.0-rc.3]: https://github.com/tokend/web-client/compare/1.7.0-rc.2...1.7.0-rc.3
 [1.7.0-rc.2]: https://github.com/tokend/web-client/compare/1.7.0-rc.1...1.7.0-rc.2
 [1.7.0-rc.1]: https://github.com/tokend/web-client/compare/1.7.0-rc.0...1.7.0-rc.1
 [1.7.0-rc.0]: https://github.com/tokend/web-client/compare/1.6.0...1.7.0-rc.0

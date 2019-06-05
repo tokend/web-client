@@ -4,11 +4,13 @@ import Vuex from 'vuex'
 
 import { balanceExplorerModule } from './store/index'
 
-import { Asset } from '../shared/wrappers/asset'
+import { AssetRecord } from '@/js/records/entities/asset.record'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
+
+import { vuexTypes } from '@/vuex'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
@@ -20,6 +22,9 @@ describe('Balance explorer module', () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox()
     store = new Vuex.Store({
+      getters: {
+        [vuexTypes.balancesAssets]: _ => [],
+      },
       modules: {
         'balance-explorer': balanceExplorerModule,
         accountId: 'SOME_ACCOUNT_ID',
@@ -81,7 +86,11 @@ describe('Balance explorer module', () => {
 
       describe('selectAsset', () => {
         it('sets selectedAsset property to passed param, isUpdateMode property to false, and isDrawerShown property to true', () => {
-          const asset = new Asset({ id: 'USD' }, '1.000000')
+          const asset = new AssetRecord({ id: 'USD' }, [{
+            asset: { code: 'USD' },
+            balance: '1.000000',
+          }]
+          )
 
           wrapper.setData({
             isUpdateMode: true,

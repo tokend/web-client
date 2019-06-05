@@ -5,6 +5,7 @@ import { base } from '@tokend/js-sdk'
 import { mount, createLocalVue } from '@vue/test-utils'
 
 import { api } from '@/api'
+import * as DocumentUploader from '@/js/helpers/upload-documents'
 
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
@@ -19,6 +20,7 @@ const Component = {
     informationStepForm: {
       name: '',
       baseAsset: {},
+      capAsset: {},
       startTime: '',
       endTime: '',
       softCap: '',
@@ -34,6 +36,7 @@ const Component = {
     fullDescriptionStepForm: {
       youtubeId: '',
     },
+    assets: [],
   }),
 }
 
@@ -49,11 +52,6 @@ describe('Manage sale request mixin', () => {
         account: {
           getters: {
             accountId: () => ('SOME_ACCOUNT_ID'),
-          },
-        },
-        keyValue: {
-          getters: {
-            defaultQuoteAsset: () => ('USD'),
           },
         },
       },
@@ -80,10 +78,11 @@ describe('Manage sale request mixin', () => {
           informationStepForm: {
             name: 'My sale',
             baseAsset: { code: 'TKN' },
+            capAsset: { code: 'USD' },
             softCap: '100.000000',
             hardCap: '200.000000',
             assetsToSell: '10.000000',
-            quoteAssets: ['BTC', 'USD'],
+            quoteAssets: ['BTC', 'ETH'],
             isWhitelisted: true,
           },
           shortBlurbStepForm: { shortDescription: 'Some description' },
@@ -96,11 +95,13 @@ describe('Manage sale request mixin', () => {
         expect(wrapper.vm.saleRequestOpts.hardCap).to.equal('200.000000')
 
         expect(wrapper.vm.saleRequestOpts.baseAsset).to.equal('TKN')
+        expect(wrapper.vm.saleRequestOpts.defaultQuoteAsset).to.equal('USD')
         expect(wrapper.vm.saleRequestOpts.requiredBaseAssetForHardCap)
           .to.equal('10.000000')
         expect(wrapper.vm.saleRequestOpts.quoteAssets)
           .to.deep.equal([
             { asset: 'BTC', price: '1' },
+            { asset: 'ETH', price: '1' },
             { asset: 'USD', price: '1' },
           ])
 
@@ -166,16 +167,20 @@ describe('Manage sale request mixin', () => {
     })
 
     describe('submitCreateSaleRequest', () => {
-      it('uploads documents, creates blob, and posts asset creation request',
+      it('calls proper methods with passed params',
         async () => {
           const saleLogo = new DocumentContainer({ key: 'logo-key' })
 
           wrapper.setData({
+            assets: [{ code: 'BTC' }, { code: 'ETH' }],
+            informationStepForm: { quoteAssets: ['USD'] },
             shortBlurbStepForm: { saleLogo },
             fullDescriptionStepForm: { description: 'Sale description' },
           })
 
-          sandbox.stub(wrapper.vm, 'uploadDocuments').resolves()
+          sandbox.stub(DocumentUploader, 'uploadDocument').resolves()
+          sandbox.stub(wrapper.vm, 'createBalancesIfNotExist').resolves()
+
           sandbox.stub(wrapper.vm, 'createSaleDescriptionBlob')
             .resolves('BLOB_ID')
           sandbox.stub(base.SaleRequestBuilder, 'createSaleCreationRequest')
@@ -183,8 +188,15 @@ describe('Manage sale request mixin', () => {
 
           await wrapper.vm.submitCreateSaleRequest('SOME_ACCOUNT_ID')
 
-          expect(wrapper.vm.uploadDocuments)
-            .to.have.been.calledOnceWithExactly([saleLogo], 'SOME_ACCOUNT_ID')
+          expect(DocumentUploader.uploadDocument)
+            .to.have.been.calledOnceWithExactly(saleLogo)
+          expect(wrapper.vm.createBalancesIfNotExist)
+            .to.have.been.calledOnceWithExactly({
+              balanceAssets: ['BTC', 'ETH'],
+              quoteAssets: ['USD'],
+              accountId: 'SOME_ACCOUNT_ID',
+            })
+
           expect(wrapper.vm.createSaleDescriptionBlob)
             .to.have.been.calledOnceWithExactly(
               'Sale description',

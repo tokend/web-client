@@ -1,6 +1,6 @@
 <template>
   <div class="balance-explorer">
-    <template v-if="isLoaded">
+    <template>
       <drawer :is-shown.sync="isDrawerShown">
         <template v-if="isUpdateMode">
           <template slot="heading">
@@ -36,7 +36,6 @@
 
       <div class="balance-explorer__asset-list-wrp">
         <div
-          v-if="assets.length"
           class="balance-explorer__asset-list"
         >
           <template v-for="asset in assets">
@@ -46,10 +45,16 @@
               @click="selectAsset(asset)"
             />
           </template>
+          <template v-for="index in itemsPerSkeletonLoader">
+            <balance-skeleton-loader
+              v-if="!isLoaded && !assets.length"
+              :key="index"
+            />
+          </template>
         </div>
 
         <no-data-message
-          v-else
+          v-if="isLoaded && !assets.length"
           icon-name="trending-up"
           :title="'assets.no-balances-title' | globalize"
           :message="'assets.no-balances-msg' | globalize"
@@ -57,30 +62,25 @@
       </div>
     </template>
 
-    <template v-else-if="isLoadFailed">
+    <template v-if="isLoadFailed">
       <p class="balance-explorer__error-msg">
         {{ 'assets.loading-error-msg' | globalize }}
       </p>
-    </template>
-
-    <template v-else>
-      <load-spinner message-id="assets.balances-loading-msg" />
     </template>
   </div>
 </template>
 
 <script>
 import Drawer from '@/vue/common/Drawer'
-import LoadSpinner from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import CardViewer from '../shared/components/card-viewer'
 import AssetAttributesViewer from '../shared/components/asset-attributes-viewer'
+import BalanceSkeletonLoader from './components/balance-skeleton-loader'
 
 import UpdateAssetFormModule from '@modules/update-asset-form'
 
 import { mapActions, mapGetters } from 'vuex'
-import { types } from './store/types'
 import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -89,11 +89,11 @@ export default {
   name: 'balance-explorer',
   components: {
     Drawer,
-    LoadSpinner,
     NoDataMessage,
     CardViewer,
     AssetAttributesViewer,
     UpdateAssetFormModule,
+    BalanceSkeletonLoader,
   },
   props: {
     defaultQuoteAsset: {
@@ -107,12 +107,15 @@ export default {
     isDrawerShown: false,
     isUpdateMode: false,
     selectedAsset: {},
+    itemsPerSkeletonLoader: 3,
   }),
 
   computed: {
-    ...mapGetters('balance-explorer', {
-      assets: types.assets,
+    ...mapGetters({
+      assets: vuexTypes.balancesAssets,
+      accountId: vuexTypes.accountId,
     }),
+
     ...mapGetters([
       vuexTypes.accountId,
       vuexTypes.kvAssetTypeKycRequired,
@@ -125,8 +128,8 @@ export default {
   },
 
   methods: {
-    ...mapActions('balance-explorer', {
-      loadAccountBalances: types.LOAD_ACCOUNT_BALANCES,
+    ...mapActions({
+      loadAccountBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
 
     async load () {

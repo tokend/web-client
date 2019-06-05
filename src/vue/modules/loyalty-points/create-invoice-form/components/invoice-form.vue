@@ -28,6 +28,8 @@
           :label="'create-invoice-form.amount-lbl' | globalize({
             asset: form.asset
           })"
+          :min="MIN_AMOUNT"
+          :max="MAX_AMOUNT"
           :step="MIN_AMOUNT"
           :error-message="getFieldErrorMessage(
             'form.amount',

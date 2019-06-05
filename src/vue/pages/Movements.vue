@@ -21,16 +21,11 @@
 
     <template v-if="getModule().canRenderSubmodule(MovementsHistoryModule)">
       <submodule-importer
-        v-if="asset.code"
+        v-if="true"
         :submodule="getModule().getSubmodule(MovementsHistoryModule)"
         :asset-code="asset.code"
         :key="`movements-history-state-${historyState}`"
-      >
-        <loader
-          slot="loader"
-          message-id="op-pages.assets-loading-msg"
-        />
-      </submodule-importer>
+      />
 
       <no-data-message
         v-else-if="isLoadFailed"
@@ -38,17 +33,11 @@
         :title="'op-pages.no-data-title' | globalize"
         :message="'op-pages.no-data-msg' | globalize"
       />
-
-      <loader
-        v-else
-        message-id="op-pages.assets-loading-msg"
-      />
     </template>
   </div>
 </template>
 
 <script>
-import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import config from '@/config'
@@ -60,7 +49,6 @@ import { MovementsTopBarReitModule } from '@modules/movements-top-bar-reit/modul
 export default {
   name: 'movements-page',
   components: {
-    Loader,
     NoDataMessage,
     SubmoduleImporter,
   },
