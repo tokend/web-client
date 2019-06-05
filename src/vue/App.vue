@@ -110,7 +110,7 @@ export default {
   async created () {
     await this.initApp()
 
-    this.detectUnсompatibleBrowser()
+    this.detectIncompatibleBrowser()
 
     this.isAppInitialized = true
   },
@@ -149,7 +149,7 @@ export default {
       documentsManager.useApi(api)
       await this.loadAssets()
     },
-    detectUnсompatibleBrowser () {
+    detectIncompatibleBrowser () {
       this.isNotSupportedBrowser = !isCompatibleBrowser()
     },
   },
