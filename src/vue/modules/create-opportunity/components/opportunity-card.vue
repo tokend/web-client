@@ -25,9 +25,7 @@ const EVENTS = {
   click: 'click',
 }
 export default {
-  name: '',
-  components: {},
-  mixins: [],
+  name: 'opportunity-card',
   props: {
     disabled: { type: Boolean, default: false },
     isSelect: { type: Boolean, default: false },
@@ -39,13 +37,6 @@ export default {
       EVENTS,
     }
   },
-  computed: {},
-  watch: {},
-  created () {
-  },
-  destroyed () {
-  },
-  methods: {},
 }
 </script>
 
