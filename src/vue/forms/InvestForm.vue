@@ -47,6 +47,9 @@
             <input-field
               white-autofill
               type="number"
+              :min="MIN_AMOUNT"
+              :max="availableAmount.value"
+              :step="MIN_AMOUNT"
               v-model="form.amount"
               @input="touchField('form.amount')"
               name="invest-amount"

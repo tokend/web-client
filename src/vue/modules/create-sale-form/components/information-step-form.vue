@@ -69,6 +69,9 @@
           @blur="touchField('form.assetsToSell')"
           name="create-sale-assets-to-sell"
           type="number"
+          :min="MIN_AMOUNT"
+          :max="availableForIssuance"
+          :step="MIN_AMOUNT"
           :label="'create-sale-form.assets-to-sell-lbl' |
             globalize({ asset: form.baseAsset.code })"
           :error-message="getFieldErrorMessage(
@@ -139,6 +142,9 @@
         <input-field
           white-autofill
           type="number"
+          :min="MIN_AMOUNT"
+          :max="form.hardCap || MAX_AMOUNT"
+          :step="MIN_AMOUNT"
           v-model="form.softCap"
           @blur="touchField('form.softCap')"
           name="create-sale-soft-cap"
@@ -158,6 +164,9 @@
         <input-field
           white-autofill
           type="number"
+          :min="form.softCap || MIN_AMOUNT"
+          :max="MAX_AMOUNT"
+          :step="MIN_AMOUNT"
           v-model="form.hardCap"
           @blur="touchField('form.hardCap')"
           name="create-sale-hard-cap"

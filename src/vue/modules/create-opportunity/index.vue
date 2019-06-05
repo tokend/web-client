@@ -91,6 +91,9 @@
             <input-field
               white-autofill
               type="number"
+              :min="MIN_ALLOWED_PERCENT"
+              :max="MAX_ALLOWED_PERCENT"
+              :step="1"
               v-model="form.saleInformation.annualReturn"
               @blur="touchField('form.saleInformation.annualReturn')"
               name="create-sale-anual-return"
@@ -116,6 +119,9 @@
             <input-field
               white-autofill
               type="number"
+              :min="minAmount"
+              :max="maxAmount"
+              :step="minAmount"
               v-model="form.information.maxIssuanceAmount"
               @blur="touchField('form.information.maxIssuanceAmount')"
               name="create-sale-max-issuance-amount"
@@ -257,6 +263,9 @@
               white-autofill
               type="number"
               v-model="form.saleInformation.softCap"
+              :min="minAmount"
+              :max="form.saleInformation.hardCap || maxAmount"
+              :step="minAmount"
               @blur="touchField('form.saleInformation.softCap')"
               name="create-sale-soft-cap"
               :label="'create-opportunity.soft-cap' | globalize({
@@ -278,6 +287,9 @@
               white-autofill
               type="number"
               v-model="form.saleInformation.hardCap"
+              :min="form.saleInformation.softCap"
+              :max="maxAmount"
+              :step="minAmount"
               @blur="touchField('form.saleInformation.hardCap')"
               name="create-sale-hard-cap"
               :label="'create-opportunity.hard-cap' | globalize({

@@ -6,8 +6,7 @@ import cardValidator from 'card-validator'
 import { base } from '@tokend/js-sdk'
 
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
-
-import { MathUtil } from '@/js/utils/math.util'
+import { MathUtil } from '@/js/utils'
 
 import * as validators from 'vuelidate/lib/validators'
 
@@ -32,9 +31,8 @@ export const maxDecimalPoints = points => value => {
 }
 export const amountRange = (from, to) => value =>
   !validators.helpers.req(value) || (
-    Number(value) &&
-    Number(value) >= Number(from) &&
-    Number(value) <= Number(to)
+    MathUtil.compare(value, from) >= 0 &&
+    MathUtil.compare(to, value) >= 0
   )
 export const minDate = (minDate) => value => {
   return moment(value).isAfter(moment(minDate))
@@ -61,6 +59,14 @@ export const softCapMoreThanHardCap = (min, hardCap) => value => {
 }
 export const hardCapLessThanSoftCap = (softCap, max) => value => {
   return amountRange(softCap, max)(value)
+}
+
+export const noMoreThanAvailableOnBalance = balance => value => {
+  return MathUtil.compare(balance, value) >= 0
+}
+
+export const noMoreThanAvailableForIssuance = available => value => {
+  return MathUtil.compare(available, value) >= 0
 }
 
 export const moreThenMin = minValue => value => {
