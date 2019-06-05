@@ -116,7 +116,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
@@ -165,9 +165,8 @@ export default {
     ASSET_POLICIES_STR,
   }),
   computed: {
-    ...mapGetters('movements-top-bar', {
-      balances: types.balances,
-      assets: types.assets,
+    ...mapGetters({
+      assets: vuexTypes.balancesAssets,
     }),
   },
   watch: {
@@ -182,15 +181,13 @@ export default {
     },
   },
   async created () {
-    await this.loadBalances()
-    await this.loadAssets()
+    await this.loadAccountBalancesDetails()
     this.setDefaultAsset()
     this.isInitialized = true
   },
   methods: {
-    ...mapActions('movements-top-bar', {
-      loadBalances: types.LOAD_BALANCES,
-      loadAssets: types.LOAD_ASSETS,
+    ...mapActions({
+      loadAccountBalancesDetails: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     setDefaultAsset () {
       this.asset = this.assets

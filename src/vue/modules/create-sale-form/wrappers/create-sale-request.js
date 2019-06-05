@@ -6,6 +6,9 @@ export class CreateSaleRequest {
     this.name = safeGet(record, 'requestDetails.creatorDetails.name')
 
     this.baseAsset = safeGet(record, 'requestDetails.baseAsset.id')
+    this.defaultQuoteAsset = safeGet(
+      record, 'requestDetails.defaultQuoteAsset.id'
+    )
     this.assetsToSell = safeGet(
       record, 'requestDetails.baseAssetForHardCap'
     )

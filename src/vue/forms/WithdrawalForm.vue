@@ -1,7 +1,7 @@
 <template>
   <div class="withdrawal">
     <template v-if="isLoaded">
-      <template v-if="assets.length">
+      <template v-if="withdrawableBalancesAssets.length">
         <form
           @submit.prevent="isFormValid() && showConfirmation()"
           novalidate
@@ -15,7 +15,7 @@
                 :label="'withdrawal-form.asset' | globalize"
               >
                 <option
-                  v-for="asset in assets"
+                  v-for="asset in withdrawableBalancesAssets"
                   :key="asset.code"
                   :value="asset"
                 >
@@ -44,23 +44,16 @@
           </div>
 
           <div class="app__form-row withdrawal__form-row">
-            <input-field
-              white-autofill
+            <amount-input-field
               class="app__form-field"
-              v-model.trim="form.amount"
-              type="number"
+              v-model="form.amount"
               name="withdrawal-amount"
-              @blur="touchField('form.amount')"
+              validation-type="outgoing"
               :label="'withdrawal-form.amount' | globalize({
                 asset: form.asset.code
               })"
-              :step="selectedAssetStep"
+              :asset="form.asset"
               :disabled="formMixin.isDisabled"
-              :error-message="getFieldErrorMessage('form.amount', {
-                available: form.asset.balance.value,
-                maxDecimalDigitsCount: DECIMAL_POINTS,
-                minValue: selectedAssetStep
-              })"
             />
           </div>
 
@@ -95,66 +88,16 @@
           </div>
 
           <div class="app__form-row withdrawal__form-row">
-            <table class="withdrawal__fee-table">
-              <tbody
-                class="withdrawal__fee-tbody"
-                :class="{ 'withdrawal__data--loading': isFeesLoadPending }"
-              >
-                <tr v-if="form.asset.externalSystemType">
-                  <td>
-                    {{ 'withdrawal-form.network-fee-hint' | globalize }}
-                  </td>
-                  <td>
-                    {{ 'withdrawal-form.network-fee-unknown' | globalize }}
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    {{ 'withdrawal-form.fixed-fee' | globalize }}
-                  </td>
-                  <td>
-                    <template v-if="isFeesLoadPending">
-                      {{ 'withdrawal-form.fee-loading-msg' | globalize }}
-                    </template>
-                    <template v-else>
-                      <!-- eslint-disable-next-line max-len -->
-                      {{ { value: fixedFee, currency: form.asset.code } | formatMoney }}
-                    </template>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    {{ 'withdrawal-form.percent-fee' | globalize }}
-                  </td>
-                  <td>
-                    <template v-if="isFeesLoadPending">
-                      {{ 'withdrawal-form.fee-loading-msg' | globalize }}
-                    </template>
-                    <template v-else>
-                      <!-- eslint-disable-next-line max-len -->
-                      {{ { value: percentFee, currency: form.asset.code } | formatMoney }}
-                    </template>
-                  </td>
-                </tr>
-                <tr class="withdrawal__total-fee-row">
-                  <td>
-                    {{ 'withdrawal-form.total-amount-account' | globalize }}
-                  </td>
-                  <td>
-                    <template v-if="isFeesLoadPending">
-                      {{ 'withdrawal-form.fee-loading-msg' | globalize }}
-                    </template>
-                    <template v-else>
-                      <!-- eslint-disable-next-line max-len -->
-                      {{ { value: (+percentFee + +fixedFee), currency: form.asset.code } | formatMoney }}
-                    </template>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <template v-if="isFeesLoaded">
+              <fees-renderer :fees-collection="fees" />
+            </template>
+
+            <template v-else>
+              <loader message-id="withdrawal-form.loading-msg" />
+            </template>
           </div>
 
-          <div class="app__form-actions withdrawal__action">
+          <div class="app__form-actions">
             <button
               v-ripple
               v-if="!formMixin.isConfirmationShown"
@@ -182,7 +125,7 @@
         <router-link
           :to="vueRoutes.assets"
           tag="button"
-          class="app__button-raised withdrawal__action"
+          class="app__button-raised"
         >
           {{ 'withdrawal-form.discover-assets-btn' | globalize }}
         </router-link>
@@ -201,11 +144,11 @@
 import config from '@/config'
 import debounce from 'lodash/debounce'
 import FormMixin from '@/vue/mixins/form.mixin'
+import FeesMixin from '@/vue/common/fees/fees.mixin'
 import Loader from '@/vue/common/Loader'
 import EmailGetter from '@/vue/common/EmailGetter'
 
-import { inputStepByDigitsCount } from '@/js/helpers/input-trailing-digits-count'
-import { AssetRecord } from '@/js/records/entities/asset.record'
+import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 import { FEE_TYPES, base } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
@@ -216,17 +159,12 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import {
   required,
-  noMoreThanAvailableOnBalance,
   address,
-  minValue,
-  maxDecimalDigitsCount,
 } from '@validators'
 
 const EVENTS = {
   operationSubmitted: 'operation-submitted',
 }
-
-const EMPTY_FEE = '0.000000'
 
 export default {
   name: 'withdrawal-form',
@@ -234,7 +172,7 @@ export default {
     Loader,
     EmailGetter,
   },
-  mixins: [FormMixin],
+  mixins: [FormMixin, FeesMixin, IdentityGetterMixin],
   data: () => ({
     isLoaded: false,
     isFailed: false,
@@ -243,15 +181,14 @@ export default {
       amount: '',
       address: '',
     },
-    assets: [],
+    fees: {},
     MIN_AMOUNT: config.MIN_AMOUNT,
-    fixedFee: EMPTY_FEE,
-    percentFee: EMPTY_FEE,
     feesDebouncedRequest: null,
-    isFeesLoadPending: false,
+    isFeesLoaded: false,
     isFeesLoadFailed: false,
     DECIMAL_POINTS: config.DECIMAL_POINTS,
     vueRoutes,
+    FEE_TYPES,
   }),
   validations () {
     const addressRules = {
@@ -261,14 +198,6 @@ export default {
     return {
       form: {
         asset: { required },
-        amount: {
-          required,
-          noMoreThanAvailableOnBalance: noMoreThanAvailableOnBalance(
-            this.form.asset.balance.value
-          ),
-          maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
-          minValue: minValue(this.selectedAssetStep),
-        },
         address: this.isMasterAssetOwner ? addressRules : {},
       },
     }
@@ -277,34 +206,26 @@ export default {
     ...mapGetters({
       accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
+      withdrawableBalancesAssets: vuexTypes.withdrawableBalancesAssets,
     }),
 
     isMasterAssetOwner () {
       return this.form.asset.owner === api.networkDetails.adminAccountId
     },
-
-    selectedAssetStep () {
-      // eslint-disable-next-line
-      return inputStepByDigitsCount(this.form.asset.trailingDigitsCount) || config.MIN_AMOUNT
-    },
   },
   watch: {
     'form.amount' (value) {
-      if (value === '' || value < +this.MIN_AMOUNT) {
-        this.fixedFee = EMPTY_FEE
-        this.percentFee = EMPTY_FEE
-        return
-      }
-      this.tryGetFees()
+      this.tryLoadFees()
     },
     'form.asset.code' () {
-      this.tryGetFees()
+      this.tryLoadFees()
     },
   },
   async created () {
     try {
       await this.loadBalances()
       await this.initAssetSelector()
+      await this.loadFees()
       this.isLoaded = true
     } catch (error) {
       this.isFailed = true
@@ -334,33 +255,29 @@ export default {
       }
       this.enableForm()
     },
-    async getFees () {
+    tryLoadFees () {
+      this.isFeesLoaded = false
+      this.isFeesLoadFailed = false
+
+      if (!this.feesDebouncedRequest) {
+        this.feesDebouncedRequest = debounce(() => this.loadFees(), 300)
+      }
+      return this.feesDebouncedRequest()
+    },
+    async loadFees () {
       try {
-        const baseEndpoint = `/v3/accounts/${this.accountId}/calculated_fees`
-        const params = [
-          `asset=${this.form.asset.code}`,
-          `fee_type=${FEE_TYPES.withdrawalFee}`,
-          `amount=${this.form.amount}`,
-        ]
+        this.fees = await this.calculateFees({
+          assetCode: this.form.asset.code,
+          amount: this.form.amount || 0,
+          senderAccountId: this.accountId,
+          type: FEE_TYPES.withdrawalFee,
+        })
 
-        const endpoint = `${baseEndpoint}?${params.join('&')}`
-        const { data: fees } = await api.get(endpoint)
-
-        this.fixedFee = fees.fixed
-        this.percentFee = fees.calculatedPercent
-        this.isFeesLoadFailed = false
+        this.isFeesLoaded = true
       } catch (e) {
         this.isFeesLoadFailed = true
         ErrorHandler.processWithoutFeedback(e)
       }
-      this.isFeesLoadPending = false
-    },
-    tryGetFees () {
-      this.isFeesLoadPending = true
-      if (!this.feesDebouncedRequest) {
-        this.feesDebouncedRequest = debounce(() => this.getFees(), 300)
-      }
-      return this.feesDebouncedRequest()
     },
     composeOptions () {
       const creatorDetails = {}
@@ -378,36 +295,22 @@ export default {
         destAsset: this.form.asset.code,
         expectedDestAssetAmount: this.form.amount,
         fee: {
-          fixed: this.fixedFee,
-          percent: this.percentFee,
+          fixed: this.fees.sourceFee.fixed,
+          percent: this.fees.sourceFee.calculatedPercent,
         },
       }
     },
     async initAssetSelector () {
-      await this.loadAssets()
-      if (this.assets.length) {
-        this.form.asset = this.assets[0]
+      if (this.withdrawableBalancesAssets.length) {
+        this.form.asset = this.withdrawableBalancesAssets[0]
       }
     },
     async reinitAssetSelector () {
-      await this.loadAssets()
-      if (this.assets.length) {
-        const updatedAsset = this.assets
+      if (this.withdrawableBalancesAssets.length) {
+        const updatedAsset = this.withdrawableBalancesAssets
           .find(item => item.code === this.form.asset.code)
-        this.form.asset = updatedAsset || this.assets[0]
+        this.form.asset = updatedAsset || this.withdrawableBalancesAssets[0]
       }
-    },
-    async loadAssets () {
-      await this.loadBalances()
-      const endpoint = `/v3/accounts/${this.accountId}`
-      const { data: account } = await api.get(endpoint, {
-        include: ['balances.asset'],
-      })
-
-      this.assets = account.balances
-        .map(b => b.asset)
-        .map(item => new AssetRecord(item, this.balances))
-        .filter(item => item.isWithdrawable && item.balance.id)
     },
   },
 }
@@ -445,10 +348,6 @@ export default {
 .withdrawal__total-fee-row {
   color: $col-text;
   font-weight: 600;
-}
-
-.withdrawal__action {
-  margin-top: 2.5rem;
 }
 
 .withdrawal__data--loading {

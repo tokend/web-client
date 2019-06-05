@@ -54,10 +54,6 @@ export class SaleRecord {
     }
   }
 
-  logoUrl (storageUrl) {
-    return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
-  }
-
   get isWhitelisted () {
     return this.definitionType === SALE_DEFINITION_TYPES.whitelist
   }

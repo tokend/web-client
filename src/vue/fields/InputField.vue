@@ -4,7 +4,7 @@
     :class="{
       'input-field--error': errorMessage,
       'input-field--monospaced': monospaced,
-      'input-field--readonly': $attrs.readonly,
+      'input-field--readonly': $attrs.readonly || $attrs.readonly === '',
       'input-field--disabled': $attrs.disabled,
       'input-field--pwd-toggle-present': isPasswordType,
     }"
@@ -19,7 +19,9 @@
       :type="isPasswordType && isPasswordShown ? 'text' : type"
       :value="value"
       :placeholder="$attrs.placeholder || ' '"
-      :tabindex="$attrs.readonly ? -1 : $attrs.tabindex"
+      :tabindex="$attrs.readonly || $attrs.readonly === ''
+        ? -1
+        : $attrs.tabindex"
       @focus="onFocus"
       @blur="onBlur"
     >

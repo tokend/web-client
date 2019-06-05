@@ -1,4 +1,4 @@
-const BigNumber = require('bignumber.js')
+import BigNumber from 'bignumber.js'
 
 const ROUNDING_MODES = Object.freeze({
   ROUND_UP: 0,
@@ -76,6 +76,15 @@ export class MathUtil {
     const result = one.plus(two)
     return result
       .toFixed(DECIMAL_PLACES)
+  }
+
+  static compare (a, b) {
+    if (!this._isValidParams('comparedTo', a, b)) return -1
+
+    const one = new BigNumber(a)
+    const two = new BigNumber(b)
+
+    return one.comparedTo(two)
   }
 
   /**
