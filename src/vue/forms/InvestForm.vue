@@ -152,19 +152,10 @@
               click="submit"
               class="app__button-raised"
               :disabled="formMixin.isDisabled || !canSubmit"
-              form="invest-form">
+            >
               {{ 'invest-form.invest-btn' | globalize }}
             </button>
           </template>
-
-          <form-confirmation
-            v-if="view.mode === VIEW_MODES.confirm"
-            :message="'invest-form.recheck-form-msg' | globalize"
-            :ok-button="'invest-form.invest-btn' | globalize"
-            :is-pending="isSubmitting"
-            @cancel="updateView(VIEW_MODES.submit) || (isFeesLoaded = false)"
-            @ok="submit()"
-          />
         </div>
       </form>
     </template>

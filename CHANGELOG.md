@@ -82,6 +82,7 @@ for further information about branching and tagging conventions.
 - Close transfer drawer on Dashboard after submitting form
 - Displaying selected asset in drawers on movements page
 - Translations on sale details drawer
+- Investing to opportunity in reit
 
 ## [1.7.0-rc.2] - 2019-05-21
 ### "Under the hood" changes
