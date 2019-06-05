@@ -17,14 +17,21 @@
         <div class="app__form-row">
           <div class="app__form-field">
             <select-field
-              v-model="form.asset"
-              :values="quoteAssetListValues"
-              key-as-value-text="nameAndCode"
+              :value="form.asset.code"
+              @input="setAssetByCode"
               :label="'invest-form.asset-lbl' | globalize"
               name="invest-asset"
               @blur="touchField('form.asset')"
               :disabled="view.mode === VIEW_MODES.confirm || !canUpdateOffer"
-            />
+            >
+              <option
+                v-for="asset in quoteAssetListValues"
+                :key="asset.code"
+                :value="asset.code"
+              >
+                {{ asset.nameAndCode }}
+              </option>
+            </select-field>
 
             <vue-markdown
               class="app__form-field-description invest-form__amount-hint"
@@ -143,7 +150,7 @@
               class="app__button-raised"
               :disabled="formMixin.isDisabled || !canSubmit"
               form="invest-form">
-              {{ 'invest-form.continue-btn' | globalize }}
+              {{ 'invest-form.invest-btn' | globalize }}
             </button>
           </template>
 
@@ -464,6 +471,11 @@ export default {
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
       loadAssets: vuexTypes.LOAD_ASSETS,
     }),
+
+    setAssetByCode (code) {
+      this.form.asset = this.quoteAssetListValues
+        .find(item => item.code === code)
+    },
 
     async loadCurrentInvestment () {
       const { data: offers } = await api.getWithSignature('/v3/offers', {
