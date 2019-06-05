@@ -19,8 +19,8 @@
           </template>
           <asset-attributes-viewer
             :asset="selectedAsset"
-            :kyc-required-asset-type="kycRequiredAssetType"
-            :security-asset-type="securityAssetType"
+            :kyc-required-asset-type="kvAssetTypeKycRequired"
+            :security-asset-type="kvAssetTypeSecurity"
           />
 
           <button
@@ -112,11 +112,11 @@ export default {
   computed: {
     ...mapGetters('balance-explorer', {
       assets: types.assets,
-      kycRequiredAssetType: types.kycRequiredAssetType,
-      securityAssetType: types.securityAssetType,
     }),
     ...mapGetters([
       vuexTypes.accountId,
+      vuexTypes.kvAssetTypeKycRequired,
+      vuexTypes.kvAssetTypeSecurity,
     ]),
   },
 
@@ -127,15 +127,11 @@ export default {
   methods: {
     ...mapActions('balance-explorer', {
       loadAccountBalances: types.LOAD_ACCOUNT_BALANCES,
-      loadKycRequiredAssetType: types.LOAD_KYC_REQUIRED_ASSET_TYPE,
-      loadSecurityAssetType: types.LOAD_SECURITY_ASSET_TYPE,
     }),
 
     async load () {
       try {
         await this.loadAccountBalances(this.defaultQuoteAsset)
-        await this.loadKycRequiredAssetType()
-        await this.loadSecurityAssetType()
         this.isLoaded = true
       } catch (e) {
         this.isLoadFailed = true
