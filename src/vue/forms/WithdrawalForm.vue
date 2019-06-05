@@ -10,14 +10,15 @@
             <div class="app__form-field">
               <select-field
                 name="withdrawal-asset"
-                v-model="form.asset"
+                :value="form.asset.code"
+                @input="setAssetByCode"
                 :disabled="formMixin.isDisabled"
                 :label="'withdrawal-form.asset' | globalize"
               >
                 <option
                   v-for="asset in withdrawableBalancesAssets"
                   :key="asset.code"
-                  :value="asset"
+                  :value="asset.code"
                 >
                   {{ asset.nameAndCode }}
                 </option>
@@ -236,6 +237,10 @@ export default {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
+    setAssetByCode (code) {
+      this.form.asset = this.withdrawableBalancesAssets
+        .find(item => item.code === code)
+    },
     async submit () {
       if (!this.isFormValid()) return
       this.disableForm()

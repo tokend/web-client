@@ -28,14 +28,15 @@
             <div class="app__form-field">
               <select-field
                 name="transfer-asset"
-                v-model="form.asset"
+                :value="form.asset.code"
+                @input="setAsset"
                 :label="'transfer-form.asset-lbl' | globalize"
                 :disabled="view.mode === VIEW_MODES.confirm"
               >
                 <option
                   v-for="asset in transferableBalancesAssets"
                   :key="asset.code"
-                  :value="asset"
+                  :value="asset.code"
                 >
                   {{ asset.nameAndCode }}
                 </option>
@@ -327,10 +328,10 @@ export default {
       this.isFeesLoaded = false
       setTimeout(() => this.updateView(VIEW_MODES.submit, {}, true), 1)
     },
-    setAsset () {
-      this.form.asset =
-        this.transferableBalancesAssets
-          .find(asset => asset.code === this.assetToTransfer) ||
+    setAsset (payload) {
+      const assetCode = payload || this.assetToTransfer
+      this.form.asset = this.transferableBalancesAssets
+        .find(asset => asset.code === assetCode) ||
         this.transferableBalancesAssets[0] ||
         {}
     },

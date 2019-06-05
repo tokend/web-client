@@ -7,10 +7,11 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <select-field
-          v-model="idDocumentType"
+          :value="idDocumentType.value"
+          @input="idDocumentType = ID_DOCUMENT_TYPES
+            .find(item => item.value === $event)"
           name="id-document-type"
-          key-as-value-text="labelTranslationId"
-          :values="ID_DOCUMENT_TYPES"
+          :disabled="isDisabled"
           :label="'general-form.id-document-type-lbl' | globalize"
           @blur="touchField('idDocumentType')"
           :error-message="getFieldErrorMessage('idDocumentType')"
@@ -18,7 +19,7 @@
           <option
             v-for="documentType in ID_DOCUMENT_TYPES"
             :key="documentType.value"
-            :value="documentType"
+            :value="documentType.value"
           >
             {{ documentType.labelTranslationId | globalize }}
           </option>

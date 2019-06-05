@@ -6,13 +6,13 @@
           name="limits-op-type"
           v-model="selectedOpType"
           :label="'limits-form.operation-type' | globalize"
-          :key="`limits-asset-selector-${selectedOpType.value}`"
+          :key="`limits-asset-selector-${selectedOpType}`"
           class="limits__assets-select app__select--no-border"
         >
           <option
             v-for="type in FORMATTED_STATS_OPERATION_TYPES"
             :key="type.value"
-            :value="type"
+            :value="type.value"
           >
             {{ type.label | globalize }}
           </option>
@@ -253,7 +253,7 @@ export default {
       annualOut: '',
       note: '',
     },
-    selectedOpType: {},
+    selectedOpType: '',
     opts: [],
     FORMATTED_STATS_OPERATION_TYPES,
     STATS_OPERATION_TYPES_KEY_NAMES,
@@ -299,7 +299,7 @@ export default {
   computed: {
     selectedLimitsByOpType () {
       // eslint-disable-next-line
-      return this.limits[STATS_OPERATION_TYPES_KEY_NAMES[this.selectedOpType.value]]
+      return this.limits[STATS_OPERATION_TYPES_KEY_NAMES[this.selectedOpType]]
     },
     minValidDailyOutValue () {
       return MIN_VALID_LIMIT_VALUE
@@ -335,7 +335,7 @@ export default {
     },
   },
   created () {
-    this.selectedOpType = this.FORMATTED_STATS_OPERATION_TYPES[0]
+    this.selectedOpType = this.FORMATTED_STATS_OPERATION_TYPES[0].value
   },
   methods: {
     tryToSubmit () {
@@ -399,7 +399,7 @@ export default {
       }
       const note = this.form.note
       const requestType = LIMITS_REQUEST_TYPE.initial
-      const statsOpType = +this.selectedOpType.value
+      const statsOpType = +this.selectedOpType
       const operationType = STATS_OPERATION_TYPES_KEY_NAMES[statsOpType]
 
       const operation = base

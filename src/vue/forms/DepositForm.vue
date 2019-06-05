@@ -12,14 +12,15 @@
           <div class="app__form-row">
             <div class="app__form-field">
               <select-field
-                v-model="selectedAsset"
+                :value="selectedAsset"
+                @input="setAssetByCode"
                 :label="'deposit-form.asset' | globalize"
                 :disabled="formMixin.isDisabled"
               >
                 <option
                   v-for="asset in assets"
                   :key="asset.code"
-                  :value="asset"
+                  :value="asset.code"
                 >
                   {{ asset.nameAndCode }}
                 </option>
@@ -141,6 +142,10 @@ export default {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
+
+    setAssetByCode (code) {
+      this.selectedAsset = this.assets.find(item => item.code === code) || {}
+    },
   },
 }
 </script>

@@ -2929,7 +2929,7 @@ cursor@^0.1.5:
   resolved "https://registry.yarnpkg.com/cursor/-/cursor-0.1.5.tgz#ea778c2b09d33c2e564fd92147076750483ebb2c"
   integrity sha1-6neMKwnTPC5WT9khRwdnUEg+uyw=
 
-custom-event-polyfill@0.3.0:
+custom-event-polyfill@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/custom-event-polyfill/-/custom-event-polyfill-0.3.0.tgz#99807839be62edb446b645832e0d80ead6fa1888"
   integrity sha1-mYB4Ob5i7bRGtkWDLg2A6tb6GIg=

@@ -52,7 +52,7 @@ const CUSTOM_SELECT_CONFIG = {
   optionClass: 'select-field__option',
   isSelectedClass: 'select-field__option--selected',
   hasFocusClass: 'select-field__option--focused',
-  isDisabledClass: 'select-field--disabled',
+  isDisabledClass: 'select-field__wrp--disabled',
   isOpenClass: 'select-field--open',
 }
 
@@ -166,8 +166,9 @@ export default {
     '&.select-field__option--focused'
   );
 
-  .select-field--disabled > & {
+  .select-field--disabled & {
     cursor: default;
+    pointer-events: none;
 
     @include readonly-material-border($field-color-unfocused);
   }

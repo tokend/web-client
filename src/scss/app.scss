@@ -398,6 +398,12 @@ h6.app__page-heading {
     div span {
       border-bottom: 0 !important;
       background-size: 0 !important;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    i {
+      top: 1.2rem;
     }
   }
 }

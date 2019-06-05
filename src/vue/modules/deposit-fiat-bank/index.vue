@@ -4,13 +4,14 @@
       <div class="app__form-field">
         <select-field
           name="deposit-fiat-bank-asset"
-          v-model="form.asset"
+          :value="form.asset.code"
+          @input="setAssetByCode"
           :label="'deposit-fiat-bank-module.asset' | globalize"
         >
           <option
             v-for="asset in depositableFiatAssets"
             :key="asset.code"
-            :value="asset"
+            :value="asset.code"
           >
             {{ asset.nameAndCode }}
           </option>
@@ -299,6 +300,10 @@ export default {
       loadAssets: types.LOAD_ASSETS,
       loadFees: types.LOAD_FEES,
     }),
+    setAssetByCode (code) {
+      this.form.asset = this.depositableFiatAssets
+        .find(item => item.code === code)
+    },
     deposited () {
       this.$emit(EVENTS.deposited)
     },

@@ -9,7 +9,7 @@
         <option
           v-for="saleState in Object.values(SALE_STATES)"
           :key="saleState.value"
-          :value="saleState"
+          :value="saleState.value"
         >
           {{ saleState.labelTranslationId | globalize }}
         </option>
@@ -115,7 +115,7 @@ export default {
     saleRecords: [],
     filters: {
       baseAsset: '',
-      state: SALE_STATES.live,
+      state: SALE_STATES.live.value,
     },
     isLoaded: false,
     isDetailsDrawerShown: false,
@@ -144,7 +144,7 @@ export default {
     },
 
     recordsLoader () {
-      const saleState = this.filters.state.value
+      const saleState = this.filters.state
 
       let opts = {
         page: { order: 'desc' },

@@ -7,7 +7,8 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <select-field
-          v-model="form.asset"
+          :value="form.asset.code"
+          @input="setAssetByCode"
           name="create-issuance-asset"
           :label="'issuance-form.asset-lbl' | globalize"
           @blur="touchField('form.asset')"
@@ -16,7 +17,7 @@
           <option
             v-for="asset in ownedAssets"
             :key="asset.code"
-            :value="asset"
+            :value="asset.code"
           >
             {{ asset.nameAndCode }}
           </option>
@@ -265,6 +266,10 @@ export default {
   },
 
   methods: {
+    setAssetByCode (code) {
+      this.form.asset = this.ownedAssets
+        .find(item => item.code === code)
+    },
     tryLoadFees () {
       this.isFeesLoaded = false
       this.isFeesLoadFailed = false

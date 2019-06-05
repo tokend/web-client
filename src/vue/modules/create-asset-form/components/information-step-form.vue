@@ -69,7 +69,7 @@
           <option
             v-for="assetType in assetTypes"
             :key="assetType.value"
-            :value="assetType"
+            :value="assetType.value"
           >
             {{ assetType.labelTranslationId | globalize }}
           </option>
@@ -225,8 +225,7 @@ export default {
       this.form = {
         name: this.request.assetName,
         code: this.request.assetCode,
-        assetType: this.assetTypes
-          .find(item => item.value === this.request.assetType),
+        assetType: this.request.assetType,
         maxIssuanceAmount: this.request.maxIssuanceAmount,
         logo: this.request.logoKey
           ? new DocumentContainer(this.request.logo)

@@ -10,13 +10,14 @@
             {{ 'op-pages.filters-prefix' | globalize }}
           </span>
           <select-field
-            v-model="asset"
+            :value="asset.code"
+            @input="setAssetByCode"
             class="app__select app__select--no-border"
           >
             <option
               v-for="asset in assets"
               :key="asset.code"
-              :value="asset"
+              :value="asset.code"
             >
               {{ asset.nameAndCode }}
             </option>
@@ -334,6 +335,9 @@ export default {
       loadBalances: types.LOAD_BALANCES,
       loadAssets: types.LOAD_ASSETS,
     }),
+    setAssetByCode (code) {
+      this.asset = this.assets.find(item => item.code === code)
+    },
     setDefaultAsset () {
       this.asset = this.assets[0]
     },

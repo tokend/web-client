@@ -310,7 +310,7 @@
               <option
                 v-for="assetType in assetTypes"
                 :key="assetType.value"
-                :value="assetType"
+                :value="assetType.value"
               >
                 {{ assetType.label | globalize }}
               </option>
@@ -788,7 +788,7 @@ export default {
       const operation = {
         requestID: requestId,
         code: this.form.information.code,
-        assetType: this.form.saleInformation.assetType.value,
+        assetType: this.form.saleInformation.assetType,
         preissuedAssetSigner: this.accountId,
         trailingDigitsCount: this.decimalPints,
         initialPreissuedAmount: this.form.information.maxIssuanceAmount,

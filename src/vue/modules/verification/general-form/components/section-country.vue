@@ -7,7 +7,8 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <select-field
-          v-model="country"
+          :value="country.code"
+          @input="country = COUNTRIES.find(item => item.code === $event)"
           name="address-country"
           :label="'general-form.address-country-lbl' | globalize"
           @blur="touchField('country')"
@@ -17,7 +18,7 @@
           <option
             v-for="countryItem in COUNTRIES"
             :key="countryItem.code"
-            :value="countryItem"
+            :value="countryItem.code"
           >
             {{ countryItem.translation | globalize }}
           </option>
