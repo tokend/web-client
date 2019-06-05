@@ -23,27 +23,41 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <select-field
-          v-model="form.baseAsset"
-          :values="ownedAssets"
+          :value="form.baseAsset.code"
+          @input="setBaseAssetByCode"
           name="create-sale-base-asset"
-          key-as-value-text="nameAndCode"
           :label="'create-sale-form.base-asset-lbl' | globalize"
-        />
+        >
+          <option
+            v-for="asset in ownedAssets"
+            :key="asset.code"
+            :value="asset.code"
+          >
+            {{ asset.nameAndCode }}
+          </option>
+        </select-field>
       </div>
     </div>
 
     <div class="app__form-row">
       <div class="app__form-field">
         <select-field
-          v-model="form.capAsset"
-          :values="baseAssets"
+          :value="form.capAsset.code"
+          @input="setCapAssetByCode"
           name="create-sale-base-asset"
-          key-as-value-text="nameAndCode"
           :label="'create-sale-form.cap-asset-lbl' | globalize"
           :error-message="!isQuoteAssetsLoaded || availableQuoteAssets.length
             ? ''
             : 'create-sale-form.no-investable-assets-err' | globalize"
-        />
+        >
+          <option
+            v-for="asset in baseAssets"
+            :key="asset.code"
+            :value="asset.code"
+          >
+            {{ asset.nameAndCode }}
+          </option>
+        </select-field>
       </div>
     </div>
 
@@ -364,6 +378,14 @@ export default {
   },
 
   methods: {
+    setBaseAssetByCode (code) {
+      this.form.baseAsset = this.ownedAssets.find(item => item.code === code)
+    },
+
+    setCapAssetByCode (code) {
+      this.form.capAsset = this.baseAssets.find(item => item.code === code)
+    },
+
     getCurrentDate () {
       return moment().toISOString()
     },

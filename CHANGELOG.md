@@ -25,6 +25,8 @@ for further information about branching and tagging conventions.
 - `AmountInputField`
 - Cap asset field to the create sale form
 - Display amount + fee in movements list
+- "custom-select" package for displaying customized select field
+- Max button to amount input fields
 - "compare" & "format" methods to `MathUtil` class
 - Name attributes to 2FA form inputs
 - Emitted value normalizers for input field:
@@ -54,6 +56,8 @@ for further information about branching and tagging conventions.
 - Now allowing the user to input birth date manually on general
   verification form
 - Now using "d3Format" and SI prefixes while formatting chart percent hints
+- Now displaying asset for incoming withdrawal requests
+- Now passing values to select field using a slot and "option" tags
 - Now using `MathUtil.compare` method in validators
 - Now using `MathUtil.format` for formatting money, numbers, and percents
 
@@ -76,6 +80,7 @@ for further information about branching and tagging conventions.
 - Disabling invest form while submitting
 - Different borders with attribute of readonly on the field
 - Close transfer drawer on Dashboard after submitting form
+- Displaying selected asset in drawers on movements page
 - Translations on sale details drawer
 
 ## [1.7.0-rc.2] - 2019-05-21

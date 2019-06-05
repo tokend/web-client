@@ -8,11 +8,18 @@
               {{ 'fees-page.asset-filter-prefix' | globalize }}
             </span>
             <select-field
-              v-model="asset"
-              :values="assets"
-              key-as-value-text="nameAndCode"
+              :value="asset.code"
+              @input="setAssetByCode"
               class="app__select app__select--no-border"
-            />
+            >
+              <option
+                v-for="asset in assets"
+                :key="asset.code"
+                :value="asset.code"
+              >
+                {{ asset.nameAndCode }}
+              </option>
+            </select-field>
           </div>
         </template>
       </top-bar>
@@ -105,6 +112,10 @@ export default {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
+
+    setAssetByCode (code) {
+      this.asset = this.assets.find(item => item.code === code)
+    },
 
     async initAssetSelector () {
       await this.loadAssets()

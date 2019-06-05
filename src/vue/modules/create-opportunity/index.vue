@@ -309,10 +309,7 @@
           <div class="app__form-field">
             <select-field
               v-model="form.saleInformation.assetType"
-              :is-value-translatable="true"
               name="asset-create-asset-type"
-              key-as-value-text="label"
-              :values="assetTypes"
               :label="
                 'create-opportunity.investor-requirements' | globalize
               "
@@ -321,7 +318,15 @@
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.assetType',
               )"
-            />
+            >
+              <option
+                v-for="assetType in assetTypes"
+                :key="assetType.value"
+                :value="assetType.value"
+              >
+                {{ assetType.label | globalize }}
+              </option>
+            </select-field>
           </div>
         </div>
         <div class="app__form-row">
@@ -795,7 +800,7 @@ export default {
       const operation = {
         requestID: requestId,
         code: this.form.information.code,
-        assetType: this.form.saleInformation.assetType.value,
+        assetType: this.form.saleInformation.assetType,
         preissuedAssetSigner: this.accountId,
         trailingDigitsCount: this.decimalPints,
         initialPreissuedAmount: this.form.information.maxIssuanceAmount,
