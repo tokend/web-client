@@ -6,6 +6,7 @@ describe('Incoming withdrawal request', () => {
       const record = {
         requestDetails: {
           amount: '10.000000',
+          asset: { id: 'USD' },
           fee: {
             fixed: '1.000000',
             calculatedPercent: '3.000000',
@@ -17,6 +18,7 @@ describe('Incoming withdrawal request', () => {
       const result = new IncomingWithdrawalRequest(record)
 
       expect(result.amount).to.equal('10.000000')
+      expect(result.assetCode).to.equal('USD')
       expect(result.fixedFee).to.equal('1.000000')
       expect(result.calculatedPercentFee).to.equal('3.000000')
 

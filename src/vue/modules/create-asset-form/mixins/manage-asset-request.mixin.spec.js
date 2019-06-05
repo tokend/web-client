@@ -95,7 +95,7 @@ describe('Manage asset request mixin', () => {
             code: 'USD',
             maxIssuanceAmount: '1000.000000',
             policies: 16,
-            assetType: { value: 1 },
+            assetType: 1,
           },
           advancedStepForm: {
             isPreissuanceDisabled: false,

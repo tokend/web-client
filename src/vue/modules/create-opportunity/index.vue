@@ -91,6 +91,9 @@
             <input-field
               white-autofill
               type="number"
+              :min="MIN_ALLOWED_PERCENT"
+              :max="MAX_ALLOWED_PERCENT"
+              :step="1"
               v-model="form.saleInformation.annualReturn"
               @blur="touchField('form.saleInformation.annualReturn')"
               name="create-sale-anual-return"
@@ -116,6 +119,9 @@
             <input-field
               white-autofill
               type="number"
+              :min="minAmount"
+              :max="maxAmount"
+              :step="minAmount"
               v-model="form.information.maxIssuanceAmount"
               @blur="touchField('form.information.maxIssuanceAmount')"
               name="create-sale-max-issuance-amount"
@@ -257,6 +263,9 @@
               white-autofill
               type="number"
               v-model="form.saleInformation.softCap"
+              :min="minAmount"
+              :max="form.saleInformation.hardCap || maxAmount"
+              :step="minAmount"
               @blur="touchField('form.saleInformation.softCap')"
               name="create-sale-soft-cap"
               :label="'create-opportunity.soft-cap' | globalize({
@@ -278,6 +287,9 @@
               white-autofill
               type="number"
               v-model="form.saleInformation.hardCap"
+              :min="form.saleInformation.softCap"
+              :max="maxAmount"
+              :step="minAmount"
               @blur="touchField('form.saleInformation.hardCap')"
               name="create-sale-hard-cap"
               :label="'create-opportunity.hard-cap' | globalize({
@@ -297,10 +309,7 @@
           <div class="app__form-field">
             <select-field
               v-model="form.saleInformation.assetType"
-              :is-value-translatable="true"
               name="asset-create-asset-type"
-              key-as-value-text="label"
-              :values="assetTypes"
               :label="
                 'create-opportunity.investor-requirements' | globalize
               "
@@ -309,7 +318,15 @@
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.assetType',
               )"
-            />
+            >
+              <option
+                v-for="assetType in assetTypes"
+                :key="assetType.value"
+                :value="assetType.value"
+              >
+                {{ assetType.label | globalize }}
+              </option>
+            </select-field>
           </div>
         </div>
         <div class="app__form-row">
@@ -785,7 +802,7 @@ export default {
       const operation = {
         requestID: requestId,
         code: this.form.information.code,
-        assetType: this.form.saleInformation.assetType.value,
+        assetType: this.form.saleInformation.assetType,
         preissuedAssetSigner: this.accountId,
         trailingDigitsCount: this.decimalPints,
         initialPreissuedAmount: this.form.information.maxIssuanceAmount,

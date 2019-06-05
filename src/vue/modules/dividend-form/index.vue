@@ -10,12 +10,19 @@
             <div class="app__form-field">
               <select-field
                 name="dividend-asset"
-                v-model="form.ownedAsset"
-                :values="ownedAssets"
-                key-as-value-text="nameAndCode"
+                :value="form.ownedAsset.code"
+                @input="setOwnedAssetByCode"
                 :disabled="formMixin.isDisabled"
                 :label="'dividend-form.asset' | globalize"
-              />
+              >
+                <option
+                  v-for="asset in ownedAssets"
+                  :key="asset.code"
+                  :value="asset.code"
+                >
+                  {{ asset.nameAndCode }}
+                </option>
+              </select-field>
               <p class="app__form-field-description">
                 <!-- eslint-disable-next-line max-len -->
                 {{ 'dividend-form.balance' | globalize({ amount: form.ownedAsset.balance.value, asset: form.ownedAsset.code }) }}
@@ -27,12 +34,19 @@
             <div class="app__form-field">
               <select-field
                 name="dividend-asset"
-                v-model="form.asset"
-                :values="assets"
-                key-as-value-text="nameAndCode"
+                :value="form.asset.code"
+                @input="setAssetByCode"
                 :disabled="formMixin.isDisabled"
                 :label="'dividend-form.asset-dividend-pay' | globalize"
-              />
+              >
+                <option
+                  v-for="asset in assets"
+                  :key="asset.code"
+                  :value="asset.code"
+                >
+                  {{ asset.nameAndCode }}
+                </option>
+              </select-field>
               <p class="app__form-field-description">
                 <!-- eslint-disable-next-line max-len -->
                 {{ 'dividend-form.balance' | globalize({ amount: form.asset.balance.value, asset: form.asset.code }) }}
@@ -47,6 +61,8 @@
               v-model.trim="form.amount"
               type="number"
               name="dividend-amount"
+              :min="config.minAmount"
+              :max="form.asset.balance.value"
               :step="config.minAmount"
               @blur="touchField('form.amount')"
               :label="'dividend-form.amount' | globalize({
@@ -281,6 +297,13 @@ export default {
       getAccountId: types.LOAD_ACCOUNT_ID,
       loadPaymentFee: types.LOAD_FEES,
     }),
+    setOwnedAssetByCode (code) {
+      this.form.ownedAsset = this.ownedAssets
+        .find(item => item.code === code)
+    },
+    setAssetByCode (code) {
+      this.form.asset = this.assets.find(item => item.code === code)
+    },
     async submit () {
       this.disableForm()
       this.isDividendSubmitting = true

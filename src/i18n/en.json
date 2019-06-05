@@ -3,12 +3,31 @@
     "number": {
       "formats": {
         "amounts": {
-          "default": "0,0.[000000]"
+          "default": {
+            "decimalSeparator": ".",
+            "groupSeparator": ",",
+            "groupSize": 3,
+            "decimalPlaces": 6
+          }
         },
-        "default": "0,0.[000000]",
-        "integer": "0,0",
-        "percent": "0,0.[00]%",
-        "order_number": "0,0o"
+        "default": {
+          "decimalSeparator": ".",
+          "groupSeparator": ",",
+          "groupSize": 3,
+          "decimalPlaces": 6
+        },
+        "integer": {
+          "groupSeparator": ",",
+          "groupSize": 3,
+          "decimalPlaces": 0
+        },
+        "percent": {
+          "decimalSeparator": ".",
+          "groupSeparator": ",",
+          "groupSize": 3,
+          "decimalPlaces": 6,
+          "suffix": "%"
+        }
       }
     },
     "date": {
@@ -1273,6 +1292,7 @@
       "loading-error-msg": "There was an error while loading.",
       "details-title": "Incoming withdrawal request",
       "requestor-header": "Requestor",
+      "asset-code-header": "Asset code",
       "amount-header": "Amount",
       "request-state-header": "Request state",
       "created-header": "Created",
@@ -1316,6 +1336,7 @@
       "coinpayments-msg": "Coinpayments",
       "non-depositable-msg": "Non-depositable",
       "asset-type": "Asset type",
+      "verification-required-title": "Requires verification",
       "does-not-require-verification-title": "Does not require verification",
       "security-asset-title": "Is security (requires accreditation for US residents)",
       "terms-title": "Terms",

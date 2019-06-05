@@ -46,10 +46,17 @@
         <select-field
           v-if="formattedPairs.length"
           v-model="selectedPair"
-          :values="formattedPairs"
           :key="selectedPair"
           class="trade-asset-selector__field app__select app__select--no-border"
-        />
+        >
+          <option
+            v-for="assetPair in formattedPairs"
+            :key="assetPair"
+            :value="assetPair"
+          >
+            {{ assetPair }}
+          </option>
+        </select-field>
         <no-data-message
           v-else
           :title="'trade-top-bar.no-pairs-message' | globalize"

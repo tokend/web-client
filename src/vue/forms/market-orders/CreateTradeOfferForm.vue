@@ -6,12 +6,19 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <select-field
-          :values="accountAssets"
           v-model="form.asset"
           name="trade-offer-base-asset"
           :disabled="formMixin.isDisabled"
           :label="baseAssetLabelTranslationId | globalize"
-        />
+        >
+          <option
+            v-for="asset in accountAssets"
+            :key="asset"
+            :value="asset"
+          >
+            {{ asset }}
+          </option>
+        </select-field>
       </div>
     </div>
 
@@ -20,6 +27,10 @@
         <input-field
           v-model.trim="form.price"
           name="trade-offer-price"
+          type="number"
+          :min="config.MIN_AMOUNT"
+          :max="config.MAX_AMOUNT"
+          :step="config.MIN_AMOUNT"
           :label="
             'create-trade-offer-form.price-lbl' | globalize({
               baseAsset: form.asset,
@@ -44,6 +55,10 @@
         <input-field
           v-model.trim="form.amount"
           name="trade-offer-amount"
+          type="number"
+          :min="config.MIN_AMOUNT"
+          :max="config.MAX_AMOUNT"
+          :step="config.MIN_AMOUNT"
           :label="'create-trade-offer-form.amount-lbl' | globalize({
             asset: form.asset
           })"
