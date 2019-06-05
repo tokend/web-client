@@ -45,6 +45,7 @@
         })"
         :disabled="formMixin.isDisabled"
         :asset="form.asset"
+        is-max-button-shown
       />
     </div>
     <div class="app__form-row deposit-fiat-card__form-row">

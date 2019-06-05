@@ -55,6 +55,7 @@
               })"
               :asset="form.asset"
               :disabled="formMixin.isDisabled"
+              is-max-button-shown
             />
           </div>
 
