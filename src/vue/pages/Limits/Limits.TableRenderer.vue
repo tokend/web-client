@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="!isLoading && !isLoadingFailed"
+    v-if="!isLoadingFailed"
     class="limits-table-renderer__table app__table app__table--with-shadow"
   >
     <table>
@@ -23,7 +23,7 @@
           </th>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="!isLoading">
         <tr
           v-for="(item, i) in limits"
           :key="`limits-table-row-${i}`"
@@ -89,6 +89,9 @@
           </td>
         </tr>
       </tbody>
+      <skeleton-loader-table-body
+        v-else
+      />
     </table>
   </div>
   <loader
@@ -114,6 +117,7 @@
 import { STATS_OPERATION_TYPES } from '@tokend/js-sdk'
 import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
+import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 
 import config from '../../../config'
 
@@ -133,6 +137,7 @@ export default {
   components: {
     Loader,
     NoDataMessage,
+    SkeletonLoaderTableBody,
   },
   props: {
     limits: { type: Object, required: true, default: () => [] },

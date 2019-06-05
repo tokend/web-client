@@ -22,7 +22,7 @@
     </template>
 
     <template v-else-if="!isLoadingFailed">
-      <loader :message-id="'sale-overview.loading-msg'" />
+      <sale-overview-skeleton-loader />
     </template>
 
     <template v-else>
@@ -35,7 +35,7 @@
 
 <script>
 import AssetDetails from '@/vue/pages/assets/AssetDetails'
-import Loader from '@/vue/common/Loader'
+import SaleOverviewSkeletonLoader from './SaleOverviewSkeletonLoader'
 
 import SaleOverviewDetails from './SaleOverviewDetails'
 
@@ -52,8 +52,8 @@ export default {
   name: 'sale-overview',
   components: {
     AssetDetails,
-    Loader,
     SaleOverviewDetails,
+    SaleOverviewSkeletonLoader,
   },
 
   props: {

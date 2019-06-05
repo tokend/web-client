@@ -1,18 +1,18 @@
 <template>
   <div class="fees">
     <template v-if="assetCode">
-      <template v-if="isLoaded">
-        <fees-table :fees="valuableFeesByAssetCode" :asset-code="assetCode" />
+      <template>
+        <fees-table
+          :fees="valuableFeesByAssetCode"
+          :asset-code="assetCode"
+          :is-loaded="isLoaded"
+        />
       </template>
 
-      <template v-else-if="isLoadFailed">
+      <template v-if="isLoadFailed">
         <p class="fees__error-msg">
           {{ 'fees.fees-loading-error-msg' | globalize }}
         </p>
-      </template>
-
-      <template v-else>
-        <load-spinner message-id="fees.fees-loading-msg" />
       </template>
     </template>
   </div>
@@ -20,7 +20,6 @@
 
 <script>
 import FeesTable from './components/fees-table'
-import LoadSpinner from '@/vue/common/Loader'
 
 import { mapActions, mapGetters } from 'vuex'
 import { types } from './store/types'
@@ -29,7 +28,6 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 export default {
   name: 'fees-module',
   components: {
-    LoadSpinner,
     FeesTable,
   },
   props: {

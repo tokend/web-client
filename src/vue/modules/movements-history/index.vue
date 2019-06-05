@@ -1,26 +1,26 @@
 <template>
   <div class="movements-history">
-    <template v-if="isInitialized && assetCode">
-      <template v-if="isMovementsLoaded">
+    <template>
+      <template>
         <h2 class="app__table-title" v-if="latestActivity">
           {{ 'movements-history.latest-activity' | globalize }}
         </h2>
         <div class="movements-history__list-wrp">
-          <movements-table :movements="movements" />
+          <movements-table
+            :is-movements-loaded="isMovementsLoaded && isInitialized"
+            :movements="movements"
+          />
         </div>
       </template>
-      <template v-else-if="isMovementsLoadFailed">
+      <template v-if="isMovementsLoadFailed">
         <p class="movements-history__error-msg">
           {{ 'movements-history.movements-load-failed-msg' | globalize }}
         </p>
       </template>
-      <template v-else>
-        <load-spinner message-id="movements-history.loading-movements-msg" />
-      </template>
 
       <div class="movements-history__collection-loader-wrp">
         <collection-loader
-          v-if="!isMovementsLoadFailed"
+          v-if="!isMovementsLoadFailed && isInitialized && assetCode"
           v-show="isMovementsLoaded && !latestActivity"
           :first-page-loader="firstPageLoader"
           @first-page-load="setMovements"
@@ -29,17 +29,12 @@
         />
       </div>
     </template>
-
-    <template v-else>
-      <load-spinner message-id="movements-history.initializing-msg" />
-    </template>
   </div>
 </template>
 
 <script>
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import MovementsTable from './components/movements-table'
-import LoadSpinner from '@/vue/common/Loader'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -52,7 +47,6 @@ const REFS = {
 export default {
   name: 'movements-history-module',
   components: {
-    LoadSpinner,
     MovementsTable,
     CollectionLoader,
   },

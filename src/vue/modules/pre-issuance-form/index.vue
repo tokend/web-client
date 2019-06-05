@@ -19,9 +19,8 @@
       {{ 'pre-issuance-form.load-failed-msg' | globalize }}
     </p>
 
-    <load-spinner
+    <skeleton-loader-pre-issuance-form
       v-else
-      :message-id="'pre-issuance-form.loading-msg'"
     />
   </div>
 </template>
@@ -30,7 +29,7 @@
 import LoadOwnedAssetsMixin from './mixins/load-owned-assets.mixin'
 
 import NoDataMessage from '@/vue/common/NoDataMessage'
-import LoadSpinner from '@/vue/common/Loader'
+import SkeletonLoaderPreIssuanceForm from './components/skeleton-loader-pre-issuance-form'
 import UploadPreIssuanceForm from './components/upload-pre-issuance-form'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -46,8 +45,8 @@ export default {
   name: 'issuance-form-module',
   components: {
     NoDataMessage,
-    LoadSpinner,
     UploadPreIssuanceForm,
+    SkeletonLoaderPreIssuanceForm,
   },
   mixins: [LoadOwnedAssetsMixin],
 

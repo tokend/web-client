@@ -24,6 +24,7 @@ $z-hint-wrapper-box: 100;
 $z-sidebar-backdrop: 115;
 $z-sidebar: 120;
 $z-tooltip-wrapper: 1;
+$z-skeleton-loader: 1;
 
 $_athensGray: #e9eaed;
 $_eastBay: #3a4180;
@@ -364,7 +365,10 @@ $col-border-comment-viewer-header: $_eastBay;
 $col-comment-content-gradient-from: $_eastBay;
 $col-comment-content-gradient-to: $_gray;
 
-// hint-wrapepr
+// skeleton-loader
+$col-background-skeleton-loader: rgba($_eastBay, 0.10);
+
+// hint-wrapper
 $col-hint-wrapper-box-bg: rgba($_black, 0.9);
 $col-hint-wrapper-box-text: $_concrete;
 

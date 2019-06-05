@@ -61,6 +61,10 @@
             </td>
           </tr>
         </tbody>
+        <skeleton-loader-table-body
+          v-if="!isLoaded"
+          :cells="6"
+        />
         <tbody
           v-else
         >
@@ -82,12 +86,14 @@
 <script>
 import FeeTypeViewer from './viewers/fee-type-viewer'
 import FeeSubtypeViewer from './viewers/fee-subtype-viewer'
+import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 
 export default {
   name: 'fees-table',
   components: {
     FeeTypeViewer,
     FeeSubtypeViewer,
+    SkeletonLoaderTableBody,
   },
 
   props: {
@@ -98,6 +104,10 @@ export default {
     assetCode: {
       type: String,
       default: '',
+    },
+    isLoaded: {
+      type: Boolean,
+      require: true,
     },
   },
 }

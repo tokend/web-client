@@ -1,17 +1,16 @@
 <template>
   <div class="issuance-explorer">
-    <template v-if="isLoaded">
-      <issuances-table :issuances="issuances" />
+    <template>
+      <issuances-table
+        :issuances="issuances"
+        :is-loaded="isLoaded"
+      />
     </template>
 
-    <template v-else-if="isLoadFailed">
+    <template v-if="isLoadFailed">
       <p class="issuance-explorer__error-msg">
         {{ 'issuance-explorer.load-failed-msg' | globalize }}
       </p>
-    </template>
-
-    <template v-else>
-      <load-spinner message-id="issuance-explorer.loading-msg" />
     </template>
 
     <div class="issuance-explorer__collection-loader-wrp">
@@ -27,7 +26,6 @@
 
 <script>
 import CollectionLoader from '@/vue/common/CollectionLoader'
-import LoadSpinner from '@/vue/common/Loader'
 
 import IssuancesTable from './components/issuances-table'
 
@@ -43,7 +41,6 @@ const EVENTS = {
 export default {
   name: 'issuance-explorer-module',
   components: {
-    LoadSpinner,
     IssuancesTable,
     CollectionLoader,
   },

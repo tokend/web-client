@@ -1,13 +1,21 @@
 <template>
   <div class="fees-page">
-    <template v-if="isLoaded && assets.length">
+    <template>
       <top-bar>
         <template slot="main">
           <div class="fees-page__filter">
-            <span class="fees-page__filter-prefix">
+            <span
+              v-if="isLoaded && assets.length"
+              class="fees-page__filter-prefix"
+            >
               {{ 'fees-page.asset-filter-prefix' | globalize }}
             </span>
+            <skeleton-loader
+              v-else
+              template="bigString"
+            />
             <select-field
+              v-if="isLoaded && assets.length"
               :value="asset.code"
               @input="setAssetByCode"
               class="app__select app__select--no-border"
@@ -20,6 +28,10 @@
                 {{ asset.nameAndCode }}
               </option>
             </select-field>
+            <skeleton-loader
+              v-else
+              template="bigString"
+            />
           </div>
         </template>
       </top-bar>
@@ -31,7 +43,7 @@
       />
     </template>
 
-    <template v-else-if="isLoaded">
+    <template v-if="isLoaded && !assets.length">
       <no-data-message
         icon-name="trending-up"
         :title="'fees-page.no-balances-title' | globalize"
@@ -41,11 +53,7 @@
       />
     </template>
 
-    <template v-else-if="!isLoadingFailed">
-      <loader message-id="fees-page.balances-loading-msg" />
-    </template>
-
-    <template v-else>
+    <template v-if="isLoadingFailed">
       <p>
         {{ 'fees-page.balances-loading-error-msg' | globalize }}
       </p>
@@ -56,7 +64,6 @@
 <script>
 import SelectField from '@/vue/fields/SelectField'
 import TopBar from '@/vue/common/TopBar'
-import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import { mapGetters, mapActions } from 'vuex'
@@ -65,15 +72,16 @@ import { vuexTypes } from '@/vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { FeesModule } from '@/vue/modules/fees/module'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
+import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
 
 export default {
   name: 'fees-page',
   components: {
     SelectField,
-    Loader,
     TopBar,
     NoDataMessage,
     SubmoduleImporter,
+    SkeletonLoader,
   },
 
   data: _ => ({
