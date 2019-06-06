@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
-## [Unreleased]
+## [1.8.0-rc.0] - 2019-06-06
 #### Fixed
 - Disabled state for amount input field
 - Minimum & maximum normalization for input field
@@ -24,6 +24,7 @@ for further information about branching and tagging conventions.
 #### Changed
 - Now loading private document URL in file field
 - Updated package.json packages
+- Now using @tokend/js-sdk@1.8.0-rc.0
 
 ## [1.8.0-x.3] - 2019-06-05
 
@@ -687,7 +688,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.8.0-x.3...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.8.0-rc.0...HEAD
+[1.8.0-rc.0]: https://github.com/tokend/web-client/compare/1.8.0-x.3...1.8.0-rc.0
 [1.8.0-x.3]: https://github.com/tokend/web-client/compare/1.8.0-x.2...1.8.0-x.3
 [1.8.0-x.2]: https://github.com/tokend/web-client/compare/1.8.0-x.1...1.8.0-x.2
 [1.8.0-x.1]: https://github.com/tokend/web-client/compare/1.8.0-x.0...1.8.0-x.1
