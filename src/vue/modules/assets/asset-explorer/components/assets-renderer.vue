@@ -20,6 +20,7 @@
 
           <asset-attributes-viewer
             :asset="selectedAsset"
+            :balance="selectedBalance"
             :kyc-required-asset-type="kycRequiredAssetType"
             :security-asset-type="securityAssetType"
           />
@@ -148,6 +149,12 @@ export default {
       kycRequiredAssetType: types.kycRequiredAssetType,
       securityAssetType: types.securityAssetType,
     }),
+
+    selectedBalance (asset) {
+      const record = this.accountBalances
+        .find(item => item.asset.code === this.selectedAsset.code)
+      return record ? record.balance : ''
+    },
   },
 
   async created () {
