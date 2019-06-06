@@ -20,8 +20,8 @@
           <asset-attributes-viewer
             :asset="selectedBalance.asset"
             :balance="selectedBalance.balance"
-            :kyc-required-asset-type="kycRequiredAssetType"
-            :security-asset-type="securityAssetType"
+            :kyc-required-asset-type="kvAssetTypeKycRequired"
+            :security-asset-type="kvAssetTypeSecurity"
           />
 
           <button
