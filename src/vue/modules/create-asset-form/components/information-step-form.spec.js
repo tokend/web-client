@@ -27,7 +27,7 @@ describe('Information step form', () => {
 
     const expectedResults = {
       name: ['required', 'maxLength'],
-      code: ['required', 'maxLength'],
+      code: ['required', 'assetCode'],
       maxIssuanceAmount: ['required', 'amountRange'],
       assetType: ['required'],
     }

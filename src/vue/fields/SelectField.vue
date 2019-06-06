@@ -157,7 +157,7 @@ export default {
   background: none;
   border: none;
   padding: $field-input-padding;
-  padding-right: 3.2rem;
+  padding-right: 2.4rem;
   height: 4rem;
 
   @include material-border(

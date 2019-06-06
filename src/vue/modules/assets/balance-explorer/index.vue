@@ -8,7 +8,7 @@
           </template>
 
           <update-asset-form-module
-            :asset-code="selectedAsset.code"
+            :asset-code="selectedBalance.asset.code"
             @close="isDrawerShown = false"
           />
         </template>
@@ -18,13 +18,14 @@
             {{ 'assets.details-drawer-title' | globalize }}
           </template>
           <asset-attributes-viewer
-            :asset="selectedAsset"
+            :asset="selectedBalance.asset"
+            :balance="selectedBalance.balance"
             :kyc-required-asset-type="kycRequiredAssetType"
             :security-asset-type="securityAssetType"
           />
 
           <button
-            v-if="selectedAsset.owner === accountId"
+            v-if="selectedBalance.asset.owner === accountId"
             v-ripple
             class="app__button-raised balance-explorer__update-btn"
             @click="isUpdateMode = true"
@@ -38,23 +39,24 @@
         <div
           class="balance-explorer__asset-list"
         >
-          <template v-for="asset in assets">
+          <template v-for="item in accountBalances">
             <card-viewer
-              :asset="asset"
-              :key="asset.code"
-              @click="selectAsset(asset)"
+              :asset="item.asset"
+              :balance="item.balance"
+              :key="item.id"
+              @click="selectBalance(item)"
             />
           </template>
           <template v-for="index in itemsPerSkeletonLoader">
             <balance-skeleton-loader
-              v-if="!isLoaded && !assets.length"
+              v-if="!isLoaded && !accountBalances.length"
               :key="index"
             />
           </template>
         </div>
 
         <no-data-message
-          v-if="isLoaded && !assets.length"
+          v-if="isLoaded && !accountBalances.length"
           icon-name="trending-up"
           :title="'assets.no-balances-title' | globalize"
           :message="'assets.no-balances-msg' | globalize"
@@ -107,13 +109,15 @@ export default {
     isLoadFailed: false,
     isDrawerShown: false,
     isUpdateMode: false,
-    selectedAsset: {},
+    selectedBalance: {
+      asset: {},
+    },
     itemsPerSkeletonLoader: 3,
   }),
 
   computed: {
     ...mapGetters({
-      assets: vuexTypes.balancesAssets,
+      accountBalances: vuexTypes.accountBalances,
       accountId: vuexTypes.accountId,
     }),
     ...mapGetters('balance-explorer', {
@@ -147,8 +151,8 @@ export default {
       }
     },
 
-    selectAsset (asset) {
-      this.selectedAsset = asset
+    selectBalance (balance) {
+      this.selectedBalance = balance
       this.isUpdateMode = false
       this.isDrawerShown = true
     },

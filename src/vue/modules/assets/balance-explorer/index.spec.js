@@ -23,7 +23,7 @@ describe('Balance explorer module', () => {
     sandbox = sinon.createSandbox()
     store = new Vuex.Store({
       getters: {
-        [vuexTypes.balancesAssets]: _ => [],
+        [vuexTypes.accountBalances]: _ => [],
       },
       modules: {
         'balance-explorer': balanceExplorerModule,
@@ -87,8 +87,8 @@ describe('Balance explorer module', () => {
         })
       })
 
-      describe('selectAsset', () => {
-        it('sets selectedAsset property to passed param, isUpdateMode property to false, and isDrawerShown property to true', () => {
+      describe('selectBalance', () => {
+        it('sets selectedBalance property to passed param, isUpdateMode property to false, and isDrawerShown property to true', () => {
           const asset = new AssetRecord({ id: 'USD' }, [{
             asset: { code: 'USD' },
             balance: '1.000000',
@@ -100,9 +100,9 @@ describe('Balance explorer module', () => {
             isDrawerShown: false,
           })
 
-          wrapper.vm.selectAsset(asset)
+          wrapper.vm.selectBalance({ asset })
 
-          expect(wrapper.vm.selectedAsset).to.deep.equal(asset)
+          expect(wrapper.vm.selectedBalance).to.deep.equal({ asset })
           expect(wrapper.vm.isUpdateMode).to.be.false
           expect(wrapper.vm.isDrawerShown).to.be.true
         })

@@ -20,6 +20,7 @@
 
           <asset-attributes-viewer
             :asset="selectedAsset"
+            :balance="selectedBalance"
             :kyc-required-asset-type="kycRequiredAssetType"
             :security-asset-type="securityAssetType"
           />
@@ -48,6 +49,7 @@
           <template v-for="asset in assets">
             <card-viewer
               :asset="asset"
+              :balance="getAssetBalance(asset)"
               :key="asset.code"
               @click="selectAsset(asset)"
             />
@@ -141,11 +143,18 @@ export default {
   computed: {
     ...mapGetters({
       assets: vuexTypes.assets,
+      accountBalances: vuexTypes.accountBalances,
     }),
     ...mapGetters('asset-explorer', {
       kycRequiredAssetType: types.kycRequiredAssetType,
       securityAssetType: types.securityAssetType,
     }),
+
+    selectedBalance (asset) {
+      const record = this.accountBalances
+        .find(item => item.asset.code === this.selectedAsset.code)
+      return record ? record.balance : ''
+    },
   },
 
   async created () {
@@ -167,6 +176,12 @@ export default {
       this.selectedAsset = asset
       this.isUpdateMode = false
       this.isDrawerShown = true
+    },
+
+    getAssetBalance (asset) {
+      const balanceRecord = this.accountBalances
+        .find(b => b.asset.code === asset.code)
+      return balanceRecord ? balanceRecord.balance : ''
     },
   },
 }

@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [1.8.0-rc.0] - 2019-06-06
+#### Fixed
+- Disabled state for amount input field
+- Minimum & maximum normalization for input field
+- Displaying balance on assets page
+- Displaying no data row on fees table
+- Hiding of "My sales" tab for non-corporate users
+- Selecting asset on deposit form
+- Displaying balances on assets page
+
+### "Under the hood" changes
+#### Added
+- Asset code validator
+
+#### Changed
+- Now loading private document URL in file field
+- Updated package.json packages
+- Now using @tokend/js-sdk@1.8.0-rc.0
+
+## [1.8.0-x.3] - 2019-06-05
+
+## [1.8.0-x.2] - 2019-06-05
+#### Fixed
+- Bug with investing in sale
+
 ## [1.8.0-x.1] - 2019-06-05
 #### Added
 - Skeleton loading
@@ -57,7 +82,7 @@ for further information about branching and tagging conventions.
 - Translations on sale details drawer
 - A bug when "My Sales" tab shown for non-corporate accounts
 
-### "Under the hood changes
+### "Under the hood" changes
 #### Added
 - Tooltip directive
 - Assets vuex module for loading and storing all the assets
@@ -362,12 +387,12 @@ for further information about branching and tagging conventions.
 - Displaying incoming withdrawal requests (Loyalty)
 
 ## [1.5.0] - 2019-04-19
-### "Under the hood changes"
+### "Under the hood" changes
 #### Changed
 - Now using @tokend/js-sdk@1.5.0
 
 ## [1.5.0-rc.3] - 2019-04-19
-### "Under the hood changes"
+### "Under the hood" changes
 #### Changed
 - Now using @tokend/js-sdk@1.5.0-rc.1
 
@@ -663,7 +688,10 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.8.0-x.1...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.8.0-rc.0...HEAD
+[1.8.0-rc.0]: https://github.com/tokend/web-client/compare/1.8.0-x.3...1.8.0-rc.0
+[1.8.0-x.3]: https://github.com/tokend/web-client/compare/1.8.0-x.2...1.8.0-x.3
+[1.8.0-x.2]: https://github.com/tokend/web-client/compare/1.8.0-x.1...1.8.0-x.2
 [1.8.0-x.1]: https://github.com/tokend/web-client/compare/1.8.0-x.0...1.8.0-x.1
 [1.8.0-x.0]: https://github.com/tokend/web-client/compare/1.7.0...1.8.0-x.0
 [1.7.0]: https://github.com/tokend/web-client/compare/1.7.0-rc.4...1.7.0
