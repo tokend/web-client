@@ -10,11 +10,18 @@
             {{ 'op-pages.filters-prefix' | globalize }}
           </span>
           <select-field
-            v-model="asset"
-            :values="assets"
-            key-as-value-text="nameAndCode"
+            :value="asset.code"
+            @input="setAssetByCode"
             class="app__select app__select--no-border"
-          />
+          >
+            <option
+              v-for="asset in assets"
+              :key="asset.code"
+              :value="asset.code"
+            >
+              {{ asset.nameAndCode }}
+            </option>
+          </select-field>
         </div>
       </template>
     </top-bar>
@@ -23,7 +30,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 
 import TopBar from '@/vue/common/TopBar'
 import SelectField from '@/vue/fields/SelectField'
@@ -45,9 +52,8 @@ export default {
     EVENTS,
   }),
   computed: {
-    ...mapGetters('shares-top-bar', {
-      balances: types.balances,
-      assets: types.assets,
+    ...mapGetters({
+      assets: vuexTypes.ownedAssets,
     }),
   },
   watch: {
@@ -62,16 +68,19 @@ export default {
     },
   },
   async created () {
-    await this.loadBalances()
-    await this.loadAssets()
+    await this.loadAccountBalancesDetails()
     this.setDefaultAsset()
     this.isInitialized = true
   },
   methods: {
-    ...mapActions('shares-top-bar', {
-      loadBalances: types.LOAD_BALANCES,
-      loadAssets: types.LOAD_ASSETS,
+    ...mapActions({
+      loadAccountBalancesDetails: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
+
+    setAssetByCode (code) {
+      this.asset = this.assets.find(item => item.code === code)
+    },
+
     setDefaultAsset () {
       this.asset = this.assets
         .find(item => item.code === this.$route.query.asset) ||
