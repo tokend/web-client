@@ -403,17 +403,17 @@ export default {
           {
             path: '/polls/all',
             name: vueRoutes.tradeExchange.name,
-            component: _ => import('@/vue/pages/PollsRequests'),
+            component: _ => import('@/vue/pages/pools/PollsRequests'),
           },
           {
             path: '/pools/my',
             name: vueRoutes.tradeUserOffers.name,
-            component: _ => import('@/vue/pages/PollsRequests'),
+            component: _ => import('@/vue/pages/pools/PollsRequests'),
           },
           {
             path: '/pools/requests',
             name: vueRoutes.tradeUserOffers.name,
-            component: _ => import('@/vue/pages/PollsRequests'),
+            component: _ => import('@/vue/pages/pools/PollsRequests'),
           },
         ],
       },
