@@ -10,9 +10,11 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Asset code validator
+- Scrolling to top of the page after sending KYC corporate request
 
 #### Changed
 - Now loading private document URL in file field
+- Now loading KYC latest data from account endpoint
 
 #### Fixed
 - Disabled state for amount input field
