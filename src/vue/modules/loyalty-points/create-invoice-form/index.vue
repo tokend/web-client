@@ -1,5 +1,8 @@
 <template>
-  <div v-if="isLoaded">
+  <div
+    v-if="isLoaded"
+    class="create-invoice-form-module"
+  >
     <template v-if="assetPairs.length">
       <invoice-form
         v-if="!isTransactionSent"
@@ -14,6 +17,10 @@
         v-else
         :invoice="invoice"
         @close="$emit(EVENTS.close)"
+      />
+
+      <balances-viewer
+        class="create-invoice-form-module__balances"
       />
     </template>
 
@@ -40,6 +47,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import InvoiceForm from './components/invoice-form'
 import InvoiceConfirmation from './components/invoice-confirmation'
+import BalancesViewer from './components/balances-viewer'
 
 import { config } from './_config'
 
@@ -60,6 +68,7 @@ export default {
     LoadSpinner,
     InvoiceForm,
     InvoiceConfirmation,
+    BalancesViewer,
   },
   props: {
     horizonUrl: {
@@ -119,3 +128,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.create-invoice-form-module__balances {
+  margin-top: 4rem;
+}
+</style>

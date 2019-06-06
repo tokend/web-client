@@ -33,7 +33,10 @@
         :asset-code="defaultAssetCode"
       />
     </div>
-    <drawer :is-shown.sync="isInvoiceRequestFormShown">
+    <drawer
+      class="loyalty-points-invoices-module__drawer"
+      :is-shown.sync="isInvoiceRequestFormShown"
+    >
       <template slot="heading">
         {{ 'loyalty-points.create-invoice-form-title' | globalize }}
       </template>
@@ -176,5 +179,9 @@ export default {
 
 .loyalty-points-invoices-module__history-title {
   margin-bottom: 0.8rem;
+}
+
+.loyalty-points-invoices-module__drawer > .drawer__pane {
+  width: 100%;
 }
 </style>

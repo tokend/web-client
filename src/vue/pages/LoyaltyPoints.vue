@@ -45,6 +45,7 @@
     </drawer>
 
     <drawer
+      class="loyalty-points-page__drawer"
       v-if="getModule().canRenderSubmodule(CreateInvoiceFormModule)"
       :is-shown.sync="isInvoiceRequestFormShown"
     >
@@ -92,4 +93,7 @@ export default {
 </script>
 
 <style lang="scss">
+.loyalty-points-page__drawer > .drawer__pane {
+  width: 100%;
+}
 </style>
