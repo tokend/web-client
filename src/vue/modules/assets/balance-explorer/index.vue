@@ -8,7 +8,7 @@
           </template>
 
           <update-asset-form-module
-            :asset-code="selectedAsset.code"
+            :asset-code="selectedBalance.asset.code"
             @close="isDrawerShown = false"
           />
         </template>
@@ -18,13 +18,14 @@
             {{ 'assets.details-drawer-title' | globalize }}
           </template>
           <asset-attributes-viewer
-            :asset="selectedAsset"
+            :asset="selectedBalance.asset"
+            :balance="selectedBalance.balance"
             :kyc-required-asset-type="kycRequiredAssetType"
             :security-asset-type="securityAssetType"
           />
 
           <button
-            v-if="selectedAsset.owner === accountId"
+            v-if="selectedBalance.asset.owner === accountId"
             v-ripple
             class="app__button-raised balance-explorer__update-btn"
             @click="isUpdateMode = true"
@@ -43,7 +44,7 @@
               :asset="item.asset"
               :balance="item.balance"
               :key="item.id"
-              @click="selectAsset(asset)"
+              @click="selectBalance(item)"
             />
           </template>
           <template v-for="index in itemsPerSkeletonLoader">
@@ -108,7 +109,9 @@ export default {
     isLoadFailed: false,
     isDrawerShown: false,
     isUpdateMode: false,
-    selectedAsset: {},
+    selectedBalance: {
+      asset: {},
+    },
     itemsPerSkeletonLoader: 3,
   }),
 
@@ -148,8 +151,8 @@ export default {
       }
     },
 
-    selectAsset (asset) {
-      this.selectedAsset = asset
+    selectBalance (balance) {
+      this.selectedBalance = balance
       this.isUpdateMode = false
       this.isDrawerShown = true
     },
