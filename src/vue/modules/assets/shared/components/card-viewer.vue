@@ -39,9 +39,6 @@ import LogoViewer from './logo-viewer'
 
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
-import { mapGetters } from 'vuex'
-import { vuexTypes } from '@/vuex'
-
 export default {
   name: 'card-viewer',
   components: { LogoViewer },
@@ -50,19 +47,17 @@ export default {
       type: AssetRecord,
       required: true,
     },
+    balance: {
+      type: String,
+      default: '',
+    },
   },
   computed: {
-    ...mapGetters({
-      getAssetByCode: vuexTypes.assetByCode,
-    }),
     assetBalance () {
       return {
         value: this.balance,
         currency: this.asset.code,
       }
-    },
-    balance () {
-      return this.getAssetByCode(this.asset.code).balance
     },
   },
 }

@@ -18,7 +18,7 @@
           v-model.trim="form.price"
           name="your-trade-offer-price"
           type="number"
-          :min="config.MIN_AMOUNT"
+          :min="0"
           :max="config.MAX_AMOUNT"
           :step="config.MIN_AMOUNT"
           :label="
@@ -46,7 +46,7 @@
           v-model.trim="form.baseAmount"
           name="your-trade-offer-base-amount"
           type="number"
-          :min="config.MIN_AMOUNT"
+          :min="0"
           :max="config.MAX_AMOUNT"
           :step="config.MIN_AMOUNT"
           :label="'your-trade-offer-form.base-amount-lbl' | globalize({

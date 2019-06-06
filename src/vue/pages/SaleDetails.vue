@@ -11,7 +11,10 @@
             <span>{{ 'sale-details.investable-sales-tab' | globalize }}</span>
           </router-link>
 
-          <router-link :to="vueRoutes.userOwnedSales">
+          <router-link
+            v-if="isAccountCorporate"
+            :to="vueRoutes.userOwnedSales"
+          >
             <span>{{ 'sales.my-sales' | globalize }}</span>
           </router-link>
 
@@ -71,6 +74,9 @@ import { errors } from '@/js/errors'
 
 import { vueRoutes } from '@/vue-router/routes'
 
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
+
 export default {
   name: 'sale-details',
   components: {
@@ -89,6 +95,12 @@ export default {
     isLoadingFailed: false,
     vueRoutes,
   }),
+
+  computed: {
+    ...mapGetters({
+      isAccountCorporate: vuexTypes.isAccountCorporate,
+    }),
+  },
 
   async created () {
     await this.loadSale(this.id)

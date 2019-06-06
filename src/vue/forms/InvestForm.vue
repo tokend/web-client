@@ -22,7 +22,8 @@
               :label="'invest-form.asset-lbl' | globalize"
               name="invest-asset"
               @blur="touchField('form.asset')"
-              :disabled="view.mode === VIEW_MODES.confirm || !canUpdateOffer"
+              :disabled="view.mode === VIEW_MODES.confirm ||
+                !canUpdateOffer || formMixin.isDisabled"
             >
               <option
                 v-for="asset in quoteAssetListValues"
@@ -47,8 +48,8 @@
             <input-field
               white-autofill
               type="number"
-              :min="MIN_AMOUNT"
-              :max="availableAmount.value"
+              :min="0"
+              :max="availableBalance.value"
               :step="MIN_AMOUNT"
               v-model="form.amount"
               @input="touchField('form.amount')"
@@ -67,7 +68,8 @@
                   }
                 }
               )"
-              :disabled="view.mode === VIEW_MODES.confirm || !canUpdateOffer"
+              :disabled="view.mode === VIEW_MODES.confirm ||
+                !canUpdateOffer || formMixin.isDisabled"
             />
 
             <p class="app__form-field-description">
@@ -110,19 +112,19 @@
             v-if="isFeesLoaded"
           >
             <fees-renderer :fees-collection="fees" />
-
-            <form-confirmation
-              v-if="view.mode === VIEW_MODES.confirm"
-              :message="'invest-form.recheck-form-msg' | globalize"
-              :ok-button="'invest-form.invest-btn' | globalize"
-              :is-pending="isSubmitting"
-              @cancel="updateView(VIEW_MODES.submit)"
-              @ok="submit"
-            />
           </div>
         </transition>
 
         <div class="app__form-actions">
+          <form-confirmation
+            v-if="view.mode === VIEW_MODES.confirm"
+            :message="'invest-form.recheck-form-msg' | globalize"
+            :ok-button="'invest-form.invest-btn' | globalize"
+            :is-pending="isSubmitting"
+            @cancel="updateView(VIEW_MODES.submit)"
+            @ok="submit"
+          />
+
           <template
             v-if="currentInvestment.id &&
               view.mode === VIEW_MODES.submit">
@@ -309,7 +311,7 @@ export default {
       if (this.form.asset.code === this.sale.defaultQuoteAsset) {
         return this.form.amount
       } else {
-        return MathUtil.multiply(this.form.amount, this.assetPairPrice)
+        return MathUtil.multiply(this.form.amount || '0', this.assetPairPrice)
       }
     },
 
@@ -340,7 +342,6 @@ export default {
     availableBalance () {
       const quoteBalance = this.quoteAssetBalances
         .find(balance => balance.asset.code === this.form.asset.code)
-
       let availableBalance
       if (this.currentInvestment.quoteAmount) {
         const convertedAmount = MathUtil.add(

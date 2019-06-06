@@ -29,7 +29,7 @@
         slot="extra"
       >
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(WithdrawalFiatModule)">
+        <template v-if="getModule().canRenderSubmodule(WithdrawalFiatModule) && asset.isFiat && asset.isWithdrawable">
           <button
             v-ripple
             class="app__button-raised movements-top-bar-reit__actions-btn"
@@ -45,7 +45,9 @@
         </template>
 
         <template
-          v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)"
+          v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)
+            && asset.isCoinpayments
+            && asset.isWithdrawable"
         >
           <button
             v-ripple
@@ -62,7 +64,7 @@
         </template>
 
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(DepositFiatModule)">
+        <template v-if="getModule().canRenderSubmodule(DepositFiatModule) && asset.isFiat && asset.isDepositable">
           <button
             v-ripple
             class="app__button-raised movements-top-bar-reit__actions-btn"
@@ -77,7 +79,7 @@
           </button>
         </template>
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(CoinpaymentsDepositModule)">
+        <template v-if="getModule().canRenderSubmodule(CoinpaymentsDepositModule) && asset.isCoinpayments">
           <button
             v-ripple
             class="app__button-raised movements-top-bar-reit__actions-btn"
@@ -117,7 +119,9 @@
         </template>
 
         <template
-          v-if="getModule().canRenderSubmodule(RedeemFormModule)"
+          v-if="getModule().canRenderSubmodule(RedeemFormModule)
+            && asset.isBond
+            && !isOwnedAsset"
         >
           <button
             v-ripple
