@@ -21,6 +21,7 @@ for further information about branching and tagging conventions.
 - Displaying no data row on fees table
 - Displaying "My sales" tab for non-corporate users
 - Selecting asset on deposit form 
+- Displaying balances on assets page
 
 ## [1.8.0-x.3] - 2019-06-05
 
