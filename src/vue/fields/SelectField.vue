@@ -155,6 +155,12 @@ export default {
     KEY_CODES,
   }),
 
+  watch: {
+    value (value) {
+      this.selected = value
+      this.highlighten = value
+    },
+  },
   created () {
     this.highlighten = this.value
     this.selected = this.value

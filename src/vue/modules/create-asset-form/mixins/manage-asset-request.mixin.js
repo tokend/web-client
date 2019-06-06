@@ -43,6 +43,8 @@ export default {
         policies: this.informationStepForm.policies,
         creatorDetails: {
           name: this.informationStepForm.name,
+          cornType: this.informationStepForm.cornType,
+          cornClass: this.informationStepForm.cornClass,
           logo: logo ? logo.getDetailsForSave() : EMPTY_DOCUMENT,
           terms: terms ? terms.getDetailsForSave() : EMPTY_DOCUMENT,
         },

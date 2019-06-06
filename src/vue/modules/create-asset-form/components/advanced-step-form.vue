@@ -5,82 +5,6 @@
   >
     <div class="app__form-row">
       <div class="app__form-field">
-        <tick-field
-          class="advanced-step-form__pre-issuance-enablement-tick-field"
-          v-model="form.isPreissuanceDisabled"
-          :disabled="isDisabled"
-        >
-          {{ 'create-asset-form.additional-issuance-check' | globalize }}
-        </tick-field>
-        <router-link
-          class="advanced-step-form__pre-issuance-guide-link"
-          :to="vueRoutes.preIssuanceGuide"
-          target="_blank"
-        >
-          {{ 'create-asset-form.pre-issuance-guide-link' | globalize }}
-          <i
-            class="mdi mdi-launch
-            advanced-step-form__pre-issuance-guide-link-launch-icon"
-          />
-        </router-link>
-      </div>
-    </div>
-
-    <template v-if="!form.isPreissuanceDisabled">
-      <div class="app__form-row">
-        <div class="app__form-field">
-          <div class="advanced-step-form__pre-issued-asset-signer-wrp">
-            <input-field
-              white-autofill
-              v-model="form.preIssuanceAssetSigner"
-              @blur="touchField('form.preIssuanceAssetSigner')"
-              name="create-asset-pre-issuance-asset-signer"
-              :label="'create-asset-form.pre-issuance-signer-lbl' | globalize"
-              :error-message="getFieldErrorMessage(
-                'form.preIssuanceAssetSigner',
-              )"
-              :disabled="isDisabled"
-            />
-            <button
-              v-ripple
-              type="button"
-              class="app__button-flat advanced-step-form__insert-account-id-btn"
-              :disabled="isDisabled"
-              @click="form.preIssuanceAssetSigner = mainSignerAccountId"
-            >
-              {{ 'create-asset-form.use-my-account-id-btn' | globalize }}
-            </button>
-          </div>
-
-          <vue-markdown
-            v-if="form.preIssuanceAssetSigner === mainSignerAccountId"
-            class="advanced-step-form__pre-issuance-disclaimer"
-            :source="'create-asset-form.pre-issuance-disclaimer' | globalize"
-          />
-        </div>
-      </div>
-
-      <div class="app__form-row">
-        <div class="app__form-field">
-          <input-field
-            white-autofill
-            type="number"
-            v-model="form.initialPreissuedAmount"
-            @blur="touchField('form.initialPreissuedAmount')"
-            name="create-asset-initial-preissued-amount"
-            :label="'create-asset-form.preissued-amount-lbl' | globalize"
-            :error-message="getFieldErrorMessage(
-              'form.initialPreissuedAmount',
-              { from: MIN_AMOUNT, to: maxIssuanceAmount }
-            )"
-            :disabled="isDisabled"
-          />
-        </div>
-      </div>
-    </template>
-
-    <div class="app__form-row">
-      <div class="app__form-field">
         <file-field
           v-model="form.terms"
           name="create-asset-terms"
@@ -122,8 +46,6 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import VueMarkdown from 'vue-markdown'
-
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
@@ -141,7 +63,6 @@ const EVENTS = {
 
 export default {
   name: 'advanced-step-form',
-  components: { VueMarkdown },
   mixins: [FormMixin],
   props: {
     request: { type: CreateAssetRequest, default: null },
@@ -152,7 +73,7 @@ export default {
 
   data: _ => ({
     form: {
-      isPreissuanceDisabled: false,
+      isPreissuanceDisabled: true,
       preIssuanceAssetSigner: '',
       initialPreissuedAmount: '',
       terms: null,

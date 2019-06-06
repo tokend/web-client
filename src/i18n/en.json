@@ -577,6 +577,7 @@
       "photo-lbl": "Selfie with verification code",
       "name-lbl": "Name",
       "company-lbl": "Company",
+      "elevator-cod": "Elevator cod",
       "headquarters-lbl": "Headquarters",
       "industry-lbl": "Industry",
       "team-size-lbl": "Team size",
@@ -1098,7 +1099,13 @@
       "terms-lbl": "Upload terms",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
       "request-submitted-msg": "Your request was successfully processed. Please, wait for approval",
-      "pre-issuance-guide-link": "Learn more about pre-issuance"
+      "pre-issuance-guide-link": "Learn more about pre-issuance",
+      "corn-type": "Corn type",
+      "corn-class": "Corn class",
+      "wheat": "Wheat",
+      "corn": "Corn",
+      "corn-code": "Corn code",
+      "corn-name": "Corn name"
     },
     "update-asset-form": {
       "loading-msg": "Loading…",

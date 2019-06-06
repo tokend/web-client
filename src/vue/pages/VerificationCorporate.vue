@@ -39,6 +39,23 @@
 
       <div class="app__form-row">
         <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.elevatorCode"
+            @blur="touchField('form.elevatorCode')"
+            name="verification-corporate-elevator-cod"
+            :label="'verification-form.elevator-cod' | globalize"
+            :error-message="getFieldErrorMessage(
+              'form.elevatorCode',
+              { length: CODE_MAX_LENGTH }
+            )"
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
           <file-field
             v-model="form.avatar"
             name="verification-corporate-avatar"
@@ -154,7 +171,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
-import { required, validateUrl, integer, minValue } from '@validators'
+import { required, validateUrl, integer, minValue, maxLength } from '@validators'
 
 const MIN_TEAM_SIZE = 1
 
@@ -163,6 +180,7 @@ const EMPTY_DOCUMENT = {
   name: '',
   key: '',
 }
+const CODE_MAX_LENGTH = 4
 
 export default {
   name: 'verification-corporate-form',
@@ -172,6 +190,7 @@ export default {
     form: {
       name: '',
       company: '',
+      elevatorCode: '',
       avatar: null,
       headquarters: '',
       industry: '',
@@ -181,12 +200,17 @@ export default {
     isFormSubmitting: false,
     MIN_TEAM_SIZE,
     DOCUMENT_TYPES,
+    CODE_MAX_LENGTH,
   }),
 
   validations: {
     form: {
       name: { required },
       company: { required },
+      elevatorCode: {
+        required,
+        maxLength: maxLength(CODE_MAX_LENGTH),
+      },
       headquarters: { required },
       industry: { required },
       teamSize: {
@@ -261,6 +285,7 @@ export default {
         headquarters: this.form.headquarters,
         industry: this.form.industry,
         team_size: this.form.teamSize,
+        elevator_code: this.form.elevatorCode,
         homepage: this.form.website,
         documents: {
           [DOCUMENT_TYPES.kycAvatar]: this.form.avatar
@@ -281,6 +306,7 @@ export default {
         industry: kycData.industry,
         teamSize: kycData.team_size,
         website: kycData.homepage,
+        elevatorCode: kycData.elevator_code,
       }
     },
   },

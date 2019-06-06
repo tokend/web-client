@@ -6,91 +6,42 @@
   >
     <div class="app__form-row">
       <div class="app__form-field">
-        <input-field
-          white-autofill
-          v-model="form.name"
-          @blur="touchField('form.name')"
-          name="create-asset-name"
-          :label="'create-asset-form.name-lbl' | globalize"
-          :error-message="getFieldErrorMessage(
-            'form.name',
-            { length: NAME_MAX_LENGTH }
-          )"
-          :maxlength="NAME_MAX_LENGTH"
-        />
+        {{ 'create-asset-form.corn-name' | globalize }}: {{ form.name }}
       </div>
     </div>
-
     <div class="app__form-row">
       <div class="app__form-field">
-        <input-field
-          white-autofill
-          v-model="form.code"
-          @blur="touchField('form.code')"
-          name="create-asset-code"
-          :label="'create-asset-form.code-lbl' | globalize"
-          :error-message="getFieldErrorMessage(
-            'form.code',
-            { length: CODE_MAX_LENGTH }
-          )"
-          :maxlength="CODE_MAX_LENGTH"
-        />
+        {{ 'create-asset-form.corn-code' | globalize }}: {{ form.code }}
       </div>
     </div>
-
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <input-field
-          white-autofill
-          type="number"
-          v-model="form.maxIssuanceAmount"
-          @blur="touchField('form.maxIssuanceAmount')"
-          name="create-asset-max-issuance-amount"
-          :label="'create-asset-form.max-issuance-amount-lbl' | globalize"
-          :error-message="getFieldErrorMessage(
-            'form.maxIssuanceAmount',
-            { from: MIN_AMOUNT, to: MAX_AMOUNT }
-          )"
-        />
-      </div>
-    </div>
-
     <div class="app__form-row">
       <div class="app__form-field">
         <select-field
-          v-model="form.assetType"
-          name="create-asset-type"
+          v-model="form.cornType"
+          name="create-corn-types"
           key-as-value-text="labelTranslationId"
           :is-value-translatable="true"
-          :values="assetTypes"
-          :label="'create-asset-form.asset-type-lbl' | globalize"
-          @blur="touchField('form.assetType')"
+          :values="cornTypes"
+          :label="'create-asset-form.corn-type' | globalize"
+          @blur="touchField('form.cornType')"
           :error-message="getFieldErrorMessage(
-            'form.assetType',
+            'form.cornType',
           )"
         />
       </div>
     </div>
-
     <div class="app__form-row">
       <div class="app__form-field">
-        <tick-field
-          v-model="form.policies"
-          :cb-value="ASSET_POLICIES.transferable"
-        >
-          {{ 'create-asset-form.transferable-lbl' | globalize }}
-        </tick-field>
-      </div>
-    </div>
-
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <tick-field
-          v-model="form.policies"
-          :cb-value="ASSET_POLICIES.withdrawable"
-        >
-          {{ 'create-asset-form.withdrawable-lbl' | globalize }}
-        </tick-field>
+        <select-field
+          v-model="form.cornClass"
+          name="create-corn-class"
+          :values="cornClasses"
+          :label="'create-asset-form.corn-class' | globalize"
+          @blur="touchField('form.cornClass')"
+          :error-message="getFieldErrorMessage(
+            'form.cornClass',
+          )"
+        />
       </div>
     </div>
 
@@ -131,7 +82,10 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
-import { required, amountRange, maxLength } from '@validators'
+import { required } from '@validators'
+
+import { vuexTypes } from '@/vuex'
+import { mapGetters } from 'vuex'
 
 import config from '@/config'
 
@@ -141,6 +95,16 @@ const EVENTS = {
 
 const CODE_MAX_LENGTH = 16
 const NAME_MAX_LENGTH = 255
+
+const CORN_TYPE = {
+  corn: 'corn',
+  wheat: 'wheat',
+}
+
+const CORN_CLASS = {
+  [CORN_TYPE.corn]: ['1', '2'],
+  [CORN_TYPE.wheat]: ['1', '2', '3'],
+}
 
 export default {
   name: 'information-step-form',
@@ -155,10 +119,12 @@ export default {
     form: {
       name: '',
       code: '',
-      maxIssuanceAmount: '',
+      maxIssuanceAmount: config.MAX_AMOUNT,
       logo: null,
-      policies: 0,
+      policies: ASSET_POLICIES.transferable + ASSET_POLICIES.withdrawable,
       assetType: '',
+      cornType: '',
+      cornClass: '',
     },
     MIN_AMOUNT: config.MIN_AMOUNT,
     MAX_AMOUNT: config.MAX_AMOUNT,
@@ -171,19 +137,10 @@ export default {
   validations () {
     return {
       form: {
-        name: {
+        cornType: {
           required,
-          maxLength: maxLength(NAME_MAX_LENGTH),
         },
-        code: {
-          required,
-          maxLength: maxLength(CODE_MAX_LENGTH),
-        },
-        maxIssuanceAmount: {
-          required,
-          amountRange: amountRange(this.MIN_AMOUNT, this.MAX_AMOUNT),
-        },
-        assetType: {
+        cornClass: {
           required,
         },
       },
@@ -191,6 +148,9 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      kycLatestData: vuexTypes.kycLatestData,
+    }),
     assetTypes () {
       return [
         {
@@ -207,19 +167,55 @@ export default {
         },
       ]
     },
+    cornTypes () {
+      return [
+        {
+          labelTranslationId: 'create-asset-form.wheat',
+          value: CORN_TYPE.wheat,
+        },
+        {
+          labelTranslationId: 'create-asset-form.corn',
+          value: CORN_TYPE.corn,
+        },
+      ]
+    },
+    cornClasses () {
+      return CORN_CLASS[this.form.cornType.value]
+    },
+  },
+
+  watch: {
+    'form.cornType' () {
+      this.form.cornClass = this.cornClasses[0]
+      this.setCornTypeClass()
+    },
+    'form.cornClass' () {
+      this.setCornTypeClass()
+    },
   },
 
   created () {
     if (this.request) {
       this.populateForm()
+    } else {
+      this.form.assetType = this.assetTypes[1]
+      this.form.cornType = this.cornTypes[0]
+      this.setCornTypeClass()
     }
   },
-
   methods: {
+    setCornTypeClass () {
+      this.form.name = this.kycLatestData.elevator_code + '-' +
+        this.form.cornType.value + '-' + this.form.cornClass
+      this.form.code = this.kycLatestData.elevator_code +
+        this.form.cornType.value[0].toUpperCase() + this.form.cornClass
+    },
     populateForm () {
       this.form = {
         name: this.request.assetName,
         code: this.request.assetCode,
+        cornType: this.request.cornType,
+        cornClass: this.request.cornClass,
         assetType: this.assetTypes
           .find(item => item.value === this.request.assetType),
         maxIssuanceAmount: this.request.maxIssuanceAmount,

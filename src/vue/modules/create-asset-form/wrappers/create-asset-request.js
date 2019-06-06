@@ -5,6 +5,8 @@ export class CreateAssetRequest {
     this.assetCode = safeGet(record, 'requestDetails.asset')
     this.assetType = safeGet(record, 'requestDetails.type')
     this.assetName = safeGet(record, 'requestDetails.creatorDetails.name')
+    this.cornType = safeGet(record, 'requestDetails.creatorDetails.cornType')
+    this.cornClass = safeGet(record, 'requestDetails.creatorDetails.cornClass')
 
     this.initialPreissuedAmount = safeGet(
       record, 'requestDetails.initialPreissuedAmount'
