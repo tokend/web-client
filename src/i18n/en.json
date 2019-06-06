@@ -1870,6 +1870,7 @@
       "loading-error-msg": "There was an error while loading.",
       "no-assets-title": "No assets",
       "no-assets-msg": "There are no available assets",
+      "no-created-assets-msg": "You did not create any assets yet",
       "no-balances-title": "No balances",
       "no-balances-msg": "You do not have any balances yet",
       "list-item-balance-line": "Balance: {{value, money}}",

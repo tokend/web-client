@@ -68,8 +68,8 @@
         <no-data-message
           v-else
           icon-name="trending-up"
-          :title="'assets.no-balances-title' | globalize"
-          :message="'assets.no-balances-msg' | globalize"
+          :title="'assets.no-assets-title' | globalize"
+          :message="'assets.no-created-assets-msg' | globalize"
         />
       </div>
     </template>
