@@ -2,6 +2,7 @@ import config from '@/config'
 import { FileUtil } from '@/js/utils/file.util'
 import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
 import { api } from '@/api'
+
 /**
  * Wrapper to simplify work with documents
  */
