@@ -105,7 +105,8 @@
       "field-error_hardCapLessThanSoftCap": "Hard cap cannot be less than \"Soft cap\" value. Soft cap: {{softCap}}",
       "field-error_noMoreThanSaleCap": "Investing amount has exceeded the sale cap {{saleCap, money}}",
       "field-error_maxForIssuance": "Max amount for issuance: {{to, money}}",
-      "field-error_minForIssuance": "Min amount for issuance: {{from, money}}"
+      "field-error_minForIssuance": "Min amount for issuance: {{from, money}}",
+      "field-error_assetCode": "Asset code must contain maximum 16 symbols and consist of alphanumeric values (A-Z, a-z, 0-9)"
     },
     "errors": {
       "default": "Something bad happened. Please try again later",
