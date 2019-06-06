@@ -83,6 +83,7 @@ const getters = {
   account: 'account',
   accountId: 'accountId',
   accountBalances: 'accountBalances',
+  accountOwnedAssetsBalances: 'accountOwnedAssetsBalances',
   accountBalanceByCode: 'accountBalanceByCode',
   accountRoleId: 'accountRoleId',
   accountDepositAddresses: 'accountDepositAddresses',
