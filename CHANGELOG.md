@@ -8,20 +8,21 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
-#### Added
-- Asset code validator
-
-#### Changed
-- Now loading private document URL in file field
-
 #### Fixed
 - Disabled state for amount input field
 - Minimum & maximum normalization for input field
 - Displaying balance on assets page
 - Displaying no data row on fees table
-- Displaying "My sales" tab for non-corporate users
-- Selecting asset on deposit form 
+- Hiding of "My sales" tab for non-corporate users
+- Selecting asset on deposit form
 - Displaying balances on assets page
+
+### "Under the hood changes
+#### Added
+- Asset code validator
+
+#### Changed
+- Now loading private document URL in file field
 
 ## [1.8.0-x.3] - 2019-06-05
 
