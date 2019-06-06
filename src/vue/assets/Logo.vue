@@ -25,6 +25,7 @@ export default {
 
 <style lang="scss">
 .logotype img {
+  width: 9.5rem;
   max-height: 4.5rem;
 }
 </style>
