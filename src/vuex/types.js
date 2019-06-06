@@ -133,6 +133,7 @@ const getters = {
   transferableBalancesAssets: 'transferableBalancesAssets',
   withdrawableBalancesAssets: 'withdrawableBalancesAssets',
   statsQuoteAsset: 'statsQuoteAsset',
+  ownedAssets: 'ownedAssets',
 }
 
 export const vuexTypes = {
