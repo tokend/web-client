@@ -17,7 +17,7 @@ for further information about branching and tagging conventions.
 - Selecting asset on deposit form
 - Displaying balances on assets page
 
-### "Under the hood changes
+### "Under the hood" changes
 #### Added
 - Asset code validator
 
@@ -82,7 +82,7 @@ for further information about branching and tagging conventions.
 - Translations on sale details drawer
 - A bug when "My Sales" tab shown for non-corporate accounts
 
-### "Under the hood changes
+### "Under the hood" changes
 #### Added
 - Tooltip directive
 - Assets vuex module for loading and storing all the assets
@@ -387,12 +387,12 @@ for further information about branching and tagging conventions.
 - Displaying incoming withdrawal requests (Loyalty)
 
 ## [1.5.0] - 2019-04-19
-### "Under the hood changes"
+### "Under the hood" changes
 #### Changed
 - Now using @tokend/js-sdk@1.5.0
 
 ## [1.5.0-rc.3] - 2019-04-19
-### "Under the hood changes"
+### "Under the hood" changes
 #### Changed
 - Now using @tokend/js-sdk@1.5.0-rc.1
 
