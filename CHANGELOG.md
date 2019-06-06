@@ -10,6 +10,8 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Asset code validator
+- My assets explorer page
+- Register of shares page
 
 #### Changed
 - Now loading private document URL in file field
