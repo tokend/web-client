@@ -8,7 +8,7 @@
           </template>
 
           <update-asset-form-module
-            :asset-code="selectedAsset.code"
+            :asset-code="selectedBalance.asset.code"
             @close="isDrawerShown = false"
           />
         </template>
@@ -18,7 +18,8 @@
             {{ 'assets.details-drawer-title' | globalize }}
           </template>
           <asset-attributes-viewer
-            :asset="selectedAsset"
+            :asset="selectedBalance.asset"
+            :balance="selectedBalance.balance"
             :kyc-required-asset-type="kvAssetTypeKycRequired"
             :security-asset-type="kvAssetTypeSecurity"
           />
@@ -48,11 +49,18 @@
           v-if="assets.length"
           class="my-assets-explorer__asset-list"
         >
-          <template v-for="asset in assets">
+          <template v-for="item in accountOwnedAssetsBalances">
             <card-viewer
-              :asset="asset"
-              :key="asset.code"
-              @click="selectAsset(asset)"
+              :asset="item.asset"
+              :balance="item.balance"
+              :key="item.id"
+              @click="selectBalance(item)"
+            />
+          </template>
+          <template v-for="index in itemsPerSkeletonLoader">
+            <asset-skeleton-loader
+              v-if="!isLoaded && !accountOwnedAssetsBalances.length"
+              :key="index"
             />
           </template>
         </div>
@@ -85,11 +93,11 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import CardViewer from '../shared/components/card-viewer'
 import AssetAttributesViewer from '../shared/components/asset-attributes-viewer'
+import AssetSkeletonLoader from './components/asset-skeleton-loader'
 
 import UpdateAssetFormModule from '@modules/update-asset-form'
 
 import { mapActions, mapGetters } from 'vuex'
-import { types } from './store/types'
 import { vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -103,6 +111,7 @@ export default {
     CardViewer,
     AssetAttributesViewer,
     UpdateAssetFormModule,
+    AssetSkeletonLoader,
   },
   props: {
     defaultQuoteAsset: {
@@ -115,14 +124,21 @@ export default {
     isLoadFailed: false,
     isDrawerShown: false,
     isUpdateMode: false,
-    selectedAsset: {},
+    selectedBalance: {
+      asset: {},
+    },
+    itemsPerSkeletonLoader: 3,
     vueRoutes,
   }),
 
   computed: {
-    ...mapGetters('my-assets-explorer', {
-      assets: types.assets,
+    ...mapGetters({
+      assets: vuexTypes.balancesAssets,
+      ownedAssets: vuexTypes.ownedAssets,
+      accountBalances: vuexTypes.accountBalances,
+      accountOwnedAssetsBalances: vuexTypes.accountOwnedAssetsBalances,
     }),
+
     ...mapGetters([
       vuexTypes.accountId,
       vuexTypes.kvAssetTypeKycRequired,
@@ -135,14 +151,12 @@ export default {
   },
 
   methods: {
-    ...mapActions('my-assets-explorer', {
-      loadAccountOwnedAssets: types.LOAD_ACCOUNT_OWNED_ASSETS,
-      loadAccountBalances: types.LOAD_ACCOUNT_BALANCES,
+    ...mapActions({
+      loadAccountBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
 
     async load () {
       try {
-        await this.loadAccountOwnedAssets()
         await this.loadAccountBalances(this.defaultQuoteAsset)
         this.isLoaded = true
       } catch (e) {
@@ -151,8 +165,8 @@ export default {
       }
     },
 
-    selectAsset (asset) {
-      this.selectedAsset = asset
+    selectBalance (balance) {
+      this.selectedBalance = balance
       this.isUpdateMode = false
       this.isDrawerShown = true
     },
