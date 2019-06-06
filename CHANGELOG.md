@@ -9,21 +9,29 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Added
-- Asset code validator
 - Scrolling to top of the page after sending KYC corporate request
 
 #### Changed
-- Now loading private document URL in file field
 - Now loading KYC latest data from account endpoint
 
+## [1.8.0-rc.0] - 2019-06-06
 #### Fixed
 - Disabled state for amount input field
 - Minimum & maximum normalization for input field
 - Displaying balance on assets page
 - Displaying no data row on fees table
-- Displaying "My sales" tab for non-corporate users
-- Selecting asset on deposit form 
+- Hiding of "My sales" tab for non-corporate users
+- Selecting asset on deposit form
 - Displaying balances on assets page
+
+### "Under the hood changes
+#### Added
+- Asset code validator
+
+#### Changed
+- Now loading private document URL in file field
+- Updated package.json packages
+- Now using @tokend/js-sdk@1.8.0-rc.0
 
 ## [1.8.0-x.3] - 2019-06-05
 
@@ -687,7 +695,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.8.0-x.3...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.8.0-rc.0...HEAD
+[1.8.0-rc.0]: https://github.com/tokend/web-client/compare/1.8.0-x.3...1.8.0-rc.0
 [1.8.0-x.3]: https://github.com/tokend/web-client/compare/1.8.0-x.2...1.8.0-x.3
 [1.8.0-x.2]: https://github.com/tokend/web-client/compare/1.8.0-x.1...1.8.0-x.2
 [1.8.0-x.1]: https://github.com/tokend/web-client/compare/1.8.0-x.0...1.8.0-x.1
