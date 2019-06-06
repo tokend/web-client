@@ -62,7 +62,7 @@ export default {
   data: () => ({
     isLoaded: true,
     PollRequestsModule,
-    vueRoutes
+    vueRoutes,
   }),
   methods: {
     closeBuyOfferDrawer () {
