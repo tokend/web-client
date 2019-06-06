@@ -35,6 +35,7 @@ describe('Create issuance form', () => {
     let wrapper
 
     beforeEach(() => {
+      sandbox.stub(CreateIssuanceForm, 'created')
       wrapper = mount(CreateIssuanceForm, { localVue, store })
     })
 

@@ -261,7 +261,7 @@ export default {
   },
 
   async created () {
-    if (this.ownedAssets.length) {
+    if ((this.ownedAssets || []).length) {
       this.form.asset = this.ownedAssets[0]
     }
 

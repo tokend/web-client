@@ -13,10 +13,8 @@
           "firefox": "51",
           "safari": "10",
           "opera": "38",
-          "ios_saf": "10",
+          "ios": "10",
           "android": "67",
-          "and_chr": "71",
-          "and_ff": "64",
         },
         "modules": "cjs"
       }

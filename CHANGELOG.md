@@ -23,6 +23,7 @@ for further information about branching and tagging conventions.
 
 #### Changed
 - Now loading private document URL in file field
+- Updated package.json packages
 
 ## [1.8.0-x.3] - 2019-06-05
 
