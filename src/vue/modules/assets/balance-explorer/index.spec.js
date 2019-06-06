@@ -2,8 +2,6 @@ import BalanceExplorerModule from './index'
 
 import Vuex from 'vuex'
 
-import { balanceExplorerModule } from './store/index'
-
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
@@ -26,7 +24,6 @@ describe('Balance explorer module', () => {
         [vuexTypes.accountBalances]: _ => [],
       },
       modules: {
-        'balance-explorer': balanceExplorerModule,
         accountId: 'SOME_ACCOUNT_ID',
       },
     })
