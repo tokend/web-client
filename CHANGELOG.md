@@ -11,6 +11,17 @@ for further information about branching and tagging conventions.
 #### Added
 - Asset code validator
 
+#### Changed
+- Now loading private document URL in file field
+
+#### Fixed
+- Disabled state for amount input field
+- Minimum & maximum normalization for input field
+- Displaying balance on assets page
+- Displaying no data row on fees table
+- Displaying "My sales" tab for non-corporate users
+- Selecting asset on deposit form 
+
 ## [1.8.0-x.3] - 2019-06-05
 
 ## [1.8.0-x.2] - 2019-06-05

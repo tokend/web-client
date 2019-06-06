@@ -38,23 +38,24 @@
         <div
           class="balance-explorer__asset-list"
         >
-          <template v-for="asset in assets">
+          <template v-for="item in accountBalances">
             <card-viewer
-              :asset="asset"
-              :key="asset.code"
+              :asset="item.asset"
+              :balance="item.balance"
+              :key="item.id"
               @click="selectAsset(asset)"
             />
           </template>
           <template v-for="index in itemsPerSkeletonLoader">
             <balance-skeleton-loader
-              v-if="!isLoaded && !assets.length"
+              v-if="!isLoaded && !accountBalances.length"
               :key="index"
             />
           </template>
         </div>
 
         <no-data-message
-          v-if="isLoaded && !assets.length"
+          v-if="isLoaded && !accountBalances.length"
           icon-name="trending-up"
           :title="'assets.no-balances-title' | globalize"
           :message="'assets.no-balances-msg' | globalize"
@@ -113,7 +114,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      assets: vuexTypes.balancesAssets,
+      accountBalances: vuexTypes.accountBalances,
       accountId: vuexTypes.accountId,
     }),
     ...mapGetters('balance-explorer', {

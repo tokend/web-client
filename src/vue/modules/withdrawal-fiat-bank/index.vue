@@ -41,7 +41,7 @@
         class="app__form-field"
         v-model.trim="form.amount"
         type="number"
-        :min="config.minAmount"
+        :min="0"
         :max="form.asset.balance.value"
         :step="config.minAmount"
         name="withdrawal-fiat-bank-amount"

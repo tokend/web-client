@@ -2,7 +2,6 @@
   <div class="sales-list">
     <div class="sales__state-filter">
       <select-field
-        :disabled="!isLoaded"
         v-model="filters.state"
         class="sales-asset-selector__field app__select app__select--no-border"
       >
