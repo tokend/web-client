@@ -50,6 +50,7 @@ import { BalancesPageModule } from '@/vue/pages/balances-page'
 import { AssetExplorerModule } from '@/vue/modules/assets/asset-explorer/module'
 import { BalanceExplorerModule } from '@/vue/modules/assets/balance-explorer/module'
 import { ShowNetworkPassphrasePseudoModule } from '@/modules-arch/pseudo-modules/show-network-passphrase-pseudo-module'
+import { VotingPageModule } from '@/vue/pages/voting-page-module'
 
 import { VerificationGeneralFormModule } from '@/vue/modules/verification/general-form/module'
 
@@ -383,6 +384,37 @@ export default {
         menuButtonMdiName: 'flash',
         submodules: [
           new FeesModule(),
+        ],
+      },
+    ),
+
+    new VotingPageModule(
+      {
+        routerEntry: {
+          path: '/voting',
+          name: vueRoutes.polls.name,
+          meta: { pageNameTranslationId: 'pages-names.polls' },
+        },
+        menuButtonTranslationId: 'pages-names.polls',
+        menuButtonMdiName: 'vote',
+        children: [
+          // Carefully: have some issues because of is-loading prop provided
+          // to children from parent component. Leave it lke that for now
+          {
+            path: '/polls/all',
+            name: vueRoutes.tradeExchange.name,
+            component: _ => import('@/vue/pages/PollsRequests'),
+          },
+          {
+            path: '/pools/my',
+            name: vueRoutes.tradeUserOffers.name,
+            component: _ => import('@/vue/pages/PollsRequests'),
+          },
+          {
+            path: '/pools/requests',
+            name: vueRoutes.tradeUserOffers.name,
+            component: _ => import('@/vue/pages/PollsRequests'),
+          },
         ],
       },
     ),
