@@ -51,6 +51,7 @@ import { AssetExplorerModule } from '@/vue/modules/assets/asset-explorer/module'
 import { BalanceExplorerModule } from '@/vue/modules/assets/balance-explorer/module'
 import { ShowNetworkPassphrasePseudoModule } from '@/modules-arch/pseudo-modules/show-network-passphrase-pseudo-module'
 import { VotingPageModule } from '@/vue/pages/voting-page-module'
+import { PollRequestsModule } from '@/vue/modules/requests/poll-requests/module'
 
 import { VerificationGeneralFormModule } from '@/vue/modules/verification/general-form/module'
 
@@ -401,20 +402,23 @@ export default {
           // Carefully: have some issues because of is-loading prop provided
           // to children from parent component. Leave it lke that for now
           {
-            path: '/polls/all',
+            path: '/voting/all',
             name: vueRoutes.tradeExchange.name,
             component: _ => import('@/vue/pages/pools/PollsRequests'),
           },
           {
-            path: '/pools/my',
+            path: '/voting/my',
             name: vueRoutes.tradeUserOffers.name,
             component: _ => import('@/vue/pages/pools/PollsRequests'),
           },
-          {
-            path: '/pools/requests',
-            name: vueRoutes.tradeUserOffers.name,
-            component: _ => import('@/vue/pages/pools/PollsRequests'),
-          },
+        ],
+        submodules: [
+          new PollRequestsModule({
+            routerEntry: {
+              path: '/voting/poll-requests',
+              name: vueRoutes.pollRequests.name,
+            },
+          }),
         ],
       },
     ),

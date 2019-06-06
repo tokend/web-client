@@ -23,14 +23,16 @@
               My polls
             </span>
           </router-link>
+          <!-- eslint-disable max-len -->
           <router-link
-            v-if="isLoaded"
-            to="/"
+            v-if="getModule().canRenderSubmodule(PollRequestsModule)"
+            :to="vueRoutes.pollsRequests"
           >
             <span>
               Polls requests
             </span>
           </router-link>
+          <!-- eslint-enable max-len -->
           <skeleton-loader
             v-else
             template="smallString"
@@ -44,6 +46,8 @@
 <script>
 import TopBar from '@/vue/common/TopBar'
 import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
+import { PollRequestsModule } from '@/vue/modules/requests/poll-requests/module'
+import { vueRoutes } from '@/vue-router/routes'
 
 const EVENTS = {
   reloadpollsData: 'reload-polls-data',
@@ -57,6 +61,8 @@ export default {
   },
   data: () => ({
     isLoaded: true,
+    PollRequestsModule,
+    vueRoutes
   }),
   methods: {
     closeBuyOfferDrawer () {

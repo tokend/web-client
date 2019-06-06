@@ -4,7 +4,7 @@ export const vueRoutes = Object.freeze({
   login: { name: 'login' },
   verify: { name: 'verify' },
   fees: { name: 'app.fees' },
-  movements: { name: 'app.movements' },
+  movements: { name: 'pollRequests' },
   loyaltyPoints: { name: 'app.loyalty-points' },
   loyaltyPointsInvoices: { name: 'app.loyalty-points-invoices' },
   loyaltyPointsStatistics: { name: 'app.loyalty-points-statistics' },
@@ -44,4 +44,5 @@ export const vueRoutes = Object.freeze({
   supportedBrowsers: { name: 'supported-browsers' },
   preIssuanceGuide: { name: 'pre-issuance-guide' },
   polls: { name: 'app.polls' },
+  pollRequests: { name: 'app.poll-requests' },
 })
