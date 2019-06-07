@@ -38,7 +38,7 @@ import { CreateAssetRequest } from '../wrappers/create-asset-request'
 import { mapGetters } from 'vuex'
 import { types } from '../store/types'
 
-import { config } from '../_config'
+import { documentsManager } from '@/api'
 
 const EVENTS = {
   updateClick: 'update-click',
@@ -69,7 +69,7 @@ export default {
     }),
 
     assetLogoUrl () {
-      return this.request.logoUrl(config().storageURL)
+      return documentsManager.getDocumentUrlByKey(this.request.logoKey)
     },
   },
 }

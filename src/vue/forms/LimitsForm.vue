@@ -5,13 +5,18 @@
         <select-field
           name="limits-op-type"
           v-model="selectedOpType"
-          :values="FORMATTED_STATS_OPERATION_TYPES"
-          key-as-value-text="label"
-          :is-value-translatable="true"
           :label="'limits-form.operation-type' | globalize"
-          :key="`limits-asset-selector-${selectedOpType.value}`"
+          :key="`limits-asset-selector-${selectedOpType}`"
           class="limits__assets-select app__select--no-border"
-        />
+        >
+          <option
+            v-for="type in FORMATTED_STATS_OPERATION_TYPES"
+            :key="type.value"
+            :value="type.value"
+          >
+            {{ type.label | globalize }}
+          </option>
+        </select-field>
       </div>
     </div>
     <div class="limits-form__table app__table">
@@ -192,7 +197,7 @@ import {
   maxDecimalPoints,
 } from '@validators'
 import { Bus } from '@/js/helpers/event-bus'
-import { Api } from '@/api'
+import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base, errors, STATS_OPERATION_TYPES } from '@tokend/js-sdk'
 import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes.const'
@@ -214,11 +219,11 @@ const FORMATTED_STATS_OPERATION_TYPES = [
     label: 'limits-form.op-type-deposit',
   },
   {
-    value: [STATS_OPERATION_TYPES.withdraw],
+    value: STATS_OPERATION_TYPES.withdraw,
     label: 'limits-form.op-type-withdraw',
   },
   {
-    value: [STATS_OPERATION_TYPES.paymentOut],
+    value: STATS_OPERATION_TYPES.paymentOut,
     label: 'limits-form.op-type-payment-out',
   },
 ]
@@ -248,7 +253,7 @@ export default {
       annualOut: '',
       note: '',
     },
-    selectedOpType: {},
+    selectedOpType: '',
     opts: [],
     FORMATTED_STATS_OPERATION_TYPES,
     STATS_OPERATION_TYPES_KEY_NAMES,
@@ -294,7 +299,7 @@ export default {
   computed: {
     selectedLimitsByOpType () {
       // eslint-disable-next-line
-      return this.limits[STATS_OPERATION_TYPES_KEY_NAMES[this.selectedOpType.value]]
+      return this.limits[STATS_OPERATION_TYPES_KEY_NAMES[this.selectedOpType]]
     },
     minValidDailyOutValue () {
       return MIN_VALID_LIMIT_VALUE
@@ -330,7 +335,7 @@ export default {
     },
   },
   created () {
-    this.selectedOpType = this.FORMATTED_STATS_OPERATION_TYPES[0]
+    this.selectedOpType = this.FORMATTED_STATS_OPERATION_TYPES[0].value
   },
   methods: {
     tryToSubmit () {
@@ -394,7 +399,7 @@ export default {
       }
       const note = this.form.note
       const requestType = LIMITS_REQUEST_TYPE.initial
-      const statsOpType = +this.selectedOpType.value
+      const statsOpType = +this.selectedOpType
       const operationType = STATS_OPERATION_TYPES_KEY_NAMES[statsOpType]
 
       const operation = base
@@ -410,7 +415,7 @@ export default {
             note,
           },
         })
-      await Api.api.postOperations(operation)
+      await api.postOperations(operation)
     },
   },
 }

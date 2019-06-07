@@ -22,12 +22,15 @@ describe('Information step form', () => {
     let wrapper
 
     beforeEach(() => {
-      wrapper = mount(InformationStepForm, { localVue })
+      wrapper = mount(InformationStepForm, {
+        localVue,
+      })
     })
 
     const expectedResults = {
       name: ['required', 'maxLength'],
       baseAsset: ['required'],
+      capAsset: ['required'],
       startTime: ['required'],
       endTime: ['required', 'minDate'],
       softCap: ['required', 'softCapMoreThanHardCap'],
@@ -79,19 +82,23 @@ describe('Information step form', () => {
         .to.have.been.calledOnce
     })
 
-    it('sets base asset property from owned assets array if request was not passed',
+    it('sets base and cap asset properties if request was not passed',
       () => {
         const wrapper = shallowMount(InformationStepForm, {
           localVue,
           propsData: {
             ownedAssets: [
-              { id: 'USD' },
+              { id: 'TKN' },
               { id: 'BTC' },
+            ],
+            baseAssets: [
+              { id: 'USD' },
             ],
           },
         })
 
-        expect(wrapper.vm.form.baseAsset).to.deep.equal({ id: 'USD' })
+        expect(wrapper.vm.form.baseAsset).to.deep.equal({ id: 'TKN' })
+        expect(wrapper.vm.form.capAsset).to.deep.equal({ id: 'USD' })
       }
     )
   })
@@ -120,25 +127,31 @@ describe('Information step form', () => {
 
     describe('method', () => {
       describe('populateForm', () => {
-        it('properly sets request prop fields to form property', () => {
+        it('properly sets request prop fields to form property', async () => {
+          sandbox.stub(wrapper.vm, 'loadBaseAssetsByQuote').resolves([])
           wrapper.setProps({
             request: {
               name: 'My sale',
-              baseAsset: 'USD',
+              baseAsset: 'TKN',
+              defaultQuoteAsset: 'USD',
               startTime: '2019-04-02T14:00:18Z',
               endTime: '2019-04-10T14:00:18Z',
               softCap: '100.000000',
               hardCap: '200.000000',
               assetsToSell: '10.000000',
-              quoteAssets: ['BTC', 'USD'],
+              quoteAssets: ['BTC', 'ETH'],
+              isWhitelisted: true,
             },
-            ownedAssets: [{ code: 'USD' }],
+            ownedAssets: [{ code: 'TKN' }],
+            baseAssets: [{ code: 'USD' }],
           })
 
           wrapper.vm.populateForm()
+          await wrapper.vm.$nextTick()
 
           expect(wrapper.vm.form.name).to.equal('My sale')
-          expect(wrapper.vm.form.baseAsset).to.deep.equal({ code: 'USD' })
+          expect(wrapper.vm.form.baseAsset).to.deep.equal({ code: 'TKN' })
+          expect(wrapper.vm.form.capAsset).to.deep.equal({ code: 'USD' })
 
           expect(wrapper.vm.form.startTime).to.equal('2019-04-02T14:00:18Z')
           expect(wrapper.vm.form.endTime).to.equal('2019-04-10T14:00:18Z')
@@ -147,7 +160,8 @@ describe('Information step form', () => {
           expect(wrapper.vm.form.hardCap).to.equal('200.000000')
 
           expect(wrapper.vm.form.assetsToSell).to.equal('10.000000')
-          expect(wrapper.vm.form.quoteAssets).to.deep.equal(['BTC', 'USD'])
+          expect(wrapper.vm.form.quoteAssets).to.deep.equal(['BTC', 'ETH'])
+          expect(wrapper.vm.form.isWhitelisted).to.be.true
         })
       })
 

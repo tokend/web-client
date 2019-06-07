@@ -1,9 +1,10 @@
 <template>
   <div class="trade-top-bar">
-    <template v-if="isLoaded">
+    <template>
       <top-bar>
         <template slot="main">
           <router-link
+            v-if="isLoaded"
             :to="{
               name: vueRoutes.tradeExchange.name,
               query: { base: assetPair.base, quote: assetPair.quote }
@@ -13,7 +14,12 @@
               {{ 'trade-top-bar.exchange-view' | globalize }}
             </span>
           </router-link>
+          <skeleton-loader
+            v-else
+            template="smallString"
+          />
           <router-link
+            v-if="isLoaded"
             :to="{
               name: vueRoutes.tradeUserOffers.name,
               query: { base: assetPair.base, quote: assetPair.quote }
@@ -23,6 +29,10 @@
               {{ 'trade-top-bar.my-offers-view' | globalize }}
             </span>
           </router-link>
+          <skeleton-loader
+            v-else
+            template="smallString"
+          />
         </template>
         <template slot="extra">
           <button
@@ -44,11 +54,22 @@
 
       <div class="trade-asset-selector__wrapper">
         <select-field
-          v-if="formattedPairs.length"
+          v-if="formattedPairs.length && isLoaded"
           v-model="selectedPair"
-          :values="formattedPairs"
           :key="selectedPair"
           class="trade-asset-selector__field app__select app__select--no-border"
+        >
+          <option
+            v-for="assetPair in formattedPairs"
+            :key="assetPair"
+            :value="assetPair"
+          >
+            {{ assetPair }}
+          </option>
+        </select-field>
+        <skeleton-loader
+          v-else-if="!isLoaded"
+          template="bigString"
         />
         <no-data-message
           v-else
@@ -56,8 +77,11 @@
           :message="'trade-top-bar.here-will-pairs-list' | globalize"
         />
       </div>
-      <div class="trade-asset-selector__balances" v-if="formattedPairs.length">
-        <p class="trade-asset-selector__balances-value">
+      <div class="trade-asset-selector__balances">
+        <p
+          v-if="formattedPairs.length && isLoaded"
+          class="trade-asset-selector__balances-value"
+        >
           {{
             // eslint-disable-next-line
             { value: assetPairBalances.base, currency: assetPair.base } | formatMoney
@@ -68,9 +92,21 @@
             { value: assetPairBalances.quote, currency: assetPair.quote } | formatMoney
           }}
         </p>
-        <p class="trade-asset-selector__balances-label">
+        <skeleton-loader
+          v-else-if="!isLoaded"
+          template="bigString"
+        />
+        <p
+          v-if="formattedPairs.length && isLoaded"
+          class="trade-asset-selector__balances-label"
+        >
           {{ 'trade-top-bar.user-balances-label' | globalize }}
         </p>
+        <skeleton-loader
+          v-else-if="!isLoaded"
+          class="trade-asset-selector__balances-skeleton-loader--margin"
+          template="smallString"
+        />
       </div>
 
       <drawer :is-shown.sync="isCreateBuyOfferDrawerShown">
@@ -78,8 +114,9 @@
           {{ 'trade-top-bar.create-buy-offer-form-title' | globalize }}
         </template>
         <create-trade-offer-form
+          is-buy
           :asset-pair="assetPair"
-          @close-drawer="closeBuyOfferDrawer"
+          @offer-created="closeBuyOfferDrawer"
         />
       </drawer>
       <drawer :is-shown.sync="isCreateSellOfferDrawerShown">
@@ -88,28 +125,23 @@
         </template>
         <create-trade-offer-form
           :asset-pair="assetPair"
-          :is-buy="false"
-          @close-drawer="closeSellOfferDrawer"
+          @offer-created="closeSellOfferDrawer"
         />
       </drawer>
-    </template>
-
-    <template v-else-if="!isLoadingFailed">
-      <loader message-id="trade-top-bar.loading-msg" />
     </template>
   </div>
 </template>
 
 <script>
 import Drawer from '@/vue/common/Drawer'
-import Loader from '@/vue/common/Loader'
 import TopBar from '@/vue/common/TopBar'
 import NoDataMessage from '@/vue/common/NoDataMessage'
+import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
 
 import SelectField from '@/vue/fields/SelectField'
 import CreateTradeOfferForm from '@/vue/forms/market-orders/CreateTradeOfferForm'
 
-import { Api } from '@/api'
+import { api } from '@/api'
 import { errors, ASSET_PAIR_POLICIES } from '@tokend/js-sdk'
 
 import { AssetPairRecord } from '@/js/records/entities/asset-pair.record'
@@ -132,9 +164,9 @@ export default {
     SelectField,
     CreateTradeOfferForm,
     Drawer,
-    Loader,
     TopBar,
     NoDataMessage,
+    SkeletonLoader,
   },
   data: () => ({
     assetPair: {
@@ -157,9 +189,9 @@ export default {
     assetPairBalances () {
       return {
         base: (this.accountBalances
-          .find(i => i.asset === this.assetPair.base) || {}).balance,
+          .find(i => i.asset.code === this.assetPair.base) || {}).balance,
         quote: (this.accountBalances
-          .find(i => i.asset === this.assetPair.quote) || {}).balance,
+          .find(i => i.asset.code === this.assetPair.quote) || {}).balance,
       }
     },
   },
@@ -196,7 +228,7 @@ export default {
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async loadTradablePairs () {
-      const { data } = await Api.get('/v3/asset_pairs', {
+      const { data } = await api.get('/v3/asset_pairs', {
         filter: { policy: ASSET_PAIR_POLICIES.tradeableSecondaryMarket },
         page: { limit: 100 },
       })
@@ -263,6 +295,10 @@ export default {
 @import '~@scss/variables';
 
 $media-custom-breakpoint: 450px;
+
+.trade-asset-selector__balances-skeleton-loader--margin {
+  margin-top: 0.8rem;
+}
 
 .trade-asset-selector__field {
   display: inline-block;

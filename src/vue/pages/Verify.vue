@@ -36,7 +36,7 @@ import { vueRoutes } from '@/vue-router/routes'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
-import { Api } from '@/api'
+import { walletsManager } from '@/api'
 
 export default {
   name: 'verify',
@@ -56,7 +56,7 @@ export default {
   beforeRouteEnter (to, from, next) {
     next(vm => {
       if (from.name === vueRoutes.login.name) {
-        Api.walletsManager.resendEmail(vm.walletId)
+        walletsManager.resendEmail(vm.walletId)
       }
     })
   },
@@ -69,7 +69,7 @@ export default {
     async submit () {
       this.disableForm()
       try {
-        await Api.walletsManager.resendEmail(this.walletId)
+        await walletsManager.resendEmail(this.walletId)
         Bus.success('auth-pages.email-requested')
       } catch (e) {
         ErrorHandler.process(e)

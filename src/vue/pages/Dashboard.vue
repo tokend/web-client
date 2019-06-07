@@ -5,7 +5,7 @@
         <asset-selector
           class="dashboard__asset-selector"
           :current-asset="currentAsset"
-          @asset-change="setCurrentAsset"
+          @asset-change="currentAsset = $event"
           :scale="scale"
         />
         <div class="dashboard__actions">
@@ -57,9 +57,8 @@
           <submodule-importer
             :submodule="getModule().getSubmodule(MovementsHistoryModule)"
             :asset-code="currentAsset"
-            :config="{ horizonURL: config.HORIZON_SERVER }"
-            :wallet="wallet"
             :ref="REFS.movementsHistory"
+            :latest-activity="true"
           />
         </div>
       </template>
@@ -75,8 +74,6 @@
 
           <submodule-importer
             :submodule="getModule().getSubmodule(IssuanceFormModule)"
-            :config="{ horizonURL: config.HORIZON_SERVER }"
-            :wallet="wallet"
             @issuance-created="showDrawer = false"
           />
         </template>
@@ -86,15 +83,11 @@
             {{ 'transfer-form.form-heading' | globalize }}
           </template>
           <transfer
-            @operation-submitted="updateBalancesAndList()"
+            @operation-submitted="closeDrawerAndUpdateList()"
             :asset-to-transfer="currentAsset"
           />
         </template>
       </drawer>
-    </template>
-
-    <template v-else>
-      <loader message-id="dashboard.data-loading" />
     </template>
   </div>
 </template>
@@ -105,8 +98,6 @@ import Transfer from '@/vue/forms/TransferForm'
 
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import Loader from '@/vue/common/Loader'
-import config from '@/config'
 import Drawer from '@/vue/common/Drawer'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
@@ -124,7 +115,6 @@ export default {
   components: {
     AssetSelector,
     Transfer,
-    Loader,
     Drawer,
     SubmoduleImporter,
   },
@@ -135,7 +125,6 @@ export default {
     transferFormIsShown: false,
     showDrawer: false,
     scale: 'day',
-    config,
     MovementsHistoryModule,
     IssuanceFormModule,
     TransferDrawerPseudoModule,
@@ -146,7 +135,6 @@ export default {
     ...mapGetters([
       vuexTypes.isAccountCorporate,
       vuexTypes.accountBalances,
-      vuexTypes.wallet,
       vuexTypes.defaultQuoteAsset,
     ]),
   },
@@ -183,7 +171,7 @@ export default {
       if (value) {
         this.currentAsset = value.code
       } else {
-        const keys = this.accountBalances.map(i => i.asset)
+        const keys = this.accountBalances.map(i => i.asset.code)
         this.currentAsset =
           keys.find(a => a === this.$route.query.asset) || keys[0] || ''
       }
@@ -197,7 +185,12 @@ export default {
       return this.$refs[REFS.movementsHistory].$children[0]
         .reloadCollectionLoader()
     },
-
+    closeDrawerAndUpdateList () {
+      this.showDrawer = false
+      setTimeout(() => {
+        this.updateBalancesAndList()
+      }, 1000)
+    },
     updateBalancesAndList () {
       return Promise.all([
         this.loadBalances(),

@@ -4,8 +4,9 @@
     :class="{
       'input-field--error': errorMessage,
       'input-field--monospaced': monospaced,
-      'input-field--readonly': $attrs.readonly,
-      'input-field--disabled': $attrs.disabled
+      'input-field--readonly': $attrs.readonly || $attrs.readonly === '',
+      'input-field--disabled': $attrs.disabled,
+      'input-field--pwd-toggle-present': isPasswordType,
     }"
   >
     <input
@@ -15,13 +16,30 @@
       :class="{
         'input-field__input--autofill-white': whiteAutofill
       }"
-      :type="type"
+      :type="isPasswordType && isPasswordShown ? 'text' : type"
       :value="value"
       :placeholder="$attrs.placeholder || ' '"
-      :tabindex="$attrs.readonly ? -1 : $attrs.tabindex"
+      :tabindex="$attrs.readonly || $attrs.readonly === ''
+        ? -1
+        : $attrs.tabindex"
       @focus="onFocus"
       @blur="onBlur"
     >
+
+    <button
+      v-if="isPasswordType"
+      type="button"
+      class="input-field__password-toggle"
+      :class="{
+        'input-field__password-toggle--autofill-white': whiteAutofill
+      }"
+      @click="isPasswordShown = !isPasswordShown"
+    >
+      <i
+        class="mdi input-field__password-toggle-icon"
+        :class="isPasswordShown ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+      />
+    </button>
 
     <span class="input-field__label">
       {{ label }}
@@ -40,6 +58,7 @@
 </template>
 
 <script>
+import { MathUtil } from '@/js/utils'
 
 const EVENTS = {
   input: 'input',
@@ -57,6 +76,7 @@ export default {
 
   data: () => ({
     isCapsLockOn: false,
+    isPasswordShown: false,
   }),
 
   computed: {
@@ -64,16 +84,21 @@ export default {
       return {
         ...this.$listeners,
         input: event => {
+          this.normalizeTargetValue(event.target)
           this.$emit(EVENTS.input, event.target.value)
         },
       }
+    },
+
+    isPasswordType () {
+      return this.type === 'password'
     },
   },
 
   methods: {
     onInput (event) {},
     onFocus (event) {
-      if (this.type === 'password') {
+      if (this.isPasswordType) {
         /**
          * Use two events to detect Caps Lock up and down.
          * If we will use only 'keydown', we can detect only Caps Lock press to
@@ -85,14 +110,16 @@ export default {
         document.addEventListener('keyup', this.detectCapsLock)
       }
     },
+
     onBlur (event) {
-      if (this.type === 'password') {
+      if (this.isPasswordType) {
         document.removeEventListener('keydown', this.detectCapsLock)
         document.removeEventListener('keyup', this.detectCapsLock)
 
         if (!this.value) this.isCapsLockOn = false
       }
     },
+
     detectCapsLock (event) {
       /**
        * {KeyboardEvent} getModifierState
@@ -102,12 +129,61 @@ export default {
       this.isCapsLockOn = event.getModifierState &&
         event.getModifierState('CapsLock')
     },
+
+    normalizeTargetValue (target) {
+      if (this.type === 'number' && target.value !== '') {
+        target.value = this.normalizeDecimalPrecision(
+          this.normalizeRange(target.value)
+        )
+      }
+    },
+
+    normalizeRange (value) {
+      const max = this.$attrs.max
+      const min = this.$attrs.min
+
+      let result = value
+      if (max && MathUtil.compare(value, max) > 0) {
+        result = max
+      } else if (min && MathUtil.compare(min, value) > 0) {
+        result = min
+      }
+
+      return result
+    },
+
+    normalizeDecimalPrecision (value) {
+      const step = this.$attrs.step
+      if (!step) {
+        return value
+      }
+
+      let precision
+      try {
+        precision = step.match(/(?:\.|,)\d+$/)[0].slice(1).length
+      } catch (error) {
+        precision = 0
+      }
+
+      let result = value
+      if (precision) {
+        const detectRe = new RegExp(`(?:\\.|,)\\d{${precision + 1},}$`)
+        if (detectRe.test(value)) {
+          const replaceRe = new RegExp(`((?:\\.|,)\\d{${precision}})\\d*`)
+          result = value.replace(replaceRe, '$1')
+        }
+      }
+
+      return result
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
 @import 'scss/variables';
+
+$pwd-toggle-btn-width: 3.2rem;
 
 .input-field {
   position: relative;
@@ -218,6 +294,30 @@ export default {
   .input-field--disabled > & {
     @include readonly-material-border($field-color-unfocused);
   }
+
+  .input-field--pwd-toggle-present > & {
+    padding-right: $pwd-toggle-btn-width + 0.4rem;
+  }
+}
+
+.input-field__password-toggle {
+  position: absolute;
+  right: 0.2rem;
+  top: $field-input-padding-top - 0.6rem;
+  width: 3.2rem;
+  height: 3.2rem;
+  cursor: pointer;
+
+  &--autofill-white {
+    background-color: $col-block-bg;
+  }
+}
+
+.input-field__password-toggle-icon {
+  position: relative;
+  font-size: 2.4rem;
+  top: 0.2rem;
+  color: $field-color-unfocused;
 }
 
 .input-field__label {

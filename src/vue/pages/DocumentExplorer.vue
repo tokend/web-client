@@ -1,8 +1,6 @@
 <template>
   <div class="document-explorer-page">
     <document-explorer-module
-      :wallet="wallet"
-      :config="config"
       :should-update.sync="shouldUpdate"
     />
   </div>
@@ -10,11 +8,6 @@
 
 <script>
 import DocumentExplorerModule from '@modules/documents/document-explorer'
-
-import { mapGetters } from 'vuex'
-import { vuexTypes } from '@/vuex'
-
-import config from '@/config'
 
 const EVENTS = {
   documentUploaded: 'update:documentUploaded',
@@ -35,17 +28,8 @@ export default {
 
   data () {
     return {
-      config: {
-        horizonURL: config.HORIZON_SERVER,
-      },
       shouldUpdate: this.documentUploaded,
     }
-  },
-
-  computed: {
-    ...mapGetters({
-      wallet: vuexTypes.wallet,
-    }),
   },
 
   watch: {

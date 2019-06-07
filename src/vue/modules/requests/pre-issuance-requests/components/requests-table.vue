@@ -1,7 +1,6 @@
 <template>
   <div class="requests-table">
     <div
-      v-if="requests.length"
       class="app__table app__table--with-shadow"
     >
       <table>
@@ -23,7 +22,9 @@
           </tr>
         </thead>
 
-        <tbody>
+        <tbody
+          v-if="requests.length && isLoaded"
+        >
           <tr
             v-for="request in requests"
             :key="request.id"
@@ -45,21 +46,24 @@
             </td>
           </tr>
         </tbody>
+        <empty-tbody-placeholder
+          v-else-if="!requests.length && isLoaded"
+          :colspan="4"
+          :message="'pre-issuance-requests.no-request-history-desc' | globalize"
+        />
+        <skeleton-loader-table-body
+          v-else
+          :cells="4"
+        />
       </table>
     </div>
-
-    <no-data-message
-      v-else
-      icon-name="trending-up"
-      :title="'pre-issuance-requests.no-request-history-title' | globalize"
-      :message="'pre-issuance-requests.no-request-history-desc' | globalize"
-    />
   </div>
 </template>
 
 <script>
-import NoDataMessage from '@/vue/common/NoDataMessage'
 import RequestStateViewer from '../../shared/components/request-state-viewer'
+import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
+import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 
 const EVENTS = {
   select: 'select',
@@ -68,13 +72,18 @@ const EVENTS = {
 export default {
   name: 'requests-table',
   components: {
-    NoDataMessage,
     RequestStateViewer,
+    SkeletonLoaderTableBody,
+    EmptyTbodyPlaceholder,
   },
 
   props: {
     requests: {
       type: Array,
+      required: true,
+    },
+    isLoaded: {
+      type: Boolean,
       required: true,
     },
   },

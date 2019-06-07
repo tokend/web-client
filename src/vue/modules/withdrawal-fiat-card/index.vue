@@ -8,14 +8,21 @@
       <div class="app__form-field">
         <select-field
           name="withdrawal-fiat-card-asset"
-          v-model="form.asset"
-          :values="withdrawableFiatAssets"
-          key-as-value-text="nameAndCode"
+          :value="form.asset.code"
+          @input="setAssetByCode"
           :disabled="formMixin.isDisabled"
           @blur="touchField('form.asset')"
           :error-message="getFieldErrorMessage('form.asset')"
           :label="'withdrawal-fiat-card-module.asset' | globalize"
-        />
+        >
+          <option
+            v-for="asset in withdrawableFiatAssets"
+            :key="asset.code"
+            :value="asset.code"
+          >
+            {{ asset.nameAndCode }}
+          </option>
+        </select-field>
         <div class="withdrawal-fiat-card__form-field-description">
           <p>
             {{
@@ -34,6 +41,8 @@
         class="app__form-field"
         v-model.trim="form.amount"
         type="number"
+        :min="0"
+        :max="form.asset.balance.value"
         :step="config.minAmount"
         name="withdrawal-fiat-card-amount"
         @blur="touchField('form.amount')"
@@ -164,17 +173,17 @@
 import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import FormMixin from '@/vue/mixins/form.mixin'
 import debounce from 'lodash/debounce'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { types } from './store/types'
 import { Bus } from '@/js/helpers/event-bus'
-import { Wallet, base } from '@tokend/js-sdk'
-import { initApi, api } from './_api'
+import { base } from '@tokend/js-sdk'
+import { api } from '@/api'
 import {
   required,
-  noMoreThanAvailableOnBalance,
+  lessThenMax,
   maxDecimalDigitsCount,
   cardNumber,
 } from '@validators'
@@ -193,13 +202,8 @@ export default {
   },
   mixins: [FormMixin],
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
     /**
      * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
      * @property config.decimalPoints - count of allowed decimal points
      * @property config.minAmount - minimal allowed amount
      */
@@ -251,7 +255,7 @@ export default {
         asset: { required },
         amount: {
           required,
-          noMoreThanAvailableOnBalance: noMoreThanAvailableOnBalance(
+          noMoreThanAvailableOnBalance: lessThenMax(
             this.form.asset.balance.value
           ),
           maxDecimalDigitsCount: maxDecimalDigitsCount(
@@ -269,9 +273,6 @@ export default {
     }
   },
   async created () {
-    initApi(this.wallet, this.config)
-
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAssets()
 
@@ -280,14 +281,15 @@ export default {
     this.isInitialized = true
   },
   methods: {
-    ...mapMutations('withdrawal-fiat-card', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
     ...mapActions('withdrawal-fiat-card', {
       loadBalances: types.LOAD_BALANCES,
       loadAssets: types.LOAD_ASSETS,
       loadFees: types.LOAD_FEES,
     }),
+    setAssetByCode (code) {
+      this.form.asset = this.withdrawableFiatAssets
+        .find(item => item.code === code)
+    },
     async getFees () {
       try {
         await this.loadFees({
@@ -316,7 +318,7 @@ export default {
         const operation = base.CreateWithdrawRequestBuilder.createWithdrawWithAutoConversion({
           ...this.composeOptions(),
         })
-        await api().postOperations(operation)
+        await api.postOperations(operation)
         Bus.success('withdrawal-fiat-card-module.withdraw-success')
         this.$emit(EVENTS.withdrawn)
       } catch (e) {

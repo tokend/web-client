@@ -84,6 +84,8 @@
           <input-field
             white-autofill
             type="number"
+            :min="MIN_TEAM_SIZE"
+            :step="1"
             v-model="form.teamSize"
             @blur="touchField('form.teamSize')"
             name="verification-corporate-team-size"
@@ -138,14 +140,14 @@
 import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 import _get from 'lodash/get'
 
-import { Api } from '@/api'
+import { api } from '@/api'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
 import { BLOB_TYPES } from '@tokend/js-sdk'
 
-import { DocumentUploader } from '@/js/helpers/document-uploader'
+import { uploadDocument } from '@/js/helpers/upload-documents'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import { Bus } from '@/js/helpers/event-bus'
@@ -227,13 +229,13 @@ export default {
       this.disableForm()
       this.isFormSubmitting = true
       try {
-        await this.uploadAvatar()
+        await uploadDocument(this.form.avatar)
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycCorporate)
         const operation = this.createKycOperation(
           kycBlobId,
           this.kvEntryCorporateRoleId
         )
-        await Api.api.postOperations(operation)
+        await api.postOperations(operation)
         do {
           await this.loadKyc()
           await this.delay(3000)
@@ -252,15 +254,6 @@ export default {
       return new Promise((resolve, reject) => {
         resolve(setTimeout(resolve, ms))
       })
-    },
-
-    async uploadAvatar () {
-      let document = this.form.avatar
-      if (document && !document.key) {
-        document = await DocumentUploader.uploadSingleDocument(
-          document, this.accountId
-        )
-      }
     },
 
     createKycData () {

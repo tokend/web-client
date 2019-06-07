@@ -4,7 +4,6 @@
       <logo-viewer
         class="card-viewer__logo"
         :asset="asset"
-        :storage-url="storageUrl"
       />
     </div>
     <div class="card-viewer__info">
@@ -15,7 +14,7 @@
         {{ asset.name || asset.code }}
       </p>
       <p
-        v-if="asset.balance"
+        v-if="balance"
         class="card-viewer__balance"
         :title="
           'assets-list.list-item-balance-line' |
@@ -38,25 +37,25 @@
 <script>
 import LogoViewer from './logo-viewer'
 
-import { Asset } from '../wrappers/asset'
+import { AssetRecord } from '@/js/records/entities/asset.record'
 
 export default {
   name: 'card-viewer',
   components: { LogoViewer },
   props: {
     asset: {
-      type: Asset,
+      type: AssetRecord,
       required: true,
     },
-    storageUrl: {
+    balance: {
       type: String,
-      required: true,
+      default: '',
     },
   },
   computed: {
     assetBalance () {
       return {
-        value: this.asset.balance,
+        value: this.balance,
         currency: this.asset.code,
       }
     },

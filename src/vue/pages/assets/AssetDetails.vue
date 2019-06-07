@@ -3,7 +3,7 @@
     <div class="asset-details__header">
       <asset-logo-dark
         :asset-code="asset.code"
-        :logo-url="asset.logoUrl(config.FILE_STORAGE)"
+        :logo-url="assetLogoUrl"
       />
       <div class="asset-details__info">
         <p class="asset-details__code">
@@ -82,6 +82,43 @@
 
               <template v-else>
                 {{ 'asset-details.absent-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'asset-details.deposit-method-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.isCoinpayments">
+                {{ 'asset-details.coinpayments-msg' | globalize }}
+              </template>
+
+              <template v-else-if="asset.externalSystemType">
+                {{ 'asset-details.default-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'asset-details.non-depositable-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'assets.asset-type' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.assetType === kvAssetTypeKycRequired">
+                {{ 'asset-details.verification-required-title' | globalize }}
+              </template>
+
+              <template v-else-if="asset.assetType === kvAssetTypeSecurity">
+                {{ 'asset-details.security-asset-title' | globalize }}
+              </template>
+
+              <template v-else>
+                <!-- eslint-disable-next-line -->
+                {{ 'asset-details.does-not-require-verification-title' | globalize }}
               </template>
             </td>
           </tr>
@@ -171,9 +208,7 @@
 <script>
 import AssetLogoDark from '@/vue/common/assets/AssetLogoDark'
 
-import config from '@/config'
-
-import { Api } from '@/api'
+import { api, documentsManager } from '@/api'
 
 import { base } from '@tokend/js-sdk'
 
@@ -200,7 +235,6 @@ export default {
   },
   data: _ => ({
     isBalanceCreating: false,
-    config,
     EVENTS,
     ASSET_SUBTYPE,
   }),
@@ -209,14 +243,18 @@ export default {
       accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
       kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
+      kvAssetTypeSecurity: vuexTypes.kvAssetTypeSecurity,
       isAccountUnverified: vuexTypes.isAccountUnverified,
       isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
+    assetLogoUrl () {
+      return documentsManager.getDocumentUrlByKey(this.asset.logoKey)
+    },
     assetTermsUrl () {
-      return this.asset.termsUrl(config.FILE_STORAGE)
+      return documentsManager.getDocumentUrlByKey(this.asset.termsKey)
     },
     isExistsInUserBalances () {
-      return !!this.balances.find(item => item.asset === this.asset.code)
+      return !!this.balances.find(item => item.asset.code === this.asset.code)
     },
     isBalanceCreationAllowed () {
       switch (this.asset.assetType) {
@@ -251,7 +289,7 @@ export default {
           asset: this.asset.code,
           action: base.xdr.ManageBalanceAction.createUnique(),
         })
-        await Api.api.postOperations(operation)
+        await api.postOperations(operation)
         await this.loadBalances()
         this.$emit(EVENTS.balanceAdded)
         Bus.success('asset-details.balance-added-msg')

@@ -1,6 +1,6 @@
 <template>
   <div class="asset-actions">
-    <template v-if="!asset.balance">
+    <template v-if="!balance">
       <button
         v-if="isBalanceCreationAllowed"
         v-ripple
@@ -32,10 +32,11 @@
 </template>
 
 <script>
-import Asset from '../../shared/wrappers/asset'
+import { AssetRecord } from '@/js/records/entities/asset.record'
 
 import { types } from '../store/types'
 import { mapGetters, mapActions } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
@@ -48,7 +49,7 @@ const EVENTS = {
 export default {
   name: 'asset-actions',
   props: {
-    asset: { type: Asset, required: true },
+    asset: { type: AssetRecord, required: true },
     kycRequiredAssetType: { type: Number, required: true },
     securityAssetType: { type: Number, required: true },
     isAccountUnverified: { type: Boolean, required: true },
@@ -62,8 +63,9 @@ export default {
     EVENTS,
   }),
   computed: {
-    ...mapGetters('asset-explorer', {
-      accountId: types.accountId,
+    ...mapGetters({
+      accountId: vuexTypes.accountId,
+      getAssetByCode: vuexTypes.assetByCode,
     }),
     isBalanceCreationAllowed () {
       switch (this.asset.type) {
@@ -77,11 +79,16 @@ export default {
           return true
       }
     },
+    balance () {
+      return this.getAssetByCode(this.asset.code)
+    },
   },
   methods: {
+    ...mapActions({
+      loadAccountBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+    }),
     ...mapActions('asset-explorer', {
       createBalance: types.CREATE_BALANCE,
-      loadAccountBalances: types.LOAD_ACCOUNT_BALANCES,
     }),
     async addBalance () {
       this.isPending = true

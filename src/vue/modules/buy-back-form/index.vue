@@ -8,12 +8,19 @@
         <div class="app__form-row">
           <div class="app__form-field">
             <select-field
-              v-model="form.asset"
-              :values="assetsInBalance"
-              key-as-value-text="nameAndCode"
+              :value="form.asset.code"
+              @input="setAssetByCode"
               class="app__select"
               :label="'buy-back-form.opportunity-uniq-code-lbl' | globalize"
-            />
+            >
+              <option
+                v-for="asset in assetsInBalance"
+                :key="asset.code"
+                :value="asset.code"
+              >
+                {{ asset.nameAndCode }}
+              </option>
+            </select-field>
           </div>
         </div>
         <p class="app__form-field-description">
@@ -45,6 +52,8 @@
               v-model="form.amount"
               name="buy-back-amount"
               type="number"
+              :min="0"
+              :max="allowedToBuy(form.asset.code)"
               :step="config.minAmount"
               autocomplete="off"
               @blur="touchField('form.amount')"
@@ -115,11 +124,8 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { types } from './store/types'
-
-import { Wallet } from '@tokend/js-sdk'
-import { initApi } from './_api'
 
 import FormConfirmation from '@/vue/common/FormConfirmation'
 import Loader from '@/vue/common/Loader'
@@ -150,13 +156,8 @@ export default {
   },
   mixins: [FormMixin, OfferManagerMixin],
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
     /**
      * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
      * @property config.minAmount - min allowed amount
      * @property config.decimalPoints - default max allowed points after dot
      * @property [config.defaultAssetCode] - prefills the asset-selector with
@@ -217,23 +218,21 @@ export default {
     },
   },
   async created () {
-    initApi(this.wallet, this.config)
-
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAssets()
     this.setDefaultAsset()
     this.isInitialized = true
   },
   methods: {
-    ...mapMutations('buy-back-form', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
     ...mapActions('buy-back-form', {
       loadBalances: types.LOAD_BALANCES,
       loadAssets: types.LOAD_ASSETS,
       loadSaleByBaseAsset: types.LOAD_SALE_BY_BASE_ASSET,
     }),
+    setAssetByCode (code) {
+      this.form.asset = this.assetsInBalance
+        .find(item => item.code === code)
+    },
     async submit () {
       this.disableForm()
       this.isSubmitting = true

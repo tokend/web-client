@@ -92,7 +92,7 @@
 <script>
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
-import { config } from '../_config'
+import { documentsManager } from '@/api'
 
 export default {
   name: 'request-attributes-viewer',
@@ -104,7 +104,7 @@ export default {
 
   computed: {
     assetTermsUrl () {
-      return this.request.termsUrl(config().storageURL)
+      return documentsManager.getDocumentUrlByKey(this.request.termsKey)
     },
   },
 }

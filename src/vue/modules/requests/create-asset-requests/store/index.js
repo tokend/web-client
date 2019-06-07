@@ -3,19 +3,16 @@ import { CreateAssetRequest } from '../wrappers/create-asset-request'
 import { base } from '@tokend/js-sdk'
 
 import { types } from './types'
-import { api } from '../_api'
+import { api } from '@/api'
+import { vuexTypes } from '@/vuex'
 
 export const state = {
-  accountId: '',
   requests: [],
   kycRequiredAssetType: null,
   securityAssetType: null,
 }
 
 export const mutations = {
-  [types.SET_ACCOUNT_ID] (state, accountId) {
-    state.accountId = accountId
-  },
   [types.SET_REQUESTS] (state, requests) {
     state.requests = requests
   },
@@ -31,13 +28,13 @@ export const mutations = {
 }
 
 export const actions = {
-  [types.LOAD_REQUESTS] ({ getters }) {
-    return api().getWithSignature('/v3/create_asset_requests', {
+  [types.LOAD_REQUESTS] ({ rootGetters }) {
+    return api.getWithSignature('/v3/create_asset_requests', {
       page: {
         order: 'desc',
       },
       filter: {
-        requestor: getters[types.accountId],
+        requestor: rootGetters[vuexTypes.accountId],
       },
       include: ['request_details'],
     })
@@ -45,14 +42,14 @@ export const actions = {
 
   async [types.LOAD_KYC_REQUIRED_ASSET_TYPE] ({ commit }) {
     const endpoint = '/v3/key_values/asset_type:kyc_required'
-    const { data } = await api().get(endpoint)
+    const { data } = await api.get(endpoint)
 
     commit(types.SET_KYC_REQUIRED_ASSET_TYPE, data.value.u32)
   },
 
   async [types.LOAD_SECURITY_ASSET_TYPE] ({ commit }) {
     const endpoint = `/v3/key_values/asset_type:security`
-    const { data } = await api().get(endpoint)
+    const { data } = await api.get(endpoint)
 
     commit(types.SET_SECURITY_ASSET_TYPE, data.value.u32)
   },
@@ -61,12 +58,11 @@ export const actions = {
     const operation = base.ManageAssetBuilder.cancelAssetRequest({
       requestID: requestId,
     })
-    await api().postOperations(operation)
+    await api.postOperations(operation)
   },
 }
 
 export const getters = {
-  [types.accountId]: state => state.accountId,
   [types.requests]: state => state.requests
     .map(r => new CreateAssetRequest(r)),
   [types.kycRequiredAssetType]: state => state.kycRequiredAssetType,

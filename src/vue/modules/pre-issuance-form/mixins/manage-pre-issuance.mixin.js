@@ -1,5 +1,5 @@
 import { base } from '@tokend/js-sdk'
-import { api } from '../_api'
+import { api } from '@/api'
 
 import { FileUtil } from '@/js/utils/file.util'
 
@@ -25,7 +25,7 @@ export default {
         .createPreIssuanceRequestOp({
           request: this.issuance.xdr,
         })
-      await api().postOperations(operation)
+      await api.postOperations(operation)
     },
 
     async extractPreIssuance (file) {

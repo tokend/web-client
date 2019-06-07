@@ -8,57 +8,265 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
-#### Added
-- Lazy loading feedback (nprogress loader)
-- `BalanceNotFoundError` to the runtime errors
-- Fonts/images/SVGs optimize
-- Check for file extension, size & dimensions in file field
-- File field design improvements:
-  - reactions to drag & drop actions
-  - images preview (+ icon for rest types of files)
-  - grayscaled disabled state
-  - upload icons
-- `initSync()` method to Api class
-- Ability to create sale and opportunity in the past
-- Sentry integration
-- Email validation on login form
+### Added
 - Waiting email verification
 
+## [1.8.0-rc.0] - 2019-06-06
+#### Fixed
+- Disabled state for amount input field
+- Minimum & maximum normalization for input field
+- Displaying balance on assets page
+- Displaying no data row on fees table
+- Hiding of "My sales" tab for non-corporate users
+- Selecting asset on deposit form
+- Displaying balances on assets page
+
+### "Under the hood" changes
+#### Added
+- Asset code validator
+
 #### Changed
-- Updated offer creating, updating drawers
+- Now loading private document URL in file field
+- Updated package.json packages
+- Now using @tokend/js-sdk@1.8.0-rc.0
+
+## [1.8.0-x.3] - 2019-06-05
+
+## [1.8.0-x.2] - 2019-06-05
+#### Fixed
+- Bug with investing in sale
+
+## [1.8.0-x.1] - 2019-06-05
+#### Added
+- Skeleton loading
+
+## [1.8.0-x.0] - 2019-06-05
+#### Added
+- Placeholder of empty list for Trade, Issuance requests and Requests pages
+- Browser compatibility check and unsupported browser page
+- Password toggle button for input fields with type="password"
+- Unify displaying of fees
+- Displaying fees on issuance form & trade forms
+- Display amount sum (amount + fee) in movements list
+- Max button to some input fields
+
+#### Changed
+- Route-to-route progress bar size and color
+- Status message slightly redesigned
+- Update "Learn more about pre-issuance" link style on sale creation form
+- Now top bar buttons in movements page are conditionally disabled, not hidden
+- Now including offer fees to account's balance on invest form
+- Create sale form improvements:
+  - Added cap asset field to the create sale form
+  - Now using cap asset as default quote asset for create sale request
+  - Now creating quote asset balances on create sale form if they don't exist
+  - Now displaying accepted investment assets as base assets of pairs where
+    cap asset is quote asset on create sale form
+- Now displaying invest form on the sale state widget
+- New using date format 'dd/mm/yyyy' instead of 'yyyy-mm-dd' in date fields
+- Now allowing the user to input birth date manually on general
+  verification form
+- Now displaying asset in incoming withdrawal requests list
+
+#### Removed
+- Cursor pointer on disabled select
+- Price history chart from sale overview page
+- "Required" validation for address line 2 on corporate KYC form
+- Displaying of Fixed fee from invest form
+
+#### Fixed
+- Don't show additional info title in kyc status message, if no additional
+  external information provided
+- Successful investment sale state update
+- Break words in sale description viewer
+- Fix labels for submit general kyc button
+- Disabling invest form while submitting
+- Closing of transfer drawer on Dashboard after submitting form
+- Auto-select of asset in drawers on movements page
+- Translations on sale details drawer
+- A bug when "My Sales" tab shown for non-corporate accounts
+
+### "Under the hood" changes
+#### Added
+- Tooltip directive
+- Assets vuex module for loading and storing all the assets
+- Whitelisted indicator on sale related modules
+- isTransferable policy getter to asset records
+- Usage of Unix line endings rule
+- `assets.module`
+- `AmountInputField`
+- "custom-select" package for displaying customized select field
+- "compare" & "format" methods to `MathUtil` class
+- `name` attributes to 2FA form inputs
+- Emitted value normalizers for input field:
+  - "normalizeRange"
+  - "normalizeDecimalPrecision"
+
+#### Changed
+- Now loading account converted balances in
+  "LOAD_ACCOUNT_BALANCES_DETAILS" vuex action
+- Now calling "UPDATE_ASSET" mutation in the
+  "LOAD_ACCOUNT_BALANCES_DETAILS" action
+- Now using `DocumentsManager` from SDK to upload documents to the storage
+- Now getting document URL using documentsManager
+- Now using `MathUtil.compare` method in validators
+- Now using `MathUtil.format` for formatting money, numbers, and percents
+- Now passing values to select field using a slot and "option" tags
+
+#### Removed
+- "numeral" package
+- Unused order number format & filter
+
+#### Fixed
+- 'data' error in asset request list
+- Calendar related tests for win32 systems
+- Different borders with attribute of readonly on the field
+
+## [1.7.0] - 2019-06-03
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.7.0
+
+## [1.7.0-rc.4] - 2019-05-30
+#### Fixed
+- Bug with unhidden "My sales"
+
+## [1.7.0-rc.3] - 2019-05-30
+#### Fixed
+- Hide "My sales" tab for non-corporate users
+- Fix Create/Update button text on general KYC verification form
+- Add missing asset type translation to sale asset details
+
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.7.0-rc.2
+
+## [1.7.0-rc.2] - 2019-05-21
+### "Under the hood" changes
+#### Changed
+- Some DevOps stuff changed
+
+## [1.7.0-rc.1] - 2019-05-21
+### "Under the hood" changes
+#### Changed
+- Some DevOps stuff changed
+
+## [1.7.0-rc.0] - 2019-05-21
+#### Added
+- New sale whitelist support:
+  - New "Whitelisted" checkbox on create sale form
+  - New "Whitelisted" row to sale details drawer
+  - New whitelist invitation form (shown only for the sale owner)
+  - New whitelist invitations drawer
+- New loading feedback when moving from one route to another (nprogress loader)
+- New "Copied" tooltip message to copy icon-buttons
+- New "Total" read-only field in offer creation form
+- New Sentry error tracking integration
+- New pre-issuance guide and links to it from pre-issuance related features
+- New sale participation statistics drawer, shown only for the sale owner
+- Now displaying up to three user balances in dropdown when click on user’s
+  avatar at top-right of the screen
+- Restored email validation on login form
+
+#### Changed
+- File field look improvements:
+  - Added reactions to drag and drop actions
+  - Added image preview
+  - Added icons for non-image filetypes
+  - Added upload icons
+  - Now gray-scale painting the field when its state is disabled
+  - New validation of file extension, size and dimensions in file field
+- Dashboard movements changes:
+  - Added "Latest activity" label
+  - Now showing only 10 latest operations
+  - Removed "More" button
+- Now formatting date in validation message of fields with min date restriction
+- Now restricting max size of uploaded files to 32mb
+- Merged "Requires verification" and "Is security (requires accreditation for US
+  residents)" into "Deposit method" row in asset details drawer
+- New 'no-data' message for Movements, Fees and Limits table
+- Now showing more highlighted disabled investing reason in Invest form
+- Updated wordings:
+  - Change "Account address" to "Account ID" on "Settings" page
+  - Add recommendation of using Google Authenticator to 2FA screen
+  - Fix typo with "some assets" on the Deposit form
+- Now showing expiration date of deposit address on the Deposit form
+- Moved sale view buttons:
+  - Invest button to the block with investment statistics
+  - View details button to under the sale heading
+- Renamed "All sales" -> "Investable sales"
+
+#### Fixed
+- Added missing formatting of asset code and value to asset details drawer
+- Fix a bug with chart on-hover tip when price up from 0 to some value: instead
+  of "+Infinity%" now showing "+100%"
+- Fixed a bug when users requesting limits changing to unlimited values
+- Fixed a bug when users receive "Your transaction is invalid" if the submitted
+  transaction had exceeded limits
+- Fixed a bug of uploading documents on general verification form
+- Fixed a bug of incorrectly shown disabled state of account type selector on
+  verification page
+- Some typos in EN translations
+- Fixed an issue with 0 instead of converted balance on Dashboard
+- Fixed an issue with displaying quote asset as currency on the line chart
+- Fixed a bug that caused "Update" button to never be shown in asset details
+  drawer
+- Fixed displaying of sale & create sale request caps
+- Bug with getting 'defaultQuoteAsset' code in the sale creation form
+- Fixed annoying flickering on update on "Trade" page
+
+#### Removed
+- Removed restriction of creating sales in the past (and opportunities for REIT
+  experimental feature
+- Removed "dev: " prefix from displayed version
+
+### "Under the hood" changes
+#### Added
+- New `BalanceNotFoundError` to the runtime errors
+- New `initSync()` method to Api class
+- New `MessageBox` component for displaying titled messages
+- New `SALE_DEFINITION_TYPES` constant
+
+#### Changed
 - Modularized:
   - Pre-issuance form
   - Issuance form
   - Create sale form
-- Now formatting `minDate` validation message using i18n date filter
+- Now using @tokend/js-sdk@1.7.0-rc.1
+- Split offer creating drawer to three new drawers
+- Optimized fonts, images, SVGs
 - Now using `moment().toISOString()` value instead of `moment().toString()
-- Moved horizon resources to "/v3" endpoints
-- Now processing documents & blobs using new ApiCaller
 - Now performing actions with wallets & factors using relevant managers
-- Now using @tokend/js-sdk@1.7.0-x.1
+- Moved horizon resources to "/v3" endpoints
 - .babelrc: babel target to allowed browsers
-- Max size of uploaded file changed to 32mb
 - Now loading converted balances on the balances page
-- Now asset value and code formatted with formatMoney
+- Moved exceeding sale cap message to vuelidate error messages
+- Now loading default quote asset in create sale form
+  endpoint
+- Clean up:
+  - Now using global api.js in all modules instead of the local analogues
+  - Removed wallet provided via prop to each module
+  - Import api instead of Api in security page
+  - Remove _config.js from modules
+  - Remove storageUrl from modules
+  - Now processing documents & blobs using new ApiCaller
 
 #### Removed
-- Unused methods from `DocumentContainer` class
+- Removed unused:
+  - `CreateSaleForm` component
+  - `PreIssuanceForm` component
+  - `requests-renderer` component
+  - `mock-helper.js` unused methods
+  - `DocumentContainer` unused methods
+  - global SDK instance
 
 #### Fixed
-- Fixed a bug when we received MAX_VALID_LIMIT_VALUE when changing
-  limits to unlimited ones and not an empty field
-- An error was fixed in which if you exceed the limit for example daily
-  then the user received an error stating that "Your transaction is invalid."
-- Show drawer for isDepositable in movements-top-bar-reit
-- Dashboard loading flow
-- Filtering owned sales on back-end side using API filters
-- Displaying "My sales" page
-- Uploading documents on general verification form
-- Disabled state for account type selector on verification page
 - `event.getModifierState` error on auth page
-- Some typos in EN translations
-- Fixed issue with 0 instead of converted balance on Dashboard
-- Displaying quote asset as currency on the line chart
+- Account balances mapping in deposit form
+
+### Experimental features changes
+#### Fixed
+- Show drawer for `isDepositable` in movements-top-bar-reit
 
 ## [1.6.0] - 2019-05-09
 #### Changed
@@ -183,12 +391,12 @@ for further information about branching and tagging conventions.
 - Displaying incoming withdrawal requests (Loyalty)
 
 ## [1.5.0] - 2019-04-19
-### "Under the hood changes"
+### "Under the hood" changes
 #### Changed
 - Now using @tokend/js-sdk@1.5.0
 
 ## [1.5.0-rc.3] - 2019-04-19
-### "Under the hood changes"
+### "Under the hood" changes
 #### Changed
 - Now using @tokend/js-sdk@1.5.0-rc.1
 
@@ -484,7 +692,18 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.8.0-rc.0...HEAD
+[1.8.0-rc.0]: https://github.com/tokend/web-client/compare/1.8.0-x.3...1.8.0-rc.0
+[1.8.0-x.3]: https://github.com/tokend/web-client/compare/1.8.0-x.2...1.8.0-x.3
+[1.8.0-x.2]: https://github.com/tokend/web-client/compare/1.8.0-x.1...1.8.0-x.2
+[1.8.0-x.1]: https://github.com/tokend/web-client/compare/1.8.0-x.0...1.8.0-x.1
+[1.8.0-x.0]: https://github.com/tokend/web-client/compare/1.7.0...1.8.0-x.0
+[1.7.0]: https://github.com/tokend/web-client/compare/1.7.0-rc.4...1.7.0
+[1.7.0-rc.4]: https://github.com/tokend/web-client/compare/1.7.0-rc.3...1.7.0-rc.4
+[1.7.0-rc.3]: https://github.com/tokend/web-client/compare/1.7.0-rc.2...1.7.0-rc.3
+[1.7.0-rc.2]: https://github.com/tokend/web-client/compare/1.7.0-rc.1...1.7.0-rc.2
+[1.7.0-rc.1]: https://github.com/tokend/web-client/compare/1.7.0-rc.0...1.7.0-rc.1
+[1.7.0-rc.0]: https://github.com/tokend/web-client/compare/1.6.0...1.7.0-rc.0
 [1.6.0]: https://github.com/tokend/web-client/compare/1.6.0-rc.0...1.6.0
 [1.6.0-rc.0]: https://github.com/tokend/web-client/compare/1.6.0-x.2...1.6.0-rc.0
 [1.6.0-x.2]: https://github.com/tokend/web-client/compare/1.6.0-x.1...1.6.0-x.2

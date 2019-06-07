@@ -23,6 +23,8 @@ $z-drawer-backdrop: -1;
 $z-hint-wrapper-box: 100;
 $z-sidebar-backdrop: 115;
 $z-sidebar: 120;
+$z-tooltip-wrapper: 1;
+$z-skeleton-loader: 1;
 
 $_athensGray: #e9eaed;
 $_eastBay: #3a4180;
@@ -121,6 +123,7 @@ $col-status-msg-warning: $col-warning;
 $col-status-msg-success: #3cab00;
 $col-status-msg-error: $col-error;
 $col-status-msg-info: $col-info;
+$col-status-msg-light-bg: $col-block-bg;
 $col-status-msg-text: $col-text-on-dark-bg;
 $col-status-close-btn-hover: rgba(0, 0, 0, 0.1);
 
@@ -286,6 +289,7 @@ $col-downloads-block-bg: $col-block-bg;
 $col-downloads-header: $col-primary;
 $col-downloads-text: $col-secondary;
 $col-downloads-line: $_athensGray;
+$col-downloads-link: $col-primary-lighten;
 
 // iOS guide colors
 $col-ios-guide-title: $col-primary;
@@ -297,6 +301,14 @@ $col-ios-guide-step-number-bg: $col-primary;
 $col-ios-guide-step-number-text: $_white;
 $col-ios-guide-step-text: $col-primary;
 $col-ios-guide-substep-text: $col-secondary;
+
+// Pre-issuance guide colors
+$col-pre-issuance-guide-title: $col-primary;
+$col-pre-issuance-guide-block-bg: $col-block-bg;
+$col-pre-issuance-guide-header: $col-primary;
+$col-pre-issuance-guide-link: $col-primary-lighten;
+$col-pre-issuance-guide-text: $col-secondary;
+$col-pre-issuance-guide-list-item: $_thinPurple;
 
 // radio field colors
 $col-radio-field-border: $col-primary;
@@ -353,6 +365,14 @@ $col-border-comment-viewer-header: $_eastBay;
 $col-comment-content-gradient-from: $_eastBay;
 $col-comment-content-gradient-to: $_gray;
 
-// hint-wrapepr
+// skeleton-loader
+$col-background-skeleton-loader: rgba($_eastBay, 0.10);
+
+// hint-wrapper
 $col-hint-wrapper-box-bg: rgba($_black, 0.9);
 $col-hint-wrapper-box-text: $_concrete;
+
+// tooltip-wrapper
+$col-tooltip-wrapper-msg-bg: rgba($_black, 0.9);
+$col-tooltip-wrapper-msg-text: $_white;
+$col-tooltip-wrapper-border-style: transparent transparent $col-tooltip-wrapper-msg-bg transparent;

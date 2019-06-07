@@ -1,14 +1,15 @@
 <template>
   <div class="pre-issuance-requests">
-    <template v-if="isLoaded">
-      <requests-table :requests="requests" />
+    <template>
+      <requests-table
+        :requests="requests"
+        :is-loaded="isLoaded"
+      />
     </template>
 
-    <p v-else-if="isLoadingFailed">
+    <p v-if="isLoadingFailed">
       {{ 'pre-issuance-requests.loading-error-msg' | globalize }}
     </p>
-
-    <load-spinner v-else message-id="pre-issuance-requests.loading-msg" />
 
     <collection-loader
       class="pre-issuance-requests__loader"
@@ -21,14 +22,9 @@
 </template>
 
 <script>
-import LoadSpinner from '@/vue/common/Loader'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 
 import RequestsTable from './components/requests-table'
-
-import { initApi } from './_api'
-
-import { Wallet } from '@tokend/js-sdk'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
@@ -38,24 +34,8 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 export default {
   name: 'pre-issuance-requests-module',
   components: {
-    LoadSpinner,
     CollectionLoader,
     RequestsTable,
-  },
-
-  props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
   },
 
   data: _ => ({
@@ -71,15 +51,11 @@ export default {
   },
 
   created () {
-    initApi(this.wallet, this.config)
-
-    this.setAccountId(this.wallet.accountId)
     this.initFirstPageLoader()
   },
 
   methods: {
     ...mapMutations('pre-issuance-requests', {
-      setAccountId: types.SET_ACCOUNT_ID,
       setRequests: types.SET_REQUESTS,
       concatRequests: types.CONCAT_REQUESTS,
     }),

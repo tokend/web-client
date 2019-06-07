@@ -7,16 +7,22 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <select-field
-          v-model="country"
-          name="id-document-type"
-          key-as-value-text="translation"
-          :is-value-translatable="false"
-          :values="COUNTRIES"
+          :value="country.code"
+          @input="country = COUNTRIES.find(item => item.code === $event)"
+          name="address-country"
           :label="'general-form.address-country-lbl' | globalize"
           @blur="touchField('country')"
           :error-message="getFieldErrorMessage('country')"
           :disabled="isDisabled || isCountryChangeDisabled"
-        />
+        >
+          <option
+            v-for="countryItem in COUNTRIES"
+            :key="countryItem.code"
+            :value="countryItem.code"
+          >
+            {{ countryItem.translation | globalize }}
+          </option>
+        </select-field>
       </div>
     </div>
 

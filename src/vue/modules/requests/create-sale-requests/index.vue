@@ -1,6 +1,6 @@
 <template>
   <div class="create-sale-requests">
-    <template v-if="isLoaded">
+    <template>
       <drawer :is-shown.sync="isDrawerShown">
         <template v-if="isUpdateMode">
           <template slot="heading">
@@ -8,8 +8,6 @@
           </template>
           <create-sale-form-module
             :request-id="selectedRequest.id"
-            :wallet="wallet"
-            :config="config"
             @close="isDrawerShown = false"
             @request-updated="initFirstPageLoader"
           />
@@ -29,15 +27,14 @@
 
       <requests-table
         :requests="requests"
+        :is-loaded="isLoaded"
         @select="showRequestDetails"
       />
     </template>
 
-    <p v-else-if="isLoadingFailed">
+    <p v-if="isLoadingFailed">
       {{ 'create-sale-requests.loading-error-msg' | globalize }}
     </p>
-
-    <load-spinner v-else message-id="create-sale-requests.loading-msg" />
 
     <collection-loader
       class="create-sale-requests__loader"
@@ -50,7 +47,6 @@
 </template>
 
 <script>
-import LoadSpinner from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 
@@ -58,11 +54,6 @@ import RequestsTable from './components/requests-table'
 import RequestViewer from './components/request-viewer'
 
 import CreateSaleFormModule from '@modules/create-sale-form'
-
-import { Wallet } from '@tokend/js-sdk'
-
-import { initApi } from './_api'
-import { initConfig } from './_config'
 
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { types } from './store/types'
@@ -72,28 +63,11 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 export default {
   name: 'create-sale-requests-module',
   components: {
-    LoadSpinner,
     Drawer,
     CollectionLoader,
     RequestsTable,
     RequestViewer,
     CreateSaleFormModule,
-  },
-
-  props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     * @property config.storageURL - the url of storage server
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
   },
 
   data: _ => ({
@@ -112,16 +86,11 @@ export default {
   },
 
   async created () {
-    initApi(this.wallet, this.config)
-    initConfig(this.config)
-
-    this.setAccountId(this.wallet.accountId)
     this.initFirstPageLoader()
   },
 
   methods: {
     ...mapMutations('create-sale-requests', {
-      setAccountId: types.SET_ACCOUNT_ID,
       setRequests: types.SET_REQUESTS,
       concatRequests: types.CONCAT_REQUESTS,
     }),

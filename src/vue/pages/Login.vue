@@ -41,7 +41,7 @@ import Loader from '@/vue/common/Loader'
 import { vueRoutes } from '@/vue-router/routes'
 import { Bus } from '@/js/helpers/event-bus'
 
-import { Api } from '@/api'
+import { walletsManager } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
@@ -60,7 +60,7 @@ export default {
       const verificationCode = this.$route.params.encodedVerificationCode
       if (verificationCode) {
         this.isVerifyingEmail = true
-        await Api.walletsManager.verifyEmail(verificationCode)
+        await walletsManager.verifyEmail(verificationCode)
         Bus.success('auth-pages.email-verified')
         this.isVerifyingEmail = false
       }

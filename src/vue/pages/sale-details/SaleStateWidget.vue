@@ -1,21 +1,5 @@
 <template>
   <div class="sale-state-widget">
-    <drawer :is-shown.sync="isOverviewDrawerShown">
-      <template slot="heading">
-        {{ 'sale-details.overview-title' | globalize }}
-      </template>
-
-      <sale-overview :sale="sale" />
-    </drawer>
-    <template v-if="getModule().canRenderSubmodule(DashboardChartPseudoModule)">
-      <submodule-importer
-        :submodule="getModule().getSubmodule(DashboardChartPseudoModule)"
-        :base-asset="sale.baseAsset"
-        :quote-asset="sale.defaultQuoteAsset"
-        :show-tabs="false"
-        :show-ticks="false"
-      />
-    </template>
     <p class="sale-state-widget__invested">
       <!-- eslint-disable-next-line max-len -->
       {{ { value: sale.currentCap, currency: sale.defaultQuoteAsset } | formatMoney }}
@@ -69,33 +53,35 @@
       </div>
     </template>
 
-    <button
-      v-ripple
-      class="app__button-raised sale-state-widget__overview-btn"
-      @click="isOverviewDrawerShown = true"
-    >
-      {{ 'sale-details.view-details-btn' | globalize }}
-    </button>
+    <div class="sale-state-widget__invest-form-wrp">
+      <h3 class="sale-state-widget__invest-form-title">
+        {{ 'sale-details.invest-title' | globalize }}
+      </h3>
+
+      <invest-form
+        class="sale-state-widget__invest-form"
+        :sale="sale"
+        @submitted="$emit(EVENTS.saleUpdated)"
+        @canceled="$emit(EVENTS.saleUpdated)"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import Drawer from '@/vue/common/Drawer'
-
-import SaleOverview from './SaleOverview'
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
-
-import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
+import InvestForm from '@/vue/forms/InvestForm'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 import { SALE_STATES } from '@/js/const/sale-states'
 
+const EVENTS = {
+  saleUpdated: 'sale-updated',
+}
+
 export default {
   name: 'sale-state-widget',
   components: {
-    Drawer,
-    SaleOverview,
-    SubmoduleImporter,
+    InvestForm,
   },
 
   props: {
@@ -103,9 +89,8 @@ export default {
   },
 
   data: _ => ({
-    isOverviewDrawerShown: false,
-    DashboardChartPseudoModule,
     SALE_STATES,
+    EVENTS,
   }),
 }
 </script>
@@ -163,9 +148,11 @@ export default {
   margin-top: 1.6rem;
 }
 
-.sale-state-widget__overview-btn {
+.sale-state-widget__invest-form-wrp {
   margin-top: 3.2rem;
-  max-width: 18rem;
-  width: 100%;
+}
+
+.sale-state-widget__invest-form {
+  margin-top: 1.2rem;
 }
 </style>

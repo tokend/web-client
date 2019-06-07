@@ -1,4 +1,4 @@
-const BigNumber = require('bignumber.js')
+import BigNumber from 'bignumber.js'
 
 const ROUNDING_MODES = Object.freeze({
   ROUND_UP: 0,
@@ -76,6 +76,48 @@ export class MathUtil {
     const result = one.plus(two)
     return result
       .toFixed(DECIMAL_PLACES)
+  }
+
+  static compare (a, b) {
+    if (!this._isValidParams('comparedTo', a, b)) return -1
+
+    const one = new BigNumber(a)
+    const two = new BigNumber(b)
+
+    return one.comparedTo(two)
+  }
+
+  /**
+   * Formats value by provided config.
+   *
+   * @param {Number|String} value Number to format.
+   * @param {Object} config Format config.
+   * @param {Number} config.decimalPlaces Number of decimal places to round.
+   * @param {String} [config.prefix] String to prepend.
+   * @param {String} [config.decimalSeparator] Decimal separator.
+   * @param {String} [config.groupSeparator] Grouping separator of
+   *                                         the integer part.
+   * @param {Number} [config.groupSize] Primary grouping size of
+   *                                    the integer part.
+   * @param {Number} [config.secondaryGroupSize] Secondary grouping size of
+                                                 the integer part.
+   * @param {String} [config.fractionGroupSeparator] Grouping separator of
+                                                     the fraction part.
+   * @param {Number} [config.fractionGroupSize] Grouping size of
+                                                the fraction part.
+   * @param {String} [config.suffix] String to append.
+
+   * @returns {String} Formatted string
+   */
+  static format (value, config) {
+    BigNumber.config({ FORMAT: config })
+
+    const num = new BigNumber(value)
+    const result = new BigNumber(
+      num.toFixed(config.decimalPlaces, ROUNDING_MODES.ROUND_HALF_UP)
+    )
+
+    return result.toFormat()
   }
 
   /**

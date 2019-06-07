@@ -1,9 +1,9 @@
-import UploadDocumentsMixin from './upload-documents.mixin'
+import { uploadDocuments } from '@/js/helpers/upload-documents'
 
 import { base } from '@tokend/js-sdk'
 
-import { api } from '../_api'
-import { config } from '../_config'
+import { api } from '@/api'
+import config from '@/config'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
@@ -15,12 +15,10 @@ const EMPTY_DOCUMENT = {
 }
 
 export default {
-  mixins: [UploadDocumentsMixin],
-
   computed: {
     preIssuanceAssetSigner () {
       return this.advancedStepForm.isPreissuanceDisabled
-        ? config().NULL_ASSET_SIGNER
+        ? config.NULL_ASSET_SIGNER
         : this.advancedStepForm.preIssuanceAssetSigner
     },
 
@@ -37,9 +35,9 @@ export default {
       return {
         requestID: this.requestId || NEW_CREATE_ASSET_REQUEST_ID,
         code: this.informationStepForm.code,
-        assetType: String(this.informationStepForm.assetType.value),
+        assetType: String(this.informationStepForm.assetType),
         preissuedAssetSigner: this.preIssuanceAssetSigner,
-        trailingDigitsCount: config().DECIMAL_POINTS,
+        trailingDigitsCount: config.DECIMAL_POINTS,
         initialPreissuedAmount: this.initialPreissuedAmount,
         maxIssuanceAmount: this.informationStepForm.maxIssuanceAmount,
         policies: this.informationStepForm.policies,
@@ -53,11 +51,11 @@ export default {
   },
 
   methods: {
-    async getCreateAssetRequestById (id) {
+    async getCreateAssetRequestById (id, accountId) {
       const endpoint = `/v3/create_asset_requests/${id}`
-      const { data: record } = await api().getWithSignature(endpoint, {
+      const { data: record } = await api.getWithSignature(endpoint, {
         filter: {
-          requestor: this.wallet.accountId,
+          requestor: accountId,
         },
         include: ['request_details'],
       })
@@ -70,10 +68,10 @@ export default {
         this.informationStepForm.logo,
         this.advancedStepForm.terms,
       ]
-      await this.uploadDocuments(assetDocuments)
+      await uploadDocuments(assetDocuments)
       const operation =
         base.ManageAssetBuilder.assetCreationRequest(this.assetRequestOpts)
-      await api().postOperations(operation)
+      await api.postOperations(operation)
     },
   },
 }

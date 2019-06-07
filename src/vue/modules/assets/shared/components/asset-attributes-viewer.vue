@@ -3,7 +3,6 @@
     <div class="asset-attributes-viewer__header">
       <logo-viewer
         :asset="asset"
-        :storage-url="storageUrl"
         :dark-mode="true"
       />
 
@@ -19,11 +18,11 @@
     <div class="app__table asset-attributes-viewer__table-wrp">
       <table>
         <tbody>
-          <tr v-if="asset.balance">
+          <tr v-if="balance">
             <td>{{ 'assets.balance-title' | globalize }}</td>
             <td>
               {{
-                { value: asset.balance, currency: asset.code } | formatMoney
+                { value: balance, currency: asset.code } | formatMoney
               }}
             </td>
           </tr>
@@ -80,36 +79,44 @@
           </tr>
           <tr>
             <td>
-              {{ 'assets.verification-required-title' | globalize }}
+              {{ 'assets.deposit-method-title' | globalize }}
             </td>
             <td>
-              <template v-if="asset.type === kycRequiredAssetType">
-                {{ 'assets.present-msg' | globalize }}
+              <template v-if="asset.isCoinpayments">
+                {{ 'assets.coinpayments-msg' | globalize }}
+              </template>
+
+              <template v-else-if="asset.externalSystemType">
+                {{ 'assets.default-msg' | globalize }}
               </template>
 
               <template v-else>
-                {{ 'assets.absent-msg' | globalize }}
+                {{ 'assets.non-depositable-msg' | globalize }}
               </template>
             </td>
           </tr>
           <tr>
             <td>
-              {{ 'assets.security-asset-title' | globalize }}
+              {{ 'assets.asset-type' | globalize }}
             </td>
             <td>
-              <template v-if="asset.type === securityAssetType">
-                {{ 'assets.present-msg' | globalize }}
+              <template v-if="asset.type === kycRequiredAssetType">
+                {{ 'assets.verification-required-title' | globalize }}
+              </template>
+
+              <template v-else-if="asset.type === securityAssetType">
+                {{ 'assets.security-asset-title' | globalize }}
               </template>
 
               <template v-else>
-                {{ 'assets.absent-msg' | globalize }}
+                {{ 'assets.does-not-require-verification-title' | globalize }}
               </template>
             </td>
           </tr>
           <tr>
             <td>{{ 'assets.terms-title' | globalize }}</td>
             <td>
-              <terms-viewer :asset="asset" :storage-url="storageUrl" />
+              <terms-viewer :asset="asset" />
             </td>
           </tr>
           <tr>
@@ -132,7 +139,7 @@ import LogoViewer from './logo-viewer'
 import TermsViewer from './terms-viewer'
 import EmailGetter from '@/vue/common/EmailGetter'
 
-import { Asset } from '../wrappers/asset'
+import { AssetRecord } from '@/js/records/entities/asset.record'
 
 export default {
   name: 'asset-attributes-viewer',
@@ -142,8 +149,8 @@ export default {
     EmailGetter,
   },
   props: {
-    asset: { type: Asset, required: true },
-    storageUrl: { type: String, required: true },
+    asset: { type: AssetRecord, required: true },
+    balance: { type: String, default: '' },
     kycRequiredAssetType: { type: Number, required: true },
     securityAssetType: { type: Number, required: true },
   },

@@ -1,7 +1,7 @@
 <template>
   <div class="limits-requests-list-renderer">
     <div
-      v-if="!isLoading && !isLoadingFailed && requests.length"
+      v-if="!isLoadingFailed"
       class="limits-requests-list-renderer__table
             app__table
             app__table--with-shadow"
@@ -25,7 +25,9 @@
             <th />
           </tr>
         </thead>
-        <tbody>
+        <tbody
+          v-if="!isLoading && requests.length"
+        >
           <tr
             v-for="(request, i) in requests"
             :request="request"
@@ -57,21 +59,25 @@
             </td>
           </tr>
         </tbody>
+        <tbody
+          v-else-if="!isLoading && !requests.length"
+        >
+          <tr>
+            <td
+              class="limits-requests-list-renderer__table-cell--align-center"
+              colspan="5"
+            >
+              <!-- eslint-disable-next-line max-len -->
+              {{ 'limits-requests-table-renderer.here-will-requests-list' | globalize }}
+            </td>
+          </tr>
+        </tbody>
+        <skeleton-loader-table-body
+          :rows="1"
+          v-else
+        />
       </table>
     </div>
-
-    <template v-else-if="!isLoading && !isLoadingFailed && !requests.length">
-      <!-- eslint-disable max-len -->
-      <no-data-message
-        :title="'limits-requests-table-renderer.no-requests-history' | globalize"
-        :message="'limits-requests-table-renderer.here-will-requests-list' | globalize"
-      />
-      <!-- eslint-enable max-len -->
-    </template>
-
-    <template v-else-if="isLoading && !isLoadingFailed">
-      <loader :message-id="'limits-requests-table-renderer.data-loading'" />
-    </template>
 
     <template v-else-if="!isLoading && isLoadingFailed">
       <!-- eslint-disable max-len -->
@@ -114,8 +120,7 @@
 </template>
 
 <script>
-import Loader from '@/vue/common/Loader'
-import NoDataMessage from '@/vue/common/NoDataMessage'
+import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 import LimitsDocumentsUploaderForm from '@/vue/forms/LimitsDocumentsUploaderForm.vue'
 import LimitsRequestDetailsViewer from './Limits.RequestDetailsViewer.vue'
 import Drawer from '@/vue/common/Drawer'
@@ -144,11 +149,10 @@ const LIMITS_REQUEST_TYPE_TRANSLATION_ID = Object.freeze({
 export default {
   name: 'limits-requests-list-renderer',
   components: {
-    Loader,
     Drawer,
-    NoDataMessage,
     LimitsDocumentsUploaderForm,
     LimitsRequestDetailsViewer,
+    SkeletonLoaderTableBody,
   },
   props: {
     requests: { type: Array, required: true, default: () => [] },
@@ -186,6 +190,10 @@ export default {
 
 <style lang="scss">
 @import '~@scss/variables';
+
+.limits-requests-list-renderer__table-cell--align-center {
+  text-align: center;
+}
 
 .limits-requests-list-renderer__reload-requests-btn {
   margin-top: 1.6rem;

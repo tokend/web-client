@@ -8,14 +8,21 @@
       <div class="app__form-field">
         <select-field
           name="deposit-fiat-card-asset"
-          v-model="form.asset"
-          :values="depositableFiatAssets"
-          key-as-value-text="nameAndCode"
+          :value="form.asset.code"
+          @input="setAssetByCode"
           :disabled="formMixin.isDisabled"
           @blur="touchField('form.asset')"
           :error-message="getFieldErrorMessage('form.asset')"
           :label="'deposit-fiat-card-module.asset' | globalize"
-        />
+        >
+          <option
+            v-for="asset in depositableFiatAssets"
+            :key="asset.code"
+            :value="asset.code"
+          >
+            {{ asset.nameAndCode }}
+          </option>
+        </select-field>
         <div class="deposit-fiat-card__form-field-description">
           <p>
             {{
@@ -29,21 +36,16 @@
       </div>
     </div>
     <div class="app__form-row">
-      <input-field
-        white-autofill
-        class="app__form-field"
-        v-model.trim="form.amount"
-        type="number"
-        :step="config.minAmount"
+      <amount-input-field
+        v-model="form.amount"
         name="deposit-fiat-card-amount"
-        @blur="touchField('form.amount')"
-        :error-message="getFieldErrorMessage('form.amount', {
-          maxDecimalDigitsCount: form.asset.trailingDigitsCount
-        })"
+        validation-type="outgoing"
         :label="'deposit-fiat-card-module.amount' | globalize({
           asset: form.asset.code
         })"
         :disabled="formMixin.isDisabled"
+        :asset="form.asset"
+        is-max-button-shown
       />
     </div>
     <div class="app__form-row deposit-fiat-card__form-row">
@@ -194,13 +196,13 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import debounce from 'lodash/debounce'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 import { Bus } from '@/js/helpers/event-bus'
 import { Wallet, base } from '@tokend/js-sdk'
-import { initApi, api } from './_api'
+import { api } from '@/api'
 import { MathUtil } from '@/js/utils'
 import {
   required,
-  maxDecimalDigitsCount,
   cardNumber,
   cardExpirationDate,
   cardCVV3,
@@ -232,10 +234,6 @@ export default {
   },
   mixins: [FormMixin],
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
     /**
      * @property config - the config for component to use
      * @property config.horizonURL - the url of horizon server (without version)
@@ -272,6 +270,9 @@ export default {
       balances: types.balances,
       calculatedFees: types.fees,
     }),
+    ...mapGetters([
+      vuexTypes.accountId,
+    ]),
     totalFee () {
       return MathUtil.add(this.fees.percentFee, this.fees.fixedFee)
     },
@@ -293,12 +294,6 @@ export default {
     return {
       form: {
         asset: { required },
-        amount: {
-          required,
-          maxDecimalDigitsCount: maxDecimalDigitsCount(
-            this.config.decimalPoints
-          ),
-        },
         cardNumber: {
           required,
           cardNumber,
@@ -318,9 +313,6 @@ export default {
     }
   },
   async created () {
-    initApi(this.wallet, this.config)
-
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAssets()
 
@@ -337,6 +329,10 @@ export default {
       loadAssets: types.LOAD_ASSETS,
       loadFees: types.LOAD_FEES,
     }),
+    setAssetByCode (code) {
+      this.form.asset = this.depositableFiatAssets
+        .find(item => item.code === code)
+    },
     async getFees () {
       try {
         await this.loadFees({
@@ -361,15 +357,12 @@ export default {
           Bus.error('deposit-fiat-card-module.failed-load-fees')
           return false
         }
-        this.reInitApi(MASTER_ACCOUNT_WALLET, this.config)
-
         // eslint-disable-next-line max-len
         const operation = base.CreateIssuanceRequestBuilder.createIssuanceRequest({
           ...this.composeOptions(),
         })
-        await api().postOperations(operation)
 
-        this.reInitApi(this.wallet, this.config)
+        await api.withWallet(MASTER_ACCOUNT_WALLET).postOperations(operation)
         Bus.success('deposit-fiat-card-module.deposit-success')
         this.$emit(EVENTS.deposited)
       } catch (e) {
@@ -404,9 +397,6 @@ export default {
         ref += possible.charAt(Math.floor(Math.random() * possible.length))
       }
       return ref
-    },
-    reInitApi (wallet, config) {
-      initApi(wallet, config)
     },
   },
 }

@@ -14,18 +14,19 @@
 </template>
 
 <script>
-import { Asset } from '../wrappers/asset'
+import { AssetRecord } from '@/js/records/entities/asset.record'
+
+import { documentsManager } from '@/api'
 
 export default {
   name: 'logo-viewer',
   props: {
-    asset: { type: Asset, required: true },
-    storageUrl: { type: String, required: true },
+    asset: { type: AssetRecord, required: true },
     darkMode: { type: Boolean, default: false },
   },
   computed: {
     url () {
-      return this.asset.logoUrl(this.storageUrl)
+      return documentsManager.getDocumentUrlByKey(this.asset.logoKey)
     },
   },
 }

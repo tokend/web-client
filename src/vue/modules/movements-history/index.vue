@@ -1,24 +1,27 @@
 <template>
   <div class="movements-history">
-    <template v-if="isInitialized && assetCode">
-      <template v-if="isMovementsLoaded">
+    <template>
+      <template>
+        <h2 class="app__table-title" v-if="latestActivity">
+          {{ 'movements-history.latest-activity' | globalize }}
+        </h2>
         <div class="movements-history__list-wrp">
-          <movements-table :movements="movements" />
+          <movements-table
+            :is-movements-loaded="isMovementsLoaded && isInitialized"
+            :movements="movements"
+          />
         </div>
       </template>
-      <template v-else-if="isMovementsLoadFailed">
+      <template v-if="isMovementsLoadFailed">
         <p class="movements-history__error-msg">
           {{ 'movements-history.movements-load-failed-msg' | globalize }}
         </p>
       </template>
-      <template v-else>
-        <load-spinner message-id="movements-history.loading-movements-msg" />
-      </template>
 
       <div class="movements-history__collection-loader-wrp">
         <collection-loader
-          v-if="!isMovementsLoadFailed"
-          v-show="isMovementsLoaded"
+          v-if="!isMovementsLoadFailed && isInitialized && assetCode"
+          v-show="isMovementsLoaded && !latestActivity"
           :first-page-loader="firstPageLoader"
           @first-page-load="setMovements"
           @next-page-load="concatMovements"
@@ -26,24 +29,16 @@
         />
       </div>
     </template>
-
-    <template v-else>
-      <load-spinner message-id="movements-history.initializing-msg" />
-    </template>
   </div>
 </template>
 
 <script>
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import MovementsTable from './components/movements-table'
-import LoadSpinner from '@/vue/common/Loader'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { types } from './store/types'
-
-import { Wallet } from '@tokend/js-sdk'
-import { initApi } from './_api'
 
 const REFS = {
   collectionLoader: 'collection-loader',
@@ -52,26 +47,17 @@ const REFS = {
 export default {
   name: 'movements-history-module',
   components: {
-    LoadSpinner,
     MovementsTable,
     CollectionLoader,
   },
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
     assetCode: {
       type: String,
       default: '',
+    },
+    latestActivity: {
+      type: Boolean,
+      default: false,
     },
   },
   data: _ => ({
@@ -93,16 +79,12 @@ export default {
     },
   },
   async created () {
-    initApi(this.wallet, this.config)
-
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     this.isInitialized = true
   },
   methods: {
     ...mapMutations('movements-history', {
       setMovements: types.SET_MOVEMENTS,
-      setAccountId: types.SET_ACCOUNT_ID,
       concatMovements: types.CONCAT_MOVEMENTS,
     }),
     ...mapActions('movements-history', {

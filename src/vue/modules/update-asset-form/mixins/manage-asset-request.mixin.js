@@ -1,9 +1,8 @@
-import UploadDocumentsMixin from './upload-documents.mixin'
-
 import { base } from '@tokend/js-sdk'
 import { REQUEST_STATES } from '@/js/const/request-states.const'
 
-import { api } from '../_api'
+import { api } from '@/api'
+import { uploadDocuments } from '@/js/helpers/upload-documents'
 
 import { UpdateAssetRequest } from '../wrappers/update-asset-request'
 
@@ -15,8 +14,6 @@ const EMPTY_DOCUMENT = {
 }
 
 export default {
-  mixins: [UploadDocumentsMixin],
-
   computed: {
     assetRequestOpts () {
       const requestId = this.request
@@ -43,11 +40,11 @@ export default {
   },
 
   methods: {
-    async getUpdateAssetRequestById (id) {
+    async getUpdateAssetRequestById (id, accountId) {
       const endpoint = `/v3/update_asset_requests/${id}`
-      const { data: record } = await api().getWithSignature(endpoint, {
+      const { data: record } = await api.getWithSignature(endpoint, {
         filter: {
-          requestor: this.wallet.accountId,
+          requestor: accountId,
         },
         include: ['request_details'],
       })
@@ -55,26 +52,28 @@ export default {
       return new UpdateAssetRequest(record)
     },
 
-    async getUpdatableRequest () {
+    async getUpdatableRequest (accountId) {
       const pendingRequest = await this.getLatestUpdateAssetRequest(
-        REQUEST_STATES.pending
+        REQUEST_STATES.pending,
+        accountId
       )
       const rejectedRequest = await this.getLatestUpdateAssetRequest(
-        REQUEST_STATES.rejected
+        REQUEST_STATES.rejected,
+        accountId
       )
 
       return pendingRequest || rejectedRequest
     },
 
-    async getLatestUpdateAssetRequest (requestState) {
+    async getLatestUpdateAssetRequest (requestState, accountId) {
       const endpoint = '/v3/update_asset_requests'
-      const { data: requests } = await api().getWithSignature(endpoint, {
+      const { data: requests } = await api.getWithSignature(endpoint, {
         page: {
           limit: 1,
           order: 'desc',
         },
         filter: {
-          requestor: this.wallet.accountId,
+          requestor: accountId,
           state: requestState,
         },
         include: ['request_details'],
@@ -88,11 +87,11 @@ export default {
         this.informationStepForm.logo,
         this.advancedStepForm.terms,
       ]
-      await this.uploadDocuments(assetDocuments)
+      await uploadDocuments(assetDocuments)
 
       const operation =
         base.ManageAssetBuilder.assetUpdateRequest(this.assetRequestOpts)
-      await api().postOperations(operation)
+      await api.postOperations(operation)
     },
   },
 }

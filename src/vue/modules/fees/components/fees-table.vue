@@ -1,7 +1,6 @@
 <template>
   <div class="fees-table">
     <div
-      v-if="fees.length"
       class="app__table app__table--with-shadow"
     >
       <table>
@@ -27,8 +26,7 @@
             </th>
           </tr>
         </thead>
-
-        <tbody>
+        <tbody v-if="isLoaded && fees.length">
           <tr
             v-for="(fee, i) in fees"
             :key="i"
@@ -61,30 +59,38 @@
             </td>
           </tr>
         </tbody>
+        <tbody v-else-if="isLoaded">
+          <tr>
+            <td
+              class="fees-table__empty-list-placeholder"
+              colspan="6"
+            >
+              <!-- eslint-disable-next-line -->
+              {{ 'fees.no-valuable-fees-msg' | globalize({ asset: assetCode }) }}
+            </td>
+          </tr>
+        </tbody>
+
+        <skeleton-loader-table-body
+          v-else
+          :cells="6"
+        />
       </table>
     </div>
-
-    <no-data-message
-      v-else
-      icon-name="trending-up"
-      :title="'fees.no-valuable-fees-title' | globalize"
-      :message="'fees.no-valuable-fees-msg' | globalize({ asset: assetCode })"
-    />
   </div>
 </template>
 
 <script>
-import NoDataMessage from '@/vue/common/NoDataMessage'
-
 import FeeTypeViewer from './viewers/fee-type-viewer'
 import FeeSubtypeViewer from './viewers/fee-subtype-viewer'
+import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 
 export default {
   name: 'fees-table',
   components: {
-    NoDataMessage,
     FeeTypeViewer,
     FeeSubtypeViewer,
+    SkeletonLoaderTableBody,
   },
 
   props: {
@@ -96,6 +102,16 @@ export default {
       type: String,
       default: '',
     },
+    isLoaded: {
+      type: Boolean,
+      require: true,
+    },
   },
 }
 </script>
+
+<style scoped lang="scss">
+  .fees-table__empty-list-placeholder {
+    text-align: center;
+  }
+</style>

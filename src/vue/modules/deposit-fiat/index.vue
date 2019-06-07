@@ -9,7 +9,6 @@
           <submodule-importer
             :submodule="getModule().getSubmodule(DepositFiatCardModule)"
             :config="config"
-            :wallet="wallet"
             @deposited="deposited"
           />
         </tab>
@@ -22,8 +21,6 @@
         >
           <submodule-importer
             :submodule="getModule().getSubmodule(DepositFiatBankModule)"
-            :config="config"
-            :wallet="wallet"
             @deposited="deposited"
           />
         </tab>
@@ -33,8 +30,6 @@
 </template>
 
 <script>
-import { Wallet } from '@tokend/js-sdk'
-
 import Tabs from '@/vue/common/tabs/Tabs'
 import Tab from '@/vue/common/tabs/Tab'
 
@@ -54,14 +49,11 @@ export default {
     SubmoduleImporter,
   },
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
     /**
      * @property config - the config for component to use
      * @property config.horizonURL - the url of horizon server (without version)
      * @property config.decimalPoints - count of allowed decimal points
+     * @property config.minAmount - minimal allowed amount
      */
     config: {
       type: Object,

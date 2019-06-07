@@ -1,5 +1,5 @@
 <template>
-  <table class="movements-table" v-if="movements.length">
+  <table class="movements-table">
     <thead>
       <tr class="movements-table__head-row">
         <th
@@ -38,30 +38,43 @@
       :movement="movement"
       :key="movement.id"
     />
+    <empty-tbody-placeholder
+      v-if="!movements.length && isMovementsLoaded"
+    />
+    <template v-for="index in itemPerSkeletonLoader">
+      <movements-skeleton-loader
+        v-if="!isMovementsLoaded && !movements.length"
+        :key="index"
+      />
+    </template>
   </table>
-  <no-data-message
-    v-else
-    :title="'movements-history.no-movements-title' | globalize"
-    :message="'movements-history.no-movements-msg' | globalize"
-  />
 </template>
 
 <script>
 import MovementsTableRow from './movements-table-row'
-import NoDataMessage from '@/vue/common/NoDataMessage'
+import MovementsSkeletonLoader from './movements-skeleton-loader.vue'
+import EmptyTbodyPlaceholder from './movements-empty-list-placeholder.vue'
 
 export default {
   name: 'movement-list-renderer',
   components: {
     MovementsTableRow,
-    NoDataMessage,
+    MovementsSkeletonLoader,
+    EmptyTbodyPlaceholder,
   },
   props: {
     movements: {
       type: Array, /** {@link Movement} **/
       required: true,
     },
+    isMovementsLoaded: {
+      type: Boolean,
+      required: true,
+    },
   },
+  data: _ => ({
+    itemPerSkeletonLoader: 3,
+  }),
 }
 </script>
 

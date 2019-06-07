@@ -1,20 +1,37 @@
 import _cloneDeep from 'lodash/cloneDeep'
 import i18next from 'i18next'
+import moment from 'moment-timezone'
 
 const mockEn = {
   'config': {
     'number': {
       'formats': {
         'amounts': {
-          'usd': '$0,0.[00]',
-          'eur': '0,0.[00]€',
-          'gbp': '0,0.[00]£',
-          'default': '0,0.[000000]',
+          'default': {
+            'decimalSeparator': '.',
+            'groupSeparator': ',',
+            'groupSize': 3,
+            'decimalPlaces': 6,
+          },
         },
-        'default': '0,0.[000000]',
-        'integer': '0,0',
-        'percent': '0,0.[00]%',
-        'order_number': '0,0o',
+        'default': {
+          'decimalSeparator': '.',
+          'groupSeparator': ',',
+          'groupSize': 3,
+          'decimalPlaces': 6,
+        },
+        'integer': {
+          'groupSeparator': ',',
+          'groupSize': 3,
+          'decimalPlaces': 0,
+        },
+        'percent': {
+          'decimalSeparator': '.',
+          'groupSeparator': ',',
+          'groupSize': 3,
+          'decimalPlaces': 6,
+          'suffix': '%',
+        },
       },
     },
 
@@ -72,6 +89,7 @@ describe('the i18n is properly configured', () => {
     const options = _cloneDeep(i18nOptions)
     options.lng = 'en'
     options.debug = false // Set to true, if something is not working
+    moment.tz.setDefault('UTC') // Set timezone to 'UTC', so tests won't convert to local timezone
     i18next.init(options)
   })
 
@@ -136,33 +154,6 @@ describe('the i18n is properly configured', () => {
       }
     })
 
-    describe('formats the preset currency', () => {
-      const amounts = {
-        '1': '$1',
-        '15.233': '$15.23',
-        '105.23400': '$105.23',
-        '509.22119821': '$509.22',
-        '152.123000': '$152.12',
-        '1200': '$1,200',
-        '1200.123123': '$1,200.12',
-        '10500': '$10,500',
-        '21500.2300': '$21,500.23',
-        '400000': '$400,000',
-      }
-
-      for (const [given, expected] of Object.entries(amounts)) {
-        it(`given = ${given}`, () => {
-          const result = i18next.t('withFormattedCurrency', {
-            amount: {
-              value: given,
-              currency: 'USD',
-            },
-          })
-          expect(result).to.equal(`Your balance is ${expected}`)
-        })
-      }
-    })
-
     describe('formats the currency without the provided code', () => {
       const amounts = {
         '1': '1',
@@ -175,6 +166,7 @@ describe('the i18n is properly configured', () => {
         '10500': '10,500',
         '21500.2300': '21,500.23',
         '400000': '400,000',
+        '85070591730234615847396907.784233': '85,070,591,730,234,615,847,396,907.784233',
       }
 
       for (const [given, expected] of Object.entries(amounts)) {
@@ -183,28 +175,6 @@ describe('the i18n is properly configured', () => {
             amount: given,
           })
           expect(result).to.equal(`Your balance is ${expected}`)
-        })
-      }
-    })
-
-    describe('formats the order number', () => {
-      const numbers = {
-        '1': '1st',
-        '2': '2nd',
-        '3': '3rd',
-        '4': '4th',
-        '10': '10th',
-        '126': '126th',
-        '1210': '1,210th',
-        '100500': '100,500th',
-      }
-
-      for (const [given, expected] of Object.entries(numbers)) {
-        it(`given = ${given}`, () => {
-          const result = i18next.t('withFormattedOrderNumber', {
-            place: given,
-          })
-          expect(result).to.equal(`You are in the ${expected} place`)
         })
       }
     })

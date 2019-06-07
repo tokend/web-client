@@ -18,7 +18,7 @@
           v-show="currentStep === STEPS.advanced.number"
           :request="request"
           :is-disabled.sync="isDisabled"
-          :main-signer-account-id="mainSignerAccountId"
+          :main-signer-account-id="accountId"
           :max-issuance-amount="informationStepForm.maxIssuanceAmount"
           @submit="setAdvancedStepForm($event) || submit()"
         />
@@ -32,7 +32,7 @@
     </template>
 
     <template v-else>
-      <load-spinner message-id="create-asset-form.loading-msg" />
+      <skeleton-loader-step-form />
     </template>
   </div>
 </template>
@@ -42,18 +42,16 @@ import LoadAssetTypesMixin from './mixins/load-asset-types.mixin'
 import ManageAssetRequestMixin from './mixins/manage-asset-request.mixin'
 
 import InformationStepForm from './components/information-step-form'
+import SkeletonLoaderStepForm from './components/skeleton-loader-step-form'
 import AdvancedStepForm from './components/advanced-step-form'
 
 import FormStepper from '@/vue/common/FormStepper'
-import LoadSpinner from '@/vue/common/Loader'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { Wallet } from '@tokend/js-sdk'
-
-import { initApi } from './_api'
-import { initConfig } from './_config'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 const STEPS = {
   information: {
@@ -74,25 +72,12 @@ export default {
   name: 'create-asset-form-module',
   components: {
     FormStepper,
-    LoadSpinner,
     InformationStepForm,
     AdvancedStepForm,
+    SkeletonLoaderStepForm,
   },
   mixins: [LoadAssetTypesMixin, ManageAssetRequestMixin],
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     * @property config.storageURL - the url of file storage server
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
     requestId: {
       type: String,
       default: '',
@@ -111,13 +96,9 @@ export default {
   }),
 
   computed: {
-    mainSignerAccountId () {
-      if (this.wallet.keypair) {
-        return this.wallet.keypair.accountId()
-      } else {
-        return ''
-      }
-    },
+    ...mapGetters([
+      vuexTypes.accountId,
+    ]),
   },
 
   async created () {
@@ -127,9 +108,6 @@ export default {
   methods: {
     async init () {
       try {
-        initApi(this.wallet, this.config)
-        initConfig(this.config)
-
         await this.loadKycRequiredAssetType()
         await this.loadSecurityAssetType()
 
@@ -144,7 +122,10 @@ export default {
 
     async tryLoadRequest () {
       if (this.requestId) {
-        this.request = await this.getCreateAssetRequestById(this.requestId)
+        this.request = await this.getCreateAssetRequestById(
+          this.requestId,
+          this.accountId
+        )
       }
     },
 

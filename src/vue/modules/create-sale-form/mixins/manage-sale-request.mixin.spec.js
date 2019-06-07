@@ -1,29 +1,33 @@
 import ManageSaleRequestMixin from './manage-sale-request.mixin'
 
-import { ApiCaller, base } from '@tokend/js-sdk'
+import { base } from '@tokend/js-sdk'
 
 import { mount, createLocalVue } from '@vue/test-utils'
 
-import * as Api from '../_api'
+import { api } from '@/api'
+import * as DocumentUploader from '@/js/helpers/upload-documents'
 
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+import Vuex from 'vuex'
 
 const localVue = createLocalVue()
 
 const Component = {
   template: `<div></div>`,
-  props: ['wallet', 'requestId'],
+  props: ['requestId'],
   data: _ => ({
     informationStepForm: {
       name: '',
       baseAsset: {},
+      capAsset: {},
       startTime: '',
       endTime: '',
       softCap: '',
       hardCap: '',
       assetsToSell: '',
       quoteAssets: [],
+      isWhitelisted: false,
     },
     shortBlurbStepForm: {
       saleLogo: null,
@@ -32,17 +36,29 @@ const Component = {
     fullDescriptionStepForm: {
       youtubeId: '',
     },
+    assets: [],
   }),
 }
 
 describe('Manage sale request mixin', () => {
   let sandbox
   let wrapper
+  let store
 
   beforeEach(() => {
     sandbox = sinon.createSandbox()
+    store = new Vuex.Store({
+      modules: {
+        account: {
+          getters: {
+            accountId: () => ('SOME_ACCOUNT_ID'),
+          },
+        },
+      },
+    })
 
     wrapper = mount(Component, {
+      store,
       mixins: [ManageSaleRequestMixin],
       localVue,
     })
@@ -62,10 +78,12 @@ describe('Manage sale request mixin', () => {
           informationStepForm: {
             name: 'My sale',
             baseAsset: { code: 'TKN' },
+            capAsset: { code: 'USD' },
             softCap: '100.000000',
             hardCap: '200.000000',
             assetsToSell: '10.000000',
-            quoteAssets: ['BTC', 'USD'],
+            quoteAssets: ['BTC', 'ETH'],
+            isWhitelisted: true,
           },
           shortBlurbStepForm: { shortDescription: 'Some description' },
           fullDescriptionStepForm: { youtubeId: 'youtube-video-id' },
@@ -77,11 +95,13 @@ describe('Manage sale request mixin', () => {
         expect(wrapper.vm.saleRequestOpts.hardCap).to.equal('200.000000')
 
         expect(wrapper.vm.saleRequestOpts.baseAsset).to.equal('TKN')
+        expect(wrapper.vm.saleRequestOpts.defaultQuoteAsset).to.equal('USD')
         expect(wrapper.vm.saleRequestOpts.requiredBaseAssetForHardCap)
           .to.equal('10.000000')
         expect(wrapper.vm.saleRequestOpts.quoteAssets)
           .to.deep.equal([
             { asset: 'BTC', price: '1' },
+            { asset: 'ETH', price: '1' },
             { asset: 'USD', price: '1' },
           ])
 
@@ -93,6 +113,9 @@ describe('Manage sale request mixin', () => {
           .to.equal('BLOB_ID')
         expect(wrapper.vm.saleRequestOpts.creatorDetails.youtube_video_id)
           .to.equal('youtube-video-id')
+
+        expect(wrapper.vm.saleRequestOpts.saleRules)
+          .to.deep.equal([{ forbids: true }])
       })
 
       it('returns opts with default request ID if requestId prop is empty',
@@ -121,23 +144,16 @@ describe('Manage sale request mixin', () => {
   })
 
   describe('method', () => {
-    beforeEach(() => {
-      sandbox.stub(Api, 'api').returns(ApiCaller.getInstance())
-    })
-
     describe('getCreateSaleRequestById', () => {
-      it('calls Api.getWithSignature method with provided params and returns an instance of CreateSaleRequest record',
+      it('calls api.getWithSignature method with provided params and returns an instance of CreateSaleRequest record',
         async () => {
-          wrapper.setProps({
-            wallet: { accountId: 'SOME_ACCOUNT_ID' },
-          })
-          sandbox.stub(Api.api(), 'getWithSignature').resolves({
+          sandbox.stub(api, 'getWithSignature').resolves({
             data: {},
           })
 
-          const result = await wrapper.vm.getCreateSaleRequestById('10')
+          const result = await wrapper.vm.getCreateSaleRequestById('10', 'SOME_ACCOUNT_ID')
 
-          expect(Api.api().getWithSignature)
+          expect(api.getWithSignature)
             .to.have.been.calledOnceWithExactly(
               '/v3/create_sale_requests/10',
               {
@@ -151,32 +167,46 @@ describe('Manage sale request mixin', () => {
     })
 
     describe('submitCreateSaleRequest', () => {
-      it('uploads documents, creates blob, and posts asset creation request',
+      it('calls proper methods with passed params',
         async () => {
           const saleLogo = new DocumentContainer({ key: 'logo-key' })
 
           wrapper.setData({
+            assets: [{ code: 'BTC' }, { code: 'ETH' }],
+            informationStepForm: { quoteAssets: ['USD'] },
             shortBlurbStepForm: { saleLogo },
             fullDescriptionStepForm: { description: 'Sale description' },
           })
 
-          sandbox.stub(wrapper.vm, 'uploadDocuments').resolves()
+          sandbox.stub(DocumentUploader, 'uploadDocument').resolves()
+          sandbox.stub(wrapper.vm, 'createBalancesIfNotExist').resolves()
+
           sandbox.stub(wrapper.vm, 'createSaleDescriptionBlob')
             .resolves('BLOB_ID')
           sandbox.stub(base.SaleRequestBuilder, 'createSaleCreationRequest')
-          sandbox.stub(Api.api(), 'postOperations').resolves()
+          sandbox.stub(api, 'postOperations').resolves()
 
-          await wrapper.vm.submitCreateSaleRequest()
+          await wrapper.vm.submitCreateSaleRequest('SOME_ACCOUNT_ID')
 
-          expect(wrapper.vm.uploadDocuments)
-            .to.have.been.calledOnceWithExactly([saleLogo])
+          expect(DocumentUploader.uploadDocument)
+            .to.have.been.calledOnceWithExactly(saleLogo)
+          expect(wrapper.vm.createBalancesIfNotExist)
+            .to.have.been.calledOnceWithExactly({
+              balanceAssets: ['BTC', 'ETH'],
+              quoteAssets: ['USD'],
+              accountId: 'SOME_ACCOUNT_ID',
+            })
+
           expect(wrapper.vm.createSaleDescriptionBlob)
-            .to.have.been.calledOnceWithExactly('Sale description')
+            .to.have.been.calledOnceWithExactly(
+              'Sale description',
+              'SOME_ACCOUNT_ID'
+            )
           expect(wrapper.vm.saleDescriptionBlobId).to.equal('BLOB_ID')
 
           expect(base.SaleRequestBuilder.createSaleCreationRequest)
             .to.have.been.calledOnce
-          expect(Api.api().postOperations)
+          expect(api.postOperations)
             .to.have.been.calledOnce
         }
       )

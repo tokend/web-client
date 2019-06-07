@@ -4,11 +4,18 @@
       <div class="app__form-field">
         <select-field
           name="deposit-fiat-bank-asset"
-          v-model="form.asset"
-          :values="depositableFiatAssets"
-          key-as-value-text="nameAndCode"
+          :value="form.asset.code"
+          @input="setAssetByCode"
           :label="'deposit-fiat-bank-module.asset' | globalize"
-        />
+        >
+          <option
+            v-for="asset in depositableFiatAssets"
+            :key="asset.code"
+            :value="asset.code"
+          >
+            {{ asset.nameAndCode }}
+          </option>
+        </select-field>
         <div class="deposit-fiat-bank__form-field-description">
           <p>
             {{
@@ -202,11 +209,9 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { types } from './store/types'
 
-import { Wallet } from '@tokend/js-sdk'
-import { initApi } from './_api'
 import FormMixin from '@/vue/mixins/form.mixin'
 import debounce from 'lodash/debounce'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -238,22 +243,6 @@ export default {
     NoDataMessage,
   },
   mixins: [FormMixin],
-  props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     * @property config.decimalPoints - count of allowed decimal points
-     * @property config.minAmount - minimal allowed amount
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
-  },
   data: _ => ({
     isInitialized: false,
     form: {
@@ -298,9 +287,6 @@ export default {
     },
   },
   async created () {
-    initApi(this.wallet, this.config)
-
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAssets()
 
@@ -309,14 +295,15 @@ export default {
     this.isInitialized = true
   },
   methods: {
-    ...mapMutations('deposit-fiat-bank', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
     ...mapActions('deposit-fiat-bank', {
       loadBalances: types.LOAD_BALANCES,
       loadAssets: types.LOAD_ASSETS,
       loadFees: types.LOAD_FEES,
     }),
+    setAssetByCode (code) {
+      this.form.asset = this.depositableFiatAssets
+        .find(item => item.code === code)
+    },
     deposited () {
       this.$emit(EVENTS.deposited)
     },

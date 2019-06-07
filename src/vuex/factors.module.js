@@ -1,4 +1,4 @@
-import { Api } from '../api'
+import { api } from '@/api'
 import { vuexTypes } from './types'
 
 const FACTOR_TYPES = Object.freeze({
@@ -30,7 +30,7 @@ export const mutations = {
 export const actions = {
   async [vuexTypes.LOAD_FACTORS] ({ commit, rootGetters }) {
     const endpoint = `/wallets/${rootGetters[vuexTypes.walletId]}/factors`
-    const { data } = await Api.getWithSignature(endpoint)
+    const { data } = await api.getWithSignature(endpoint)
     commit(vuexTypes.SET_FACTORS, data)
   },
 }

@@ -1,12 +1,11 @@
 import ManageAssetRequestMixin from './manage-asset-request.mixin'
-import UploadDocumentsMixin from './upload-documents.mixin'
 
 import { Wallet, base } from '@tokend/js-sdk'
 
 import { mount, createLocalVue } from '@vue/test-utils'
 
-import * as Api from '../_api'
-import * as Config from '../_config'
+import { api, useWallet } from '@/api'
+import * as DocumentUploader from '@/js/helpers/upload-documents'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
@@ -15,7 +14,7 @@ const localVue = createLocalVue()
 
 const Component = {
   template: '<div></div>',
-  props: ['wallet', 'requestId'],
+  props: ['requestId'],
   data: _ => ({
     informationStepForm: {
       name: '',
@@ -41,7 +40,7 @@ describe('Manage asset request mixin', () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox()
     wrapper = mount(Component, {
-      mixins: [ManageAssetRequestMixin, UploadDocumentsMixin],
+      mixins: [ManageAssetRequestMixin],
       localVue,
     })
   })
@@ -52,17 +51,8 @@ describe('Manage asset request mixin', () => {
 
   describe('computed property', () => {
     describe('preIssuanceAssetSigner', () => {
-      it('returns null asset signer ID, if pre-issuance is disabled, or preissued asset signer property otherwise',
+      it('if pre-issuance is disabled, or preissued asset signer property otherwise',
         () => {
-          sandbox.stub(Config, 'config').returns({
-            NULL_ASSET_SIGNER: 'NULL_ASSET_SIGNER',
-          })
-          wrapper.setData({
-            advancedStepForm: { isPreissuanceDisabled: true },
-          })
-          expect(wrapper.vm.preIssuanceAssetSigner)
-            .to.equal('NULL_ASSET_SIGNER')
-
           wrapper.setData({
             advancedStepForm: {
               isPreissuanceDisabled: false,
@@ -105,7 +95,7 @@ describe('Manage asset request mixin', () => {
             code: 'USD',
             maxIssuanceAmount: '1000.000000',
             policies: 16,
-            assetType: { value: 1 },
+            assetType: 1,
           },
           advancedStepForm: {
             isPreissuanceDisabled: false,
@@ -169,26 +159,21 @@ describe('Manage asset request mixin', () => {
         'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
         '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
       )
-      const config = {
-        horizonURL: 'https://test.api.com',
-      }
 
-      Api.initApi(wallet, config)
+      api.useBaseURL('https://test.api.com')
+      useWallet(wallet)
     })
 
     describe('getCreateAssetRequestById', () => {
-      it('calls Api.getWithSignature method with provided params and returns an instance of CreateAssetRequest record',
+      it('calls api.getWithSignature method with provided params and returns an instance of CreateAssetRequest record',
         async () => {
-          wrapper.setProps({
-            wallet: { accountId: 'SOME_ACCOUNT_ID' },
-          })
-          sandbox.stub(Api.api(), 'getWithSignature').resolves({
+          sandbox.stub(api, 'getWithSignature').resolves({
             data: {},
           })
 
-          const result = await wrapper.vm.getCreateAssetRequestById('10')
+          const result = await wrapper.vm.getCreateAssetRequestById('10', 'SOME_ACCOUNT_ID')
 
-          expect(Api.api().getWithSignature)
+          expect(api.getWithSignature)
             .to.have.been.calledOnceWithExactly(
               '/v3/create_asset_requests/10',
               {
@@ -212,20 +197,17 @@ describe('Manage asset request mixin', () => {
             advancedStepForm: { terms },
           })
 
-          sandbox.stub(wrapper.vm, 'uploadDocuments').resolves()
+          sandbox.stub(DocumentUploader, 'uploadDocuments').resolves()
           sandbox.stub(base.ManageAssetBuilder, 'assetCreationRequest')
-          sandbox.stub(Api.api(), 'postOperations').resolves()
+          sandbox.stub(api, 'postOperations').resolves()
 
-          await wrapper.vm.submitCreateAssetRequest()
+          await wrapper.vm.submitCreateAssetRequest('SOME_ACCOUNT_ID')
 
-          expect(wrapper.vm.uploadDocuments)
-            .to.have.been.calledOnceWithExactly([
-              logo,
-              terms,
-            ])
+          expect(DocumentUploader.uploadDocuments)
+            .to.have.been.calledOnceWithExactly([logo, terms])
           expect(base.ManageAssetBuilder.assetCreationRequest)
             .to.have.been.calledOnce
-          expect(Api.api().postOperations)
+          expect(api.postOperations)
             .to.have.been.calledOnce
         }
       )

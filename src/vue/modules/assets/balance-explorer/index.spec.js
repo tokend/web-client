@@ -4,13 +4,13 @@ import Vuex from 'vuex'
 
 import { balanceExplorerModule } from './store/index'
 
-import { Asset } from '../shared/wrappers/asset'
+import { AssetRecord } from '@/js/records/entities/asset.record'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-import * as Api from './_api'
-
 import { ErrorHandler } from '@/js/helpers/error-handler'
+
+import { vuexTypes } from '@/vuex'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
@@ -22,7 +22,13 @@ describe('Balance explorer module', () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox()
     store = new Vuex.Store({
-      modules: { 'balance-explorer': balanceExplorerModule },
+      getters: {
+        [vuexTypes.accountBalances]: _ => [],
+      },
+      modules: {
+        'balance-explorer': balanceExplorerModule,
+        accountId: 'SOME_ACCOUNT_ID',
+      },
     })
   })
 
@@ -32,25 +38,13 @@ describe('Balance explorer module', () => {
 
   describe('created hook', () => {
     it('inits API, sets account ID, and loads balances', async () => {
-      sandbox.stub(Api, 'initApi')
-      sandbox.stub(BalanceExplorerModule.methods, 'setAccountId')
       sandbox.stub(BalanceExplorerModule.methods, 'load')
 
       await shallowMount(BalanceExplorerModule, {
         localVue,
         store,
-        propsData: {
-          config: { horizonURL: 'https://test.api.com' },
-          wallet: { accountId: 'SOME_ACCOUNT_ID' },
-        },
       })
 
-      expect(Api.initApi).to.has.been.calledOnceWithExactly(
-        { accountId: 'SOME_ACCOUNT_ID' },
-        { horizonURL: 'https://test.api.com' }
-      )
-      expect(BalanceExplorerModule.methods.setAccountId)
-        .to.have.been.calledOnceWithExactly('SOME_ACCOUNT_ID')
       expect(BalanceExplorerModule.methods.load)
         .to.have.been.calledOnce
     })
@@ -65,10 +59,6 @@ describe('Balance explorer module', () => {
       wrapper = shallowMount(BalanceExplorerModule, {
         store,
         localVue,
-        propsData: {
-          config: { storageURL: 'https://storage.com' },
-          wallet: { accountId: 'SOME_ACCOUNT_ID' },
-        },
       })
     })
 
@@ -97,18 +87,22 @@ describe('Balance explorer module', () => {
         })
       })
 
-      describe('selectAsset', () => {
-        it('sets selectedAsset property to passed param, isUpdateMode property to false, and isDrawerShown property to true', () => {
-          const asset = new Asset({ id: 'USD' }, '1.000000')
+      describe('selectBalance', () => {
+        it('sets selectedBalance property to passed param, isUpdateMode property to false, and isDrawerShown property to true', () => {
+          const asset = new AssetRecord({ id: 'USD' }, [{
+            asset: { code: 'USD' },
+            balance: '1.000000',
+          }]
+          )
 
           wrapper.setData({
             isUpdateMode: true,
             isDrawerShown: false,
           })
 
-          wrapper.vm.selectAsset(asset)
+          wrapper.vm.selectBalance({ asset })
 
-          expect(wrapper.vm.selectedAsset).to.deep.equal(asset)
+          expect(wrapper.vm.selectedBalance).to.deep.equal({ asset })
           expect(wrapper.vm.isUpdateMode).to.be.false
           expect(wrapper.vm.isDrawerShown).to.be.true
         })

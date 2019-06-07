@@ -1,17 +1,16 @@
 <template>
   <div class="issuance-explorer">
-    <template v-if="isLoaded">
-      <issuances-table :issuances="issuances" />
+    <template>
+      <issuances-table
+        :issuances="issuances"
+        :is-loaded="isLoaded"
+      />
     </template>
 
-    <template v-else-if="isLoadFailed">
+    <template v-if="isLoadFailed">
       <p class="issuance-explorer__error-msg">
         {{ 'issuance-explorer.load-failed-msg' | globalize }}
       </p>
-    </template>
-
-    <template v-else>
-      <load-spinner message-id="issuance-explorer.loading-msg" />
     </template>
 
     <div class="issuance-explorer__collection-loader-wrp">
@@ -27,7 +26,6 @@
 
 <script>
 import CollectionLoader from '@/vue/common/CollectionLoader'
-import LoadSpinner from '@/vue/common/Loader'
 
 import IssuancesTable from './components/issuances-table'
 
@@ -36,9 +34,6 @@ import { types } from './store/types'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { Wallet } from '@tokend/js-sdk'
-import { initApi } from './_api'
-
 const EVENTS = {
   shouldUpdate: 'update:shouldUpdate',
 }
@@ -46,24 +41,11 @@ const EVENTS = {
 export default {
   name: 'issuance-explorer-module',
   components: {
-    LoadSpinner,
     IssuancesTable,
     CollectionLoader,
   },
 
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
     shouldUpdate: {
       type: Boolean,
       default: false,
@@ -78,7 +60,6 @@ export default {
 
   computed: {
     ...mapGetters('issuance-explorer', {
-      accountId: types.accountId,
       issuances: types.issuances,
     }),
   },
@@ -93,14 +74,10 @@ export default {
   },
 
   created () {
-    initApi(this.wallet, this.config)
-    this.setAccountId(this.wallet.accountId)
-
     this.initFirstPageLoader()
   },
   methods: {
     ...mapMutations('issuance-explorer', {
-      setAccountId: types.SET_ACCOUNT_ID,
       setIssuances: types.SET_ISSUANCES,
       concatIssuances: types.CONCAT_ISSUANCES,
     }),

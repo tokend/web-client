@@ -2,10 +2,12 @@ import WAValidator from 'wallet-address-validator'
 import moment from 'moment'
 import iban from 'iban'
 import cardValidator from 'card-validator'
+import _isString from 'lodash/isString'
 
 import { base } from '@tokend/js-sdk'
 
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+import { MathUtil } from '@/js/utils'
 
 import * as validators from 'vuelidate/lib/validators'
 
@@ -30,9 +32,8 @@ export const maxDecimalPoints = points => value => {
 }
 export const amountRange = (from, to) => value =>
   !validators.helpers.req(value) || (
-    Number(value) &&
-    Number(value) >= Number(from) &&
-    Number(value) <= Number(to)
+    MathUtil.compare(value, from) >= 0 &&
+    MathUtil.compare(to, value) >= 0
   )
 export const minDate = (minDate) => value => {
   return moment(value).isAfter(moment(minDate))
@@ -62,11 +63,26 @@ export const hardCapLessThanSoftCap = (softCap, max) => value => {
 }
 
 export const noMoreThanAvailableOnBalance = balance => value => {
-  return +balance >= +value
+  return MathUtil.compare(balance, value) >= 0
 }
 
 export const noMoreThanAvailableForIssuance = available => value => {
-  return +available >= +value
+  return MathUtil.compare(available, value) >= 0
+}
+
+export const moreThenMin = minValue => value => {
+  if (MathUtil.compare(minValue, value) === -1) {
+    return false
+  } else {
+    return true
+  }
+}
+export const lessThenMax = maxValue => value => {
+  if (MathUtil.compare(value, maxValue) === 1) {
+    return false
+  } else {
+    return true
+  }
 }
 
 export const maxDecimalDigitsCount = maxDecimalDigitsCount => value => {
@@ -133,4 +149,8 @@ export const validateUrl = url => {
   // eslint-disable-next-line
   const reg = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/)
   return reg.test(url)
+}
+
+export const assetCode = value => {
+  return _isString(value) && /^[a-z\d]{1,16}$/i.test(value)
 }

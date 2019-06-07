@@ -1,7 +1,7 @@
 import GetReceiverAccountMixin from './get-receiver-account.mixin'
 
 import { base } from '@tokend/js-sdk'
-import { api } from '../_api'
+import { api } from '@/api'
 
 import { errors } from '@/js/errors'
 
@@ -27,7 +27,7 @@ export default {
 
     async getReceiverBalanceId (receiverAccountId, assetCode) {
       const endpoint = `/v3/accounts/${receiverAccountId}`
-      const { data: account } = await api().get(endpoint, {
+      const { data: account } = await api.get(endpoint, {
         include: ['balances.asset'],
       })
 
@@ -47,7 +47,7 @@ export default {
           creatorDetails: {},
         })
 
-      await api().postOperations(operation)
+      await api.postOperations(operation)
     },
   },
 }

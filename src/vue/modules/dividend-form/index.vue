@@ -10,12 +10,19 @@
             <div class="app__form-field">
               <select-field
                 name="dividend-asset"
-                v-model="form.ownedAsset"
-                :values="ownedAssets"
-                key-as-value-text="nameAndCode"
+                :value="form.ownedAsset.code"
+                @input="setOwnedAssetByCode"
                 :disabled="formMixin.isDisabled"
                 :label="'dividend-form.asset' | globalize"
-              />
+              >
+                <option
+                  v-for="asset in ownedAssets"
+                  :key="asset.code"
+                  :value="asset.code"
+                >
+                  {{ asset.nameAndCode }}
+                </option>
+              </select-field>
               <p class="app__form-field-description">
                 <!-- eslint-disable-next-line max-len -->
                 {{ 'dividend-form.balance' | globalize({ amount: form.ownedAsset.balance.value, asset: form.ownedAsset.code }) }}
@@ -27,12 +34,19 @@
             <div class="app__form-field">
               <select-field
                 name="dividend-asset"
-                v-model="form.asset"
-                :values="assets"
-                key-as-value-text="nameAndCode"
+                :value="form.asset.code"
+                @input="setAssetByCode"
                 :disabled="formMixin.isDisabled"
                 :label="'dividend-form.asset-dividend-pay' | globalize"
-              />
+              >
+                <option
+                  v-for="asset in assets"
+                  :key="asset.code"
+                  :value="asset.code"
+                >
+                  {{ asset.nameAndCode }}
+                </option>
+              </select-field>
               <p class="app__form-field-description">
                 <!-- eslint-disable-next-line max-len -->
                 {{ 'dividend-form.balance' | globalize({ amount: form.asset.balance.value, asset: form.asset.code }) }}
@@ -47,6 +61,8 @@
               v-model.trim="form.amount"
               type="number"
               name="dividend-amount"
+              :min="0"
+              :max="form.asset.balance.value"
               :step="config.minAmount"
               @blur="touchField('form.amount')"
               :label="'dividend-form.amount' | globalize({
@@ -167,18 +183,19 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import FormConfirmation from '@/vue/common/FormConfirmation'
 import Loader from '@/vue/common/Loader'
 
-import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import EmailGetter from '@/vue/common/EmailGetter'
 import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 
-import { PAYMENT_FEE_SUBTYPES, Wallet, base } from '@tokend/js-sdk'
-import { api, initApi } from './_api'
+import { PAYMENT_FEE_SUBTYPES, base } from '@tokend/js-sdk'
+import { api } from '@/api'
 import {
   amount,
   maxDecimalDigitsCount,
-  noMoreThanAvailableOnBalance,
+  lessThenMax,
   required,
 } from '@validators'
 import { MathUtil } from '@/js/utils/math.util'
@@ -198,15 +215,10 @@ export default {
   },
   mixins: [FormMixin],
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
     /**
      * @property config - the config for component to use
      * @property config.decimalPoints - count of allowed decimal points
      * @property config.minAmount - minimal allowed amount
-     * @property config.horizonURL - the url of horizon server (without version)
      * @property [config.defaultAssetCode] - prefills the asset-selector with
      *           this asset code
      */
@@ -232,12 +244,14 @@ export default {
   }),
   computed: {
     ...mapGetters('dividend-form', {
-      accountId: types.accountId,
       balances: types.balances,
       assets: types.assets,
       ownedAssets: types.ownedAssets,
       signers: types.balanceHolders,
     }),
+    ...mapGetters([
+      vuexTypes.accountId,
+    ]),
   },
   watch: {
     'form.ownedAsset.code' () {
@@ -251,7 +265,7 @@ export default {
         amount: {
           required,
           amount,
-          noMoreThanAvailableOnBalance: noMoreThanAvailableOnBalance(
+          noMoreThanAvailableOnBalance: lessThenMax(
             this.form.asset.balance.value
           ),
           maxDecimalDigitsCount: maxDecimalDigitsCount(
@@ -262,9 +276,6 @@ export default {
     }
   },
   async created () {
-    initApi(this.wallet, this.config)
-
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAssets()
 
@@ -279,9 +290,6 @@ export default {
     this.isInitialized = true
   },
   methods: {
-    ...mapMutations('dividend-form', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
     ...mapActions('dividend-form', {
       loadBalances: types.LOAD_BALANCES,
       loadAssets: types.LOAD_ASSETS,
@@ -289,6 +297,13 @@ export default {
       getAccountId: types.LOAD_ACCOUNT_ID,
       loadPaymentFee: types.LOAD_FEES,
     }),
+    setOwnedAssetByCode (code) {
+      this.form.ownedAsset = this.ownedAssets
+        .find(item => item.code === code)
+    },
+    setAssetByCode (code) {
+      this.form.asset = this.assets.find(item => item.code === code)
+    },
     async submit () {
       this.disableForm()
       this.isDividendSubmitting = true
@@ -298,7 +313,7 @@ export default {
           return false
         }
         const operations = await this.getTransferOperations()
-        await api().postOperations(...operations)
+        await api.postOperations(...operations)
         Bus.success('dividend-form.dividend-success')
         this.$emit(EVENTS.transferred)
       } catch (e) {

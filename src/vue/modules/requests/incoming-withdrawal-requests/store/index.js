@@ -3,17 +3,14 @@ import { IncomingWithdrawalRequest } from '../wrappers/incoming-withdrawal-reque
 import { base } from '@tokend/js-sdk'
 
 import { types } from './types'
-import { api } from '../_api'
+import { api } from '@/api'
+import { vuexTypes } from '@/vuex'
 
 export const state = {
-  accountId: '',
   requests: [],
 }
 
 export const mutations = {
-  [types.SET_ACCOUNT_ID] (state, accountId) {
-    state.accountId = accountId
-  },
   [types.SET_REQUESTS] (state, requests) {
     state.requests = requests
   },
@@ -23,15 +20,15 @@ export const mutations = {
 }
 
 export const actions = {
-  [types.LOAD_REQUESTS] ({ getters }) {
-    return api().getWithSignature('/v3/create_withdraw_requests', {
+  [types.LOAD_REQUESTS] ({ rootGetters }) {
+    return api.getWithSignature('/v3/create_withdraw_requests', {
       page: {
         order: 'desc',
       },
       filter: {
-        reviewer: getters[types.accountId],
+        reviewer: rootGetters[vuexTypes.accountId],
       },
-      include: ['request_details', 'request_details.balance'],
+      include: ['request_details'],
     })
   },
 
@@ -42,7 +39,7 @@ export const actions = {
       action: base.xdr.ReviewRequestOpAction.approve().value,
     })
 
-    await api().postOperations(operation)
+    await api.postOperations(operation)
   },
 
   async [types.REJECT_REQUEST] (_, { request, reason }) {
@@ -52,7 +49,7 @@ export const actions = {
       action: base.xdr.ReviewRequestOpAction.permanentReject().value,
     })
 
-    await api().postOperations(operation)
+    await api.postOperations(operation)
   },
 }
 
@@ -75,7 +72,6 @@ function createReviewWithdrawRequestOp ({ request, action, reason }) {
 }
 
 export const getters = {
-  [types.accountId]: state => state.accountId,
   [types.requests]: state => state.requests
     .map(r => new IncomingWithdrawalRequest(r)),
 }

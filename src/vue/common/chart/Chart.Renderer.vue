@@ -25,6 +25,7 @@ import * as d3Axis from 'd3-axis'
 import * as d3Shape from 'd3-shape'
 import * as d3Transition from 'd3-transition'
 import * as d3Ease from 'd3-ease'
+import * as d3Format from 'd3-format'
 // import * as d3 from 'd3'
 import moment from 'moment'
 const d3 = Object.assign(
@@ -405,20 +406,23 @@ export default {
               break
             }
           }
-          function getPrecision (number) {
-            return number.toString().split('.')[0].length + 1
-          }
           if (data[data.indexOf(nearestPoint) - 1]) {
             const prevValue = data[data.indexOf(nearestPoint) - 1].value
             const currentValue = nearestPoint.value
-            if (prevValue > currentValue) {
+            if (prevValue === 0) {
+              if (prevValue < currentValue) {
+                tipPriceChangeText.text('+100%')
+              } else {
+                tipPriceChangeText.text('+0%')
+              }
+            } else if (prevValue > currentValue) {
               const val = ((prevValue - currentValue) /
                 Math.abs(prevValue)) * 100
-              tipPriceChangeText.text(`-${val.toPrecision(getPrecision(val))}%`)
+              tipPriceChangeText.text(`-${d3Format.format('.2~s')(val)}%`)
             } else if (prevValue < currentValue) {
               const val = ((currentValue - prevValue) /
                 Math.abs(prevValue)) * 100
-              tipPriceChangeText.text(`+${val.toPrecision(getPrecision(val))}%`)
+              tipPriceChangeText.text(`+${d3Format.format('.2~s')(val)}%`)
             } else {
               tipPriceChangeText.text('+0%')
             }

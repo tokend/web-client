@@ -34,6 +34,11 @@ export function buildRouter (store) {
         component: resolve => require(['@/vue/pages/Terms'], resolve),
       },
       {
+        path: '/supported-browsers',
+        name: vueRoutes.supportedBrowsers.name,
+        component: resolve => require(['@/vue/pages/SupportedBrowsers'], resolve),
+      },
+      {
         path: '/downloads',
         name: vueRoutes.downloads.name,
         component: resolve => require(['@/vue/pages/Downloads'], resolve),
@@ -42,6 +47,11 @@ export function buildRouter (store) {
         path: '/ios-installation-guide',
         name: vueRoutes.iosInstallationGuide.name,
         component: resolve => require(['@/vue/pages/IosInstallationGuide'], resolve),
+      },
+      {
+        path: '/pre-issuance-guide',
+        name: vueRoutes.preIssuanceGuide.name,
+        component: resolve => require(['@/vue/pages/PreIssuanceGuide'], resolve),
       },
       {
         path: '/auth',

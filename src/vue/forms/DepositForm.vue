@@ -12,12 +12,19 @@
           <div class="app__form-row">
             <div class="app__form-field">
               <select-field
-                v-model="selectedAsset"
-                :values="assets"
-                key-as-value-text="nameAndCode"
+                :value="selectedAsset.code"
+                @input="setAssetByCode"
                 :label="'deposit-form.asset' | globalize"
                 :disabled="formMixin.isDisabled"
-              />
+              >
+                <option
+                  v-for="asset in assets"
+                  :key="asset.code"
+                  :value="asset.code"
+                >
+                  {{ asset.nameAndCode }}
+                </option>
+              </select-field>
             </div>
           </div>
         </div>
@@ -29,9 +36,7 @@
               :submodule="getModule().getSubmodule(CoinpaymentsDepositModule)"
               :asset="item"
               :balance-id="balanceId"
-              :wallet="wallet"
               :account-id="accountId"
-              :config="config"
               :key="item.code"
             />
           </template>
@@ -79,8 +84,6 @@ import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import config from '@/config'
-import { AssetRecord } from '@/js/records/entities/asset.record'
 import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments-deposit/module'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
@@ -95,14 +98,14 @@ export default {
     SubmoduleImporter,
   },
   mixins: [FormMixin],
+
   props: {
+    assetCode: { type: String, default: '' },
   },
+
   data () {
     return {
       CoinpaymentsDepositModule,
-      config: {
-        horizonURL: config.HORIZON_SERVER,
-      },
       isLoaded: false,
       isLoadingFailed: false,
       assets: [],
@@ -114,32 +117,24 @@ export default {
     ...mapGetters({
       accountId: vuexTypes.accountId,
       accountBalances: vuexTypes.accountBalances,
-      wallet: vuexTypes.wallet,
     }),
     balanceId () {
       return this.accountBalances.find(item => {
-        return item.asset === this.selectedAsset.code
+        return item.asset.code === this.selectedAsset.code
       }).id
     },
   },
-  watch: {
-    'selectedAsset.code' () {
-      // Transferred to the disabled state before receiving the address,
-      // in order to avoid a large number of requests
-      if (!this.selectedAsset.isCoinpayments) {
-        this.disableForm()
-      }
-    },
-  },
+
   async created () {
     try {
       await this.loadBalances()
       this.assets = this.accountBalances
-        .map(item => new AssetRecord(item.assetDetails))
+        .map(item => item.asset)
         .filter(item => item.isDepositable)
 
       if (this.assets.length) {
-        this.selectedAsset = this.assets[0]
+        this.selectedAsset = this.assets.find(a => a.code === this.assetCode) ||
+          this.assets[0]
       }
       this.isLoaded = true
     } catch (e) {
@@ -150,8 +145,12 @@ export default {
 
   methods: {
     ...mapActions({
-      loadAccount: vuexTypes.LOAD_ACCOUNT,
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
+
+    setAssetByCode (code) {
+      this.selectedAsset = this.assets.find(item => item.code === code) || {}
+    },
   },
 }
 </script>

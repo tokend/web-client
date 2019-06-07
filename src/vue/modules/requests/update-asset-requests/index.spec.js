@@ -6,9 +6,6 @@ import { updateAssetRequestsModule } from './store/index'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-import * as Api from './_api'
-import * as Config from './_config'
-
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const localVue = createLocalVue()
@@ -21,7 +18,9 @@ describe('Update asset requests module', () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox()
     store = new Vuex.Store({
-      modules: { 'update-asset-requests': updateAssetRequestsModule },
+      modules: {
+        'update-asset-requests': updateAssetRequestsModule,
+      },
     })
   })
 
@@ -31,60 +30,13 @@ describe('Update asset requests module', () => {
 
   describe('created hook', () => {
     beforeEach(() => {
-      sandbox.stub(Api, 'initApi')
-      sandbox.stub(Config, 'initConfig')
-      sandbox.stub(UpdateAssetRequestsModule.methods, 'setAccountId')
       sandbox.stub(UpdateAssetRequestsModule.methods, 'initFirstPageLoader')
-    })
-
-    it('calls initApi function with correct params', () => {
-      shallowMount(UpdateAssetRequestsModule, {
-        localVue,
-        store,
-        propsData: {
-          config: 'SOME_CONFIG',
-          wallet: 'SOME_WALLET',
-        },
-      })
-
-      expect(Api.initApi)
-        .to.have.been.calledOnceWithExactly('SOME_WALLET', 'SOME_CONFIG')
-    })
-
-    it('calls initConfig function with correct params', () => {
-      shallowMount(UpdateAssetRequestsModule, {
-        localVue,
-        store,
-        propsData: {
-          config: 'SOME_CONFIG',
-          wallet: { accountId: 'SOME_ACCOUNT_ID' },
-        },
-      })
-
-      expect(Config.initConfig)
-        .to.have.been.calledOnceWithExactly('SOME_CONFIG')
-    })
-
-    it('calls setAccountId method', () => {
-      shallowMount(UpdateAssetRequestsModule, {
-        localVue,
-        store,
-        propsData: {
-          wallet: { accountId: 'SOME_ACCOUNT_ID' },
-        },
-      })
-
-      expect(UpdateAssetRequestsModule.methods.setAccountId)
-        .to.have.been.calledOnceWithExactly('SOME_ACCOUNT_ID')
     })
 
     it('calls initFirstPageLoader method', () => {
       shallowMount(UpdateAssetRequestsModule, {
         localVue,
         store,
-        propsData: {
-          wallet: { accountId: 'SOME_ACCOUNT_ID' },
-        },
       })
 
       expect(UpdateAssetRequestsModule.methods.initFirstPageLoader)

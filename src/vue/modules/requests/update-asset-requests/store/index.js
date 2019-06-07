@@ -3,17 +3,14 @@ import { UpdateAssetRequest } from '../wrappers/update-asset-request'
 import { base } from '@tokend/js-sdk'
 
 import { types } from './types'
-import { api } from '../_api'
+import { api } from '@/api'
+import { vuexTypes } from '@/vuex'
 
 export const state = {
-  accountId: '',
   requests: [],
 }
 
 export const mutations = {
-  [types.SET_ACCOUNT_ID] (state, accountId) {
-    state.accountId = accountId
-  },
   [types.SET_REQUESTS] (state, requests) {
     state.requests = requests
   },
@@ -24,13 +21,13 @@ export const mutations = {
 }
 
 export const actions = {
-  [types.LOAD_REQUESTS] ({ getters }) {
-    return api().getWithSignature('/v3/update_asset_requests', {
+  [types.LOAD_REQUESTS] ({ rootGetters }) {
+    return api.getWithSignature('/v3/update_asset_requests', {
       page: {
         order: 'desc',
       },
       filter: {
-        requestor: getters[types.accountId],
+        requestor: rootGetters[vuexTypes.accountId],
       },
       include: ['request_details'],
     })
@@ -40,12 +37,11 @@ export const actions = {
     const operation = base.ManageAssetBuilder.cancelAssetRequest({
       requestID: requestId,
     })
-    await api().postOperations(operation)
+    await api.postOperations(operation)
   },
 }
 
 export const getters = {
-  [types.accountId]: state => state.accountId,
   [types.requests]: state => state.requests
     .map(r => new UpdateAssetRequest(r)),
 }

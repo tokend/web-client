@@ -45,29 +45,8 @@
               </button>
             </template>
           </template>
-          <template v-else>
-            <button
-              v-ripple
-              class="app__button-raised opportunity-details__invest-btn"
-              @click="isInvestDrawerShown = true"
-            >
-              {{ 'opportunity-details.invest' | globalize }}
-            </button>
-          </template>
         </template>
       </top-bar>
-
-      <drawer :is-shown.sync="isInvestDrawerShown">
-        <template slot="heading">
-          {{ 'opportunity-details.invest' | globalize }}
-        </template>
-
-        <invest-form
-          :sale="opportunity"
-          @submitted="hideInvestDrawer() || refreshOpportunity()"
-          @canceled="hideInvestDrawer() || refreshOpportunity()"
-        />
-      </drawer>
 
       <template v-if="getModule().canRenderSubmodule(DividendFormModule)">
         <drawer :is-shown.sync="isDividendDrawerShown">
@@ -76,7 +55,6 @@
           </template>
           <submodule-importer
             :submodule="getModule().getSubmodule(DividendFormModule)"
-            :wallet="wallet"
             :config="dividendConfig"
             @transferred="dividendModuleTransferred"
           />
@@ -90,7 +68,6 @@
           </template>
           <submodule-importer
             :submodule="getModule().getSubmodule(BuyBackFormModule)"
-            :wallet="wallet"
             :config="buyBackConfig"
             @submitted="buyBackModuleSubmitted"
           />
@@ -136,17 +113,15 @@ import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
-import InvestForm from '@/vue/forms/InvestForm'
 import { DividendFormModule } from '@/vue/modules/dividend-form/module'
 import { BuyBackFormModule } from '@/vue/modules/buy-back-form/module'
 
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
-import { AssetRecord } from '@/js/records/entities/asset.record'
 import { ASSET_SUBTYPE } from '@/js/const/asset-subtypes.const'
 
-import { Api } from '@/api'
+import { api } from '@/api'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@/js/errors'
@@ -163,7 +138,6 @@ export default {
     Loader,
     Drawer,
     NoDataMessage,
-    InvestForm,
     SubmoduleImporter,
   },
 
@@ -178,20 +152,17 @@ export default {
     isLoadingFailed: false,
     isDividendDrawerShown: false,
     isBuyBackDrawerShown: false,
-    isInvestDrawerShown: false,
     vueRoutes,
     ASSET_SUBTYPE,
     DividendFormModule,
     BuyBackFormModule,
     dividendConfig: {
       decimalPoints: config.DECIMAL_POINTS,
-      horizonURL: config.HORIZON_SERVER,
       minAmount: config.MIN_AMOUNT,
       defaultAssetCode: null,
     },
     buyBackConfig: {
       decimalPoints: config.DECIMAL_POINTS,
-      horizonURL: config.HORIZON_SERVER,
       minAmount: config.MIN_AMOUNT,
       defaultAssetCode: null,
     },
@@ -199,8 +170,8 @@ export default {
 
   computed: {
     ...mapGetters({
-      wallet: vuexTypes.wallet,
       accountId: vuexTypes.accountId,
+      assetByCode: vuexTypes.assetByCode,
     }),
     isOpportunityOwner () {
       return this.opportunity.owner === this.accountId
@@ -212,7 +183,7 @@ export default {
 
   async created () {
     await this.loadOpportunity(this.id)
-    await this.loadAsset(this.opportunity.baseAsset)
+    this.asset = this.assetByCode(this.opportunity.baseAsset)
     this.setDefaultDividendAssetCode()
     this.setDefaultBuyBackAssetCode()
   },
@@ -220,7 +191,7 @@ export default {
   methods: {
     async loadOpportunity (opportunityId) {
       try {
-        const { data } = await Api.get(`/v3/sales/${opportunityId}`, {
+        const { data } = await api.get(`/v3/sales/${opportunityId}`, {
           include: ['base_asset', 'default_quote_asset', 'quote_assets'],
         })
         this.opportunity = new SaleRecord(data)
@@ -231,16 +202,6 @@ export default {
           this.isLoadingFailed = true
           ErrorHandler.processWithoutFeedback(e)
         }
-      }
-    },
-
-    async loadAsset (assetCode) {
-      try {
-        const endpoint = `/v3/assets/${assetCode}`
-        const { data } = await Api.get(endpoint)
-        this.asset = new AssetRecord(data)
-      } catch (e) {
-        ErrorHandler.processWithoutFeedback(e)
       }
     },
 
@@ -263,10 +224,6 @@ export default {
 
     buyBackModuleSubmitted () {
       this.isBuyBackDrawerShown = false
-    },
-
-    hideInvestDrawer () {
-      this.isInvestDrawerShown = false
     },
   },
 }

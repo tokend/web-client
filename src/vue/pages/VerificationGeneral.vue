@@ -145,9 +145,9 @@
 import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 import _get from 'lodash/get'
 
-import { Api } from '@/api'
+import { api } from '@/api'
 
-import { DocumentUploader } from '@/js/helpers/document-uploader'
+import { uploadDocuments } from '@/js/helpers/upload-documents'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import { Bus } from '@/js/helpers/event-bus'
@@ -242,13 +242,13 @@ export default {
       if (!this.isFormValid()) return
       this.disableForm()
       try {
-        await this.uploadDocuments()
+        await uploadDocuments(Object.values(this.form.documents))
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycGeneral)
         const operation = this.createKycOperation(
           kycBlobId,
           this.kvEntryGeneralRoleId,
         )
-        await Api.api.postOperations(operation)
+        await api.postOperations(operation)
         do {
           await this.loadKyc()
           await this.delay(3000)
@@ -265,16 +265,6 @@ export default {
       return new Promise((resolve, reject) => {
         resolve(setTimeout(resolve, ms))
       })
-    },
-
-    async uploadDocuments () {
-      for (let document of Object.values(this.form.documents)) {
-        if (document && !document.key) {
-          document = await DocumentUploader.uploadSingleDocument(
-            document, this.accountId
-          )
-        }
-      }
     },
 
     createKycData () {

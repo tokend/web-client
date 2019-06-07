@@ -47,7 +47,7 @@
     </template>
 
     <template v-else>
-      <load-spinner message-id="create-sale-form.loading-msg" />
+      <skeleton-loader-step-form />
     </template>
   </div>
 </template>
@@ -59,18 +59,16 @@ import ManageSaleRequestMixin from './mixins/manage-sale-request.mixin'
 import InformationStepForm from './components/information-step-form'
 import ShortBlurbStepForm from './components/short-blurb-step-form'
 import FullDescriptionStepForm from './components/full-description-step-form'
+import SkeletonLoaderStepForm from './components/skeleton-loader-step-form'
 
 import FormStepper from '@/vue/common/FormStepper'
-import LoadSpinner from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { Wallet } from '@tokend/js-sdk'
-
-import { initApi } from './_api'
-import { initConfig } from './_config'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 const STEPS = {
   information: {
@@ -95,27 +93,14 @@ export default {
   name: 'create-sale-form-module',
   components: {
     FormStepper,
-    LoadSpinner,
     NoDataMessage,
     InformationStepForm,
     ShortBlurbStepForm,
     FullDescriptionStepForm,
+    SkeletonLoaderStepForm,
   },
   mixins: [LoadAssetsMixin, ManageSaleRequestMixin],
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     * @property config.storageURL - the url of file storage server
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
     requestId: {
       type: String,
       default: '',
@@ -135,6 +120,12 @@ export default {
     STEPS,
   }),
 
+  computed: {
+    ...mapGetters([
+      vuexTypes.accountId,
+    ]),
+  },
+
   async created () {
     await this.init()
   },
@@ -142,10 +133,7 @@ export default {
   methods: {
     async init () {
       try {
-        initApi(this.wallet, this.config)
-        initConfig(this.config)
-
-        await this.loadAssets()
+        await this.loadAssets(this.accountId)
         await this.tryLoadRequest()
 
         this.isLoaded = true
@@ -157,9 +145,13 @@ export default {
 
     async tryLoadRequest () {
       if (this.requestId) {
-        this.request = await this.getCreateSaleRequestById(this.requestId)
+        this.request = await this.getCreateSaleRequestById(
+          this.requestId,
+          this.accountId
+        )
         this.saleDescription = await this.getSaleDescription(
-          this.request.descriptionBlobId
+          this.request.descriptionBlobId,
+          this.accountId
         )
       }
     },
@@ -186,7 +178,7 @@ export default {
     async submit () {
       this.isDisabled = true
       try {
-        await this.submitCreateSaleRequest()
+        await this.submitCreateSaleRequest(this.accountId)
         Bus.success('create-sale-form.request-submitted-msg')
         this.emitSubmitEvents()
       } catch (e) {
