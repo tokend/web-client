@@ -9,6 +9,42 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Added
+- File types exceptions to .gitattributes
+
+#### Fixed
+- Restored images line endings
+
+## [1.8.0-rc.0] - 2019-06-06
+#### Fixed
+- Disabled state for amount input field
+- Minimum & maximum normalization for input field
+- Displaying balance on assets page
+- Displaying no data row on fees table
+- Hiding of "My sales" tab for non-corporate users
+- Selecting asset on deposit form
+- Displaying balances on assets page
+
+### "Under the hood" changes
+#### Added
+- Asset code validator
+
+#### Changed
+- Now loading private document URL in file field
+- Updated package.json packages
+- Now using @tokend/js-sdk@1.8.0-rc.0
+
+## [1.8.0-x.3] - 2019-06-05
+
+## [1.8.0-x.2] - 2019-06-05
+#### Fixed
+- Bug with investing in sale
+
+## [1.8.0-x.1] - 2019-06-05
+#### Added
+- Skeleton loading
+
+## [1.8.0-x.0] - 2019-06-05
+#### Added
 - Placeholder of empty list for Trade, Issuance requests and Requests pages
 - Tooltip directive
 - Assets vuex module for loading and storing all the assets
