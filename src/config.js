@@ -2,6 +2,19 @@ import { base } from '@tokend/js-sdk'
 import normalizeUrl from 'normalize-url'
 import packageJson from '../package.json'
 
+function normalizeEnvUrls (env) {
+  let envCopy = Object.assign(env)
+
+  if (envCopy.hasOwnProperty('HORIZON_SERVER')) {
+    envCopy.HORIZON_SERVER = normalizeUrl(envCopy.HORIZON_SERVER)
+  }
+  if (envCopy.hasOwnProperty('FILE_STORAGE')) {
+    envCopy.FILE_STORAGE = normalizeUrl(envCopy.FILE_STORAGE)
+  }
+
+  return envCopy
+}
+
 export default Object.assign(
   {
     /**
@@ -105,6 +118,6 @@ export default Object.assign(
     SENTRY_DSN: '',
   },
   // process.env,
-  process.env,
-  document.ENV
+  Object.assign(process.env, normalizeEnvUrls(process.env)),
+  Object.assign(document.ENV, normalizeEnvUrls(document.ENV))
 )
