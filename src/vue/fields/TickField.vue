@@ -133,6 +133,7 @@ export default {
 
 // HACK: fix cut of transforms on some browsers (chrome)
 $z-index-tick-field: 0;
+$tick-size: 1.8rem;
 
 .tick-field {
   position: relative;
@@ -144,6 +145,7 @@ $z-index-tick-field: 0;
 .tick-field__label {
   font-size: 1.4rem;
   color: $field-color-focused;
+  vertical-align: middle;
   padding-left: 2.8rem;
   cursor: pointer;
 
@@ -155,15 +157,15 @@ $z-index-tick-field: 0;
 }
 
 .tick-field__tick {
-  width: 2rem;
-  min-width: 2rem;
-  height: 2rem;
+  width: $tick-size;
+  min-width: $tick-size;
+  height: $tick-size;
   cursor: pointer;
-  margin: -0.3rem 1.3rem 0 0;
+  margin: 0 1.3rem 0 0;
   z-index: $z-index-tick-field;
   border: solid 0.1rem;
   border-radius: 0.2rem;
-  border-color: $col-tick-field-unfocused;
+  border-color: $field-color-unfocused;
   position: absolute;
   left: 0;
   display: block;
@@ -177,10 +179,11 @@ $z-index-tick-field: 0;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) translateY(-0.1rem) rotate(45deg);
+    transform: translate(-50%, -50%) translateY($tick-size * -0.1)
+      rotate(45deg);
     display: block;
-    height: 1rem;
-    width: 0.6rem;
+    height: $tick-size * 0.5;
+    width: $tick-size * 0.25;
     border: solid white;
     border-width: 0 0.2rem 0.2rem 0;
     opacity: 0;
@@ -213,6 +216,10 @@ $z-index-tick-field: 0;
 .tick-field__input {
   position: absolute;
   opacity: 0;
-  pointer-events: none;
+  height: $tick-size;
+  width: $tick-size;
+  top: 0;
+  left: 0;
+  cursor: pointer;
 }
 </style>

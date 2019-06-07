@@ -207,6 +207,7 @@ $pwd-toggle-btn-width: 3.2rem;
   @include material-border($field-color-focused, $field-color-unfocused);
   @include text-font-sizes;
 
+  &:read-only,
   &:disabled {
     cursor: default;
     filter: grayscale(100%);
@@ -234,7 +235,7 @@ $pwd-toggle-btn-width: 3.2rem;
     @include placeholder;
   }
 
-  &:not([readonly]) {
+  &:not(:read-only) {
     box-shadow: inset 0 0 0 5rem $field-color-background;
     // autofill hack
   }
@@ -353,6 +354,7 @@ $pwd-toggle-btn-width: 3.2rem;
     color: $field-color-error;
   }
 
+  .input-field__input:read-only ~ &,
   .input-field__input:disabled ~ & {
     filter: grayscale(100%);
   }
