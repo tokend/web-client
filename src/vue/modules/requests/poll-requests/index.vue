@@ -1,5 +1,27 @@
 <template>
   <div>
+    <template>
+      <drawer :is-shown.sync="isDrawerShown">
+        <template slot="heading">
+          {{ 'poll-requests.details-title' | globalize }}
+        </template>
+        <request-viewer
+          :request="selectedRequest"
+          @cancel="(isDrawerShown = false) || initFirstPageLoader()"
+        />
+      </drawer>
+
+      <requests-table
+        :requests="requests"
+        :is-loaded="isLoaded"
+        @select="showRequestDetails"
+      />
+    </template>
+
+    <p v-if="isLoadingFailed">
+      {{ 'create-asset-requests.loading-error-msg' | globalize }}
+    </p>
+
     <collection-loader
       class="create-asset-requests__loader"
       v-show="requests.length && isLoaded"
@@ -11,18 +33,27 @@
 </template>
 
 <script>
+import Drawer from '@/vue/common/Drawer'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
 import CollectionLoader from '@/vue/common/CollectionLoader'
+import RequestsTable from './components/requests-table'
+import RequestViewer from './components/request-viewer'
 
 export default {
   name: 'poll-requests',
   components: {
     CollectionLoader,
+    RequestsTable,
+    Drawer,
+    RequestViewer,
   },
   data: _ => ({
     isLoaded: false,
+    isLoadingFailed: false,
+    isDrawerShown: false,
+    selectedRequest: {},
     firstPageLoader: () => {},
   }),
   computed: {
@@ -55,6 +86,11 @@ export default {
 
     initFirstPageLoader () {
       this.firstPageLoader = _ => this.loadRequests()
+    },
+
+    showRequestDetails (request) {
+      this.selectedRequest = request
+      this.isDrawerShown = true
     },
   },
 }

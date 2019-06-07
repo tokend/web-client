@@ -33,7 +33,7 @@ export const actions = {
   },
 
   async [types.CANCEL_REQUEST] (_, requestId) {
-    const operation = base.ManageAssetBuilder.cancelAssetRequest({
+    const operation = base.ManageCreatePollRequestBuilder.cancelPollRequest({
       requestID: requestId,
     })
     await api.postOperations(operation)
