@@ -2,7 +2,7 @@
   <div class="verification-general-2">
     <submodule-importer
       :submodule="getModule().getSubmodule(VerificationGeneralFormModule)"
-      :blob-id="isFormPopulatable ? kycLatestBlobId : ''"
+      :blob-id="isFormPopulatable ? kycLatestRequestBlobId : ''"
       :request-id="isRequestUpdatable ? String(kycRequestId) : '0'"
       :general-role-id="String(kvEntryGeneralRoleId)"
       :us-verified-role-id="String(kvEntryUsVerifiedRoleId)"
@@ -36,7 +36,7 @@ export default {
     ...mapGetters({
       kycState: vuexTypes.kycState,
       kycRequestId: vuexTypes.kycRequestId,
-      kycLatestBlobId: vuexTypes.kycLatestBlobId,
+      kycLatestRequestBlobId: vuexTypes.kycLatestRequestBlobId,
 
       kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
       kvEntryUsVerifiedRoleId: vuexTypes.kvEntryUsVerifiedRoleId,

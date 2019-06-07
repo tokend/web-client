@@ -30,7 +30,6 @@
           name="create-asset-code"
           :label="'create-asset-form.code-lbl' | globalize"
           :error-message="getFieldErrorMessage('form.code')"
-          :maxlength="CODE_MAX_LENGTH"
         />
       </div>
     </div>
