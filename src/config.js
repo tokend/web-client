@@ -118,6 +118,10 @@ export default Object.assign(
     SENTRY_DSN: '',
   },
   // process.env,
-  Object.assign(process.env, normalizeEnvUrls(process.env)),
-  Object.assign(document.ENV, normalizeEnvUrls(document.ENV))
+  Object.keys(process.env)
+    ? Object.assign(process.env, normalizeEnvUrls(process.env))
+    : process.env,
+  Object.keys(document.ENV)
+    ? Object.assign(document.ENV, normalizeEnvUrls(document.ENV))
+    : document.ENV,
 )
