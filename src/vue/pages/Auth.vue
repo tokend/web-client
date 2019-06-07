@@ -139,9 +139,11 @@ export default {
 }
 
 .auth__version {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
   font-size: 1.2rem;
   color: $col-text-auth-version;
-  margin: 1.2rem 0 0;
 }
 
 .auth__idle-message-wrp {
