@@ -6,34 +6,6 @@
   width: 80%;
   max-width: 320px;
 }
-
-.app__init-left-face-logo,
-.app__init-top-face-logo,
-.app__init-right-face-logo,
-.app__init-logo-text {
-  position: absolute;
-  margin: 0 auto;
-  width: 100%;
-}
-
-.app__init-left-face-logo,
-.app__init-top-face-logo,
-.app__init-right-face-logo {
-  animation: .6s app__init-blink infinite;
-}
-.app__init-top-face-logo {
-  opacity: 0;
-  animation-delay: .18s;
-}
-.app__init-right-face-logo {
-  opacity: 0;
-  animation-delay: .36s;
-}
-.app__init-logo-text {
-  position: absolute;
-  margin: 0 auto;
-  width: 100%;
-}
 @keyframes app__init-blink {
   0% { opacity: 0; }
   50% { opacity: 1; }
