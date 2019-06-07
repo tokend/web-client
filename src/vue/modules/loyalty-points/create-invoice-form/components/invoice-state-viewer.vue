@@ -18,6 +18,16 @@
       {{ 'create-invoice-form.payment-pending-state' | globalize }}
     </span>
   </p>
+
+  <p
+    v-else
+    class="invoice-state-viewer invoice-state-viewer--none"
+  >
+    <i class="mdi mdi-progress-clock" />
+    <span>
+      {{ 'create-invoice-form.payment-not-confirmed-state' | globalize }}
+    </span>
+  </p>
 </template>
 
 <script>
@@ -41,5 +51,9 @@ export default {
 
 .invoice-state-viewer--pending {
   color: $col-pending;
+}
+
+.invoice-state-viewer--none {
+  color: $col-text-secondary;
 }
 </style>

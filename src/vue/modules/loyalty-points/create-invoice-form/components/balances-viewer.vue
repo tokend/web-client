@@ -6,75 +6,90 @@
       </p>
 
       <p class="balances-viewer__card-amount">
-        70
+        {{ customerBalance | formatMoney }}
       </p>
 
       <p class="balances-viewer__card-description">
-        Gas Station Points
+        {{ invoice.asset.name }}
       </p>
     </div>
 
     <div class="balances-viewer__card balances-viewer__card--transaction">
       <p class="balances-viewer__card-title">
-        Customer's points
+        Transaction value
       </p>
 
       <p class="balances-viewer__card-amount">
-        70
+        {{ invoice.totalPrice | formatMoney }}
       </p>
 
       <p class="balances-viewer__card-description">
-        Gas Station Points
+        {{ config.DEFAULT_POINT_NAME }}
       </p>
     </div>
 
     <div class="balances-viewer__card balances-viewer__card--point">
       <p class="balances-viewer__card-title">
-        Customer's points
+        {{ config.DEFAULT_POINT_NAME }}
       </p>
 
       <p class="balances-viewer__card-amount">
-        70
+        {{ invoice.amount | formatMoney }}
       </p>
 
       <p class="balances-viewer__card-description">
-        Gas Station Points
+        1 {{ config.DEFAULT_POINT_CODE }} =
+        {{ invoice.price | formatMoney }} {{ invoice.asset.code }}
       </p>
     </div>
 
     <div class="balances-viewer__card balances-viewer__card--point">
       <p class="balances-viewer__card-title">
-        Customer's points
+        {{ invoice.asset.name }}
       </p>
 
       <p class="balances-viewer__card-amount">
-        70
+        -{{ invoice.totalPrice | formatMoney }}
       </p>
 
       <p class="balances-viewer__card-description">
-        Gas Station Points
+        1 {{ invoice.asset.code }} =
+        {{ 1 / invoice.price | formatMoney }} {{ config.DEFAULT_POINT_CODE }}
       </p>
     </div>
 
     <div class="balances-viewer__card balances-viewer__card--balance">
       <p class="balances-viewer__card-title">
-        Customer's points
+        Merchant's points
       </p>
 
       <p class="balances-viewer__card-amount">
-        70
+        {{ merchantBalance | formatMoney }}
       </p>
 
       <p class="balances-viewer__card-description">
-        Gas Station Points
+        {{ config.DEFAULT_POINT_NAME }}
       </p>
     </div>
   </div>
 </template>
 
 <script>
+import { Invoice } from '../wrappers/invoice'
+import { config } from '../_config'
+
 export default {
   name: 'balances-viewer',
+
+  props: {
+    invoice: { type: Invoice, required: true },
+    customerBalance: { type: [Number, String], required: true },
+    merchantBalance: { type: [Number, String], required: true },
+  },
+
+  data: _ => ({
+    config,
+  }),
 }
 </script>
 

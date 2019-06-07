@@ -16,11 +16,9 @@
       <invoice-confirmation
         v-else
         :invoice="invoice"
+        :merchant-email="walletEmail"
+        :merchant-system="horizonUrl"
         @close="$emit(EVENTS.close)"
-      />
-
-      <balances-viewer
-        class="create-invoice-form-module__balances"
       />
     </template>
 
@@ -47,7 +45,6 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import InvoiceForm from './components/invoice-form'
 import InvoiceConfirmation from './components/invoice-confirmation'
-import BalancesViewer from './components/balances-viewer'
 
 import { config } from './_config'
 
@@ -68,7 +65,6 @@ export default {
     LoadSpinner,
     InvoiceForm,
     InvoiceConfirmation,
-    BalancesViewer,
   },
   props: {
     horizonUrl: {
@@ -104,7 +100,7 @@ export default {
 
   async created () {
     try {
-      await this.loadAssetPairs({ asset: config.DEFAULT_POINT })
+      await this.loadAssetPairs({ asset: config.DEFAULT_POINT_CODE })
       this.isLoaded = true
     } catch (e) {
       this.isLoadFailed = true
@@ -128,9 +124,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.create-invoice-form-module__balances {
-  margin-top: 4rem;
-}
-</style>

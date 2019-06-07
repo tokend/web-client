@@ -1,17 +1,23 @@
 import { PAYMENT_STATES } from '../const/payment-states.const'
+import { MathUtil } from '@/js/utils'
 
 export class Invoice {
-  constructor ({ record, isConfirmed }) {
+  constructor (record) {
     this.subject = record.subject
-    this.totalPrice = record.totalPrice
+    this.price = record.price
+    this.amount = record.amount
 
     this.asset = record.asset
     this.reference = record.reference
-    this.system = record.system
 
-    this.state = isConfirmed
-      ? PAYMENT_STATES.successful
-      : PAYMENT_STATES.pending
+    this.system = record.system
+    this.loyaltyAccount = record.loyaltyAccount
+
+    this.state = PAYMENT_STATES.none
+  }
+
+  get totalPrice () {
+    return MathUtil.multiply(this.price, this.amount)
   }
 
   get isPending () {
@@ -20,6 +26,10 @@ export class Invoice {
 
   get isSuccessful () {
     return this.state === PAYMENT_STATES.successful
+  }
+
+  setPendingState () {
+    this.state = PAYMENT_STATES.pending
   }
 
   setSuccessfulState () {

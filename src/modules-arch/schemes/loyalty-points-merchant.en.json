@@ -37,6 +37,7 @@
       "total-price": "Total price: **{{amount, money}}**",
       "waiting-for-payment-btn": "Waiting for payment…",
       "close-btn": "Close",
+      "payment-not-confirmed-state": "Transaction is sending",
       "payment-pending-state": "Waiting for payment",
       "payment-successful-state": "Successful",
       "create-invoice": "Create invoice",

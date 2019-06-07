@@ -1,15 +1,20 @@
 <template>
   <div
     class="confirmation-state-viewer"
-    :class="invoice.isSuccessful
-      ? 'confirmation-state-viewer--successful'
-      : 'confirmation-state-viewer--pending'"
+    :class="`confirmation-state-viewer--${confirmationState}`"
   >
     <p
       v-if="invoice.isSuccessful"
       class="confirmation-state-viewer__icon"
     >
       <i class="mdi mdi-check-circle" />
+    </p>
+
+    <p
+      v-else-if="invoice.isPending"
+      class="confirmation-state-viewer__icon"
+    >
+      <i class="mdi mdi-timer-sand" />
     </p>
 
     <p
@@ -23,7 +28,7 @@
       {{
         'create-invoice-form.confirmations-count' | globalize({
           current: currentConfirmationsCount,
-          total: TOTAL_CONFIRMATIONS,
+          total: CONFIRMATIONS.total,
         })
       }}
     </p>
@@ -33,8 +38,17 @@
 <script>
 import { Invoice } from '../wrappers/invoice'
 
-const PENDING_CONFIRMATIONS = 1
-const TOTAL_CONFIRMATIONS = 2
+const CONFIRMATIONS = {
+  none: 0,
+  pending: 1,
+  total: 2,
+}
+
+const CONFIRMATIONS_STATES = {
+  none: 'none',
+  pending: 'pending',
+  successful: 'successful',
+}
 
 export default {
   name: 'confirmation-state-viewer',
@@ -44,15 +58,27 @@ export default {
   },
 
   data: _ => ({
-    TOTAL_CONFIRMATIONS,
+    CONFIRMATIONS,
   }),
 
   computed: {
     currentConfirmationsCount () {
       if (this.invoice.isSuccessful) {
-        return TOTAL_CONFIRMATIONS
+        return CONFIRMATIONS.total
+      } else if (this.invoice.isPending) {
+        return CONFIRMATIONS.pending
       } else {
-        return PENDING_CONFIRMATIONS
+        return CONFIRMATIONS.none
+      }
+    },
+
+    confirmationState () {
+      if (this.invoice.isSuccessful) {
+        return CONFIRMATIONS_STATES.successful
+      } else if (this.invoice.isPending) {
+        return CONFIRMATIONS_STATES.pending
+      } else {
+        return CONFIRMATIONS_STATES.none
       }
     },
   },
@@ -66,14 +92,10 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
 
-.confirmation-state-viewer--successful {
-  color: $col-success;
-}
-
-.confirmation-state-viewer--pending {
-  color: $col-pending;
+  &--none { color: $col-text-secondary; }
+  &--pending { color: $col-pending; }
+  &--successful { color: $col-success; }
 }
 
 .confirmation-state-viewer__icon {
