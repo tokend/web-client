@@ -3,7 +3,8 @@
     class="select-field"
     :class="{
       'select-field--error': errorMessage,
-      'select-field--disabled': $attrs.disabled
+      'select-field--disabled': $attrs.disabled,
+      'select-field--readonly': $attrs.readonly,
     }"
   >
     <template v-if="label">
@@ -18,11 +19,8 @@
     <select
       :id="`select-${_uid}`"
       class="select-field__select"
-      :disabled="$attrs.disabled"
-      :name="$attrs.name"
       :value="value"
-      :required="$attrs.required"
-      :autofocus="$attrs.autofocus"
+      v-bind="$attrs"
       @change="onChange"
     >
       <slot />
@@ -166,17 +164,17 @@ export default {
     '&.select-field__option--focused'
   );
 
-  .select-field--disabled & {
+  .select-field--disabled &,
+  .select-field--readonly & {
     cursor: default;
     pointer-events: none;
+    color: $field-color-unfocused;
 
     @include readonly-material-border($field-color-unfocused);
   }
 }
 
 .select-field__opener span {
-  color: $field-color-text;
-
   @include text-font-sizes;
 }
 
@@ -267,7 +265,8 @@ export default {
   transform: rotate(-180deg);
 }
 
-.select-field--disabled {
+.select-field--disabled,
+.select-field--readonly {
   filter: grayscale(100%);
 }
 

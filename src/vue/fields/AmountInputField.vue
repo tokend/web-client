@@ -23,7 +23,7 @@
       class="amount-input-field__max-btn"
       type="button"
       @click="$emit(EVENTS.input, maxIncomingAmount)"
-      :disabled="$attrs.disabled"
+      :disabled="$attrs.disabled || $attrs.readonly"
     >
       <i class="mdi mdi-arrow-up-bold amount-input-field__max-icon" />
     </button>
@@ -148,6 +148,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import 'scss/variables';
+
 .amount-input-field {
   display: flex;
 }
@@ -157,10 +159,17 @@ export default {
   margin-left: 0.6rem;
   max-width: 2.4rem;
   max-height: 2.4rem;
+  color: $field-color-unfocused;
+  transition: 0.2s color;
 
   &:disabled {
     filter: grayscale(100%);
     cursor: default;
+  }
+
+  &:enabled:hover,
+  &:enabled:focus {
+    color: inherit;
   }
 }
 

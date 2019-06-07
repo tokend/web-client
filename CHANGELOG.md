@@ -11,6 +11,23 @@ for further information about branching and tagging conventions.
 ## Added
 - URLs normalization in env.js
 
+## [1.8.0-rc.1] - 2019-06-07
+#### Changed
+- Some design improvements to fields and rendered fees:
+  - Fields are now synchronized in disabled colors and style
+  - Text areas now have thinner border-width
+  - Tick field now looks a bit nittier
+  - Rendered fees now have less obtrusive underlines on clickable part
+  - Rendered fees now have a bit smaller font-sizes and line-heights
+  - Rendered fees now have "Show my account fees" at the bottom of the component
+
+### "Under the hood" changed
+#### Added
+- File types exceptions to .gitattributes
+
+#### Fixed
+- Restored images line endings
+
 ## [1.8.0-rc.0] - 2019-06-06
 #### Fixed
 - Disabled state for amount input field
@@ -692,7 +709,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.8.0-rc.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.8.0-rc.1...HEAD
+[1.8.0-rc.1]: https://github.com/tokend/web-client/compare/1.8.0-rc.0...1.8.0-rc.1
 [1.8.0-rc.0]: https://github.com/tokend/web-client/compare/1.8.0-x.3...1.8.0-rc.0
 [1.8.0-x.3]: https://github.com/tokend/web-client/compare/1.8.0-x.2...1.8.0-x.3
 [1.8.0-x.2]: https://github.com/tokend/web-client/compare/1.8.0-x.1...1.8.0-x.2
