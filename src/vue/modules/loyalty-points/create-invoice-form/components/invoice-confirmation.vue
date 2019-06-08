@@ -3,7 +3,6 @@
     <invoice-viewer :invoice="invoice" />
 
     <balances-viewer
-      v-if="customerBalance.id"
       class="invoice-confirmation__balances"
       :invoice="invoice"
       :customer-balance="customerBalance.amount"
@@ -102,7 +101,7 @@ export default {
     },
 
     merchantBalance () {
-      return this.getBalanceByAssetCode(config.DEFAULT_POINT_CODE)
+      return this.getBalanceByAssetCode(config.DEFAULT_POINT_CODE) || {}
     },
   },
 
@@ -191,7 +190,6 @@ export default {
 
       const balance = account.balances
         .find(b => b.asset.id === this.invoice.asset.code)
-
       this.customerBalance = new Balance(balance || {})
     },
 
