@@ -1,18 +1,18 @@
 <template>
   <div class="register-of-shares">
     <template
-      v-if="getModule().canRenderSubmodule(SharesTopBarModule)">
+      v-if="getModule().canRenderSubmodule(MovementsTopBarModule)">
       <submodule-importer
-        :submodule="getModule().getSubmodule(SharesTopBarModule)"
+        :submodule="getModule().getSubmodule(MovementsTopBarModule)"
         @asset-updated="updateAsset"
         @movements-update-required="updateList"
       />
     </template>
 
-    <template v-if="getModule().canRenderSubmodule(SharesHistoryModule)">
+    <template v-if="getModule().canRenderSubmodule(MovementsHistoryModule)">
       <submodule-importer
         v-if="asset.code"
-        :submodule="getModule().getSubmodule(SharesHistoryModule)"
+        :submodule="getModule().getSubmodule(MovementsHistoryModule)"
         :asset-code="asset.code"
         :key="`movements-history-state-${historyState}`"
       >
@@ -42,8 +42,8 @@ import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import Loader from '@/vue/common/Loader'
 
-import { SharesTopBarModule } from '@modules/shares-top-bar/module'
-import { SharesHistoryModule } from '@/vue/modules/shares-history/module'
+import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
+import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 
 export default {
   name: 'register-of-shares-page',
@@ -54,8 +54,8 @@ export default {
   },
 
   data: _ => ({
-    SharesTopBarModule,
-    SharesHistoryModule,
+    MovementsTopBarModule,
+    MovementsHistoryModule,
     asset: {},
     historyState: 0,
     isLoadFailed: false,
@@ -66,6 +66,7 @@ export default {
       this.asset = asset
     },
 
+    // MovementsHistoryModule uses these 3 methods below
     withdrawalFiatModuleWithdrawn () {
       this.updateList()
     },

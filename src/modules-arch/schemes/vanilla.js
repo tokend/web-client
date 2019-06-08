@@ -55,8 +55,6 @@ import { VerificationGeneralFormModule } from '@/vue/modules/verification/genera
 import { MyAssetsPageModule } from '@/vue/pages/my-assets-page-module'
 import { MyAssetsExplorerModule } from '@/vue/modules/assets/my-assets-explorer/module'
 import { SharesPageModule } from '@/vue/pages/shares-page-module'
-import { SharesTopBarModule } from '@modules/shares-top-bar/module'
-import { SharesHistoryModule } from '@/vue/modules/shares-history/module'
 
 export default {
   pages: [
@@ -201,8 +199,8 @@ export default {
         menuButtonTranslationId: 'pages-names.register-of-shares',
         menuButtonMdiName: 'book-open',
         submodules: [
-          new SharesHistoryModule(),
-          new SharesTopBarModule(),
+          new MovementsTopBarModule(),
+          new MovementsHistoryModule(),
         ],
         isCorporateOnly: true,
       },

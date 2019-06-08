@@ -1,6 +1,6 @@
 import { PageModuleDescriptor } from '@/modules-arch/page-module-descriptor'
-import { SharesTopBarModule } from '@modules/shares-top-bar/module'
-import { SharesHistoryModule } from '@/vue/modules/shares-history/module'
+import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
+import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 
 export class SharesPageModule extends PageModuleDescriptor {
   constructor (opts = {}) {
@@ -8,8 +8,8 @@ export class SharesPageModule extends PageModuleDescriptor {
       ...opts,
       importComponentFn: _ => import('@/vue/pages/Shares'),
       allowedSubmodules: [
-        SharesHistoryModule,
-        SharesTopBarModule,
+        MovementsTopBarModule,
+        MovementsHistoryModule,
       ],
     })
   }

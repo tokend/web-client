@@ -77,6 +77,22 @@
         <email-getter :account-id="operationDetails.toAccountId" />
       </td>
     </tr>
+    <tr class="attributes-viewer__table-row">
+      <td class="attributes-viewer__table-cell">
+        {{ 'movements-history.payment-sender-id-lbl' | globalize }}
+      </td>
+      <td class="attributes-viewer__table-cell">
+        {{ operationDetails.fromAccountId }}
+      </td>
+    </tr>
+    <tr class="attributes-viewer__table-row">
+      <td class="attributes-viewer__table-cell">
+        {{ 'movements-history.payment-recipient-id-lbl' | globalize }}
+      </td>
+      <td class="attributes-viewer__table-cell">
+        {{ operationDetails.toAccountId }}
+      </td>
+    </tr>
   </tbody>
 </template>
 

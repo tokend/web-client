@@ -15,7 +15,7 @@
             class="app__select app__select--no-border"
           >
             <option
-              v-for="asset in assets"
+              v-for="asset in currentPageAssets"
               :key="asset.code"
               :value="asset.code"
             >
@@ -25,6 +25,7 @@
         </div>
       </template>
       <div
+        v-if="!isSharesPage"
         class="movements-top-bar__actions"
         slot="extra"
       >
@@ -133,6 +134,7 @@ import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
 import { DepositFormPseudoModule } from '@/modules-arch/pseudo-modules/deposit-form-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
+import { vueRoutes } from '@/vue-router/routes'
 
 const EVENTS = {
   assetUpdated: 'asset-updated',
@@ -171,7 +173,16 @@ export default {
   computed: {
     ...mapGetters({
       assets: vuexTypes.balancesAssets,
+      ownedAssets: vuexTypes.ownedAssets,
     }),
+
+    isSharesPage () {
+      return this.$route.name === vueRoutes.registerOfShares.name
+    },
+
+    currentPageAssets () {
+      return this.isSharesPage ? this.ownedAssets : this.assets
+    },
   },
   watch: {
     asset: {
@@ -194,12 +205,12 @@ export default {
       loadAccountBalancesDetails: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     setAssetByCode (code) {
-      this.asset = this.assets.find(item => item.code === code)
+      this.asset = this.currentPageAssets.find(item => item.code === code)
     },
     setDefaultAsset () {
-      this.asset = this.assets
+      this.asset = this.currentPageAssets
         .find(item => item.code === this.$route.query.asset) ||
-        this.assets[0]
+        this.currentPageAssets[0]
     },
     getMessageIdForPolicy (policy) {
       let messageId = ''
