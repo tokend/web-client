@@ -1,6 +1,6 @@
-import { PageModuleDescriptor } from '@/modules-arch/page-module-descriptor'
+import { ModuleDescriptor } from '@/modules-arch/module-descriptor'
 
-export class PollRequestsModule extends PageModuleDescriptor {
+export class PollRequestsModule extends ModuleDescriptor {
   constructor (opts = {}) {
     super({
       importComponentFn: _ => import('@modules/requests/poll-requests'),

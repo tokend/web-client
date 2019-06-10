@@ -2072,6 +2072,12 @@
     "asset-select-field": {
       "failed-loading-msg": "Assets loading failed!",
       "no-assets-for-select": "No assets for select"
+    },
+    "polls": {
+      "create-poll": "Create",
+      "update-poll": "Update poll",
+      "overview-title": "Poll overview",
+      "new-poll": "New poll"
     }
   }
 }

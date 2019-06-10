@@ -45,4 +45,6 @@ export const vueRoutes = Object.freeze({
   preIssuanceGuide: { name: 'pre-issuance-guide' },
   polls: { name: 'app.polls' },
   pollRequests: { name: 'app.poll-requests' },
+  userOwnedPolls: { name: 'app.user-owned-polls' },
+  allPolls: { name: 'app.all-polls' },
 })

@@ -4,35 +4,47 @@
       <top-bar>
         <template slot="main">
           <router-link
-            to="/"
+            v-if="getModule().canRenderSubmodule(PollsListPageModule)"
+            :to="vueRoutes.allPolls"
           >
-            <span>
-              All polls
-            </span>
+            <span>All polls</span>
           </router-link>
           <router-link
-            to="/"
+            v-if="getModule().canRenderSubmodule(PollsListOwnedPageModule)"
+            :to="vueRoutes.userOwnedPolls"
           >
-            <span>
-              My polls
-            </span>
+            <span>My polls</span>
           </router-link>
-          <!-- eslint-disable max-len -->
           <router-link
-            v-if="getModule().canRenderSubmodule(PollRequestsModule)"
+            v-if="getModule().canRenderSubmodule(PollRequestsPageModule)"
             :to="vueRoutes.pollRequests"
           >
-            <span>
-              Polls requests
-            </span>
+            <span>Polls requests</span>
           </router-link>
-          <!-- eslint-enable max-len -->
-          <skeleton-loader
-            v-else
-            template="smallString"
-          />
+        </template>
+
+        <template slot="extra">
+          <button
+            v-ripple
+            class="app__button-raised"
+            @click="isCreatePollDrawerShown = true"
+          >
+            <i class="mdi mdi-plus sales__btn-icon" />
+            {{ 'polls.create-poll' | globalize }}
+          </button>
         </template>
       </top-bar>
+
+      <template>
+        <drawer
+          :is-shown.sync="isCreatePollDrawerShown"
+          :close-by-click-outside="false"
+        >
+          <template slot="heading">
+            {{ 'polls.new-poll' | globalize }}
+          </template>
+        </drawer>
+      </template>
     </template>
     <router-view />
   </div>
@@ -40,19 +52,24 @@
 
 <script>
 import TopBar from '@/vue/common/TopBar'
-import { PollRequestsModule } from '@/vue/modules/requests/poll-requests/module'
-import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
+import { PollRequestsPageModule } from '@/vue/pages/polls/poll-requests-page'
 import { vueRoutes } from '@/vue-router/routes'
+import { PollsListPageModule } from '@/vue/pages/polls/all-polls-page-module'
+import { PollsListOwnedPageModule } from '@/vue/pages/polls/user-owned-polls-page-module'
+import Drawer from '@/vue/common/Drawer'
 
 export default {
   name: 'polls',
   components: {
     TopBar,
-    SkeletonLoader,
+    Drawer,
   },
   data: _ => ({
+    isCreatePollDrawerShown: false,
     vueRoutes,
-    PollRequestsModule,
+    PollRequestsPageModule,
+    PollsListPageModule,
+    PollsListOwnedPageModule,
   }),
 }
 </script>

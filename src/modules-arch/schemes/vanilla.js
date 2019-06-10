@@ -50,8 +50,11 @@ import { BalancesPageModule } from '@/vue/pages/balances-page'
 import { AssetExplorerModule } from '@/vue/modules/assets/asset-explorer/module'
 import { BalanceExplorerModule } from '@/vue/modules/assets/balance-explorer/module'
 import { ShowNetworkPassphrasePseudoModule } from '@/modules-arch/pseudo-modules/show-network-passphrase-pseudo-module'
-import { VotingPageModule } from '@/vue/pages/voting-page-module'
+import { PollsPageModule } from '@/vue/pages/polls-page-module'
 import { PollRequestsModule } from '@/vue/modules/requests/poll-requests/module'
+import { PollRequestsPageModule } from '@/vue/pages/polls/poll-requests-page'
+import { PollsListPageModule } from '@/vue/pages/polls/all-polls-page-module'
+import { PollsListOwnedPageModule } from '@/vue/pages/polls/user-owned-polls-page-module'
 
 import { VerificationGeneralFormModule } from '@/vue/modules/verification/general-form/module'
 
@@ -389,35 +392,47 @@ export default {
       },
     ),
 
-    new VotingPageModule(
+    new PollsPageModule(
       {
         routerEntry: {
-          path: '/voting',
+          path: '/polls',
           name: vueRoutes.polls.name,
           meta: { pageNameTranslationId: 'pages-names.polls' },
         },
         menuButtonTranslationId: 'pages-names.polls',
         menuButtonMdiName: 'vote',
-        children: [
-          // Carefully: have some issues because of is-loading prop provided
-          // to children from parent component. Leave it lke that for now
-          {
-            path: '/voting/all',
-            name: vueRoutes.tradeExchange.name,
-            component: _ => import('@/vue/pages/pools/PollsRequests'),
-          },
-          {
-            path: '/voting/my',
-            name: vueRoutes.tradeUserOffers.name,
-            component: _ => import('@/vue/pages/pools/PollsRequests'),
-          },
-        ],
+        isAutoRedirectToFirstChild: true,
         submodules: [
-          new PollRequestsModule({
+          new PollsListPageModule({
             routerEntry: {
-              path: '/voting/poll-requests',
+              path: '/polls/all',
+              name: vueRoutes.allPolls.name,
+              props: {
+                default: true,
+                isUserPolls: false,
+              },
+            },
+          }),
+          new PollsListOwnedPageModule({
+            routerEntry: {
+              path: '/polls/my',
+              name: vueRoutes.userOwnedPolls.name,
+              props: {
+                default: true,
+                isUserPolls: true,
+              },
+            },
+            isCorporateOnly: true,
+          }),
+          new PollRequestsPageModule({
+            routerEntry: {
+              path: '/polls/poll-requests',
               name: vueRoutes.pollRequests.name,
             },
+            isCorporateOnly: true,
+            submodules: [
+              new PollRequestsModule(),
+            ],
           }),
         ],
       },
