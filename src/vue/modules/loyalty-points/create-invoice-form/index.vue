@@ -1,11 +1,14 @@
 <template>
-  <div v-if="isLoaded">
+  <div
+    v-if="isLoaded"
+    class="create-invoice-form-module"
+  >
     <template v-if="assetPairs.length">
       <invoice-form
         v-if="!isTransactionSent"
         :amount="amount"
         :subject="subject"
-        :merchant-email="wallet.email"
+        :merchant-email="walletEmail"
         :merchant-system="horizonUrl"
         @submit="initConfirmation"
       />
@@ -13,6 +16,8 @@
       <invoice-confirmation
         v-else
         :invoice="invoice"
+        :merchant-email="walletEmail"
+        :merchant-system="horizonUrl"
         @close="$emit(EVENTS.close)"
       />
     </template>
@@ -45,6 +50,7 @@ import { config } from './_config'
 
 import { mapGetters, mapActions } from 'vuex'
 import { types } from './store/types'
+import { vuexTypes } from '@/vuex/types'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -87,11 +93,14 @@ export default {
     ...mapGetters('create-invoice-form', {
       assetPairs: types.assetPairs,
     }),
+    ...mapGetters({
+      walletEmail: vuexTypes.walletEmail,
+    }),
   },
 
   async created () {
     try {
-      await this.loadAssetPairs({ asset: config.DEFAULT_POINT })
+      await this.loadAssetPairs({ asset: config.DEFAULT_POINT_CODE })
       this.isLoaded = true
     } catch (e) {
       this.isLoadFailed = true
