@@ -15,7 +15,7 @@
             class="app__select app__select--no-border"
           >
             <option
-              v-for="asset in currentPageAssets"
+              v-for="asset in assets"
               :key="asset.code"
               :value="asset.code"
             >
@@ -172,7 +172,7 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      assets: vuexTypes.balancesAssets,
+      balancesAssets: vuexTypes.balancesAssets,
       ownedAssets: vuexTypes.ownedAssets,
     }),
 
@@ -180,8 +180,8 @@ export default {
       return this.$route.name === vueRoutes.registerOfShares.name
     },
 
-    currentPageAssets () {
-      return this.isSharesPage ? this.ownedAssets : this.assets
+    assets () {
+      return this.isSharesPage ? this.ownedAssets : this.balancesAssets
     },
   },
   watch: {
@@ -205,12 +205,12 @@ export default {
       loadAccountBalancesDetails: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     setAssetByCode (code) {
-      this.asset = this.currentPageAssets.find(item => item.code === code)
+      this.asset = this.assets.find(item => item.code === code)
     },
     setDefaultAsset () {
-      this.asset = this.currentPageAssets
+      this.asset = this.assets
         .find(item => item.code === this.$route.query.asset) ||
-        this.currentPageAssets[0]
+        this.assets[0]
     },
     getMessageIdForPolicy (policy) {
       let messageId = ''
