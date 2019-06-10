@@ -1,4 +1,3 @@
-import { MockHelper } from '../test'
 import { vuexTypes } from './types'
 
 import kyc from './kyc.module'
@@ -8,63 +7,64 @@ import Vuex from 'vuex'
 
 import responseJSON from '../test/mocks/update-kyc'
 
+import { api } from '@/api'
+import { MockWrapper } from '@/test'
+
 Vue.use(Vuex)
 
 describe('kyc.module end-to-end test', () => {
   describe('LOAD_KYC should update all the getters properly', () => {
-    let store, mockHelper
+    let store
 
-    const accountId = 'GA4BFNAN3UHKCMK3Q5QVQFLANHHEGMOCDRHY6MN4OSPEPWOYGHYVY7M2'
-    const latestBlobId = 'G6V2SIIY2KAP3NGZTJ5DJTBFFKPIC2LESBGQITXR64HXFPFOVPGA'
     const latestKycData = { first_name: 'Bob', last_name: 'Smith' }
     const kycState = 'approved'
     const kycStateI = 3
 
     beforeEach(async () => {
-      mockHelper = new MockHelper()
       store = new Vuex.Store({
         actions: {},
-        getters: {
-          accountId: _ => accountId,
-        },
+        getters: { accountId: _ => 'SOME_ACCOUNT_ID' },
         mutations: {},
         state: {},
         modules: { kyc },
       })
-      mockHelper.mockEndpoint(`/accounts/${accountId}/blobs/${latestBlobId}`, {
-        data:
-          {
-            id: latestBlobId,
-            type: 'kyc_form',
-            attributes:
-              {
-                value: JSON.stringify(latestKycData),
-              },
+
+      sinon.stub(api, 'getWithSignature')
+        .withArgs('/v3/accounts/SOME_ACCOUNT_ID', { include: ['kyc_data'] })
+        .resolves({
+          data: {
+            kycData: { kycData: { blobId: 'BLOB_ID' } },
           },
-      })
-      mockHelper.mockEndpoint(`/v3/change_role_requests?include=request_details&filter%5Brequestor%5D=${accountId}&page%5Blimit%5D=1&page%5Border%5D=desc`,
-        responseJSON
-      )
+        })
+        .withArgs('/v3/change_role_requests', {
+          filter: { requestor: 'SOME_ACCOUNT_ID' },
+          page: { limit: 1, order: 'desc' },
+          include: ['request_details'],
+        })
+        .resolves(MockWrapper.makeJsonapiResponse(responseJSON))
+        .withArgs('/accounts/SOME_ACCOUNT_ID/blobs/BLOB_ID')
+        .resolves({ data: { value: JSON.stringify(latestKycData) } })
+
       await store.dispatch(vuexTypes.LOAD_KYC)
+    })
+
+    afterEach(() => {
+      api.getWithSignature.restore()
     })
 
     it('kycState', () => {
       expect(store.getters[vuexTypes.kycState])
-        .to
-        .equal(kycState)
+        .to.equal(kycState)
     })
 
     it('kycStateI', () => {
       expect(store.getters[vuexTypes.kycStateI])
-        .to
-        .equal(kycStateI)
+        .to.equal(kycStateI)
     })
 
     it('kycLatestData', () => {
       expect(store.getters[vuexTypes.kycLatestData])
-        .to
-        .deep
-        .equal(latestKycData)
+        .to.deep.equal(latestKycData)
     })
   })
 })
