@@ -36,10 +36,10 @@ export default {
 @import '~@scss/variables';
 
 .invoice-state-viewer--successful {
-  color: $col-success;
+  color: $text-success-light;
 }
 
 .invoice-state-viewer--pending {
-  color: $col-pending;
+  color: $text-warning-light;
 }
 </style>

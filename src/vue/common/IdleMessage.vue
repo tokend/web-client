@@ -64,12 +64,12 @@ export default {
 .idle-message {
   align-items: center;
   padding: 2.4rem;
-  background-color: $col-warning;
+  background-color: $bg-warning-lighter;
   position: relative;
 }
 
 .idle-message__text {
-  color: $col-text-on-dark-bg;
+  color: $text-primary-lighter;
   font-size: 1.4rem;
   line-height: 1.25;
   font-weight: 700;
@@ -90,7 +90,7 @@ export default {
     position: absolute;
     top: 20%;
     left: calc(50% - 0.1rem);
-    background-color: $col-text-on-dark-bg;
+    background-color: $bg-primary-lighter;
   }
 
   &:after {

@@ -84,11 +84,11 @@ export default {
 }
 
 .invoice-summary-viewer__link {
-  color: $col-primary-lighten;
+  color: $line-primary;
   text-decoration: none;
 
   &:visited {
-    color: $col-primary-lighten;
+    color: $line-primary;
   }
 }
 </style>

@@ -144,7 +144,7 @@ export default {
 .verification-state-message__content {
   padding: 2.4rem;
   font-size: 1.4rem;
-  color: $col-primary-txt;
+  color: $text-primary-lighter;
   word-wrap: break-word;
   line-height: 1.25;
 }

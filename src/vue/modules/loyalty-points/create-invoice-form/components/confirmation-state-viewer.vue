@@ -69,11 +69,11 @@ export default {
 }
 
 .confirmation-state-viewer--successful {
-  color: $col-success;
+  color: $text-success-light;
 }
 
 .confirmation-state-viewer--pending {
-  color: $col-pending;
+  color: $text-warning-light;
 }
 
 .confirmation-state-viewer__icon {

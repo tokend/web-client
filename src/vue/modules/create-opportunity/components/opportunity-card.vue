@@ -69,17 +69,17 @@ export default {
 }
 
 .account-type-selector__item--select {
-  border: 0.2rem solid $col-primary-lighten;
+  border: 0.2rem solid $border-primary-dark;
 }
 
 .account-type-selector__item-title {
-  color: $col-primary;
+  color: $text-primary-dark;
   font-size: 1.8rem;
 }
 
 .account-type-selector__item-description {
   margin-top: 0.8rem;
-  color: $col-secondary;
+  color: $text-primary-light;
   font-size: 1.2rem;
   text-align: center;
 }
@@ -94,11 +94,11 @@ export default {
   top: -1.2rem;
   right: -1.2rem;
   position: absolute;
-  border: 0.2rem solid $col-primary-lighten;
+  border: 0.2rem solid $border-primary-dark;
 }
 
 .account-type-selector__selected-icon-tag {
   font-size: 1.6rem;
-  color: $col-primary-lighten;
+  color: $line-primary;
 }
 </style>

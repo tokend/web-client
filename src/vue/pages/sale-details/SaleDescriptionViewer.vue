@@ -137,7 +137,7 @@ export default {
   }
 
   a {
-    color: $col-secondary;
+    color: $text-primary-light;
   }
 }
 </style>

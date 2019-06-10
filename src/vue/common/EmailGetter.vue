@@ -194,7 +194,7 @@ export default {
 }
 
 .email-getter__copy-button {
-  color: $col-primary-inactive;
+  color: $text-inactive;
   margin-left: 0.5rem;
   min-height: 1rem;
   min-width: 1rem;
@@ -202,7 +202,7 @@ export default {
   padding: 0;
 
   &:hover {
-    color: $col-primary-inactive-hover-darken;
+    color: $text-inactive-hover-darken;
     background: none;
   }
 }

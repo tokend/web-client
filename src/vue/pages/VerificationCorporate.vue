@@ -311,7 +311,7 @@ export default {
 }
 
 .verification-corporate-form__account-info-title {
-  color: $col-primary;
+  color: $text-primary-dark;
   font-size: 1.3rem;
 }
 </style>

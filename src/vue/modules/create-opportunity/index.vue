@@ -939,7 +939,7 @@ export default {
 
 .create-opportunity__error-text {
   margin-bottom: 2rem;
-  color: $col-error;
+  color: $text-warning;
 }
 
 .create-opportunity__price {

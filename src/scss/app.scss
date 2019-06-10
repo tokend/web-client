@@ -21,7 +21,7 @@ select,
 button,
 textarea {
   background: $col-app-background;
-  color: $col-primary;
+  color: $text-primary-dark;
   font-family: 'Circular', 'Noto Sans', '-apple-system', 'BlinkMacSystemFont', sans-serif;
   font-weight: 400;
   letter-spacing: 0.005rem;
@@ -261,7 +261,7 @@ h6.app__page-heading {
   @include button-raised();
 
   &--danger {
-    background-color: $col-error;
+    background-color: $bg-warning;
   }
 }
 
@@ -413,7 +413,7 @@ h6.app__page-heading {
 
   .bar {
     // !importants are for overwrite nprogress’ styles
-    background: $col-primary-lighten !important;
+    background: $bg-secondary-dark !important;
     height: 0.3rem !important;
   }
 }

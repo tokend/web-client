@@ -37,11 +37,11 @@ export default {
 
 .terms-viewer__link {
   font-size: 1.4rem;
-  color: $col-primary-lighten;
+  color: $line-primary;
   text-decoration: none;
 
   &:visited {
-    color: $col-primary-lighten;
+    color: $line-primary;
   }
 }
 </style>

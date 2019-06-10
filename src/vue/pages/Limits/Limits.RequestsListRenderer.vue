@@ -215,7 +215,7 @@ export default {
 
 .limits-requests-list-renderer__show-details-btn {
   font-size: 1.2rem;
-  color: $col-primary-lighten;
+  color: $line-primary;
   cursor: pointer;
 }
 </style>

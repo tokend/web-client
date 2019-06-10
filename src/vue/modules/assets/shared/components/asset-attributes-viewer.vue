@@ -197,13 +197,13 @@ $media-small-height: 460px;
 .asset-attributes-viewer__code {
   font-size: 1.8rem;
   font-weight: 700;
-  color: $col-primary;
+  color: $text-primary-dark;
 }
 
 .asset-attributes-viewer__name {
   margin-top: 0.1rem;
   font-size: 1.4rem;
   line-height: 1.29;
-  color: $col-primary;
+  color: $text-primary-dark;
 }
 </style>

@@ -83,11 +83,11 @@ export default {
 
 .request-attributes-viewer__terms {
   font-size: 1.4rem;
-  color: $col-primary-lighten;
+  color: $line-primary;
   text-decoration: none;
 
   &:visited {
-    color: $col-primary-lighten;
+    color: $line-primary;
   }
 }
 </style>

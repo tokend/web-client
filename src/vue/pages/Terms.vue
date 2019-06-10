@@ -101,7 +101,7 @@ export default {
       }
 
       a:visited {
-        color: $col-primary;
+        color: $text-primary-dark;
       }
     }
   }

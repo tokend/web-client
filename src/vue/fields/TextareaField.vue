@@ -178,7 +178,7 @@ export default {
   left: 1.6rem;
   max-width: 70%;
   font-size: 1.2rem;
-  color: $col-error;
+  color: $text-warning;
 }
 
 </style>

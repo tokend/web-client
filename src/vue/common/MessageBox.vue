@@ -68,14 +68,14 @@ export default {
   position: relative;
   padding: 1.6rem;
   font-size: 1.4rem;
-  color: $col-primary-txt;
+  color: $text-primary-lighter;
   line-height: 1.25;
 
-  &--success { background-color: $col-success; }
-  &--warning { background-color: $col-warning; }
-  &--error { background-color: $col-error; }
-  &--info { background-color: $col-info; }
-  &--danger { background-color: $col-danger; }
+  &--success { background-color: $bg-success-light; }
+  &--warning { background-color: $bg-warning-lighter; }
+  &--error { background-color: $bg-warning; }
+  &--info { background-color: $bg-secondary-dark; }
+  &--danger { background-color: $bg-warning-dark; }
   &--default { background-color: $col-text; }
 }
 

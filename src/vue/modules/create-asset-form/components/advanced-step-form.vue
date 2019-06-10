@@ -265,7 +265,7 @@ export default {
   border-bottom: 0.1rem solid $col-link;
 
   &:visited {
-    color: $col-primary;
+    color: $text-primary-dark;
   }
 }
 

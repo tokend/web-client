@@ -194,7 +194,7 @@ export default {
 @import '~@scss/mixins';
 
 .verification__subtitle {
-  color: $col-primary;
+  color: $text-primary-dark;
   font-size: 1.3rem;
   margin-top: 4rem;
 }
@@ -231,17 +231,17 @@ export default {
 }
 
 .router-link-exact-active {
-  border: 0.2rem solid $col-primary-lighten;
+  border: 0.2rem solid $border-primary-dark;
 }
 
 .account-type-selector__item-title {
-  color: $col-primary;
+  color: $text-primary-dark;
   font-size: 1.8rem;
 }
 
 .account-type-selector__item-description {
   margin-top: 0.8rem;
-  color: $col-secondary;
+  color: $text-primary-light;
   font-size: 1.2rem;
   text-align: center;
 }
@@ -251,7 +251,7 @@ export default {
   height: 2.4rem;
   padding: 0.2rem;
   background-color: $col-block-bg;
-  border: 0.2rem solid $col-primary-lighten;
+  border: 0.2rem solid $border-primary-dark;
   border-radius: 2rem;
   top: -1.2rem;
   right: -1.2rem;
@@ -265,7 +265,7 @@ export default {
 
 .account-type-selector__selected-icon-tag {
   font-size: 1.6rem;
-  color: $col-primary-lighten;
+  color: $line-primary;
 }
 
 .verification__form-label {

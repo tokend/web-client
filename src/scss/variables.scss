@@ -14,6 +14,87 @@ $content-padding-left: 5rem;
 $content-padding-right: 6.5rem;
 $content-side-paddings-sm: 2rem;
 
+// base background colors:
+$bg-primary-lighter: #ffffff;
+$bg-primary-light: #f5f6f9;
+$bg-primary: #f6f8fb;
+$bg-primary-dark: #e9eaed;
+$bg-primary-darker: #3a4180;
+
+$bg-secondary-lighter: #e2e3e3;
+$bg-secondary-light: #c1bfd0;
+$bg-secondary: #837fa1;
+$bg-secondary-dark: #7b6eff;
+$bg-secondary-darker: #000000;
+
+$bg-tertiary-lighter: #f5f6ff;
+$bg-tertiary-light: #f2f2f4;
+$bg-tertiary: #e0e0e0;
+$bg-tertiary-dark: #cccccc;
+$bg-tertiary-darker: #0ea7ba;
+
+$bg-inactive: rgba($bg-primary-darker, 0.7);
+$bg-inactive-hover-darken: darken($bg-inactive, 20%);
+$bg-flat-hover: rgba($bg-primary-darker, 0.2);
+
+// status background colors:
+$bg-warning-lighter: #ffa333;
+$bg-warning-light: #ef6c00;
+$bg-warning: #ef5350;
+$bg-warning-dark: #d6244a;
+
+$bg-success-lighter: #51ca90;
+$bg-success-light: #33a494;
+$bg-success: #3cab00;
+
+$bg-info: #0ea7ba;
+
+// base text colors:
+$text-primary-lighter: #ffffff;
+$text-primary-light: #837fa1;
+$text-primary: #7b6eff;
+$text-primary-dark: #3a4180;
+
+$text-secondary-lighter: #f2f2f2;
+$text-secondary-light: #c6c6c6;
+$text-secondary: #c1bfd0;
+
+$text-inactive: rgba($text-primary-dark, 0.7);
+$text-inactive-hover-darken: darken($text-inactive, 20%);
+$text-flat-hover: rgba($text-primary-dark, 0.2);
+
+// status text colors
+$text-warning-lighter: #ffa333;
+$text-warning-light: #ef6c00;
+$text-warning: #ef5350;
+$text-warning-dark: #d6244a;
+
+$text-success-lighter: #51ca90;
+$text-success-light: #33a494;
+$text-success: #3cab00;
+
+$text-info: #0ea7ba;
+
+// base line colors:
+$line-primary-lighter: #e9eaed;
+$line-primary-light: #c1bfd0;
+$line-primary: #7b6eff;
+$line-primary-dark: #3a4180;
+
+// base border colors:
+$border-primary-lighter: #c4c8cb;
+$border-primary-light: #c1bfd0;
+$border-primary: #aeaeae;
+$border-primary-dark: #7b6eff;
+$border-primary-darker: #3a4180;
+
+$border-secondary-light: #c4c8cb;
+$border-secondary: #aaaaaa;
+
+// base shadow colors:
+$shadow-primary-light: #3a4180;
+$shadow-primary: #000000;
+
 // z-indexes
 $z-app-navbar: 4;
 $z-sidebar-burger: 10;
@@ -26,142 +107,99 @@ $z-sidebar: 120;
 $z-tooltip-wrapper: 1;
 $z-skeleton-loader: 1;
 
-$_athensGray: #e9eaed;
-$_eastBay: #3a4180;
-$_white: #ffffff;
-$_concrete: #f2f2f2;
-$_black: #000000;
-$_gray: #e2e3e3;
-$_silverChalice: #aeaeae;
-$_cyan: #0ea7ba;
-$_thinGray: #f2f2f4;
-$_thinBlue: #f6f8fb;
-$_lightGray: #c6c6c6;
-$_mediumGray: #cccccc;
-$_lightRed: #ef5350;
-$_darkRed: #d6244a;
-$_cornflowerBlue: #7b6eff;
-$_deepBlue: #291e93;
-$_green: #33a494;
-$_lightGreen: #51ca90;
-$_orange: #ef6c00;
-$_orangePeel: #ffa333;
-$_whiteSmoke: #f5f6f9;
-$_lightPurple: #837fa1;
-$_ghostWhite: #c4c8cb;
-$_thinPurple: #c1bfd0;
-$_alto: #e0e0e0;
-$_silverChalice: #aaaaaa;
-$_aliceBlue: #f5f6ff;
+// $_deepBlue: #291e93;  // used nowhere
+// $_orange: #ef6c00;  // used nowhere
 
 // base colors:
-$col-primary: $_eastBay;
-$col-secondary: $_lightPurple;
-$col-primary-lighten: $_cornflowerBlue;
-$col-primary-txt: $_white;
-$col-link: $col-primary-lighten;
-$col-text-on-dark-bg: $_white;
-
-$col-primary-inactive: rgba($col-primary, 0.7);
-$col-primary-inactive-hover-darken: darken($col-primary-inactive, 20%);
-$col-primary-flat-hover: rgba($col-primary, 0.2);
-
-// status colors:
-$col-accent: $_lightRed;
-$col-pending: $_orange;
-$col-warning: $_orangePeel;
-$col-success: $_green;
-$col-error: $_lightRed;
-$col-info: $_cornflowerBlue;
-$col-danger: $_darkRed;
+$col-text-on-dark-bg: $text-primary-lighter;
 
 // global colors
-$col-text: $_eastBay;
-$col-text-secondary: $_lightPurple;
-$col-link: $_cornflowerBlue;
-$col-border: $_ghostWhite;
-$col-block-bg: $_white;
-$col-app-background: $_gray;
-$col-app-content-background: $_thinBlue;
+$col-text: $text-primary-dark;
+$col-text-secondary: $text-primary-light;
+$col-link: $text-primary;
+$col-border: $border-secondary-light;
+$col-block-bg: $bg-primary-lighter;
+$col-app-background: $line-primary-lighter;
+$col-app-content-background: $bg-primary;
 
 // text colors:
 $col-heading: $col-text;
 $col-text-page-heading: $col-heading;
-$col-text-auth-title-big: $_white;
-$col-text-auth-title-small: $_cornflowerBlue;
-$col-text-auth-tip-link: $_cornflowerBlue;
-$col-text-auth-version: rgba($_cornflowerBlue, 0.65);
-$col-text-highlighted: $col-primary-lighten;
+$col-text-auth-title-big: $text-primary-lighter;
+$col-text-auth-title-small: $text-primary;
+$col-text-auth-tip-link: $text-primary;
+$col-text-auth-version: rgba($text-primary, 0.65);
+$col-text-highlighted: $text-primary;
 
 // button colors:
-$col-button-raised: $col-primary-lighten;
-$col-button-raised-txt: $col-primary-txt;
+$col-button-raised: $bg-secondary-dark;
+$col-button-raised-txt: $text-primary-lighter;
 
-$col-button-flat-hover: $col-primary-flat-hover;
-$col-button-flat-txt: $col-primary;
-$col-button-flat-txt-inactive: $col-primary-inactive;
-$col-button-flat-disabled-txt: $_lightGray;
+$col-button-flat-hover: $bg-flat-hover;
+$col-button-flat-txt: $text-primary-dark;
+$col-button-flat-txt-inactive: $text-inactive;
+$col-button-flat-disabled-txt: $text-secondary-light;
 
-$col-button-flat-accent-hover: rgba($col-accent, 0.2);
-$col-button-flat-accent-txt: $col-accent;
-$col-button-flat-accent-disabled-txt: $_lightGray;
+$col-button-flat-accent-hover: rgba($bg-warning, 0.2);
+$col-button-flat-accent-txt: $text-warning;
+$col-button-flat-accent-disabled-txt: $text-secondary-light;
 
-$col-button-back-icon: $col-primary-inactive;
-$col-button-back-icon-hover: $col-primary-lighten;
+$col-button-back-icon: $text-inactive;
+$col-button-back-icon-hover: $text-primary;
 
-$col-button-flat-light-bg: $_whiteSmoke;
-$col-button-flat-light-shadow: rgba(0, 0, 0, 0.15);
+$col-button-flat-light-bg: $bg-primary-light;
+$col-button-flat-light-shadow: rgba($shadow-primary, 0.15);
 $col-button-flat-light-text: $col-text;
 
 // block
-$col-block-bg: $_white;
-$col-block-shadow: rgba(0, 0, 0, 0.1);
-$col-block-line: $_thinPurple;
+$col-block-bg: $bg-primary-lighter;
+$col-block-shadow: rgba($shadow-primary, 0.1);
+$col-block-line: $line-primary-light;
 
 // status message colors
-$col-status-msg-warning: $col-warning;
-$col-status-msg-success: #3cab00;
-$col-status-msg-error: $col-error;
-$col-status-msg-info: $col-info;
+$col-status-msg-warning: $bg-warning-lighter;
+$col-status-msg-success: $text-success;
+$col-status-msg-error: $bg-warning;
+$col-status-msg-info: $text-info;
 $col-status-msg-light-bg: $col-block-bg;
-$col-status-msg-text: $col-text-on-dark-bg;
+$col-status-msg-text: $text-primary-lighter;
 $col-status-close-btn-hover: rgba(0, 0, 0, 0.1);
 
 // drawer colors:
 $col-drawer-bg: $col-block-bg;
 $col-drawer-backdrop-bg: rgba(0, 0, 0, 0.1);
-$col-drawer-head-bg: $_athensGray;
-$col-drawer-head-text: $_eastBay;
+$col-drawer-head-bg: $bg-primary-dark;
+$col-drawer-head-text: $text-primary-dark;
 
 // sidebar
-$col-sidebar-background: $_athensGray;
-$col-sidebar-background-media-small: $_thinGray;
-$col-sidebar-text: $col-primary-inactive;
-$col-sidebar-scheme-label: rgba($col-primary-inactive, 0.5);
-$col-sidebar-burger-icon-color: $_white;
-$col-sidebar-active-elem-text: $col-primary;
-$col-sidebar-active-elem-background: $_thinGray;
+$col-sidebar-background: $bg-primary-dark;
+$col-sidebar-background-media-small: $bg-tertiary-light;
+$col-sidebar-text: $text-inactive;
+$col-sidebar-scheme-label: rgba($text-inactive, 0.5);
+$col-sidebar-burger-icon-color: $text-primary-lighter;
+$col-sidebar-active-elem-text: $text-primary-dark;
+$col-sidebar-active-elem-background: $bg-tertiary-light;
 
 // passport (signed in user details in bg)
-$col-passport-email-abbr-text: $col-text-on-dark-bg;
-$col-passport-email-abbr-bg: rgba($_eastBay, 0.15);
+$col-passport-email-abbr-text: $text-primary-lighter;
+$col-passport-email-abbr-bg: rgba($bg-primary-darker, 0.15);
 
 // fields colors
-$col-text-field-hint: $col-primary;
-$col-text-field-hint-inactive: $col-primary-inactive;
+$col-text-field-hint: $text-primary-dark;
+$col-text-field-hint-inactive: $text-inactive;
 $col-field-background: $col-block-bg;
-$col-file-field-background: $_whiteSmoke;
-$col-file-field-border: $_ghostWhite;
-$col-file-field-drop-bg: $_aliceBlue;
-$col-field-text-secondary: $_lightPurple;
-$col-field-shadow: rgba(0, 0, 0, 0.1);
-$col-tick-field-shadow: rgba($_eastBay, 0.6);
-$col-select-field-selected-background: rgba($_eastBay, 0.1);
-$col-select-field-hover-background: rgba($_eastBay, 0.05);
-$col-switch-field-background: $_whiteSmoke;
-$col-switch-field-border: $_thinPurple;
-$col-switch-field-disabled: $_mediumGray;
-$col-switch-field-enabled: $_lightGreen;
+$col-file-field-background: $bg-primary-light;
+$col-file-field-border: $border-secondary-light;
+$col-file-field-drop-bg: $bg-tertiary-lighter;
+$col-field-text-secondary: $text-primary-light;
+$col-field-shadow: rgba($shadow-primary, 0.1);
+$col-tick-field-shadow: rgba($shadow-primary-light, 0.6);
+$col-select-field-selected-background: rgba($bg-primary-darker, 0.1);
+$col-select-field-hover-background: rgba($bg-primary-darker, 0.05);
+$col-switch-field-background: $bg-primary-light;
+$col-switch-field-border: $border-primary-light;
+$col-switch-field-disabled: $bg-tertiary-dark;
+$col-switch-field-enabled: $bg-success-lighter;
 $col-switch-field-enabled-border: darken($col-switch-field-enabled, 10%);
 $col-switch-field-disabled-border: darken($col-switch-field-disabled, 10%);
 
@@ -169,210 +207,210 @@ $col-switch-field-disabled-border: darken($col-switch-field-disabled, 10%);
 $col-auth-titles-background-light: #5d5882;
 $col-auth-titles-background-dark: #2a2749;
 $col-auth-titles-background-fallback: #332f5c;
-$col-clipboard-background: $_whiteSmoke;
+$col-clipboard-background: $bg-primary-light;
 $col-clipboard-background-darken: darken($col-clipboard-background, 5%);
 
 // table colors:
-$col-table-background: $_white;
-$col-table-alt-row-background: $_whiteSmoke;
-$col-table-cell-text: $col-primary;
-$col-table-cell-text-inactive: $_lightPurple;
-$col-table-head-text: $_lightPurple;
-$col-table-row-selected: darken($_whiteSmoke, 10%);
-$col-table-row-disabled: $_alto;
-$col-table-shadow: rgba(0, 0, 0, 0.1);
-$col-table-scroll-side-shadow: rgba(0, 0, 0, 0.2);
+$col-table-background: $bg-primary-lighter;
+$col-table-alt-row-background: $bg-primary-light;
+$col-table-cell-text: $text-primary-dark;
+$col-table-cell-text-inactive: $text-primary-light;
+$col-table-head-text: $text-primary-light;
+$col-table-row-selected: darken($bg-primary-light, 10%);
+$col-table-row-disabled: $bg-tertiary;
+$col-table-shadow: rgba($shadow-primary, 0.1);
+$col-table-scroll-side-shadow: rgba($shadow-primary, 0.2);
 
 // document manager
-$col-document-manager-border: $_silverChalice;
+$col-document-manager-border: $border-secondary;
 
 // loader colors:
-$col-loader-text: $col-primary;
-$col-loader-icon: $col-primary-inactive;
+$col-loader-text: $text-primary-dark;
+$col-loader-icon: $text-inactive;
 
 // details colors:
-$col-details-label: $col-primary-inactive;
-$col-details-value: $col-primary;
-$col-details-border: rgba($col-primary, 0.2);
+$col-details-label: $text-inactive;
+$col-details-value: $text-primary-dark;
+$col-details-border: rgba($border-primary-darker, 0.2);
 
 // no-data-message colors:
-$col-no-data-message-text: $col-primary;
-$col-no-data-message-description: $col-primary-inactive;
-$col-no-data-message-icon-color: rgba($col-primary, 0.4);
+$col-no-data-message-text: $text-primary-dark;
+$col-no-data-message-description: $text-inactive;
+$col-no-data-message-icon-color: rgba($text-primary-dark, 0.4);
 
 // list colors:
-$col-list-text: $col-primary;
+$col-list-text: $text-primary-dark;
 $col-list-block-background: $col-block-bg;
-$col-list-btn-details-text: $col-primary;
-$col-list-btn-details-background: rgba($col-primary, 0.1);
+$col-list-btn-details-text: $text-primary-dark;
+$col-list-btn-details-background: rgba($bg-primary-darker, 0.1);
 
 // top bar colors
-$col-top-bar-background: $_white;
-$col-top-bar-text: $_eastBay;
-$col-top-bar-tab: $_lightPurple;
-$col-top-bar-tab-active: $_cornflowerBlue;
+$col-top-bar-background: $bg-primary-lighter;
+$col-top-bar-text: $text-primary-dark;
+$col-top-bar-tab: $text-primary-light;
+$col-top-bar-tab-active: $text-primary;
 
 // chart colors:
-$col-chart-line: $col-primary-lighten;
-$col-chart-fill: $_white;
-$col-chart-ticks: $col-primary-inactive;
-$col-chart-text: $col-primary-inactive;
-$col-chart-tip-circle-border: $_white;
-$col-chart-tip-circle: $col-primary;
-$col-chart-tip-line-inactive: $col-primary;
-$col-chart-tip-line-active: $col-primary-lighten;
-$col-chart-tip-text-box: $_white;
-$col-chart-tip-text-price: $col-primary;
-$col-chart-tip-date-dd: $col-primary;
-$col-chart-tip-date-mm: rgba($col-primary, 0.6);
+$col-chart-line: $line-primary;
+$col-chart-fill: $bg-primary-lighter;
+$col-chart-ticks: $text-inactive;
+$col-chart-text: $text-inactive;
+$col-chart-tip-circle-border: $bg-primary-lighter;
+$col-chart-tip-circle: $text-primary-dark;
+$col-chart-tip-line-inactive: $line-primary-dark;
+$col-chart-tip-line-active: $line-primary;
+$col-chart-tip-text-box: $bg-primary-lighter;
+$col-chart-tip-text-price: $text-primary-dark;
+$col-chart-tip-date-dd: $text-primary-dark;
+$col-chart-tip-date-mm: rgba($text-primary-dark, 0.6);
 $col-chart-message-wrapper: rgba($col-app-content-background, 0.25);
-$col-chart-message-background: $_white;
-$col-chart-message-text: $col-primary;
+$col-chart-message-background: $bg-primary-lighter;
+$col-chart-message-text: $text-primary-dark;
 
 // form stepper colors
-$col-form-stepper-text: $col-primary;
-$col-form-stepper-icon: $col-text-on-dark-bg;
-$col-form-stepper-icon-background: $col-primary;
-$col-form-stepper-tab-active: $col-primary-lighten;
-$col-form-stepper-tab-border: $_thinPurple;
+$col-form-stepper-text: $text-primary-dark;
+$col-form-stepper-icon: $text-primary-lighter;
+$col-form-stepper-icon-background: $bg-primary-darker;
+$col-form-stepper-tab-active: $text-primary;
+$col-form-stepper-tab-border: $border-primary-light;
 
 // asset card colors
-$col-asset-card-background: $_white;
-$col-asset-card-header-background: $_athensGray;
+$col-asset-card-background: $bg-primary-lighter;
+$col-asset-card-header-background: $bg-primary-dark;
 $col-asset-card-text-primary: $col-text;
 $col-asset-card-text-secondary: $col-text-secondary;
 
 // loyalty points invoices card colors
-$col-invoices-card-background: $_white;
-$col-invoices-card-header-background: $_athensGray;
+$col-invoices-card-background: $bg-primary-lighter;
+$col-invoices-card-header-background: $bg-primary-dark;
 
 // tabs colors:
-$col-tabs-txt: $col-primary;
-$col-tabs-disabled-txt: $col-primary-inactive;
-$col-tabs-indicator: $col-secondary;
+$col-tabs-txt: $text-primary-dark;
+$col-tabs-disabled-txt: $text-inactive;
+$col-tabs-indicator: $bg-secondary;
 $col-tabs-default-border-bottom: rgba($col-tabs-indicator, 0.1);
-$col-tabs-hover-bg: rgba($col-secondary, 0.05);
+$col-tabs-hover-bg: rgba($bg-secondary, 0.05);
 
 // sale card colors
-$col-sale-card-background: $_white;
+$col-sale-card-background: $bg-primary-lighter;
 $col-sale-card-shadow: $col-block-shadow;
-$col-sale-card-header-background: $_athensGray;
+$col-sale-card-header-background: $bg-primary-dark;
 $col-sale-card-text-primary: $col-text;
-$col-sale-card-text-bold: $_cornflowerBlue;
-$col-sale-card-progress-bar-background: $_thinPurple;
-$col-sale-card-progress-bar-value: $_cornflowerBlue;
+$col-sale-card-text-bold: $text-primary;
+$col-sale-card-progress-bar-background: $bg-secondary-light;
+$col-sale-card-progress-bar-value: $text-primary;
 
 // request colors
-$col-request-approved: $_cyan;
-$col-request-pending: $_orangePeel;
-$col-request-rejected: $_lightRed;
+$col-request-approved: $bg-tertiary-darker;
+$col-request-pending: $bg-warning-lighter;
+$col-request-rejected: $bg-warning;
 
 // asset logo
-$col-asset-logo-background: $_white;
-$col-asset-logo-text: $col-primary;
+$col-asset-logo-background: $bg-primary-lighter;
+$col-asset-logo-text: $text-primary-dark;
 
 // asset logo
-$col-asset-logo-dark-background: $_silverChalice;
-$col-asset-logo-dark-text: $_white;
+$col-asset-logo-dark-background: $border-secondary;
+$col-asset-logo-dark-text: $text-primary-lighter;
 
 // terms colors
-$col-terms-title: $col-primary;
+$col-terms-title: $text-primary-dark;
 $col-terms-block-bg: $col-block-bg;
-$col-terms-header: $col-primary;
-$col-terms-list-item: $_thinPurple;
-$col-terms-text: $col-secondary;
-$col-terms-link: $col-primary-lighten;
+$col-terms-header: $text-primary-dark;
+$col-terms-list-item: $text-secondary;
+$col-terms-text: $text-primary-light;
+$col-terms-link: $text-primary;
 
 // downloads colors
-$col-downloads-title: $col-primary;
+$col-downloads-title: $text-primary-dark;
 $col-downloads-block-bg: $col-block-bg;
-$col-downloads-header: $col-primary;
-$col-downloads-text: $col-secondary;
-$col-downloads-line: $_athensGray;
-$col-downloads-link: $col-primary-lighten;
+$col-downloads-header: $text-primary-dark;
+$col-downloads-text: $text-primary-light;
+$col-downloads-line: $bg-primary-dark;
+$col-downloads-link: $text-primary;
 
 // iOS guide colors
-$col-ios-guide-title: $col-primary;
+$col-ios-guide-title: $text-primary-dark;
 $col-ios-guide-block-bg: $col-block-bg;
-$col-ios-guide-header: $col-primary;
-$col-ios-guide-link: $col-primary-lighten;
-$col-ios-guide-text: $col-secondary;
-$col-ios-guide-step-number-bg: $col-primary;
-$col-ios-guide-step-number-text: $_white;
-$col-ios-guide-step-text: $col-primary;
-$col-ios-guide-substep-text: $col-secondary;
+$col-ios-guide-header: $text-primary-dark;
+$col-ios-guide-link: $text-primary;
+$col-ios-guide-text: $text-primary-light;
+$col-ios-guide-step-number-bg: $bg-primary-darker;
+$col-ios-guide-step-number-text: $text-primary-lighter;
+$col-ios-guide-step-text: $text-primary-dark;
+$col-ios-guide-substep-text: $text-primary-light;
 
 // Pre-issuance guide colors
-$col-pre-issuance-guide-title: $col-primary;
+$col-pre-issuance-guide-title: $text-primary-dark;
 $col-pre-issuance-guide-block-bg: $col-block-bg;
-$col-pre-issuance-guide-header: $col-primary;
-$col-pre-issuance-guide-link: $col-primary-lighten;
-$col-pre-issuance-guide-text: $col-secondary;
-$col-pre-issuance-guide-list-item: $_thinPurple;
+$col-pre-issuance-guide-header: $text-primary-dark;
+$col-pre-issuance-guide-link: $text-primary;
+$col-pre-issuance-guide-text: $text-primary-light;
+$col-pre-issuance-guide-list-item: $text-secondary;
 
 // radio field colors
-$col-radio-field-border: $col-primary;
-$col-radio-field-background: $_white;
+$col-radio-field-border: $border-primary-darker;
+$col-radio-field-background: $bg-primary-lighter;
 
 // sale details colors
-$col-sale-details-title: $col-primary;
-$col-sale-details-subtitle: $col-secondary;
+$col-sale-details-title: $text-primary-dark;
+$col-sale-details-subtitle: $text-primary-light;
 $col-sale-details-text-primary: $col-text;
 $col-sale-details-text-secondary: $col-text-secondary;
 $col-sale-details-block: $col-block-bg;
-$col-sale-details-logo-bg: $_athensGray;
-$col-sale-details-progress-bar-bg: $_thinPurple;
-$col-sale-details-progress-bar-funded: $col-primary-lighten;
+$col-sale-details-logo-bg: $bg-primary-dark;
+$col-sale-details-progress-bar-bg: $bg-secondary-light;
+$col-sale-details-progress-bar-funded: $text-primary;
 // TODO: paste here variables that are ready to use during the refactor process
 
 // movement history colors:
-$col-incoming: $_green;
-$col-outgoing: $_lightRed;
-$col-locked: $_orangePeel;
-$col-unlocked: $_orangePeel;
+$col-incoming: $text-success-light;
+$col-outgoing: $text-warning;
+$col-locked: $bg-warning-lighter;
+$col-unlocked: $bg-warning-lighter;
 
 // pie chart colors
-$col-pie-chart-shadow: rgba(0, 0, 0, 0.25);
+$col-pie-chart-shadow: rgba($shadow-primary, 0.25);
 $col-pie-chart-stroke: rgba($col-text, 0.5);
 $col-pie-chart-text: $col-text;
 
 // document card colors:
-$col-document-card-viewer-bg: $_white;
+$col-document-card-viewer-bg: $bg-primary-lighter;
 $col-document-card-viewer-shadow: $col-block-shadow;
-$col-document-card-viewer-header-bg: $_athensGray;
+$col-document-card-viewer-header-bg: $bg-primary-dark;
 $col-document-card-viewer-text: $col-text;
 
 // document icon colors:
-$col-document-icon-background: $_white;
-$col-document-icon-text: $col-primary;
+$col-document-icon-background: $bg-primary-lighter;
+$col-document-icon-text: $text-primary-dark;
 
 // document-upload-form-colors:
-$col-document-upload-progress-bar-bg: $_gray;
-$col-document-upload-progress-bar-value: $_cornflowerBlue;
+$col-document-upload-progress-bar-bg: $line-primary-lighter;
+$col-document-upload-progress-bar-value: $text-primary;
 
 // document signer list colors:
-$col-signer-list-item-bg: $_white;
+$col-signer-list-item-bg: $bg-primary-lighter;
 $col-signer-list-item-shadow: $col-block-shadow;
-$col-signer-list-item-avatar-bg: $_eastBay;
-$col-signer-list-item-avatar-text: $_white;
-$col-signer-list-item-rule-text: $_lightPurple;
+$col-signer-list-item-avatar-bg: $bg-primary-darker;
+$col-signer-list-item-avatar-text: $text-primary-lighter;
+$col-signer-list-item-rule-text: $text-primary-light;
 
 // document-uploader-viewer
-$col-document-uploader-text-unlighten: $_lightPurple;
+$col-document-uploader-text-unlighten: $text-primary-light;
 
 // comment-viewer
-$col-border-comment-viewer-header: $_eastBay;
-$col-comment-content-gradient-from: $_eastBay;
-$col-comment-content-gradient-to: $_gray;
+$col-border-comment-viewer-header: $text-primary-dark;
+$col-comment-content-gradient-from: $bg-primary-darker;
+$col-comment-content-gradient-to: $line-primary-lighter;
 
 // skeleton-loader
-$col-background-skeleton-loader: rgba($_eastBay, 0.10);
+$col-background-skeleton-loader: rgba($bg-primary-darker, 0.10);
 
 // hint-wrapper
-$col-hint-wrapper-box-bg: rgba($_black, 0.9);
-$col-hint-wrapper-box-text: $_concrete;
+$col-hint-wrapper-box-bg: rgba($bg-secondary-darker, 0.9);
+$col-hint-wrapper-box-text: $text-secondary-lighter;
 
 // tooltip-wrapper
-$col-tooltip-wrapper-msg-bg: rgba($_black, 0.9);
-$col-tooltip-wrapper-msg-text: $_white;
+$col-tooltip-wrapper-msg-bg: rgba($bg-secondary-darker, 0.9);
+$col-tooltip-wrapper-msg-text: $text-primary-lighter;
 $col-tooltip-wrapper-border-style: transparent transparent $col-tooltip-wrapper-msg-bg transparent;

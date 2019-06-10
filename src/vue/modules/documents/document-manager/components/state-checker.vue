@@ -121,8 +121,8 @@ export default {
     }
   }
 
-  &--verified { @include state-checker($col-success); }
-  &--not-verified { @include state-checker($col-error); }
+  &--verified { @include state-checker($bg-success-light); }
+  &--not-verified { @include state-checker($bg-warning); }
 }
 
 .state-checker__heading {

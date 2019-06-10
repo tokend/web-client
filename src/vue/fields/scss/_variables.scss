@@ -1,17 +1,17 @@
 @import '~@scss/variables';
 
-$col-field-text: $col-primary;
-$col-field-text-unfocused: $col-primary-inactive;
-$col-field-icon: $col-primary;
-$col-dropdown-bg: $_white;
+$col-field-text: $text-primary-dark;
+$col-field-text-unfocused: $text-inactive;
+$col-field-icon: $text-primary-dark;
+$col-dropdown-bg: $bg-primary-lighter;
 
 $z-index-select-field-list: 5;
 
-$field-color-background: $_thinBlue;
+$field-color-background: $bg-primary;
 $field-color-text: $col-field-text;
 $field-color-focused: $field-color-text;
 $field-color-unfocused: $col-field-text-unfocused;
-$field-color-error: $col-accent;
+$field-color-error: $text-warning;
 $field-label-font-size: 1.2rem;
 $field-label-line-height: 1;
 $field-text-font-size: 1.8rem;
@@ -29,8 +29,8 @@ $file-field-background-color: $col-file-field-background;
 $file-field-border-color: $col-file-field-border;
 $file-field-note-color: $col-field-text-secondary;
 $file-field-drop-bg-color: $col-file-field-drop-bg;
-$col-select-field-hover: rgba($col-primary, 0.1);
-$col-tick-field-unfocused: $col-primary-lighten;
+$col-select-field-hover: rgba($bg-primary-darker, 0.1);
+$col-tick-field-unfocused: $text-primary;
 
 @mixin input-paddings {
   font-size: $field-text-font-size;
