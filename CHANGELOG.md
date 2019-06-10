@@ -11,6 +11,7 @@ for further information about branching and tagging conventions.
 #### Added
 - Waiting email verification
 - Scrolling to top of the page after sending KYC corporate request
+- URLs normalization in env.js
 
 #### Changed
 - Now loading KYC latest data from account endpoint
