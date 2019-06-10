@@ -4,7 +4,7 @@ export class PollsListOwnedPageModule extends PageModuleDescriptor {
   constructor (opts = {}) {
     super({
       ...opts,
-      importComponentFn: _ => import('@/vue/pages/polls/PollsList'),
+      importComponentFn: _ => import('@/vue/pages/PollsAll'),
     })
   }
 }

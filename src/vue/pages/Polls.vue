@@ -4,7 +4,7 @@
       <top-bar>
         <template slot="main">
           <router-link
-            v-if="getModule().canRenderSubmodule(PollsListPageModule)"
+            v-if="getModule().canRenderSubmodule(PollsAllPageModule)"
             :to="vueRoutes.allPolls"
           >
             <span>All polls</span>
@@ -54,7 +54,7 @@
 import TopBar from '@/vue/common/TopBar'
 import { PollRequestsPageModule } from '@/vue/pages/polls/poll-requests-page'
 import { vueRoutes } from '@/vue-router/routes'
-import { PollsListPageModule } from '@/vue/pages/polls/all-polls-page-module'
+import { PollsAllPageModule } from '@/vue/pages/polls-all-page-module'
 import { PollsListOwnedPageModule } from '@/vue/pages/polls/user-owned-polls-page-module'
 import Drawer from '@/vue/common/Drawer'
 
@@ -68,7 +68,7 @@ export default {
     isCreatePollDrawerShown: false,
     vueRoutes,
     PollRequestsPageModule,
-    PollsListPageModule,
+    PollsAllPageModule,
     PollsListOwnedPageModule,
   }),
 }
