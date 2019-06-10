@@ -84,6 +84,12 @@ export function buildRouter (store) {
             component: resolve => require(['@/vue/pages/Recovery'], resolve),
             beforeEnter: buildAuthPageGuard(store),
           },
+          {
+            path: '/kyc-recovery',
+            name: vueRoutes.kycRecovery.name,
+            component: resolve => require(['@/vue/pages/KycRecovery'], resolve),
+            beforeEnter: buildAuthPageGuard(store),
+          },
         ],
       },
       {
