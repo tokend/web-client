@@ -12,7 +12,7 @@
           <div class="app__form-row">
             <div class="app__form-field">
               <select-field
-                :value="selectedAsset"
+                :value="selectedAsset.code"
                 @input="setAssetByCode"
                 :label="'deposit-form.asset' | globalize"
                 :disabled="formMixin.isDisabled"

@@ -31,7 +31,7 @@
                 :value="form.asset.code"
                 @input="setAsset"
                 :label="'transfer-form.asset-lbl' | globalize"
-                :disabled="view.mode === VIEW_MODES.confirm"
+                :readonly="view.mode === VIEW_MODES.confirm"
               >
                 <option
                   v-for="asset in transferableBalancesAssets"
@@ -64,6 +64,7 @@
                 :label="'transfer-form.amount-lbl' | globalize"
                 :asset="form.asset"
                 is-max-button-shown
+                :readonly="view.mode === VIEW_MODES.confirm"
               />
             </div>
           </div>
@@ -76,7 +77,7 @@
                 :label="'transfer-form.recipient-lbl' | globalize"
                 :error-message="getFieldErrorMessage('form.recipient')"
                 @blur="touchField('form.recipient')"
-                :readonly="view.mode === VIEW_MODES.confirm"
+                :disabled="view.mode === VIEW_MODES.confirm"
               />
             </div>
           </div>

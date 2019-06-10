@@ -1,6 +1,7 @@
 import config from '@/config'
 import { FileUtil } from '@/js/utils/file.util'
 import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
+import { api } from '@/api'
 
 /**
  * Wrapper to simplify work with documents
@@ -47,6 +48,17 @@ export class DocumentContainer {
       mimeType: this.mimeType,
       file: this.file,
     }
+  }
+
+  async getPrivateUrl () {
+    if (!this.key) {
+      throw new Error(`
+        To derive private url file must be already uploaded and contain
+        the key
+      `)
+    }
+    const { data } = await api.getWithSignature(`/documents/${this.key}`)
+    return data.url
   }
 
   setKey (key) {

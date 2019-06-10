@@ -229,7 +229,7 @@ export default {
 
   created () {
     if (this.isFormPopulatable) {
-      this.form = this.parseKycData(this.kycLatestData)
+      this.form = this.parseKycData(this.kycLatestRequestData)
 
       if (this.isFormDisabled) {
         this.disableForm()

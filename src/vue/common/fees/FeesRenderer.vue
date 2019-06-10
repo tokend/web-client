@@ -1,14 +1,5 @@
 <template>
   <div class="fees-renderer">
-    <router-link
-      class="fees-renderer__view-fees-link"
-      :to="vueRoutes.fees"
-      target="_blank"
-    >
-      <span>{{ 'fees-renderer.view-fees-link' | globalize }}</span>
-      <i class="mdi mdi-open-in-new fees-renderer__view-icon" />
-    </router-link>
-
     <p
       v-if="feesCollection.isExternalFeePresent"
       class="fees-renderer__network-fee"
@@ -25,12 +16,25 @@
     <div
       v-for="(fee, i) in feesCollection.fees"
       :key="i"
+      class="fees-renderer__fee-block"
     >
       <fee-viewer
-        class="fees-renderer__fee-block"
         :fee="fee"
         :asset-code="feesCollection.assetCode"
       />
+    </div>
+
+    <div class="fees-renderer__view-fees-link-wrp">
+      <router-link
+        class="fees-renderer__view-fees-link"
+        :to="vueRoutes.fees"
+        target="_blank"
+        rel="noopener"
+      >
+        {{
+          'fees-renderer.view-fees-link' | globalize
+        }}<i class="mdi mdi-open-in-new fees-renderer__view-icon" />
+      </router-link>
     </div>
 
     <div
@@ -101,7 +105,7 @@ export default {
 }
 
 .fees-renderer__network-fee-text {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
 }
 
 .fees-renderer__network-fee,
@@ -110,13 +114,13 @@ export default {
 }
 
 .fees-renderer__view-fees-link {
-  display: flex;
-  justify-content: flex-end;
   margin-bottom: 0.6rem;
   color: $col-link;
+  font-size: 1.4rem;
 }
 
 .fees-renderer__view-icon {
-  display: flex;
+  display: inline-block;
+  margin-left: 0.5ch;
 }
 </style>
