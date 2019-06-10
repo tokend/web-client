@@ -105,7 +105,7 @@
         "account_role_to_set": 3,
         "sequence_number": 1,
         "creator_details": {
-          "blob_id": "G6V2SIIY2KAP3NGZTJ5DJTBFFKPIC2LESBGQITXR64HXFPFOVPGA"
+          "blob_id": "BLOB_ID"
         }
       },
       "relationships": {
@@ -124,7 +124,7 @@
         "account_role_to_set": 4,
         "sequence_number": 0,
         "creator_details": {
-          "blobId": "HKRDBQPYTE5MXDFKBQ2IQ3KIOCCQIUC2V5PXWPTECGCMMGTZSAUQ",
+          "blobId": "OTHER_BLOB_ID",
           "resetReason": "Izmena",
           "previousAccountRole": 3
         }

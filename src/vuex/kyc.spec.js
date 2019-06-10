@@ -56,6 +56,24 @@ describe('kyc.module', () => {
         latestData,
       })
     })
+
+    it('SET_KYC_LATEST_REQUEST_DATA should properly modify state', () => {
+      const state = {
+        latestRequestData: '{}',
+      }
+
+      mutations[vuexTypes.SET_KYC_LATEST_REQUEST_DATA](
+        state,
+        JSON.stringify({
+          first_name: 'John',
+          last_name: 'Doe',
+        })
+      )
+
+      expect(state).to.deep.equal({
+        latestRequestData: '{"first_name":"John","last_name":"Doe"}',
+      })
+    })
   })
 
   describe('actions', () => {
@@ -73,7 +91,7 @@ describe('kyc.module', () => {
     it('LOAD_KYC should dispatch the proper set of actions', async () => {
       const expectedActions = [
         [vuexTypes.LOAD_KYC_LATEST_REQUEST],
-        [vuexTypes.LOAD_KYC_DATA],
+        [vuexTypes.LOAD_KYC_LATEST_DATA],
       ]
 
       await actions[vuexTypes.LOAD_KYC](store)
@@ -103,7 +121,7 @@ describe('kyc.module', () => {
       expect(store.commit.args).to.deep.equal(Object.entries(expectedMutations))
     })
 
-    describe('LOAD_KYC_DATA commits the proper set of mutations', async () => {
+    describe('LOAD_KYC_LATEST_DATA commits the proper set of mutations', async () => {
       const blobId = 'THEBMLAOPWIIERIBJKMN....'
       const latestDataPayload = JSON.stringify({
         first_name: 'John', last_name: 'Doe',
@@ -127,7 +145,7 @@ describe('kyc.module', () => {
         [expectedMutation]: latestDataPayload,
       }
 
-      await actions[vuexTypes.LOAD_KYC_DATA](store)
+      await actions[vuexTypes.LOAD_KYC_LATEST_DATA](store)
 
       expect(store.commit.args).to.deep.equal(Object.entries(expectedMutations))
     })
