@@ -53,7 +53,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getAssetByCode: vuexTypes.assetByCode,
+      accountBalanceByCode: vuexTypes.accountBalanceByCode,
     }),
     assetBalance () {
       return {
@@ -62,7 +62,7 @@ export default {
       }
     },
     balance () {
-      return this.getAssetByCode(this.asset.code).balance
+      return this.accountBalanceByCode(this.asset.code).balance
     },
   },
 }

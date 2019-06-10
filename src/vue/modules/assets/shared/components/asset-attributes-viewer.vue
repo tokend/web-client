@@ -27,93 +27,6 @@
             </td>
           </tr>
           <tr>
-            <td>{{ 'assets.maximum-title' | globalize }}</td>
-            <td>
-              {{
-                { value: asset.maxIssuanceAmount, currency: asset.code } |
-                  formatMoney
-              }}
-            </td>
-          </tr>
-          <tr>
-            <td>{{ 'assets.issued-title' | globalize }}</td>
-            <td>
-              {{ { value: asset.issued, currency: asset.code } | formatMoney }}
-            </td>
-          </tr>
-          <tr>
-            <td>{{ 'assets.available-title' | globalize }}</td>
-            <td>
-              {{ { value: asset.availableForIssuance, currency: asset.code } |
-                formatMoney
-              }}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'assets.transferable-title' | globalize }}
-            </td>
-            <td>
-              <template v-if="asset.isTransferable">
-                {{ 'assets.present-msg' | globalize }}
-              </template>
-
-              <template v-else>
-                {{ 'assets.absent-msg' | globalize }}
-              </template>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'assets.withdrawable-title' | globalize }}
-            </td>
-            <td>
-              <template v-if="asset.isWithdrawable">
-                {{ 'assets.present-msg' | globalize }}
-              </template>
-
-              <template v-else>
-                {{ 'assets.absent-msg' | globalize }}
-              </template>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'assets.deposit-method-title' | globalize }}
-            </td>
-            <td>
-              <template v-if="asset.isCoinpayments">
-                {{ 'assets.coinpayments-msg' | globalize }}
-              </template>
-
-              <template v-else-if="asset.externalSystemType">
-                {{ 'assets.default-msg' | globalize }}
-              </template>
-
-              <template v-else>
-                {{ 'assets.non-depositable-msg' | globalize }}
-              </template>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'assets.asset-type' | globalize }}
-            </td>
-            <td>
-              <template v-if="asset.type === kycRequiredAssetType">
-                {{ 'assets.verification-required-title' | globalize }}
-              </template>
-
-              <template v-else-if="asset.type === securityAssetType">
-                {{ 'assets.security-asset-title' | globalize }}
-              </template>
-
-              <template v-else>
-                {{ 'assets.does-not-require-verification-title' | globalize }}
-              </template>
-            </td>
-          </tr>
-          <tr>
             <td>{{ 'assets.terms-title' | globalize }}</td>
             <td>
               <terms-viewer :asset="asset" />
@@ -157,10 +70,10 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getAssetByCode: vuexTypes.assetByCode,
+      accountBalanceByCode: vuexTypes.accountBalanceByCode,
     }),
     balance () {
-      return this.getAssetByCode(this.asset.code).balance
+      return this.accountBalanceByCode(this.asset.code).balance
     },
   },
 }
