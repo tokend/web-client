@@ -74,7 +74,7 @@ export default {
   &--success { background-color: $bg-success; }
   &--warning { background-color: $bg-warning; }
   &--error { background-color: $bg-error; }
-  &--info { background-color: $bg-secondary-dark; }
+  &--info { background-color: $bg-info; }
   &--danger { background-color: $bg-danger; }
   &--default { background-color: $col-text; }
 }

@@ -36,7 +36,7 @@ export default {
 @import '~@scss/variables';
 
 .invoice-state-viewer--successful {
-  color: $text-success-light;
+  color: $text-success;
 }
 
 .invoice-state-viewer--pending {

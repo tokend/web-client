@@ -183,7 +183,7 @@ $avatar-margin-right: 1.8rem;
   position: relative;
   top: 0.1rem;
 
-  &--allowed { color: $text-success-light; }
+  &--allowed { color: $text-success; }
   &--restricted { color: $text-error; }
 }
 </style>
