@@ -10,6 +10,12 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - File types exceptions to .gitattributes
+- Balances panel to the invoice form (Loyalty)
+
+#### Changed
+- Invoice form width to full screen
+- Now displaying customer's & merchant's balances on the invoice form 
+  confirmation
 
 #### Fixed
 - Restored images line endings
