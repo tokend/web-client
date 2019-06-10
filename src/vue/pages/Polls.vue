@@ -23,7 +23,10 @@
           </router-link>
         </template>
 
-        <template slot="extra">
+        <template
+          slot="extra"
+          v-if="getModule().canRenderSubmodule(CreatePollFormModule)"
+        >
           <button
             v-ripple
             class="app__button-raised"
@@ -43,6 +46,11 @@
           <template slot="heading">
             {{ 'polls.new-poll' | globalize }}
           </template>
+
+          <submodule-importer
+            :submodule="getModule().getSubmodule(CreatePollFormModule)"
+            @close="isCreatePollDrawerShown = false"
+          />
         </drawer>
       </template>
     </template>
@@ -57,12 +65,15 @@ import { vueRoutes } from '@/vue-router/routes'
 import { PollsListPageModule } from '@/vue/pages/polls/all-polls-page-module'
 import { PollsListOwnedPageModule } from '@/vue/pages/polls/user-owned-polls-page-module'
 import Drawer from '@/vue/common/Drawer'
+import { CreatePollFormModule } from '@/vue/modules/create-poll-form/module'
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
 export default {
   name: 'polls',
   components: {
     TopBar,
     Drawer,
+    SubmoduleImporter,
   },
   data: _ => ({
     isCreatePollDrawerShown: false,
@@ -70,6 +81,7 @@ export default {
     PollRequestsPageModule,
     PollsListPageModule,
     PollsListOwnedPageModule,
+    CreatePollFormModule,
   }),
 }
 </script>

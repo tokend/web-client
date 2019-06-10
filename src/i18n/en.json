@@ -2078,6 +2078,17 @@
       "update-poll": "Update poll",
       "overview-title": "Poll overview",
       "new-poll": "New poll"
+    },
+    "create-poll-form": {
+      "permission-type-lbl": "Permission type",
+      "start-time-lbl": "Start time",
+      "close-time-lbl": "Close time",
+      "vote-confirmation-required-lbl": "Vote confirmation required",
+      "result-provider-id-lbl": "Result provider id",
+      "question-lbl": "Question",
+      "description-lbl": "Description {{number}}",
+      "create-btn": "Create",
+      "request-submitted-msg": "Your request has been submitted successfully. Please wait for review."
     }
   }
 }
