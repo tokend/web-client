@@ -271,8 +271,8 @@ $col-card-title: rgba($col-text, 0.8);
   font-size: 2rem;
   animation: move-up 1s ease-out;
 
-  &--incoming { color: $col-success; }
-  &--outgoing { color: $col-danger; }
+  &--incoming { color: $text-success; }
+  &--outgoing { color: $text-danger; }
 }
 
 @keyframes move-up {
