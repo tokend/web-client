@@ -71,11 +71,11 @@ export default {
   color: $text-primary-lighter;
   line-height: 1.25;
 
-  &--success { background-color: $bg-success-light; }
-  &--warning { background-color: $bg-warning-lighter; }
-  &--error { background-color: $bg-warning; }
+  &--success { background-color: $bg-success; }
+  &--warning { background-color: $bg-warning; }
+  &--error { background-color: $bg-error; }
   &--info { background-color: $bg-secondary-dark; }
-  &--danger { background-color: $bg-warning-dark; }
+  &--danger { background-color: $bg-danger; }
   &--default { background-color: $col-text; }
 }
 

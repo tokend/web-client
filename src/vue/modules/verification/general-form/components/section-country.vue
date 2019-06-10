@@ -132,7 +132,7 @@ export default {
 @import '../scss/styles';
 
 .verification-general-form__usa-warning-msg {
-  color: $text-warning-lighter;
+  color: $text-warning;
   margin-top: 0.5rem;
 }
 

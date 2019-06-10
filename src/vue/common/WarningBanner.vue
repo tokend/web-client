@@ -38,11 +38,11 @@ export default {
   justify-content: center;
 
   &--warning {
-    background-color: $bg-warning-lighter;
+    background-color: $bg-warning;
   }
 
   &--danger {
-    background-color: $bg-warning;
+    background-color: $bg-error;
   }
 }
 

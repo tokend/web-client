@@ -40,6 +40,6 @@ export default {
 }
 
 .invoice-state-viewer--pending {
-  color: $text-warning-light;
+  color: $text-pending;
 }
 </style>

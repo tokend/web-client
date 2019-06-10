@@ -184,6 +184,6 @@ $avatar-margin-right: 1.8rem;
   top: 0.1rem;
 
   &--allowed { color: $text-success-light; }
-  &--restricted { color: $text-warning; }
+  &--restricted { color: $text-error; }
 }
 </style>

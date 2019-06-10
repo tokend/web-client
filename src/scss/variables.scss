@@ -14,6 +14,18 @@ $content-padding-left: 5rem;
 $content-padding-right: 6.5rem;
 $content-side-paddings-sm: 2rem;
 
+// z-indexes
+$z-app-navbar: 4;
+$z-sidebar-burger: 10;
+$z-status-message: 10;
+$z-drawer: 10;
+$z-drawer-backdrop: -1;
+$z-hint-wrapper-box: 100;
+$z-sidebar-backdrop: 115;
+$z-sidebar: 120;
+$z-tooltip-wrapper: 1;
+$z-skeleton-loader: 1;
+
 // base background colors:
 $bg-primary-lighter: #ffffff;
 $bg-primary-light: #f5f6f9;
@@ -38,16 +50,16 @@ $bg-inactive-hover-darken: darken($bg-inactive, 20%);
 $bg-flat-hover: rgba($bg-primary-darker, 0.2);
 
 // status background colors:
-$bg-warning-lighter: #ffa333;
-$bg-warning-light: #ef6c00;
-$bg-warning: #ef5350;
-$bg-warning-dark: #d6244a;
+$bg-accent: #ef5350;
+$bg-pending: #ef6c00;
+$bg-warning: #ffa333;
+$bg-success: #33a494;
+$bg-error: #ef5350;
+$bg-info: $bg-secondary-dark;
+$bg-danger: #d6244a;
 
 $bg-success-lighter: #51ca90;
-$bg-success-light: #33a494;
-$bg-success: #3cab00;
 
-$bg-info: #0ea7ba;
 
 // base text colors:
 $text-primary-lighter: #ffffff;
@@ -64,16 +76,15 @@ $text-inactive-hover-darken: darken($text-inactive, 20%);
 $text-flat-hover: rgba($text-primary-dark, 0.2);
 
 // status text colors
-$text-warning-lighter: #ffa333;
-$text-warning-light: #ef6c00;
-$text-warning: #ef5350;
-$text-warning-dark: #d6244a;
+$text-accent: #ef5350;
+$text-pending: #ef6c00;
+$text-warning: #ffa333;
+$text-success: #33a494;
+$text-error: #ef5350;
+$text-info: $text-primary;
+$text-danger: #d6244a;
 
-$text-success-lighter: #51ca90;
-$text-success-light: #33a494;
-$text-success: #3cab00;
-
-$text-info: #0ea7ba;
+$text-success-light: #3cab00;
 
 // base line colors:
 $line-primary-lighter: #e9eaed;
@@ -94,18 +105,6 @@ $border-secondary: #aaaaaa;
 // base shadow colors:
 $shadow-primary-light: #3a4180;
 $shadow-primary: #000000;
-
-// z-indexes
-$z-app-navbar: 4;
-$z-sidebar-burger: 10;
-$z-status-message: 10;
-$z-drawer: 10;
-$z-drawer-backdrop: -1;
-$z-hint-wrapper-box: 100;
-$z-sidebar-backdrop: 115;
-$z-sidebar: 120;
-$z-tooltip-wrapper: 1;
-$z-skeleton-loader: 1;
 
 // $_deepBlue: #291e93;  // used nowhere
 // $_orange: #ef6c00;  // used nowhere
@@ -140,8 +139,8 @@ $col-button-flat-txt: $text-primary-dark;
 $col-button-flat-txt-inactive: $text-inactive;
 $col-button-flat-disabled-txt: $text-secondary-light;
 
-$col-button-flat-accent-hover: rgba($bg-warning, 0.2);
-$col-button-flat-accent-txt: $text-warning;
+$col-button-flat-accent-hover: rgba($bg-accent, 0.2);
+$col-button-flat-accent-txt: $text-accent;
 $col-button-flat-accent-disabled-txt: $text-secondary-light;
 
 $col-button-back-icon: $text-inactive;
@@ -157,9 +156,9 @@ $col-block-shadow: rgba($shadow-primary, 0.1);
 $col-block-line: $line-primary-light;
 
 // status message colors
-$col-status-msg-warning: $bg-warning-lighter;
+$col-status-msg-warning: $bg-warning;
 $col-status-msg-success: $text-success;
-$col-status-msg-error: $bg-warning;
+$col-status-msg-error: $bg-error;
 $col-status-msg-info: $text-info;
 $col-status-msg-light-bg: $col-block-bg;
 $col-status-msg-text: $text-primary-lighter;
@@ -302,8 +301,8 @@ $col-sale-card-progress-bar-value: $text-primary;
 
 // request colors
 $col-request-approved: $bg-tertiary-darker;
-$col-request-pending: $bg-warning-lighter;
-$col-request-rejected: $bg-warning;
+$col-request-pending: $bg-warning;
+$col-request-rejected: $bg-error;
 
 // asset logo
 $col-asset-logo-background: $bg-primary-lighter;
@@ -365,9 +364,9 @@ $col-sale-details-progress-bar-funded: $text-primary;
 
 // movement history colors:
 $col-incoming: $text-success-light;
-$col-outgoing: $text-warning;
-$col-locked: $bg-warning-lighter;
-$col-unlocked: $bg-warning-lighter;
+$col-outgoing: $text-error;
+$col-locked: $bg-warning;
+$col-unlocked: $bg-warning;
 
 // pie chart colors
 $col-pie-chart-shadow: rgba($shadow-primary, 0.25);

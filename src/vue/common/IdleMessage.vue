@@ -64,7 +64,7 @@ export default {
 .idle-message {
   align-items: center;
   padding: 2.4rem;
-  background-color: $bg-warning-lighter;
+  background-color: $bg-warning;
   position: relative;
 }
 

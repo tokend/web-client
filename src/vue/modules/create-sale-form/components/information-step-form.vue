@@ -425,7 +425,7 @@ export default {
 
 .information-step-form__error-text {
   margin-top: 1rem;
-  color: $text-warning;
+  color: $text-error;
 }
 
 .information-step-form__price {

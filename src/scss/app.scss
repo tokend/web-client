@@ -261,7 +261,7 @@ h6.app__page-heading {
   @include button-raised();
 
   &--danger {
-    background-color: $bg-warning;
+    background-color: $bg-error;
   }
 }
 

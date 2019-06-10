@@ -287,7 +287,7 @@ $dropdown-item-side-padding: 2.4rem;
 }
 
 .passport__account-type--blocked {
-  color: $text-warning;
+  color: $text-error;
   font-weight: 700;
 }
 

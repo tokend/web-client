@@ -75,17 +75,17 @@ export default {
   }
 
   &--approved:before {
-    background-color: $bg-success-light;
+    background-color: $bg-success;
   }
 
   &--pending:before {
-    background-color: $bg-warning-lighter;
+    background-color: $bg-warning;
   }
 
   &--rejected:before,
   &--canceled:before,
   &--permanently-rejected:before {
-    background-color: $bg-warning;
+    background-color: $bg-error;
   }
 }
 </style>

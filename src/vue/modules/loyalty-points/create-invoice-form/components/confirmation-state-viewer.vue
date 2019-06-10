@@ -73,7 +73,7 @@ export default {
 }
 
 .confirmation-state-viewer--pending {
-  color: $text-warning-light;
+  color: $text-pending;
 }
 
 .confirmation-state-viewer__icon {
