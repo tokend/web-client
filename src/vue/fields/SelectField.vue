@@ -156,7 +156,6 @@ export default {
   border: none;
   padding: $field-input-padding;
   padding-right: 2.4rem;
-  height: 4rem;
 
   @include material-border(
     $field-color-focused,
