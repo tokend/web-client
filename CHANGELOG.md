@@ -12,18 +12,47 @@ for further information about branching and tagging conventions.
 - Asset code validator
 - My assets explorer page
 - Register of shares page
+- Waiting email verification
+- Scrolling to top of the page after sending KYC corporate request
 
 #### Changed
-- Now loading private document URL in file field
+- Now loading KYC latest data from account endpoint
 
+## [1.8.0-rc.1] - 2019-06-07
+#### Changed
+- Some design improvements to fields and rendered fees:
+  - Fields are now synchronized in disabled colors and style
+  - Text areas now have thinner border-width
+  - Tick field now looks a bit nittier
+  - Rendered fees now have less obtrusive underlines on clickable part
+  - Rendered fees now have a bit smaller font-sizes and line-heights
+  - Rendered fees now have "Show my account fees" at the bottom of the component
+
+### "Under the hood" changed
+#### Added
+- File types exceptions to .gitattributes
+
+#### Fixed
+- Restored images line endings
+
+## [1.8.0-rc.0] - 2019-06-06
 #### Fixed
 - Disabled state for amount input field
 - Minimum & maximum normalization for input field
 - Displaying balance on assets page
 - Displaying no data row on fees table
-- Displaying "My sales" tab for non-corporate users
-- Selecting asset on deposit form 
+- Hiding of "My sales" tab for non-corporate users
+- Selecting asset on deposit form
 - Displaying balances on assets page
+
+### "Under the hood" changes
+#### Added
+- Asset code validator
+
+#### Changed
+- Now loading private document URL in file field
+- Updated package.json packages
+- Now using @tokend/js-sdk@1.8.0-rc.0
 
 ## [1.8.0-x.3] - 2019-06-05
 
@@ -81,7 +110,7 @@ for further information about branching and tagging conventions.
 - Translations on sale details drawer
 - A bug when "My Sales" tab shown for non-corporate accounts
 
-### "Under the hood changes
+### "Under the hood" changes
 #### Added
 - Tooltip directive
 - Assets vuex module for loading and storing all the assets
@@ -386,12 +415,12 @@ for further information about branching and tagging conventions.
 - Displaying incoming withdrawal requests (Loyalty)
 
 ## [1.5.0] - 2019-04-19
-### "Under the hood changes"
+### "Under the hood" changes
 #### Changed
 - Now using @tokend/js-sdk@1.5.0
 
 ## [1.5.0-rc.3] - 2019-04-19
-### "Under the hood changes"
+### "Under the hood" changes
 #### Changed
 - Now using @tokend/js-sdk@1.5.0-rc.1
 
@@ -687,7 +716,9 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.8.0-x.3...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.8.0-rc.1...HEAD
+[1.8.0-rc.1]: https://github.com/tokend/web-client/compare/1.8.0-rc.0...1.8.0-rc.1
+[1.8.0-rc.0]: https://github.com/tokend/web-client/compare/1.8.0-x.3...1.8.0-rc.0
 [1.8.0-x.3]: https://github.com/tokend/web-client/compare/1.8.0-x.2...1.8.0-x.3
 [1.8.0-x.2]: https://github.com/tokend/web-client/compare/1.8.0-x.1...1.8.0-x.2
 [1.8.0-x.1]: https://github.com/tokend/web-client/compare/1.8.0-x.0...1.8.0-x.1

@@ -14,7 +14,7 @@ export default {
   mixins: [FormMixin],
   computed: {
     ...mapGetters({
-      kycLatestData: vuexTypes.kycLatestData,
+      kycLatestRequestData: vuexTypes.kycLatestRequestData,
       kycState: vuexTypes.kycState,
       kycRequestId: vuexTypes.kycRequestId,
       accountId: vuexTypes.accountId,

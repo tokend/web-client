@@ -135,7 +135,6 @@ module.exports = {
 
     'declaration-bang-space-after': ['never', { severity: 'warning' }],
     'declaration-bang-space-before': ['always', { severity: 'warning' }],
-    'declaration-colon-newline-after': ['always-multi-line', { severity: 'warning' }],
     'declaration-colon-space-after': ['always-single-line', { severity: 'warning' }],
     'declaration-colon-space-before': ['never', { severity: 'warning' }],
 

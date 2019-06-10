@@ -117,27 +117,33 @@ export default {
 .fee-viewer__direction-title {
   display: flex;
   justify-content: space-between;
-}
-
-.fee-viewer__direction-title-text {
-  font-size: 1.6rem;
+  line-height: 1.4865;
 }
 
 .fee-viewer__total {
-  border-bottom: dotted 0.15rem;
-  font-size: 1.6rem;
   cursor: pointer;
+  white-space: nowrap;
+  position: relative;
+
+  &:after {
+    content: '';
+    position: absolute;
+    border-bottom: dotted 0.1rem;
+    bottom: 0.3rem;
+    left: 0;
+    width: 100%;
+    height: 0.1rem;
+  }
 }
 
 .fee-viewer__details {
-  margin-top: 0.6rem;
   overflow: hidden;
 }
 
 .fee-viewer__details-row {
   display: flex;
   justify-content: space-between;
-  line-height: 1.5;
+  line-height: 1.4865;
 }
 
 .fee-viewer__details-row-text {
@@ -148,22 +154,22 @@ export default {
 $fee-viewer-animation-duration: 0.2s;
 
 .fee-viewer__details-transition-enter-active {
-  animation:
-    fee-viewer__details-keyframes
-    $fee-viewer-animation-duration
+  animation: fee-viewer__details-keyframes $fee-viewer-animation-duration
     ease-in-out;
 }
 
 .fee-viewer__details-transition-leave-active {
-  animation:
-    fee-viewer__details-keyframes
-    $fee-viewer-animation-duration
-    ease-in-out
-    reverse;
+  animation: fee-viewer__details-keyframes $fee-viewer-animation-duration
+    ease-in-out reverse;
 }
 
 @keyframes fee-viewer__details-keyframes {
-  from { max-height: 0; }
-  to { max-height: 4rem; }
+  from {
+    max-height: 0;
+  }
+
+  to {
+    max-height: 4rem;
+  }
 }
 </style>

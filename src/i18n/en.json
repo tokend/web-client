@@ -469,7 +469,8 @@
       "know-credentials-question": "Know your credentials?",
       "know-credentials-answer": "Sign in now",
       "have-an-account-question": "Already have an account?",
-      "have-an-account-answer": "Sign in now"
+      "have-an-account-answer": "Sign in now",
+      "verifying-email-msg": "Please wait while we verifying your email address."
     },
     "settings-page": {
       "verification-tab": "Verification",
@@ -1027,7 +1028,7 @@
       "amount-lbl": "Amount",
       "insufficient-sales": "Insufficient balance",
       "recipient-lbl": "Recipient email or account ID",
-      "subject-lbl": "Add note (under {{length}} symbols)",
+      "subject-lbl": "Add note",
       "total-amount": "Total amount",
       "continue-btn": "Continue",
       "recheck-form": "Please recheck the form before proceeding",
@@ -1738,7 +1739,7 @@
       "issuance-fee-msg": "Issuance fee",
       "unknown-fee-msg": "Unknown fee",
       "pay-for-recipient-lbl": "Pay fees for recipient",
-      "view-fees-link": "View all fees"
+      "view-fees-link": "Show my account fees"
     },
     "deposit-form": {
       "deposit": "Deposit",
@@ -1933,7 +1934,7 @@
       "upload-image": "Upload the image users will see first in their searcher",
       "cover-logo": "Cover logo",
       "short-description": "Short description",
-      "subject-lbl": "Add note (under {{length}} symbols)",
+      "subject-lbl": "Add note",
       "full-description": "Full description",
       "submit-btn": "Submit",
       "asset-type-required-kyc": "Requires KYC",

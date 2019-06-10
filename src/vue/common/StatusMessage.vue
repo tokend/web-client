@@ -2,7 +2,11 @@
   <transition name="status-message__transition">
     <div
       v-if="isShown"
-      :class="`status-message status-message--${messageType}`"
+      class="status-message"
+      :class="[
+        `status-message--${messageType}`,
+        { 'status-message--jump': isShownAgain }
+      ]"
     >
       <div class="status-message__icon-wrp">
         <i
@@ -33,7 +37,8 @@
 import { Bus } from '@/js/helpers/event-bus'
 
 const DEFAULT_MESSAGE_TRANSLATION_ID = 'status-message.default-message'
-const CLOSE_TIMEOUT_MS = 10000
+const CLOSE_TIMEOUT_MS = 100000
+const SHOWN_AGAIN_PRESENCE_TIMEOUT_MS = 1000
 const MESSAGE_TYPES = Object.freeze({
   warning: 'warning',
   success: 'success',
@@ -50,7 +55,9 @@ export default {
     messageType: '',
     messageArgs: {},
     isShown: false,
-    timeoutId: -1,
+    isShownAgain: false,
+    isShownTimeoutId: -1,
+    isShownAgainTimeoutId: -1,
   }),
 
   computed: {
@@ -94,15 +101,31 @@ export default {
         this.messageId = DEFAULT_MESSAGE_TRANSLATION_ID
       }
 
-      this.isShown = true
-
-      if (this.timeoutId >= 0) {
-        window.clearTimeout(this.timeoutId)
+      if (this.isShown) {
+        this.doJump()
+      } else {
+        this.isShown = true
       }
 
-      this.timeoutId = window.setTimeout(_ => {
+      if (this.isShownTimeoutId >= 0) {
+        window.clearTimeout(this.isShownTimeoutId)
+      }
+
+      this.isShownTimeoutId = window.setTimeout(_ => {
         this.isShown = false
       }, CLOSE_TIMEOUT_MS)
+    },
+
+    doJump () {
+      this.isShownAgain = true
+
+      if (this.isShownAgainTimeoutId) {
+        window.clearTimeout(this.isShownAgainTimeoutId)
+      }
+
+      this.isShownAgainTimeoutId = window.setTimeout(_ => {
+        this.isShownAgain = false
+      }, SHOWN_AGAIN_PRESENCE_TIMEOUT_MS)
     },
 
     isObject (value) {
@@ -145,6 +168,10 @@ $icon-padding: 2.4rem;
     background-color: $col-status-msg-light-bg;
   }
 
+  &--jump {
+    animation: status-message__transition-jump 0.25s ease-out;
+  }
+
   @include respond-to($tablet) {
     min-width: auto;
   }
@@ -166,10 +193,21 @@ $icon-padding: 2.4rem;
   display: flex;
   font-size: 3.6rem;
 
-  &--success { color: $col-status-msg-success; }
-  &--error { color: $col-status-msg-text; }
-  &--info { color: $col-status-msg-info; }
-  &--warning { color: $col-status-msg-text; }
+  &--success {
+    color: $col-status-msg-success;
+  }
+
+  &--error {
+    color: $col-status-msg-text;
+  }
+
+  &--info {
+    color: $col-status-msg-info;
+  }
+
+  &--warning {
+    color: $col-status-msg-text;
+  }
 }
 
 .status-message__payload {
@@ -276,5 +314,19 @@ $icon-padding: 2.4rem;
 .status-message__transition-leave-to {
   transform: rotateX(90deg);
   opacity: 0;
+}
+
+@keyframes status-message__transition-jump {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 </style>
