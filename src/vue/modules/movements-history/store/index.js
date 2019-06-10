@@ -1,19 +1,15 @@
 import { Movement } from '../wrappers/movement'
-import { Balance } from '../wrappers/balance'
 
 import { types } from './types'
 import { api } from '@/api'
 import { vuexTypes } from '@/vuex'
+import _isEmpty from 'lodash/isEmpty'
 
 export const state = {
-  balances: [],
   movements: [],
 }
 
 export const mutations = {
-  [types.SET_BALANCES] (state, balances) {
-    state.balances = balances
-  },
   [types.SET_MOVEMENTS] (state, movements) {
     state.movements = movements
   },
@@ -23,10 +19,10 @@ export const mutations = {
 }
 
 export const actions = {
-  [types.LOAD_MOVEMENTS] ({ getters, rootGetters }, assetCode) {
-    const balance = getters[types.getBalanceByAssetCode](assetCode)
+  [types.LOAD_MOVEMENTS] ({ rootGetters }, assetCode) {
+    const balance = rootGetters[vuexTypes.accountBalanceByCode](assetCode)
 
-    if (!balance) {
+    if (_isEmpty(balance)) {
       throw new Error(`No balance found for ${assetCode}`)
     }
 
@@ -43,22 +39,27 @@ export const actions = {
     })
   },
 
-  async [types.LOAD_BALANCES] ({ commit, rootGetters }) {
-    const endpoint = `/v3/accounts/${rootGetters[vuexTypes.accountId]}`
-    const { data: account } = await api.getWithSignature(endpoint, {
-      include: ['balances.state'],
-    })
+  [types.LOAD_SHARE_MOVEMENTS] ({ rootGetters }, assetCode) {
+    const balance = rootGetters[vuexTypes.accountBalanceByCode](assetCode)
+    if (_isEmpty(balance)) {
+      throw new Error(`No balance found for ${assetCode}`)
+    }
 
-    commit(types.SET_BALANCES, account.balances)
+    return api.getWithSignature('/v3/movements', {
+      page: {
+        order: 'desc',
+        limit: 10,
+      },
+      filter: {
+        asset: assetCode,
+      },
+      include: ['effect', 'operation.details'],
+    })
   },
 }
 
 export const getters = {
   [types.movements]: state => state.movements.map(m => new Movement(m)),
-  [types.balances]: state => state.balances.map(b => new Balance(b)),
-  [types.getBalanceByAssetCode]: (_, getters) => assetCode => getters
-    .balances
-    .find(b => b.assetCode === assetCode),
 }
 
 export const movementsHistoryModule = {

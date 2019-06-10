@@ -469,7 +469,8 @@
       "know-credentials-question": "Know your credentials?",
       "know-credentials-answer": "Sign in now",
       "have-an-account-question": "Already have an account?",
-      "have-an-account-answer": "Sign in now"
+      "have-an-account-answer": "Sign in now",
+      "verifying-email-msg": "Please wait while we verifying your email address."
     },
     "settings-page": {
       "verification-tab": "Verification",
@@ -671,7 +672,8 @@
       "sale-details": "Sale details",
       "loyalty-points": "Loyalty points",
       "statistics": "Statistics",
-      "documents": "Documents"
+      "documents": "Documents",
+      "register-of-shares": "Register of shares"
     },
     "limits": {
       "explore-limits": "Explore limits",
@@ -955,7 +957,9 @@
       "source-pays-for-destination-lbl": "Source pays for destination",
       "subject-lbl": "Subject",
       "payment-sender-lbl": "Payment sender",
+      "payment-sender-id-lbl": "Payment sender ID",
       "payment-recipient-lbl": "Payment recipient",
+      "payment-recipient-id-lbl": "Payment recipient ID",
       "request-state-lbl": "Request state",
       "request-rejected-msg": "Request rejected",
       "request-approved-msg": "Request approved",
@@ -1090,7 +1094,8 @@
       "no-assets-msg": "There are no available assets",
       "no-balances-title": "No balances",
       "no-balances-msg": "You do not have any balances yet",
-      "create-btn": "Create"
+      "create-btn": "Create",
+      "my-assets-title": "My assets"
     },
     "create-asset-form": {
       "loading-msg": "Loading…",
@@ -1866,6 +1871,7 @@
       "loading-error-msg": "There was an error while loading.",
       "no-assets-title": "No assets",
       "no-assets-msg": "There are no available assets",
+      "no-created-assets-msg": "You did not create any assets yet",
       "no-balances-title": "No balances",
       "no-balances-msg": "You do not have any balances yet",
       "list-item-balance-line": "Balance: {{value, money}}",
@@ -1897,7 +1903,8 @@
       "terms-title": "Terms",
       "download-terms-btn": "Download terms",
       "already-in-your-balance-btn": "Already in your balances",
-      "owner-lbl": "Owner"
+      "owner-lbl": "Owner",
+      "view-shares-btn": "View shares"
     },
     "create-opportunity": {
       "maturity-date": "Maturity Date",

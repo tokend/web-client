@@ -2,8 +2,6 @@ import BalanceExplorerModule from './index'
 
 import Vuex from 'vuex'
 
-import { balanceExplorerModule } from './store/index'
-
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
@@ -26,7 +24,6 @@ describe('Balance explorer module', () => {
         [vuexTypes.accountBalances]: _ => [],
       },
       modules: {
-        'balance-explorer': balanceExplorerModule,
         accountId: 'SOME_ACCOUNT_ID',
       },
     })
@@ -66,13 +63,10 @@ describe('Balance explorer module', () => {
       describe('load', () => {
         it('calls load methods and sets isLoaded property to true if loading succeded', async () => {
           sandbox.stub(wrapper.vm, 'loadAccountBalances').resolves()
-          sandbox.stub(wrapper.vm, 'loadKycRequiredAssetType').resolves()
-          sandbox.stub(wrapper.vm, 'loadSecurityAssetType').resolves()
 
           await wrapper.vm.load()
 
           expect(wrapper.vm.loadAccountBalances).to.have.been.calledOnce
-          expect(wrapper.vm.loadKycRequiredAssetType).to.have.been.calledOnce
           expect(wrapper.vm.isLoaded).to.be.true
         })
 

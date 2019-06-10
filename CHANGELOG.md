@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+#### Added
+- Asset code validator
+- My assets explorer page
+- Register of shares page
+- Waiting email verification
+- Scrolling to top of the page after sending KYC corporate request
+- URLs normalization in env.js
+
+#### Changed
+- Now loading KYC latest data from account endpoint
+
 ## [1.8.0-rc.1] - 2019-06-07
 #### Changed
 - Some design improvements to fields and rendered fees:
@@ -20,6 +32,12 @@ for further information about branching and tagging conventions.
 ### "Under the hood" changed
 #### Added
 - File types exceptions to .gitattributes
+- Balances panel to the invoice form (Loyalty)
+
+#### Changed
+- Invoice form width to full screen
+- Now displaying customer's & merchant's balances on the invoice form 
+  confirmation
 
 #### Fixed
 - Restored images line endings

@@ -30,6 +30,7 @@ const mutations = {
   SET_KYC_RELATED_REQUEST: 'SET_KYC_RELATED_REQUEST',
   SET_KYC_LATEST_DATA: 'SET_KYC_LATEST_DATA',
   SET_ACCOUNT_ROLE_RESETED: 'SET_ACCOUNT_ROLE_RESETED',
+  SET_KYC_LATEST_REQUEST_DATA: 'SET_KYC_LATEST_REQUEST_DATA',
 
   // assets
   SET_ASSETS: 'SET_ASSETS',
@@ -40,8 +41,6 @@ const actions = {
   // key-value
   LOAD_KV_ENTRIES: 'LOAD_KV_ENTRIES',
   LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS: 'LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS',
-  LOAD_KV_KYC_REQUIRED: 'LOAD_KV_KYC_REQUIRED',
-  LOAD_KV_ASSET_TYPE_SECURITY: 'LOAD_KV_ASSET_TYPE_SECURITY',
 
   // account
   LOAD_ACCOUNT: 'LOAD_ACCOUNT',
@@ -57,8 +56,9 @@ const actions = {
   // kyc
   LOAD_KYC: 'LOAD_KYC',
   LOAD_KYC_LATEST_REQUEST: 'LOAD_KYC_LATEST_REQUEST',
+  LOAD_KYC_LATEST_REQUEST_DATA: 'LOAD_KYC_LATEST_REQUEST_DATA',
   LOAD_KYC_RELATED_REQUEST: 'LOAD_KYC_RELATED_REQUEST',
-  LOAD_KYC_DATA: 'LOAD_KYC_DATA',
+  LOAD_KYC_LATEST_DATA: 'LOAD_KYC_LATEST_DATA',
 
   // assets
   LOAD_ASSETS: 'LOAD_ASSETS',
@@ -83,6 +83,7 @@ const getters = {
   account: 'account',
   accountId: 'accountId',
   accountBalances: 'accountBalances',
+  accountOwnedAssetsBalances: 'accountOwnedAssetsBalances',
   accountBalanceByCode: 'accountBalanceByCode',
   accountRoleId: 'accountRoleId',
   accountDepositAddresses: 'accountDepositAddresses',
@@ -112,7 +113,6 @@ const getters = {
   kycState: 'kycState',
   kycStateI: 'kycStateI',
   kycRequestId: 'kycRequestId',
-  kycLatestBlobId: 'kycLatestBlobId',
   kycRequestRejectReason: 'kycRequestRejectReason',
   kycRequestResetReason: 'kycRequestResetReason',
   kycRequestExternalDetails: 'kycRequestExternalDetails',
@@ -120,6 +120,8 @@ const getters = {
   kycAccountRoleToSet: 'kycAccountRoleToSet',
   kycPreviousRequestAccountRoleToSet: 'kycPreviousRequestAccountRoleToSet',
   kycLatestData: 'kycLatestData',
+  kycLatestRequestBlobId: 'kycLatestRequestBlobId',
+  kycLatestRequestData: 'kycLatestRequestData',
   kycAvatarKey: 'kycAvatarKey',
   isAccountRoleReseted: 'isAccountRoleReseted',
 
@@ -133,6 +135,7 @@ const getters = {
   transferableBalancesAssets: 'transferableBalancesAssets',
   withdrawableBalancesAssets: 'withdrawableBalancesAssets',
   statsQuoteAsset: 'statsQuoteAsset',
+  ownedAssets: 'ownedAssets',
 }
 
 export const vuexTypes = {

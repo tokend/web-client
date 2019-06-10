@@ -219,7 +219,7 @@ export default {
 
   created () {
     if (this.isFormPopulatable) {
-      this.form = this.parseKycData(this.kycLatestData)
+      this.form = this.parseKycData(this.kycLatestRequestData)
     }
   },
 
@@ -240,7 +240,9 @@ export default {
           await this.loadKyc()
           await this.delay(3000)
         } while (this.kycState !== REQUEST_STATES_STR.pending)
+
         Bus.success('verification-form.request-submitted-msg')
+        this.scrollTop()
       } catch (e) {
         ErrorHandler.process(e)
       }
@@ -253,6 +255,14 @@ export default {
       /* eslint-disable-next-line promise/avoid-new */
       return new Promise((resolve, reject) => {
         resolve(setTimeout(resolve, ms))
+      })
+    },
+
+    scrollTop () {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
       })
     },
 

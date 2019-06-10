@@ -20,8 +20,8 @@
           <asset-attributes-viewer
             :asset="selectedBalance.asset"
             :balance="selectedBalance.balance"
-            :kyc-required-asset-type="kycRequiredAssetType"
-            :security-asset-type="securityAssetType"
+            :kyc-required-asset-type="kvAssetTypeKycRequired"
+            :security-asset-type="kvAssetTypeSecurity"
           />
 
           <button
@@ -83,7 +83,6 @@ import BalanceSkeletonLoader from './components/balance-skeleton-loader'
 import UpdateAssetFormModule from '@modules/update-asset-form'
 
 import { mapActions, mapGetters } from 'vuex'
-import { types } from './store/types'
 import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -120,10 +119,12 @@ export default {
       accountBalances: vuexTypes.accountBalances,
       accountId: vuexTypes.accountId,
     }),
-    ...mapGetters('balance-explorer', {
-      kycRequiredAssetType: types.kycRequiredAssetType,
-      securityAssetType: types.securityAssetType,
-    }),
+
+    ...mapGetters([
+      vuexTypes.accountId,
+      vuexTypes.kvAssetTypeKycRequired,
+      vuexTypes.kvAssetTypeSecurity,
+    ]),
   },
 
   async created () {
@@ -134,16 +135,10 @@ export default {
     ...mapActions({
       loadAccountBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
-    ...mapActions('balance-explorer', {
-      loadKycRequiredAssetType: types.LOAD_KYC_REQUIRED_ASSET_TYPE,
-      loadSecurityAssetType: types.LOAD_SECURITY_ASSET_TYPE,
-    }),
 
     async load () {
       try {
         await this.loadAccountBalances(this.defaultQuoteAsset)
-        await this.loadKycRequiredAssetType()
-        await this.loadSecurityAssetType()
         this.isLoaded = true
       } catch (e) {
         this.isLoadFailed = true

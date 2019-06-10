@@ -68,7 +68,7 @@ export const actions = {
 
   async [types.LOAD_MOVEMENTS] ({ getters, commit, rootGetters }, assetCode) {
     if (!getters[types.balances].length) {
-      await actions[types.LOAD_BALANCES]({ getters, commit })
+      await actions[types.LOAD_BALANCES]({ getters, rootGetters, commit })
     }
 
     const balance = getters[types.getBalanceByAssetCode](assetCode)
