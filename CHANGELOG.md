@@ -9,6 +9,9 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Added
+- Asset code validator
+- My assets explorer page
+- Register of shares page
 - Waiting email verification
 - Scrolling to top of the page after sending KYC corporate request
 - URLs normalization in env.js

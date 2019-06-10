@@ -25,6 +25,7 @@
         </div>
       </template>
       <div
+        v-if="!isSharesPage"
         class="movements-top-bar__actions"
         slot="extra"
       >
@@ -133,6 +134,7 @@ import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
 import { DepositFormPseudoModule } from '@/modules-arch/pseudo-modules/deposit-form-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
+import { vueRoutes } from '@/vue-router/routes'
 
 const EVENTS = {
   assetUpdated: 'asset-updated',
@@ -170,8 +172,17 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      assets: vuexTypes.balancesAssets,
+      balancesAssets: vuexTypes.balancesAssets,
+      ownedAssets: vuexTypes.ownedAssets,
     }),
+
+    isSharesPage () {
+      return this.$route.name === vueRoutes.registerOfShares.name
+    },
+
+    assets () {
+      return this.isSharesPage ? this.ownedAssets : this.balancesAssets
+    },
   },
   watch: {
     asset: {

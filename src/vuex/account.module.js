@@ -53,6 +53,9 @@ export const getters = {
   [vuexTypes.accountId]: state => state.account.id,
   [vuexTypes.accountBalances]: state => state.balancesDetails
     .map(item => new BalanceRecord(item)),
+  [vuexTypes.accountOwnedAssetsBalances]: state => state.balancesDetails
+    .map(item => new BalanceRecord(item))
+    .filter(i => i.asset.owner === state.account.id) || {},
   [vuexTypes.accountBalanceByCode]: state => code => state.balancesDetails
     .map(item => new BalanceRecord(item))
     .find(i => i.asset.code === code) || {},

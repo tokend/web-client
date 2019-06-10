@@ -43,4 +43,6 @@ export const vueRoutes = Object.freeze({
   iosInstallationGuide: { name: 'ios-installation-guide' },
   supportedBrowsers: { name: 'supported-browsers' },
   preIssuanceGuide: { name: 'pre-issuance-guide' },
+  myAssets: { name: 'app.my-assets' },
+  registerOfShares: { name: 'app.register-of-shares' },
 })

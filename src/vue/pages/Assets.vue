@@ -12,6 +12,13 @@
         >
           <span>{{ 'assets-page.balances-title' | globalize }}</span>
         </router-link>
+        <template v-if="getModule().canRenderSubmodule(MyAssetsPageModule)">
+          <router-link
+            :to="vueRoutes.myAssets"
+          >
+            <span>{{ 'assets-page.my-assets-title' | globalize }}</span>
+          </router-link>
+        </template>
       </template>
       <template
         slot="extra"
@@ -58,6 +65,7 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import { CreateAssetFormModule } from '@modules/create-asset-form/module'
+import { MyAssetsPageModule } from './my-assets-page-module'
 
 export default {
   name: 'assets',
@@ -69,6 +77,7 @@ export default {
   data: _ => ({
     vueRoutes,
     CreateAssetFormModule,
+    MyAssetsPageModule,
     isAssetDrawerShown: false,
   }),
   computed: {

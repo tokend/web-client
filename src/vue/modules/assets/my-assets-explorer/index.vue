@@ -1,6 +1,6 @@
 <template>
-  <div class="balance-explorer">
-    <template>
+  <div class="my-assets-explorer">
+    <template v-if="isLoaded">
       <drawer :is-shown.sync="isDrawerShown">
         <template v-if="isUpdateMode">
           <template slot="heading">
@@ -24,22 +24,32 @@
             :security-asset-type="kvAssetTypeSecurity"
           />
 
-          <button
-            v-if="selectedBalance.asset.owner === accountId"
-            v-ripple
-            class="app__button-raised balance-explorer__update-btn"
-            @click="isUpdateMode = true"
-          >
-            {{ 'assets.update-btn' | globalize }}
-          </button>
+          <div class="my-assets-explorer__actions-wrapper">
+            <button
+              v-ripple
+              class="app__button-raised my-assets-explorer__update-btn"
+              @click="isUpdateMode = true"
+            >
+              {{ 'assets.update-btn' | globalize }}
+            </button>
+
+            <router-link
+              :to="vueRoutes.registerOfShares"
+              tag="button"
+              class="app__button-flat my-assets-explorer__view-shares-btn"
+            >
+              {{ 'assets.view-shares-btn' | globalize }}
+            </router-link>
+          </div>
         </template>
       </drawer>
 
-      <div class="balance-explorer__asset-list-wrp">
+      <div class="my-assets-explorer__asset-list-wrp">
         <div
-          class="balance-explorer__asset-list"
+          v-if="assets.length"
+          class="my-assets-explorer__asset-list"
         >
-          <template v-for="item in accountBalances">
+          <template v-for="item in accountOwnedAssetsBalances">
             <card-viewer
               :asset="item.asset"
               :balance="item.balance"
@@ -48,54 +58,60 @@
             />
           </template>
           <template v-for="index in itemsPerSkeletonLoader">
-            <balance-skeleton-loader
-              v-if="!isLoaded && !accountBalances.length"
+            <asset-skeleton-loader
+              v-if="!isLoaded && !accountOwnedAssetsBalances.length"
               :key="index"
             />
           </template>
         </div>
 
         <no-data-message
-          v-if="isLoaded && !accountBalances.length"
+          v-else
           icon-name="trending-up"
-          :title="'assets.no-balances-title' | globalize"
-          :message="'assets.no-balances-msg' | globalize"
+          :title="'assets.no-assets-title' | globalize"
+          :message="'assets.no-created-assets-msg' | globalize"
         />
       </div>
     </template>
 
-    <template v-if="isLoadFailed">
-      <p class="balance-explorer__error-msg">
+    <template v-else-if="isLoadFailed">
+      <p class="my-assets-explorer__error-msg">
         {{ 'assets.loading-error-msg' | globalize }}
       </p>
+    </template>
+
+    <template v-else>
+      <load-spinner message-id="assets.balances-loading-msg" />
     </template>
   </div>
 </template>
 
 <script>
 import Drawer from '@/vue/common/Drawer'
+import LoadSpinner from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import CardViewer from '../shared/components/card-viewer'
 import AssetAttributesViewer from '../shared/components/asset-attributes-viewer'
-import BalanceSkeletonLoader from './components/balance-skeleton-loader'
+import AssetSkeletonLoader from './components/asset-skeleton-loader'
 
 import UpdateAssetFormModule from '@modules/update-asset-form'
 
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
-
+import { vueRoutes } from '@/vue-router/routes'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
-  name: 'balance-explorer',
+  name: 'my-assets-explorer',
   components: {
     Drawer,
+    LoadSpinner,
     NoDataMessage,
     CardViewer,
     AssetAttributesViewer,
     UpdateAssetFormModule,
-    BalanceSkeletonLoader,
+    AssetSkeletonLoader,
   },
   props: {
     defaultQuoteAsset: {
@@ -112,12 +128,15 @@ export default {
       asset: {},
     },
     itemsPerSkeletonLoader: 3,
+    vueRoutes,
   }),
 
   computed: {
     ...mapGetters({
+      assets: vuexTypes.balancesAssets,
+      ownedAssets: vuexTypes.ownedAssets,
       accountBalances: vuexTypes.accountBalances,
-      accountId: vuexTypes.accountId,
+      accountOwnedAssetsBalances: vuexTypes.accountOwnedAssetsBalances,
     }),
 
     ...mapGetters([
@@ -162,17 +181,22 @@ $asset-card-margin: 0.75rem;
 
 $media-small-height: 460px;
 
-.balance-explorer__asset-list {
+.my-assets-explorer__asset-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
   margin: -$asset-card-margin;
 }
 
-.balance-explorer__update-btn {
-  margin-top: 4.9rem;
+.my-assets-explorer__update-btn {
   max-width: 18rem;
   width: 100%;
+}
+
+.my-assets-explorer__actions-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4.9rem;
 
   @include respond-to-height($media-small-height) {
     margin-top: 2.4rem;
