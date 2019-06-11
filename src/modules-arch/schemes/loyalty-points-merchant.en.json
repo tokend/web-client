@@ -37,6 +37,7 @@
       "total-price": "Total price: **{{amount, money}}**",
       "waiting-for-payment-btn": "Waiting for payment…",
       "close-btn": "Close",
+      "payment-not-confirmed-state": "Transaction is being sent",
       "payment-pending-state": "Waiting for payment",
       "payment-successful-state": "Successful",
       "create-invoice": "Create invoice",
@@ -52,7 +53,11 @@
       "subject-th": "Subject",
       "point-th": "Point",
       "system-th": "System",
-      "invalid-account-number-err": "You've entered invalid account number. Please, try another one"
+      "invalid-account-number-err": "You've entered invalid account number. Please, try another one",
+      "customer-points-title": "Customer's points",
+      "transaction-value-title": "Transaction value",
+      "merchant-points-title": "Merchant's points",
+      "pair-price-hint": "1 {{base}} = {{price, money}} {{quote}}"
     }
   }
 }

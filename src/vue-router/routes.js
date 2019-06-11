@@ -43,6 +43,8 @@ export const vueRoutes = Object.freeze({
   iosInstallationGuide: { name: 'ios-installation-guide' },
   supportedBrowsers: { name: 'supported-browsers' },
   preIssuanceGuide: { name: 'pre-issuance-guide' },
+  myAssets: { name: 'app.my-assets' },
+  registerOfShares: { name: 'app.register-of-shares' },
   polls: { name: 'app.polls' },
   pollRequests: { name: 'app.poll-requests' },
   userOwnedPolls: { name: 'app.user-owned-polls' },

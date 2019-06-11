@@ -19,6 +19,7 @@ describe('Assets renderer', () => {
     store = new Vuex.Store({
       getters: {
         assets: _ => [],
+        accountBalances: _ => [],
       },
       modules: { 'asset-explorer': assetExplorerModule },
     })

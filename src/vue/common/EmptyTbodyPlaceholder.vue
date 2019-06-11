@@ -33,10 +33,11 @@ export default {
 @import '~@scss/mixins';
 @import '~@scss/variables';
 
-.empty-tbody-placeholder__brief {
-  background-color: $col-block-bg;
-
-  @include box-shadow;
+.app__table table tbody tr:nth-child(odd).empty-tbody-placeholder__brief,
+.app__table table tbody tr:nth-child(odd).empty-tbody-placeholder__brief:hover,
+.empty-tbody-placeholder__brief,
+.empty-tbody-placeholder__brief:hover {
+  background-color: $col-table-alt-row-background;
 }
 
 .empty-tbody-placeholder__cell--align-center {

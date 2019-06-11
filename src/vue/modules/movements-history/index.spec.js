@@ -2,7 +2,6 @@ import MovementsHistoryModule from './index'
 import { movementsHistoryModule } from './store/index'
 
 import Vuex from 'vuex'
-
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -25,53 +24,22 @@ describe('Movements history module', () => {
     })
   })
 
-  describe('created hook', () => {
-    beforeEach(() => {
-      sinon.stub(MovementsHistoryModule.methods, 'loadBalances').resolves()
-    })
-
-    afterEach(() => {
-      MovementsHistoryModule.methods.loadBalances.restore()
-    })
-
-    it('calls loadBalances action', () => {
-      shallowMount(MovementsHistoryModule, {
-        localVue,
-        store,
-        propsData: props,
-      })
-
-      expect(MovementsHistoryModule.methods.loadBalances)
-        .to.have.been.calledOnce
-    })
-
-    it('sets isInitialized property to true if actions in Created were succeded',
-      async () => {
-        const wrapper = await shallowMount(MovementsHistoryModule, {
-          store,
-          localVue,
-          propsData: props,
-        })
-
-        expect(wrapper.vm.isInitialized).to.be.true
-      })
-  })
-
   describe('component', () => {
     let wrapper
 
     beforeEach(() => {
-      sinon.stub(MovementsHistoryModule, 'created').resolves()
+      const $route = {
+        name: 'app.movements',
+      }
 
       wrapper = shallowMount(MovementsHistoryModule, {
         store,
         localVue,
         propsData: props,
+        mocks: {
+          $route,
+        },
       })
-    })
-
-    afterEach(() => {
-      MovementsHistoryModule.created.restore()
     })
 
     describe('method', () => {
@@ -90,6 +58,7 @@ describe('Movements history module', () => {
 
         it('sets isMovementsLoaded property to true if loading was succeded',
           async () => {
+            sinon.stub(wrapper.vm, 'isSharesPage').returns(false)
             sinon.stub(wrapper.vm, 'loadMovements')
               .withArgs(props.assetCode)
               .resolves()

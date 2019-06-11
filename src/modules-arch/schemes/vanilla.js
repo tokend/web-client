@@ -58,6 +58,9 @@ import { PollsListOwnedPageModule } from '@/vue/pages/polls/user-owned-polls-pag
 import { CreatePollFormModule } from '@/vue/modules/create-poll-form/module'
 
 import { VerificationGeneralFormModule } from '@/vue/modules/verification/general-form/module'
+import { MyAssetsPageModule } from '@/vue/pages/my-assets-page-module'
+import { MyAssetsExplorerModule } from '@/vue/modules/assets/my-assets-explorer/module'
+import { SharesPageModule } from '@/vue/pages/shares-page-module'
 
 export default {
   pages: [
@@ -174,10 +177,38 @@ export default {
               new BalanceExplorerModule(),
             ],
           }),
+          new MyAssetsPageModule({
+            routerEntry: {
+              path: '/assets/my-assets',
+              name: vueRoutes.myAssets.name,
+              meta: { pageNameTranslationId: 'pages-names.assets' },
+            },
+            submodules: [
+              new MyAssetsExplorerModule(),
+            ],
+            isCorporateOnly: true,
+          }),
           new CreateAssetFormModule({
             isCorporateOnly: true,
           }),
         ],
+      },
+    ),
+
+    new SharesPageModule(
+      {
+        routerEntry: {
+          path: '/register-of-shares',
+          name: vueRoutes.registerOfShares.name,
+          meta: { pageNameTranslationId: 'pages-names.register-of-shares' },
+        },
+        menuButtonTranslationId: 'pages-names.register-of-shares',
+        menuButtonMdiName: 'book-open',
+        submodules: [
+          new MovementsTopBarModule(),
+          new MovementsHistoryModule(),
+        ],
+        isCorporateOnly: true,
       },
     ),
 

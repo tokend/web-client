@@ -119,7 +119,7 @@
             <input-field
               white-autofill
               type="number"
-              :min="minAmount"
+              :min="0"
               :max="maxAmount"
               :step="minAmount"
               v-model="form.information.maxIssuanceAmount"
@@ -264,7 +264,7 @@
               type="number"
               v-model="form.saleInformation.softCap"
               :min="minAmount"
-              :max="form.saleInformation.hardCap || maxAmount"
+              :max="maxAmount"
               :step="minAmount"
               @blur="touchField('form.saleInformation.softCap')"
               name="create-sale-soft-cap"
@@ -287,7 +287,7 @@
               white-autofill
               type="number"
               v-model="form.saleInformation.hardCap"
-              :min="form.saleInformation.softCap"
+              :min="0"
               :max="maxAmount"
               :step="minAmount"
               @blur="touchField('form.saleInformation.hardCap')"

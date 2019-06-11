@@ -8,7 +8,7 @@
           </template>
 
           <update-asset-form-module
-            :asset-code="selectedAsset.code"
+            :asset-code="selectedBalance.asset.code"
             @close="isDrawerShown = false"
           />
         </template>
@@ -18,13 +18,14 @@
             {{ 'assets.details-drawer-title' | globalize }}
           </template>
           <asset-attributes-viewer
-            :asset="selectedAsset"
-            :kyc-required-asset-type="kycRequiredAssetType"
-            :security-asset-type="securityAssetType"
+            :asset="selectedBalance.asset"
+            :balance="selectedBalance.balance"
+            :kyc-required-asset-type="kvAssetTypeKycRequired"
+            :security-asset-type="kvAssetTypeSecurity"
           />
 
           <button
-            v-if="selectedAsset.owner === accountId"
+            v-if="selectedBalance.asset.owner === accountId"
             v-ripple
             class="app__button-raised balance-explorer__update-btn"
             @click="isUpdateMode = true"
@@ -38,23 +39,24 @@
         <div
           class="balance-explorer__asset-list"
         >
-          <template v-for="asset in assets">
+          <template v-for="item in accountBalances">
             <card-viewer
-              :asset="asset"
-              :key="asset.code"
-              @click="selectAsset(asset)"
+              :asset="item.asset"
+              :balance="item.balance"
+              :key="item.id"
+              @click="selectBalance(item)"
             />
           </template>
           <template v-for="index in itemsPerSkeletonLoader">
             <balance-skeleton-loader
-              v-if="!isLoaded && !assets.length"
+              v-if="!isLoaded && !accountBalances.length"
               :key="index"
             />
           </template>
         </div>
 
         <no-data-message
-          v-if="isLoaded && !assets.length"
+          v-if="isLoaded && !accountBalances.length"
           icon-name="trending-up"
           :title="'assets.no-balances-title' | globalize"
           :message="'assets.no-balances-msg' | globalize"
@@ -81,7 +83,6 @@ import BalanceSkeletonLoader from './components/balance-skeleton-loader'
 import UpdateAssetFormModule from '@modules/update-asset-form'
 
 import { mapActions, mapGetters } from 'vuex'
-import { types } from './store/types'
 import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -107,19 +108,23 @@ export default {
     isLoadFailed: false,
     isDrawerShown: false,
     isUpdateMode: false,
-    selectedAsset: {},
+    selectedBalance: {
+      asset: {},
+    },
     itemsPerSkeletonLoader: 3,
   }),
 
   computed: {
     ...mapGetters({
-      assets: vuexTypes.balancesAssets,
+      accountBalances: vuexTypes.accountBalances,
       accountId: vuexTypes.accountId,
     }),
-    ...mapGetters('balance-explorer', {
-      kycRequiredAssetType: types.kycRequiredAssetType,
-      securityAssetType: types.securityAssetType,
-    }),
+
+    ...mapGetters([
+      vuexTypes.accountId,
+      vuexTypes.kvAssetTypeKycRequired,
+      vuexTypes.kvAssetTypeSecurity,
+    ]),
   },
 
   async created () {
@@ -130,16 +135,10 @@ export default {
     ...mapActions({
       loadAccountBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
-    ...mapActions('balance-explorer', {
-      loadKycRequiredAssetType: types.LOAD_KYC_REQUIRED_ASSET_TYPE,
-      loadSecurityAssetType: types.LOAD_SECURITY_ASSET_TYPE,
-    }),
 
     async load () {
       try {
         await this.loadAccountBalances(this.defaultQuoteAsset)
-        await this.loadKycRequiredAssetType()
-        await this.loadSecurityAssetType()
         this.isLoaded = true
       } catch (e) {
         this.isLoadFailed = true
@@ -147,8 +146,8 @@ export default {
       }
     },
 
-    selectAsset (asset) {
-      this.selectedAsset = asset
+    selectBalance (balance) {
+      this.selectedBalance = balance
       this.isUpdateMode = false
       this.isDrawerShown = true
     },

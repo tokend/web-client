@@ -1,6 +1,7 @@
 <template>
   <div class="amount-input-field">
     <input-field
+      v-bind="$attrs"
       name="transfer-amount"
       type="number"
       :value="value"
@@ -14,7 +15,6 @@
         from: minAmount,
         to: maxIncomingAmount
       })"
-      :disabled="disabled"
       @blur="touchField('value')"
     />
 
@@ -23,6 +23,7 @@
       class="amount-input-field__max-btn"
       type="button"
       @click="$emit(EVENTS.input, maxIncomingAmount)"
+      :disabled="$attrs.disabled || $attrs.readonly"
     >
       <i class="mdi mdi-arrow-up-bold amount-input-field__max-icon" />
     </button>
@@ -63,7 +64,6 @@ export default {
   props: {
     asset: { type: AssetRecord, required: true },
     label: { type: String, default: '' },
-    disabled: { type: Boolean, default: false },
     value: { type: [Number, String], default: undefined },
     validationType: { type: String, required: true },
     isMaxButtonShown: { type: Boolean, default: false },
@@ -148,6 +148,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import 'scss/variables';
+
 .amount-input-field {
   display: flex;
 }
@@ -157,6 +159,18 @@ export default {
   margin-left: 0.6rem;
   max-width: 2.4rem;
   max-height: 2.4rem;
+  color: $field-color-unfocused;
+  transition: 0.2s color;
+
+  &:disabled {
+    filter: grayscale(100%);
+    cursor: default;
+  }
+
+  &:enabled:hover,
+  &:enabled:focus {
+    color: inherit;
+  }
 }
 
 .amount-input-field__max-icon {

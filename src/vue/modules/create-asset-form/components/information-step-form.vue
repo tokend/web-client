@@ -29,11 +29,7 @@
           @blur="touchField('form.code')"
           name="create-asset-code"
           :label="'create-asset-form.code-lbl' | globalize"
-          :error-message="getFieldErrorMessage(
-            'form.code',
-            { length: CODE_MAX_LENGTH }
-          )"
-          :maxlength="CODE_MAX_LENGTH"
+          :error-message="getFieldErrorMessage('form.code')"
         />
       </div>
     </div>
@@ -43,7 +39,7 @@
         <input-field
           white-autofill
           type="number"
-          :min="MIN_AMOUNT"
+          :min="0"
           :max="MAX_AMOUNT"
           :step="MIN_AMOUNT"
           v-model="form.maxIssuanceAmount"
@@ -139,7 +135,7 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
-import { required, amountRange, maxLength } from '@validators'
+import { required, amountRange, maxLength, assetCode } from '@validators'
 
 import config from '@/config'
 
@@ -147,7 +143,6 @@ const EVENTS = {
   submit: 'submit',
 }
 
-const CODE_MAX_LENGTH = 16
 const NAME_MAX_LENGTH = 255
 
 export default {
@@ -172,7 +167,6 @@ export default {
     MAX_AMOUNT: config.MAX_AMOUNT,
     ASSET_POLICIES,
     DOCUMENT_TYPES,
-    CODE_MAX_LENGTH,
     NAME_MAX_LENGTH,
   }),
 
@@ -185,7 +179,7 @@ export default {
         },
         code: {
           required,
-          maxLength: maxLength(CODE_MAX_LENGTH),
+          assetCode,
         },
         maxIssuanceAmount: {
           required,

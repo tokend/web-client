@@ -69,7 +69,7 @@
           @blur="touchField('form.assetsToSell')"
           name="create-sale-assets-to-sell"
           type="number"
-          :min="MIN_AMOUNT"
+          :min="0"
           :max="availableForIssuance"
           :step="MIN_AMOUNT"
           :label="'create-sale-form.assets-to-sell-lbl' |
@@ -142,7 +142,7 @@
         <input-field
           white-autofill
           type="number"
-          :min="MIN_AMOUNT"
+          :min="0"
           :max="form.hardCap || MAX_AMOUNT"
           :step="MIN_AMOUNT"
           v-model="form.softCap"
@@ -164,7 +164,7 @@
         <input-field
           white-autofill
           type="number"
-          :min="form.softCap || MIN_AMOUNT"
+          :min="0"
           :max="MAX_AMOUNT"
           :step="MIN_AMOUNT"
           v-model="form.hardCap"

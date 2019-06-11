@@ -20,7 +20,7 @@
           v-model.trim="form.price"
           name="submit-trade-offer-price"
           type="number"
-          :min="config.MIN_AMOUNT"
+          :min="0"
           :max="config.MAX_AMOUNT"
           :step="config.MIN_AMOUNT"
           :label="
@@ -47,7 +47,7 @@
         <input-field
           v-model.trim="form.baseAmount"
           type="number"
-          :min="config.MIN_AMOUNT"
+          :min="0"
           :max="config.MAX_AMOUNT"
           :step="config.MIN_AMOUNT"
           name="submit-trade-offer-base-amount"

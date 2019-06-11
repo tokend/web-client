@@ -2,6 +2,7 @@ import WAValidator from 'wallet-address-validator'
 import moment from 'moment'
 import iban from 'iban'
 import cardValidator from 'card-validator'
+import _isString from 'lodash/isString'
 
 import { base } from '@tokend/js-sdk'
 
@@ -148,4 +149,8 @@ export const validateUrl = url => {
   // eslint-disable-next-line
   const reg = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/)
   return reg.test(url)
+}
+
+export const assetCode = value => {
+  return _isString(value) && /^[a-z\d]{1,16}$/i.test(value)
 }

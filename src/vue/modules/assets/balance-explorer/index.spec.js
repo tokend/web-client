@@ -2,8 +2,6 @@ import BalanceExplorerModule from './index'
 
 import Vuex from 'vuex'
 
-import { balanceExplorerModule } from './store/index'
-
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
@@ -23,10 +21,9 @@ describe('Balance explorer module', () => {
     sandbox = sinon.createSandbox()
     store = new Vuex.Store({
       getters: {
-        [vuexTypes.balancesAssets]: _ => [],
+        [vuexTypes.accountBalances]: _ => [],
       },
       modules: {
-        'balance-explorer': balanceExplorerModule,
         accountId: 'SOME_ACCOUNT_ID',
       },
     })
@@ -66,13 +63,10 @@ describe('Balance explorer module', () => {
       describe('load', () => {
         it('calls load methods and sets isLoaded property to true if loading succeded', async () => {
           sandbox.stub(wrapper.vm, 'loadAccountBalances').resolves()
-          sandbox.stub(wrapper.vm, 'loadKycRequiredAssetType').resolves()
-          sandbox.stub(wrapper.vm, 'loadSecurityAssetType').resolves()
 
           await wrapper.vm.load()
 
           expect(wrapper.vm.loadAccountBalances).to.have.been.calledOnce
-          expect(wrapper.vm.loadKycRequiredAssetType).to.have.been.calledOnce
           expect(wrapper.vm.isLoaded).to.be.true
         })
 
@@ -87,8 +81,8 @@ describe('Balance explorer module', () => {
         })
       })
 
-      describe('selectAsset', () => {
-        it('sets selectedAsset property to passed param, isUpdateMode property to false, and isDrawerShown property to true', () => {
+      describe('selectBalance', () => {
+        it('sets selectedBalance property to passed param, isUpdateMode property to false, and isDrawerShown property to true', () => {
           const asset = new AssetRecord({ id: 'USD' }, [{
             asset: { code: 'USD' },
             balance: '1.000000',
@@ -100,9 +94,9 @@ describe('Balance explorer module', () => {
             isDrawerShown: false,
           })
 
-          wrapper.vm.selectAsset(asset)
+          wrapper.vm.selectBalance({ asset })
 
-          expect(wrapper.vm.selectedAsset).to.deep.equal(asset)
+          expect(wrapper.vm.selectedBalance).to.deep.equal({ asset })
           expect(wrapper.vm.isUpdateMode).to.be.false
           expect(wrapper.vm.isDrawerShown).to.be.true
         })
