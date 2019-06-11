@@ -18,7 +18,7 @@ for further information about branching and tagging conventions.
 
 #### Changed
 - Now loading KYC latest data from account endpoint
-
+- Fields variables moved to global varibles file
 ## [1.8.0-rc.1] - 2019-06-07
 #### Changed
 - Some design improvements to fields and rendered fees:
