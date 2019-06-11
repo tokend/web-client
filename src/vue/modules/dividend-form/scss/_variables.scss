@@ -1,12 +1,11 @@
-$_cornflowerBlue: #7b6eff;
-$_lightPurple: #837fa1;
-$_eastBay: #3a4180;
-
+$text-primary: #7b6eff;
+$text-primary-light: #837fa1;
+$text-primary-dark: #3a4180;
 
 // status colors:
 
-$col-info: $_cornflowerBlue;
+$col-info: $text-primary;
 
 // global colors
-$col-text-secondary: $_lightPurple;
-$col-text: $_eastBay;
+$col-text-secondary: $text-primary-light;
+$col-text: $text-primary-dark;

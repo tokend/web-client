@@ -242,7 +242,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'scss/variables';
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .date-field-flatpickr {
   position: relative;

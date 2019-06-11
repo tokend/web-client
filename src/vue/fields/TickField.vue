@@ -128,7 +128,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import './scss/variables';
 @import '~@scss/variables';
 
 // HACK: fix cut of transforms on some browsers (chrome)

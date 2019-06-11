@@ -25,6 +25,7 @@ $z-sidebar-backdrop: 115;
 $z-sidebar: 120;
 $z-tooltip-wrapper: 1;
 $z-skeleton-loader: 1;
+$z-index-select-field-list: 5;
 
 $_athensGray: #e9eaed;
 $_eastBay: #3a4180;
@@ -164,6 +165,23 @@ $col-switch-field-disabled: $_mediumGray;
 $col-switch-field-enabled: $_lightGreen;
 $col-switch-field-enabled-border: darken($col-switch-field-enabled, 10%);
 $col-switch-field-disabled-border: darken($col-switch-field-disabled, 10%);
+$col-field-text: $col-primary;
+$col-field-text-unfocused: $col-primary-inactive;
+$col-field-icon: $col-primary;
+$col-dropdown-bg: $_white;
+$field-color-background: $_thinBlue;
+$field-color-text: $col-field-text;
+$field-color-focused: $field-color-text;
+$field-color-unfocused: $col-field-text-unfocused;
+$field-color-error: $col-accent;
+$textarea-background-color: #f9fafc;
+$file-field-background-color: $col-file-field-background;
+$file-field-border-color: $col-file-field-border;
+$file-field-note-color: $col-field-text-secondary;
+$file-field-drop-bg-color: $col-file-field-drop-bg;
+$field-placeholer-color: $col-field-text-unfocused;
+$col-select-field-hover: rgba($col-primary, 0.1);
+$col-tick-field-unfocused: $col-primary-lighten;
 
 // other colors
 $col-auth-titles-background-light: #5d5882;
@@ -376,3 +394,16 @@ $col-hint-wrapper-box-text: $_concrete;
 $col-tooltip-wrapper-msg-bg: rgba($_black, 0.9);
 $col-tooltip-wrapper-msg-text: $_white;
 $col-tooltip-wrapper-border-style: transparent transparent $col-tooltip-wrapper-msg-bg transparent;
+
+// fields dimensions
+$field-label-font-size: 1.2rem;
+$field-label-line-height: 1;
+$field-text-font-size: 1.8rem;
+$field-text-line-height: 1.25;
+$field-error-font-size: 1.2rem;
+$field-error-line-height: 1.25;
+$field-transition-duration: 0.2s;
+$field-error-margin-top: 0.4rem;
+$field-input-padding-top: 1.5rem;
+$field-input-padding-bottom: 0.6rem;
+$field-input-padding: $field-input-padding-top 0 $field-input-padding-bottom 0;

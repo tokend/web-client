@@ -80,7 +80,7 @@ export default {
 
 <style lang="scss">
 @import '~simplemde/dist/simplemde.min.css';
-@import 'scss/variables';
+@import '~@scss/variables';
 
 // Disabled because vue-markdown
 /* stylelint-disable selector-nested-pattern */

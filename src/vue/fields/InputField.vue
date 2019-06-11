@@ -181,7 +181,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import 'scss/variables';
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 $pwd-toggle-btn-width: 3.2rem;
 
