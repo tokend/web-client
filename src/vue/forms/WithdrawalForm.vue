@@ -21,7 +21,7 @@
                   {{
                     'withdrawal-form.balance' | globalize({
                       balance: {
-                        value: form.asset.balance.value,
+                        value: balance.balance,
                         currency: form.asset.code
                       }
                     })
@@ -200,12 +200,16 @@ export default {
     ...mapGetters({
       accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
+      accountBalanceByCode: vuexTypes.accountBalanceByCode,
       withdrawableBalancesAssets: vuexTypes.withdrawableBalancesAssets,
     }),
 
     isMasterAssetOwner () {
       return this.form.asset.owner === api.networkDetails.adminAccountId
     },
+    balance () {
+      return this.accountBalanceByCode(this.form.asset.code)
+    }
   },
   watch: {
     'form.amount' (value) {
@@ -283,7 +287,7 @@ export default {
       }
 
       return {
-        balance: this.form.asset.balance.id,
+        balance: this.balance.id,
         amount: this.form.amount,
         creatorDetails: creatorDetails,
         destAsset: this.form.asset.code,
