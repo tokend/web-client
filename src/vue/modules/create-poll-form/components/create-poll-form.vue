@@ -345,7 +345,6 @@ export default {
 
 .create-poll-form__description {
   display: flex;
-  align-items: center;
   width: 100%;
 }
 
