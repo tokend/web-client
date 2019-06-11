@@ -8,8 +8,8 @@
         </tr>
 
         <tr>
-          <td>{{ 'poll-requests.close-time-title' | globalize }}</td>
-          <td>{{ request.closeTime | formatCalendar }}</td>
+          <td>{{ 'poll-requests.end-time-title' | globalize }}</td>
+          <td>{{ request.endTime | formatCalendar }}</td>
         </tr>
 
         <tr>

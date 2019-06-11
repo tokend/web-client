@@ -6,24 +6,66 @@
   >
     <div class="app__form-row">
       <div class="app__form-field">
-        <select-field
-          v-model="form.permissionType"
-          @blur="touchField('form.permissionType')"
-          name="create-poll-permission-type"
-          :label="'create-poll-form.permission-type-lbl' | globalize"
+        <textarea-field
+          white-autofill
+          v-model="form.question"
+          @blur="touchField('form.question')"
+          name="create-poll-question"
+          :label="'create-poll-form.question-lbl' | globalize"
           :disabled="formMixin.isDisabled"
           :error-message="getFieldErrorMessage(
-            'form.permissionType',
+            'form.question',
           )"
-        >
-          <option
-            v-for="pollType in pollTypes"
-            :key="pollType.value"
-            :value="pollType.value"
+        />
+      </div>
+    </div>
+
+    <div
+      v-for="(choice, index) in form.choices"
+      :key="index"
+      class="app__form-row">
+      <div class="app__form-field">
+        <div class="create-poll-form__choice-description-wrp">
+          <div class="create-poll-form__description">
+            <!-- eslint-disable max-len -->
+            <input-field
+              white-autofill
+              v-model="form.choices[index].description"
+              @blur="touchField(`form.choices[${index}].description`)"
+              :name="'create-poll-description'"
+              :label="'create-poll-form.description-lbl' | globalize({ number: index + 1 })"
+              :disabled="formMixin.isDisabled"
+              :error-message="getFieldErrorMessage(`form.choices[${index}].description`)"
+            />
+            <!-- eslint-enable max-len -->
+
+            <button
+              v-ripple
+              v-if="isCanDeleteDescription(index + 1)"
+              type="button"
+              class="app__button-flat create-poll-form__delete-description-btn"
+              @click="deleteDescription(index)"
+              :disabled="formMixin.isDisabled"
+            >
+              <i class="mdi mdi-minus-circle-outline" />
+            </button>
+          </div>
+          <div
+            v-if="isCanAddDescription(index + 1)"
+            class="create-poll-form__add-description-wrp"
           >
-            {{ pollType.labelTranslationId | globalize }}
-          </option>
-        </select-field>
+            <p
+              class="create-poll-form__add-description"
+            >
+              <a
+                class="create-poll-form__add-description-btn"
+                @click="addDescription(index)"
+              >
+                {{ 'create-poll-form.add-description-btn' | globalize }}
+              </a>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -53,7 +95,7 @@
           @input="touchField('form.endTime')"
           @blur="touchField('form.endTime')"
           name="create-poll-end-time"
-          :label="'create-poll-form.close-time-lbl' | globalize"
+          :label="'create-poll-form.end-time-lbl' | globalize"
           :disabled="formMixin.isDisabled"
           :error-message="getFieldErrorMessage(
             'form.endTime',
@@ -64,13 +106,24 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <tick-field
-          name="create-poll-vote-confirmation-required"
-          v-model="form.isVoteConfirmationRequired"
+        <select-field
+          v-model="form.permissionType"
+          @blur="touchField('form.permissionType')"
+          name="create-poll-permission-type"
+          :label="'create-poll-form.permission-type-lbl' | globalize"
           :disabled="formMixin.isDisabled"
+          :error-message="getFieldErrorMessage(
+            'form.permissionType',
+          )"
         >
-          {{ 'create-poll-form.vote-confirmation-required-lbl' | globalize }}
-        </tick-field>
+          <option
+            v-for="pollType in pollTypes"
+            :key="pollType.value"
+            :value="pollType.value"
+          >
+            {{ pollType.labelTranslationId | globalize }}
+          </option>
+        </select-field>
       </div>
     </div>
 
@@ -103,58 +156,13 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <textarea-field
-          white-autofill
-          v-model="form.question"
-          @blur="touchField('form.question')"
-          name="create-poll-question"
-          :label="'create-poll-form.question-lbl' | globalize"
+        <tick-field
+          name="create-poll-vote-confirmation-required"
+          v-model="form.isVoteConfirmationRequired"
           :disabled="formMixin.isDisabled"
-          :error-message="getFieldErrorMessage(
-            'form.question',
-          )"
-        />
-      </div>
-    </div>
-
-    <div
-      v-for="(choice, index) in form.choices"
-      :key="index"
-      class="app__form-row">
-      <div class="app__form-field">
-        <div class="create-poll-form__choice-description-wrp">
-          <!-- eslint-disable max-len -->
-          <input-field
-            white-autofill
-            v-model="form.choices[index].description"
-            @blur="touchField(`form.choices[${index}].description`)"
-            :name="'create-poll-description'"
-            :label="'create-poll-form.description-lbl' | globalize({ number: index + 1 })"
-            :disabled="formMixin.isDisabled"
-            :error-message="getFieldErrorMessage(`form.choices[${index}].description`)"
-          />
-          <!-- eslint-enable max-len -->
-          <button
-            v-ripple
-            v-if="isCanAddDescription(index + 1)"
-            type="button"
-            class="app__button-flat create-poll-form__add-description-btn"
-            @click="addDescription(index)"
-            :disabled="formMixin.isDisabled"
-          >
-            +
-          </button>
-          <button
-            v-ripple
-            v-if="isCanDeleteDescription(index + 1)"
-            type="button"
-            class="app__button-flat create-poll-form__add-description-btn"
-            @click="deleteDescription(index)"
-            :disabled="formMixin.isDisabled"
-          >
-            -
-          </button>
-        </div>
+        >
+          {{ 'create-poll-form.vote-confirmation-required-lbl' | globalize }}
+        </tick-field>
       </div>
     </div>
 
@@ -331,6 +339,32 @@ export default {
 
 .create-poll-form__choice-description-wrp {
   display: flex;
+  flex-direction: column;
+}
+
+.create-poll-form__description {
+  display: flex;
   align-items: center;
+  width: 100%;
+}
+
+.create-poll-form__add-description {
+  margin-top: 1rem;
+}
+
+.create-poll-form__add-description-btn {
+  cursor: pointer;
+  white-space: nowrap;
+  position: relative;
+
+  &:after {
+    content: '';
+    position: absolute;
+    border-bottom: dotted 0.1rem;
+    bottom: 0.1rem;
+    left: 0;
+    width: 100%;
+    height: 0.1rem;
+  }
 }
 </style>
