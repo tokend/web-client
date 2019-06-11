@@ -51,7 +51,7 @@ export default {
     ...mapGetters('poll-requests', {
       restrictedPollType: types.restrictedPollType,
     }),
-  }
+  },
 }
 </script>
 
