@@ -40,10 +40,15 @@
       },
       "formats": {
         "same_day": "[Today at] H:mm",
+        "same_day_inline": "[today at] H:mm",
         "last_day": "[Yesterday at] H:mm",
+        "last_day_inline": "[yesterday at] H:mm",
         "next_day": "[Tomorrow at] H:mm",
+        "next_day_inline": "[tomorrow at] H:mm",
         "last_week": "[Last] dddd [at] H:mm",
-        "next_week": "[Next] dddd [at] H:mm"
+        "last_week_inline": "[last] dddd [at] H:mm",
+        "next_week": "[Next] dddd [at] H:mm",
+        "next_week_inline": "[next] dddd [at] H:mm"
       }
     }
   },
@@ -56,6 +61,7 @@
       "number": "{{value, number}}",
       "integer": "{{value, integer}}",
       "calendar": "{{value, calendar}}",
+      "calendar-inline": "{{value, calendar-inline}}",
       "order_number": "{{value, order_number}}",
       "percent": "{{value, percent}}"
     },
@@ -2088,6 +2094,18 @@
       "update-poll": "Update poll",
       "overview-title": "Poll overview",
       "new-poll": "New poll"
+    },
+    "polls-all": {
+      "state-open": "Open",
+      "state-passed": "Passed",
+      "state-failed": "Failed",
+      "state-canceled": "Canceled",
+      "state-inline-open": "open",
+      "state-inline-passed": "passed",
+      "state-inline-failed": "failed",
+      "state-inline-canceled": "canceled",
+      "ends-at-row": "Ends at <span title='{{time, dmyt}}'>{{time, calendar-inline}}</span>",
+      "ended-at-row": "Ended <span title='{{time, dmyt}}'>{{time, calendar-inline}}</span>, {{state}}"
     }
   }
 }
