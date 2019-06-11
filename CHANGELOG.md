@@ -18,6 +18,7 @@ for further information about branching and tagging conventions.
 
 #### Changed
 - Now loading KYC latest data from account endpoint
+- Base colors names
 
 ## [1.8.0-rc.1] - 2019-06-07
 #### Changed
