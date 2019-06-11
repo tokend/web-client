@@ -40,14 +40,14 @@
             <!-- eslint-enable max-len -->
 
             <button
-              v-ripple
               v-if="isCanDeleteDescription(index + 1)"
               type="button"
-              class="app__button-flat create-poll-form__delete-description-btn"
+              class="create-poll-form__delete-description-btn"
               @click="deleteDescription(index)"
               :disabled="formMixin.isDisabled"
             >
-              <i class="mdi mdi-minus-circle-outline" />
+              <!-- eslint-disable-next-line max-len -->
+              <i class="mdi mdi-minus-circle-outline create-poll-form__delete-description-icon" />
             </button>
           </div>
           <div
@@ -327,6 +327,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '~@/vue/forms/app-form';
+@import '~@scss/variables';
 
 .create-poll-form__result-provider-id-wrp {
   display: flex;
@@ -366,5 +367,28 @@ export default {
     width: 100%;
     height: 0.1rem;
   }
+}
+
+.create-poll-form__delete-description-btn {
+  margin-top: 1.4rem;
+  margin-left: 0.6rem;
+  max-width: 2.4rem;
+  max-height: 2.4rem;
+  color: $col-primary-inactive;
+  transition: 0.2s color;
+
+  &:disabled {
+    filter: grayscale(100%);
+    cursor: default;
+  }
+
+  &:enabled:hover,
+  &:enabled:focus {
+    color: inherit;
+  }
+}
+
+.create-poll-form__delete-description-icon {
+  font-size: 2.4rem;
 }
 </style>

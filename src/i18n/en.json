@@ -1352,7 +1352,7 @@
       "cancellation-msg": "Are you sure to cancel the request?",
       "update-btn": "Update",
       "cancel-btn": "CANCEL",
-      "choice-title":"Description {{number}}",
+      "choice-title":"Option {{number}}",
       "restricted-type-desc": "Restricted"
     },
     "asset-details": {
@@ -2096,13 +2096,13 @@
       "vote-confirmation-required-lbl": "Vote confirmation required",
       "result-provider-id-lbl": "Result provider id",
       "question-lbl": "Question",
-      "description-lbl": "Description {{number}}",
+      "description-lbl": "Option {{number}}",
       "create-btn": "Create",
       "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
       "verification-not-required-lbl": "Does not require verification",
       "restricted-poll-lbl": "Restricted",
       "load-failed-msg": "There was an error while loading. Please, try again later",
-      "add-description-btn": "Add description"
+      "add-description-btn": "Add option"
     }
   }
 }
