@@ -1346,7 +1346,8 @@
       "cancellation-msg": "Are you sure to cancel the request?",
       "update-btn": "Update",
       "cancel-btn": "CANCEL",
-      "choice-title":"Description {{number}}"
+      "choice-title":"Description {{number}}",
+      "restricted-type-desc": "Restricted"
     },
     "asset-details": {
       "balance-title": "Balance",

@@ -19,7 +19,11 @@
 
         <tr>
           <td>{{ 'poll-requests.permission-type-title' | globalize }}</td>
-          <td>{{ request.permissionType }}</td>
+          <td>
+            <template v-if="request.permissionType === restrictedPollType">
+              {{ 'poll-requests.restricted-type-desc' | globalize }}
+            </template>
+          </td>
         </tr>
 
         <tr>
@@ -42,10 +46,11 @@
         </tr>
 
         <tr>
-          <td>
+          <td class="request-attributes-viewer__question" colspan="2">
             {{ 'poll-requests.question-title' | globalize }}
+            <br>
+            {{ request.question }}
           </td>
-          <td>{{ request.question }}</td>
         </tr>
         <tr
           v-for="(choice, id) in request.choices"
@@ -66,6 +71,7 @@ export default {
   name: 'request-attributes-viewer',
   props: {
     request: { type: PollRequest, required: true },
+    restrictedPollType: { type: Number, required: true },
   },
 }
 </script>
@@ -73,17 +79,12 @@ export default {
 <style lang="scss" scoped>
 @import '~@scss/variables';
 
-.request-attributes-viewer tr td:last-child {
-  text-align: right;
+.request-attributes-viewer .request-attributes-viewer__question:last-child {
+  text-align: left;
+  white-space: normal;
 }
 
-.request-attributes-viewer__terms {
-  font-size: 1.4rem;
-  color: $col-primary-lighten;
-  text-decoration: none;
-
-  &:visited {
-    color: $col-primary-lighten;
-  }
+.request-attributes-viewer tr td:last-child {
+  text-align: right;
 }
 </style>

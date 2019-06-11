@@ -8,6 +8,7 @@
     <request-attributes-viewer
       class="request-viewer__table"
       :request="request"
+      :restricted-poll-type="restrictedPollType"
     />
 
     <request-actions
@@ -24,6 +25,8 @@ import RequestActions from './request-actions'
 import RequestAttributesViewer from './request-attributes-viewer'
 
 import { PollRequest } from '../wrappers/poll-request'
+import { mapGetters } from 'vuex'
+import { types } from '../store/types'
 
 const EVENTS = {
   cancel: 'cancel',
@@ -44,6 +47,11 @@ export default {
   data: _ => ({
     EVENTS,
   }),
+  computed: {
+    ...mapGetters('poll-requests', {
+      restrictedPollType: types.restrictedPollType,
+    }),
+  }
 }
 </script>
 
