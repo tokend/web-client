@@ -1338,6 +1338,7 @@
       "number-of-choices-title": "Number of choices",
       "permission-type-title": "Permission type",
       "vote-confirmation-required-title": "Vote confirmation required",
+      "provider-id": "Provider id",
       "poll-data-title": "Poll data",
       "question-title": "Question",
       "yes-msg": "Yes",
@@ -1345,7 +1346,7 @@
       "cancellation-msg": "Are you sure to cancel the request?",
       "update-btn": "Update",
       "cancel-btn": "CANCEL",
-      "choice-title":"Choice {{number}}"
+      "choice-title":"Description {{number}}"
     },
     "asset-details": {
       "balance-title": "Balance",
@@ -2088,7 +2089,10 @@
       "question-lbl": "Question",
       "description-lbl": "Description {{number}}",
       "create-btn": "Create",
-      "request-submitted-msg": "Your request has been submitted successfully. Please wait for review."
+      "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
+      "verification-not-required-lbl": "Does not require verification",
+      "restricted-poll-lbl": "Restricted",
+      "load-failed-msg": "There was an error while loading. Please, try again later"
     }
   }
 }

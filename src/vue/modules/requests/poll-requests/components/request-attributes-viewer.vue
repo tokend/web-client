@@ -23,6 +23,11 @@
         </tr>
 
         <tr>
+          <td>{{ 'poll-requests.provider-id' | globalize }}</td>
+          <td>{{ request.resultProvider }}</td>
+        </tr>
+
+        <tr>
           <!-- eslint-disable-next-line max-len -->
           <td>{{ 'poll-requests.vote-confirmation-required-title' | globalize }}</td>
           <td>
@@ -46,8 +51,8 @@
           v-for="(choice, id) in request.choices"
           :key="id">
           <!-- eslint-disable-next-line max-len -->
-          <td>{{ 'poll-requests.choice-title' | globalize({ number: id + 1 }) }}</td>
-          <td>{{ choice.name }}</td>
+          <td>{{ 'poll-requests.choice-title' | globalize({ number: choice.number }) }}</td>
+          <td>{{ choice.description }}</td>
         </tr>
       </tbody>
     </table>
