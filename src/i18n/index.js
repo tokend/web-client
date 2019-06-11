@@ -44,6 +44,8 @@ function buildI18nOptions (language, i18n) {
             return moment(param).format(i18n.config.date.presets.datetime)
           case 'dmy':
             return moment(param).format(i18n.config.date.presets.dmy)
+          case 'dmyt':
+            return moment(param).format(i18n.config.date.presets.dmyt)
           case 'calendar':
             return moment(param).calendar(null, {
               sameDay: i18n.config.date.formats.same_day,

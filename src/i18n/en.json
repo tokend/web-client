@@ -35,7 +35,8 @@
         "time": "H:mm",
         "date": "MMMM D, YYYY",
         "datetime": "MMMM D, YYYY [at] H:mm",
-        "dmy": "DD MM YYYY"
+        "dmy": "DD.MM.YYYY",
+        "dmyt": "DD.MM.YYYY [at] H:mm"
       },
       "formats": {
         "same_day": "[Today at] H:mm",
@@ -50,6 +51,7 @@
     "formats": {
       "date": "{{value, date}}",
       "dmy": "{{value, dmy}}",
+      "dmyt": "{{value, dmyt}}",
       "money": "{{value, money}}",
       "number": "{{value, number}}",
       "integer": "{{value, integer}}",

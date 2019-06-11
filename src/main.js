@@ -24,6 +24,7 @@ import { formatInteger } from '@/vue/filters/formatInteger'
 import { formatPercent } from '@/vue/filters/formatPercent'
 import { formatCalendar } from '@/vue/filters/formatCalendar'
 import { formatDateDMY } from '@/vue/filters/formatDateDMY'
+import { formatDateDMYT } from '@/vue/filters/formatDateDMYT'
 import { abbreviate } from '@/vue/filters/abbreviate'
 import { cropAddress } from '@/vue/filters/cropAddress'
 import { SchemeRegistry } from '@/modules-arch/scheme-registry'
@@ -51,6 +52,7 @@ async function init () {
   Vue.filter('globalize', globalize)
   Vue.filter('formatDate', formatDate)
   Vue.filter('formatDateDMY', formatDateDMY)
+  Vue.filter('formatDateDMYT', formatDateDMYT)
   Vue.filter('formatMoney', formatMoney)
   Vue.filter('formatNumber', formatNumber)
   Vue.filter('formatPercent', formatPercent)
