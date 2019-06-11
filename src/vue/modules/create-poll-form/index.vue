@@ -130,23 +130,23 @@
           <!-- eslint-enable max-len -->
           <button
             v-ripple
-            v-if="choice.canDelete"
+            v-if="isCanAddDescription(index + 1)"
             type="button"
             class="app__button-flat create-poll-form__add-description-btn"
-            @click="deleteDescription(index + 1)"
-            :disabled="formMixin.isDisabled"
-          >
-            -
-          </button>
-          <button
-            v-ripple
-            v-else
-            type="button"
-            class="app__button-flat create-poll-form__add-description-btn"
-            @click="addDescription(choice, index)"
+            @click="addDescription(index)"
             :disabled="formMixin.isDisabled"
           >
             +
+          </button>
+          <button
+            v-ripple
+            v-if="isCanDeleteDescription(index + 1)"
+            type="button"
+            class="app__button-flat create-poll-form__add-description-btn"
+            @click="deleteDescription(index)"
+            :disabled="formMixin.isDisabled"
+          >
+            -
           </button>
         </div>
       </div>
@@ -155,6 +155,7 @@
     <div class="app__form-actions">
       <form-confirmation
         v-if="formMixin.isConfirmationShown"
+        :is-pending="isSubmitting"
         @ok="submit()"
         @cancel="hideConfirmation()"
       />
@@ -181,7 +182,9 @@ import { vuexTypes } from '@/vuex'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { required, maxLength, minDate } from '@validators'
-import { globalize } from '@/vue/filters/globalize'
+import { base } from '@tokend/js-sdk'
+import { DateUtil } from '@/js/utils'
+import { api } from '@/api'
 
 const NAME_MAX_LENGTH = 255
 const EVENTS = {
@@ -200,8 +203,9 @@ export default {
       startTime: '',
       isVoteConfirmationRequired: false,
       resultProviderID: '',
-      choices: [{ description: '', number: 1, canDelete: false }],
+      choices: [{ description: '', number: 1 }],
     },
+    isSubmitting: false,
   }),
   validations () {
     return {
@@ -242,13 +246,10 @@ export default {
     },
   },
   methods: {
-    addDescription (choice, index) {
-      if (!choice.description) return
-      choice.canDelete = true
+    addDescription (index) {
       this.form.choices.push({
         number: index + 1,
         description: '',
-        canDelete: false,
       })
     },
     deleteDescription (index) {
@@ -256,24 +257,44 @@ export default {
     },
     async submit () {
       if (this.isFormValid()) {
-        this.isDisabled = true
+        this.disableForm()
+        this.isSubmitting = true
         try {
-          await this.submitCreatePollRequest()
+          const createPollOperation = this.buildCreatePollOperation()
+          await api.postOperations(createPollOperation)
           Bus.success('create-poll-form.request-submitted-msg')
           this.$emit(EVENTS.submit)
         } catch (e) {
-          this.isDisabled = false
+          this.enableForm()
           ErrorHandler.process(e)
         }
+        this.isSubmitting = false
+        this.hideConfirmation()
+        this.enableForm()
       }
     },
-    getChoiceErrorMsg (index) {
-      if (this.$v.form.choices.$each[index].description.$invalid &&
-      this.$v.form.choices.$each[index].description.$dirty) {
-        return globalize('validation.field-error_required')
-      } else {
-        return ''
+    buildCreatePollOperation () {
+      const operation = {
+        permissionType: Number(this.form.permissionType),
+        voteConfirmationRequired: this.form.isVoteConfirmationRequired,
+        resultProviderID: this.form.resultProviderID,
+        startTime: DateUtil.toTimestamp(this.form.startTime),
+        endTime: DateUtil.toTimestamp(this.form.endTime),
+        numberOfChoices: this.form.choices.length,
+        pollType: base.xdr.PollType.singleChoice().value,
+        creatorDetails: {
+          question: this.form.question,
+          choices: this.form.choices,
+        },
       }
+      return base.ManageCreatePollRequestBuilder.createPollRequest(operation)
+    },
+    isCanDeleteDescription (index) {
+      return index !== this.form.choices.length ||
+      (index === this.form.choices.length && this.form.choices.length !== 1)
+    },
+    isCanAddDescription (index) {
+      return index === this.form.choices.length
     },
   },
 }

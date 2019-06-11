@@ -49,7 +49,7 @@
 
           <submodule-importer
             :submodule="getModule().getSubmodule(CreatePollFormModule)"
-            @close="isCreatePollDrawerShown = false"
+            @submit="isCreatePollDrawerShown = false"
           />
         </drawer>
       </template>
