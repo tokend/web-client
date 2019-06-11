@@ -81,6 +81,41 @@
       <div class="app__form-field">
         <input-field
           white-autofill
+          v-model="form.garbage"
+          @blur="touchField('form.garbage')"
+          name="create-issuance-reference"
+          :error-message="getFieldErrorMessage(
+            'form.garbage',
+            { from: 0, to: 100 }
+          )"
+          type="number"
+          :label="'issuance-form.garbage' | globalize"
+          :disabled="formMixin.isDisabled"
+        />
+      </div>
+    </div>
+    <div class="app__form-row">
+      <div class="app__form-field">
+        <input-field
+          white-autofill
+          v-model="form.humidity"
+          @blur="touchField('form.humidity')"
+          name="create-issuance-reference"
+          :error-message="getFieldErrorMessage(
+            'form.humidity',
+            { from: 0, to: 100 }
+          )"
+          type="number"
+          :label="'issuance-form.humidity' | globalize"
+          :disabled="formMixin.isDisabled"
+        />
+      </div>
+    </div>
+
+    <div class="app__form-row">
+      <div class="app__form-field">
+        <input-field
+          white-autofill
           v-model="form.reference"
           @blur="touchField('form.reference')"
           name="create-issuance-reference"
@@ -187,6 +222,8 @@ export default {
       amount: '0',
       receiver: '',
       reference: '',
+      garbage: '',
+      humidity: '',
     },
     fees: {},
     feesDebouncedRequest: null,
@@ -214,6 +251,20 @@ export default {
         reference: {
           required,
           maxLength: maxLength(REFERENCE_MAX_LENGTH),
+        },
+        garbage: {
+          required,
+          amountRange: amountRange(
+            0,
+            100
+          ),
+        },
+        humidity: {
+          required,
+          amountRange: amountRange(
+            0,
+            100
+          ),
         },
       },
       receivingAmount: {

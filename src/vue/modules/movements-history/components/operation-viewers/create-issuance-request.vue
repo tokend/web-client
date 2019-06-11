@@ -8,6 +8,22 @@
         {{ operationDetails.reference }}
       </td>
     </tr>
+    <tr class="attributes-viewer__table-row">
+      <td class="attributes-viewer__table-cell">
+        {{ 'movements-history.garbage' | globalize }}
+      </td>
+      <td class="attributes-viewer__table-cell">
+        {{ operationDetails.creatorDetails.garbage }}%
+      </td>
+    </tr>
+    <tr class="attributes-viewer__table-row">
+      <td class="attributes-viewer__table-cell">
+        {{ 'movements-history.humidity' | globalize }}
+      </td>
+      <td class="attributes-viewer__table-cell">
+        {{ operationDetails.creatorDetails.humidity }}%
+      </td>
+    </tr>
   </tbody>
 </template>
 

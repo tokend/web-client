@@ -5,5 +5,6 @@
 export class CreateIssuanceRequestOp {
   constructor (record) {
     this.reference = record.reference
+    this.creatorDetails = record.creatorDetails
   }
 }

@@ -128,6 +128,8 @@ describe('Manage issuance mixin', () => {
             asset: { code: 'USD' },
             amount: 100,
             reference: 'SOME_REFERENCE',
+            garbage: '100',
+            humidity: '0.1',
           },
         })
         sandbox.stub(
@@ -143,7 +145,10 @@ describe('Manage issuance mixin', () => {
             amount: '100',
             receiver: 'SOME_BALANCE_ID',
             reference: 'SOME_REFERENCE',
-            creatorDetails: {},
+            creatorDetails: {
+              garbage: '100',
+              humidity: '0.1',
+            },
           })
         expect(api.postOperations)
           .to.have.been.calledOnceWithExactly('ISSUANCE_OPERATION')

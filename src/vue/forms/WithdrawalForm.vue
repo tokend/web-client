@@ -209,7 +209,7 @@ export default {
     },
     balance () {
       return this.accountBalanceByCode(this.form.asset.code)
-    }
+    },
   },
   watch: {
     'form.amount' (value) {

@@ -44,7 +44,10 @@ export default {
           amount: this.form.amount.toString(),
           receiver: receiverBalanceId,
           reference: this.form.reference,
-          creatorDetails: {},
+          creatorDetails: {
+            garbage: this.form.garbage,
+            humidity: this.form.humidity,
+          },
         })
 
       await api.postOperations(operation)

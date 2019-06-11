@@ -32,7 +32,6 @@ export const maxDecimalPoints = points => value => {
 }
 export const amountRange = (from, to) => value =>
   !validators.helpers.req(value) || (
-    Number(value) &&
     Number(value) >= Number(from) &&
     Number(value) <= Number(to)
   )
