@@ -45,7 +45,10 @@ export default {
       return `radio-field-${this._uid}`
     },
     isChecked () {
-      return this.value === this.cbValue
+      if (typeof this.cbValue === 'number') {
+        return +this.cbValue === +this.value
+      }
+      return this.cbValue === this.value
     },
   },
 
