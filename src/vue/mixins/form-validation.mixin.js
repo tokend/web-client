@@ -63,7 +63,7 @@ export default {
       if (!this.$v.$invalid) {
         return ''
       }
-      const fieldHasArrayLinkRe = new RegExp(/(\w*)+(\[\d\])/)
+      const fieldHasArrayLinkRe = new RegExp(/(\w+)(\[\d\])/)
       let newField = cloneDeep(field)
 
       if (fieldHasArrayLinkRe.test(newField)) {
