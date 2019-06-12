@@ -46,18 +46,28 @@
         </tr>
 
         <tr>
-          <td class="request-attributes-viewer__question" colspan="2">
+          <td
+            class="request-attributes-viewer__question"
+            :colspan="isQuestionMaxLen ? 2 : 1"
+          >
             {{ 'poll-requests.question-title' | globalize }}
-            <br>
-            {{ request.question }}
+            <template v-if="isQuestionMaxLen">
+              <br>
+              {{ request.question }}
+            </template>
           </td>
+          <template v-if="!isQuestionMaxLen">
+            <td>
+              {{ request.question }}
+            </td>
+          </template>
         </tr>
         <tr
           v-for="(choice, id) in request.choices"
           :key="id">
           <!-- eslint-disable-next-line max-len -->
           <td>{{ 'poll-requests.choice-title' | globalize({ number: choice.number }) }}</td>
-          <td>{{ choice.description }}</td>
+          <td>{{ choice.option }}</td>
         </tr>
       </tbody>
     </table>
@@ -66,12 +76,23 @@
 
 <script>
 import { PollRequest } from '../wrappers/poll-request'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
+
+const QUESTION_MAX_LEN = 20
 
 export default {
   name: 'request-attributes-viewer',
   props: {
     request: { type: PollRequest, required: true },
-    restrictedPollType: { type: Number, required: true },
+  },
+  computed: {
+    ...mapGetters({
+      restrictedPollType: vuexTypes.kvPollTypeRestricted,
+    }),
+    isQuestionMaxLen () {
+      return this.request.question.length >= QUESTION_MAX_LEN
+    },
   },
 }
 </script>

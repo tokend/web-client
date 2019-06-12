@@ -8,7 +8,6 @@ import { vuexTypes } from '@/vuex'
 
 export const state = {
   requests: [],
-  restrictedPollType: null,
 }
 
 export const mutations = {
@@ -17,9 +16,6 @@ export const mutations = {
   },
   [types.CONCAT_REQUESTS] (state, requests) {
     state.requests = state.requests.concat(requests)
-  },
-  [types.SET_RESTRICTED_POLL_TYPE] (state, pollType) {
-    state.restrictedPollType = pollType
   },
 }
 
@@ -36,13 +32,6 @@ export const actions = {
     })
   },
 
-  async [types.LOAD_RESTRICTED_POLL_TYPE] ({ commit }) {
-    const endpoint = `/v3/key_values/poll_type:restricted`
-    const { data } = await api.get(endpoint)
-
-    commit(types.SET_RESTRICTED_POLL_TYPE, data.value.u32)
-  },
-
   async [types.CANCEL_REQUEST] (_, requestId) {
     const operation = base.ManageCreatePollRequestBuilder.cancelPollRequest({
       requestID: requestId,
@@ -54,7 +43,6 @@ export const actions = {
 export const getters = {
   [types.requests]: state => state.requests
     .map(r => new PollRequest(r)),
-  [types.restrictedPollType]: state => state.restrictedPollType,
 }
 
 export const pollRequestsModule = {

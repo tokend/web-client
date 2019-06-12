@@ -63,7 +63,6 @@ export default {
   },
   async created () {
     this.initFirstPageLoader()
-    await this.loadPollType()
   },
   methods: {
     ...mapMutations('poll-requests', {
@@ -72,7 +71,6 @@ export default {
     }),
     ...mapActions('poll-requests', {
       loadCreateAssetRequests: types.LOAD_REQUESTS,
-      loadRestrictedPollType: types.LOAD_RESTRICTED_POLL_TYPE,
     }),
     async loadRequests () {
       this.isLoaded = false
@@ -93,13 +91,6 @@ export default {
     showRequestDetails (request) {
       this.selectedRequest = request
       this.isDrawerShown = true
-    },
-    async loadPollType () {
-      try {
-        await this.loadRestrictedPollType()
-      } catch (e) {
-        ErrorHandler.processWithoutFeedback(e)
-      }
     },
   },
 }
