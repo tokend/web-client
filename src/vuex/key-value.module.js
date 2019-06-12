@@ -1,5 +1,5 @@
 import { vuexTypes } from '@/vuex/types'
-import { api } from '@/api'
+import { api, loadingDataViaLoop } from '@/api'
 
 function getKvValue (kvKey, kvArray) {
   const kvFound = kvArray.find((key) => key.id === kvKey)
@@ -22,6 +22,7 @@ export const state = {
   },
   kvAssetTypeKycRequired: null,
   kvAssetTypeSecurity: null,
+  kvPollTypeRestricted: null,
   defaultQuoteAsset: '',
 }
 
@@ -56,6 +57,9 @@ export const mutations = {
   [vuexTypes.SET_KV_ASSET_TYPE_SECURITY] (state, kvAssetTypeSecurity) {
     state.kvAssetTypeSecurity = kvAssetTypeSecurity
   },
+  [vuexTypes.SET_KV_POLL_TYPE_RESTRICTED] (state, kvPollTypeRestricted) {
+    state.kvPollTypeRestricted = kvPollTypeRestricted
+  },
   [vuexTypes.SET_DEFAULT_QUOTE_ASSET] (state, asset) {
     state.defaultQuoteAsset = asset
   },
@@ -67,7 +71,8 @@ export const actions = {
   },
 
   async [vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS] ({ commit }) {
-    const { data } = await api.get(`/v3/key_values`)
+    const response = await api.get(`/v3/key_values`)
+    let data = await loadingDataViaLoop(response)
 
     const generalRoleId = getKvValue('account_role:general', data)
     const corporateRoleId = getKvValue('account_role:corporate', data)
@@ -77,6 +82,7 @@ export const actions = {
     const usAccreditedRoleId = getKvValue('account_role:us_accredited', data)
     const assetTypeKycRequired = getKvValue('asset_type:kyc_required', data)
     const assetTypeSecurity = getKvValue('asset_type:security', data)
+    const restrictedPollType = getKvValue('poll_type:restricted', data)
 
     commit(vuexTypes.SET_KV_ENTRY_GENERAL_ROLE_ID, generalRoleId)
     commit(vuexTypes.SET_KV_ENTRY_CORPORATE_ROLE_ID, corporateRoleId)
@@ -86,6 +92,7 @@ export const actions = {
     commit(vuexTypes.SET_KV_ENTRY_US_ACCREDITED_ROLE_ID, usAccreditedRoleId)
     commit(vuexTypes.SET_KV_KYC_REQUIRED, assetTypeKycRequired)
     commit(vuexTypes.SET_KV_ASSET_TYPE_SECURITY, assetTypeSecurity)
+    commit(vuexTypes.SET_KV_POLL_TYPE_RESTRICTED, restrictedPollType)
   },
 }
 
@@ -101,6 +108,7 @@ export const getters = {
   [vuexTypes.kvAssetTypeSecurity]: state => state.kvAssetTypeSecurity,
   [vuexTypes.defaultQuoteAsset]: (a, getters, b, rootGetters) =>
     rootGetters[vuexTypes.statsQuoteAsset].code,
+  [vuexTypes.kvPollTypeRestricted]: state => state.kvPollTypeRestricted,
 }
 
 export default {

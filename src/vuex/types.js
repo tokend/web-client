@@ -11,6 +11,7 @@ const mutations = {
   SET_KV_ENTRY_US_VERIFIED_ROLE_ID: 'SET_KV_ENTRY_US_VERIFIED_ROLE_ID',
   SET_KV_ENTRY_US_ACCREDITED_ROLE_ID: 'SET_KV_ENTRY_US_ACCREDITED_ROLE_ID',
   SET_KV_ASSET_TYPE_SECURITY: 'SET_KV_ASSET_TYPE_SECURITY',
+  SET_KV_POLL_TYPE_RESTRICTED: 'SET_KV_POLL_TYPE_RESTRICTED',
 
   SET_KV_KYC_REQUIRED: 'SET_KV_KYC_REQUIRED',
   SET_DEFAULT_QUOTE_ASSET: 'SET_DEFAULT_QUOTE_ASSET',
@@ -77,6 +78,7 @@ const getters = {
   kvEntryUsAccreditedRoleId: 'kvEntryUsAccreditedRoleId',
   kvAssetTypeKycRequired: 'kvAssetTypeKycRequired',
   kvAssetTypeSecurity: 'kvAssetTypeSecurity',
+  kvPollTypeRestricted: 'kvPollTypeRestricted',
   defaultQuoteAsset: 'defaultQuoteAsset',
 
   // account

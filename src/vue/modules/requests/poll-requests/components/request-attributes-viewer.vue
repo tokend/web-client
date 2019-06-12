@@ -8,8 +8,8 @@
         </tr>
 
         <tr>
-          <td>{{ 'poll-requests.close-time-title' | globalize }}</td>
-          <td>{{ request.closeTime | formatCalendar }}</td>
+          <td>{{ 'poll-requests.end-time-title' | globalize }}</td>
+          <td>{{ request.endTime | formatCalendar }}</td>
         </tr>
 
         <tr>
@@ -19,7 +19,16 @@
 
         <tr>
           <td>{{ 'poll-requests.permission-type-title' | globalize }}</td>
-          <td>{{ request.permissionType }}</td>
+          <td>
+            <template v-if="request.permissionType === restrictedPollType">
+              {{ 'poll-requests.restricted-type-desc' | globalize }}
+            </template>
+          </td>
+        </tr>
+
+        <tr>
+          <td>{{ 'poll-requests.provider-id' | globalize }}</td>
+          <td>{{ request.resultProvider }}</td>
         </tr>
 
         <tr>
@@ -37,17 +46,28 @@
         </tr>
 
         <tr>
-          <td>
+          <td
+            class="request-attributes-viewer__question"
+            :colspan="isQuestionMaxLen ? 2 : 1"
+          >
             {{ 'poll-requests.question-title' | globalize }}
+            <template v-if="isQuestionMaxLen">
+              <br>
+              {{ request.question }}
+            </template>
           </td>
-          <td>{{ request.question }}</td>
+          <template v-if="!isQuestionMaxLen">
+            <td>
+              {{ request.question }}
+            </td>
+          </template>
         </tr>
         <tr
           v-for="(choice, id) in request.choices"
           :key="id">
           <!-- eslint-disable-next-line max-len -->
-          <td>{{ 'poll-requests.choice-title' | globalize({ number: id + 1 }) }}</td>
-          <td>{{ choice.name }}</td>
+          <td>{{ 'poll-requests.choice-title' | globalize({ number: choice.number }) }}</td>
+          <td>{{ choice.description }}</td>
         </tr>
       </tbody>
     </table>
@@ -56,11 +76,23 @@
 
 <script>
 import { PollRequest } from '../wrappers/poll-request'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
+
+const QUESTION_MAX_LEN = 20
 
 export default {
   name: 'request-attributes-viewer',
   props: {
     request: { type: PollRequest, required: true },
+  },
+  computed: {
+    ...mapGetters({
+      restrictedPollType: vuexTypes.kvPollTypeRestricted,
+    }),
+    isQuestionMaxLen () {
+      return this.request.question.length >= QUESTION_MAX_LEN
+    },
   },
 }
 </script>
@@ -68,17 +100,12 @@ export default {
 <style lang="scss" scoped>
 @import '~@scss/variables';
 
-.request-attributes-viewer tr td:last-child {
-  text-align: right;
+.request-attributes-viewer .request-attributes-viewer__question:last-child {
+  text-align: left;
+  white-space: normal;
 }
 
-.request-attributes-viewer__terms {
-  font-size: 1.4rem;
-  color: $col-primary-lighten;
-  text-decoration: none;
-
-  &:visited {
-    color: $col-primary-lighten;
-  }
+.request-attributes-viewer tr td:last-child {
+  text-align: right;
 }
 </style>
