@@ -67,7 +67,7 @@
           :key="id">
           <!-- eslint-disable-next-line max-len -->
           <td>{{ 'poll-requests.choice-title' | globalize({ number: choice.number }) }}</td>
-          <td>{{ choice.option }}</td>
+          <td>{{ choice.description }}</td>
         </tr>
       </tbody>
     </table>

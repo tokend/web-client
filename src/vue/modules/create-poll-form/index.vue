@@ -30,12 +30,12 @@
             <!-- eslint-disable max-len -->
             <input-field
               white-autofill
-              v-model="form.choices[index].option"
-              @blur="touchField(`form.choices[${index}].option`)"
-              :name="'create-poll-option'"
-              :label="'create-poll-form.option-lbl' | globalize({ number: index + 1 })"
+              v-model="form.choices[index].description"
+              @blur="touchField(`form.choices[${index}].description`)"
+              :name="'create-poll-description'"
+              :label="'create-poll-form.description-lbl' | globalize({ number: index + 1 })"
               :disabled="formMixin.isDisabled"
-              :error-message="getFieldErrorMessage(`form.choices[${index}].option`)"
+              :error-message="getFieldErrorMessage(`form.choices[${index}].description`)"
             />
             <!-- eslint-enable max-len -->
 
@@ -223,7 +223,7 @@ export default {
       startTime: '',
       isVoteConfirmationRequired: false,
       resultProviderID: '',
-      choices: [{ option: '', number: 1 }],
+      choices: [{ description: '', number: 1 }],
     },
     isSubmitting: false,
   }),
@@ -250,7 +250,7 @@ export default {
         },
         choices: {
           $each: {
-            option: {
+            description: {
               required,
             },
           },
@@ -279,7 +279,7 @@ export default {
     addChoice (choice) {
       this.form.choices.push({
         number: choice.number + 1,
-        option: '',
+        description: '',
       })
     },
     deleteChoice (index) {

@@ -2097,7 +2097,7 @@
       "vote-confirmation-required-lbl": "Vote confirmation required",
       "result-provider-id-lbl": "Result provider id",
       "question-lbl": "Question",
-      "option-lbl": "Option {{number}}",
+      "description-lbl": "Option {{number}}",
       "create-btn": "Create",
       "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
       "verification-not-required-lbl": "Does not require verification",
