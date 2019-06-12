@@ -1,0 +1,11 @@
+{
+  "name": "stylelint-steves-steve1", 
+  "version": "0.0.1",
+  "main": "index.js",
+  "devDependencies": {
+    "stylelint": "~2.6.0"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  }
+}

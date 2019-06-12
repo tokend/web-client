@@ -1,4 +1,5 @@
 // https://stylelint.io/user-guide/rules/
+const path = require('path')
 
 module.exports = {
   // Default <stylelint-processor-html> sometimes shows wrong number of the line
@@ -7,6 +8,7 @@ module.exports = {
   plugins: [
     'stylelint-scss',
     'stylelint-declaration-strict-value',
+    path.resolve(__dirname, 'stylelint/index.js'),
   ],
   // css also is a valid scss so we don't need to use both - scss is enough
   syntax: 'scss',
@@ -251,5 +253,6 @@ module.exports = {
         },
       },
     ],
+    'plugin/kebab-case-file-name': true,
   },
 }

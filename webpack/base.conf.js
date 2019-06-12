@@ -78,6 +78,9 @@ module.exports = {
       {
         test: /\.s[a|c]ss$/,
         loader: 'style-loader!css-loader!sass-loader',
+        // options: {
+        //   eslintPath: path.join(__dirname, '../eslint/.eslintrc.js'),
+        // },
       },
     ],
   },
