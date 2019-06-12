@@ -3,11 +3,11 @@ let stylelint = require('stylelint')
 let ruleName = 'plugin/kebab-case-file-name'
 
 let messages = stylelint.utils.ruleMessages(ruleName, {
-  rejected: 'steve rejects this',
-});
+  rejected: 'css files should have kebab-case names',
+})
 
 module.exports = stylelint.createPlugin(ruleName, function (max, options) {
-  const kebabCaseRegex = new RegExp('^[a-z0-9]+((\-[a-z0-9]+){1,})?.scss$')
+  const kebabCaseRegex = new RegExp('^[_a-z0-9]+((\-[a-z0-9]+){1,})?.scss$')
   const scssRegex = new RegExp('.s[a|c]ss$')
 
   return function (root, result) {     
@@ -15,16 +15,16 @@ module.exports = stylelint.createPlugin(ruleName, function (max, options) {
     const filename = path.basename(root.source.input.file)
 
     // return new Promise(function(resolve) {
-    if (scssRegex.test(filename)) {
+    if (scssRegex.test(filename) && !kebabCaseRegex.test(filename)) {
       console.log(filename)
-
-      if (!kebabCaseRegex.test(filename)) {
-        // root.utils.report("Filename '{{name}}' is not in kebab-case.", {
-        // filename,
-        // })
-        // console.log(filename)
-        // resolve()
-      }
+      root.walkAtRules(function (atrule) {
+        stylelint.utils.report({
+          message: messages.rejected,
+          node: atrule,
+          result: result,
+          ruleName: ruleName
+        });
+      })
     }
     // })
   }
