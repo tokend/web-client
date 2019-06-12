@@ -1,18 +1,20 @@
 <template>
   <div class="polls-all">
     <div class="polls-all__filters">
-      <select-field
-        v-model="filters.assetCode"
-        class="polls-all__filter-field app__select app__select--no-border"
-      >
-        <option
-          v-for="balance in balances"
-          :key="balance.asset.code"
-          :value="balance.asset.code"
+      <template v-if="balances.length">
+        <select-field
+          v-model="filters.assetCode"
+          class="polls-all__filter-field app__select app__select--no-border"
         >
-          {{ balance.asset.nameAndCode }}
-        </option>
-      </select-field>
+          <option
+            v-for="balance in balances"
+            :key="balance.asset.code"
+            :value="balance.asset.code"
+          >
+            {{ balance.asset.nameAndCode }}
+          </option>
+        </select-field>
+      </template>
 
       <select-field
         v-model="filters.state"
@@ -89,16 +91,24 @@
         </div>
       </div>
       <!-- TODO: skeleton loading -->
+      <!-- TODO: no-data-message -->
     </div>
 
-    <div class="limits__requests-collection-loader">
-      <collection-loader
-        :first-page-loader="getList"
-        @first-page-load="list = $event"
-        @next-page-load="list = list.concat($event)"
-        ref="listCollectionLoader"
-      />
-    </div>
+    <!--
+        HACK: collection loader tries to fetch the first page at any cost, but
+        getList required filters.assetCode to be assigned. so the loader
+        should be rendered only after filters.assetCode assigned any value
+     -->
+    <template v-if="filters.assetCode">
+      <div class="limits__requests-collection-loader">
+        <collection-loader
+          :first-page-loader="getList"
+          @first-page-load="list = $event"
+          @next-page-load="list = list.concat($event)"
+          ref="listCollectionLoader"
+        />
+      </div>
+    </template>
 
     <drawer :is-shown.sync="isDrawerShown">
       <template slot="heading">
@@ -122,6 +132,8 @@ import VueMarkdown from 'vue-markdown'
 import moment from 'moment'
 import Drawer from '@/vue/common/Drawer'
 import PollVoter from './polls-all/PollVoter'
+
+// TODO: vote review
 
 const POLL_STATES = {
   open: 1,
@@ -191,7 +203,6 @@ export default {
   async created () {
     try {
       await this.initAssetCodeFilter()
-      await this.reloadList()
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error)
     }
