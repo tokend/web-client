@@ -77,6 +77,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { ASSET_POLICIES } from '@tokend/js-sdk'
+import { CORN_TYPE, CORN_CLASS } from '@/js/const/corn'
 
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
@@ -95,16 +96,6 @@ const EVENTS = {
 
 const CODE_MAX_LENGTH = 16
 const NAME_MAX_LENGTH = 255
-
-const CORN_TYPE = {
-  corn: 'corn',
-  wheat: 'wheat',
-}
-
-const CORN_CLASS = {
-  [CORN_TYPE.corn]: ['1', '2'],
-  [CORN_TYPE.wheat]: ['1', '2', '3'],
-}
 
 export default {
   name: 'information-step-form',
@@ -209,6 +200,7 @@ export default {
         this.form.cornType.value + '-' + this.form.cornClass
       this.form.code = this.kycLatestData.elevator_code +
         this.form.cornType.value[0].toUpperCase() + this.form.cornClass
+      this.form.elevatorCode = this.kycLatestData.elevator_code
     },
     populateForm () {
       this.form = {
@@ -216,6 +208,7 @@ export default {
         code: this.request.assetCode,
         cornType: this.request.cornType,
         cornClass: this.request.cornClass,
+        elevatorCode: this.request.elevatorCode,
         assetType: this.assetTypes
           .find(item => item.value === this.request.assetType),
         maxIssuanceAmount: this.request.maxIssuanceAmount,

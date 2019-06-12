@@ -96,6 +96,7 @@ describe('Manage asset request mixin', () => {
             maxIssuanceAmount: '1000.000000',
             policies: 16,
             assetType: { value: 1 },
+            cornType: {},
           },
           advancedStepForm: {
             isPreissuanceDisabled: false,
@@ -124,6 +125,11 @@ describe('Manage asset request mixin', () => {
           wrapper.setProps({
             requestId: '',
           })
+          wrapper.setData({
+            informationStepForm: {
+              cornType: {},
+            },
+          })
 
           expect(wrapper.vm.assetRequestOpts.requestID).to.equal('0')
         }
@@ -131,7 +137,10 @@ describe('Manage asset request mixin', () => {
 
       it('returns opts with empty documents if they are not set', () => {
         wrapper.setData({
-          informationStepForm: { logo: null },
+          informationStepForm: {
+            logo: null,
+            cornType: {},
+          },
           advancedStepForm: { terms: null },
         })
 
@@ -193,7 +202,10 @@ describe('Manage asset request mixin', () => {
           const terms = new DocumentContainer({ key: 'terms-key' })
 
           wrapper.setData({
-            informationStepForm: { logo },
+            informationStepForm: {
+              logo,
+              cornType: {},
+            },
             advancedStepForm: { terms },
           })
 

@@ -1884,7 +1884,15 @@
       "terms-title": "Terms",
       "download-terms-btn": "Download terms",
       "already-in-your-balance-btn": "Already in your balances",
-      "owner-lbl": "Owner"
+      "owner-lbl": "Owner",
+      "all": "Все",
+      "wheat": "Пшеница",
+      "corn": "Кукуруза",
+      "token-type": "Тип актива",
+      "corn-type": "Зерно",
+      "crypto": "Средства",
+      "total-corn-amount": "Общее количесто зерна",
+      "elevator-code": "Код элеватора"
     },
     "create-opportunity": {
       "maturity-date": "Maturity Date",
