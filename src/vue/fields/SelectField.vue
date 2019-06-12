@@ -89,6 +89,10 @@ export default {
     if (this.customSelectInstance && this.customSelectInstance.container) {
       this.addCustomSelectEvents()
     }
+
+    if (!this.value) {
+      this.fixDisplayOfEmptyValue()
+    }
   },
 
   beforeDestroy () {
@@ -128,6 +132,17 @@ export default {
         'keydown',
       )
     },
+
+    // Design requires select fields be displayed with the same height
+    // whether the field filled out or not. When there is no value, the field
+    // has no content to stretch the field, so we need to add a non-breakable
+    // space manually. We cannot add an <option> with empty value cuz it
+    // produces an additional unneeded option be rendered. If we add anything
+    // except of &nbsp; that 'anything' will overlap field’s label.
+    fixDisplayOfEmptyValue () {
+      document.querySelector(`.${CUSTOM_SELECT_CONFIG.openerClass} > span`)
+        .innerHTML = '&nbsp;'
+    },
   },
 }
 </script>
@@ -163,8 +178,8 @@ export default {
     '&.select-field__option--focused'
   );
 
-  .select-field--disabled &,
-  .select-field--readonly & {
+  .select-field--disabled > .select-field__wrp > &,
+  .select-field--readonly > .select-field__wrp > & {
     cursor: default;
     pointer-events: none;
     color: $field-color-unfocused;
