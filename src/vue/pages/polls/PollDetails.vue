@@ -1,26 +1,26 @@
 <template>
-  <div class="request-attributes-viewer app__table">
+  <div class="poll-details app__table">
     <table>
       <tbody>
         <tr>
           <td>{{ 'poll-requests.start-time-title' | globalize }}</td>
-          <td>{{ request.startTime | formatCalendar }}</td>
+          <td>{{ poll.startTime | formatCalendar }}</td>
         </tr>
 
         <tr>
           <td>{{ 'poll-requests.end-time-title' | globalize }}</td>
-          <td>{{ request.endTime | formatCalendar }}</td>
+          <td>{{ poll.endTime | formatCalendar }}</td>
         </tr>
 
         <tr>
           <td>{{ 'poll-requests.number-of-choices-title' | globalize }}</td>
-          <td>{{ request.numberOfChoices }}</td>
+          <td>{{ poll.numberOfChoices }}</td>
         </tr>
 
         <tr>
           <td>{{ 'poll-requests.permission-type-title' | globalize }}</td>
           <td>
-            <template v-if="request.permissionType === restrictedPollType">
+            <template v-if="poll.permissionType === restrictedPollType">
               {{ 'poll-requests.restricted-type-desc' | globalize }}
             </template>
           </td>
@@ -28,14 +28,14 @@
 
         <tr>
           <td>{{ 'poll-requests.provider-id' | globalize }}</td>
-          <td>{{ request.resultProvider }}</td>
+          <td>{{ poll.resultProvider.id }}</td>
         </tr>
 
         <tr>
           <!-- eslint-disable-next-line max-len -->
           <td>{{ 'poll-requests.vote-confirmation-required-title' | globalize }}</td>
           <td>
-            <template v-if="request.voteConfirmationRequired">
+            <template v-if="poll.voteConfirmationRequired">
               {{ 'poll-requests.yes-msg' | globalize }}
             </template>
 
@@ -47,23 +47,23 @@
 
         <tr>
           <td
-            class="request-attributes-viewer__question"
+            class="poll-details__question"
             :colspan="isQuestionMaxLen ? 2 : 1"
           >
             {{ 'poll-requests.question-title' | globalize }}
             <template v-if="isQuestionMaxLen">
               <br>
-              {{ request.question }}
+              {{ poll.creatorDetails.question }}
             </template>
           </td>
           <template v-if="!isQuestionMaxLen">
             <td>
-              {{ request.question }}
+              {{ poll.creatorDetails.question }}
             </td>
           </template>
         </tr>
         <tr
-          v-for="(choice, id) in request.choices"
+          v-for="(choice, id) in poll.creatorDetails.choices"
           :key="id">
           <!-- eslint-disable-next-line max-len -->
           <td>{{ 'poll-requests.choice-title' | globalize({ number: choice.number }) }}</td>
@@ -75,23 +75,22 @@
 </template>
 
 <script>
-import { PollRequest } from '../wrappers/poll-request'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 const QUESTION_MAX_LEN = 20
 
 export default {
-  name: 'request-attributes-viewer',
+  name: 'poll-details',
   props: {
-    request: { type: PollRequest, required: true },
+    poll: { type: Object, required: true },
   },
   computed: {
     ...mapGetters({
       restrictedPollType: vuexTypes.kvPollTypeRestricted,
     }),
     isQuestionMaxLen () {
-      return this.request.question.length >= QUESTION_MAX_LEN
+      return this.poll.creatorDetails.question.length >= QUESTION_MAX_LEN
     },
   },
 }
@@ -100,12 +99,12 @@ export default {
 <style lang="scss" scoped>
 @import '~@scss/variables';
 
-.request-attributes-viewer .request-attributes-viewer__question:last-child {
+.poll-details .poll-details__question:last-child {
   text-align: left;
   white-space: normal;
 }
 
-.request-attributes-viewer tr td:last-child {
+.poll-details tr td:last-child {
   text-align: right;
 }
 </style>

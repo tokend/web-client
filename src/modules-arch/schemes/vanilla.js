@@ -55,6 +55,7 @@ import { PollRequestsModule } from '@/vue/modules/requests/poll-requests/module'
 import { PollRequestsPageModule } from '@/vue/pages/polls/poll-requests-page'
 import { PollsAllPageModule } from '@/vue/pages/polls-all-page-module'
 import { PollsListOwnedPageModule } from '@/vue/pages/polls/user-owned-polls-page-module'
+import { CreatePollFormModule } from '@/vue/modules/create-poll-form/module'
 
 import { VerificationGeneralFormModule } from '@/vue/modules/verification/general-form/module'
 import { MyAssetsPageModule } from '@/vue/pages/my-assets-page-module'
@@ -464,6 +465,9 @@ export default {
             submodules: [
               new PollRequestsModule(),
             ],
+          }),
+          new CreatePollFormModule({
+            isCorporateOnly: true,
           }),
         ],
       },
