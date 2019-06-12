@@ -20,16 +20,16 @@
         v-model="filters.state"
         class="polls-all__filter-field app__select app__select--no-border"
       >
-        <option :value="POLL_STATES.open">
+        <option :value="pollStates.open">
           {{ 'polls-all.state-open' | globalize }}
         </option>
-        <option :value="POLL_STATES.passed">
+        <option :value="pollStates.passed">
           {{ 'polls-all.state-passed' | globalize }}
         </option>
-        <option :value="POLL_STATES.failed">
+        <option :value="pollStates.failed">
           {{ 'polls-all.state-failed' | globalize }}
         </option>
-        <option :value="POLL_STATES.canceled">
+        <option :value="pollStates.canceled">
           {{ 'polls-all.state-canceled' | globalize }}
         </option>
       </select-field>
@@ -46,47 +46,7 @@
             class="polls-all__poll-card"
             @click="selectItem(item)"
           >
-            <p class="polls-all__poll-card-question">
-              <span class="polls-all__poll-card-number">
-                <!-- eslint-disable-next-line max-len -->
-                {{ 'polls-all.list-item-id-prefix' | globalize({ id: item.id }) }}
-              </span>
-              {{ item.creatorDetails.question }}
-            </p>
-
-            <!-- eslint-disable-next-line vue/max-attributes-per-line -->
-            <template v-if="item.pollState.value === POLL_STATES.open &&
-              isBeforeNow(item.endTime)">
-              <vue-markdown
-                class="polls-all__poll-card-state"
-                :source="'polls-all.ends-at-row' | globalize({
-                  time: item.endTime
-                })"
-                :html="true"
-              />
-            </template>
-
-            <template v-else>
-              <vue-markdown
-                class="polls-all__poll-card-state"
-                :source="'polls-all.ended-at-row' | globalize({
-                  time: item.endTime,
-                  state: $options.filters.globalize(
-                    POLL_STATES_INLINE_TRANSLATION_IDS[item.pollState.value]
-                  ),
-                })"
-                :html="true"
-              />
-            </template>
-
-            <p class="polls-all__poll-card-time">
-              {{ 'polls-all.list-item-author-prefix' | globalize }}
-              <email-getter
-                is-titled
-                :account-id="item.owner.id"
-                :is-copy-button="false"
-              />
-            </p>
+            <poll-card :poll="item" />
           </button>
         </div>
       </div>
@@ -103,8 +63,8 @@
       <div class="limits__requests-collection-loader">
         <collection-loader
           :first-page-loader="getList"
-          @first-page-load="list = $event"
-          @next-page-load="list = list.concat($event)"
+          @first-page-load="setList"
+          @next-page-load="concatList"
           ref="listCollectionLoader"
         />
       </div>
@@ -127,37 +87,22 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import FormMixin from '@/vue/mixins/form.mixin'
 import { api } from '@/api'
 import CollectionLoader from '@/vue/common/CollectionLoader'
-import EmailGetter from '@/vue/common/EmailGetter'
-import VueMarkdown from 'vue-markdown'
-import moment from 'moment'
 import Drawer from '@/vue/common/Drawer'
 import PollVoter from './polls-all/PollVoter'
+import PollCard from './polls-all/PollCard'
+
+import { PollRecord } from '@/js/records/entities/poll.record'
 
 // TODO: vote review
-
-const POLL_STATES = {
-  open: 1,
-  passed: 2,
-  failed: 3,
-  canceled: 4,
-}
-
-const POLL_STATES_INLINE_TRANSLATION_IDS = {
-  [POLL_STATES.open]: 'polls-all.state-inline-open',
-  [POLL_STATES.passed]: 'polls-all.state-inline-passed',
-  [POLL_STATES.failed]: 'polls-all.state-inline-failed',
-  [POLL_STATES.canceled]: 'polls-all.state-inline-canceled',
-}
 
 export default {
   name: 'polls-all',
 
   components: {
     CollectionLoader,
-    EmailGetter,
-    VueMarkdown,
     Drawer,
     PollVoter,
+    PollCard,
   },
 
   mixins: [FormMixin],
@@ -166,15 +111,14 @@ export default {
     return {
       filters: {
         assetCode: '',
-        state: POLL_STATES.open,
+        state: PollRecord.states.open,
       },
       isLoading: false,
       isInitialized: false,
       list: [],
       isDrawerShown: false,
       pollToBrowse: {},
-      POLL_STATES,
-      POLL_STATES_INLINE_TRANSLATION_IDS,
+      pollStates: PollRecord.states,
     }
   },
 
@@ -258,12 +202,18 @@ export default {
       return result
     },
 
-    reloadList () {
-      return this.$refs.listCollectionLoader.loadFirstPage()
+    setList (newList) {
+      this.list = newList.map(i => new PollRecord(i))
     },
 
-    isBeforeNow (date) {
-      return moment().isBefore(date)
+    concatList (newChunk) {
+      this.list = this.list.concat(
+        newChunk.map(i => new PollRecord(i))
+      )
+    },
+
+    reloadList () {
+      return this.$refs.listCollectionLoader.loadFirstPage()
     },
 
     selectItem (item) {

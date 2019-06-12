@@ -25,6 +25,7 @@
 import PollVoteForm from './PollVoteForm'
 import Tabs from '@/vue/common/tabs/Tabs'
 import Tab from '@/vue/common/tabs/Tab'
+import { PollRecord } from '@/js/records/entities/poll.record'
 
 const EVENTS = {
   close: 'close',
@@ -41,7 +42,7 @@ export default {
 
   props: {
     poll: {
-      type: Object,
+      type: PollRecord,
       required: true,
     },
   },

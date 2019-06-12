@@ -1361,7 +1361,7 @@
       "cancellation-msg": "Are you sure to cancel the request?",
       "update-btn": "Update",
       "cancel-btn": "CANCEL",
-      "choice-title":"Option {{number}}",
+      "choice-title": "Option {{number}}",
       "restricted-type-desc": "Restricted"
     },
     "asset-details": {
@@ -2118,15 +2118,17 @@
       "state-passed": "Passed",
       "state-failed": "Failed",
       "state-canceled": "Canceled",
+      "vote-drawer-title": "Vote in poll"
+    },
+    "poll-card": {
+      "author-prefix": "by",
+      "id-prefix": "#{{id}}",
+      "ends-at-row": "Ends at <span title='{{time, dmyt}}'>{{time, calendar-inline}}</span>",
+      "ended-at-row": "Ended <span title='{{time, dmyt}}'>{{time, calendar-inline}}</span>, {{state}}",
       "state-inline-open": "open",
       "state-inline-passed": "passed",
       "state-inline-failed": "failed",
-      "state-inline-canceled": "canceled",
-      "ends-at-row": "Ends at <span title='{{time, dmyt}}'>{{time, calendar-inline}}</span>",
-      "ended-at-row": "Ended <span title='{{time, dmyt}}'>{{time, calendar-inline}}</span>, {{state}}",
-      "list-item-author-prefix": "by",
-      "list-item-id-prefix": "#{{id}}",
-      "vote-drawer-title": "Vote in poll"
+      "state-inline-canceled": "canceled"
     },
     "poll-voter": {
       "vote-tab": "Vote",
