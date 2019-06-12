@@ -98,6 +98,7 @@
       "field-error_minDate": "Date should be after {{ minDate, date }}",
       "field-error_maxDate": "Date should be before {{ maxDate, date }}",
       "field-error_emailOrAccountId": "This field should be a valid email or account ID",
+      "field-error_accountId": "This field should be a valid account ID",
       "field-error_maxDecimalPoints": "Only {{quantity}} digits after point are allowed",
       "field-error_noMoreThanAvailableOnBalance": "Insufficient balance. You have {{available, number}}",
       "field-error_noMoreThanAvailableForIssuance": "Insufficient available for issuance amount. You have {{available, number}}",
@@ -1348,18 +1349,20 @@
       "no-request-history-desc": "Here will be the list of your poll requests",
       "request-canceled-msg": "Your request was successfully cancelled",
       "start-time-title": "Start time",
-      "close-time-title": "Close time",
+      "end-time-title": "End time",
       "number-of-choices-title": "Number of choices",
       "permission-type-title": "Permission type",
       "vote-confirmation-required-title": "Vote confirmation required",
+      "provider-id": "Provider id",
       "poll-data-title": "Poll data",
-      "question-title": "Question",
+      "question-title": "Question:",
       "yes-msg": "Yes",
       "no-msg": "No",
       "cancellation-msg": "Are you sure to cancel the request?",
       "update-btn": "Update",
       "cancel-btn": "CANCEL",
-      "choice-title":"Choice {{number}}"
+      "choice-title":"Option {{number}}",
+      "restricted-type-desc": "Restricted"
     },
     "asset-details": {
       "balance-title": "Balance",
@@ -2094,6 +2097,21 @@
       "update-poll": "Update poll",
       "overview-title": "Poll overview",
       "new-poll": "New poll"
+    },
+    "create-poll-form": {
+      "permission-type-lbl": "Permission type",
+      "start-time-lbl": "Start time",
+      "end-time-lbl": "End time",
+      "vote-confirmation-required-lbl": "Vote confirmation required",
+      "result-provider-id-lbl": "Result provider id",
+      "question-lbl": "Question",
+      "description-lbl": "Option {{number}}",
+      "create-btn": "Create",
+      "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
+      "verification-not-required-lbl": "Does not require verification",
+      "restricted-poll-lbl": "Restricted",
+      "load-failed-msg": "There was an error while loading. Please, try again later",
+      "add-choice-btn": "Add option"
     },
     "polls-all": {
       "state-open": "Open",

@@ -22,7 +22,6 @@
 import RequestMessageViewer from '../../shared/components/request-message-viewer'
 import RequestActions from './request-actions'
 import RequestAttributesViewer from './request-attributes-viewer'
-
 import { PollRequest } from '../wrappers/poll-request'
 
 const EVENTS = {
@@ -36,7 +35,6 @@ export default {
     RequestActions,
     RequestAttributesViewer,
   },
-
   props: {
     request: { type: PollRequest, required: true },
   },

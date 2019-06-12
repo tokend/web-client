@@ -1,6 +1,7 @@
 import { globalize } from '@/vue/filters/globalize'
 import safeGet from 'lodash/get'
 import isObject from 'lodash/isObject'
+import cloneDeep from 'lodash/cloneDeep'
 
 export default {
   methods: {
@@ -62,8 +63,14 @@ export default {
       if (!this.$v.$invalid) {
         return ''
       }
+      const fieldHasArrayLinkRe = new RegExp(/(\w+)(\[\d\])/)
+      let newField = cloneDeep(field)
 
-      const fieldDetails = safeGet(this.$v, field)
+      if (fieldHasArrayLinkRe.test(newField)) {
+        newField = newField.replace(fieldHasArrayLinkRe, '$1.$each$2')
+      }
+
+      const fieldDetails = safeGet(this.$v, newField)
 
       if (!fieldDetails.$dirty) {
         return ''

@@ -54,6 +54,9 @@ export const address = (asset) => value => {
 export const emailOrAccountId = value => {
   return validateEmail(value) || base.Keypair.isValidPublicKey(value)
 }
+export const accountId = value => {
+  return base.Keypair.isValidPublicKey(value)
+}
 export const documentContainer = value => value instanceof DocumentContainer
 export const softCapMoreThanHardCap = (min, hardCap) => value => {
   return amountRange(min, hardCap)(value)
