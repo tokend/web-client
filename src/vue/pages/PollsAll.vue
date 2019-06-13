@@ -5,6 +5,7 @@
         <select-field
           v-model="filters.assetCode"
           class="polls-all__filter-field app__select app__select--no-border"
+          :disabled="filters.isOwnedByCurrentUser"
         >
           <option
             v-for="balance in balances"
@@ -33,6 +34,24 @@
           {{ 'polls-all.state-canceled' | globalize }}
         </option>
       </select-field>
+
+      <div class="polls-all__filter-field polls-all__filter-field--tick">
+        <tick-field
+          v-model="filters.isOwnedByCurrentUser"
+          :cb-value="true"
+        >
+          {{ 'polls-all.owned-by-me-filter-lbl' | globalize }}
+        </tick-field>
+      </div>
+
+      <div class="polls-all__filter-field polls-all__filter-field--tick">
+        <tick-field
+          v-model="filters.isResultProvidedByCurrentUser"
+          :cb-value="true"
+        >
+          {{ 'polls-all.result-provided-by-me-filter-lbl' | globalize }}
+        </tick-field>
+      </div>
     </div>
 
     <template v-if="list.length">
@@ -132,6 +151,8 @@ export default {
       filters: {
         assetCode: '',
         state: PollRecord.states.open,
+        isOwnedByCurrentUser: false,
+        isResultProvidedByCurrentUser: false,
       },
       isLoading: false,
       isInitialized: false,
@@ -145,22 +166,25 @@ export default {
   computed: {
     ...mapGetters({
       balances: vuexTypes.accountBalances,
+      accountId: vuexTypes.accountId,
     }),
   },
 
   watch: {
     'filters.assetCode' () {
-      if (!this.isInitialized) {
-        return
-      }
-      this.reloadList()
+      this.reloadListIfInitialized()
     },
 
     'filters.state' () {
-      if (!this.isInitialized) {
-        return
-      }
-      this.reloadList()
+      this.reloadListIfInitialized()
+    },
+
+    'filters.isOwnedByCurrentUser' () {
+      this.reloadListIfInitialized()
+    },
+
+    'filters.isResultProvidedByCurrentUser' () {
+      this.reloadListIfInitialized()
     },
   },
 
@@ -208,10 +232,18 @@ export default {
       try {
         result = await api.getWithSignature('/v3/polls', {
           filter: {
-            owner: this.balances
-              .find(i => i.asset.code === this.filters.assetCode)
-              .asset.owner,
+            owner: this.filters.isOwnedByCurrentUser
+              ? this.accountId
+              : this.balances
+                .find(i => i.asset.code === this.filters.assetCode)
+                .asset.owner,
+
             state: this.filters.state,
+
+            ...(this.filters.isResultProvidedByCurrentUser
+              ? { 'result_provider': this.accountId }
+              : {}
+            ),
           },
         })
       } catch (error) {
@@ -234,6 +266,13 @@ export default {
 
     reloadList () {
       return this.$refs.listCollectionLoader.loadFirstPage()
+    },
+
+    reloadListIfInitialized () {
+      if (!this.isInitialized) {
+        return
+      }
+      this.reloadList()
     },
 
     selectItem (item) {
@@ -259,7 +298,11 @@ $list-item-margin: 2rem;
   width: auto;
 
   & + & {
-    margin-left: 1.2rem;
+    margin-left: 1.6rem;
+  }
+
+  &--tick /deep/ .tick-field__label {
+    font-size: 1.8rem;
   }
 }
 

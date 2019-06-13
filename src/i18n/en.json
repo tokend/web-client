@@ -2120,7 +2120,9 @@
       "state-canceled": "Canceled",
       "vote-drawer-title": "Vote in poll",
       "no-list-title": "No polls yet",
-      "no-list-msg": "No polls found by the provided criteria. Please try another search query."
+      "no-list-msg": "No polls found by the provided criteria. Please try another search query.",
+      "owned-by-me-filter-lbl": "Owned by me",
+      "result-provided-by-me-filter-lbl": "Result provided by me"
     },
     "poll-card": {
       "author-prefix": "By",
