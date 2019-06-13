@@ -277,6 +277,12 @@ export default {
   &:before {
     transition: transform 0.2s ease-out;
   }
+
+  .select-field--disabled > &,
+  .select-field--readonly > & {
+    filter: grayscale(100%);
+    color: $field-color-unfocused;
+  }
 }
 
 .select-field__selected-icon--active:before {
