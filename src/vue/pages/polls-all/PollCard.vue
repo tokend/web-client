@@ -85,7 +85,6 @@ export default {
 @import '~@scss/mixins';
 
 .poll-card {
-  cursor: pointer;
   border-radius: 0.4rem;
   box-shadow: 0 0.5rem 1rem 0 $col-sale-card-shadow;
   background-color: $col-sale-card-background;
