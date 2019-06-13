@@ -85,14 +85,18 @@
           <form-confirmation
             v-if="formMixin.isConfirmationShown && isCloseConfirmationMode"
             message-id="my-poll-manage-form.close-poll-confirmation-msg"
+            ok-button-text-id="my-poll-manage-form.yes-btn"
+            cancel-button-text-id="my-poll-manage-form.no-btn"
+            is-danger-color
             @ok="hideCloseConfirmation() || closePoll()"
             @cancel="hideCloseConfirmation"
           />
           <template v-else>
+            <!-- eslint-disable max-len -->
             <button
               type="button"
               class="app__button-raised app__button-raised--danger"
-              :disabled="formMixin.isDisabled"
+              :disabled="formMixin.isDisabled || !form.result || form.result < 0"
               @click="showCloseConfirmation"
             >
               <!-- eslint-enable max-len -->
@@ -111,6 +115,9 @@
           <form-confirmation
             v-if="formMixin.isConfirmationShown && isCancelConfirmationMode"
             message-id="my-poll-manage-form.cancel-poll-confirmation-msg"
+            ok-button-text-id="my-poll-manage-form.yes-btn"
+            cancel-button-text-id="my-poll-manage-form.no-btn"
+            is-danger-color
             @ok="hideCancelConfirmation() || cancelPoll()"
             @cancel="hideCancelConfirmation"
           />
@@ -164,7 +171,7 @@ export default {
     return {
       form: {
         endTime: '',
-        result: '',
+        result: -1,
       },
       isCloseConfirmationMode: false,
       isCancelConfirmationMode: false,

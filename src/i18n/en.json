@@ -2156,7 +2156,9 @@
       "cancel-poll-subheading": "Cancel poll",
       "current-end-time-title": "Current end time",
       "passed-poll-result": "Passed",
-      "failed-poll-result": "Failed"
+      "failed-poll-result": "Failed",
+      "yes-btn": "Yes",
+      "no-btn": "No"
     },
     "my-poll": {
       "manage-tab": "Manage",

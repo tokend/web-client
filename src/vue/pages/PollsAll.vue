@@ -105,7 +105,7 @@
         {{ 'polls-all.vote-drawer-title' | globalize }}
       </template>
 
-      <poll-voter :poll="pollToBrowse" />
+      <my-poll :poll-id="pollToBrowse.id" />
     </drawer>
   </div>
 </template>
@@ -121,7 +121,7 @@ import EmailGetter from '@/vue/common/EmailGetter'
 import VueMarkdown from 'vue-markdown'
 import moment from 'moment'
 import Drawer from '@/vue/common/Drawer'
-import PollVoter from './polls-all/PollVoter'
+import MyPoll from './polls-my/MyPoll'
 
 const POLL_STATES = {
   open: 1,
@@ -145,7 +145,7 @@ export default {
     EmailGetter,
     VueMarkdown,
     Drawer,
-    PollVoter,
+    MyPoll,
   },
 
   mixins: [FormMixin],
