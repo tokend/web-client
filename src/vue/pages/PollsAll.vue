@@ -288,18 +288,18 @@ export default {
 @import '~@scss/variables.scss';
 
 $list-item-margin: 2rem;
+$filter-field-to-filter-field-margin: 2rem;
 
 .polls-all__filters {
-  margin-bottom: 2.4rem;
+  margin: -$filter-field-to-filter-field-margin 0 2.4rem
+    (-$filter-field-to-filter-field-margin);
 }
 
 .polls-all__filter-field {
   display: inline-block;
   width: auto;
-
-  & + & {
-    margin-left: 1.6rem;
-  }
+  margin: $filter-field-to-filter-field-margin 0 0
+    $filter-field-to-filter-field-margin;
 
   &--tick /deep/ .tick-field__label {
     font-size: 1.8rem;
