@@ -15,6 +15,7 @@ for further information about branching and tagging conventions.
 - Waiting email verification
 - Scrolling to top of the page after sending KYC corporate request
 - URLs normalization in env.js
+- Linter rule for kebab-case css file names
 
 #### Changed
 - Now loading KYC latest data from account endpoint

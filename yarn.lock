@@ -9390,6 +9390,9 @@ stylelint-declaration-strict-value@1.1.3:
   resolved "https://registry.yarnpkg.com/stylelint-declaration-strict-value/-/stylelint-declaration-strict-value-1.1.3.tgz#5afaf44019c08ddca76975dbd66f1f4f77abbb0d"
   integrity sha512-k/DvGu9lEKE0X59aZfc5t0lHJJE1DfD7btRTM+FMZNX0TPACv5RuE9l5YuPGBXlBDX5QTJeSKakEddMn3jEg6g==
 
+"stylelint-plugin@file:stylelint":
+  version "0.0.1"
+
 stylelint-scss@3.8.0:
   version "3.8.0"
   resolved "https://registry.yarnpkg.com/stylelint-scss/-/stylelint-scss-3.8.0.tgz#fc372306c2105b461d0c162199e65f0c09fada2a"

@@ -1,5 +1,5 @@
 {
-  "name": "stylelint-steves-steve1", 
+  "name": "stylelint-plugin", 
   "version": "0.0.1",
   "main": "index.js",
   "devDependencies": {
