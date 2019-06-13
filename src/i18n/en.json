@@ -2118,10 +2118,12 @@
       "state-passed": "Passed",
       "state-failed": "Failed",
       "state-canceled": "Canceled",
-      "vote-drawer-title": "Vote in poll"
+      "vote-drawer-title": "Vote in poll",
+      "no-list-title": "No polls yet",
+      "no-list-msg": "No polls found by the provided criteria. Please try another search query."
     },
     "poll-card": {
-      "author-prefix": "by",
+      "author-prefix": "By",
       "id-prefix": "#{{id}}",
       "ends-at-row": "Ends at <span title='{{time, dmyt}}'>{{time, calendar-inline}}</span>",
       "ended-at-row": "Ended <span title='{{time, dmyt}}'>{{time, calendar-inline}}</span>, {{state}}",

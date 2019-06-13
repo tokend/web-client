@@ -35,7 +35,7 @@
       </select-field>
     </div>
 
-    <div class="polls-all__list-wrp">
+    <template v-if="list.length">
       <div class="polls-all__list">
         <div
           class="polls-all__list-item-wrp"
@@ -43,16 +43,34 @@
           :key="item.id"
         >
           <button
-            class="polls-all__poll-card"
+            class="polls-all__list-item-btn"
             @click="selectItem(item)"
           >
             <poll-card :poll="item" />
           </button>
         </div>
       </div>
-      <!-- TODO: skeleton loading -->
-      <!-- TODO: no-data-message -->
-    </div>
+    </template>
+
+    <template v-else-if="!list.length && isLoading">
+      <div class="polls-all__list">
+        <div
+          class="polls-all__list-item-wrp"
+          v-for="item in 5"
+          :key="item"
+        >
+          <poll-card-skeleton />
+        </div>
+      </div>
+    </template>
+
+    <template v-else-if="!list.length && !isLoading && isInitialized">
+      <no-data-message
+        icon-name="vote"
+        :title="'polls-all.no-list-title' | globalize"
+        :message="'polls-all.no-list-msg' | globalize"
+      />
+    </template>
 
     <!--
         HACK: collection loader tries to fetch the first page at any cost, but
@@ -87,9 +105,11 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import FormMixin from '@/vue/mixins/form.mixin'
 import { api } from '@/api'
 import CollectionLoader from '@/vue/common/CollectionLoader'
+import NoDataMessage from '@/vue/common/NoDataMessage'
 import Drawer from '@/vue/common/Drawer'
 import PollVoter from './polls-all/PollVoter'
 import PollCard from './polls-all/PollCard'
+import PollCardSkeleton from './polls-all/PollCardSkeleton'
 
 import { PollRecord } from '@/js/records/entities/poll.record'
 
@@ -103,6 +123,8 @@ export default {
     Drawer,
     PollVoter,
     PollCard,
+    PollCardSkeleton,
+    NoDataMessage,
   },
 
   mixins: [FormMixin],
@@ -225,13 +247,64 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~@scss/mixins.scss';
+@import '~@scss/variables.scss';
+
+$list-item-margin: 2rem;
+
+.polls-all__filters {
+  margin-bottom: 2.4rem;
+}
+
 .polls-all__filter-field {
   display: inline-block;
   width: auto;
+
+  & + & {
+    margin-left: 1.2rem;
+  }
 }
 
-.polls-all__poll-card {
+.polls-all__list-item-btn {
   display: block;
+  width: 100%;
+  max-width: 100%;
   text-align: left;
+}
+
+.polls-all__list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -$list-item-margin 0 0 (-$list-item-margin);
+}
+
+.polls-all__list-item-wrp {
+  margin: $list-item-margin 0 0 $list-item-margin;
+  width: calc(100% + #{$list-item-margin});
+
+  $media-desktop: 1130px;
+  $media-small-desktop: 960px;
+
+  @mixin list-item-width($width) {
+    flex: 0 1 calc(#{$width} - (#{$list-item-margin}));
+    max-width: calc(#{$width} - (#{$list-item-margin}));
+  }
+
+  @include list-item-width(25%);
+  @include respond-to-custom($media-desktop) {
+    @include list-item-width(33%);
+  }
+  @include respond-to-custom($media-small-desktop) {
+    @include list-item-width(50%);
+  }
+  @include respond-to-custom($sidebar-hide-bp) {
+    @include list-item-width(33%);
+  }
+  @include respond-to(small) {
+    @include list-item-width(50%);
+  }
+  @include respond-to(xsmall) {
+    @include list-item-width(100%);
+  }
 }
 </style>
