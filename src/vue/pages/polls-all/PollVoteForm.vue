@@ -86,6 +86,8 @@ const EVENTS = {
 }
 
 export default {
+  name: 'poll-vote-form',
+
   mixins: [FormMixin],
 
   props: {

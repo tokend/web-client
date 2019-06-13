@@ -113,8 +113,6 @@ import PollCardSkeleton from './polls-all/PollCardSkeleton'
 
 import { PollRecord } from '@/js/records/entities/poll.record'
 
-// TODO: vote review
-
 export default {
   name: 'polls-all',
 

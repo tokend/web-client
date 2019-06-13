@@ -20,6 +20,8 @@ import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
 import PollCard from './PollCard.vue'
 
 export default {
+  name: 'poll-card-skeleton',
+
   components: {
     SkeletonLoader,
   },
