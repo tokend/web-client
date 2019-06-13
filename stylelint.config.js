@@ -253,6 +253,6 @@ module.exports = {
         },
       },
     ],
-    'plugin/kebab-case-file-name': true,
+    'plugin/kebab-case-file-name': [true, { severity: 'warning' }],
   },
 }

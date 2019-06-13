@@ -3,32 +3,31 @@ let stylelint = require('stylelint')
 let ruleName = 'plugin/kebab-case-file-name'
 
 let messages = stylelint.utils.ruleMessages(ruleName, {
-  rejected: 'css files should have kebab-case names',
+  rejected: value => ` ${value} file name hould have kebab-case namespace`,
 })
 
 module.exports = stylelint.createPlugin(ruleName, function (max, options) {
-  const kebabCaseRegex = new RegExp('^[_a-z0-9]+((\-[a-z0-9]+){1,})?.scss$')
+  const kebabCaseRegex = new RegExp('^[_a-z0-9]+((\-[a-z0-9]+){1,})?.s[a|c]ss$')
   const scssRegex = new RegExp('.s[a|c]ss$')
+  const vueRegex = new RegExp('.vue$')
 
-  return function (root, result) {     
-    // to access the variable for the whole of this file scss =           
+  return function (root, result) {
     const filename = path.basename(root.source.input.file)
-
-    // return new Promise(function(resolve) {
-    if (scssRegex.test(filename) && !kebabCaseRegex.test(filename)) {
-      console.log(filename)
-      root.walkAtRules(function (atrule) {
-        stylelint.utils.report({
-          message: messages.rejected,
-          node: atrule,
-          result: result,
-          ruleName: ruleName
-        });
-      })
+    if (vueRegex.test(filename)) {
+      return
     }
-    // })
+    if (scssRegex.test(filename) && kebabCaseRegex.test(filename)) {
+      return
+    }
+
+    stylelint.utils.report({
+      message: messages.rejected(filename),
+      line: 1,
+      result: result,
+      ruleName: ruleName,
+    })
   }
-});
+})
 
 module.exports.ruleName = ruleName
 module.exports.messages = messages
