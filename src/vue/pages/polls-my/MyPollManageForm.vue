@@ -3,57 +3,51 @@
     <form
       novalidate
       class="app__form"
-      @submit.prevent="isFormValid() && showConfirmation()"
+      @submit.prevent="submit"
     >
-      <poll-state-viewer :poll-state="poll.pollState.value" />
+      <div class="my-poll-manage-form__end-time-wrp">
+        <h3 class="my-poll-manage-form-subheading app__form-subheading">
+          {{ 'my-poll-manage-form.update-end-time-subheading' | globalize }}
+        </h3>
 
-      <poll-details
-        class="my-poll-manage-form__poll-details"
-        :poll="poll"
-      />
-
-      <div class="app__form-row">
-        <div class="app__form-field">
-          <date-field
-            v-model="form.endTime"
-            :enable-time="true"
-            :disable-before="getDisableDate"
-            @input="touchField('form.endTime')"
-            @blur="touchField('form.endTime')"
-            name="my-poll-manage-end-time"
-            :label="'my-poll-manage-form.end-time-lbl' | globalize"
-            :disabled="formMixin.isDisabled"
-            :error-message="getFieldErrorMessage(
-              'form.endTime', { minDate: poll.startTime || getCurrentDate() }
-            )"
-          />
+        <div class="my-poll-manage-form__table app__table">
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  {{ 'my-poll-manage-form.current-end-time-title' | globalize }}
+                </td>
+                <td>{{ poll.endTime | formatCalendar }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-      </div>
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <date-field
+              v-model="form.endTime"
+              :enable-time="true"
+              :disable-before="getDisableDate"
+              @input="touchField('form.endTime')"
+              @blur="touchField('form.endTime')"
+              name="my-poll-manage-end-time"
+              :label="'my-poll-manage-form.new-end-time-lbl' | globalize"
+              :disabled="formMixin.isDisabled"
+              :error-message="getFieldErrorMessage(
+                'form.endTime', { minDate: poll.startTime || getCurrentDate() }
+              )"
+            />
+          </div>
+        </div>
+        <div class="app__form-actions my-poll-manage-form__form-actions">
+          <form-confirmation
+            v-if="formMixin.isConfirmationShown && !isCloseConfirmationMode
+              && !isCancelConfirmationMode"
+            @ok="hideConfirmation() || updatePoll()"
+            @cancel="hideConfirmation"
+          />
 
-      <div class="my-poll-manage-form__form-actions app__form-actions">
-        <form-confirmation
-          v-if="formMixin.isConfirmationShown && !isCloseConfirmationMode
-            && !isCancelConfirmationMode"
-          @ok="hideConfirmation() || updatePoll()"
-          @cancel="hideConfirmation"
-        />
-
-        <form-confirmation
-          v-if="formMixin.isConfirmationShown && isCloseConfirmationMode"
-          message-id="my-poll-manage-form.close-poll-confirmation-msg"
-          @ok="hideCloseConfirmation() || closePoll()"
-          @cancel="hideCloseConfirmation"
-        />
-
-        <form-confirmation
-          v-if="formMixin.isConfirmationShown && isCancelConfirmationMode"
-          message-id="my-poll-manage-form.cancel-poll-confirmation-msg"
-          @ok="hideCancelConfirmation() || cancelPoll()"
-          @cancel="hideCancelConfirmation"
-        />
-
-        <template v-else-if="!formMixin.isConfirmationShown">
-          <div class="my-poll-manage-form__buttons-wrp">
+          <template v-else>
             <button
               type="submit"
               class="app__button-raised"
@@ -61,29 +55,77 @@
             >
               {{ 'my-poll-manage-form.submit-btn' | globalize }}
             </button>
-            <div class="my-poll-manage-form__buttons-raised">
-              <!-- eslint-disable max-len -->
-              <button
-                type="button"
-                class="app__button-raised app__button-raised--danger my-poll-manage-form__button--close"
-                :disabled="formMixin.isDisabled"
-                @click="showCloseConfirmation"
-              >
-                <!-- eslint-enable max-len -->
-                {{ 'my-poll-manage-form.close-poll-btn' | globalize }}
-              </button>
+          </template>
+        </div>
+      </div>
 
-              <button
-                type="button"
-                class="app__button-raised app__button-raised--danger"
-                :disabled="formMixin.isDisabled"
-                @click="showCancelConfirmation"
-              >
-                {{ 'my-poll-manage-form.cancel-poll-btn' | globalize }}
-              </button>
-            </div>
+      <div class="my-poll-manage-form__close-poll-wrp">
+        <h3 class="my-poll-manage-form-subheading app__form-subheading">
+          {{ 'my-poll-manage-form.close-poll-subheading' | globalize }}
+        </h3>
+
+        <div class="my-poll-manage-form__choices">
+          <div
+            class="my-poll-manage-form__choice-wrp"
+            v-for="item in VOTING_RESULTS"
+            :key="item.value"
+          >
+            <radio-field
+              :name="`my-poll-manage-form__choice-${item.value}`"
+              v-model="form.result"
+              :cb-value="item.value"
+              :disabled="formMixin.isDisabled"
+            >
+              {{ item.name | globalize }}
+            </radio-field>
           </div>
-        </template>
+        </div>
+
+        <div class="my-poll-manage-form__form-actions app__form-actions">
+          <form-confirmation
+            v-if="formMixin.isConfirmationShown && isCloseConfirmationMode"
+            message-id="my-poll-manage-form.close-poll-confirmation-msg"
+            @ok="hideCloseConfirmation() || closePoll()"
+            @cancel="hideCloseConfirmation"
+          />
+          <template v-else>
+            <button
+              type="button"
+              class="app__button-raised app__button-raised--danger"
+              :disabled="formMixin.isDisabled"
+              @click="showCloseConfirmation"
+            >
+              <!-- eslint-enable max-len -->
+              {{ 'my-poll-manage-form.close-poll-btn' | globalize }}
+            </button>
+          </template>
+        </div>
+      </div>
+
+      <div class="my-poll-manage-form__cancel-poll-wrp">
+        <h3 class="my-poll-manage-form-subheading app__form-subheading">
+          {{ 'my-poll-manage-form.cancel-poll-subheading' | globalize }}
+        </h3>
+
+        <div class="my-poll-manage-form__form-actions app__form-actions">
+          <form-confirmation
+            v-if="formMixin.isConfirmationShown && isCancelConfirmationMode"
+            message-id="my-poll-manage-form.cancel-poll-confirmation-msg"
+            @ok="hideCancelConfirmation() || cancelPoll()"
+            @cancel="hideCancelConfirmation"
+          />
+
+          <template v-else>
+            <button
+              type="button"
+              class="app__button-raised app__button-raised--danger"
+              :disabled="formMixin.isDisabled"
+              @click="showCancelConfirmation"
+            >
+              {{ 'my-poll-manage-form.cancel-poll-btn' | globalize }}
+            </button>
+          </template>
+        </div>
       </div>
     </form>
   </div>
@@ -93,8 +135,6 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import PollStateViewer from '@/vue/pages/polls/PollStateViewer'
-import PollDetails from '@/vue/pages/polls/PollDetails'
 import {
   required,
   minDate,
@@ -106,12 +146,13 @@ import { Bus } from '@/js/helpers/event-bus'
 import { base } from '@tokend/js-sdk'
 import { DateUtil } from '@/js/utils'
 
+const VOTING_RESULTS = [
+  { name: 'my-poll-manage-form.passed-poll-result', value: 0 },
+  { name: 'my-poll-manage-form.failed-poll-result', value: 1 },
+]
+
 export default {
   name: 'my-poll-manage-form',
-  components: {
-    PollStateViewer,
-    PollDetails,
-  },
   mixins: [FormMixin],
   props: {
     poll: {
@@ -123,9 +164,11 @@ export default {
     return {
       form: {
         endTime: '',
+        result: '',
       },
       isCloseConfirmationMode: false,
       isCancelConfirmationMode: false,
+      VOTING_RESULTS,
     }
   },
 
@@ -151,18 +194,25 @@ export default {
           required,
           minDate: minDate(this.poll.startTime || moment().toISOString()),
         },
+        result: {
+          required,
+        },
       },
     }
   },
 
   methods: {
+    submit () {
+      if (!this.isFormValid('form.endTime')) return
+      this.showConfirmation()
+    },
     async updatePoll () {
       this.disableForm()
       try {
         await api.postOperations(
           this.buildUpdatePollEndTimeOperation(),
         )
-        Bus.success('my-poll-manage-form.updated-time-notification')
+        Bus.success('my-poll-manage-form.update-date-notification')
       } catch (error) {
         ErrorHandler.process(error)
       }
@@ -206,6 +256,7 @@ export default {
     },
 
     showCloseConfirmation () {
+      if (!this.isFormValid('form.result')) return
       this.isCloseConfirmationMode = true
       this.showConfirmation()
     },
@@ -226,7 +277,8 @@ export default {
     buildClosePollOperation () {
       return base.ManagePollBuilder.closePoll({
         pollID: this.poll.id,
-        newEndTime: DateUtil.toTimestamp(this.form.endTime),
+        result: Number(this.form.result),
+        details: '{}',
       })
     },
     buildCancelPollOperation () {
@@ -242,22 +294,28 @@ export default {
 @import '@/vue/forms/_app-form';
 @import '~@scss/variables';
 
-.my-poll-manage-form__buttons-wrp {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
+.my-poll-manage-form__form-actions:not(:first-child) {
+  margin-top: 3rem;
 }
 
-.my-poll-manage-form__buttons-raised {
-  display: flex;
+.my-poll-manage-form-subheading {
+  margin-top: 3rem;
+  margin-bottom: 0;
 }
 
-.my-poll-manage-form__button--close {
-  margin-right: 1rem;
+.my-poll-manage-form__table tr td:last-child {
+  text-align: right;
 }
 
-.my-poll-manage-form__poll-details {
+.my-poll-manage-form__table {
+  margin-top: 1.5rem;
+}
+
+.my-poll-manage-form__choice-wrp:not(:first-of-type) {
+  margin-top: 1.2rem;
+}
+
+.my-poll-manage-form__choices {
   margin-top: 2rem;
 }
-
 </style>

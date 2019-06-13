@@ -2141,29 +2141,26 @@
       "add-choice-btn": "Add option"
     },
     "my-poll-manage-form": {
-      "submit-btn": "Update end time",
+      "submit-btn": "Update",
       "submitted-notification": "Successfully updated",
       "close-poll-btn": "Close",
       "cancel-poll-btn": "Cancel",
-      "close-poll-confirmation-msg": "Are you sure you want to close your current poll?",
-      "cancel-poll-confirmation-msg": "Are you sure you want to cancel your current poll?",
+      "close-poll-confirmation-msg": "Are you sure you want to close the poll?",
+      "cancel-poll-confirmation-msg": "Are you sure you want to cancel the poll?",
       "close-notification": "Successfully close poll",
       "cancel-notification": "Successfully cancel poll",
-      "end-time-lbl": "End time",
-      "update-date-notification": "End time was updated"
-    },
-    "polls-my": {
-      "poll-drawer-title": "Poll details"
+      "new-end-time-lbl": "New end time",
+      "update-date-notification": "End time was updated",
+      "update-end-time-subheading": "Update end time",
+      "close-poll-subheading": "Close poll",
+      "cancel-poll-subheading": "Cancel poll",
+      "current-end-time-title": "Current end time",
+      "passed-poll-result": "Passed",
+      "failed-poll-result": "Failed"
     },
     "my-poll": {
       "manage-tab": "Manage",
       "participants-tab": "Participants"
-    },
-    "poll-state-messages": {
-      "open-msg": "Your poll is open",
-      "passed-msg": "Your poll is passed",
-      "canceled-msg": "Your poll is canceled",
-      "failed-msg": "Your poll is failed"
     }
   }
 }

@@ -71,7 +71,7 @@ export default {
       const endpoint = `/v3/polls/${this.pollId}`
       try {
         const { data } = await api.getWithSignature(endpoint, {
-          include: ['participation'],
+          include: ['participation', 'participation.votes'],
         })
         this.poll = data
       } catch (error) {
