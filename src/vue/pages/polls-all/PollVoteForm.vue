@@ -2,7 +2,7 @@
   <div class="poll-vote-form">
     <div class="poll-vote-form__question-wrp">
       <p class="poll-vote-form__question">
-        {{ poll.creatorDetails.question }}
+        {{ poll.question }}
       </p>
     </div>
 
@@ -13,7 +13,7 @@
       <div class="poll-vote-form__choices">
         <div
           class="poll-vote-form__choice-wrp"
-          v-for="item in poll.creatorDetails.choices"
+          v-for="item in poll.choices"
           :key="item.number"
         >
           <radio-field
@@ -79,6 +79,7 @@ import { base, errors } from '@tokend/js-sdk'
 import { api } from '@/api'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { PollRecord } from '@/js/records/entities/poll.record'
 
 const EVENTS = {
   submitted: 'submitted',
@@ -89,7 +90,7 @@ export default {
 
   props: {
     poll: {
-      type: Object,
+      type: PollRecord,
       required: true,
     },
   },

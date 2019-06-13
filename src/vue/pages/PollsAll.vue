@@ -1,39 +1,41 @@
 <template>
   <div class="polls-all">
     <div class="polls-all__filters">
-      <select-field
-        v-model="filters.assetCode"
-        class="polls-all__filter-field app__select app__select--no-border"
-      >
-        <option
-          v-for="balance in balances"
-          :key="balance.asset.code"
-          :value="balance.asset.code"
+      <template v-if="balances.length">
+        <select-field
+          v-model="filters.assetCode"
+          class="polls-all__filter-field app__select app__select--no-border"
         >
-          {{ balance.asset.nameAndCode }}
-        </option>
-      </select-field>
+          <option
+            v-for="balance in balances"
+            :key="balance.asset.code"
+            :value="balance.asset.code"
+          >
+            {{ balance.asset.nameAndCode }}
+          </option>
+        </select-field>
+      </template>
 
       <select-field
         v-model="filters.state"
         class="polls-all__filter-field app__select app__select--no-border"
       >
-        <option :value="POLL_STATES.open">
+        <option :value="pollStates.open">
           {{ 'polls-all.state-open' | globalize }}
         </option>
-        <option :value="POLL_STATES.passed">
+        <option :value="pollStates.passed">
           {{ 'polls-all.state-passed' | globalize }}
         </option>
-        <option :value="POLL_STATES.failed">
+        <option :value="pollStates.failed">
           {{ 'polls-all.state-failed' | globalize }}
         </option>
-        <option :value="POLL_STATES.canceled">
+        <option :value="pollStates.canceled">
           {{ 'polls-all.state-canceled' | globalize }}
         </option>
       </select-field>
     </div>
 
-    <div class="polls-all__list-wrp">
+    <template v-if="list.length">
       <div class="polls-all__list">
         <div
           class="polls-all__list-item-wrp"
@@ -41,71 +43,57 @@
           :key="item.id"
         >
           <button
-            class="polls-all__poll-card"
+            class="polls-all__list-item-btn"
             @click="selectItem(item)"
           >
-            <p class="polls-all__poll-card-question">
-              <span class="polls-all__poll-card-number">
-                <!-- eslint-disable-next-line max-len -->
-                {{ 'polls-all.list-item-id-prefix' | globalize({ id: item.id }) }}
-              </span>
-              {{ item.creatorDetails.question }}
-            </p>
-
-            <!-- eslint-disable-next-line vue/max-attributes-per-line -->
-            <template v-if="item.pollState.value === POLL_STATES.open &&
-              isBeforeNow(item.endTime)">
-              <vue-markdown
-                class="polls-all__poll-card-state"
-                :source="'polls-all.ends-at-row' | globalize({
-                  time: item.endTime
-                })"
-                :html="true"
-              />
-            </template>
-
-            <template v-else>
-              <vue-markdown
-                class="polls-all__poll-card-state"
-                :source="'polls-all.ended-at-row' | globalize({
-                  time: item.endTime,
-                  state: $options.filters.globalize(
-                    POLL_STATES_INLINE_TRANSLATION_IDS[item.pollState.value]
-                  ),
-                })"
-                :html="true"
-              />
-            </template>
-
-            <p class="polls-all__poll-card-time">
-              {{ 'polls-all.list-item-author-prefix' | globalize }}
-              <email-getter
-                is-titled
-                :account-id="item.owner.id"
-                :is-copy-button="false"
-              />
-            </p>
+            <poll-card :poll="item" />
           </button>
         </div>
       </div>
-      <!-- TODO: skeleton loading -->
-    </div>
+    </template>
 
-    <div class="limits__requests-collection-loader">
-      <collection-loader
-        :first-page-loader="getList"
-        @first-page-load="list = $event"
-        @next-page-load="list = list.concat($event)"
-        ref="listCollectionLoader"
+    <template v-else-if="!list.length && isLoading">
+      <div class="polls-all__list">
+        <div
+          class="polls-all__list-item-wrp"
+          v-for="item in 5"
+          :key="item"
+        >
+          <poll-card-skeleton />
+        </div>
+      </div>
+    </template>
+
+    <template v-else-if="!list.length && !isLoading && isInitialized">
+      <no-data-message
+        icon-name="vote"
+        :title="'polls-all.no-list-title' | globalize"
+        :message="'polls-all.no-list-msg' | globalize"
       />
-    </div>
+    </template>
+
+    <!--
+        HACK: collection loader tries to fetch the first page at any cost, but
+        getList required filters.assetCode to be assigned. so the loader
+        should be rendered only after filters.assetCode assigned any value
+     -->
+    <template v-if="filters.assetCode">
+      <div class="limits__requests-collection-loader">
+        <collection-loader
+          :first-page-loader="getList"
+          @first-page-load="setList"
+          @next-page-load="concatList"
+          ref="listCollectionLoader"
+        />
+      </div>
+    </template>
 
     <drawer :is-shown.sync="isDrawerShown">
       <template slot="heading">
         {{ 'polls-all.vote-drawer-title' | globalize }}
       </template>
 
-      <my-poll :poll-id="pollToBrowse.id" />
+      <poll-voter :poll="pollToBrowse" />
     </drawer>
   </div>
 </template>
@@ -117,35 +105,26 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import FormMixin from '@/vue/mixins/form.mixin'
 import { api } from '@/api'
 import CollectionLoader from '@/vue/common/CollectionLoader'
-import EmailGetter from '@/vue/common/EmailGetter'
-import VueMarkdown from 'vue-markdown'
-import moment from 'moment'
+import NoDataMessage from '@/vue/common/NoDataMessage'
 import Drawer from '@/vue/common/Drawer'
-import MyPoll from './polls-my/MyPoll'
+import PollVoter from './polls-all/PollVoter'
+import PollCard from './polls-all/PollCard'
+import PollCardSkeleton from './polls-all/PollCardSkeleton'
 
-const POLL_STATES = {
-  open: 1,
-  passed: 2,
-  failed: 3,
-  canceled: 4,
-}
+import { PollRecord } from '@/js/records/entities/poll.record'
 
-const POLL_STATES_INLINE_TRANSLATION_IDS = {
-  [POLL_STATES.open]: 'polls-all.state-inline-open',
-  [POLL_STATES.passed]: 'polls-all.state-inline-passed',
-  [POLL_STATES.failed]: 'polls-all.state-inline-failed',
-  [POLL_STATES.canceled]: 'polls-all.state-inline-canceled',
-}
+// TODO: vote review
 
 export default {
   name: 'polls-all',
 
   components: {
     CollectionLoader,
-    EmailGetter,
-    VueMarkdown,
     Drawer,
-    MyPoll,
+    PollVoter,
+    PollCard,
+    PollCardSkeleton,
+    NoDataMessage,
   },
 
   mixins: [FormMixin],
@@ -154,15 +133,14 @@ export default {
     return {
       filters: {
         assetCode: '',
-        state: POLL_STATES.open,
+        state: PollRecord.states.open,
       },
       isLoading: false,
       isInitialized: false,
       list: [],
       isDrawerShown: false,
       pollToBrowse: {},
-      POLL_STATES,
-      POLL_STATES_INLINE_TRANSLATION_IDS,
+      pollStates: PollRecord.states,
     }
   },
 
@@ -191,7 +169,6 @@ export default {
   async created () {
     try {
       await this.initAssetCodeFilter()
-      await this.reloadList()
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error)
     }
@@ -247,12 +224,18 @@ export default {
       return result
     },
 
-    reloadList () {
-      return this.$refs.listCollectionLoader.loadFirstPage()
+    setList (newList) {
+      this.list = newList.map(i => new PollRecord(i))
     },
 
-    isBeforeNow (date) {
-      return moment().isBefore(date)
+    concatList (newChunk) {
+      this.list = this.list.concat(
+        newChunk.map(i => new PollRecord(i))
+      )
+    },
+
+    reloadList () {
+      return this.$refs.listCollectionLoader.loadFirstPage()
     },
 
     selectItem (item) {
@@ -264,13 +247,64 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~@scss/mixins.scss';
+@import '~@scss/variables.scss';
+
+$list-item-margin: 2rem;
+
+.polls-all__filters {
+  margin-bottom: 2.4rem;
+}
+
 .polls-all__filter-field {
   display: inline-block;
   width: auto;
+
+  & + & {
+    margin-left: 1.2rem;
+  }
 }
 
-.polls-all__poll-card {
+.polls-all__list-item-btn {
   display: block;
+  width: 100%;
+  max-width: 100%;
   text-align: left;
+}
+
+.polls-all__list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -$list-item-margin 0 0 (-$list-item-margin);
+}
+
+.polls-all__list-item-wrp {
+  margin: $list-item-margin 0 0 $list-item-margin;
+  width: calc(100% + #{$list-item-margin});
+
+  $media-desktop: 1130px;
+  $media-small-desktop: 960px;
+
+  @mixin list-item-width($width) {
+    flex: 0 1 calc(#{$width} - (#{$list-item-margin}));
+    max-width: calc(#{$width} - (#{$list-item-margin}));
+  }
+
+  @include list-item-width(25%);
+  @include respond-to-custom($media-desktop) {
+    @include list-item-width(33%);
+  }
+  @include respond-to-custom($media-small-desktop) {
+    @include list-item-width(50%);
+  }
+  @include respond-to-custom($sidebar-hide-bp) {
+    @include list-item-width(33%);
+  }
+  @include respond-to(small) {
+    @include list-item-width(50%);
+  }
+  @include respond-to(xsmall) {
+    @include list-item-width(100%);
+  }
 }
 </style>

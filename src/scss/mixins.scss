@@ -139,3 +139,36 @@ $x-large: 1920px;
     @content;
   }
 }
+
+@mixin multi-line-ellipsis(
+  $line-height: 1.5,
+  $line-count: 2,
+  $strict: false,
+  $bg-color: white,
+  $width: 4ch
+) {
+  $max-height: $line-height * $line-count;
+
+  overflow: hidden;
+  position: relative;
+  line-height: $line-height;
+  max-height: $max-height;
+  white-space: normal;
+  word-break: break-all;
+  text-overflow: ellipsis;
+
+  @if ($strict) {
+    height: $max-height;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    display: block;
+    right: 0;
+    bottom: 0;
+    width: $width;
+    height: $line-height;
+    background: linear-gradient(to right, #ffffff00 0%, $bg-color 88%);
+  }
+}
