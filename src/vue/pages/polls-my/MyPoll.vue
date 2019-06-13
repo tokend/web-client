@@ -1,12 +1,11 @@
 <template>
   <div class="my-poll">
-    <tabs>
+    <tabs v-if="isLoaded">
       <tab
         :name="'my-poll.manage-tab' | globalize"
         id="manage-poll"
       >
         <my-poll-manage-form
-          v-if="isLoaded"
           :poll="poll"
           @submitted="manageFormSubmitted"
         />
@@ -16,7 +15,7 @@
         :name="'my-poll.participants-tab' | globalize"
         id="participants"
       >
-        TODO
+        <poll-participants :poll="poll" />
       </tab>
     </tabs>
   </div>
@@ -24,6 +23,7 @@
 
 <script>
 import MyPollManageForm from './MyPollManageForm'
+import PollParticipants from './PollParticipants'
 import Tabs from '@/vue/common/tabs/Tabs'
 import Tab from '@/vue/common/tabs/Tab'
 import { errors } from '@tokend/js-sdk'
@@ -40,6 +40,7 @@ export default {
 
   components: {
     MyPollManageForm,
+    PollParticipants,
     Tabs,
     Tab,
   },

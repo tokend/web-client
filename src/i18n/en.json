@@ -2167,6 +2167,10 @@
     "my-poll": {
       "manage-tab": "Manage",
       "participants-tab": "Participants"
+    },
+    "poll-participants": {
+      "email-lbl": "Email",
+      "choice-lbl": "Choice"
     }
   }
 }
