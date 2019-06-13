@@ -100,6 +100,11 @@ import {
   minDate,
 } from '@validators'
 import moment from 'moment'
+import { api } from '@/api'
+import { ErrorHandler } from '@/js/helpers/error-handler'
+import { Bus } from '@/js/helpers/event-bus'
+import { base } from '@tokend/js-sdk'
+import { DateUtil } from '@/js/utils'
 
 export default {
   name: 'my-poll-manage-form',
@@ -151,6 +156,44 @@ export default {
   },
 
   methods: {
+    async updatePoll () {
+      this.disableForm()
+      try {
+        await api.postOperations(
+          this.buildUpdatePollEndTimeOperation(),
+        )
+        Bus.success('my-poll-manage-form.updated-time-notification')
+      } catch (error) {
+        ErrorHandler.process(error)
+      }
+      this.enableForm()
+    },
+
+    async closePoll () {
+      this.disableForm()
+      try {
+        await api.postOperations(
+          this.buildClosePollOperation(),
+        )
+        Bus.success('my-poll-manage-form.close-notification')
+      } catch (error) {
+        ErrorHandler.process(error)
+      }
+      this.enableForm()
+    },
+
+    async cancelPoll () {
+      this.disableForm()
+      try {
+        await api.postOperations(
+          this.buildCancelPollOperation(),
+        )
+        Bus.success('my-poll-manage-form.cancel-notification')
+      } catch (error) {
+        ErrorHandler.process(error)
+      }
+      this.enableForm()
+    },
 
     showCancelConfirmation () {
       this.isCancelConfirmationMode = true
@@ -173,6 +216,23 @@ export default {
     },
     getCurrentDate () {
       return moment().toISOString()
+    },
+    buildUpdatePollEndTimeOperation () {
+      return base.ManagePollBuilder.updatePollEndTime({
+        pollID: this.poll.id,
+        newEndTime: DateUtil.toTimestamp(this.form.endTime),
+      })
+    },
+    buildClosePollOperation () {
+      return base.ManagePollBuilder.closePoll({
+        pollID: this.poll.id,
+        newEndTime: DateUtil.toTimestamp(this.form.endTime),
+      })
+    },
+    buildCancelPollOperation () {
+      return base.ManagePollBuilder.cancelPoll({
+        pollID: this.poll.id,
+      })
     },
   },
 }

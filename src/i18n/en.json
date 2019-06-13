@@ -2149,7 +2149,8 @@
       "cancel-poll-confirmation-msg": "Are you sure you want to cancel your current poll?",
       "close-notification": "Successfully close poll",
       "cancel-notification": "Successfully cancel poll",
-      "end-time-lbl": "End time"
+      "end-time-lbl": "End time",
+      "update-date-notification": "End time was updated"
     },
     "polls-my": {
       "poll-drawer-title": "Poll details"
