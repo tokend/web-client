@@ -3,7 +3,7 @@ let stylelint = require('stylelint')
 let ruleName = 'plugin/kebab-case-file-name'
 
 let messages = stylelint.utils.ruleMessages(ruleName, {
-  rejected: value => ` ${value} file name hould have kebab-case namespace`,
+  rejected: value => ` ${value} file name should have kebab-case namespace`,
 })
 
 module.exports = stylelint.createPlugin(ruleName, function (max, options) {
