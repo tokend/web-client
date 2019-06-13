@@ -15,17 +15,20 @@
         :name="'poll-voter.details-tab' | globalize"
         id="poll-voter"
       >
-        TODO
+        <poll-attributes :poll="poll" />
       </tab>
     </tabs>
   </div>
 </template>
 
 <script>
-import PollVoteForm from './PollVoteForm'
 import Tabs from '@/vue/common/tabs/Tabs'
 import Tab from '@/vue/common/tabs/Tab'
+
 import { PollRecord } from '@/js/records/entities/poll.record'
+
+import PollVoteForm from './PollVoteForm.vue'
+import PollAttributes from './PollAttributes.vue'
 
 const EVENTS = {
   close: 'close',
@@ -35,9 +38,10 @@ export default {
   name: 'poll-voter',
 
   components: {
-    PollVoteForm,
     Tabs,
     Tab,
+    PollVoteForm,
+    PollAttributes,
   },
 
   props: {

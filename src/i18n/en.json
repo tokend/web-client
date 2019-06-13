@@ -2143,6 +2143,25 @@
       "remove-vote-btn": "Remove  vote",
       "remove-vote-confirmation-msg": "Are you sure you want to remove your current vote?",
       "removed-notification": "Successfully removed vote"
+    },
+    "poll-attributes": {
+      "id-key": "Poll ID",
+      "owner-key": "Owner",
+      "start-time-key": "Start time",
+      "end-time-key": "End time",
+      "state-key": "State",
+      "permission-type-key": "Permission type",
+      "result-provider-key": "Result provider",
+      "number-of-choices-key": "Number of choices",
+      "vote-confirmation-required-key": "Vote confirmation required",
+      "is-ongoing-key": "Is in progress",
+      "state-open-val": "Open",
+      "state-passed-val": "Passed",
+      "state-failed-val": "Failed",
+      "state-canceled-val": "Canceled",
+      "permission-type-restricted-val": "Restricted",
+      "yes-val": "Yes",
+      "no-val": "No"
     }
   }
 }
