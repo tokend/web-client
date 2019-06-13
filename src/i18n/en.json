@@ -2108,10 +2108,10 @@
       "description-lbl": "Option {{number}}",
       "create-btn": "Create",
       "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
-      "verification-not-required-lbl": "Does not require verification",
       "restricted-poll-lbl": "Restricted",
       "load-failed-msg": "There was an error while loading. Please, try again later",
-      "add-choice-btn": "Add option"
+      "add-choice-btn": "Add option",
+      "vote-confirmation-required-disabled-tooltip": "Not supported at the moment"
     },
     "polls-all": {
       "state-open": "Open",
