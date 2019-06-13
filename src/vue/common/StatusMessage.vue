@@ -37,7 +37,7 @@
 import { Bus } from '@/js/helpers/event-bus'
 
 const DEFAULT_MESSAGE_TRANSLATION_ID = 'status-message.default-message'
-const CLOSE_TIMEOUT_MS = 100000
+const CLOSE_TIMEOUT_MS = 10000
 const SHOWN_AGAIN_PRESENCE_TIMEOUT_MS = 1000
 const MESSAGE_TYPES = Object.freeze({
   warning: 'warning',

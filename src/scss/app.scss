@@ -350,6 +350,12 @@ h6.app__page-heading {
   &.app__table--clickable-rows tbody tr {
     cursor: pointer;
   }
+
+  &--last-td-to-right {
+    & > table > tbody > tr > td:last-of-type {
+      text-align: right;
+    }
+  }
 }
 
 .app__table--with-shadow {
@@ -403,7 +409,7 @@ h6.app__page-heading {
     }
 
     i {
-      top: 1.2rem;
+      top: 0.3rem;
     }
   }
 }

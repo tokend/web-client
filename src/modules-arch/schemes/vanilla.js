@@ -53,7 +53,7 @@ import { ShowNetworkPassphrasePseudoModule } from '@/modules-arch/pseudo-modules
 import { PollsPageModule } from '@/vue/pages/polls-page-module'
 import { PollRequestsModule } from '@/vue/modules/requests/poll-requests/module'
 import { PollRequestsPageModule } from '@/vue/pages/polls/poll-requests-page'
-import { PollsListPageModule } from '@/vue/pages/polls/all-polls-page-module'
+import { PollsAllPageModule } from '@/vue/pages/polls-all-page-module'
 import { PollsListOwnedPageModule } from '@/vue/pages/polls/user-owned-polls-page-module'
 import { CreatePollFormModule } from '@/vue/modules/create-poll-form/module'
 
@@ -435,7 +435,7 @@ export default {
         menuButtonMdiName: 'vote',
         isAutoRedirectToFirstChild: true,
         submodules: [
-          new PollsListPageModule({
+          new PollsAllPageModule({
             routerEntry: {
               path: '/polls/all',
               name: vueRoutes.allPolls.name,
