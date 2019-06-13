@@ -1,25 +1,25 @@
 <template>
   <div class="poll-card">
-    <p class="polls-all__poll-card-question">
-      <span class="polls-all__poll-card-number">
+    <p class="poll-card__title">
+      <span class="poll-card__number">
         {{ 'poll-card.id-prefix' | globalize({ id: poll.id }) }}
       </span>
-      {{ poll.question }}
+      <span class="poll-card__question">
+        {{ poll.question }}
+      </span>
     </p>
 
     <template v-if="poll.isOpen && poll.isStarted">
       <vue-markdown
-        class="polls-all__poll-card-state"
+        class="poll-card__status"
         :html="true"
-        :source="'poll-card.ends-at-row' | globalize({
-          time: poll.endsAt
-        })"
+        :source="'poll-card.ends-at-row' | globalize({ time: poll.endsAt })"
       />
     </template>
 
     <template v-else>
       <vue-markdown
-        class="polls-all__poll-card-state"
+        class="poll-card__status"
         :html="true"
         :source="'poll-card.ended-at-row' | globalize({
           time: poll.endsAt,
@@ -28,9 +28,10 @@
       />
     </template>
 
-    <p class="polls-all__poll-card-time">
-      {{ 'poll-card.author-prefix' | globalize }}
-
+    <p class="poll-card__author">
+      <span class="poll-card__author-prefix">
+        {{ 'poll-card.author-prefix' | globalize }}
+      </span>
       <email-getter
         is-titled
         :account-id="poll.ownerId"
@@ -74,10 +75,51 @@ export default {
       }
 
       return this.$options.filters.globalize(translationId)
-    }
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+@import '~@scss/variables';
+@import '~@scss/mixins';
+
+.poll-card {
+  cursor: pointer;
+  border-radius: 0.4rem;
+  box-shadow: 0 0.5rem 1rem 0 $col-sale-card-shadow;
+  background-color: $col-sale-card-background;
+  padding: 1.6rem;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  overflow-x: hidden;
+}
+
+.poll-card__title {
+  margin-bottom: 1.6rem;
+  font-size: 1.6rem;
+
+  @include multi-line-ellipsis(1.6rem * 1.5, 2, true);
+}
+
+.poll-card__number {
+  color: $col-text-secondary;
+  font-size: inherit;
+  margin-right: 0.5ch;
+}
+
+.poll-card__status,
+.poll-card__author {
+  color: $col-text-secondary;
+  font-size: 1.3rem;
+  line-height: 1.5;
+}
+
+.poll-card__author {
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+}
 </style>
