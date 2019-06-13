@@ -204,11 +204,11 @@ $tick-size: 1.8rem;
     color: $field-color-unfocused;
   }
 
-  .tick-field:hover > & {
+  .tick-field__input:focus ~ & {
     outline-color: $field-color-unfocused;
   }
 
-  .tick-field__input:focus ~ & {
+  .tick-field:hover > .tick-field__input:enabled ~ & {
     outline-color: $field-color-unfocused;
   }
 }
@@ -221,5 +221,9 @@ $tick-size: 1.8rem;
   top: 0;
   left: 0;
   cursor: pointer;
+
+  &:disabled {
+    cursor: default;
+  }
 }
 </style>
