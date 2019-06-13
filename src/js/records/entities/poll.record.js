@@ -18,7 +18,7 @@ export class PollRecord {
     this.endsAt = _get(record, 'endTime')
     this.stateI = _get(record, 'pollState.value')
     this.permissionType = _get(record, 'permissionType')
-    this.resultProviderId = _get(record, 'resultProvider')
+    this.resultProviderId = _get(record, 'resultProvider.id')
     this.numberOfChoices = _get(record, 'numberOfChoices')
     this.isVoteConfirmationRequired = _get(record, 'voteConfirmationRequired')
     this.question = _get(record, 'creatorDetails.question')
