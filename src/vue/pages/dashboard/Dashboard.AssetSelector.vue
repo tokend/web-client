@@ -129,9 +129,11 @@ export default {
       // String.localeCompare() compare two strings and returns
       // them in alphabet order
       const baseAssets = this.assets
+        .filter(item => item.isGrainCoin)
         .filter(asset => asset.isBaseAsset)
         .sort((a, b) => a.code.localeCompare(b.code))
       const otherAssets = this.assets
+        .filter(item => item.isGrainCoin)
         .filter(asset => !asset.isBaseAsset)
         .sort((a, b) => a.code.localeCompare(b.code))
       return [

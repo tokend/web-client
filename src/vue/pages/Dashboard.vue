@@ -33,21 +33,21 @@
               }}
             </button>
           </template>
+
+          <!-- eslint-disable-next-line max-len -->
+          <template v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)">
+            <button
+              v-ripple
+              class="app__button-raised dashboard__action"
+              @click="isWithdrawalDrawerShown = true"
+            >
+              <i class="mdi mdi-download dashboard__download-icon" />
+              {{ 'dashboard.withdraw' | globalize }}
+            </button>
+          </template>
         </div>
       </div>
       <template v-if="currentAsset">
-        <div
-          v-if="currentAsset !== defaultQuoteAsset &&
-            getModule().getSubmodule(DashboardChartPseudoModule)
-          "
-          class="dashboard__chart"
-        >
-          <submodule-importer
-            :submodule="getModule().getSubmodule(DashboardChartPseudoModule)"
-            :base-asset="currentAsset"
-            :quote-asset="defaultQuoteAsset"
-          />
-        </div>
         <div
           class="dashboard__activity"
           v-if="getModule().canRenderSubmodule(MovementsHistoryModule) &&
@@ -88,6 +88,14 @@
           />
         </template>
       </drawer>
+      <drawer :is-shown.sync="isWithdrawalDrawerShown">
+        <template slot="heading">
+          {{ 'op-pages.withdraw' | globalize }}
+        </template>
+        <withdrawal-form
+          @operation-submitted="$emit(EVENTS.movementsUpdateRequired)"
+        />
+      </drawer>
     </template>
 
     <template v-else>
@@ -107,9 +115,11 @@ import Drawer from '@/vue/common/Drawer'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
+import WithdrawalForm from '@/vue/forms/WithdrawalForm'
+
 import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
-import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
+import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
 
 const REFS = {
   movementsHistory: 'movements-history',
@@ -123,6 +133,7 @@ export default {
     Loader,
     Drawer,
     SubmoduleImporter,
+    WithdrawalForm,
   },
   data: () => ({
     currentAsset: null,
@@ -130,11 +141,12 @@ export default {
     createIssuanceFormIsShown: false,
     transferFormIsShown: false,
     showDrawer: false,
+    isWithdrawalDrawerShown: false,
     scale: 'day',
     MovementsHistoryModule,
+    WithdrawalDrawerPseudoModule,
     IssuanceFormModule,
     TransferDrawerPseudoModule,
-    DashboardChartPseudoModule,
     REFS,
   }),
   computed: {
@@ -177,7 +189,9 @@ export default {
       if (value) {
         this.currentAsset = value.code
       } else {
-        const keys = this.accountBalances.map(i => i.asset.code)
+        const keys = this.accountBalances
+          .filter(item => item.asset.isGrainCoin)
+          .map(i => i.asset.code)
         this.currentAsset =
           keys.find(a => a === this.$route.query.asset) || keys[0] || ''
       }
@@ -227,6 +241,7 @@ export default {
 }
 
 .dashboard__plus-icon,
+.dashboard__download-icon,
 .dashboard__send-icon {
   font-size: 1.6rem;
   margin-right: 0.5rem;

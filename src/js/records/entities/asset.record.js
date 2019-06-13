@@ -119,6 +119,10 @@ export class AssetRecord {
     return !!this.details.isFiat
   }
 
+  get isGrainCoin () {
+    return !!this.details.elevatorCode
+  }
+
   get isRequiresKYC () {
     return this.assetType
   }

@@ -59,6 +59,7 @@ export default {
         menuButtonMdiName: 'view-dashboard',
         submodules: [
           new MovementsHistoryModule(),
+          new WithdrawalDrawerPseudoModule(),
           new IssuanceFormModule({
             isCorporateOnly: true,
           }),
@@ -89,45 +90,6 @@ export default {
             ],
           }),
         ],
-      },
-    ),
-
-    new TradePageModule(
-      {
-        routerEntry: {
-          path: '/trade',
-          name: vueRoutes.trade.name,
-          meta: { pageNameTranslationId: 'pages-names.trade' },
-          redirect: vueRoutes.tradeExchange,
-          children: [
-            // Carefully: have some issues because of is-loading prop provided
-            // to children from parent component. Leave it lke that for now
-            {
-              path: '/trade/exchange',
-              name: vueRoutes.tradeExchange.name,
-              component: _ => import('@/vue/pages/TradeExchange'),
-            },
-            {
-              path: '/trade/my-orders',
-              name: vueRoutes.tradeUserOffers.name,
-              component: _ => import('@/vue/pages/TradeUserOffers'),
-            },
-          ],
-        },
-        menuButtonTranslationId: 'pages-names.trade',
-        menuButtonMdiName: 'finance',
-      },
-    ),
-
-    new LimitsPageModule(
-      {
-        routerEntry: {
-          path: '/limits',
-          name: vueRoutes.limits.name,
-          meta: { pageNameTranslationId: 'pages-names.limits' },
-        },
-        menuButtonTranslationId: 'pages-names.limits',
-        menuButtonMdiName: 'poll-box',
       },
     ),
 
@@ -162,27 +124,6 @@ export default {
             ],
           }),
           new CreateAssetFormModule({
-            isCorporateOnly: true,
-          }),
-        ],
-      },
-    ),
-
-    new IssuancePageModule(
-      {
-        routerEntry: {
-          path: '/issuance',
-          name: vueRoutes.issuance.name,
-          meta: { pageNameTranslationId: 'pages-names.issuance' },
-        },
-        menuButtonTranslationId: 'pages-names.issuance',
-        menuButtonMdiName: 'poll',
-        submodules: [
-          new IssuanceExplorerModule(),
-          new IssuanceFormModule({
-            isCorporateOnly: true,
-          }),
-          new PreIssuanceFormModule({
             isCorporateOnly: true,
           }),
         ],
@@ -247,6 +188,67 @@ export default {
             ],
           }),
         ],
+      },
+    ),
+
+    new IssuancePageModule(
+      {
+        routerEntry: {
+          path: '/issuance',
+          name: vueRoutes.issuance.name,
+          meta: { pageNameTranslationId: 'pages-names.issuance' },
+        },
+        isCorporateOnly: true,
+        menuButtonTranslationId: 'pages-names.issuance',
+        menuButtonMdiName: 'poll',
+        submodules: [
+          new IssuanceExplorerModule(),
+          new IssuanceFormModule({
+            isCorporateOnly: true,
+          }),
+          new PreIssuanceFormModule({
+            isCorporateOnly: true,
+          }),
+        ],
+      },
+    ),
+
+    new TradePageModule(
+      {
+        routerEntry: {
+          path: '/trade',
+          name: vueRoutes.trade.name,
+          meta: { pageNameTranslationId: 'pages-names.trade' },
+          redirect: vueRoutes.tradeExchange,
+          children: [
+            // Carefully: have some issues because of is-loading prop provided
+            // to children from parent component. Leave it lke that for now
+            {
+              path: '/trade/exchange',
+              name: vueRoutes.tradeExchange.name,
+              component: _ => import('@/vue/pages/TradeExchange'),
+            },
+            {
+              path: '/trade/my-orders',
+              name: vueRoutes.tradeUserOffers.name,
+              component: _ => import('@/vue/pages/TradeUserOffers'),
+            },
+          ],
+        },
+        menuButtonTranslationId: 'pages-names.trade',
+        menuButtonMdiName: 'finance',
+      },
+    ),
+
+    new LimitsPageModule(
+      {
+        routerEntry: {
+          path: '/limits',
+          name: vueRoutes.limits.name,
+          meta: { pageNameTranslationId: 'pages-names.limits' },
+        },
+        menuButtonTranslationId: 'pages-names.limits',
+        menuButtonMdiName: 'poll-box',
       },
     ),
 

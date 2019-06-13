@@ -183,10 +183,12 @@ export default {
     elevatorCodes () {
       return [
         '-',
-        ...this.assets.reduce((codes, item) => {
-          codes.add(item.details.elevatorCode)
-          return codes
-        }, new Set()),
+        ...this.assets
+          .filter(item => item.isGrainCoin)
+          .reduce((codes, item) => {
+            codes.add(item.details.elevatorCode)
+            return codes
+          }, new Set()),
       ]
     },
     filteredAssets () {
@@ -196,10 +198,10 @@ export default {
           filteredAssets = [...this.assets]
           break
         case ASSET_TYPES.corn:
-          filteredAssets = this.assets.filter(item => item.details.cornClass)
+          filteredAssets = this.assets.filter(item => item.isGrainCoin)
           break
         case ASSET_TYPES.crypto:
-          filteredAssets = this.assets.filter(item => !item.details.cornClass)
+          filteredAssets = this.assets.filter(item => !item.isGrainCoin)
           break
         default:
           filteredAssets = []

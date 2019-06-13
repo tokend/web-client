@@ -81,7 +81,7 @@
 
     <drawer :is-shown.sync="isWithdrawalDrawerShown">
       <template slot="heading">
-        {{ 'withdrawal-form.withdrawal' | globalize }}
+        {{ 'op-pages.withdraw' | globalize }}
       </template>
       <withdrawal-form
         @operation-submitted="$emit(EVENTS.movementsUpdateRequired)"
@@ -99,7 +99,7 @@
 
     <drawer :is-shown.sync="isTransferDrawerShown">
       <template slot="heading">
-        {{ 'transfer-form.form-heading' | globalize }}
+        {{ 'op-pages.send' | globalize }}
       </template>
       <transfer-form
         @operation-submitted="$emit(EVENTS.movementsUpdateRequired)"
@@ -160,8 +160,11 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      assets: vuexTypes.balancesAssets,
+      balancesAssets: vuexTypes.balancesAssets,
     }),
+    assets () {
+      return this.balancesAssets.filter(item => !item.isGrainCoin)
+    },
   },
   watch: {
     asset: {
