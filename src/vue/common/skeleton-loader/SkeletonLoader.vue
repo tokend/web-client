@@ -6,6 +6,9 @@
     <div
       class="skeleton-loader__stub"
       :class="`skeleton-loader__stub--${TEMPLATES[template]}`"
+      :style="{
+        ...(width ? { width: '100%', maxWidth: width} : {}),
+      }"
     />
   </div>
 </template>
@@ -35,6 +38,11 @@ export default {
         return Object.keys(TEMPLATES).includes(value)
       },
     },
+    width: {
+      type: [String],
+      default: '',
+      required: false,
+    },
   },
   data: _ => ({
     TEMPLATES,
@@ -53,7 +61,7 @@ $media-desktop: 1130px;
 $media-small-desktop: 960px;
 
 /* stylelint-disable function-calc-no-invalid */
-@mixin asset-card-width ($width) {
+@mixin asset-card-width($width) {
   flex: 0 1 calc(#{$width}% - (#{$asset-card-margin} * 2));
   max-width: calc(#{$width}% - (#{$asset-card-margin} * 2));
 }
@@ -113,31 +121,36 @@ $media-small-desktop: 960px;
     width: 45%;
     height: 100%;
     position: absolute;
-    background:
-      linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.25),
-        transparent
-      );
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.25),
+      transparent
+    );
     left: 0;
     top: 0;
     animation: skeleton-loader__gradient-animation 0.8s linear infinite;
   }
 
   &--big-string {
+    display: inline-block;
     height: 1.8rem;
-    width: 15rem;
+    width: 100%;
+    max-width: 15rem;
   }
 
   &--small-string {
+    display: inline-block;
     height: 1.4rem;
-    width: 10rem;
+    width: 100%;
+    max-width: 10rem;
   }
 
   &--x-small-string {
+    display: inline-block;
     height: 1rem;
-    width: 8rem;
+    width: 100%;
+    max-width: 8rem;
   }
 
   &--big-icon {
