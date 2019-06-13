@@ -152,6 +152,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 import { base } from '@tokend/js-sdk'
 import { DateUtil } from '@/js/utils'
+import { PollRecord } from '@/js/records/entities/poll.record'
 
 const VOTING_RESULTS = [
   { name: 'my-poll-manage-form.passed-poll-result', value: 0 },
@@ -163,7 +164,7 @@ export default {
   mixins: [FormMixin],
   props: {
     poll: {
-      type: Object,
+      type: PollRecord,
       required: true,
     },
   },
@@ -191,7 +192,7 @@ export default {
   },
 
   created () {
-    this.form.endTime = this.poll.endTime
+    this.form.endTime = this.poll.endsAt
   },
 
   validations () {

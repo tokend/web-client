@@ -93,7 +93,7 @@
         {{ 'polls-all.vote-drawer-title' | globalize }}
       </template>
 
-      <poll-voter :poll="pollToBrowse" />
+      <my-poll :poll-id="pollToBrowse.id" />
     </drawer>
   </div>
 </template>
@@ -107,7 +107,7 @@ import { api } from '@/api'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import Drawer from '@/vue/common/Drawer'
-import PollVoter from './polls-all/PollVoter'
+import MyPoll from './polls-my/MyPoll'
 import PollCard from './polls-all/PollCard'
 import PollCardSkeleton from './polls-all/PollCardSkeleton'
 
@@ -121,7 +121,7 @@ export default {
   components: {
     CollectionLoader,
     Drawer,
-    PollVoter,
+    MyPoll,
     PollCard,
     PollCardSkeleton,
     NoDataMessage,

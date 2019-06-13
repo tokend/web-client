@@ -29,6 +29,7 @@ import Tab from '@/vue/common/tabs/Tab'
 import { errors } from '@tokend/js-sdk'
 import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { PollRecord } from '@/js/records/entities/poll.record'
 
 const EVENTS = {
   close: 'close',
@@ -73,7 +74,7 @@ export default {
         const { data } = await api.getWithSignature(endpoint, {
           include: ['participation', 'participation.votes'],
         })
-        this.poll = data
+        this.poll = new PollRecord(data)
       } catch (error) {
         if (!(error instanceof errors.NotFoundError)) {
           throw error
