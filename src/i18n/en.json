@@ -1893,7 +1893,11 @@
       "corn-type": "Зерно",
       "crypto": "Средства",
       "total-corn-amount": "Общее количесто зерна",
-      "elevator-code": "Код элеватора"
+      "elevator-code": "Код элеватора",
+      "grain-type": "Тип зерна",
+      "corn-class": "Класс зерна",
+      "corn-code": "Код актива",
+      "corn-name": "Имя актива"
     },
     "create-opportunity": {
       "maturity-date": "Maturity Date",

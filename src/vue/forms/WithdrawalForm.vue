@@ -11,7 +11,7 @@
               <select-field
                 name="withdrawal-asset"
                 v-model="form.asset"
-                :values="withdrawableBalancesAssets"
+                :values="assets"
                 key-as-value-text="nameAndCode"
                 :disabled="formMixin.isDisabled"
                 :label="'withdrawal-form.asset' | globalize"
@@ -159,6 +159,11 @@ import {
 const EVENTS = {
   operationSubmitted: 'operation-submitted',
 }
+const ASSET_TYPE = {
+  all: 'all',
+  grain: 'grain',
+  crypto: 'crypto',
+}
 
 export default {
   name: 'withdrawal-form',
@@ -167,6 +172,9 @@ export default {
     EmailGetter,
   },
   mixins: [FormMixin, FeesMixin, IdentityGetterMixin],
+  props: {
+    assetType: { type: String, default: ASSET_TYPE.all },
+  },
   data: () => ({
     isLoaded: false,
     isFailed: false,
@@ -209,6 +217,18 @@ export default {
     },
     balance () {
       return this.accountBalanceByCode(this.form.asset.code)
+    },
+    assets () {
+      switch (this.assetType) {
+        case ASSET_TYPE.grain:
+          return this.withdrawableBalancesAssets
+            .filter(item => item.isGrainCoin)
+        case ASSET_TYPE.crypto:
+          return this.withdrawableBalancesAssets
+            .filter(item => !item.isGrainCoin)
+        default:
+          return this.withdrawableBalancesAssets
+      }
     },
   },
   watch: {
@@ -299,15 +319,15 @@ export default {
       }
     },
     async initAssetSelector () {
-      if (this.withdrawableBalancesAssets.length) {
-        this.form.asset = this.withdrawableBalancesAssets[0]
+      if (this.assets.length) {
+        this.form.asset = this.assets[0]
       }
     },
     async reinitAssetSelector () {
-      if (this.withdrawableBalancesAssets.length) {
-        const updatedAsset = this.withdrawableBalancesAssets
+      if (this.assets.length) {
+        const updatedAsset = this.assets
           .find(item => item.code === this.form.asset.code)
-        this.form.asset = updatedAsset || this.withdrawableBalancesAssets[0]
+        this.form.asset = updatedAsset || this.assets[0]
       }
     },
   },

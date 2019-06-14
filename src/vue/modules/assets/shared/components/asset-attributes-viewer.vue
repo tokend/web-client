@@ -26,10 +26,22 @@
               }}
             </td>
           </tr>
-          <tr>
-            <td>{{ 'assets.terms-title' | globalize }}</td>
+          <tr v-if="asset.details.elevatorCode">
+            <td>{{ 'assets.elevator-code' | globalize }}</td>
             <td>
-              <terms-viewer :asset="asset" />
+              {{ asset.details.elevatorCode }}
+            </td>
+          </tr>
+          <tr v-if="asset.details.cornType">
+            <td>{{ 'assets.grain-type' | globalize }}</td>
+            <td>
+              {{ `assets.${asset.details.cornType}` | globalize }}
+            </td>
+          </tr>
+          <tr v-if="asset.details.cornClass">
+            <td>{{ 'assets.corn-class' | globalize }}</td>
+            <td>
+              {{ asset.details.cornClass }}
             </td>
           </tr>
           <tr>
@@ -39,6 +51,12 @@
                 right-side
                 :account-id="asset.owner"
               />
+            </td>
+          </tr>
+          <tr>
+            <td>{{ 'assets.terms-title' | globalize }}</td>
+            <td>
+              <terms-viewer :asset="asset" />
             </td>
           </tr>
         </tbody>

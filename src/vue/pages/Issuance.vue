@@ -12,15 +12,6 @@
         slot="extra"
       >
         <button
-          v-if="getModule().canRenderSubmodule(PreIssuanceFormModule)"
-          v-ripple
-          class="app__button-raised"
-          @click="isPreIssuanceDrawerShown = true"
-        >
-          {{ 'issuance-page.upload-pre-issuance' | globalize }}
-        </button>
-
-        <button
           v-if="getModule().canRenderSubmodule(IssuanceFormModule)"
           v-ripple
           class="app__button-raised"
@@ -30,20 +21,6 @@
         </button>
       </template>
     </top-bar>
-
-    <drawer
-      v-if="getModule().canRenderSubmodule(PreIssuanceFormModule)"
-      :is-shown.sync="isPreIssuanceDrawerShown"
-    >
-      <template slot="heading">
-        {{ 'issuance-page.upload-pre-issuance' | globalize }}
-      </template>
-
-      <submodule-importer
-        :submodule="getModule().getSubmodule(PreIssuanceFormModule)"
-        @pre-issuance-created="isPreIssuanceDrawerShown = false"
-      />
-    </drawer>
 
     <drawer
       v-if="getModule().canRenderSubmodule(IssuanceFormModule)"

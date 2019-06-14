@@ -1,7 +1,7 @@
 <template>
   <div class="transfer app__page-content-wrp">
     <template v-if="isLoaded">
-      <template v-if="!transferableBalancesAssets.length">
+      <template v-if="!assets.length">
         <h2 class="app__page-heading">
           {{ 'transfer-form.no-assets-heading' | globalize }}
         </h2>
@@ -28,7 +28,7 @@
             <div class="app__form-field">
               <select-field
                 name="transfer-asset"
-                :values="transferableBalancesAssets"
+                :values="assets"
                 v-model="form.asset"
                 key-as-value-text="nameAndCode"
                 :label="'transfer-form.asset-lbl' | globalize"
@@ -165,6 +165,12 @@ const EVENTS = {
   operationSubmitted: 'operation-submitted',
 }
 
+const ASSET_TYPE = {
+  all: 'all',
+  grain: 'grain',
+  crypto: 'crypto',
+}
+
 export default {
   name: 'transfers-form',
   components: {
@@ -177,6 +183,7 @@ export default {
   ],
   props: {
     assetToTransfer: { type: String, default: '' },
+    assetType: { type: String, default: ASSET_TYPE.all },
   },
   data: () => ({
     form: {
@@ -214,6 +221,18 @@ export default {
     ]),
     balance () {
       return this.accountBalanceByCode(this.form.asset.code)
+    },
+    assets () {
+      switch (this.assetType) {
+        case ASSET_TYPE.grain:
+          return this.transferableBalancesAssets
+            .filter(item => item.isGrainCoin)
+        case ASSET_TYPE.crypto:
+          return this.transferableBalancesAssets
+            .filter(item => !item.isGrainCoin)
+        default:
+          return this.transferableBalancesAssets
+      }
     },
   },
   async created () {
@@ -323,9 +342,9 @@ export default {
     },
     setAsset () {
       this.form.asset =
-        this.transferableBalancesAssets
+        this.assets
           .find(asset => asset.code === this.assetToTransfer) ||
-        this.transferableBalancesAssets[0] ||
+        this.assets[0] ||
         {}
     },
   },

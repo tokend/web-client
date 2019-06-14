@@ -206,12 +206,5 @@ describe('Dashboard.AssetSelector component', () => {
         expect(wrapper.vm.currentAssetBalanceDetails).to.deep.equal({})
       })
     })
-    it('assetsList()', () => {
-      wrapper.vm.assets = mockedAssets
-      const sortedAssets = mockedAssets
-        .sort((a, b) => a.code.localeCompare(b.code))
-
-      expect(wrapper.vm.assetsList).to.deep.equal(sortedAssets)
-    })
   })
 })

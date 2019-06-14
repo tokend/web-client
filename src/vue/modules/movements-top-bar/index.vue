@@ -84,6 +84,7 @@
         {{ 'op-pages.withdraw' | globalize }}
       </template>
       <withdrawal-form
+        asset-type="crypto"
         @operation-submitted="$emit(EVENTS.movementsUpdateRequired)"
       />
     </drawer>
@@ -102,6 +103,7 @@
         {{ 'op-pages.send' | globalize }}
       </template>
       <transfer-form
+        asset-type="crypto"
         @operation-submitted="$emit(EVENTS.movementsUpdateRequired)"
       />
     </drawer>

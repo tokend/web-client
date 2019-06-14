@@ -10,6 +10,18 @@
         />
         <div class="dashboard__actions">
           <!-- eslint-disable-next-line max-len -->
+          <template v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)">
+            <button
+              v-ripple
+              class="app__button-raised dashboard__action"
+              @click="isWithdrawalDrawerShown = true"
+            >
+              <i class="mdi mdi-download dashboard__download-icon" />
+              {{ 'dashboard.withdraw' | globalize }}
+            </button>
+          </template>
+
+          <!-- eslint-disable-next-line max-len -->
           <template v-if="getModule().canRenderSubmodule(IssuanceFormModule)">
             <button
               class="app__button-raised dashboard__action"
@@ -31,18 +43,6 @@
               {{
                 'dashboard.send-asset-lbl' | globalize({ asset: currentAsset })
               }}
-            </button>
-          </template>
-
-          <!-- eslint-disable-next-line max-len -->
-          <template v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)">
-            <button
-              v-ripple
-              class="app__button-raised dashboard__action"
-              @click="isWithdrawalDrawerShown = true"
-            >
-              <i class="mdi mdi-download dashboard__download-icon" />
-              {{ 'dashboard.withdraw' | globalize }}
             </button>
           </template>
         </div>
@@ -85,6 +85,7 @@
           <transfer
             @operation-submitted="updateBalancesAndList()"
             :asset-to-transfer="currentAsset"
+            asset-type="grain"
           />
         </template>
       </drawer>
@@ -93,6 +94,7 @@
           {{ 'op-pages.withdraw' | globalize }}
         </template>
         <withdrawal-form
+          asset-type="grain"
           @operation-submitted="$emit(EVENTS.movementsUpdateRequired)"
         />
       </drawer>

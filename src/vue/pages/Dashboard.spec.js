@@ -81,57 +81,6 @@ describe('Dashboard component', () => {
     sinon.restore()
   })
 
-  describe('setCurrentAsset()', () => {
-    it('set currentAsset as passed value', () => {
-      mountComponentWithSpecifiedAccountBalances(mockedAccountBalances)
-      wrapper.vm.setCurrentAsset({ code: 'BTC' })
-
-      expect(wrapper.vm.currentAsset).to.equal('BTC')
-    })
-
-    describe('set default currentAsset =>', () => {
-      it('set router query asset if accountBalances has one', () => {
-        mountComponentWithSpecifiedAccountBalances(mockedAccountBalances)
-        wrapper.vm.$router.push({
-          query: { asset: 'ETH' },
-        })
-
-        wrapper.vm.setCurrentAsset()
-
-        expect(wrapper.vm.currentAsset).to.equal('ETH')
-      })
-
-      it('set first asset code in accountBalances list route query asset does not exists', () => {
-        const mockedAccountBalances = [
-          {
-            balance: '1',
-            asset: {
-              code: 'BTC',
-              policies: [
-                { value: ASSET_POLICIES.transferable },
-                { value: ASSET_POLICIES.baseAsset },
-              ],
-            },
-          },
-        ]
-        mountComponentWithSpecifiedAccountBalances(mockedAccountBalances)
-
-        wrapper.vm.setCurrentAsset()
-
-        expect(wrapper.vm.currentAsset).to.equal('BTC')
-      })
-
-      it('set empty string if accountBalances is empty', () => {
-        const mockedAccountBalances = []
-        mountComponentWithSpecifiedAccountBalances(mockedAccountBalances)
-
-        wrapper.vm.setCurrentAsset()
-
-        expect(wrapper.vm.currentAsset).to.equal('')
-      })
-    })
-  })
-
   describe('watchers', () => {
     beforeEach(() => {
       mountComponentWithSpecifiedAccountBalances(mockedAccountBalances)
