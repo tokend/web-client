@@ -86,6 +86,8 @@ const EVENTS = {
 }
 
 export default {
+  name: 'poll-vote-form',
+
   mixins: [FormMixin],
 
   props: {
@@ -145,10 +147,14 @@ export default {
 
       this.disableForm()
       try {
-        await api.postOperations(
-          this.buildVoteRemovalOperation(),
-          this.buildSingleChoiceVoteOperation(),
-        )
+        const operations = []
+        if (this.isRepeatVote) {
+          operations.push(this.buildVoteRemovalOperation())
+        }
+        operations.push(this.buildSingleChoiceVoteOperation())
+
+        await api.postOperations(...operations)
+        await this.tryPopulateChoice()
 
         Bus.success('poll-vote-form.submitted-notification')
         this.$emit(EVENTS.submitted)

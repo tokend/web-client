@@ -5,6 +5,7 @@
         <select-field
           v-model="filters.assetCode"
           class="polls-all__filter-field app__select app__select--no-border"
+          :disabled="filters.isOwnedByCurrentUser"
         >
           <option
             v-for="balance in balances"
@@ -33,6 +34,24 @@
           {{ 'polls-all.state-canceled' | globalize }}
         </option>
       </select-field>
+
+      <div class="polls-all__filter-field polls-all__filter-field--tick">
+        <tick-field
+          v-model="filters.isOwnedByCurrentUser"
+          :cb-value="true"
+        >
+          {{ 'polls-all.owned-by-me-filter-lbl' | globalize }}
+        </tick-field>
+      </div>
+
+      <div class="polls-all__filter-field polls-all__filter-field--tick">
+        <tick-field
+          v-model="filters.isResultProvidedByCurrentUser"
+          :cb-value="true"
+        >
+          {{ 'polls-all.result-provided-by-me-filter-lbl' | globalize }}
+        </tick-field>
+      </div>
     </div>
 
     <template v-if="list.length">
@@ -113,8 +132,6 @@ import PollCardSkeleton from './polls-all/PollCardSkeleton'
 
 import { PollRecord } from '@/js/records/entities/poll.record'
 
-// TODO: vote review
-
 export default {
   name: 'polls-all',
 
@@ -134,6 +151,8 @@ export default {
       filters: {
         assetCode: '',
         state: PollRecord.states.open,
+        isOwnedByCurrentUser: false,
+        isResultProvidedByCurrentUser: false,
       },
       isLoading: false,
       isInitialized: false,
@@ -147,22 +166,25 @@ export default {
   computed: {
     ...mapGetters({
       balances: vuexTypes.accountBalances,
+      accountId: vuexTypes.accountId,
     }),
   },
 
   watch: {
     'filters.assetCode' () {
-      if (!this.isInitialized) {
-        return
-      }
-      this.reloadList()
+      this.reloadListIfInitialized()
     },
 
     'filters.state' () {
-      if (!this.isInitialized) {
-        return
-      }
-      this.reloadList()
+      this.reloadListIfInitialized()
+    },
+
+    'filters.isOwnedByCurrentUser' () {
+      this.reloadListIfInitialized()
+    },
+
+    'filters.isResultProvidedByCurrentUser' () {
+      this.reloadListIfInitialized()
     },
   },
 
@@ -210,10 +232,18 @@ export default {
       try {
         result = await api.getWithSignature('/v3/polls', {
           filter: {
-            owner: this.balances
-              .find(i => i.asset.code === this.filters.assetCode)
-              .asset.owner,
+            owner: this.filters.isOwnedByCurrentUser
+              ? this.accountId
+              : this.balances
+                .find(i => i.asset.code === this.filters.assetCode)
+                .asset.owner,
+
             state: this.filters.state,
+
+            ...(this.filters.isResultProvidedByCurrentUser
+              ? { 'result_provider': this.accountId }
+              : {}
+            ),
           },
         })
       } catch (error) {
@@ -238,6 +268,13 @@ export default {
       return this.$refs.listCollectionLoader.loadFirstPage()
     },
 
+    reloadListIfInitialized () {
+      if (!this.isInitialized) {
+        return
+      }
+      this.reloadList()
+    },
+
     selectItem (item) {
       this.pollToBrowse = item
       this.isDrawerShown = true
@@ -251,17 +288,21 @@ export default {
 @import '~@scss/variables.scss';
 
 $list-item-margin: 2rem;
+$filter-field-to-filter-field-margin: 2rem;
 
 .polls-all__filters {
-  margin-bottom: 2.4rem;
+  margin: -$filter-field-to-filter-field-margin 0 2.4rem
+    (-$filter-field-to-filter-field-margin);
 }
 
 .polls-all__filter-field {
   display: inline-block;
   width: auto;
+  margin: $filter-field-to-filter-field-margin 0 0
+    $filter-field-to-filter-field-margin;
 
-  & + & {
-    margin-left: 1.2rem;
+  &--tick /deep/ .tick-field__label {
+    font-size: 1.8rem;
   }
 }
 

@@ -23,7 +23,7 @@
         :html="true"
         :source="'poll-card.ended-at-row' | globalize({
           time: poll.endsAt,
-          state: translatePollStateInline(poll.stateI),
+          state: translatePollStateInline(poll),
         })"
       />
     </template>
@@ -48,6 +48,8 @@ import VueMarkdown from 'vue-markdown'
 import { PollRecord } from '@/js/records/entities/poll.record'
 
 export default {
+  name: 'poll-vote',
+
   components: {
     EmailGetter,
     VueMarkdown,

@@ -23,7 +23,8 @@
     <div
       v-for="(choice, index) in form.choices"
       :key="index"
-      class="app__form-row">
+      class="app__form-row"
+    >
       <div class="app__form-field">
         <div class="create-poll-form__choice-wrp">
           <div class="create-poll-form__choice">
@@ -54,9 +55,7 @@
             v-if="canAddChoice(index + 1)"
             class="create-poll-form__add-choice-wrp"
           >
-            <p
-              class="create-poll-form__add-choice"
-            >
+            <p class="create-poll-form__add-choice">
               <a
                 class="create-poll-form__add-choice-btn"
                 @click="addChoice(choice)"
@@ -159,7 +158,13 @@
         <tick-field
           name="create-poll-vote-confirmation-required"
           v-model="form.isVoteConfirmationRequired"
-          :disabled="formMixin.isDisabled"
+          :disabled="true || formMixin.isDisabled"
+          v-tooltip="{
+            type: 'hover',
+            text: $options.filters.globalize(
+              'create-poll-form.vote-confirmation-required-disabled-tooltip'
+            ),
+          }"
         >
           {{ 'create-poll-form.vote-confirmation-required-lbl' | globalize }}
         </tick-field>
@@ -262,6 +267,7 @@ export default {
     ...mapGetters({
       accountId: vuexTypes.accountId,
       restrictedPollType: vuexTypes.kvPollTypeRestricted,
+      unrestrictedPollType: vuexTypes.kvPollTypeUnrestricted,
     }),
     yesterday () {
       return moment().subtract(1, 'days').toISOString()
@@ -271,6 +277,10 @@ export default {
         {
           labelTranslationId: 'create-poll-form.restricted-poll-lbl',
           value: this.restrictedPollType,
+        },
+        {
+          labelTranslationId: 'create-poll-form.unrestricted-poll-lbl',
+          value: this.unrestrictedPollType,
         },
       ]
     },
@@ -324,7 +334,7 @@ export default {
     },
     canDeleteChoice (index) {
       return index !== this.form.choices.length ||
-      (index === this.form.choices.length && this.form.choices.length !== 1)
+        (index === this.form.choices.length && this.form.choices.length !== 1)
     },
     canAddChoice (index) {
       return index === this.form.choices.length

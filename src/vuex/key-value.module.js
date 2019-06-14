@@ -23,6 +23,7 @@ export const state = {
   kvAssetTypeKycRequired: null,
   kvAssetTypeSecurity: null,
   kvPollTypeRestricted: null,
+  kvPollTypeunRestricted: null,
   defaultQuoteAsset: '',
 }
 
@@ -60,6 +61,9 @@ export const mutations = {
   [vuexTypes.SET_KV_POLL_TYPE_RESTRICTED] (state, kvPollTypeRestricted) {
     state.kvPollTypeRestricted = kvPollTypeRestricted
   },
+  [vuexTypes.SET_KV_POLL_TYPE_UNRESTRICTED] (state, kvPollTypeUnrestricted) {
+    state.kvPollTypeUnrestricted = kvPollTypeUnrestricted
+  },
   [vuexTypes.SET_DEFAULT_QUOTE_ASSET] (state, asset) {
     state.defaultQuoteAsset = asset
   },
@@ -83,6 +87,7 @@ export const actions = {
     const assetTypeKycRequired = getKvValue('asset_type:kyc_required', data)
     const assetTypeSecurity = getKvValue('asset_type:security', data)
     const restrictedPollType = getKvValue('poll_type:restricted', data)
+    const unrestrictedPollType = getKvValue('poll_type:unrestricted', data)
 
     commit(vuexTypes.SET_KV_ENTRY_GENERAL_ROLE_ID, generalRoleId)
     commit(vuexTypes.SET_KV_ENTRY_CORPORATE_ROLE_ID, corporateRoleId)
@@ -93,6 +98,7 @@ export const actions = {
     commit(vuexTypes.SET_KV_KYC_REQUIRED, assetTypeKycRequired)
     commit(vuexTypes.SET_KV_ASSET_TYPE_SECURITY, assetTypeSecurity)
     commit(vuexTypes.SET_KV_POLL_TYPE_RESTRICTED, restrictedPollType)
+    commit(vuexTypes.SET_KV_POLL_TYPE_UNRESTRICTED, unrestrictedPollType)
   },
 }
 
@@ -109,6 +115,7 @@ export const getters = {
   [vuexTypes.defaultQuoteAsset]: (a, getters, b, rootGetters) =>
     rootGetters[vuexTypes.statsQuoteAsset].code,
   [vuexTypes.kvPollTypeRestricted]: state => state.kvPollTypeRestricted,
+  [vuexTypes.kvPollTypUnrestricted]: state => state.kvPollTypeUnrestricted,
 }
 
 export default {

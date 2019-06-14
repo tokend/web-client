@@ -2098,6 +2098,22 @@
       "overview-title": "Poll overview",
       "new-poll": "New poll"
     },
+    "create-poll-form": {
+      "permission-type-lbl": "Permission type",
+      "start-time-lbl": "Start time",
+      "end-time-lbl": "End time",
+      "vote-confirmation-required-lbl": "Vote confirmation required",
+      "result-provider-id-lbl": "Result provider id",
+      "question-lbl": "Question",
+      "description-lbl": "Option {{number}}",
+      "create-btn": "Create",
+      "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
+      "restricted-poll-lbl": "Restricted",
+      "unrestricted-poll-lbl": "Unrestricted",
+      "load-failed-msg": "There was an error while loading. Please, try again later",
+      "add-choice-btn": "Add option",
+      "vote-confirmation-required-disabled-tooltip": "Not supported at the moment"
+    },
     "polls-all": {
       "state-open": "Open",
       "state-passed": "Passed",
@@ -2105,7 +2121,9 @@
       "state-canceled": "Canceled",
       "vote-drawer-title": "Vote in poll",
       "no-list-title": "No polls yet",
-      "no-list-msg": "No polls found by the provided criteria. Please try another search query."
+      "no-list-msg": "No polls found by the provided criteria. Please try another search query.",
+      "owned-by-me-filter-lbl": "Owned by me",
+      "result-provided-by-me-filter-lbl": "Result provided by me"
     },
     "poll-card": {
       "author-prefix": "By",
@@ -2128,21 +2146,6 @@
       "remove-vote-btn": "Remove  vote",
       "remove-vote-confirmation-msg": "Are you sure you want to remove your current vote?",
       "removed-notification": "Successfully removed vote"
-    },
-    "create-poll-form": {
-      "permission-type-lbl": "Permission type",
-      "start-time-lbl": "Start time",
-      "end-time-lbl": "End time",
-      "vote-confirmation-required-lbl": "Vote confirmation required",
-      "result-provider-id-lbl": "Result provider id",
-      "question-lbl": "Question",
-      "description-lbl": "Option {{number}}",
-      "create-btn": "Create",
-      "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
-      "verification-not-required-lbl": "Does not require verification",
-      "restricted-poll-lbl": "Restricted",
-      "load-failed-msg": "There was an error while loading. Please, try again later",
-      "add-choice-btn": "Add option"
     },
     "my-poll-manage-form": {
       "submit-btn": "Update",
@@ -2171,6 +2174,25 @@
     "poll-participants": {
       "email-lbl": "Email",
       "choice-lbl": "Choice"
+    },
+    "poll-attributes": {
+      "id-key": "Poll ID",
+      "owner-key": "Owner",
+      "start-time-key": "Start time",
+      "end-time-key": "End time",
+      "state-key": "State",
+      "permission-type-key": "Permission type",
+      "result-provider-key": "Result provider",
+      "number-of-choices-key": "Number of choices",
+      "vote-confirmation-required-key": "Vote confirmation required",
+      "is-ongoing-key": "Is in progress",
+      "state-open-val": "Open",
+      "state-passed-val": "Passed",
+      "state-failed-val": "Failed",
+      "state-canceled-val": "Canceled",
+      "permission-type-restricted-val": "Restricted",
+      "yes-val": "Yes",
+      "no-val": "No"
     }
   }
 }

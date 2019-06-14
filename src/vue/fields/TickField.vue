@@ -168,6 +168,8 @@ $tick-size: 1.8rem;
   border-color: $field-color-unfocused;
   position: absolute;
   left: 0;
+  top: 50%;
+  transform: translateY(-50%);
   display: block;
   pointer-events: none;
   outline: 0.25rem solid transparent;
