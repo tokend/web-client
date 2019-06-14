@@ -54,6 +54,12 @@
             </td>
           </tr>
           <tr>
+            <td>{{ 'assets.issued-title' | globalize }}</td>
+            <td>
+              {{ { value: asset.issued, currency: asset.code } | formatMoney }}
+            </td>
+          </tr>
+          <tr>
             <td>{{ 'assets.terms-title' | globalize }}</td>
             <td>
               <terms-viewer :asset="asset" />
