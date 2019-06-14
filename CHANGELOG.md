@@ -18,6 +18,10 @@ for further information about branching and tagging conventions.
 
 #### Changed
 - Now loading KYC latest data from account endpoint
+- Disable withdraw for unverified users
+
+#### Fixed
+- "Balance is invalid" when submitting withdraw operation
 
 ## [1.8.0-rc.1] - 2019-06-07
 #### Changed
@@ -36,7 +40,7 @@ for further information about branching and tagging conventions.
 
 #### Changed
 - Invoice form width to full screen
-- Now displaying customer's & merchant's balances on the invoice form 
+- Now displaying customer's & merchant's balances on the invoice form
   confirmation
 
 #### Fixed
