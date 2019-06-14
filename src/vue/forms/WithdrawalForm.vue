@@ -210,12 +210,15 @@ export default {
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
-      balances: vuexTypes.accountBalances,
       withdrawableBalancesAssets: vuexTypes.withdrawableBalancesAssets,
+      accountBalanceByCode: vuexTypes.accountBalanceByCode,
     }),
 
     isMasterAssetOwner () {
       return this.form.asset.owner === api.networkDetails.adminAccountId
+    },
+    selectedAssetBalance () {
+      return this.accountBalanceByCode(this.form.asset.code)
     },
   },
   watch: {
@@ -298,7 +301,7 @@ export default {
       }
 
       return {
-        balance: this.form.asset.balance.id,
+        balance: this.selectedAssetBalance.id,
         amount: this.form.amount,
         creatorDetails: creatorDetails,
         destAsset: this.form.asset.code,
