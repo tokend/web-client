@@ -17,17 +17,6 @@
           {{ 'movements-history.movements-load-failed-msg' | globalize }}
         </p>
       </template>
-      <!--
-      <div class="movements-history__collection-loader-wrp">
-        <collection-loader
-          v-if="!isMovementsLoadFailed && assetCode"
-          v-show="isMovementsLoaded && !latestActivity"
-          :first-page-loader="firstPageLoader"
-          @first-page-load="setMovements"
-          @next-page-load="concatMovements"
-          :ref="REFS.collectionLoader"
-        />
-      </div> -->
 
       <div class="movements-history__collection-loader-wrp">
         <collection
