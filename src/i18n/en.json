@@ -835,7 +835,8 @@
       "not-depositable-msg": "{{asset}} is not depositable",
       "not-withdrawable-msg": "{{asset}} is not withdrawable",
       "not-transferable-msg": "{{asset}} is not transferable",
-      "not-redeemable-msg": "{{asset}} is not redeemable"
+      "not-redeemable-msg": "{{asset}} is not redeemable",
+      "unverified-cant-do-msg": "Unverified account can't perform this operation"
     },
     "op-details": {
       "fixed-fee-lbl": "Fixed fee",
