@@ -17,7 +17,7 @@
           {{ 'movements-history.movements-load-failed-msg' | globalize }}
         </p>
       </template>
-
+      <!--
       <div class="movements-history__collection-loader-wrp">
         <collection-loader
           v-if="!isMovementsLoadFailed && assetCode"
@@ -27,13 +27,24 @@
           @next-page-load="concatMovements"
           :ref="REFS.collectionLoader"
         />
+      </div> -->
+
+      <div class="movements-history__collection-loader-wrp">
+        <collection
+          v-if="!isMovementsLoadFailed && assetCode"
+          v-show="isMovementsLoaded && !latestActivity"
+          :loader="firstPageLoader"
+          v-model="list"
+          @input="consoleLog"
+        />
       </div>
     </template>
   </div>
 </template>
 
 <script>
-import CollectionLoader from '@/vue/common/CollectionLoader'
+// import CollectionLoader from '@/vue/common/CollectionLoader'
+import Collection from '@/vue/common/Collection'
 import MovementsTable from './components/movements-table'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
@@ -49,7 +60,8 @@ export default {
   name: 'movements-history-module',
   components: {
     MovementsTable,
-    CollectionLoader,
+    // CollectionLoader,
+    Collection,
   },
   props: {
     assetCode: {
@@ -65,6 +77,7 @@ export default {
     isMovementsLoaded: false,
     isMovementsLoadFailed: false,
     REFS,
+    list: [],
   }),
   computed: {
     ...mapGetters('movements-history', {
@@ -112,7 +125,17 @@ export default {
         this.isMovementsLoadFailed = true
       }
     },
+    consoleLog (value) {
+      this.setMovements(value)
+    }
   },
+  watchers: {
+    list (value) {
+      console.log(value)
+      this.setMovements(value)
+      console.log(value)
+    }
+  }
 }
 </script>
 
