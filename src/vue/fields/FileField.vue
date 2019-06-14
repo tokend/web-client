@@ -125,8 +125,6 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import config from '@/config'
-
 const MAX_FILE_MEGABYTES = 32
 const IMAGE_FILE_EXTENSIONS = ['jpg', 'png']
 
@@ -187,7 +185,7 @@ export default {
   methods: {
     async loadDocumentUrl (document) {
       if (document.key) {
-        this.documentUrl = `${config.FILE_STORAGE}/${document.key}`
+        this.documentUrl = await document.getPrivateUrl()
       } else {
         this.documentUrl = await FileUtil.getDataUrl(document.file)
       }

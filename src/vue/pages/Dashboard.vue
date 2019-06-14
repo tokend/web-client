@@ -13,6 +13,7 @@
           <template v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)">
             <button
               v-ripple
+              v-if="currentAsset"
               class="app__button-raised dashboard__action"
               @click="isWithdrawalDrawerShown = true"
             >

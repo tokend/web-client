@@ -13,20 +13,6 @@
         <div class="app__form-field">
           <input-field
             white-autofill
-            v-model="form.name"
-            @blur="touchField('form.name')"
-            name="verification-corporate-name"
-            :label="'verification-form.name-lbl' | globalize"
-            :error-message="getFieldErrorMessage('form.name')"
-            :disabled="formMixin.isDisabled"
-          />
-        </div>
-      </div>
-
-      <div class="app__form-row">
-        <div class="app__form-field">
-          <input-field
-            white-autofill
             v-model="form.company"
             @blur="touchField('form.company')"
             name="verification-corporate-company"
@@ -41,28 +27,11 @@
         <div class="app__form-field">
           <input-field
             white-autofill
-            v-model="form.elevatorCode"
-            @blur="touchField('form.elevatorCode')"
-            name="verification-corporate-elevator-cod"
-            :label="'verification-form.elevator-cod' | globalize"
-            :error-message="getFieldErrorMessage(
-              'form.elevatorCode',
-              { length: CODE_MAX_LENGTH }
-            )"
-            :disabled="formMixin.isDisabled"
-          />
-        </div>
-      </div>
-
-      <div class="app__form-row">
-        <div class="app__form-field">
-          <file-field
-            v-model="form.avatar"
-            name="verification-corporate-avatar"
-            :note="'verification-form.image-type-note' | globalize"
-            :file-extensions="['jpg', 'png']"
-            :document-type="DOCUMENT_TYPES.kycAvatar"
-            :label="'verification-form.avatar-lbl' | globalize"
+            v-model="form.name"
+            @blur="touchField('form.name')"
+            name="verification-corporate-name"
+            :label="'verification-form.name-lbl' | globalize"
+            :error-message="getFieldErrorMessage('form.name')"
             :disabled="formMixin.isDisabled"
           />
         </div>
@@ -100,6 +69,23 @@
         <div class="app__form-field">
           <input-field
             white-autofill
+            v-model="form.elevatorCode"
+            @blur="touchField('form.elevatorCode')"
+            name="verification-corporate-elevator-cod"
+            :label="'verification-form.elevator-cod' | globalize"
+            :error-message="getFieldErrorMessage(
+              'form.elevatorCode',
+              { length: CODE_MAX_LENGTH }
+            )"
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
             type="number"
             v-model="form.teamSize"
             @blur="touchField('form.teamSize')"
@@ -115,13 +101,51 @@
 
       <div class="app__form-row">
         <div class="app__form-field">
-          <input-field
-            white-autofill
-            v-model="form.website"
-            @blur="touchField('form.website')"
-            name="verification-corporate-website"
-            :label="'verification-form.website-lbl' | globalize"
-            :error-message="getFieldErrorMessage('form.website')"
+          {{ 'verification-form.shipment' | globalize }}:
+        </div>
+      </div>
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <tick-field
+            :name="`create-sale-whitelisted`"
+            v-model="form.carShipment"
+          >
+            {{ 'verification-form.car' | globalize }}
+          </tick-field>
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <tick-field
+            :name="`create-sale-whitelisted`"
+            v-model="form.trainShipment"
+          >
+            {{ 'verification-form.train' | globalize }}
+          </tick-field>
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <tick-field
+            :name="`create-sale-whitelisted`"
+            v-model="form.portShipment"
+          >
+            {{ 'verification-form.port' | globalize }}
+          </tick-field>
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <file-field
+            v-model="form.avatar"
+            name="verification-corporate-avatar"
+            :note="'verification-form.image-type-note' | globalize"
+            :file-extensions="['jpg', 'png']"
+            :document-type="DOCUMENT_TYPES.kycAvatar"
+            :label="'verification-form.avatar-lbl' | globalize"
             :disabled="formMixin.isDisabled"
           />
         </div>
@@ -171,7 +195,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
-import { required, validateUrl, integer, minValue, maxLength } from '@validators'
+import { required, integer, minValue, maxLength } from '@validators'
 
 const MIN_TEAM_SIZE = 1
 
@@ -195,7 +219,9 @@ export default {
       headquarters: '',
       industry: '',
       teamSize: '0',
-      website: '',
+      carShipment: false,
+      trainShipment: false,
+      portShipment: false,
     },
     isFormSubmitting: false,
     MIN_TEAM_SIZE,
@@ -217,10 +243,6 @@ export default {
         required,
         integer,
         minValue: minValue(MIN_TEAM_SIZE),
-      },
-      website: {
-        required,
-        validateUrl,
       },
     },
   },
@@ -285,8 +307,10 @@ export default {
         headquarters: this.form.headquarters,
         industry: this.form.industry,
         team_size: this.form.teamSize,
+        car_shipment: this.form.carShipment,
+        train_shipment: this.form.trainShipment,
+        port_shipment: this.form.portShipment,
         elevator_code: this.form.elevatorCode,
-        homepage: this.form.website,
         documents: {
           [DOCUMENT_TYPES.kycAvatar]: this.form.avatar
             ? this.form.avatar.getDetailsForSave()
@@ -305,7 +329,9 @@ export default {
         headquarters: kycData.headquarters,
         industry: kycData.industry,
         teamSize: kycData.team_size,
-        website: kycData.homepage,
+        carShipment: kycData.car_shipment,
+        trainShipment: kycData.train_shipment,
+        portShipment: kycData.port_shipment,
         elevatorCode: kycData.elevator_code,
       }
     },
