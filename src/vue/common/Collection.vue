@@ -2,8 +2,8 @@
   <div class="collection">
     <button
       v-if="!isNoMoreEntries"
-      class="collection-loader__more-button app__button-flat"
-      @click="extendList"
+      class="collection__more-button app__button-flat"
+      @click="loadPage(nextPageLoader)"
     >
       {{ 'common.more-btn' | globalize }}
     </button>
@@ -41,38 +41,29 @@ export default {
     isNoMoreEntries: false,
     isFetchedFirst: true,
   }),
-  watch: {
-    loader: {
-      immediate: true,
-      handler: async function (loaderFunction) {
-        let response = await loaderFunction()
-        this.nextPageLoader = response.fetchNext
-        this.$emit(EVENTS.input, response.data)
-        console.log(response)
-      },
-    },
-  },
   mounted () {
-    // let some = await this.loader()
-    // console.log(some)
+    this.loadPage(this.loader)
   },
   methods: {
-    async extendList () {
+    async loadPage (loaderFn) {
       try {
-        let response = await this.nextPageLoader()
+        const response = await loaderFn()
         this.nextPageLoader = response.fetchNext
-        let extendedValue = this.value.concat(response.data)
+        const extendedValue = this.value.concat(response.data)
         this.$emit(EVENTS.input, extendedValue)
         this.isNoMoreEntries = response.data.length < this.pageLimit
-        console.log(response)
       } catch (e) {
-        console.log(e)
+        this.$emit(EVENTS.error, e)
+        // ErrorHandler.processWithoutFeedback(e)
       }
     },
     setLoader () {
     },
-    reload () {
+    reload (loaderFn) {
+      this.$emit(EVENTS.input, [])
+      this.loadPage(loaderFn)
     },
+
   },
 }
 </script>
@@ -81,7 +72,7 @@ export default {
   @import '~@scss/variables';
   @import '~@scss/mixins';
 
-  .collection-loader {
+  .collection {
     display: flex;
     justify-content: center;
   }

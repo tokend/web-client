@@ -35,7 +35,7 @@
           v-show="isMovementsLoaded && !latestActivity"
           :loader="firstPageLoader"
           v-model="list"
-          @input="consoleLog"
+          ref="collection"
         />
       </div>
     </template>
@@ -53,7 +53,7 @@ import { types } from './store/types'
 import { vueRoutes } from '@/vue-router/routes'
 
 const REFS = {
-  collectionLoader: 'collection-loader',
+  collection: 'collection',
 }
 
 export default {
@@ -86,7 +86,6 @@ export default {
     firstPageLoader () {
       const assetCode = this.assetCode // HACK: passing this.assetCode directly
       // to function will lead to losing reactivity
-
       return _ => this.loadMovementsFirstPage(assetCode)
     },
 
@@ -94,11 +93,17 @@ export default {
       return this.$route.name === vueRoutes.registerOfShares.name
     },
   },
-
+  watch: {
+    list (value) {
+      this.setMovements(value)
+    },
+    assetCode (value) {
+      this.reloadCollectionLoader()
+    },
+  },
   methods: {
     ...mapMutations('movements-history', {
       setMovements: types.SET_MOVEMENTS,
-      concatMovements: types.CONCAT_MOVEMENTS,
     }),
     ...mapActions('movements-history', {
       loadMovements: types.LOAD_MOVEMENTS,
@@ -106,7 +111,7 @@ export default {
     }),
 
     reloadCollectionLoader () {
-      return this.$refs[REFS.collectionLoader].loadFirstPage()
+      return this.$refs[REFS.collection].reload(this.firstPageLoader)
     },
 
     async loadMovementsFirstPage (assetCode) {
@@ -125,17 +130,7 @@ export default {
         this.isMovementsLoadFailed = true
       }
     },
-    consoleLog (value) {
-      this.setMovements(value)
-    }
   },
-  watchers: {
-    list (value) {
-      console.log(value)
-      this.setMovements(value)
-      console.log(value)
-    }
-  }
 }
 </script>
 
