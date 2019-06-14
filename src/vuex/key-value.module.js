@@ -23,7 +23,7 @@ export const state = {
   kvAssetTypeKycRequired: null,
   kvAssetTypeSecurity: null,
   kvPollTypeRestricted: null,
-  kvPollTypeunRestricted: null,
+  kvPollTypeUnrestricted: null,
   defaultQuoteAsset: '',
 }
 
@@ -115,7 +115,7 @@ export const getters = {
   [vuexTypes.defaultQuoteAsset]: (a, getters, b, rootGetters) =>
     rootGetters[vuexTypes.statsQuoteAsset].code,
   [vuexTypes.kvPollTypeRestricted]: state => state.kvPollTypeRestricted,
-  [vuexTypes.kvPollTypUnrestricted]: state => state.kvPollTypeUnrestricted,
+  [vuexTypes.kvPollTypeUnrestricted]: state => state.kvPollTypeUnrestricted,
 }
 
 export default {

@@ -80,6 +80,7 @@ const getters = {
   kvAssetTypeKycRequired: 'kvAssetTypeKycRequired',
   kvAssetTypeSecurity: 'kvAssetTypeSecurity',
   kvPollTypeRestricted: 'kvPollTypeRestricted',
+  kvPollTypeUnrestricted: 'kvPollTypeUnrestricted',
   defaultQuoteAsset: 'defaultQuoteAsset',
 
   // account

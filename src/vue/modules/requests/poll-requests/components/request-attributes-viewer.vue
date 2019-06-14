@@ -20,9 +20,7 @@
         <tr>
           <td>{{ 'poll-requests.permission-type-title' | globalize }}</td>
           <td>
-            <template v-if="request.permissionType === restrictedPollType">
-              {{ 'poll-requests.restricted-type-desc' | globalize }}
-            </template>
+            {{ pollPermissionTypeTranslated }}
           </td>
         </tr>
 
@@ -89,9 +87,29 @@ export default {
   computed: {
     ...mapGetters({
       restrictedPollType: vuexTypes.kvPollTypeRestricted,
+      unrestrictedPollType: vuexTypes.kvPollTypeUnrestricted,
     }),
     isQuestionMaxLen () {
       return this.request.question.length >= QUESTION_MAX_LEN
+    },
+    pollPermissionTypeTranslated () {
+      let translationId
+
+      switch (this.request.permissionType) {
+        case this.restrictedPollType:
+          translationId = 'poll-requests.restricted-type-desc'
+          break
+
+        case this.unrestrictedPollType:
+          translationId = 'poll-requests.unrestricted-type-desc'
+          break
+
+        default:
+          translationId = '[UNKNOWN_PERMISSION_TYPE]'
+          break
+      }
+
+      return this.$options.filters.globalize(translationId)
     },
   },
 }

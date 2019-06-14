@@ -1362,7 +1362,8 @@
       "update-btn": "Update",
       "cancel-btn": "CANCEL",
       "choice-title": "Option {{number}}",
-      "restricted-type-desc": "Restricted"
+      "restricted-type-desc": "Restricted",
+      "unrestricted-type-desc": "Unrestricted"
     },
     "asset-details": {
       "balance-title": "Balance",
@@ -2191,6 +2192,7 @@
       "state-failed-val": "Failed",
       "state-canceled-val": "Canceled",
       "permission-type-restricted-val": "Restricted",
+      "permission-type-unrestricted-val": "Unrestricted",
       "yes-val": "Yes",
       "no-val": "No"
     }
