@@ -19,13 +19,22 @@
       </tab>
 
       <tab
+        v-if="(isPollOwner() || isPollResultProvider()) && poll.isOpen"
         :name="'poll-voter.manage-tab' | globalize"
         id="poll-voter__poll-manage-form"
       >
-        <poll-manage-form :poll="poll" />
+        <poll-manage-form
+          :poll="poll"
+          :is-poll-owner="isPollOwner()"
+          :is-poll-result-provider="isPollResultProvider()"
+          @submitted="loadPoll()"
+          @closed="$emit(EVENTS.closed)"
+          @canceled="$emit(EVENTS.canceled)"
+        />
       </tab>
 
       <tab
+        v-if="isPollOwner()"
         :name="'poll-voter.participants-tab' | globalize"
         id="poll-voter__poll-participants"
       >
@@ -47,9 +56,13 @@ import PollManageForm from './PollManageForm'
 import PollParticipants from './PollParticipants'
 import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 const EVENTS = {
   close: 'close',
+  closed: 'closed',
+  canceled: 'canceled',
 }
 
 export default {
@@ -65,8 +78,8 @@ export default {
   },
 
   props: {
-    pollId: {
-      type: String,
+    currentPoll: {
+      type: PollRecord,
       required: true,
     },
   },
@@ -75,17 +88,28 @@ export default {
     return {
       poll: {},
       isLoaded: false,
+      EVENTS,
     }
   },
 
+  computed: {
+    ...mapGetters({
+      accountId: vuexTypes.accountId,
+    }),
+  },
+
   async created () {
-    await this.loadPoll()
+    if (this.isPollOwner()) {
+      await this.loadPoll()
+    } else {
+      this.poll = this.currentPoll
+    }
     this.isLoaded = true
   },
 
   methods: {
     async loadPoll () {
-      const endpoint = `/v3/polls/${this.pollId}`
+      const endpoint = `/v3/polls/${this.currentPoll.id}`
       try {
         const { data } = await api.getWithSignature(endpoint, {
           include: ['participation', 'participation.votes'],
@@ -95,8 +119,17 @@ export default {
         ErrorHandler.processWithoutFeedback(error)
       }
     },
+
     voteFormSubmitted (event) {
       this.$emit(EVENTS.close)
+    },
+
+    isPollOwner () {
+      return this.accountId === this.currentPoll.ownerId
+    },
+
+    isPollResultProvider () {
+      return this.accountId === this.currentPoll.resultProviderId
     },
   },
 }

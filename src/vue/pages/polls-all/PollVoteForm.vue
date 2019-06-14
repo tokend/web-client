@@ -51,7 +51,11 @@
           <button
             type="submit"
             class="app__button-raised"
-            :disabled="formMixin.isDisabled || !form.choice || form.choice < 0"
+            :disabled="formMixin.isDisabled ||
+              !form.choice ||
+              form.choice < 0 ||
+              !poll.isOpen
+            "
           >
             {{ 'poll-vote-form.submit-btn' | globalize }}
           </button>
@@ -60,7 +64,7 @@
             v-if="isRepeatVote"
             type="button"
             class="app__button-raised app__button-raised--danger"
-            :disabled="formMixin.isDisabled"
+            :disabled="formMixin.isDisabled || !poll.isOpen"
             @click="showRemovalConfirmation"
           >
             {{ 'poll-vote-form.remove-vote-btn' | globalize }}

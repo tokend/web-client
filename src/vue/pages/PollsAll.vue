@@ -35,7 +35,10 @@
         </option>
       </select-field>
 
-      <div class="polls-all__filter-field polls-all__filter-field--tick">
+      <div
+        class="polls-all__filter-field polls-all__filter-field--tick"
+        v-if="isCorporate"
+      >
         <tick-field
           v-model="filters.isOwnedByCurrentUser"
           :cb-value="true"
@@ -44,7 +47,10 @@
         </tick-field>
       </div>
 
-      <div class="polls-all__filter-field polls-all__filter-field--tick">
+      <div
+        v-if="isCorporate"
+        class="polls-all__filter-field polls-all__filter-field--tick"
+      >
         <tick-field
           v-model="filters.isResultProvidedByCurrentUser"
           :cb-value="true"
@@ -112,7 +118,7 @@
         {{ 'polls-all.vote-drawer-title' | globalize }}
       </template>
 
-      <poll-voter :poll-id="pollToBrowse.id" />
+      <poll-voter :current-poll="pollToBrowse" />
     </drawer>
   </div>
 </template>
@@ -167,6 +173,7 @@ export default {
     ...mapGetters({
       balances: vuexTypes.accountBalances,
       accountId: vuexTypes.accountId,
+      isCorporate: vuexTypes.isAccountCorporate,
     }),
   },
 

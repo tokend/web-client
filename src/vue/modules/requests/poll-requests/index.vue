@@ -49,6 +49,12 @@ export default {
     Drawer,
     RequestViewer,
   },
+  props: {
+    isPollsLoading: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data: _ => ({
     isLoaded: false,
     isLoadingFailed: false,
@@ -60,6 +66,11 @@ export default {
     ...mapGetters('poll-requests', {
       requests: types.requests,
     }),
+  },
+  watch: {
+    'isPollsLoading' () {
+      this.initFirstPageLoader()
+    },
   },
   async created () {
     this.initFirstPageLoader()

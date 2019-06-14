@@ -128,7 +128,10 @@ export default {
   },
 
   props: {
-    poll: { type: PollRecord, required: true },
+    poll: {
+      type: PollRecord,
+      required: true,
+    },
   },
 
   computed: {
