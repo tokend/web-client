@@ -1,21 +1,21 @@
 <template>
-  <div class="my-poll-manage-form">
+  <div class="poll-manage-form">
     <form
       novalidate
       class="app__form"
       @submit.prevent="submit"
     >
-      <div class="my-poll-manage-form__end-time-wrp">
-        <h3 class="my-poll-manage-form-subheading app__form-subheading">
-          {{ 'my-poll-manage-form.update-end-time-subheading' | globalize }}
+      <div class="poll-manage-form__end-time-wrp">
+        <h3 class="poll-manage-form-subheading app__form-subheading">
+          {{ 'poll-manage-form.update-end-time-subheading' | globalize }}
         </h3>
 
-        <div class="my-poll-manage-form__table app__table">
+        <div class="poll-manage-form__table app__table">
           <table>
             <tbody>
               <tr>
                 <td>
-                  {{ 'my-poll-manage-form.current-end-time-title' | globalize }}
+                  {{ 'poll-manage-form.current-end-time-title' | globalize }}
                 </td>
                 <td>{{ poll.endTime | formatCalendar }}</td>
               </tr>
@@ -30,8 +30,8 @@
               :disable-before="getDisableDate"
               @input="touchField('form.endTime')"
               @blur="touchField('form.endTime')"
-              name="my-poll-manage-end-time"
-              :label="'my-poll-manage-form.new-end-time-lbl' | globalize"
+              name="poll-manage-end-time"
+              :label="'poll-manage-form.new-end-time-lbl' | globalize"
               :disabled="formMixin.isDisabled"
               :error-message="getFieldErrorMessage(
                 'form.endTime', { minDate: poll.startTime || getCurrentDate() }
@@ -39,7 +39,7 @@
             />
           </div>
         </div>
-        <div class="app__form-actions my-poll-manage-form__form-actions">
+        <div class="app__form-actions poll-manage-form__form-actions">
           <form-confirmation
             v-if="formMixin.isConfirmationShown && !isCloseConfirmationMode
               && !isCancelConfirmationMode"
@@ -53,25 +53,25 @@
               class="app__button-raised"
               :disabled="formMixin.isDisabled"
             >
-              {{ 'my-poll-manage-form.submit-btn' | globalize }}
+              {{ 'poll-manage-form.submit-btn' | globalize }}
             </button>
           </template>
         </div>
       </div>
 
-      <div class="my-poll-manage-form__close-poll-wrp">
-        <h3 class="my-poll-manage-form-subheading app__form-subheading">
-          {{ 'my-poll-manage-form.close-poll-subheading' | globalize }}
+      <div class="poll-manage-form__close-poll-wrp">
+        <h3 class="poll-manage-form-subheading app__form-subheading">
+          {{ 'poll-manage-form.close-poll-subheading' | globalize }}
         </h3>
 
-        <div class="my-poll-manage-form__choices">
+        <div class="poll-manage-form__choices">
           <div
-            class="my-poll-manage-form__choice-wrp"
+            class="poll-manage-form__choice-wrp"
             v-for="item in VOTING_RESULTS"
             :key="item.value"
           >
             <radio-field
-              :name="`my-poll-manage-form__choice-${item.value}`"
+              :name="`poll-manage-form__choice-${item.value}`"
               v-model="form.result"
               :cb-value="item.value"
               :disabled="formMixin.isDisabled"
@@ -81,12 +81,12 @@
           </div>
         </div>
 
-        <div class="my-poll-manage-form__form-actions app__form-actions">
+        <div class="poll-manage-form__form-actions app__form-actions">
           <form-confirmation
             v-if="formMixin.isConfirmationShown && isCloseConfirmationMode"
-            message-id="my-poll-manage-form.close-poll-confirmation-msg"
-            ok-button-text-id="my-poll-manage-form.yes-btn"
-            cancel-button-text-id="my-poll-manage-form.no-btn"
+            message-id="poll-manage-form.close-poll-confirmation-msg"
+            ok-button-text-id="poll-manage-form.yes-btn"
+            cancel-button-text-id="poll-manage-form.no-btn"
             is-danger-color
             @ok="hideCloseConfirmation() || closePoll()"
             @cancel="hideCloseConfirmation"
@@ -100,23 +100,23 @@
               @click="showCloseConfirmation"
             >
               <!-- eslint-enable max-len -->
-              {{ 'my-poll-manage-form.close-poll-btn' | globalize }}
+              {{ 'poll-manage-form.close-poll-btn' | globalize }}
             </button>
           </template>
         </div>
       </div>
 
-      <div class="my-poll-manage-form__cancel-poll-wrp">
-        <h3 class="my-poll-manage-form-subheading app__form-subheading">
-          {{ 'my-poll-manage-form.cancel-poll-subheading' | globalize }}
+      <div class="poll-manage-form__cancel-poll-wrp">
+        <h3 class="poll-manage-form-subheading app__form-subheading">
+          {{ 'poll-manage-form.cancel-poll-subheading' | globalize }}
         </h3>
 
-        <div class="my-poll-manage-form__form-actions app__form-actions">
+        <div class="poll-manage-form__form-actions app__form-actions">
           <form-confirmation
             v-if="formMixin.isConfirmationShown && isCancelConfirmationMode"
-            message-id="my-poll-manage-form.cancel-poll-confirmation-msg"
-            ok-button-text-id="my-poll-manage-form.yes-btn"
-            cancel-button-text-id="my-poll-manage-form.no-btn"
+            message-id="poll-manage-form.cancel-poll-confirmation-msg"
+            ok-button-text-id="poll-manage-form.yes-btn"
+            cancel-button-text-id="poll-manage-form.no-btn"
             is-danger-color
             @ok="hideCancelConfirmation() || cancelPoll()"
             @cancel="hideCancelConfirmation"
@@ -129,7 +129,7 @@
               :disabled="formMixin.isDisabled"
               @click="showCancelConfirmation"
             >
-              {{ 'my-poll-manage-form.cancel-poll-btn' | globalize }}
+              {{ 'poll-manage-form.cancel-poll-btn' | globalize }}
             </button>
           </template>
         </div>
@@ -155,12 +155,12 @@ import { DateUtil } from '@/js/utils'
 import { PollRecord } from '@/js/records/entities/poll.record'
 
 const VOTING_RESULTS = [
-  { name: 'my-poll-manage-form.passed-poll-result', value: 0 },
-  { name: 'my-poll-manage-form.failed-poll-result', value: 1 },
+  { name: 'poll-manage-form.passed-poll-result', value: 0 },
+  { name: 'poll-manage-form.failed-poll-result', value: 1 },
 ]
 
 export default {
-  name: 'my-poll-manage-form',
+  name: 'poll-manage-form',
   mixins: [FormMixin],
   props: {
     poll: {
@@ -220,7 +220,7 @@ export default {
         await api.postOperations(
           this.buildUpdatePollEndTimeOperation(),
         )
-        Bus.success('my-poll-manage-form.update-date-notification')
+        Bus.success('poll-manage-form.update-date-notification')
       } catch (error) {
         ErrorHandler.process(error)
       }
@@ -233,7 +233,7 @@ export default {
         await api.postOperations(
           this.buildClosePollOperation(),
         )
-        Bus.success('my-poll-manage-form.close-notification')
+        Bus.success('poll-manage-form.close-notification')
       } catch (error) {
         ErrorHandler.process(error)
       }
@@ -246,7 +246,7 @@ export default {
         await api.postOperations(
           this.buildCancelPollOperation(),
         )
-        Bus.success('my-poll-manage-form.cancel-notification')
+        Bus.success('poll-manage-form.cancel-notification')
       } catch (error) {
         ErrorHandler.process(error)
       }
@@ -302,28 +302,28 @@ export default {
 @import '@/vue/forms/_app-form';
 @import '~@scss/variables';
 
-.my-poll-manage-form__form-actions:not(:first-child) {
+.poll-manage-form__form-actions:not(:first-child) {
   margin-top: 3rem;
 }
 
-.my-poll-manage-form-subheading {
+.poll-manage-form-subheading {
   margin-top: 3rem;
   margin-bottom: 0;
 }
 
-.my-poll-manage-form__table tr td:last-child {
+.poll-manage-form__table tr td:last-child {
   text-align: right;
 }
 
-.my-poll-manage-form__table {
+.poll-manage-form__table {
   margin-top: 1.5rem;
 }
 
-.my-poll-manage-form__choice-wrp:not(:first-of-type) {
+.poll-manage-form__choice-wrp:not(:first-of-type) {
   margin-top: 1.2rem;
 }
 
-.my-poll-manage-form__choices {
+.poll-manage-form__choices {
   margin-top: 2rem;
 }
 </style>

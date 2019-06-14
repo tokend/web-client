@@ -2097,7 +2097,9 @@
       "create-poll": "Create",
       "update-poll": "Update poll",
       "overview-title": "Poll overview",
-      "new-poll": "New poll"
+      "new-poll": "New poll",
+      "all": "All polls",
+      "requests": "Polls requests"
     },
     "create-poll-form": {
       "permission-type-lbl": "Permission type",
@@ -2138,7 +2140,9 @@
     },
     "poll-voter": {
       "vote-tab": "Vote",
-      "details-tab": "Details"
+      "details-tab": "Details",
+      "manage-tab": "Manage",
+      "participants-tab": "Participants"
     },
     "poll-vote-form": {
       "submit-btn": "Vote",
@@ -2148,7 +2152,7 @@
       "remove-vote-confirmation-msg": "Are you sure you want to remove your current vote?",
       "removed-notification": "Successfully removed vote"
     },
-    "my-poll-manage-form": {
+    "poll-manage-form": {
       "submit-btn": "Update",
       "submitted-notification": "Successfully updated",
       "close-poll-btn": "Close",
@@ -2167,10 +2171,6 @@
       "failed-poll-result": "Failed",
       "yes-btn": "Yes",
       "no-btn": "No"
-    },
-    "my-poll": {
-      "manage-tab": "Manage",
-      "participants-tab": "Participants"
     },
     "poll-participants": {
       "email-lbl": "Email",

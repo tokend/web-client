@@ -47,6 +47,5 @@ export const vueRoutes = Object.freeze({
   registerOfShares: { name: 'app.register-of-shares' },
   polls: { name: 'app.polls' },
   pollRequests: { name: 'app.poll-requests' },
-  userOwnedPolls: { name: 'app.user-owned-polls' },
   allPolls: { name: 'app.all-polls' },
 })

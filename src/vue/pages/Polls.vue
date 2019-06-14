@@ -7,19 +7,13 @@
             v-if="getModule().canRenderSubmodule(PollsAllPageModule)"
             :to="vueRoutes.allPolls"
           >
-            <span>All polls</span>
-          </router-link>
-          <router-link
-            v-if="getModule().canRenderSubmodule(PollsListOwnedPageModule)"
-            :to="vueRoutes.userOwnedPolls"
-          >
-            <span>My polls</span>
+            <span>{{ 'polls.all' | globalize }}</span>
           </router-link>
           <router-link
             v-if="getModule().canRenderSubmodule(PollRequestsPageModule)"
             :to="vueRoutes.pollRequests"
           >
-            <span>Polls requests</span>
+            <span>{{ 'polls.requests' | globalize }}</span>
           </router-link>
         </template>
 
@@ -63,7 +57,6 @@ import TopBar from '@/vue/common/TopBar'
 import { PollRequestsPageModule } from '@/vue/pages/polls/poll-requests-page'
 import { vueRoutes } from '@/vue-router/routes'
 import { PollsAllPageModule } from '@/vue/pages/polls-all-page-module'
-import { PollsListOwnedPageModule } from '@/vue/pages/polls/user-owned-polls-page-module'
 import Drawer from '@/vue/common/Drawer'
 import { CreatePollFormModule } from '@/vue/modules/create-poll-form/module'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
@@ -80,7 +73,6 @@ export default {
     vueRoutes,
     PollRequestsPageModule,
     PollsAllPageModule,
-    PollsListOwnedPageModule,
     CreatePollFormModule,
   }),
 }
