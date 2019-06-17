@@ -24,7 +24,7 @@ describe('Asset actions', () => {
     wrapper = shallowMount(AssetActions, {
       store: new Vuex.Store({
         getters: {
-          [vuexTypes.assetByCode]: a => {
+          [vuexTypes.accountBalanceByCode]: a => {
             return function (a) {
               return {}
             }
