@@ -7,17 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
-## [Unreleased]
-#### Fixed
-- Display of "add to balance" button in asset attributes
-- Status message self-close duration
-
+## [1.8.0-rc.2] - 2019-06-17
 #### Changed
-- Now loading KYC latest data from account endpoint
 - Disable withdraw for unverified users
 
 #### Fixed
-- "Balance is invalid" when submitting withdraw operation
+- Display of "add to balance" button in asset attributes
+- Fixed timeout of status message self-close
+- Bug when "Balance is invalid" error appeared on withdraw submitting
 
 ## [1.8.0-rc.1] - 2019-06-07
 #### Changed
@@ -726,7 +723,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.8.0-rc.1...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.8.0-rc.2...HEAD
+[1.8.0-rc.2]: https://github.com/tokend/web-client/compare/1.8.0-rc.1...1.8.0-rc.2
 [1.8.0-rc.1]: https://github.com/tokend/web-client/compare/1.8.0-rc.0...1.8.0-rc.1
 [1.8.0-rc.0]: https://github.com/tokend/web-client/compare/1.8.0-x.3...1.8.0-rc.0
 [1.8.0-x.3]: https://github.com/tokend/web-client/compare/1.8.0-x.2...1.8.0-x.3
