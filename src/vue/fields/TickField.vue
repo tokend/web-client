@@ -3,31 +3,22 @@
     <input
       class="tick-field__input"
       type="checkbox"
-      :checked="checked"
-      :disabled="disabled"
-      :name="name"
+      v-bind="$attrs"
+      :name="$attrs.name || id"
       :id="id"
       :value="cbValue"
-      :required="required"
-      :autofocus="autofocus"
       @change="onChange"
     >
 
     <label
       class="tick-field__label"
       :for="id"
-      :title="title"
+      :title="$attrs.title"
     >
       <slot />
     </label>
 
-    <span
-      class="tick-field__tick"
-      :for="id"
-      :title="title"
-    >
-      <!-- css art -->
-    </span>
+    <div class="tick-field__tick" />
   </div>
 </template>
 
@@ -39,20 +30,8 @@ const EVENTS = {
 
 export default {
   props: {
-    value: {
-      type: [String, Number, Array, Boolean],
-      required: true,
-      default: '' || 0,
-    },
-    // proxies
-    name: { type: String, default: undefined },
-    disabled: { type: Boolean, default: false },
-    /* eslint-disable */
-    cbValue: { default: undefined },
-    /* eslint-enable */
-    title: { type: [String, Number], default: undefined },
-    required: { type: Boolean, default: false },
-    autofocus: { type: Boolean, default: false },
+    value: { type: [String, Number, Array, Boolean], required: true },
+    cbValue: { type: [String, Number, Boolean], default: false },
   },
   computed: {
     id () {
@@ -127,7 +106,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import './scss/variables';
 @import '~@scss/variables';
 
@@ -168,9 +147,8 @@ $tick-size: 1.8rem;
   border-color: $field-color-unfocused;
   position: absolute;
   left: 0;
-  top: 50%;
+  top: calc(50% - #{$tick-size * 0.1});
   transform: translateY(-50%);
-  display: block;
   pointer-events: none;
   outline: 0.25rem solid transparent;
   outline-offset: -0.1rem;
@@ -179,10 +157,9 @@ $tick-size: 1.8rem;
   &:after {
     content: '';
     position: absolute;
-    top: 50%;
+    top: calc(50% - #{$tick-size * 0.1});
     left: 50%;
-    transform: translate(-50%, -50%) translateY($tick-size * -0.1)
-      rotate(45deg);
+    transform: translate(-50%, -50%) rotate(45deg);
     display: block;
     height: $tick-size * 0.5;
     width: $tick-size * 0.25;
@@ -220,7 +197,8 @@ $tick-size: 1.8rem;
   opacity: 0;
   height: $tick-size;
   width: $tick-size;
-  top: 0;
+  top: calc(50% - #{$tick-size * 0.1});
+  transform: translateY(-50%);
   left: 0;
   cursor: pointer;
 

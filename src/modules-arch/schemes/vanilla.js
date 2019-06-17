@@ -107,42 +107,20 @@ export default {
       },
     ),
 
-    new TradePageModule(
+    new SharesPageModule(
       {
         routerEntry: {
-          path: '/trade',
-          name: vueRoutes.trade.name,
-          meta: { pageNameTranslationId: 'pages-names.trade' },
-          redirect: vueRoutes.tradeExchange,
-          children: [
-            // Carefully: have some issues because of is-loading prop provided
-            // to children from parent component. Leave it lke that for now
-            {
-              path: '/trade/exchange',
-              name: vueRoutes.tradeExchange.name,
-              component: _ => import('@/vue/pages/TradeExchange'),
-            },
-            {
-              path: '/trade/my-orders',
-              name: vueRoutes.tradeUserOffers.name,
-              component: _ => import('@/vue/pages/TradeUserOffers'),
-            },
-          ],
+          path: '/register-of-shares',
+          name: vueRoutes.registerOfShares.name,
+          meta: { pageNameTranslationId: 'pages-names.register-of-shares' },
         },
-        menuButtonTranslationId: 'pages-names.trade',
-        menuButtonMdiName: 'finance',
-      },
-    ),
-
-    new LimitsPageModule(
-      {
-        routerEntry: {
-          path: '/limits',
-          name: vueRoutes.limits.name,
-          meta: { pageNameTranslationId: 'pages-names.limits' },
-        },
-        menuButtonTranslationId: 'pages-names.limits',
-        menuButtonMdiName: 'poll-box',
+        menuButtonTranslationId: 'pages-names.register-of-shares',
+        menuButtonMdiName: 'book-open',
+        submodules: [
+          new MovementsTopBarModule(),
+          new MovementsHistoryModule(),
+        ],
+        isCorporateOnly: true,
       },
     ),
 
@@ -188,44 +166,6 @@ export default {
             isCorporateOnly: true,
           }),
           new CreateAssetFormModule({
-            isCorporateOnly: true,
-          }),
-        ],
-      },
-    ),
-
-    new SharesPageModule(
-      {
-        routerEntry: {
-          path: '/register-of-shares',
-          name: vueRoutes.registerOfShares.name,
-          meta: { pageNameTranslationId: 'pages-names.register-of-shares' },
-        },
-        menuButtonTranslationId: 'pages-names.register-of-shares',
-        menuButtonMdiName: 'book-open',
-        submodules: [
-          new MovementsTopBarModule(),
-          new MovementsHistoryModule(),
-        ],
-        isCorporateOnly: true,
-      },
-    ),
-
-    new IssuancePageModule(
-      {
-        routerEntry: {
-          path: '/issuance',
-          name: vueRoutes.issuance.name,
-          meta: { pageNameTranslationId: 'pages-names.issuance' },
-        },
-        menuButtonTranslationId: 'pages-names.issuance',
-        menuButtonMdiName: 'poll',
-        submodules: [
-          new IssuanceExplorerModule(),
-          new IssuanceFormModule({
-            isCorporateOnly: true,
-          }),
-          new PreIssuanceFormModule({
             isCorporateOnly: true,
           }),
         ],
@@ -295,6 +235,69 @@ export default {
       },
     ),
 
+    new PollsPageModule(
+      {
+        routerEntry: {
+          path: '/polls',
+          name: vueRoutes.polls.name,
+          meta: { pageNameTranslationId: 'pages-names.polls' },
+        },
+        menuButtonTranslationId: 'pages-names.polls',
+        menuButtonMdiName: 'vote',
+        isAutoRedirectToFirstChild: true,
+        submodules: [
+          new PollsAllPageModule({
+            routerEntry: {
+              path: '/polls/all',
+              name: vueRoutes.allPolls.name,
+              props: true,
+            },
+          }),
+          new PollRequestsPageModule({
+            routerEntry: {
+              path: '/polls/poll-requests',
+              name: vueRoutes.pollRequests.name,
+              props: true,
+            },
+            isCorporateOnly: true,
+            submodules: [
+              new PollRequestsModule(),
+            ],
+          }),
+          new CreatePollFormModule({
+            isCorporateOnly: true,
+          }),
+        ],
+      },
+    ),
+
+    new TradePageModule(
+      {
+        routerEntry: {
+          path: '/trade',
+          name: vueRoutes.trade.name,
+          meta: { pageNameTranslationId: 'pages-names.trade' },
+          redirect: vueRoutes.tradeExchange,
+          children: [
+            // Carefully: have some issues because of is-loading prop provided
+            // to children from parent component. Leave it lke that for now
+            {
+              path: '/trade/exchange',
+              name: vueRoutes.tradeExchange.name,
+              component: _ => import('@/vue/pages/TradeExchange'),
+            },
+            {
+              path: '/trade/my-orders',
+              name: vueRoutes.tradeUserOffers.name,
+              component: _ => import('@/vue/pages/TradeUserOffers'),
+            },
+          ],
+        },
+        menuButtonTranslationId: 'pages-names.trade',
+        menuButtonMdiName: 'finance',
+      },
+    ),
+
     new RequestsPageModule(
       {
         routerEntry: {
@@ -356,6 +359,54 @@ export default {
       },
     ),
 
+    new IssuancePageModule(
+      {
+        routerEntry: {
+          path: '/issuance',
+          name: vueRoutes.issuance.name,
+          meta: { pageNameTranslationId: 'pages-names.issuance' },
+        },
+        menuButtonTranslationId: 'pages-names.issuance',
+        menuButtonMdiName: 'poll',
+        submodules: [
+          new IssuanceExplorerModule(),
+          new IssuanceFormModule({
+            isCorporateOnly: true,
+          }),
+          new PreIssuanceFormModule({
+            isCorporateOnly: true,
+          }),
+        ],
+      },
+    ),
+
+    new LimitsPageModule(
+      {
+        routerEntry: {
+          path: '/limits',
+          name: vueRoutes.limits.name,
+          meta: { pageNameTranslationId: 'pages-names.limits' },
+        },
+        menuButtonTranslationId: 'pages-names.limits',
+        menuButtonMdiName: 'poll-box',
+      },
+    ),
+
+    new FeesPageModule(
+      {
+        routerEntry: {
+          path: '/fees',
+          name: vueRoutes.fees.name,
+          meta: { pageNameTranslationId: 'pages-names.fees' },
+        },
+        menuButtonTranslationId: 'pages-names.fees',
+        menuButtonMdiName: 'flash',
+        submodules: [
+          new FeesModule(),
+        ],
+      },
+    ),
+
     new SettingsPageModule(
       {
         routerEntry: {
@@ -406,57 +457,6 @@ export default {
           }),
         ],
       }
-    ),
-
-    new FeesPageModule(
-      {
-        routerEntry: {
-          path: '/fees',
-          name: vueRoutes.fees.name,
-          meta: { pageNameTranslationId: 'pages-names.fees' },
-        },
-        menuButtonTranslationId: 'pages-names.fees',
-        menuButtonMdiName: 'flash',
-        submodules: [
-          new FeesModule(),
-        ],
-      },
-    ),
-
-    new PollsPageModule(
-      {
-        routerEntry: {
-          path: '/polls',
-          name: vueRoutes.polls.name,
-          meta: { pageNameTranslationId: 'pages-names.polls' },
-        },
-        menuButtonTranslationId: 'pages-names.polls',
-        menuButtonMdiName: 'vote',
-        isAutoRedirectToFirstChild: true,
-        submodules: [
-          new PollsAllPageModule({
-            routerEntry: {
-              path: '/polls/all',
-              name: vueRoutes.allPolls.name,
-              props: true,
-            },
-          }),
-          new PollRequestsPageModule({
-            routerEntry: {
-              path: '/polls/poll-requests',
-              name: vueRoutes.pollRequests.name,
-              props: true,
-            },
-            isCorporateOnly: true,
-            submodules: [
-              new PollRequestsModule(),
-            ],
-          }),
-          new CreatePollFormModule({
-            isCorporateOnly: true,
-          }),
-        ],
-      },
     ),
   ],
 }

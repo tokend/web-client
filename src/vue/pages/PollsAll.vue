@@ -2,9 +2,9 @@
   <div class="polls-all">
     <div class="polls-all__filters">
       <template v-if="balances.length">
-        <select-field
+        <select-filter-field
           v-model="filters.assetCode"
-          class="polls-all__filter-field app__select app__select--no-border"
+          class="polls-all__filter-field"
           :disabled="filters.isOwnedByCurrentUser"
         >
           <option
@@ -14,10 +14,10 @@
           >
             {{ balance.asset.nameAndCode }}
           </option>
-        </select-field>
+        </select-filter-field>
       </template>
 
-      <select-field
+      <select-filter-field
         v-model="filters.state"
         class="polls-all__filter-field app__select app__select--no-border"
       >
@@ -33,31 +33,25 @@
         <option :value="pollStates.canceled">
           {{ 'polls-all.state-canceled' | globalize }}
         </option>
-      </select-field>
+      </select-filter-field>
 
-      <div
-        class="polls-all__filter-field polls-all__filter-field--tick"
+      <tick-filter-field
         v-if="isCorporate"
+        v-model="filters.isOwnedByCurrentUser"
+        :cb-value="true"
+        class="polls-all__filter-field"
       >
-        <tick-field
-          v-model="filters.isOwnedByCurrentUser"
-          :cb-value="true"
-        >
-          {{ 'polls-all.owned-by-me-filter-lbl' | globalize }}
-        </tick-field>
-      </div>
+        {{ 'polls-all.owned-by-me-filter-lbl' | globalize }}
+      </tick-filter-field>
 
-      <div
+      <tick-filter-field
         v-if="isCorporate"
-        class="polls-all__filter-field polls-all__filter-field--tick"
+        v-model="filters.isResultProvidedByCurrentUser"
+        :cb-value="true"
+        class="polls-all__filter-field"
       >
-        <tick-field
-          v-model="filters.isResultProvidedByCurrentUser"
-          :cb-value="true"
-        >
-          {{ 'polls-all.result-provided-by-me-filter-lbl' | globalize }}
-        </tick-field>
-      </div>
+        {{ 'polls-all.result-provided-by-me-filter-lbl' | globalize }}
+      </tick-filter-field>
     </div>
 
     <template v-if="list.length">
@@ -91,6 +85,7 @@
 
     <template v-else-if="!list.length && !isLoading && isInitialized">
       <no-data-message
+        class="polls-all__no-data-message"
         icon-name="vote"
         :title="'polls-all.no-list-title' | globalize"
         :message="'polls-all.no-list-msg' | globalize"
@@ -119,7 +114,7 @@
         {{ 'polls-all.vote-drawer-title' | globalize }}
       </template>
 
-      <poll-voter
+      <poll-viewer
         :poll-id="pollToBrowse.id"
         @closedDrawer="isDrawerShown = false"
         @updatedEndTime="refreshPollsList()"
@@ -134,16 +129,18 @@
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import FormMixin from '@/vue/mixins/form.mixin'
 import { api } from '@/api'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import Drawer from '@/vue/common/Drawer'
-import PollVoter from './polls-all/PollVoter'
+import PollViewer from './polls-all/PollViewer'
 import PollCard from './polls-all/PollCard'
 import PollCardSkeleton from './polls-all/PollCardSkeleton'
 
 import { PollRecord } from '@/js/records/entities/poll.record'
+
+import SelectFilterField from '@/vue/fields/SelectFilterField'
+import TickFilterField from '@/vue/fields/TickFilterField'
 
 const DELAY_REFRESH_LIST_TIME = 500
 
@@ -153,13 +150,13 @@ export default {
   components: {
     CollectionLoader,
     Drawer,
-    PollVoter,
+    PollViewer,
     PollCard,
     PollCardSkeleton,
     NoDataMessage,
+    SelectFilterField,
+    TickFilterField,
   },
-
-  mixins: [FormMixin],
 
   data () {
     return {
@@ -323,14 +320,8 @@ $filter-field-to-filter-field-margin: 2rem;
 }
 
 .polls-all__filter-field {
-  display: inline-block;
-  width: auto;
   margin: $filter-field-to-filter-field-margin 0 0
     $filter-field-to-filter-field-margin;
-
-  &--tick /deep/ .tick-field__label {
-    font-size: 1.8rem;
-  }
 }
 
 .polls-all__list-item-btn {
@@ -378,5 +369,9 @@ $filter-field-to-filter-field-margin: 2rem;
 
 .polls-all__loader {
   margin-top: 1rem;
+}
+
+.polls-all__no-data-message {
+  margin-top: 4.8rem;
 }
 </style>

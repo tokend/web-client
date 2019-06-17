@@ -1,9 +1,9 @@
 <template>
-  <div class="poll-voter">
+  <div class="poll-viewer">
     <tabs v-if="isLoaded">
       <tab
-        :name="'poll-voter.vote-tab' | globalize"
-        id="poll-voter__poll-vote-form"
+        :name="'poll-viewer.vote-tab' | globalize"
+        id="poll-viewer__poll-vote-form"
       >
         <poll-vote-form
           :poll="poll"
@@ -12,16 +12,16 @@
       </tab>
 
       <tab
-        :name="'poll-voter.details-tab' | globalize"
-        id="poll-voter"
+        :name="'poll-viewer.details-tab' | globalize"
+        id="poll-viewer"
       >
         <poll-attributes :poll="poll" />
       </tab>
 
       <tab
         v-if="(isPollOwner() || isPollResultProvider()) && poll.isOpen"
-        :name="'poll-voter.manage-tab' | globalize"
-        id="poll-voter__poll-manage-form"
+        :name="'poll-viewer.manage-tab' | globalize"
+        id="poll-viewer__poll-manage-form"
       >
         <poll-manage-form
           :poll="poll"
@@ -35,8 +35,8 @@
 
       <tab
         v-if="isPollOwner()"
-        :name="'poll-voter.participants-tab' | globalize"
-        id="poll-voter__poll-participants"
+        :name="'poll-viewer.participants-tab' | globalize"
+        id="poll-viewer__poll-participants"
       >
         <poll-participants :poll="poll" />
       </tab>
@@ -67,7 +67,7 @@ const EVENTS = {
 }
 
 export default {
-  name: 'poll-voter',
+  name: 'poll-viewer',
 
   components: {
     Tabs,
