@@ -60,10 +60,10 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 const EVENTS = {
-  closeDrawer: 'closeDrawer',
-  pollClosed: 'pollClosed',
-  pollCanceled: 'pollCanceled',
-  endTimeUpdated: 'endTimeUpdated',
+  closeDrawer: 'close-drawer',
+  pollClosed: 'poll-closed',
+  pollCanceled: 'poll-canceled',
+  endTimeUpdated: 'end-time-updated',
 }
 
 export default {
