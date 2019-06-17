@@ -16,6 +16,10 @@ for further information about branching and tagging conventions.
 - Fixed timeout of status message self-close
 - Bug when "Balance is invalid" error appeared on withdraw submitting
 
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.8.0-rc.1
+
 ## [1.8.0-rc.1] - 2019-06-07
 #### Changed
 - Some design improvements to fields and rendered fees:
