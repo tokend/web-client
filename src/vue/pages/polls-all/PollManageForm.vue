@@ -48,7 +48,7 @@
               <button
                 type="submit"
                 class="app__button-raised"
-                :disabled="formMixin.isDisabled || !poll.isOpen"
+                :disabled="formMixin.isDisabled"
               >
                 {{ 'poll-manage-form.submit-btn' | globalize }}
               </button>
@@ -101,8 +101,7 @@
                 class="app__button-raised app__button-raised--danger"
                 :disabled="formMixin.isDisabled ||
                   !form.result ||
-                  form.result < 0 ||
-                  !poll.isOpen
+                  form.result < 0
                 "
                 @click="showCloseConfirmation"
               >
@@ -139,7 +138,7 @@
               <button
                 type="button"
                 class="app__button-raised app__button-raised--danger"
-                :disabled="formMixin.isDisabled || !poll.isOpen"
+                :disabled="formMixin.isDisabled"
                 @click="showCancelConfirmation"
               >
                 {{ 'poll-manage-form.cancel-poll-btn' | globalize }}
