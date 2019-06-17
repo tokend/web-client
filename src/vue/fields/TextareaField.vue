@@ -4,6 +4,7 @@
     :class="{
       'text-field--error': errorMessage,
       'text-field--disabled': disabled,
+      'text-field--readonly': readonly,
       'text-field--dirty': hasValue
     }
     ">
@@ -103,17 +104,22 @@ export default {
   padding-top: 2.6rem;
   caret-color: $field-color-text;
   background-color: $textarea-background-color;
-  border: 0.2rem solid rgba($field-color-unfocused, 0.5);
+  border: 0.1rem solid rgba($field-color-unfocused, 0.5);
   border-radius: 0.4rem;
   transition: all 0s, border-color 0.2s ease-out;
   overflow: hidden;
 
-  &:hover {
+  // stylelint-disable-next-line
+  &:not(.text-field--readonly):not(.text-field--disabled):hover,
+  &--dirty:enabled {
     border-color: $field-color-focused;
   }
 
-  &--dirty {
-    border-color: $field-color-focused;
+  &--disabled,
+  &--readonly {
+    filter: grayscale(100%);
+    border-color: rgba($field-color-unfocused, 0.5); // stylelint-disable-line
+    border-style: dashed;
   }
 }
 
@@ -129,16 +135,14 @@ export default {
   font-size: 1.6rem;
   pointer-events: none;
 
-  .text-field--dirty & {
-    color: $field-color-text;
+  .text-field--dirty > &,
+  .text-field__input:focus ~ & {
     top: 0.8rem;
     font-size: 1.2rem;
   }
 
-  .text-field__input:focus ~ & {
+  .text-field__input:not(:disabled):not(:read-only):focus ~ & {
     color: $field-color-text;
-    top: 0.8rem;
-    font-size: 1.2rem;
   }
 }
 
@@ -153,7 +157,9 @@ export default {
   overflow-y: auto;
   padding: 0 1.6rem;
 
-  &:disabled {
+  &:disabled,
+  &:read-only {
+    color: $field-color-unfocused;
     cursor: default;
   }
 }
@@ -163,7 +169,7 @@ export default {
   bottom: 0.8rem;
   right: 1.6rem;
   font-size: 1.2rem;
-  color: $field-color-text;
+  color: $field-color-unfocused;
 }
 
 .text-field__err-mes {

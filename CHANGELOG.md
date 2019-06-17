@@ -7,9 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
-## Unreleased
+## [Unreleased]
 #### Fixed
-- Missing add to wallet button in asset attributes
+- Display of "add to balance" button in asset attributes
+
+## [1.8.0-rc.1] - 2019-06-07
+#### Changed
+- Some design improvements to fields and rendered fees:
+  - Fields are now synchronized in disabled colors and style
+  - Text areas now have thinner border-width
+  - Tick field now looks a bit nittier
+  - Rendered fees now have less obtrusive underlines on clickable part
+  - Rendered fees now have a bit smaller font-sizes and line-heights
+  - Rendered fees now have "Show my account fees" at the bottom of the component
+
+### "Under the hood" changed
+#### Added
+- File types exceptions to .gitattributes
+
+#### Fixed
+- Restored images line endings
 
 ## [1.8.0-rc.0] - 2019-06-06
 #### Fixed
@@ -21,7 +38,7 @@ for further information about branching and tagging conventions.
 - Selecting asset on deposit form
 - Displaying balances on assets page
 
-### "Under the hood changes
+### "Under the hood" changes
 #### Added
 - Asset code validator
 
@@ -86,7 +103,7 @@ for further information about branching and tagging conventions.
 - Translations on sale details drawer
 - A bug when "My Sales" tab shown for non-corporate accounts
 
-### "Under the hood changes
+### "Under the hood" changes
 #### Added
 - Tooltip directive
 - Assets vuex module for loading and storing all the assets
@@ -391,12 +408,12 @@ for further information about branching and tagging conventions.
 - Displaying incoming withdrawal requests (Loyalty)
 
 ## [1.5.0] - 2019-04-19
-### "Under the hood changes"
+### "Under the hood" changes
 #### Changed
 - Now using @tokend/js-sdk@1.5.0
 
 ## [1.5.0-rc.3] - 2019-04-19
-### "Under the hood changes"
+### "Under the hood" changes
 #### Changed
 - Now using @tokend/js-sdk@1.5.0-rc.1
 
@@ -692,7 +709,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.8.0-rc.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.8.0-rc.1...HEAD
+[1.8.0-rc.1]: https://github.com/tokend/web-client/compare/1.8.0-rc.0...1.8.0-rc.1
 [1.8.0-rc.0]: https://github.com/tokend/web-client/compare/1.8.0-x.3...1.8.0-rc.0
 [1.8.0-x.3]: https://github.com/tokend/web-client/compare/1.8.0-x.2...1.8.0-x.3
 [1.8.0-x.2]: https://github.com/tokend/web-client/compare/1.8.0-x.1...1.8.0-x.2
