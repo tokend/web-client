@@ -24,12 +24,12 @@
           <input-field
             white-autofill
             type="number"
-            v-model="form.amount"
-            @blur="touchField('form.amount')"
+            v-model="form.physicalWeight"
+            @blur="touchField('form.physicalWeight')"
             name="create-issuance-amount"
             :label="'issuance-form.amount-lbl' | globalize"
             :error-message="getFieldErrorMessage(
-              'form.amount',
+              'form.physicalWeight',
               {
                 from: MIN_AMOUNT,
                 to: form.asset.availableForIssuance,
@@ -46,20 +46,6 @@
             {{ form.asset.code }}
           </p>
         </div>
-
-        <p
-          v-if="form.asset.availableForIssuance"
-          class="app__form-field-description"
-        >
-          {{
-            'issuance-form.available-for-issuance-hint' | globalize({
-              amount: {
-                value: form.asset.availableForIssuance,
-                currency: form.asset.code
-              }
-            })
-          }}
-        </p>
       </div>
     </div>
 
@@ -135,6 +121,7 @@
         <fees-renderer :fees-collection="fees" />
 
         <readonly-field
+          :title="'issuance-form.title-amount-calc' | globalize"
           :label="'issuance-form.amount-to-receive-msg' | globalize"
           :value="receivingAmount | formatMoney"
           :error-message="getFieldErrorMessage('receivingAmount.value')"
@@ -200,6 +187,7 @@ const REFERENCE_MAX_LENGTH = 255
 const EVENTS = {
   submit: 'submit',
 }
+const MIN_HUMIDITY = 14
 
 const FEES_LOADING_DELAY_MS = 300
 
@@ -220,10 +208,11 @@ export default {
     form: {
       asset: {},
       amount: '0',
+      physicalWeight: '0',
       receiver: '',
       reference: '',
-      garbage: '',
-      humidity: '',
+      garbage: '0',
+      humidity: '0',
     },
     fees: {},
     feesDebouncedRequest: null,
@@ -239,7 +228,7 @@ export default {
     return {
       form: {
         asset: { required },
-        amount: {
+        physicalWeight: {
           required,
           amountRange: amountRange(
             config.MIN_AMOUNT,
@@ -292,12 +281,23 @@ export default {
   },
 
   watch: {
-    'form.amount' (value) {
+    'form.amount' () {
       this.tryLoadFees()
+    },
+    'form.physicalWeight' () {
+      this.calculateAmount()
     },
 
     'form.asset.code' () {
       this.tryLoadFees()
+    },
+
+    'form.garbage' () {
+      this.calculateAmount()
+    },
+
+    'form.humidity' () {
+      this.calculateAmount()
     },
   },
 
@@ -351,6 +351,16 @@ export default {
 
       this.isFormSubmitting = false
       this.hideConfirmation()
+    },
+
+    calculateAmount () {
+      let totalPercent = +this.form.garbage
+      if (+this.form.humidity > MIN_HUMIDITY) {
+        totalPercent = totalPercent + (+this.form.humidity - MIN_HUMIDITY)
+      }
+      const amount = MathUtil
+        .multiply(+this.form.physicalWeight, (1 - +totalPercent / 100))
+      this.form.amount = amount > 0 ? amount : 0
     },
   },
 }

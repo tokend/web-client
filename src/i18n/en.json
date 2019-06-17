@@ -823,7 +823,7 @@
       "fixed-fee-lbl": "Fixed fee",
       "percent-fee-lbl": "Percent fee",
       "asset-lbl": "Актив",
-      "amount-lbl": "Количество",
+      "amount-lbl": "Физический вес",
       "base-amount-lbl": "Base amount",
       "quote-amount-lbl": "Quote amount",
       "counterparty-email-lbl": "Counterparty email",
@@ -1033,13 +1033,14 @@
       "reference-lbl": "Комментарий",
       "available-for-issuance-hint": "Available for issuance: {{amount, money}}",
       "receiver-lbl": "Email или ID фермера",
-      "amount-to-receive-msg": "Начислится",
+      "amount-to-receive-msg": "Зачетный вес",
       "issue-btn": "Начислить",
       "no-owned-assets-title": "No owned assets yet",
       "no-owned-assets-msg": "Please create an asset to make an issuance",
       "assets-issued-msg": "Операция начисления прошла успешно",
       "garbage": "Сорная примесь (%)",
-      "humidity": "Влажность (%)"
+      "humidity": "Влажность (%)",
+      "title-amount-calc": "Расчитывается как: Физический вес - Физический вес * (Сорная примесь% + |Влажность% - 14%| )"
     },
     "pre-issuance-form": {
       "loading-msg": "Загрузка…",

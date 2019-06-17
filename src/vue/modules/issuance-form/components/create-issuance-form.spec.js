@@ -40,9 +40,11 @@ describe('Create issuance form', () => {
 
     const expectedResults = {
       asset: ['required'],
-      amount: ['required', 'amountRange', 'maxDecimalDigitsCount'],
+      physicalWeight: ['required', 'amountRange', 'maxDecimalDigitsCount'],
       receiver: ['required', 'emailOrAccountId'],
       reference: ['required', 'maxLength'],
+      garbage: ['required', 'amountRange'],
+      humidity: ['required', 'amountRange'],
     }
 
     for (const [model, rules] of Object.entries(expectedResults)) {
