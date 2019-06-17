@@ -10,9 +10,14 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Fixed
 - Display of "add to balance" button in asset attributes
+- Status message self-close duration
+
+#### Changed
+- Now loading KYC latest data from account endpoint
+- Disable withdraw for unverified users
 
 #### Fixed
-- Status message self-close duration
+- "Balance is invalid" when submitting withdraw operation
 
 ## [1.8.0-rc.1] - 2019-06-07
 #### Changed

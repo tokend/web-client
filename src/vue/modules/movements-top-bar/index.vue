@@ -30,11 +30,13 @@
       >
         <!-- eslint-disable-next-line max-len -->
         <template v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)">
+          <!-- TODO, currently unverified users can't withdraw, wait for
+            devops initscripts update -->
           <button
             v-ripple
             class="app__button-raised movements-top-bar__actions-btn"
             @click="isWithdrawalDrawerShown = true"
-            :disabled="!asset.isWithdrawable"
+            :disabled="!asset.isWithdrawable || isAccountUnverified"
             :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isWithdrawable) |
               globalize({ asset: asset.code })
             "
@@ -171,6 +173,8 @@ export default {
   computed: {
     ...mapGetters({
       assets: vuexTypes.balancesAssets,
+      ownedAssets: vuexTypes.ownedAssets,
+      isAccountUnverified: vuexTypes.isAccountUnverified,
     }),
   },
   watch: {
@@ -207,7 +211,11 @@ export default {
         if (policy === ASSET_POLICIES_STR.isDepositable) {
           messageId = 'op-pages.not-depositable-msg'
         } else if (policy === ASSET_POLICIES_STR.isWithdrawable) {
-          messageId = 'op-pages.not-withdrawable-msg'
+          if (this.isAccountUnverified) {
+            messageId = 'op-pages.unverified-cant-do-msg'
+          } else {
+            messageId = 'op-pages.not-withdrawable-msg'
+          }
         } else if (policy === ASSET_POLICIES_STR.isTransferable) {
           messageId = 'op-pages.not-transferable-msg'
         }
