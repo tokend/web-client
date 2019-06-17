@@ -90,9 +90,4 @@ export default {
     display: flex;
     justify-content: center;
   }
-
-  .collection-loader__more-button {
-    min-height: 3rem;
-    margin-top: 0.5rem;
-  }
 </style>

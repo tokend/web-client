@@ -19,11 +19,11 @@
     </template>
 
     <p v-if="isLoadingFailed">
-      {{ 'create-asset-requests.loading-error-msg' | globalize }}
+      {{ 'poll-requests.loading-error-msg' | globalize }}
     </p>
 
     <collection-loader
-      class="create-asset-requests__loader"
+      class="poll-requests__loader"
       v-show="requests.length && isLoaded"
       :first-page-loader="firstPageLoader"
       @first-page-load="setRequests"
@@ -107,4 +107,8 @@ export default {
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.poll-requests__loader {
+  margin-top: 1rem;
+}
+</style>

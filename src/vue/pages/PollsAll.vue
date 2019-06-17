@@ -103,8 +103,9 @@
         should be rendered only after filters.assetCode assigned any value
      -->
     <template v-if="filters.assetCode">
-      <div class="limits__requests-collection-loader">
+      <div class="polls-all__requests-collection-loader">
         <collection-loader
+          class="polls-all__loader"
           :first-page-loader="getList"
           @first-page-load="setList"
           @next-page-load="concatList"
@@ -354,5 +355,9 @@ $filter-field-to-filter-field-margin: 2rem;
   @include respond-to(xsmall) {
     @include list-item-width(100%);
   }
+}
+
+.polls-all__loader {
+  margin-top: 1rem;
 }
 </style>
