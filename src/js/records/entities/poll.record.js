@@ -5,7 +5,7 @@ const STATES = Object.freeze({
   open: 1,
   passed: 2,
   failed: 3,
-  canceled: 4, // TODO: clarify
+  canceled: 4,
 })
 
 export class PollRecord {
