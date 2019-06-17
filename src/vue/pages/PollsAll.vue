@@ -118,7 +118,7 @@
         {{ 'polls-all.vote-drawer-title' | globalize }}
       </template>
 
-      <poll-voter :current-poll="pollToBrowse" />
+      <poll-voter :poll-id="pollToBrowse.id" />
     </drawer>
   </div>
 </template>

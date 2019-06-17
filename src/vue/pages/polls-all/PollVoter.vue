@@ -78,8 +78,8 @@ export default {
   },
 
   props: {
-    currentPoll: {
-      type: PollRecord,
+    pollId: {
+      type: String,
       required: true,
     },
   },
@@ -99,17 +99,13 @@ export default {
   },
 
   async created () {
-    if (this.isPollOwner()) {
-      await this.loadPoll()
-    } else {
-      this.poll = this.currentPoll
-    }
+    await this.loadPoll()
     this.isLoaded = true
   },
 
   methods: {
     async loadPoll () {
-      const endpoint = `/v3/polls/${this.currentPoll.id}`
+      const endpoint = `/v3/polls/${this.pollId}`
       try {
         const { data } = await api.getWithSignature(endpoint, {
           include: ['participation', 'participation.votes'],
@@ -125,11 +121,11 @@ export default {
     },
 
     isPollOwner () {
-      return this.accountId === this.currentPoll.ownerId
+      return this.accountId === this.poll.ownerId
     },
 
     isPollResultProvider () {
-      return this.accountId === this.currentPoll.resultProviderId
+      return this.accountId === this.poll.resultProviderId
     },
   },
 }
