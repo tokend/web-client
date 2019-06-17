@@ -438,15 +438,14 @@ export default {
             routerEntry: {
               path: '/polls/all',
               name: vueRoutes.allPolls.name,
-              props: {
-                default: true,
-              },
+              props: true,
             },
           }),
           new PollRequestsPageModule({
             routerEntry: {
               path: '/polls/poll-requests',
               name: vueRoutes.pollRequests.name,
+              props: true,
             },
             isCorporateOnly: true,
             submodules: [

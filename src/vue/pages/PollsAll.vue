@@ -119,7 +119,13 @@
         {{ 'polls-all.vote-drawer-title' | globalize }}
       </template>
 
-      <poll-voter :poll-id="pollToBrowse.id" />
+      <poll-voter
+        :poll-id="pollToBrowse.id"
+        @closedDrawer="isDrawerShown = false"
+        @updatedEndTime="refreshPollsList()"
+        @canceledPoll="refreshPollsListWithCloseDrawer()"
+        @closedPoll="refreshPollsListWithCloseDrawer()"
+      />
     </drawer>
   </div>
 </template>
@@ -138,6 +144,8 @@ import PollCard from './polls-all/PollCard'
 import PollCardSkeleton from './polls-all/PollCardSkeleton'
 
 import { PollRecord } from '@/js/records/entities/poll.record'
+
+const DELAY_REFRESH_LIST_TIME = 500
 
 export default {
   name: 'polls-all',
@@ -286,6 +294,17 @@ export default {
     selectItem (item) {
       this.pollToBrowse = item
       this.isDrawerShown = true
+    },
+
+    refreshPollsList () {
+      setTimeout(() => {
+        this.reloadList()
+      }, DELAY_REFRESH_LIST_TIME)
+    },
+
+    refreshPollsListWithCloseDrawer () {
+      this.isDrawerShown = false
+      this.refreshPollsList()
     },
   },
 }

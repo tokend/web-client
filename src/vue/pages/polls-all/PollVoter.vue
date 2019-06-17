@@ -27,9 +27,9 @@
           :poll="poll"
           :is-poll-owner="isPollOwner()"
           :is-poll-result-provider="isPollResultProvider()"
-          @submitted="loadPoll()"
-          @closed="$emit(EVENTS.closed)"
-          @canceled="$emit(EVENTS.canceled)"
+          @updatedEndTime="updatedEndTimeFormSubmitted()"
+          @closedPoll="$emit(EVENTS.closedPoll)"
+          @canceledPoll="$emit(EVENTS.canceledPoll)"
         />
       </tab>
 
@@ -60,9 +60,10 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 const EVENTS = {
-  close: 'close',
-  closed: 'closed',
-  canceled: 'canceled',
+  closeDrawer: 'closeDrawer',
+  closedPoll: 'closedPoll',
+  canceledPoll: 'canceledPoll',
+  updatedEndTime: 'updatedEndTime',
 }
 
 export default {
@@ -117,7 +118,11 @@ export default {
     },
 
     voteFormSubmitted (event) {
-      this.$emit(EVENTS.close)
+      this.$emit(EVENTS.closeDrawer)
+    },
+
+    updatedEndTimeFormSubmitted () {
+      this.$emit(EVENTS.updatedEndTime)
     },
 
     isPollOwner () {

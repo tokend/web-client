@@ -41,6 +41,10 @@ import CollectionLoader from '@/vue/common/CollectionLoader'
 import RequestsTable from './components/requests-table'
 import RequestViewer from './components/request-viewer'
 
+const EVENTS = {
+  shouldUpdate: 'update:shouldUpdate',
+}
+
 export default {
   name: 'poll-requests',
   components: {
@@ -50,7 +54,7 @@ export default {
     RequestViewer,
   },
   props: {
-    isPollsLoading: {
+    shouldUpdate: {
       type: Boolean,
       default: false,
     },
@@ -68,8 +72,11 @@ export default {
     }),
   },
   watch: {
-    'isPollsLoading' () {
-      this.initFirstPageLoader()
+    shouldUpdate (value) {
+      if (value) {
+        this.initFirstPageLoader()
+        this.$emit(EVENTS.shouldUpdate, false)
+      }
     },
   },
   async created () {
