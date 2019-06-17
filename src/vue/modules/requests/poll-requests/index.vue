@@ -40,9 +40,10 @@ import { types } from './store/types'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import RequestsTable from './components/requests-table'
 import RequestViewer from './components/request-viewer'
+import { Bus } from '@/js/helpers/event-bus'
 
 const EVENTS = {
-  shouldUpdate: 'update:shouldUpdate',
+  updatePollRequests: 'polls:updateRequestsList',
 }
 
 export default {
@@ -52,12 +53,6 @@ export default {
     RequestsTable,
     Drawer,
     RequestViewer,
-  },
-  props: {
-    shouldUpdate: {
-      type: Boolean,
-      default: false,
-    },
   },
   data: _ => ({
     isLoaded: false,
@@ -71,16 +66,11 @@ export default {
       requests: types.requests,
     }),
   },
-  watch: {
-    shouldUpdate (value) {
-      if (value) {
-        this.initFirstPageLoader()
-        this.$emit(EVENTS.shouldUpdate, false)
-      }
-    },
-  },
   async created () {
     this.initFirstPageLoader()
+    Bus.on(EVENTS.updatePollRequests, () =>
+      this.initFirstPageLoader()
+    )
   },
   methods: {
     ...mapMutations('poll-requests', {

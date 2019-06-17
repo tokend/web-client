@@ -43,12 +43,12 @@
 
           <submodule-importer
             :submodule="getModule().getSubmodule(CreatePollFormModule)"
-            @submitted="reloadPolls()"
+            @submitted="isCreatePollDrawerShown = false"
           />
         </drawer>
       </template>
     </template>
-    <router-view :is-polls-loading.sync="isPollsLoading" />
+    <router-view />
   </div>
 </template>
 
@@ -76,12 +76,6 @@ export default {
     PollsAllPageModule,
     CreatePollFormModule,
   }),
-  methods: {
-    reloadPolls () {
-      this.isCreatePollDrawerShown = false
-      this.isPollsLoading = true
-    },
-  },
 }
 </script>
 
