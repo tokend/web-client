@@ -1,9 +1,9 @@
 <template>
-  <div class="poll-voter">
+  <div class="poll-viewer">
     <tabs>
       <tab
-        :name="'poll-voter.vote-tab' | globalize"
-        id="poll-voter__poll-vote-form"
+        :name="'poll-viewer.vote-tab' | globalize"
+        id="poll-viewer__poll-vote-form"
       >
         <poll-vote-form
           :poll="poll"
@@ -12,8 +12,8 @@
       </tab>
 
       <tab
-        :name="'poll-voter.details-tab' | globalize"
-        id="poll-voter"
+        :name="'poll-viewer.details-tab' | globalize"
+        id="poll-viewer"
       >
         <poll-attributes :poll="poll" />
       </tab>
@@ -35,7 +35,7 @@ const EVENTS = {
 }
 
 export default {
-  name: 'poll-voter',
+  name: 'poll-viewer',
 
   components: {
     Tabs,

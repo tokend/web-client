@@ -2134,7 +2134,7 @@
       "state-inline-failed": "failed",
       "state-inline-canceled": "canceled"
     },
-    "poll-voter": {
+    "poll-viewer": {
       "vote-tab": "Vote",
       "details-tab": "Details"
     },
