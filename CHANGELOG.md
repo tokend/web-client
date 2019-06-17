@@ -11,6 +11,9 @@ for further information about branching and tagging conventions.
 #### Fixed
 - Display of "add to balance" button in asset attributes
 
+#### Fixed
+- Status message self-close duration
+
 ## [1.8.0-rc.1] - 2019-06-07
 #### Changed
 - Some design improvements to fields and rendered fees:
@@ -27,6 +30,15 @@ for further information about branching and tagging conventions.
 
 #### Fixed
 - Restored images line endings
+
+### Experimental features changes
+#### Added
+- Balances panel to the invoice form (Loyalty)
+
+#### Changed
+- Invoice form width to full screen
+- Now displaying customer's & merchant's balances on the invoice form
+  confirmation
 
 ## [1.8.0-rc.0] - 2019-06-06
 #### Fixed
