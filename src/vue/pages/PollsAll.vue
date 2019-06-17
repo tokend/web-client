@@ -116,10 +116,10 @@
 
       <poll-viewer
         :poll-id="pollToBrowse.id"
-        @closedDrawer="isDrawerShown = false"
-        @updatedEndTime="refreshPollsList()"
-        @canceledPoll="refreshPollsListWithCloseDrawer()"
-        @closedPoll="refreshPollsListWithCloseDrawer()"
+        @close-drawer="isDrawerShown = false"
+        @end-time-updated="refreshPollsList()"
+        @poll-canceled="refreshPollsListWithCloseDrawer()"
+        @poll-closed="refreshPollsListWithCloseDrawer()"
       />
     </drawer>
   </div>

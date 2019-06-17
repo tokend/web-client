@@ -174,9 +174,9 @@ const VOTING_RESULTS = [
 ]
 
 const EVENTS = {
-  updatedEndTime: 'updatedEndTime',
-  closedPoll: 'closedPoll',
-  canceledPoll: 'canceledPoll',
+  endTimeUpdated: 'endTimeUpdated',
+  pollClosed: 'pollClosed',
+  pollCanceled: 'pollCanceled',
 }
 
 export default {
@@ -252,7 +252,7 @@ export default {
           this.buildUpdatePollEndTimeOperation(),
         )
         Bus.success('poll-manage-form.update-date-notification')
-        this.$emit(EVENTS.updatedEndTime)
+        this.$emit(EVENTS.endTimeUpdated)
       } catch (error) {
         ErrorHandler.process(error)
       }
@@ -266,7 +266,7 @@ export default {
           this.buildClosePollOperation(),
         )
         Bus.success('poll-manage-form.close-notification')
-        this.$emit(EVENTS.closedPoll)
+        this.$emit(EVENTS.pollClosed)
       } catch (error) {
         ErrorHandler.process(error)
       }
@@ -280,7 +280,7 @@ export default {
           this.buildCancelPollOperation(),
         )
         Bus.success('poll-manage-form.cancel-notification')
-        this.$emit(EVENTS.canceledPoll)
+        this.$emit(EVENTS.pollCanceled)
       } catch (error) {
         ErrorHandler.process(error)
       }

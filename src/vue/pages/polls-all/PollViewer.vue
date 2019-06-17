@@ -27,9 +27,9 @@
           :poll="poll"
           :is-poll-owner="isPollOwner()"
           :is-poll-result-provider="isPollResultProvider()"
-          @updatedEndTime="updatedEndTimeFormSubmitted()"
-          @closedPoll="$emit(EVENTS.closedPoll)"
-          @canceledPoll="$emit(EVENTS.canceledPoll)"
+          @end-time-updated="updatedEndTimeFormSubmitted()"
+          @poll-closed="$emit(EVENTS.pollClosed)"
+          @poll-canceled="$emit(EVENTS.pollCanceled)"
         />
       </tab>
 
@@ -61,9 +61,9 @@ import { vuexTypes } from '@/vuex'
 
 const EVENTS = {
   closeDrawer: 'closeDrawer',
-  closedPoll: 'closedPoll',
-  canceledPoll: 'canceledPoll',
-  updatedEndTime: 'updatedEndTime',
+  pollClosed: 'pollClosed',
+  pollCanceled: 'pollCanceled',
+  endTimeUpdated: 'endTimeUpdated',
 }
 
 export default {
@@ -122,7 +122,7 @@ export default {
     },
 
     updatedEndTimeFormSubmitted () {
-      this.$emit(EVENTS.updatedEndTime)
+      this.$emit(EVENTS.endTimeUpdated)
     },
 
     isPollOwner () {
