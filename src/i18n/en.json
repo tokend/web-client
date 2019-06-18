@@ -427,7 +427,7 @@
       "op_number_of_admins_exceeds_license": "Number of admins violates license restriction. Please contact enterprise@distributedlab.com",
       "op_account_not_found": "There is no account with such id",
       "op_role_not_found": "There is no role with such id",
-      "op_pole_not_ready": "Cannot close ongoing poll",
+      "op_poll_not_ready": "Cannot close ongoing poll",
       "op_not_authorized_to_close_poll": "Not authorized to close poll",
       "op_create_poll_tasks_not_found": "There is no key value by key \"create_poll_tasks:permission_type\" ",
       "op_result_provider_not_found": "ResultProvider account not found",
@@ -1353,7 +1353,7 @@
       "number-of-choices-title": "Number of choices",
       "permission-type-title": "Permission type",
       "vote-confirmation-required-title": "Vote confirmation required",
-      "provider-id": "Provider id",
+      "result-provider": "Result provider",
       "poll-data-title": "Poll data",
       "question-title": "Question:",
       "yes-msg": "Yes",
@@ -1362,7 +1362,8 @@
       "update-btn": "Update",
       "cancel-btn": "CANCEL",
       "choice-title": "Option {{number}}",
-      "restricted-type-desc": "Restricted"
+      "restricted-type-desc": "Restricted",
+      "unrestricted-type-desc": "Unrestricted"
     },
     "asset-details": {
       "balance-title": "Balance",
@@ -2096,7 +2097,9 @@
       "create-poll": "Create",
       "update-poll": "Update poll",
       "overview-title": "Poll overview",
-      "new-poll": "New poll"
+      "new-poll": "New poll",
+      "all": "All polls",
+      "requests": "Polls requests"
     },
     "create-poll-form": {
       "permission-type-lbl": "Permission type",
@@ -2109,6 +2112,7 @@
       "create-btn": "Create",
       "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
       "restricted-poll-lbl": "Restricted",
+      "unrestricted-poll-lbl": "Unrestricted",
       "load-failed-msg": "There was an error while loading. Please, try again later",
       "add-choice-btn": "Add option",
       "vote-confirmation-required-disabled-tooltip": "Not supported at the moment"
@@ -2136,7 +2140,9 @@
     },
     "poll-viewer": {
       "vote-tab": "Vote",
-      "details-tab": "Details"
+      "details-tab": "Details",
+      "manage-tab": "Manage",
+      "participants-tab": "Participants"
     },
     "poll-vote-form": {
       "submit-btn": "Vote",
@@ -2145,6 +2151,39 @@
       "remove-vote-btn": "Remove  vote",
       "remove-vote-confirmation-msg": "Are you sure you want to remove your current vote?",
       "removed-notification": "Successfully removed vote"
+    },
+    "poll-update-end-time-form": {
+      "submit-btn": "Update",
+      "submitted-notification": "Successfully updated",
+      "new-end-time-lbl": "New end time",
+      "update-date-notification": "End time was updated",
+      "update-end-time-subheading": "Update end time",
+      "current-end-time-title": "Current end time: {{time, dmyt}}"
+    },
+    "cancel-poll-form": {
+      "cancel-poll-btn": "Cancel",
+      "cancel-poll-confirmation-msg": "Are you sure you want to cancel the poll?",
+      "cancel-notification": "Successfully canceled",
+      "cancel-poll-subheading": "Cancel poll",
+      "cancel-poll-description": "Allows to cancel poll",
+      "yes-btn": "Yes",
+      "no-btn": "No"
+    },
+    "close-poll-form": {
+      "close-poll-btn": "Close",
+      "close-poll-confirmation-msg": "Are you sure you want to close the poll?",
+      "close-notification": "Successfully closed",
+      "close-poll-subheading": "Close poll",
+      "close-poll-description": "Close existing poll with a result:",
+      "passed-poll-result": "Passed",
+      "failed-poll-result": "Failed",
+      "yes-btn": "Yes",
+      "no-btn": "No"
+    },
+    "poll-participants": {
+      "email-lbl": "Email",
+      "choice-lbl": "Choice",
+      "no-request-history-desc": "Here will be the list of poll participants"
     },
     "poll-attributes": {
       "id-key": "Poll ID",
@@ -2162,6 +2201,7 @@
       "state-failed-val": "Failed",
       "state-canceled-val": "Canceled",
       "permission-type-restricted-val": "Restricted",
+      "permission-type-unrestricted-val": "Unrestricted",
       "yes-val": "Yes",
       "no-val": "No"
     }

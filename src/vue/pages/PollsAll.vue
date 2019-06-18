@@ -36,6 +36,7 @@
       </select-filter-field>
 
       <tick-filter-field
+        v-if="isCorporate"
         v-model="filters.isOwnedByCurrentUser"
         :cb-value="true"
         class="polls-all__filter-field"
@@ -44,6 +45,7 @@
       </tick-filter-field>
 
       <tick-filter-field
+        v-if="isCorporate"
         v-model="filters.isResultProvidedByCurrentUser"
         :cb-value="true"
         class="polls-all__filter-field"
@@ -96,8 +98,9 @@
         should be rendered only after filters.assetCode assigned any value
      -->
     <template v-if="filters.assetCode">
-      <div class="limits__requests-collection-loader">
+      <div class="polls-all__requests-collection-loader">
         <collection-loader
+          class="polls-all__loader"
           :first-page-loader="getList"
           @first-page-load="setList"
           @next-page-load="concatList"
@@ -111,7 +114,13 @@
         {{ 'polls-all.vote-drawer-title' | globalize }}
       </template>
 
-      <poll-viewer :poll="pollToBrowse" />
+      <poll-viewer
+        :poll-id="pollToBrowse.id"
+        @close-drawer="isDrawerShown = false"
+        @end-time-updated="refreshPollsList()"
+        @poll-canceled="refreshPollsListWithCloseDrawer()"
+        @poll-closed="refreshPollsListWithCloseDrawer()"
+      />
     </drawer>
   </div>
 </template>
@@ -132,6 +141,8 @@ import { PollRecord } from '@/js/records/entities/poll.record'
 
 import SelectFilterField from '@/vue/fields/SelectFilterField'
 import TickFilterField from '@/vue/fields/TickFilterField'
+
+const DELAY_REFRESH_LIST_TIME = 500
 
 export default {
   name: 'polls-all',
@@ -168,6 +179,7 @@ export default {
     ...mapGetters({
       balances: vuexTypes.accountBalances,
       accountId: vuexTypes.accountId,
+      isCorporate: vuexTypes.isAccountCorporate,
     }),
   },
 
@@ -280,6 +292,17 @@ export default {
       this.pollToBrowse = item
       this.isDrawerShown = true
     },
+
+    refreshPollsList () {
+      setTimeout(() => {
+        this.reloadList()
+      }, DELAY_REFRESH_LIST_TIME)
+    },
+
+    refreshPollsListWithCloseDrawer () {
+      this.isDrawerShown = false
+      this.refreshPollsList()
+    },
   },
 }
 </script>
@@ -342,6 +365,10 @@ $filter-field-to-filter-field-margin: 2rem;
   @include respond-to(xsmall) {
     @include list-item-width(100%);
   }
+}
+
+.polls-all__loader {
+  margin-top: 1rem;
 }
 
 .polls-all__no-data-message {

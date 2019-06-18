@@ -267,6 +267,7 @@ export default {
     ...mapGetters({
       accountId: vuexTypes.accountId,
       restrictedPollType: vuexTypes.kvPollTypeRestricted,
+      unrestrictedPollType: vuexTypes.kvPollTypeUnrestricted,
     }),
     yesterday () {
       return moment().subtract(1, 'days').toISOString()
@@ -276,6 +277,10 @@ export default {
         {
           labelTranslationId: 'create-poll-form.restricted-poll-lbl',
           value: this.restrictedPollType,
+        },
+        {
+          labelTranslationId: 'create-poll-form.unrestricted-poll-lbl',
+          value: this.unrestrictedPollType,
         },
       ]
     },
@@ -302,6 +307,7 @@ export default {
           await api.postOperations(createPollOperation)
           Bus.success('create-poll-form.request-submitted-msg')
           this.$emit(EVENTS.submitted)
+          Bus.emit('polls:updateRequestsList')
         } catch (e) {
           this.enableForm()
           ErrorHandler.process(e)

@@ -32,6 +32,7 @@ for further information about branching and tagging conventions.
 - Resolved an issue when select field was displayed glitchy if no value selected
 - Resolved an issue when disabled or readonly select field was rendered slightly
   differ from other fields
+- Resolved an issue when date field was disabled after submit form
 
 ### "Under the hood" changes
 #### Added
@@ -41,6 +42,7 @@ for further information about branching and tagging conventions.
   multiline blocks
 - `width` property to skeleton loader for more flexible width setup
 - Now config urls are insensitive for presence of absence of trailing slash
+- New rule for account id validation (accountId)
 
 #### Changed
 - Now loading latest KYC data from account endpoint instead of the latest

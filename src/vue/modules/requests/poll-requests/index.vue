@@ -19,11 +19,11 @@
     </template>
 
     <p v-if="isLoadingFailed">
-      {{ 'create-asset-requests.loading-error-msg' | globalize }}
+      {{ 'poll-requests.loading-error-msg' | globalize }}
     </p>
 
     <collection-loader
-      class="create-asset-requests__loader"
+      class="poll-requests__loader"
       v-show="requests.length && isLoaded"
       :first-page-loader="firstPageLoader"
       @first-page-load="setRequests"
@@ -40,6 +40,7 @@ import { types } from './store/types'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import RequestsTable from './components/requests-table'
 import RequestViewer from './components/request-viewer'
+import { Bus } from '@/js/helpers/event-bus'
 
 export default {
   name: 'poll-requests',
@@ -63,6 +64,9 @@ export default {
   },
   async created () {
     this.initFirstPageLoader()
+    Bus.on('polls:updateRequestsList', () =>
+      this.initFirstPageLoader()
+    )
   },
   methods: {
     ...mapMutations('poll-requests', {
@@ -96,4 +100,8 @@ export default {
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.poll-requests__loader {
+  margin-top: 1rem;
+}
+</style>

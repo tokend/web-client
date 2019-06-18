@@ -20,15 +20,15 @@
         <tr>
           <td>{{ 'poll-requests.permission-type-title' | globalize }}</td>
           <td>
-            <template v-if="request.permissionType === restrictedPollType">
-              {{ 'poll-requests.restricted-type-desc' | globalize }}
-            </template>
+            {{ pollPermissionTypeTranslated }}
           </td>
         </tr>
 
         <tr>
-          <td>{{ 'poll-requests.provider-id' | globalize }}</td>
-          <td>{{ request.resultProvider }}</td>
+          <td>{{ 'poll-requests.result-provider' | globalize }}</td>
+          <td>
+            <email-getter :account-id="request.resultProvider" />
+          </td>
         </tr>
 
         <tr>
@@ -78,20 +78,44 @@
 import { PollRequest } from '../wrappers/poll-request'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import EmailGetter from '@/vue/common/EmailGetter'
 
 const QUESTION_MAX_LEN = 20
 
 export default {
   name: 'request-attributes-viewer',
+  components: {
+    EmailGetter,
+  },
   props: {
     request: { type: PollRequest, required: true },
   },
   computed: {
     ...mapGetters({
       restrictedPollType: vuexTypes.kvPollTypeRestricted,
+      unrestrictedPollType: vuexTypes.kvPollTypeUnrestricted,
     }),
     isQuestionMaxLen () {
       return this.request.question.length >= QUESTION_MAX_LEN
+    },
+    pollPermissionTypeTranslated () {
+      let translationId
+
+      switch (this.request.permissionType) {
+        case this.restrictedPollType:
+          translationId = 'poll-requests.restricted-type-desc'
+          break
+
+        case this.unrestrictedPollType:
+          translationId = 'poll-requests.unrestricted-type-desc'
+          break
+
+        default:
+          translationId = '[UNKNOWN_PERMISSION_TYPE]'
+          break
+      }
+
+      return this.$options.filters.globalize(translationId)
     },
   },
 }

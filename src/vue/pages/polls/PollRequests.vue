@@ -16,7 +16,6 @@ export default {
   components: {
     SubmoduleImporter,
   },
-
   data: _ => ({
     PollRequestsModule,
   }),

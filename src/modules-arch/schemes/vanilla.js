@@ -54,7 +54,6 @@ import { PollsPageModule } from '@/vue/pages/polls-page-module'
 import { PollRequestsModule } from '@/vue/modules/requests/poll-requests/module'
 import { PollRequestsPageModule } from '@/vue/pages/polls/poll-requests-page'
 import { PollsAllPageModule } from '@/vue/pages/polls-all-page-module'
-import { PollsListOwnedPageModule } from '@/vue/pages/polls/user-owned-polls-page-module'
 import { CreatePollFormModule } from '@/vue/modules/create-poll-form/module'
 
 import { VerificationGeneralFormModule } from '@/vue/modules/verification/general-form/module'
@@ -251,27 +250,14 @@ export default {
             routerEntry: {
               path: '/polls/all',
               name: vueRoutes.allPolls.name,
-              props: {
-                default: true,
-                isUserPolls: false,
-              },
+              props: true,
             },
-          }),
-          new PollsListOwnedPageModule({
-            routerEntry: {
-              path: '/polls/my',
-              name: vueRoutes.userOwnedPolls.name,
-              props: {
-                default: true,
-                isUserPolls: true,
-              },
-            },
-            isCorporateOnly: true,
           }),
           new PollRequestsPageModule({
             routerEntry: {
               path: '/polls/poll-requests',
               name: vueRoutes.pollRequests.name,
+              props: true,
             },
             isCorporateOnly: true,
             submodules: [

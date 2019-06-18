@@ -128,12 +128,16 @@ export default {
   },
 
   props: {
-    poll: { type: PollRecord, required: true },
+    poll: {
+      type: PollRecord,
+      required: true,
+    },
   },
 
   computed: {
     ...mapGetters([
       vuexTypes.kvPollTypeRestricted,
+      vuexTypes.kvPollTypeUnrestricted,
     ]),
 
     pollStateTranslated () {
@@ -160,6 +164,10 @@ export default {
       switch (this.poll.permissionType) {
         case this.kvPollTypeRestricted:
           translationId = 'poll-attributes.permission-type-restricted-val'
+          break
+
+        case this.kvPollTypeUnrestricted:
+          translationId = 'poll-attributes.permission-type-unrestricted-val'
           break
 
         default:

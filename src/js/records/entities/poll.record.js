@@ -22,6 +22,11 @@ export class PollRecord {
     this.numberOfChoices = _get(record, 'numberOfChoices')
     this.isVoteConfirmationRequired = _get(record, 'voteConfirmationRequired')
     this.question = _get(record, 'creatorDetails.question')
+    this.participants = _get(record, 'participation.votes', [])
+      .map(item => ({
+        id: item.id,
+        choice: item.voteData.singleChoice,
+      }))
 
     this.choices = _get(record, 'creatorDetails.choices', [])
       .map(item => ({
