@@ -7,7 +7,7 @@
         </h2>
         <div class="movements-history__list-wrp">
           <movements-table
-            :is-movements-loaded="isMovementsLoaded"
+            :is-movements-loaded="isMovementsLoading"
             :movements="movements"
           />
         </div>
@@ -21,7 +21,9 @@
       <div class="movements-history__collection-loader-wrp">
         <collection
           v-if="!isMovementsLoadFailed && assetCode"
-          v-show="isMovementsLoaded && !latestActivity"
+          v-show="!isMovementsLoading && !latestActivity"
+          @is-loading="isMovementsLoading"
+          @is-failed="isMovementsLoadFailed"
           :loader="firstPageLoader"
           v-model="list"
           ref="collection"
@@ -32,12 +34,10 @@
 </template>
 
 <script>
-// import CollectionLoader from '@/vue/common/CollectionLoader'
 import Collection from '@/vue/common/Collection'
 import MovementsTable from './components/movements-table'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
-import { ErrorHandler } from '@/js/helpers/error-handler'
 import { types } from './store/types'
 import { vueRoutes } from '@/vue-router/routes'
 
@@ -49,7 +49,6 @@ export default {
   name: 'movements-history-module',
   components: {
     MovementsTable,
-    // CollectionLoader,
     Collection,
   },
   props: {
@@ -63,7 +62,7 @@ export default {
     },
   },
   data: _ => ({
-    isMovementsLoaded: false,
+    isMovementsLoading: false,
     isMovementsLoadFailed: false,
     REFS,
     list: [],
@@ -75,6 +74,7 @@ export default {
     firstPageLoader () {
       const assetCode = this.assetCode // HACK: passing this.assetCode directly
       // to function will lead to losing reactivity
+
       return _ => this.loadMovementsFirstPage(assetCode)
     },
 
@@ -100,24 +100,17 @@ export default {
     }),
 
     reloadCollectionLoader () {
-      return this.$refs[REFS.collection].reload(this.firstPageLoader)
+      return this.$refs[REFS.collection].reload()
     },
 
     async loadMovementsFirstPage (assetCode) {
-      this.isMovementsLoaded = false
-      try {
-        let response
-        if (this.isSharesPage) {
-          response = await this.loadShareMovements(assetCode)
-        } else {
-          response = await this.loadMovements(assetCode)
-        }
-        this.isMovementsLoaded = true
-        return response
-      } catch (e) {
-        ErrorHandler.processWithoutFeedback(e)
-        this.isMovementsLoadFailed = true
+      let response
+      if (this.isSharesPage) {
+        response = await this.loadShareMovements(assetCode)
+      } else {
+        response = await this.loadMovements(assetCode)
       }
+      return response
     },
   },
 }

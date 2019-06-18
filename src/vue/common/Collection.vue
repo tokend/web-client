@@ -13,6 +13,10 @@
 <script>
 const EVENTS = {
   input: 'input',
+  isFailed: 'is-failed',
+  isLoading: 'is-loading',
+  isEmpty: 'is-empty',
+  isFetchedFirst: 'is-fetched-first',
 }
 
 const DEFAULT_PAGE_LIMIT = 10
@@ -41,29 +45,34 @@ export default {
     isNoMoreEntries: false,
     isFetchedFirst: true,
   }),
-  mounted () {
-    this.loadPage(this.loader)
+  watch: {
+    loader: {
+      immediate: true,
+      handler: 'loadPage',
+    },
   },
+  // mounted () {
+  //   this.loadPage(this.loader)
+  // },
   methods: {
     async loadPage (loaderFn) {
+      this.$emit(EVENTS.isLoading, true)
       try {
         const response = await loaderFn()
         this.nextPageLoader = response.fetchNext
         const extendedValue = this.value.concat(response.data)
         this.$emit(EVENTS.input, extendedValue)
+        this.$emit(EVENTS.isFetchedFirst, false)
         this.isNoMoreEntries = response.data.length < this.pageLimit
       } catch (e) {
-        this.$emit(EVENTS.error, e)
-        // ErrorHandler.processWithoutFeedback(e)
+        this.$emit(EVENTS.isFailed, true)
       }
+      this.$emit(EVENTS.isLoading, false)
     },
-    setLoader () {
-    },
-    reload (loaderFn) {
+    reload () {
+      this.$emit(EVENTS.isFetchedFirst, true)
       this.$emit(EVENTS.input, [])
-      this.loadPage(loaderFn)
     },
-
   },
 }
 </script>
