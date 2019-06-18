@@ -7,49 +7,42 @@
         </h2>
         <div class="movements-history__list-wrp">
           <movements-table
-            :is-movements-loaded="isMovementsLoading"
+            :is-movements-loaded="collection.isLoading"
             :movements="movements"
           />
         </div>
       </template>
-      <template v-if="isMovementsLoadFailed">
+      <template v-if="collection.isFailed">
         <p class="movements-history__error-msg">
           {{ 'movements-history.movements-load-failed-msg' | globalize }}
         </p>
       </template>
 
       <div class="movements-history__collection-loader-wrp">
-        <collection
-          v-if="!isMovementsLoadFailed && assetCode"
-          v-show="!isMovementsLoading && !latestActivity"
-          @is-loading="isMovementsLoading"
-          @is-failed="isMovementsLoadFailed"
-          :loader="firstPageLoader"
-          v-model="list"
-          ref="collection"
-        />
+        <button
+          v-show="!collection.isNoMoreEntries"
+          class="collection__more-button app__button-flat"
+          @click="loadCollection"
+        >
+          {{ 'common.more-btn' | globalize }}
+        </button>
       </div>
     </template>
   </div>
 </template>
 
 <script>
-import Collection from '@/vue/common/Collection'
 import MovementsTable from './components/movements-table'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
 import { vueRoutes } from '@/vue-router/routes'
-
-const REFS = {
-  collection: 'collection',
-}
+import { Collection } from '@/vue/common/collection.js'
 
 export default {
   name: 'movements-history-module',
   components: {
     MovementsTable,
-    Collection,
   },
   props: {
     assetCode: {
@@ -62,10 +55,7 @@ export default {
     },
   },
   data: _ => ({
-    isMovementsLoading: false,
-    isMovementsLoadFailed: false,
-    REFS,
-    list: [],
+    collection: new Collection(),
   }),
   computed: {
     ...mapGetters('movements-history', {
@@ -83,11 +73,10 @@ export default {
     },
   },
   watch: {
-    list (value) {
-      this.setMovements(value)
-    },
-    assetCode (value) {
-      this.reloadCollectionLoader()
+    async assetCode () {
+      this.collection.setLoader = this.firstPageLoader
+      this.setMovements(await this.collection.reload())
+      // this.reloadCollectionLoader()
     },
   },
   methods: {
@@ -99,10 +88,6 @@ export default {
       loadShareMovements: types.LOAD_SHARE_MOVEMENTS,
     }),
 
-    reloadCollectionLoader () {
-      return this.$refs[REFS.collection].reload()
-    },
-
     async loadMovementsFirstPage (assetCode) {
       let response
       if (this.isSharesPage) {
@@ -111,6 +96,9 @@ export default {
         response = await this.loadMovements(assetCode)
       }
       return response
+    },
+    async loadCollection () {
+      this.setMovements(await this.collection.loadPage())
     },
   },
 }
