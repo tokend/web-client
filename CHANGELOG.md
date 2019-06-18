@@ -9,15 +9,45 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Added
-- Asset code validator
-- My assets explorer page
-- Register of shares page
-- Waiting email verification
-- Scrolling to top of the page after sending KYC corporate request
-- URLs normalization in env.js
+- New asset code validator
+- New "My assets" page
+- New "Register of shares" page
+- New page scroll to top behavior after KYC corporate request submitting
+- New a bit restyled version of select and checkbox fields to use them as
+  filters
+- New Voting feature:
+  - Create poll form
+  - Create poll requests pages
+  - Poll exploration pages
+  - Poll manage forms
+  - Poll vote form
 
 #### Changed
-- Now loading KYC latest data from account endpoint
+- Reordered sidebar menu items
+- Fixed some style issues with radio button and checkbox fields
+
+#### Fixed
+- Resolved an issue when the email verification still had been in progress but
+  the users was redirected to the application
+- Resolved an issue when select field was displayed glitchy if no value selected
+- Resolved an issue when disabled or readonly select field was rendered slightly
+  differ from other fields
+
+### "Under the hood" changes
+#### Added
+- DMYT (DD.MM.YYYY at TIME) and calendar inline (like normal calendar but words
+  start from small letter) i18next filters
+- `@mixin multi-line-ellipsis` — scss mixin for easily setting up ellipsis of
+  multiline blocks
+- `width` property to skeleton loader for more flexible width setup
+- Now config urls are insensitive for presence of absence of trailing slash
+
+#### Changed
+- Now loading latest KYC data from account endpoint instead of the latest
+  request endpoint when possible
+
+#### Removed
+- Get rid of some ineffective style-lint rules
 
 ## [1.8.0-rc.1] - 2019-06-07
 #### Changed
@@ -36,7 +66,7 @@ for further information about branching and tagging conventions.
 
 #### Changed
 - Invoice form width to full screen
-- Now displaying customer's & merchant's balances on the invoice form 
+- Now displaying customer's & merchant's balances on the invoice form
   confirmation
 
 #### Fixed
