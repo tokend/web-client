@@ -214,7 +214,6 @@ import { api } from '@/api'
 const QUESTION_MAX_LENGTH = 255
 const EVENTS = {
   submitted: 'submitted',
-  updatePollRequests: 'polls:updateRequestsList',
 }
 
 export default {
@@ -308,7 +307,7 @@ export default {
           await api.postOperations(createPollOperation)
           Bus.success('create-poll-form.request-submitted-msg')
           this.$emit(EVENTS.submitted)
-          Bus.emit(EVENTS.updatePollRequests)
+          Bus.emit('polls:updateRequestsList')
         } catch (e) {
           this.enableForm()
           ErrorHandler.process(e)

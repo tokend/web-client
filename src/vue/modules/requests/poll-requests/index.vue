@@ -42,10 +42,6 @@ import RequestsTable from './components/requests-table'
 import RequestViewer from './components/request-viewer'
 import { Bus } from '@/js/helpers/event-bus'
 
-const EVENTS = {
-  updatePollRequests: 'polls:updateRequestsList',
-}
-
 export default {
   name: 'poll-requests',
   components: {
@@ -68,7 +64,7 @@ export default {
   },
   async created () {
     this.initFirstPageLoader()
-    Bus.on(EVENTS.updatePollRequests, () =>
+    Bus.on('polls:updateRequestsList', () =>
       this.initFirstPageLoader()
     )
   },
