@@ -2149,6 +2149,7 @@
       "submit-btn": "Vote",
       "submitted-notification": "Successfully voted",
       "repeat-vote-msg": "You already voted in this poll, a new vote will replace the current one.",
+      "repeat-vote-disabled-msg": "You already voted in this poll, re-voting is not permitted in the current poll.",
       "remove-vote-btn": "Remove  vote",
       "remove-vote-confirmation-msg": "Are you sure you want to remove your current vote?",
       "removed-notification": "Successfully removed vote"

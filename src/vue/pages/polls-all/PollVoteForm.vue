@@ -29,7 +29,13 @@
 
       <template v-if="isRepeatVote">
         <p class="poll-vote-form__repeat-vote-msg">
-          {{ 'poll-vote-form.repeat-vote-msg' | globalize }}
+          <template v-if="!isRepeatVoteAllowed">
+            {{ 'poll-vote-form.repeat-vote-disabled-msg' | globalize }}
+          </template>
+
+          <template v-else>
+            {{ 'poll-vote-form.repeat-vote-msg' | globalize }}
+          </template>
         </p>
       </template>
 
@@ -54,14 +60,15 @@
             :disabled="formMixin.isDisabled ||
               !form.choice ||
               form.choice < 0 ||
-              !poll.isOpen
+              !poll.isOpen ||
+              (isRepeatVote && !isRepeatVoteAllowed)
             "
           >
             {{ 'poll-vote-form.submit-btn' | globalize }}
           </button>
 
           <button
-            v-if="isRepeatVote"
+            v-if="isRepeatVote && isRepeatVoteAllowed"
             type="button"
             class="app__button-raised app__button-raised--danger"
             :disabled="formMixin.isDisabled || !poll.isOpen"
@@ -114,7 +121,12 @@ export default {
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
+      restrictedPollType: vuexTypes.kvPollTypeRestricted,
     }),
+
+    isRepeatVoteAllowed () {
+      return this.poll.permissionType !== this.restrictedPollType
+    },
   },
 
   async created () {
