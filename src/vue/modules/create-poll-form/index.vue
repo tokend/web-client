@@ -13,9 +13,8 @@
           name="create-poll-question"
           :label="'create-poll-form.question-lbl' | globalize"
           :disabled="formMixin.isDisabled"
-          :error-message="getFieldErrorMessage(
-            'form.question',
-          )"
+          :error-message="getFieldErrorMessage('form.question')"
+          :maxlength="QUESTION_MAX_LENGTH"
         />
       </div>
     </div>
@@ -56,12 +55,13 @@
             class="create-poll-form__add-choice-wrp"
           >
             <p class="create-poll-form__add-choice">
-              <a
+              <button
                 class="create-poll-form__add-choice-btn"
                 @click="addChoice(choice)"
+                :disabled="formMixin.isDisabled"
               >
                 {{ 'create-poll-form.add-choice-btn' | globalize }}
-              </a>
+              </button>
             </p>
           </div>
         </div>
@@ -250,6 +250,7 @@ export default {
       choices: [{ description: '', number: 1 }],
     },
     isSubmitting: false,
+    QUESTION_MAX_LENGTH,
   }),
   validations () {
     return {
@@ -406,6 +407,12 @@ export default {
     left: 0;
     width: 100%;
     height: 0.1rem;
+  }
+
+  &:disabled {
+    filter: grayscale(1);
+    opacity: 0.7;
+    cursor: default;
   }
 }
 
