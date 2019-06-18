@@ -1353,7 +1353,7 @@
       "number-of-choices-title": "Number of choices",
       "permission-type-title": "Permission type",
       "vote-confirmation-required-title": "Vote confirmation required",
-      "provider-id": "Provider id",
+      "result-provider": "Result provider",
       "poll-data-title": "Poll data",
       "question-title": "Question:",
       "yes-msg": "Yes",
@@ -2152,23 +2152,29 @@
       "remove-vote-confirmation-msg": "Are you sure you want to remove your current vote?",
       "removed-notification": "Successfully removed vote"
     },
-    "poll-manage-form": {
+    "poll-update-end-time-form": {
       "submit-btn": "Update",
       "submitted-notification": "Successfully updated",
-      "close-poll-btn": "Close",
-      "cancel-poll-btn": "Cancel",
-      "close-poll-confirmation-msg": "Are you sure you want to close the poll?",
-      "cancel-poll-confirmation-msg": "Are you sure you want to cancel the poll?",
-      "close-notification": "Successfully closed",
-      "cancel-notification": "Successfully canceled",
       "new-end-time-lbl": "New end time",
       "update-date-notification": "End time was updated",
       "update-end-time-subheading": "Update end time",
-      "close-poll-subheading": "Close poll",
-      "close-poll-description": "Close existing poll with a result:",
+      "current-end-time-title": "Current end time: {{time, dmyt}}"
+    },
+    "cancel-poll-form": {
+      "cancel-poll-btn": "Cancel",
+      "cancel-poll-confirmation-msg": "Are you sure you want to cancel the poll?",
+      "cancel-notification": "Successfully canceled",
       "cancel-poll-subheading": "Cancel poll",
       "cancel-poll-description": "Allows to cancel poll",
-      "current-end-time-title": "Current end time: {{time, dmyt}}",
+      "yes-btn": "Yes",
+      "no-btn": "No"
+    },
+    "close-poll-form": {
+      "close-poll-btn": "Close",
+      "close-poll-confirmation-msg": "Are you sure you want to close the poll?",
+      "close-notification": "Successfully closed",
+      "close-poll-subheading": "Close poll",
+      "close-poll-description": "Close existing poll with a result:",
       "passed-poll-result": "Passed",
       "failed-poll-result": "Failed",
       "yes-btn": "Yes",

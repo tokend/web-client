@@ -25,8 +25,10 @@
         </tr>
 
         <tr>
-          <td>{{ 'poll-requests.provider-id' | globalize }}</td>
-          <td>{{ request.resultProvider }}</td>
+          <td>{{ 'poll-requests.result-provider' | globalize }}</td>
+          <td>
+            <email-getter :account-id="request.resultProvider" />
+          </td>
         </tr>
 
         <tr>
@@ -76,11 +78,15 @@
 import { PollRequest } from '../wrappers/poll-request'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import EmailGetter from '@/vue/common/EmailGetter'
 
 const QUESTION_MAX_LEN = 20
 
 export default {
   name: 'request-attributes-viewer',
+  components: {
+    EmailGetter,
+  },
   props: {
     request: { type: PollRequest, required: true },
   },

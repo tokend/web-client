@@ -4,12 +4,14 @@
     class="app__form"
     @submit.prevent="isFormValid() && showConfirmation()"
   >
-    <div class="poll-manage-form__end-time-wrp">
+    <div class="poll-update-end-time-form">
+      <!-- eslint-disable max-len -->
       <h3
-        class="poll-manage-form-subheading__end-time app__form-subheading"
+        class="poll-update-end-time-form-subheading__end-time app__form-subheading"
       >
-        {{ 'poll-manage-form.update-end-time-subheading' | globalize }}
+        {{ 'poll-update-end-time-form.update-end-time-subheading' | globalize }}
       </h3>
+      <!-- eslint-enable max-len -->
 
       <div class="app__form-row">
         <div class="app__form-field">
@@ -20,21 +22,24 @@
             @input="touchField('form.endTime')"
             @blur="touchField('form.endTime')"
             name="poll-manage-end-time"
-            :label="'poll-manage-form.new-end-time-lbl' | globalize"
+            :label="'poll-update-end-time-form.new-end-time-lbl' | globalize"
             :disabled="formMixin.isDisabled"
             :error-message="getFieldErrorMessage(
               'form.endTime', { minDate: getMinDate() }
             )"
           />
+          <!-- eslint-disable max-len -->
+
           <vue-markdown
-            class="app__form-field-description poll-manage-form__time-hint"
-            :source="'poll-manage-form.current-end-time-title' | globalize({
+            class="app__form-field-description poll-update-end-time-form__time-hint"
+            :source="'poll-update-end-time-form.current-end-time-title' | globalize({
               time: poll.endsAt
             })"
           />
+          <!-- eslint-enable max-len -->
         </div>
       </div>
-      <div class="app__form-actions poll-manage-form__form-actions">
+      <div class="app__form-actions poll-update-end-time-form__form-actions">
         <form-confirmation
           v-if="formMixin.isConfirmationShown"
           @ok="hideConfirmation() || updatePoll()"
@@ -47,7 +52,7 @@
             class="app__button-raised"
             :disabled="formMixin.isDisabled"
           >
-            {{ 'poll-manage-form.submit-btn' | globalize }}
+            {{ 'poll-update-end-time-form.submit-btn' | globalize }}
           </button>
         </template>
       </div>
@@ -124,7 +129,7 @@ export default {
         await api.postOperations(
           this.buildUpdatePollEndTimeOperation(),
         )
-        Bus.success('poll-manage-form.update-date-notification')
+        Bus.success('poll-update-end-time-form.update-date-notification')
         this.$emit(EVENTS.endTimeUpdated)
       } catch (error) {
         ErrorHandler.process(error)
@@ -151,16 +156,16 @@ export default {
 @import '@/vue/forms/_app-form';
 @import '~@scss/variables';
 
-.poll-manage-form__form-actions:not(:first-child) {
+.poll-update-end-time-form__form-actions:not(:first-child) {
   margin-top: 2rem;
 }
 
-.poll-manage-form-subheading__end-time {
+.poll-update-end-time-form-subheading__end-time {
   margin-top: 0;
   margin-bottom: 0;
 }
 
-.poll-manage-form__time-hint {
+.poll-update-end-time-form__time-hint {
   p {
     font-size: 1.2rem;
   }

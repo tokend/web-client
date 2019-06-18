@@ -62,4 +62,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.poll-manage-form {
+  & > *:not(:first-child) {
+    margin-top: 5rem;
+  }
+}
 </style>

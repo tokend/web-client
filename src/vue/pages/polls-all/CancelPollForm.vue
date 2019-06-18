@@ -4,21 +4,21 @@
     class="app__form"
     @submit.prevent="submit"
   >
-    <div class="poll-manage-form__cancel-poll-wrp">
-      <h3 class="poll-manage-form-subheading app__form-subheading">
-        {{ 'poll-manage-form.cancel-poll-subheading' | globalize }}
+    <div class="cancel-poll-form">
+      <h3 class="cancel-poll-form-subheading app__form-subheading">
+        {{ 'cancel-poll-form.cancel-poll-subheading' | globalize }}
       </h3>
 
-      <p class="poll-manage-form-description">
-        {{ 'poll-manage-form.cancel-poll-description' | globalize }}
+      <p class="cancel-poll-form-description">
+        {{ 'cancel-poll-form.cancel-poll-description' | globalize }}
       </p>
 
-      <div class="poll-manage-form__form-actions app__form-actions">
+      <div class="cancel-poll-form__form-actions app__form-actions">
         <form-confirmation
           v-if="formMixin.isConfirmationShown"
-          message-id="poll-manage-form.cancel-poll-confirmation-msg"
-          ok-button-text-id="poll-manage-form.yes-btn"
-          cancel-button-text-id="poll-manage-form.no-btn"
+          message-id="cancel-poll-form.cancel-poll-confirmation-msg"
+          ok-button-text-id="cancel-poll-form.yes-btn"
+          cancel-button-text-id="cancel-poll-form.no-btn"
           is-danger-color
           @ok="hideConfirmation() || cancelPoll()"
           @cancel="hideConfirmation"
@@ -30,7 +30,7 @@
             class="app__button-raised app__button-raised--danger"
             :disabled="formMixin.isDisabled"
           >
-            {{ 'poll-manage-form.cancel-poll-btn' | globalize }}
+            {{ 'cancel-poll-form.cancel-poll-btn' | globalize }}
           </button>
         </template>
       </div>
@@ -71,7 +71,7 @@ export default {
         await api.postOperations(
           this.buildCancelPollOperation(),
         )
-        Bus.success('poll-manage-form.cancel-notification')
+        Bus.success('cancel-poll-form.cancel-notification')
         this.$emit(EVENTS.pollCanceled)
       } catch (error) {
         ErrorHandler.process(error)
@@ -90,18 +90,17 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/vue/forms/_app-form';
-@import '~@scss/variables';
 
-.poll-manage-form__form-actions:not(:first-child) {
+.cancel-poll-form__form-actions:not(:first-child) {
   margin-top: 2rem;
 }
 
-.poll-manage-form-subheading {
-  margin-top: 5rem;
+.cancel-poll-form-subheading {
+  margin-top: 0;
   margin-bottom: 0;
 }
 
-.poll-manage-form-description {
+.cancel-poll-form-description {
   margin-top: 1rem;
 }
 </style>

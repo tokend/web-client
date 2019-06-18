@@ -4,23 +4,23 @@
     class="app__form"
     @submit.prevent="isFormValid() && showConfirmation()"
   >
-    <div class="poll-manage-form__close-poll-wrp">
-      <h3 class="poll-manage-form-subheading app__form-subheading">
-        {{ 'poll-manage-form.close-poll-subheading' | globalize }}
+    <div class="close-poll-form">
+      <h3 class="close-poll-form-subheading app__form-subheading">
+        {{ 'close-poll-form.close-poll-subheading' | globalize }}
       </h3>
 
-      <p class="poll-manage-form-description">
-        {{ 'poll-manage-form.close-poll-description' | globalize }}
+      <p class="close-poll-form-description">
+        {{ 'close-poll-form.close-poll-description' | globalize }}
       </p>
 
-      <div class="poll-manage-form__choices">
+      <div class="close-poll-form__choices">
         <div
-          class="poll-manage-form__choice-wrp"
+          class="close-poll-form__choice-wrp"
           v-for="item in VOTING_RESULTS"
           :key="item.value"
         >
           <radio-field
-            :name="`poll-manage-form__choice-${item.value}`"
+            :name="`close-poll-form__choice-${item.value}`"
             v-model="form.result"
             :cb-value="item.value"
             :disabled="formMixin.isDisabled"
@@ -30,12 +30,12 @@
         </div>
       </div>
 
-      <div class="poll-manage-form__form-actions app__form-actions">
+      <div class="close-poll-form__form-actions app__form-actions">
         <form-confirmation
           v-if="formMixin.isConfirmationShown"
-          message-id="poll-manage-form.close-poll-confirmation-msg"
-          ok-button-text-id="poll-manage-form.yes-btn"
-          cancel-button-text-id="poll-manage-form.no-btn"
+          message-id="close-poll-form.close-poll-confirmation-msg"
+          ok-button-text-id="close-poll-form.yes-btn"
+          cancel-button-text-id="close-poll-form.no-btn"
           is-danger-color
           @ok="hideConfirmation() || closePoll()"
           @cancel="hideConfirmation"
@@ -49,7 +49,7 @@
               form.result < 0
             "
           >
-            {{ 'poll-manage-form.close-poll-btn' | globalize }}
+            {{ 'close-poll-form.close-poll-btn' | globalize }}
           </button>
         </template>
       </div>
@@ -67,8 +67,8 @@ import { PollRecord } from '@/js/records/entities/poll.record'
 import { required } from '@validators'
 
 const VOTING_RESULTS = [
-  { name: 'poll-manage-form.passed-poll-result', value: 0 },
-  { name: 'poll-manage-form.failed-poll-result', value: 1 },
+  { name: 'close-poll-form.passed-poll-result', value: 0 },
+  { name: 'close-poll-form.failed-poll-result', value: 1 },
 ]
 
 const EVENTS = {
@@ -110,7 +110,7 @@ export default {
         await api.postOperations(
           this.buildClosePollOperation(),
         )
-        Bus.success('poll-manage-form.close-notification')
+        Bus.success('close-poll-form.close-notification')
         this.$emit(EVENTS.pollClosed)
       } catch (error) {
         ErrorHandler.process(error)
@@ -131,26 +131,25 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/vue/forms/_app-form';
-@import '~@scss/variables';
 
-.poll-manage-form__form-actions:not(:first-child) {
+.close-poll-form__form-actions:not(:first-child) {
   margin-top: 2rem;
 }
 
-.poll-manage-form-subheading {
-  margin-top: 5rem;
+.close-poll-form-subheading {
+  margin-top: 0;
   margin-bottom: 0;
 }
 
-.poll-manage-form__choice-wrp:not(:first-of-type) {
+.close-poll-form__choice-wrp:not(:first-of-type) {
   margin-top: 1.2rem;
 }
 
-.poll-manage-form__choices {
+.close-poll-form__choices {
   margin-top: 2rem;
 }
 
-.poll-manage-form-description {
+.close-poll-form-description {
   margin-top: 1rem;
 }
 </style>
