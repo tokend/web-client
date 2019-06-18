@@ -129,23 +129,37 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <div class="create-poll-form__result-provider-id-wrp">
+          <!--
+            The field and button are disabled because of module that takes over
+            responsibility for closing and vote counting. The module requires
+            result provider ID set to master account ID. Input is not removed
+            because we were planning of making this feature to be changed from
+            auto-mode to manual-mode, manual-mode enabled by setting any other
+            account ID in this field.
+          -->
           <input-field
             white-autofill
             v-model="form.resultProviderID"
             @blur="touchField('form.resultProviderID')"
             name="create-poll-result-provider-id"
             :label="'create-poll-form.result-provider-id-lbl' | globalize"
-            :disabled="formMixin.isDisabled"
+            :disabled="true || formMixin.isDisabled"
             :error-message="getFieldErrorMessage(
               'form.resultProviderID',
             )"
+            v-tooltip="{
+              type: 'hover',
+              text: $options.filters.globalize(
+                'create-poll-form.result-provider-disabled-tooltip'
+              ),
+            }"
           />
           <button
             v-ripple
             type="button"
             class="app__button-flat create-poll-form__insert-account-id-btn"
             @click="form.resultProviderID = accountId"
-            :disabled="formMixin.isDisabled"
+            :disabled="true || formMixin.isDisabled"
           >
             {{ 'create-asset-form.use-my-account-id-btn' | globalize }}
           </button>
@@ -155,6 +169,11 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
+        <!--
+          The tick field is disabled because result provider ID should review
+          the votes than, but module described in result-provider-id-wrp field’s
+          comment is not prepared for this and behavior is undefined.
+        -->
         <tick-field
           name="create-poll-vote-confirmation-required"
           v-model="form.isVoteConfirmationRequired"
@@ -227,7 +246,7 @@ export default {
       endTime: '',
       startTime: '',
       isVoteConfirmationRequired: false,
-      resultProviderID: '',
+      resultProviderID: api.networkDetails.masterAccountId,
       choices: [{ description: '', number: 1 }],
     },
     isSubmitting: false,

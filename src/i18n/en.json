@@ -2115,7 +2115,8 @@
       "unrestricted-poll-lbl": "Unrestricted",
       "load-failed-msg": "There was an error while loading. Please, try again later",
       "add-choice-btn": "Add option",
-      "vote-confirmation-required-disabled-tooltip": "Not supported at the moment"
+      "vote-confirmation-required-disabled-tooltip": "Not supported at the moment",
+      "result-provider-disabled-tooltip": "Not supported at the moment"
     },
     "polls-all": {
       "state-open": "Open",

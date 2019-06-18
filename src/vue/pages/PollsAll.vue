@@ -43,15 +43,6 @@
       >
         {{ 'polls-all.owned-by-me-filter-lbl' | globalize }}
       </tick-filter-field>
-
-      <tick-filter-field
-        v-if="isCorporate"
-        v-model="filters.isResultProvidedByCurrentUser"
-        :cb-value="true"
-        class="polls-all__filter-field"
-      >
-        {{ 'polls-all.result-provided-by-me-filter-lbl' | globalize }}
-      </tick-filter-field>
     </div>
 
     <template v-if="list.length">
@@ -164,7 +155,6 @@ export default {
         assetCode: '',
         state: PollRecord.states.open,
         isOwnedByCurrentUser: false,
-        isResultProvidedByCurrentUser: false,
       },
       isLoading: false,
       isInitialized: false,
@@ -193,10 +183,6 @@ export default {
     },
 
     'filters.isOwnedByCurrentUser' () {
-      this.reloadListIfInitialized()
-    },
-
-    'filters.isResultProvidedByCurrentUser' () {
       this.reloadListIfInitialized()
     },
   },
@@ -252,11 +238,6 @@ export default {
                 .asset.owner,
 
             state: this.filters.state,
-
-            ...(this.filters.isResultProvidedByCurrentUser
-              ? { 'result_provider': this.accountId }
-              : {}
-            ),
           },
         })
       } catch (error) {
