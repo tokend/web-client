@@ -9,7 +9,6 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Added
-- New asset code validator
 - New "My assets" page
 - New "Register of shares" page
 - New page scroll to top behavior after KYC corporate request submitting
@@ -42,7 +41,8 @@ for further information about branching and tagging conventions.
   multiline blocks
 - `width` property to skeleton loader for more flexible width setup
 - Now config urls are insensitive for presence of absence of trailing slash
-- New rule for account id validation (accountId)
+- New asset code validation rule
+- New account id validation rule
 
 #### Changed
 - Now loading latest KYC data from account endpoint instead of the latest
