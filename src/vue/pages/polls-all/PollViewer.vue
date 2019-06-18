@@ -121,8 +121,9 @@ export default {
       this.$emit(EVENTS.closeDrawer)
     },
 
-    updatedEndTimeFormSubmitted () {
+    async updatedEndTimeFormSubmitted () {
       this.$emit(EVENTS.endTimeUpdated)
+      await this.loadPoll()
     },
 
     isPollOwner () {
