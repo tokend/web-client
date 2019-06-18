@@ -48,7 +48,7 @@ import VueMarkdown from 'vue-markdown'
 import { PollRecord } from '@/js/records/entities/poll.record'
 
 export default {
-  name: 'poll-vote',
+  name: 'poll-card',
 
   components: {
     EmailGetter,
