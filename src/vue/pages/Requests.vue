@@ -9,29 +9,6 @@
           <span>{{ 'requests-page.asset-creation-title' | globalize }}</span>
         </router-link>
 
-        <router-link
-          v-if="getModule().canRenderSubmodule(AssetUpdateRequestsPageModule)"
-          :to="vueRoutes.assetUpdateRequests"
-        >
-          <span>{{ 'requests-page.asset-update-title' | globalize }}</span>
-        </router-link>
-
-        <router-link
-          v-if="getModule().canRenderSubmodule(SaleCreationRequestsPageModule)"
-          :to="vueRoutes.saleCreationRequests"
-        >
-          <span>{{ 'requests-page.sale-creation-title' | globalize }}</span>
-        </router-link>
-
-        <router-link
-          v-if="getModule().canRenderSubmodule(PreIssuanceRequestsPageModule)"
-          :to="vueRoutes.preIssuanceUploadRequests"
-        >
-          <span>
-            {{ 'requests-page.pre-issuance-upload-title' | globalize }}
-          </span>
-        </router-link>
-
         <!-- eslint-disable max-len -->
         <router-link
           v-if="getModule().canRenderSubmodule(IncomingWithdrawalRequestsPageModule)"
