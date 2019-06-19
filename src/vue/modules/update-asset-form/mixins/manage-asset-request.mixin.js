@@ -34,6 +34,7 @@ export default {
           name: this.informationStepForm.name,
           logo: logo ? logo.getDetailsForSave() : EMPTY_DOCUMENT,
           terms: terms ? terms.getDetailsForSave() : EMPTY_DOCUMENT,
+          stellar: this.stellarInfo(),
         },
       }
     },
@@ -92,6 +93,17 @@ export default {
       const operation =
         base.ManageAssetBuilder.assetUpdateRequest(this.assetRequestOpts)
       await api.postOperations(operation)
+    },
+
+    stellarInfo () {
+      return this.advancedStepForm.isStellarIntegrationEnabled
+        ? {
+          withdraw: this.advancedStepForm.stellar.withdraw,
+          deposit: this.advancedStepForm.stellar.deposit,
+          asset_type: this.advancedStepForm.stellar.assetType,
+          asset_code: this.advancedStepForm.stellar.assetCode,
+        }
+        : {}
     },
   },
 }

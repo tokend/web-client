@@ -172,6 +172,53 @@
               {{ +asset.annualReturn }}%
             </td>
           </tr>
+          <template v-if="asset.stellarAssetCode !== ''">
+            <tr :title="'asset-details.stellar-asset-code-title' | globalize">
+              <td>
+                {{ 'asset-details.stellar-asset-code-title' | globalize }}
+              </td>
+              <td>
+                {{ asset.stellarAssetCode }}
+              </td>
+            </tr>
+
+            <tr :title="'asset-details.stellar-asset-type-title' | globalize">
+              <td>
+                {{ 'asset-details.stellar-asset-type-title' | globalize }}
+              </td>
+              <td>
+                {{ stellarAssetTypeTranslated }}
+              </td>
+            </tr>
+
+            <tr :title="'asset-details.stellar-withdraw-title' | globalize">
+              <td>
+                {{ 'asset-details.stellar-withdraw-title' | globalize }}
+              </td>
+              <td>
+                <template v-if="asset.stellarWithdraw">
+                  {{ 'asset-details.yes-msg' | globalize }}
+                </template>
+                <template v-else>
+                  {{ 'asset-details.no-msg' | globalize }}
+                </template>
+              </td>
+            </tr>
+
+            <tr :title="'asset-details.stellar-deposit-title' | globalize">
+              <td>
+                {{ 'asset-details.stellar-deposit-title' | globalize }}
+              </td>
+              <td>
+                <template v-if="asset.stellarDeposit">
+                  {{ 'asset-details.yes-msg' | globalize }}
+                </template>
+                <template v-else>
+                  {{ 'asset-details.no-msg' | globalize }}
+                </template>
+              </td>
+            </tr>
+          </template>
         </tbody>
       </table>
     </div>
@@ -218,6 +265,12 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ASSET_SUBTYPE } from '@/js/const/asset-subtypes.const'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
+
+const STELLAR_TYPES = {
+  creditAlphanum4: 'credit_alphanum4',
+  creditAlphanum12: 'credit_alphanum12',
+  native: 'native',
+}
 
 const EVENTS = {
   balanceAdded: 'balance-added',
@@ -267,6 +320,29 @@ export default {
         default:
           return true
       }
+    },
+    stellarAssetTypeTranslated () {
+      let translationId
+
+      switch (this.asset.stellarAssetType) {
+        case STELLAR_TYPES.creditAlphanum4:
+          translationId = 'assets.credit-alphanum4-stellar-asset-type-lbl'
+          break
+
+        case STELLAR_TYPES.creditAlphanum12:
+          translationId = 'assets.credit-alphanum12-stellar-asset-type-lbl'
+          break
+
+        case STELLAR_TYPES.native:
+          translationId = 'assets.native-stellar-asset-type-lbl'
+          break
+
+        default:
+          translationId = '[UNKNOWN_STELLAR_ASSET_TYPE]'
+          break
+      }
+
+      return this.$options.filters.globalize(translationId)
     },
   },
   async created () {

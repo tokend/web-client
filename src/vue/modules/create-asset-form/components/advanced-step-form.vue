@@ -349,8 +349,6 @@ export default {
     'form.stellar.assetType' (val) {
       if (val === STELLAR_TYPES.native) {
         this.form.stellar.assetCode = 'XLM'
-      } else {
-        this.form.stellar.assetCode = ''
       }
     },
   },
@@ -365,6 +363,7 @@ export default {
     populateForm () {
       const isPreissuanceDisabled =
         this.request.preIssuanceAssetSigner === config.NULL_ASSET_SIGNER
+      const isStellarIntegrationEnabled = this.request.assetCode !== ''
 
       this.form = {
         isPreissuanceDisabled: isPreissuanceDisabled,
@@ -377,6 +376,13 @@ export default {
         terms: this.request.termsKey
           ? new DocumentContainer(this.request.terms)
           : null,
+        isStellarIntegrationEnabled: isStellarIntegrationEnabled,
+        stellar: {
+          withdraw: this.request.stellarWithdraw,
+          deposit: this.request.stellarDeposit,
+          assetType: this.request.stellarAssetType,
+          assetCode: this.request.stellarAssetCode,
+        },
       }
     },
 
