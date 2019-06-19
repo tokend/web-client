@@ -47,6 +47,7 @@ export default {
           creatorDetails: {
             garbage: this.form.garbage,
             humidity: this.form.humidity,
+            physical_weight: this.form.physicalWeight,
           },
         })
 

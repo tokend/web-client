@@ -41,6 +41,7 @@
         <create-issuance-request-op-viewer
           v-if="movement.operationDetails instanceof CreateIssuanceRequestOp"
           :operation-details="movement.operationDetails"
+          :asset-code="movement.assetCode"
         />
         <create-withdrawal-request-op-viewer
           v-if="movement.operationDetails instanceof CreateWithdrawRequestOp"

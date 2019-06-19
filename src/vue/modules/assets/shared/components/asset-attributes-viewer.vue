@@ -53,7 +53,7 @@
               />
             </td>
           </tr>
-          <tr>
+          <tr v-if="asset.isGrainCoin">
             <td>{{ 'assets.issued-title' | globalize }}</td>
             <td>
               {{ { value: asset.issued, currency: asset.code } | formatMoney }}

@@ -1,8 +1,11 @@
 <template>
   <tbody>
     <tr class="attributes-viewer__table-row">
-      <td class="attributes-viewer__table-cell">
+      <td class="attributes-viewer__table-cell" v-if="!isGrainCoin">
         {{ 'movements-history.amount-lbl' | globalize }}
+      </td>
+      <td class="attributes-viewer__table-cell" v-if="isGrainCoin">
+        {{ 'movements-history.credit-weight-lbl' | globalize }}
       </td>
       <td class="attributes-viewer__table-cell">
         {{ amount | formatMoney }}
@@ -41,6 +44,9 @@
 <script>
 import { BalanceChangedEffect } from '../../wrappers/effect'
 
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
+
 import { MathUtil } from '@/js/utils'
 
 export default {
@@ -60,6 +66,9 @@ export default {
     },
   },
   computed: {
+    ...mapGetters({
+      assetByCode: vuexTypes.assetByCode,
+    }),
     amount () {
       const currency = this.assetCode
       let value = this.effect.amount
@@ -90,6 +99,9 @@ export default {
           this.effect.calculatedPercentFee
         ),
       }
+    },
+    isGrainCoin () {
+      return this.assetByCode(this.assetCode).isGrainCoin
     },
   },
 }
