@@ -1,3 +1,5 @@
+import { ErrorHandler } from '@/js/helpers/error-handler'
+
 const DEFAULT_PAGE_LIMIT = 10
 
 export class Collection {
@@ -31,6 +33,7 @@ export class Collection {
       return this._list
     } catch (e) {
       this._isFailed = true
+      ErrorHandler.processWithoutFeedback(e)
     }
     this._isLoading = false
   }
@@ -52,6 +55,10 @@ export class Collection {
 
   get isFailed () {
     return this._isFailed
+  }
+
+  get isEmpty () {
+    return this._isEmpty
   }
 
   reload () {

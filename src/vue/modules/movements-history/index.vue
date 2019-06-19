@@ -7,7 +7,7 @@
         </h2>
         <div class="movements-history__list-wrp">
           <movements-table
-            :is-movements-loaded="collection.isLoading"
+            :is-movements-loaded="!collection.isLoading"
             :movements="movements"
           />
         </div>
