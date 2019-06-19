@@ -101,44 +101,6 @@
 
       <div class="app__form-row">
         <div class="app__form-field">
-          {{ 'verification-form.shipment' | globalize }}:
-        </div>
-      </div>
-      <div class="app__form-row">
-        <div class="app__form-field">
-          <tick-field
-            :name="`create-sale-whitelisted`"
-            v-model="form.carShipment"
-          >
-            {{ 'verification-form.car' | globalize }}
-          </tick-field>
-        </div>
-      </div>
-
-      <div class="app__form-row">
-        <div class="app__form-field">
-          <tick-field
-            :name="`create-sale-whitelisted`"
-            v-model="form.trainShipment"
-          >
-            {{ 'verification-form.train' | globalize }}
-          </tick-field>
-        </div>
-      </div>
-
-      <div class="app__form-row">
-        <div class="app__form-field">
-          <tick-field
-            :name="`create-sale-whitelisted`"
-            v-model="form.portShipment"
-          >
-            {{ 'verification-form.port' | globalize }}
-          </tick-field>
-        </div>
-      </div>
-
-      <div class="app__form-row">
-        <div class="app__form-field">
           <file-field
             v-model="form.avatar"
             name="verification-corporate-avatar"
@@ -219,9 +181,6 @@ export default {
       headquarters: '',
       industry: '',
       teamSize: '0',
-      carShipment: false,
-      trainShipment: false,
-      portShipment: false,
     },
     isFormSubmitting: false,
     MIN_TEAM_SIZE,
@@ -307,9 +266,6 @@ export default {
         headquarters: this.form.headquarters,
         industry: this.form.industry,
         team_size: this.form.teamSize,
-        car_shipment: this.form.carShipment,
-        train_shipment: this.form.trainShipment,
-        port_shipment: this.form.portShipment,
         elevator_code: this.form.elevatorCode,
         documents: {
           [DOCUMENT_TYPES.kycAvatar]: this.form.avatar
@@ -329,9 +285,6 @@ export default {
         headquarters: kycData.headquarters,
         industry: kycData.industry,
         teamSize: kycData.team_size,
-        carShipment: kycData.car_shipment,
-        trainShipment: kycData.train_shipment,
-        portShipment: kycData.port_shipment,
         elevatorCode: kycData.elevator_code,
       }
     },
