@@ -25,6 +25,7 @@
         <div class="app__form-field">
           <tick-field
             v-model="form.stellar.deposit"
+            :disabled="isDisabled"
           >
             {{ 'create-asset-form.deposit-lbl' | globalize }}
           </tick-field>
@@ -35,6 +36,7 @@
         <div class="app__form-field">
           <tick-field
             v-model="form.stellar.withdraw"
+            :disabled="isDisabled"
           >
             {{ 'create-asset-form.withdraw-lbl' | globalize }}
           </tick-field>
@@ -51,6 +53,7 @@
             :error-message="getFieldErrorMessage(
               'form.stellar.assetType',
             )"
+            :disabled="isDisabled"
           >
             <option
               v-for="assetType in STELLAR_ASSET_TYPES"
@@ -63,6 +66,7 @@
         </div>
       </div>
 
+      <!-- eslint-disable max-len -->
       <div class="app__form-row">
         <div class="app__form-field">
           <input-field
@@ -71,11 +75,15 @@
             name="create-stellar-asset-code"
             :label="'create-asset-form.stellar-asset-code-lbl' | globalize"
             @blur="touchField('form.stellar.assetCode')"
-            :error-message="getFieldErrorMessage('form.stellar.assetCode')"
-
+            :error-message="getFieldErrorMessage('form.stellar.assetCode', {
+              length: getAssetCodeMaxLength(),
+              minLength: CREDIT_ALPHANUM12_MIN_LENGTH
+            })"
+            :disabled="isDisabled || form.stellar.assetType === STELLAR_TYPES.native"
           />
         </div>
       </div>
+      <!-- eslint-enable max-len -->
     </template>
 
     <h3 class="advanced-step-form__issuance-subheading app__form-subheading">
@@ -213,7 +221,14 @@ import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
 import config from '@/config'
 
-import { requiredUnless, amountRange } from '@validators'
+import {
+  requiredUnless,
+  amountRange,
+  requiredIf,
+  minLength,
+  maxLength,
+  alphaNum,
+} from '@validators'
 import { vueRoutes } from '@/vue-router/routes'
 
 const EVENTS = {
@@ -235,6 +250,16 @@ const STELLAR_ASSET_TYPES = [
     value: 'native',
   },
 ]
+
+const STELLAR_TYPES = {
+  creditAlphanum4: 'credit_alphanum4',
+  creditAlphanum12: 'credit_alphanum12',
+  native: 'native',
+}
+
+const CREDIT_ALPHANUM4_MAX_LENGTH = 4
+const CREDIT_ALPHANUM12_MIN_LENGTH = 5
+const CREDIT_ALPHANUM12_MAX_LENGTH = 12
 
 export default {
   name: 'advanced-step-form',
@@ -265,10 +290,12 @@ export default {
     DOCUMENT_TYPES,
     vueRoutes,
     STELLAR_ASSET_TYPES,
+    STELLAR_TYPES,
+    CREDIT_ALPHANUM12_MIN_LENGTH,
   }),
 
   validations () {
-    return {
+    let validations = {
       form: {
         preIssuanceAssetSigner: {
           required: requiredUnless(function () {
@@ -286,14 +313,46 @@ export default {
         },
         stellar: {
           assetType: {
-            required: true,
+            required: requiredIf(function () {
+              return this.form.isStellarIntegrationEnabled
+            }),
           },
           assetCode: {
-            required: true,
+            required: requiredIf(function () {
+              return this.form.isStellarIntegrationEnabled
+            }),
           },
         },
       },
     }
+    switch (this.form.stellar.assetType) {
+      case STELLAR_TYPES.creditAlphanum4:
+        validations.form.stellar.assetCode.maxLength = maxLength(
+          CREDIT_ALPHANUM4_MAX_LENGTH
+        )
+        validations.form.stellar.assetCode.alphaNum = alphaNum
+        break
+      case STELLAR_TYPES.creditAlphanum12:
+        validations.form.stellar.assetCode.minLength = minLength(
+          CREDIT_ALPHANUM12_MIN_LENGTH
+        )
+        validations.form.stellar.assetCode.maxLength = maxLength(
+          CREDIT_ALPHANUM12_MAX_LENGTH
+        )
+        validations.form.stellar.assetCode.alphaNum = alphaNum
+        break
+    }
+    return validations
+  },
+
+  watch: {
+    'form.stellar.assetType' (val) {
+      if (val === STELLAR_TYPES.native) {
+        this.form.stellar.assetCode = 'XLM'
+      } else {
+        this.form.stellar.assetCode = ''
+      }
+    },
   },
 
   created () {
@@ -338,6 +397,14 @@ export default {
 
     emitEnabledState () {
       this.$emit(EVENTS.updateIsDisabled, false)
+    },
+    getAssetCodeMaxLength () {
+      if (this.form.stellar.assetType === STELLAR_TYPES.creditAlphanum4) {
+        return CREDIT_ALPHANUM4_MAX_LENGTH
+      // eslint-disable-next-line max-len
+      } else if (this.form.stellar.assetType === STELLAR_TYPES.creditAlphanum12) {
+        return CREDIT_ALPHANUM12_MAX_LENGTH
+      }
     },
   },
 }
