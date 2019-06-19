@@ -38,17 +38,21 @@
         "dmy": "DD.MM.YYYY",
         "dmyt": "DD.MM.YYYY [at] H:mm"
       },
-      "formats": {
-        "same_day": "[Today at] H:mm",
-        "same_day_inline": "[today at] H:mm",
-        "last_day": "[Yesterday at] H:mm",
-        "last_day_inline": "[yesterday at] H:mm",
-        "next_day": "[Tomorrow at] H:mm",
-        "next_day_inline": "[tomorrow at] H:mm",
-        "last_week": "[Last] dddd [at] H:mm",
-        "last_week_inline": "[last] dddd [at] H:mm",
-        "next_week": "[Next] dddd [at] H:mm",
-        "next_week_inline": "[next] dddd [at] H:mm"
+      "calendar": {
+        "sameDay": "[Today at] H:mm",
+        "lastDay": "[Yesterday at] H:mm",
+        "nextDay": "[Tomorrow at] H:mm",
+        "lastWeek": "[Last] dddd [at] H:mm",
+        "nextWeek": "[Next] dddd [at] H:mm",
+        "sameElse": "MMMM D, YYYY [at] H:mm"
+      },
+      "calendarInline": {
+        "sameDay": "[today at] H:mm",
+        "lastDay": "[yesterday at] H:mm",
+        "nextDay": "[tomorrow at] H:mm",
+        "lastWeek": "[last] dddd [at] H:mm",
+        "nextWeek": "[next] dddd [at] H:mm",
+        "sameElse": "[at] MMMM D, YYYY [at] H:mm"
       }
     }
   },
@@ -62,7 +66,7 @@
       "integer": "{{value, integer}}",
       "calendar": "{{value, calendar}}",
       "calendar-inline": "{{value, calendar-inline}}",
-      "order_number": "{{value, order_number}}",
+      "order-number": "{{value, orderNumber}}",
       "percent": "{{value, percent}}"
     },
     "common": {
@@ -429,20 +433,21 @@
       "op_number_of_admins_exceeds_license": "Number of admins violates license restriction. Please contact enterprise@distributedlab.com",
       "op_account_not_found": "There is no account with such id",
       "op_role_not_found": "There is no role with such id",
-      "op_poll_not_ready": "Cannot close ongoing poll",
-      "op_not_authorized_to_close_poll": "Not authorized to close poll",
-      "op_create_poll_tasks_not_found": "There is no key value by key \"create_poll_tasks:permission_type\" ",
-      "op_result_provider_not_found": "ResultProvider account not found",
-      "op_invalid_dates": "Start time of the poll is after end time",
-      "op_invalid_start_time": "Start time of the poll is in the past",
-      "op_invalid_vote": "Provided choice is not valid",
-      "op_poll_not_found": "CreatePoll with such ID does not exist",
-      "op_vote_exists": "You already voted to this poll, please remove your current vote and try again",
-      "op_poll_type_mistmatched": "Type of the poll and poll type specified in vote are mismatched",
-      "op_poll_type_mismatched": "Type of the poll and poll type specified in vote are mismatched",
-      "op_poll_not_started": "CreatePoll has not started yet",
-      "op_poll_ended": "CreatePoll has ended, no votes can be accepted",
-      "op_vote_not_found": "Vote to remove cannot be found"
+      "op_poll_not_ready": "Cannot close ongoing poll, please wait until it end time is passed.",
+      "op_not_authorized_to_close_poll": "Not authorized to close poll, please contact poll owner to resolve the issue.",
+      "op_create_poll_tasks_not_found": "Create poll tasks not found, please contact admin to resolve the issue.",
+      "op_result_provider_not_found": "Result provider account not found, please check the field and retry.",
+      "op_invalid_dates": "Start time cannot be after end time, please check the fields and retry.",
+      "op_invalid_start_time": "Start time of the poll is in the past.",
+      "op_invalid_end_time": "End time cannot be in the past, please check the field and retry.",
+      "op_invalid_vote": "Invalid vote choice, please contact poll system owner to resolve the issue.",
+      "op_poll_not_found": "Poll with the provided ID not found, please contact system owner to resolve the issue,",
+      "op_vote_exists": "You already voted to this poll, please remove your current vote and retry.",
+      "op_poll_type_mistmatched": "Poll type specified in vote is mismatched with the one in poll. Please contact system owner to resolve the issue.",
+      "op_poll_type_mismatched": "Poll type specified in vote is mismatched with the one in poll. Please contact system owner to resolve the issue.",
+      "op_poll_not_started": "Poll is not started yet, please wait until start time passed and retry.",
+      "op_poll_ended": "Poll is ended. We so sorry, but you cannot vote in the poll anymore.",
+      "op_vote_not_found": "Cannot remove specified vote, please contact system owner to resolve the issue."
     },
     "idle-message": {
       "notification-message": "You have been logged out due to long inactivity."
@@ -2186,7 +2191,7 @@
     "poll-card": {
       "author-prefix": "By",
       "id-prefix": "#{{id}}",
-      "ends-at-row": "Ends at <span title='{{time, dmyt}}'>{{time, calendar-inline}}</span>",
+      "ends-at-row": "Ends <span title='{{time, dmyt}}'>{{time, calendar-inline}}</span>",
       "ended-at-row": "Ended <span title='{{time, dmyt}}'>{{time, calendar-inline}}</span>, {{state}}",
       "state-inline-open": "open",
       "state-inline-passed": "passed",

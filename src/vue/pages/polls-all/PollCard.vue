@@ -9,7 +9,7 @@
       </span>
     </p>
 
-    <template v-if="poll.isOpen && poll.isStarted">
+    <template v-if="poll.isOpen && !poll.isEnded">
       <vue-markdown
         class="poll-card__status"
         :html="true"
