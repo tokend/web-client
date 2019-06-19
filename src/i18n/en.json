@@ -1134,7 +1134,17 @@
       "terms-lbl": "Upload terms",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
       "request-submitted-msg": "Your request was successfully processed. Please, wait for approval",
-      "pre-issuance-guide-link": "Learn more about pre-issuance"
+      "pre-issuance-guide-link": "Learn more about pre-issuance",
+      "stellar-integration-subheading": "Stellar integration",
+      "issuance-subheading": "Issuance",
+      "deposit-lbl": "Deposit",
+      "withdraw-lbl": "Withdraw",
+      "credit-alphanum4-stellar-asset-type-lbl": "Alphanumeric 4",
+      "credit-alphanum12-stellar-asset-type-lbl": "Alphanumeric 12",
+      "native-stellar-asset-type-lbl": "Native",
+      "stellar-asset-type-lbl": "Type",
+      "stellar-asset-code-lbl": "Asset code",
+      "integration-with-stellar-check": "Integration with stellar"
     },
     "update-asset-form": {
       "loading-msg": "Loading…",

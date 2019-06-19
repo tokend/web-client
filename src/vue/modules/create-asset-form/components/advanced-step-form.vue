@@ -3,6 +3,85 @@
     class="app__form advanced-step-form"
     @submit.prevent="isFormValid() && setConfirmationState()"
   >
+    <!-- eslint-disable-next-line max-len -->
+    <h3 class="advanced-step-form__stellar-integration-subheading app__form-subheading">
+      {{ 'create-asset-form.stellar-integration-subheading' | globalize }}
+    </h3>
+
+    <div class="app__form-row">
+      <div class="app__form-field">
+        <tick-field
+          class="advanced-step-form__stellar-integration-enablement-tick-field"
+          v-model="form.isStellarIntegrationEnabled"
+          :disabled="isDisabled"
+        >
+          {{ 'create-asset-form.integration-with-stellar-check' | globalize }}
+        </tick-field>
+      </div>
+    </div>
+
+    <template v-if="form.isStellarIntegrationEnabled">
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <tick-field
+            v-model="form.stellar.deposit"
+          >
+            {{ 'create-asset-form.deposit-lbl' | globalize }}
+          </tick-field>
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <tick-field
+            v-model="form.stellar.withdraw"
+          >
+            {{ 'create-asset-form.withdraw-lbl' | globalize }}
+          </tick-field>
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <select-field
+            v-model="form.stellar.assetType"
+            name="create-stellar-asset-type"
+            :label="'create-asset-form.stellar-asset-type-lbl' | globalize"
+            @blur="touchField('form.stellar.assetType')"
+            :error-message="getFieldErrorMessage(
+              'form.stellar.assetType',
+            )"
+          >
+            <option
+              v-for="assetType in STELLAR_ASSET_TYPES"
+              :key="assetType.value"
+              :value="assetType.value"
+            >
+              {{ assetType.labelTranslationId | globalize }}
+            </option>
+          </select-field>
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.stellar.assetCode"
+            name="create-stellar-asset-code"
+            :label="'create-asset-form.stellar-asset-code-lbl' | globalize"
+            @blur="touchField('form.stellar.assetCode')"
+            :error-message="getFieldErrorMessage('form.stellar.assetCode')"
+
+          />
+        </div>
+      </div>
+    </template>
+
+    <h3 class="advanced-step-form__issuance-subheading app__form-subheading">
+      {{ 'create-asset-form.issuance-subheading' | globalize }}
+    </h3>
+
     <div class="app__form-row">
       <div class="app__form-field">
         <tick-field
@@ -142,6 +221,21 @@ const EVENTS = {
   updateIsDisabled: 'update:isDisabled',
 }
 
+const STELLAR_ASSET_TYPES = [
+  {
+    labelTranslationId: 'create-asset-form.credit-alphanum4-stellar-asset-type-lbl',
+    value: 'credit_alphanum4',
+  },
+  {
+    labelTranslationId: 'create-asset-form.credit-alphanum12-stellar-asset-type-lbl',
+    value: 'credit_alphanum12',
+  },
+  {
+    labelTranslationId: 'create-asset-form.native-stellar-asset-type-lbl',
+    value: 'native',
+  },
+]
+
 export default {
   name: 'advanced-step-form',
   components: { VueMarkdown },
@@ -156,13 +250,21 @@ export default {
   data: _ => ({
     form: {
       isPreissuanceDisabled: false,
+      isStellarIntegrationEnabled: false,
       preIssuanceAssetSigner: '',
       initialPreissuedAmount: '',
       terms: null,
+      stellar: {
+        withdraw: false,
+        deposit: false,
+        assetType: '',
+        assetCode: '',
+      },
     },
     MIN_AMOUNT: config.MIN_AMOUNT,
     DOCUMENT_TYPES,
     vueRoutes,
+    STELLAR_ASSET_TYPES,
   }),
 
   validations () {
@@ -181,6 +283,14 @@ export default {
             this.MIN_AMOUNT,
             this.maxIssuanceAmount,
           ),
+        },
+        stellar: {
+          assetType: {
+            required: true,
+          },
+          assetCode: {
+            required: true,
+          },
         },
       },
     }
@@ -271,5 +381,15 @@ export default {
 
 .advanced-step-form__pre-issuance-guide-link-launch-icon {
   font-size: 1.4rem;
+}
+
+.advanced-step-form__stellar-integration-subheading {
+  margin-top: 2rem;
+  margin-bottom: -1rem;
+}
+
+.advanced-step-form__issuance-subheading {
+  margin-top: 5rem;
+  margin-bottom: -1rem;
 }
 </style>
