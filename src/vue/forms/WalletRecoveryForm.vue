@@ -58,7 +58,7 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 import { required, password, sameAs, email } from '@validators'
 
-import { walletsManager, factorsManager } from '@/api'
+import { walletsManager } from '@/api'
 import { errors } from '@/js/errors'
 
 import { Bus } from '@/js/helpers/event-bus'
@@ -68,6 +68,9 @@ import { vueRoutes } from '@/vue-router/routes'
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
 
+const EVENT = {
+  error: 'error',
+}
 export default {
   name: 'wallet-recovery-form',
   mixins: [FormMixin],
@@ -123,12 +126,7 @@ export default {
             ErrorHandler.processWithoutFeedback(e)
             break
           case errors.TFARequiredError:
-            try {
-              await factorsManager.verifyTotpFactorAndRetry(e, '000000')
-            } catch (err) {
-              alert('aaaa')
-              console.error(err)
-            }
+            this.$emit(EVENT.error, e)
             break
           default:
             ErrorHandler.process(e)

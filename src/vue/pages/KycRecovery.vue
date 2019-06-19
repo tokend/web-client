@@ -6,7 +6,13 @@
 
     <div class="auth-page__content">
       <wallet-recovery-form
+        v-if="isWalletRecoveryFormDisplay"
         @submit="isEmailSent = true"
+        @error="checkError"
+      />
+      <wallet-recovery-tfa-code-form
+        v-if="!isWalletRecoveryFormDisplay"
+        :error="recoveryError"
       />
 
       <div class="auth-page__tips">
@@ -25,6 +31,7 @@
 
 <script>
 import WalletRecoveryForm from '../forms/WalletRecoveryForm'
+import WalletRecoveryTfaCodeForm from '../forms/WalletRecoveryTfaCodeForm'
 
 import { vueRoutes } from '@/vue-router/routes'
 
@@ -32,11 +39,20 @@ export default {
   name: 'kyc-recovery',
   components: {
     WalletRecoveryForm,
+    WalletRecoveryTfaCodeForm,
   },
   data: _ => ({
     isEmailSent: false,
+    isWalletRecoveryFormDisplay: true,
+    recoveryError: {},
     vueRoutes,
   }),
+  methods: {
+    checkError (error) {
+      this.recoveryError = error
+      this.isWalletRecoveryFormDisplay = false
+    },
+  },
 }
 </script>
 
