@@ -53,20 +53,22 @@ export default {
       return new UpdateAssetRequest(record)
     },
 
-    async getUpdatableRequest (accountId) {
+    async getUpdatableRequest (assetCode, accountId) {
       const pendingRequest = await this.getLatestUpdateAssetRequest(
         REQUEST_STATES.pending,
-        accountId
+        accountId,
+        assetCode
       )
       const rejectedRequest = await this.getLatestUpdateAssetRequest(
         REQUEST_STATES.rejected,
-        accountId
+        accountId,
+        assetCode
       )
 
       return pendingRequest || rejectedRequest
     },
 
-    async getLatestUpdateAssetRequest (requestState, accountId) {
+    async getLatestUpdateAssetRequest (requestState, accountId, assetCode) {
       const endpoint = '/v3/update_asset_requests'
       const { data: requests } = await api.getWithSignature(endpoint, {
         page: {
@@ -76,6 +78,7 @@ export default {
         filter: {
           requestor: accountId,
           state: requestState,
+          'request_details.asset': assetCode,
         },
         include: ['request_details'],
       })

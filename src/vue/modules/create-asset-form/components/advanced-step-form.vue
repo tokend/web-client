@@ -14,6 +14,7 @@
           class="advanced-step-form__stellar-integration-enablement-tick-field"
           v-model="form.isStellarIntegrationEnabled"
           :disabled="isDisabled"
+          :cb-value="true"
         >
           {{ 'create-asset-form.integration-with-stellar-check' | globalize }}
         </tick-field>
@@ -26,6 +27,7 @@
           <tick-field
             v-model="form.stellar.deposit"
             :disabled="isDisabled"
+            :cb-value="true"
           >
             {{ 'create-asset-form.deposit-lbl' | globalize }}
           </tick-field>
@@ -37,6 +39,7 @@
           <tick-field
             v-model="form.stellar.withdraw"
             :disabled="isDisabled"
+            :cb-value="true"
           >
             {{ 'create-asset-form.withdraw-lbl' | globalize }}
           </tick-field>
@@ -260,6 +263,7 @@ const STELLAR_TYPES = {
 const CREDIT_ALPHANUM4_MAX_LENGTH = 4
 const CREDIT_ALPHANUM12_MIN_LENGTH = 5
 const CREDIT_ALPHANUM12_MAX_LENGTH = 12
+const NATIVE_XLM_TYPE = 'XLM'
 
 export default {
   name: 'advanced-step-form',
@@ -348,7 +352,7 @@ export default {
   watch: {
     'form.stellar.assetType' (val) {
       if (val === STELLAR_TYPES.native) {
-        this.form.stellar.assetCode = 'XLM'
+        this.form.stellar.assetCode = NATIVE_XLM_TYPE
       }
     },
   },
@@ -363,7 +367,7 @@ export default {
     populateForm () {
       const isPreissuanceDisabled =
         this.request.preIssuanceAssetSigner === config.NULL_ASSET_SIGNER
-      const isStellarIntegrationEnabled = this.request.assetCode !== ''
+      const isStellarIntegrationEnabled = this.request.stellarAssetCode !== ''
 
       this.form = {
         isPreissuanceDisabled: isPreissuanceDisabled,

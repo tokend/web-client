@@ -14,6 +14,7 @@
           class="advanced-step-form__stellar-integration-enablement-tick-field"
           v-model="form.isStellarIntegrationEnabled"
           :disabled="isDisabled"
+          :cb-value="true"
         >
           {{ 'update-asset-form.integration-with-stellar-check' | globalize }}
         </tick-field>
@@ -26,6 +27,7 @@
           <tick-field
             v-model="form.stellar.deposit"
             :disabled="isDisabled"
+            :cb-value="true"
           >
             {{ 'update-asset-form.deposit-lbl' | globalize }}
           </tick-field>
@@ -37,6 +39,7 @@
           <tick-field
             v-model="form.stellar.withdraw"
             :disabled="isDisabled"
+            :cb-value="true"
           >
             {{ 'update-asset-form.withdraw-lbl' | globalize }}
           </tick-field>
@@ -145,15 +148,15 @@ const EVENTS = {
 
 const STELLAR_ASSET_TYPES = [
   {
-    labelTranslationId: 'create-asset-form.credit-alphanum4-stellar-asset-type-lbl',
+    labelTranslationId: 'update-asset-form.credit-alphanum4-stellar-asset-type-lbl',
     value: 'credit_alphanum4',
   },
   {
-    labelTranslationId: 'create-asset-form.credit-alphanum12-stellar-asset-type-lbl',
+    labelTranslationId: 'update-asset-form.credit-alphanum12-stellar-asset-type-lbl',
     value: 'credit_alphanum12',
   },
   {
-    labelTranslationId: 'create-asset-form.native-stellar-asset-type-lbl',
+    labelTranslationId: 'update-asset-form.native-stellar-asset-type-lbl',
     value: 'native',
   },
 ]
@@ -167,6 +170,7 @@ const STELLAR_TYPES = {
 const CREDIT_ALPHANUM4_MAX_LENGTH = 4
 const CREDIT_ALPHANUM12_MIN_LENGTH = 5
 const CREDIT_ALPHANUM12_MAX_LENGTH = 12
+const NATIVE_XLM_TYPE = 'XLM'
 
 export default {
   name: 'advanced-step-form',
@@ -234,7 +238,7 @@ export default {
   watch: {
     'form.stellar.assetType' (val) {
       if (val === STELLAR_TYPES.native) {
-        this.form.stellar.assetCode = 'XLM'
+        this.form.stellar.assetCode = NATIVE_XLM_TYPE
       }
     },
   },
