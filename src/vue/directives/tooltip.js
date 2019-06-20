@@ -9,9 +9,12 @@
  * - Styles are customizable
  *
  * Value variants:
- * - Type: 'click', 'hover': 'hover' by default
- * - Position: 'top', 'right', 'bottom', 'left'; 'top' by default
- * - Width: number, without css units like px/em; 'auto' by default
+ * - type: 'click', 'hover': 'hover' by default
+ * - position: 'top', 'right', 'bottom', 'left'; 'top' by default
+ * - anchor: DOM element, into which the tooltip will be inserted. Allow you to
+ *           prevent problems with elements that have own scrolling. Inserts
+ *           into '#app' by default
+ * - width: number, without css units like px/em; 'auto' by default
  * - height: number, without css units like px/em; 'auto' by default
  * - bgColor: any legal color values; #000 by default
  * - textColor: any legal color values; #fff by default
@@ -71,6 +74,7 @@ export const tooltip = (() => {
     bottom: 'bottom',
     left: 'left',
   }
+  const ANCHOR = document.getElementById('app')
   let tooltipText
   let tooltipWrapper
   let tooltipArrow
@@ -269,17 +273,11 @@ export const tooltip = (() => {
     }
   }
 
-  function getParentElementByClassName (element, className) {
-    if (!element || !element.parentNode) return false
-    if (element.classList.contains(className)) return element
-    return getParentElementByClassName(element.parentNode, className)
-  }
-
   function renderTooltip (e, binding) {
     target = e.target ? e.target : e
     // For the case when tooltip defined inside Drawer to prevent the problem
     // with document scrolling
-    const tooltipContainer = getParentElementByClassName(target, 'drawer') || document.getElementById('app')
+    const tooltipContainer = safeGet(binding, 'value.anchor', DIRECTIONS.top) || ANCHOR
     targetRect = target.getBoundingClientRect()
     position = safeGet(binding, 'value.position', DIRECTIONS.top)
     currentPosition = position
