@@ -48,4 +48,6 @@ export const vueRoutes = Object.freeze({
   polls: { name: 'app.polls' },
   pollRequests: { name: 'app.poll-requests' },
   allPolls: { name: 'app.all-polls' },
+  atomicSwaps: { name: 'app.atomic-swaps' },
+  atomicSwapsExplore: { name: 'app.atomic-swaps-explore' },
 })

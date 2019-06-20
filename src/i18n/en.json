@@ -683,7 +683,8 @@
       "statistics": "Statistics",
       "documents": "Documents",
       "register-of-shares": "Register of shares",
-      "polls": "Polls"
+      "polls": "Polls",
+      "atomic-swaps": "Atomic swaps"
     },
     "limits": {
       "explore-limits": "Explore limits",
@@ -2206,6 +2207,11 @@
       "permission-type-unrestricted-val": "Unrestricted",
       "yes-val": "Yes",
       "no-val": "No"
+    },
+    "atomic-swaps": {
+      "explore-atomic-swaps": "Explore atomic swaps",
+      "create-atomic-swap-bth": "Create atomic swap",
+      "new-atomic-swap": "New atomic swap"
     }
   }
 }
