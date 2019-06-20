@@ -222,7 +222,7 @@ export default {
       this.form = {
         name: this.request.assetName,
         code: this.request.assetCode,
-        assetType: this.request.assetType,
+        assetType: String(this.request.assetType),
         maxIssuanceAmount: this.request.maxIssuanceAmount,
         logo: this.request.logoKey
           ? new DocumentContainer(this.request.logo)

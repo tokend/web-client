@@ -34,6 +34,7 @@ export default {
           name: this.informationStepForm.name,
           logo: logo ? logo.getDetailsForSave() : EMPTY_DOCUMENT,
           terms: terms ? terms.getDetailsForSave() : EMPTY_DOCUMENT,
+          stellar: this.stellarInfo(),
         },
       }
     },
@@ -52,20 +53,22 @@ export default {
       return new UpdateAssetRequest(record)
     },
 
-    async getUpdatableRequest (accountId) {
+    async getUpdatableRequest (assetCode, accountId) {
       const pendingRequest = await this.getLatestUpdateAssetRequest(
         REQUEST_STATES.pending,
-        accountId
+        accountId,
+        assetCode
       )
       const rejectedRequest = await this.getLatestUpdateAssetRequest(
         REQUEST_STATES.rejected,
-        accountId
+        accountId,
+        assetCode
       )
 
       return pendingRequest || rejectedRequest
     },
 
-    async getLatestUpdateAssetRequest (requestState, accountId) {
+    async getLatestUpdateAssetRequest (requestState, accountId, assetCode) {
       const endpoint = '/v3/update_asset_requests'
       const { data: requests } = await api.getWithSignature(endpoint, {
         page: {
@@ -75,6 +78,7 @@ export default {
         filter: {
           requestor: accountId,
           state: requestState,
+          'request_details.asset': assetCode,
         },
         include: ['request_details'],
       })
@@ -92,6 +96,17 @@ export default {
       const operation =
         base.ManageAssetBuilder.assetUpdateRequest(this.assetRequestOpts)
       await api.postOperations(operation)
+    },
+
+    stellarInfo () {
+      return this.advancedStepForm.isStellarIntegrationEnabled
+        ? {
+          withdraw: this.advancedStepForm.stellar.withdraw,
+          deposit: this.advancedStepForm.stellar.deposit,
+          asset_type: this.advancedStepForm.stellar.assetType,
+          asset_code: this.advancedStepForm.stellar.assetCode,
+        }
+        : {}
     },
   },
 }

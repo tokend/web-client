@@ -27,6 +27,11 @@ export class CreateAssetRequest extends Request {
 
     this.logo = safeGet(record, 'requestDetails.creatorDetails.logo')
     this.logoKey = safeGet(record, 'requestDetails.creatorDetails.logo.key')
+
+    this.stellarAssetCode = safeGet(record, 'requestDetails.creatorDetails.stellar.assetCode') || ''
+    this.stellarAssetType = safeGet(record, 'requestDetails.creatorDetails.stellar.assetType') || ''
+    this.stellarWithdraw = safeGet(record, 'requestDetails.creatorDetails.stellar.withdraw') || false
+    this.stellarDeposit = safeGet(record, 'requestDetails.creatorDetails.stellar.deposit') || false
   }
 
   get isTransferable () {
