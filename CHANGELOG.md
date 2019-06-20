@@ -32,6 +32,7 @@ for further information about branching and tagging conventions.
 - Resolved an issue when disabled or readonly select field was rendered slightly
   differ from other fields
 - Resolved an issue when date field was disabled after submit form
+- Issue with tooltip displaying inside elements with own scroll
 
 ### "Under the hood" changes
 #### Added
