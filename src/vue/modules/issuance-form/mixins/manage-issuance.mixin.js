@@ -46,7 +46,9 @@ export default {
           reference: this.form.reference,
           creatorDetails: {
             garbage: this.form.garbage,
+            garbage_contract: this.form.garbageContract,
             humidity: this.form.humidity,
+            humidity_contract: this.form.humidityContract,
             physical_weight: this.form.physicalWeight,
             fusarium: this.form.fusarium,
             contamination: this.form.contamination,

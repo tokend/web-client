@@ -27,10 +27,26 @@
       </tr>
       <tr class="attributes-viewer__table-row">
         <td class="attributes-viewer__table-cell">
+          {{ 'movements-history.garbage-contract' | globalize }}
+        </td>
+        <td class="attributes-viewer__table-cell">
+          {{ operationDetails.creatorDetails.garbageContract }}%
+        </td>
+      </tr>
+      <tr class="attributes-viewer__table-row">
+        <td class="attributes-viewer__table-cell">
           {{ 'movements-history.humidity' | globalize }}
         </td>
         <td class="attributes-viewer__table-cell">
           {{ operationDetails.creatorDetails.humidity }}%
+        </td>
+      </tr>
+      <tr class="attributes-viewer__table-row">
+        <td class="attributes-viewer__table-cell">
+          {{ 'movements-history.humidity-contract' | globalize }}
+        </td>
+        <td class="attributes-viewer__table-cell">
+          {{ operationDetails.creatorDetails.humidityContract }}%
         </td>
       </tr>
       <template v-if="cornType === CORN_TYPE.wheat">

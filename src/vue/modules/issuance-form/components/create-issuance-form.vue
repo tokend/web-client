@@ -85,6 +85,24 @@
       <div class="app__form-field">
         <input-field
           white-autofill
+          v-model="form.garbageContract"
+          @blur="touchField('form.garbageContract')"
+          name="create-issuance-reference"
+          :error-message="getFieldErrorMessage(
+            'form.garbageContract',
+            { from: 0, to: 100 }
+          )"
+          type="number"
+          :label="'issuance-form.garbage-contract' | globalize"
+          :disabled="formMixin.isDisabled"
+        />
+      </div>
+    </div>
+
+    <div class="app__form-row">
+      <div class="app__form-field">
+        <input-field
+          white-autofill
           v-model="form.humidity"
           @blur="touchField('form.humidity')"
           name="create-issuance-reference"
@@ -94,6 +112,24 @@
           )"
           type="number"
           :label="'issuance-form.humidity' | globalize"
+          :disabled="formMixin.isDisabled"
+        />
+      </div>
+    </div>
+
+    <div class="app__form-row">
+      <div class="app__form-field">
+        <input-field
+          white-autofill
+          v-model="form.humidityContract"
+          @blur="touchField('form.humidityContract')"
+          name="create-issuance-reference"
+          :error-message="getFieldErrorMessage(
+            'form.humidity',
+            { from: 0, to: 100 }
+          )"
+          type="number"
+          :label="'issuance-form.humidity-contract' | globalize"
           :disabled="formMixin.isDisabled"
         />
       </div>
@@ -302,7 +338,6 @@ const REFERENCE_MAX_LENGTH = 255
 const EVENTS = {
   submit: 'submit',
 }
-const MIN_HUMIDITY = 14
 
 const FEES_LOADING_DELAY_MS = 300
 
@@ -328,7 +363,9 @@ export default {
       receiver: '',
       reference: '',
       garbage: '0',
+      garbageContract: '0',
       humidity: '0',
+      humidityContract: '0',
       fusarium: '',
       contamination: '',
       protein: '',
@@ -369,7 +406,21 @@ export default {
             100
           ),
         },
+        garbageContract: {
+          required,
+          amountRange: amountRange(
+            0,
+            100
+          ),
+        },
         humidity: {
+          required,
+          amountRange: amountRange(
+            0,
+            100
+          ),
+        },
+        humidityContract: {
           required,
           amountRange: amountRange(
             0,
@@ -440,6 +491,15 @@ export default {
         currency: this.form.asset.code,
       }
     },
+    xB () {
+      return 100 * (+this.form.humidity - +this.form.humidityContract) / (100 -
+        +this.form.humidityContract)
+    },
+    cc () {
+      return ((100 - this.xB) *
+        (+this.form.garbage - +this.form.garbageContract)) /
+        (100 - +this.form.garbageContract)
+    },
   },
 
   watch: {
@@ -457,8 +517,14 @@ export default {
     'form.garbage' () {
       this.calculateAmount()
     },
+    'form.garbageContract' () {
+      this.calculateAmount()
+    },
 
     'form.humidity' () {
+      this.calculateAmount()
+    },
+    'form.humidityContract' () {
       this.calculateAmount()
     },
   },
@@ -516,12 +582,8 @@ export default {
     },
 
     calculateAmount () {
-      let totalPercent = +this.form.garbage
-      if (+this.form.humidity > MIN_HUMIDITY) {
-        totalPercent = totalPercent + (+this.form.humidity - MIN_HUMIDITY)
-      }
-      const amount = MathUtil
-        .multiply(+this.form.physicalWeight, (1 - +totalPercent / 100))
+      const amount = +this.form.physicalWeight -
+        (+this.form.physicalWeight * ((this.cc + this.xB) / 100))
       this.form.amount = amount > 0 ? amount : 0
     },
   },
