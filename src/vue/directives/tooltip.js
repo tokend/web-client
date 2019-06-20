@@ -18,9 +18,9 @@
  * - fontSize: number with css units like px/em; '1.4rem' by default
  *
  * Example of usage is described below.
- *  <element
- *    v-tooltip="{
- *      type: 'hover',
+    <element
+      v-tooltip="{
+        type: 'hover',
         text: 'Lorem ipsum',
         position: 'top',
         style: {
@@ -269,9 +269,17 @@ export const tooltip = (() => {
     }
   }
 
+  function getParentElementByClassName (element, className) {
+    if (!element || !element.parentNode) return false
+    if (element.classList.contains(className)) return element
+    return getParentElementByClassName(element.parentNode, className)
+  }
+
   function renderTooltip (e, binding) {
-    const appContainer = document.getElementById('app')
     target = e.target ? e.target : e
+    // For the case when tooltip defined inside Drawer to prevent the problem
+    // with document scrolling
+    const tooltipContainer = getParentElementByClassName(target, 'drawer') || document.getElementById('app')
     targetRect = target.getBoundingClientRect()
     position = safeGet(binding, 'value.position', DIRECTIONS.top)
     currentPosition = position
@@ -303,7 +311,7 @@ export const tooltip = (() => {
     tooltipWrapper.appendChild(tooltipText)
     tooltipWrapper.appendChild(tooltipArrow)
     tooltipWrapper.appendChild(tooltipBridge)
-    appContainer.appendChild(tooltipWrapper)
+    tooltipContainer.appendChild(tooltipWrapper)
     target.classList.add('tooltip-container')
 
     twRect = tooltipWrapper.getBoundingClientRect()
