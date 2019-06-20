@@ -23,6 +23,7 @@ import { IncomingWithdrawalRequestsPageModule } from '@/vue/pages/incoming-withd
 import { IncomingWithdrawalRequestsModule } from '@/vue/modules/requests/incoming-withdrawal-requests/module'
 import { VerificationPageModule } from '@/vue/pages/verification-page-module'
 import { VerificationGeneralAdvancedPageModule } from '@/vue/pages/verification-general-advanced-page-module'
+import { VerificationFundAdvancedPageModule } from '@/vue/pages/verification-fund-advanced-page-module'
 import { VerificationCorporatePageModule } from '@/vue/pages/verification-corporate-page-module'
 import { SecurityPageModule } from '@/vue/pages/security-page-module'
 import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-account-id-pseudo-module'
@@ -39,6 +40,7 @@ import { DepositFormPseudoModule } from '@/modules-arch/pseudo-modules/deposit-f
 import { ShowNetworkPassphrasePseudoModule } from '@/modules-arch/pseudo-modules/show-network-passphrase-pseudo-module'
 
 import { VerificationGeneralFormModule } from '@/vue/modules/verification/general-form/module'
+import { VerificationFundFormModule } from '@/vue/modules/verification/fund-form/module'
 import { AssetsPageModule } from '@/vue/pages/assets-page-module'
 import { AssetExplorerPageModule } from '@/vue/pages/asset-explorer-page'
 import { AssetExplorerModule } from '@/vue/modules/assets/asset-explorer/module'
@@ -284,6 +286,15 @@ export default {
                   path: '/settings/verification/corporate',
                   name: vueRoutes.verificationCorporate.name,
                 },
+              }),
+              new VerificationFundAdvancedPageModule({
+                routerEntry: {
+                  path: '/settings/verification/fund',
+                  name: vueRoutes.verificationFund.name,
+                },
+                submodules: [
+                  new VerificationFundFormModule(),
+                ],
               }),
             ],
           }),

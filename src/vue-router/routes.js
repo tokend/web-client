@@ -19,6 +19,7 @@ export const vueRoutes = Object.freeze({
   verification: { name: 'app.verification' },
   verificationGeneral: { name: 'app.verification.general' },
   verificationCorporate: { name: 'app.verification.corporate' },
+  verificationFund: { name: 'app.verification.fund' },
   security: { name: 'app.security' },
   dashboard: { name: 'app.dashboard' },
   trade: { name: 'app.trade' },

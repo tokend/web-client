@@ -502,8 +502,10 @@
       "account-type-lbl": "Тип аккаунта",
       "account-type-general-title": "Фермер",
       "account-type-corporate-title": "Элеватор",
+      "account-type-fund-title": "Фонд",
       "account-type-general-description": "Отправка зерна на элеватор, покупка, продажа и переоформление активов",
-      "account-type-corporate-description": "Приемка и отгрузка зерна, учет активов"
+      "account-type-corporate-description": "Приемка и отгрузка зерна, учет активов",
+      "account-type-fund-description": "Закупка зерна, трейдинг"
     },
     "verification-state-message": {
       "blocked-title": "Аккаунт заблокирован",
@@ -560,6 +562,42 @@
       "country-details-lbl": "Информация о стране",
       "usa-accredited-exp-msg": "Чтобы мы могли подтвердить ваш статус, предоставьте документ, подтверждающий, что вы являетесь аккредитованным инвестором"
     },
+    "fund-form": {
+      "address-postal-code-lbl'": "Почтовый индекс",
+      "documents-lbl": "Документы",
+      "id-document-face-lbl": "Документ, удостоверяющий личность (лицевая сторона)",
+      "id-document-back-lbl": "Документ, удостоверяющий личность (задняя сторона)",
+      "address-details-lbl": "Адресные данные",
+      "date-of-birth-lbl": "Дата рождения",
+      "address-line-1-lbl": "Название",
+      "address-line-2-lbl": "Веб-сайт",
+      "address-country-lbl": "Страна",
+      "address-city-lbl": "Город",
+      "address-state-lbl": "Область",
+      "address-postal-code-lbl": "Телефон",
+      "id-document-type-lbl": "Тип документа, удостоверяющего личность",
+      "passport-lbl": "Паспорт",
+      "identity-card-lbl": "Identity card",
+      "driving-license-lbl": "Водительские права",
+      "residence-permit-lbl": "Вид на жительство",
+      "account-information-lbl": "Информация об аккаунте",
+      "personal-details-lbl": "Личные данные",
+      "photo-verification-lbl": "Фото",
+      "first-name-lbl": "Имя",
+      "last-name-lbl": "Фамилия",
+      "avatar-lbl": "Аватарка",
+      "image-type-note": "image (Max 32mb)",
+      "file-type-note": "image/pdf (Max 32mb)",
+      "verification-code-btn": "Показать ключ",
+      "photo-explanation-msg": "Чтобы быть уверенным, что вы отправляете документы, сделайте фотографию с уникальным сгенерированным ключом",
+      "photo-lbl": "Фото с проверочным кодом",
+      "request-submitted-msg": "Ваш запрос был успешно отправлен. Пожалуйста, подождите.",
+      "usa-warning-msg": "Из-за постановлений правительства США некоторые возможности доступны только аккредитованным инвесторам.",
+      "i-am-accredited-lbl": "Я аккредитованный инвестор",
+      "document-poi-lbl": "Подтверждающие документы",
+      "country-details-lbl": "Информация о стране",
+      "usa-accredited-exp-msg": "Чтобы мы могли подтвердить ваш статус, предоставьте документ, подтверждающий, что вы являетесь аккредитованным инвестором"
+    },
     "verification-form": {
       "account-information-lbl": "Информация об аккаунте",
       "create-btn": "Запрос проверки",
@@ -586,7 +624,10 @@
       "car": "Авто",
       "train": "ж/д",
       "port": "Порт",
-      "request-submitted-msg": "Ваш запрос был успешно отправлен. Пожалуйста, подождите."
+      "request-submitted-msg": "Ваш запрос был успешно отправлен. Пожалуйста, подождите.",
+      "city": "Город",
+      "phone": "Телефон",
+      "doc-lbl": "Документы"
     },
     "input-field": {
       "caps-lock-warning": "Warning: Caps-Lock is ON"

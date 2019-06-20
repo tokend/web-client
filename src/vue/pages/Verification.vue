@@ -11,9 +11,10 @@
           <router-link
             :to="vueRoutes.verificationGeneral"
             class="account-type-selector__item"
-            :disabled="kycState && kycAccountRole &&
+            :disabled="(kycState && kycAccountRole &&
               !isKycTypeGeneral &&
-              kycState !== REQUEST_STATES_STR.permanentlyRejected"
+              kycState !== REQUEST_STATES_STR.permanentlyRejected) ||
+              kycLatestRequestData.is_fund"
           >
             <p class="account-type-selector__item-title">
               {{ 'verification-page.account-type-general-title' | globalize }}
@@ -41,6 +42,25 @@
             </p>
             <p class="account-type-selector__item-description">
               {{ 'verification-page.account-type-corporate-description'
+                | globalize }}
+            </p>
+            <div class="account-type-selector__selected-icon">
+              <i class="mdi mdi-check" />
+            </div>
+          </router-link>
+
+          <router-link
+            :to="vueRoutes.verificationFund"
+            class="account-type-selector__item"
+            :disabled="kycState && kycAccountRole &&
+              !kycLatestRequestData.is_fund &&
+              kycState !== REQUEST_STATES_STR.permanentlyRejected"
+          >
+            <p class="account-type-selector__item-title">
+              {{ 'verification-page.account-type-fund-title' | globalize }}
+            </p>
+            <p class="account-type-selector__item-description">
+              {{ 'verification-page.account-type-fund-description'
                 | globalize }}
             </p>
             <div class="account-type-selector__selected-icon">
@@ -92,6 +112,7 @@ function verificationGuard (to, from, next) {
   const kycState = store.getters[vuexTypes.kycState]
   const kycAccountRole = store.getters[vuexTypes.kycAccountRoleToSet]
   const kvEntryCorporateRoleId = store.getters[vuexTypes.kvEntryCorporateRoleId]
+  const kycLatestRequestData = store.getters[vuexTypes.kycLatestRequestData]
   const kvEntryUsVerifiedRoleId =
     store.getters[vuexTypes.kvEntryUsVerifiedRoleId]
   const kvEntryUsAccreditedRoleId =
@@ -110,9 +131,19 @@ function verificationGuard (to, from, next) {
       case kvEntryGeneralRoleId:
       case kvEntryUsVerifiedRoleId:
       case kvEntryUsAccreditedRoleId:
-        to.name === vueRoutes.verificationGeneral.name
-          ? next()
-          : next(vueRoutes.verificationGeneral)
+        if (to.name === vueRoutes.verificationGeneral.name &&
+          !kycLatestRequestData.is_fund) {
+          next()
+        } else if (to.name === vueRoutes.verificationFund.name &&
+          kycLatestRequestData.is_fund) {
+          next()
+        } else {
+          if (kycLatestRequestData.is_fund) {
+            next(vueRoutes.verificationFund)
+          } else {
+            next(vueRoutes.verificationGeneral)
+          }
+        }
         break
       default:
         next()
@@ -143,6 +174,7 @@ export default {
 
       kycState: vuexTypes.kycState,
       kycAccountRole: vuexTypes.kycAccountRoleToSet,
+      kycLatestRequestData: vuexTypes.kycLatestRequestData,
 
       kvEntryCorporateRoleId: vuexTypes.kvEntryCorporateRoleId,
       kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,

@@ -1,6 +1,7 @@
 import { PageModuleDescriptor } from '@/modules-arch/page-module-descriptor'
 import { VerificationCorporatePageModule } from './verification-corporate-page-module'
 import { VerificationGeneralPageModule } from './verification-general-page-module'
+import { VerificationFundAdvancedPageModule } from '@/vue/pages/verification-fund-advanced-page-module'
 import { VerificationGeneralAdvancedPageModule } from './verification-general-advanced-page-module'
 
 export class VerificationPageModule extends PageModuleDescriptor {
@@ -12,6 +13,7 @@ export class VerificationPageModule extends PageModuleDescriptor {
         VerificationCorporatePageModule,
         VerificationGeneralPageModule,
         VerificationGeneralAdvancedPageModule,
+        VerificationFundAdvancedPageModule,
       ],
     })
   }
