@@ -277,7 +277,7 @@ export const tooltip = (() => {
     target = e.target ? e.target : e
     // For the case when tooltip defined inside Drawer to prevent the problem
     // with document scrolling
-    const tooltipContainer = safeGet(binding, 'value.anchor', DIRECTIONS.top) || ANCHOR
+    const tooltipContainer = safeGet(binding, 'value.anchor', ANCHOR)
     targetRect = target.getBoundingClientRect()
     position = safeGet(binding, 'value.position', DIRECTIONS.top)
     currentPosition = position
