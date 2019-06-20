@@ -84,6 +84,58 @@
             </template>
           </td>
         </tr>
+
+        <template v-if="request.stellarAssetCode">
+          <!-- eslint-disable-next-line max-len -->
+          <tr :title="'create-asset-requests.stellar-asset-code-title' | globalize">
+            <td>
+              {{ 'create-asset-requests.stellar-asset-code-title' | globalize }}
+            </td>
+            <td>
+              {{ request.stellarAssetCode }}
+            </td>
+          </tr>
+
+          <!-- eslint-disable-next-line max-len -->
+          <tr :title="'create-asset-requests.stellar-asset-type-title' | globalize">
+            <td>
+              {{ 'create-asset-requests.stellar-asset-type-title' | globalize }}
+            </td>
+            <td>
+              {{ stellarAssetTypeTranslated }}
+            </td>
+          </tr>
+
+          <!-- eslint-disable-next-line max-len -->
+          <tr :title="'create-asset-requests.stellar-withdraw-title' | globalize">
+            <td>
+              {{ 'create-asset-requests.stellar-withdraw-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="request.stellarWithdraw">
+                {{ 'create-asset-requests.yes-msg' | globalize }}
+              </template>
+              <template v-else>
+                {{ 'create-asset-requests.no-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+
+          <!-- eslint-disable-next-line max-len -->
+          <tr :title="'create-asset-requests.stellar-deposit-title' | globalize">
+            <td>
+              {{ 'create-asset-requests.stellar-deposit-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="request.stellarDeposit">
+                {{ 'create-asset-requests.yes-msg' | globalize }}
+              </template>
+              <template v-else>
+                {{ 'create-asset-requests.no-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+        </template>
       </tbody>
     </table>
   </div>
@@ -93,6 +145,12 @@
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
 import { documentsManager } from '@/api'
+
+const STELLAR_TYPES = {
+  creditAlphanum4: 'credit_alphanum4',
+  creditAlphanum12: 'credit_alphanum12',
+  native: 'native',
+}
 
 export default {
   name: 'request-attributes-viewer',
@@ -105,6 +163,30 @@ export default {
   computed: {
     assetTermsUrl () {
       return documentsManager.getDocumentUrlByKey(this.request.termsKey)
+    },
+
+    stellarAssetTypeTranslated () {
+      let translationId
+
+      switch (this.request.stellarAssetType) {
+        case STELLAR_TYPES.creditAlphanum4:
+          translationId = 'create-asset-requests.credit-alphanum4-stellar-asset-type-lbl'
+          break
+
+        case STELLAR_TYPES.creditAlphanum12:
+          translationId = 'create-asset-requests.credit-alphanum12-stellar-asset-type-lbl'
+          break
+
+        case STELLAR_TYPES.native:
+          translationId = 'create-asset-requests.native-stellar-asset-type-lbl'
+          break
+
+        default:
+          translationId = '[UNKNOWN_STELLAR_ASSET_TYPE]'
+          break
+      }
+
+      return this.$options.filters.globalize(translationId)
     },
   },
 }

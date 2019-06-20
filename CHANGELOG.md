@@ -20,6 +20,7 @@ for further information about branching and tagging conventions.
   - Poll exploration pages
   - Poll manage forms
   - Poll vote form
+- Stellar integration
 
 #### Changed
 - Reordered sidebar menu items
@@ -32,6 +33,7 @@ for further information about branching and tagging conventions.
 - Resolved an issue when disabled or readonly select field was rendered slightly
   differ from other fields
 - Resolved an issue when date field was disabled after submit form
+- Resolved an issue when tick field was displayed not chacked if value checked
 
 ### "Under the hood" changes
 #### Added
