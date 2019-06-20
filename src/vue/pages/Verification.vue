@@ -9,6 +9,7 @@
         </p>
         <div class="account-type-selector">
           <router-link
+            tag="button"
             :to="vueRoutes.verificationGeneral"
             class="account-type-selector__item"
             :disabled="kycState && kycAccountRole &&
@@ -30,6 +31,7 @@
           </router-link>
 
           <router-link
+            tag="button"
             :to="vueRoutes.verificationCorporate"
             class="account-type-selector__item"
             :disabled="kycState && kycAccountRole &&
