@@ -1,7 +1,7 @@
 import { globalize } from '@/vue/filters/globalize'
 import safeGet from 'lodash/get'
 import isObject from 'lodash/isObject'
-import cloneDeep from 'lodash/cloneDeep'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
   methods: {
@@ -39,6 +39,7 @@ export default {
       const isValid = !form.$invalid
       return isValid && isInsideFormValid
     },
+
     /**
      * getFieldErrorMessage decides if the validation error is present
      * for the field. To be invalid the vuelidate $touch method should
@@ -51,33 +52,34 @@ export default {
      *     :error-message="getFieldErrorMessage(`form.email`)"
      *  />
      *
-     * @param {string} field - the string with the field name. Works also for
-     *                 nested fields, such as `form.email`.
+     * @param {string} fieldPath - the string with the field name. Works also
+     *                             for nested fields, such as `form.email`.
      * @param {Object} [options] - the interpolation options object for
      *                 translation.
      *
      * @returns {string} the human-readable error message if the
      *                  field is invalid, empty string - otherwise.
      */
-    getFieldErrorMessage (field, options) {
+    getFieldErrorMessage (fieldPath, options) {
+      if (!fieldPath) {
+        ErrorHandler.processWithoutFeedback('getFieldErrorMessage: "fieldPath" is required')
+      }
+
       if (!this.$v.$invalid) {
         return ''
       }
-      const fieldHasArrayLinkRe = new RegExp(/(\w+)(\[\d\])/)
-      let newField = cloneDeep(field)
 
-      if (fieldHasArrayLinkRe.test(newField)) {
-        newField = newField.replace(fieldHasArrayLinkRe, '$1.$each$2')
+      const field = this._extractVuelidateField(fieldPath)
+      if (!field || !Object.keys(field).length) {
+        ErrorHandler.processWithoutFeedback(`getFieldErrorMessage: Cannot extract vuelidate field by ${fieldPath.trim()}`)
       }
 
-      const fieldDetails = safeGet(this.$v, newField)
-
-      if (!fieldDetails.$dirty) {
+      if (!field.$dirty) {
         return ''
       }
 
-      for (const rule of Object.keys(fieldDetails.$params)) {
-        if (!fieldDetails[rule]) {
+      for (const rule of Object.keys(field.$params)) {
+        if (!field[rule]) {
           return globalize(`validation.field-error`, {
             context: rule,
             ...options,
@@ -85,9 +87,11 @@ export default {
         }
       }
     },
+
     clearFields () {
       this.clearFieldsWithOverriding({})
     },
+
     clearFieldsWithOverriding (overriddenFields) {
       for (const [fieldName, fieldValue] of Object.entries(this.form)) {
         if (overriddenFields[fieldName]) {
@@ -106,11 +110,21 @@ export default {
       }
       this.$v.$reset()
     },
+
     touchField (fieldName) {
       const field = safeGet(this.$v, fieldName)
       if (field) {
         field.$touch()
       }
+    },
+
+    _extractVuelidateField (fieldPath = '') {
+      let resultFieldPath = fieldPath.trim().replace(
+        /(\w+)(\[\d+\])/, // path like "array[12]"
+        '$1.$each$2', // replace with "array.$each[12]"
+      ) // all the others path should be treated unmodified
+
+      return safeGet(this.$v, resultFieldPath)
     },
   },
 }
