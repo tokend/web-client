@@ -2271,6 +2271,9 @@
       "explore-atomic-swaps": "Explore atomic swaps",
       "create-atomic-swap-bth": "Create atomic swap",
       "new-atomic-swap": "New atomic swap"
+    },
+    "create-atomic-swap-form": {
+      "asset-lbl": "Asset"
     }
   }
 }
