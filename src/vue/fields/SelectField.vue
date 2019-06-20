@@ -141,10 +141,14 @@ export default {
     // except of &nbsp; that 'anything' will overlap field’s label.
     fixDisplayOfEmptyValue () {
       const opener = document
-        .querySelector(`.${CUSTOM_SELECT_CONFIG.openerClass} > span`)
+        .querySelectorAll(`.${CUSTOM_SELECT_CONFIG.openerClass} > span`)
 
       if (opener) {
-        opener.innerHTML = '&nbsp;'
+        for (let i = 0; i < opener.length; i++) {
+          if (!opener[i].innerText) {
+            opener[i].innerHTML = '&nbsp;'
+          }
+        }
       }
     },
   },

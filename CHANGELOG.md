@@ -20,6 +20,7 @@ for further information about branching and tagging conventions.
   - Poll exploration pages
   - Poll manage forms
   - Poll vote form
+- Stellar integration
 
 #### Changed
 - Reordered sidebar menu items
