@@ -136,7 +136,7 @@ export default {
           this.accountId
         )
       } else if (this.assetCode) {
-        request = await this.getUpdatableRequest(this.accountId)
+        request = await this.getUpdatableRequest(this.assetCode, this.accountId)
       }
 
       return request

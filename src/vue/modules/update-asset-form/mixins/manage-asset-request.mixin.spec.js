@@ -138,7 +138,7 @@ describe('Manage asset request mixin', () => {
             data: [{}],
           })
 
-          const result = await wrapper.vm.getLatestUpdateAssetRequest(1, 'SOME_ACCOUNT_ID')
+          const result = await wrapper.vm.getLatestUpdateAssetRequest(1, 'SOME_ACCOUNT_ID', 'SOME_ASSET')
 
           expect(api.getWithSignature)
             .to.have.been.calledOnceWithExactly(
@@ -150,6 +150,7 @@ describe('Manage asset request mixin', () => {
                 },
                 filter: {
                   requestor: 'SOME_ACCOUNT_ID',
+                  'request_details.asset': 'SOME_ASSET',
                   state: 1,
                 },
                 include: ['request_details'],
@@ -164,7 +165,7 @@ describe('Manage asset request mixin', () => {
           data: [],
         })
 
-        const result = await wrapper.vm.getLatestUpdateAssetRequest(1, 'SOME_ACCOUNT_ID')
+        const result = await wrapper.vm.getLatestUpdateAssetRequest(1, 'SOME_ACCOUNT_ID',)
 
         expect(result).to.be.null
       })
@@ -177,14 +178,14 @@ describe('Manage asset request mixin', () => {
           sandbox.stub(wrapper.vm, 'getLatestUpdateAssetRequest')
             .resolves(request)
 
-          const result = await wrapper.vm.getUpdatableRequest('SOME_ACCOUNT_ID')
+          const result = await wrapper.vm.getUpdatableRequest('SOME_ASSET', 'SOME_ACCOUNT_ID')
 
           expect(wrapper.vm.getLatestUpdateAssetRequest)
             .to.have.been.calledTwice
           expect(wrapper.vm.getLatestUpdateAssetRequest)
-            .to.have.been.calledWithExactly(REQUEST_STATES.pending, 'SOME_ACCOUNT_ID')
+            .to.have.been.calledWithExactly(REQUEST_STATES.pending, 'SOME_ACCOUNT_ID', 'SOME_ASSET')
           expect(wrapper.vm.getLatestUpdateAssetRequest)
-            .to.have.been.calledWithExactly(REQUEST_STATES.rejected, 'SOME_ACCOUNT_ID')
+            .to.have.been.calledWithExactly(REQUEST_STATES.rejected, 'SOME_ACCOUNT_ID', 'SOME_ASSET')
           expect(result).to.equal(request)
         }
       )
