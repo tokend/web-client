@@ -115,7 +115,9 @@
       "field-error_noMoreThanSaleCap": "Investing amount has exceeded the sale cap {{saleCap, money}}",
       "field-error_maxForIssuance": "Max amount for issuance: {{to, money}}",
       "field-error_minForIssuance": "Min amount for issuance: {{from, money}}",
-      "field-error_assetCode": "Asset code must contain maximum 16 symbols and consist of alphanumeric values (A-Z, a-z, 0-9)"
+      "field-error_assetCode": "Asset code must contain maximum 16 symbols and consist of alphanumeric values (A-Z, a-z, 0-9)",
+      "field-error_alphaNum": "Accepts only alphanumerics",
+      "field-error_minLength": "This field must contain minimum {{minLength}} symbols"
     },
     "errors": {
       "default": "Something bad happened. Please try again later",
@@ -1134,7 +1136,17 @@
       "terms-lbl": "Upload terms",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
       "request-submitted-msg": "Your request was successfully processed. Please, wait for approval",
-      "pre-issuance-guide-link": "Learn more about pre-issuance"
+      "pre-issuance-guide-link": "Learn more about pre-issuance",
+      "stellar-integration-subheading": "Stellar integration",
+      "issuance-subheading": "Issuance",
+      "deposit-lbl": "Deposit",
+      "withdraw-lbl": "Withdraw",
+      "credit-alphanum4-stellar-asset-type-lbl": "Alphanumeric 4",
+      "credit-alphanum12-stellar-asset-type-lbl": "Alphanumeric 12",
+      "native-stellar-asset-type-lbl": "Native",
+      "stellar-asset-type-lbl": "Type",
+      "stellar-asset-code-lbl": "Asset code",
+      "integration-with-stellar-check": "Integration with stellar"
     },
     "update-asset-form": {
       "loading-msg": "Loading…",
@@ -1150,7 +1162,17 @@
       "withdrawable-lbl": "Withdrawable",
       "terms-lbl": "Upload terms",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
-      "request-submitted-msg": "Your request was successfully processed. Please, wait for approval"
+      "request-submitted-msg": "Your request was successfully processed. Please, wait for approval",
+      "stellar-integration-subheading": "Stellar integration",
+      "terms-subheading": "Terms",
+      "deposit-lbl": "Deposit",
+      "withdraw-lbl": "Withdraw",
+      "credit-alphanum4-stellar-asset-type-lbl": "Alphanumeric 4",
+      "credit-alphanum12-stellar-asset-type-lbl": "Alphanumeric 12",
+      "native-stellar-asset-type-lbl": "Native",
+      "stellar-asset-type-lbl": "Type",
+      "stellar-asset-code-lbl": "Asset code",
+      "integration-with-stellar-check": "Integration with stellar"
     },
     "assets-list": {
       "update-asset-title": "Update asset",
@@ -1236,7 +1258,14 @@
       "no-msg": "No",
       "cancellation-msg": "Are you sure to cancel the request?",
       "update-btn": "Update",
-      "cancel-btn": "CANCEL"
+      "cancel-btn": "CANCEL",
+      "stellar-asset-code-title": "Stellar asset code",
+      "stellar-asset-type-title": "Stellar asset type",
+      "stellar-withdraw-title": "Stellar withdraw",
+      "stellar-deposit-title": "Stellar deposit",
+      "credit-alphanum4-stellar-asset-type-lbl": "Alphanumeric 4",
+      "credit-alphanum12-stellar-asset-type-lbl": "Alphanumeric 12",
+      "native-stellar-asset-type-lbl": "Native"
     },
     "update-asset-requests": {
       "update-asset-title": "Update asset",
@@ -1260,7 +1289,14 @@
       "no-msg": "No",
       "cancellation-msg": "Are you sure to cancel the request?",
       "update-btn": "Update",
-      "cancel-btn": "CANCEL"
+      "cancel-btn": "CANCEL",
+      "stellar-asset-code-title": "Stellar asset code",
+      "stellar-asset-type-title": "Stellar asset type",
+      "stellar-withdraw-title": "Stellar withdraw",
+      "stellar-deposit-title": "Stellar deposit",
+      "credit-alphanum4-stellar-asset-type-lbl": "Alphanumeric 4",
+      "credit-alphanum12-stellar-asset-type-lbl": "Alphanumeric 12",
+      "native-stellar-asset-type-lbl": "Native"
     },
     "create-sale-requests": {
       "update-sale-title": "Update sale",
@@ -1394,7 +1430,16 @@
       "maturity-date": "Maturity Date",
       "annual-return": "Annual return in percents",
       "expected-revenue": "Expected revenue per year",
-      "verification-required-err": "You need to verify your account to add this asset to your balances"
+      "verification-required-err": "You need to verify your account to add this asset to your balances",
+      "stellar-asset-code-title": "Stellar asset code",
+      "stellar-asset-type-title": "Stellar asset type",
+      "stellar-withdraw-title": "Stellar withdraw",
+      "stellar-deposit-title": "Stellar deposit",
+      "credit-alphanum4-stellar-asset-type-lbl": "Alphanumeric 4",
+      "credit-alphanum12-stellar-asset-type-lbl": "Alphanumeric 12",
+      "native-stellar-asset-type-lbl": "Native",
+      "yes-msg": "Yes",
+      "no-msg": "No"
     },
     "file-field": {
       "upload-file-title": "Drag a file here or click to browse",
@@ -1943,7 +1988,16 @@
       "download-terms-btn": "Download terms",
       "already-in-your-balance-btn": "Already in your balances",
       "owner-lbl": "Owner",
-      "view-shares-btn": "View shares"
+      "view-shares-btn": "View shares",
+      "stellar-asset-code-title": "Stellar asset code",
+      "stellar-asset-type-title": "Stellar asset type",
+      "stellar-withdraw-title": "Stellar withdraw",
+      "stellar-deposit-title": "Stellar deposit",
+      "credit-alphanum4-stellar-asset-type-lbl": "Alphanumeric 4",
+      "credit-alphanum12-stellar-asset-type-lbl": "Alphanumeric 12",
+      "native-stellar-asset-type-lbl": "Native",
+      "yes-msg": "Yes",
+      "no-msg": "No"
     },
     "create-opportunity": {
       "maturity-date": "Maturity Date",
