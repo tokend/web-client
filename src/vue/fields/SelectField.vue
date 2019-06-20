@@ -140,15 +140,11 @@ export default {
     // produces an additional unneeded option be rendered. If we add anything
     // except of &nbsp; that 'anything' will overlap field’s label.
     fixDisplayOfEmptyValue () {
-      const opener = document
-        .querySelectorAll(`.${CUSTOM_SELECT_CONFIG.openerClass} > span`)
+      const opener = this.$el
+        .querySelector(`.${CUSTOM_SELECT_CONFIG.openerClass} > span`)
 
       if (opener) {
-        for (let i = 0; i < opener.length; i++) {
-          if (!opener[i].innerText) {
-            opener[i].innerHTML = '&nbsp;'
-          }
-        }
+        opener.innerHTML = '&nbsp;'
       }
     },
   },
