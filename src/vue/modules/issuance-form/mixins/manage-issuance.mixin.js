@@ -48,6 +48,11 @@ export default {
             garbage: this.form.garbage,
             humidity: this.form.humidity,
             physical_weight: this.form.physicalWeight,
+            fusarium: this.form.fusarium,
+            contamination: this.form.contamination,
+            protein: this.form.protein,
+            gluten_percent: this.form.glutenPercent,
+            gluten_comment: this.form.glutenComment,
           },
         })
 

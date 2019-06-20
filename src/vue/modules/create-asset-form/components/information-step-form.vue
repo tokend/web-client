@@ -165,8 +165,8 @@ export default {
           value: CORN_TYPE.wheat,
         },
         {
-          labelTranslationId: 'create-asset-form.corn',
-          value: CORN_TYPE.corn,
+          labelTranslationId: 'create-asset-form.barley',
+          value: CORN_TYPE.barley,
         },
       ]
     },

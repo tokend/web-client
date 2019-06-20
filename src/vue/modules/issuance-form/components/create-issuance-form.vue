@@ -80,6 +80,7 @@
         />
       </div>
     </div>
+
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
@@ -97,6 +98,118 @@
         />
       </div>
     </div>
+
+    <template v-if="form.asset.details.cornType === CORN_TYPE.wheat">
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.fusarium"
+            @blur="touchField('form.fusarium')"
+            name="create-issuance-fusarium"
+            :error-message="getFieldErrorMessage(
+              'form.fusarium',
+              { from: 0, to: 100 }
+            )"
+            type="number"
+            :label="'issuance-form.fusarium' | globalize"
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.contamination"
+            @blur="touchField('form.contamination')"
+            name="create-issuance-contamination"
+            :error-message="getFieldErrorMessage(
+              'form.contamination',
+              { length: REFERENCE_MAX_LENGTH }
+            )"
+            :label="'issuance-form.contamination' | globalize"
+            :maxlength="REFERENCE_MAX_LENGTH"
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.protein"
+            @blur="touchField('form.protein')"
+            name="create-issuance-protein"
+            :error-message="getFieldErrorMessage(
+              'form.protein',
+              { from: 0, to: 100 }
+            )"
+            type="number"
+            :label="'issuance-form.protein' | globalize"
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.glutenPercent"
+            @blur="touchField('form.glutenPercent')"
+            name="create-issuance-gluten-percent"
+            :error-message="getFieldErrorMessage(
+              'form.glutenPercent',
+              { from: 0, to: 100 }
+            )"
+            type="number"
+            :label="'issuance-form.gluten-percent' | globalize"
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.glutenComment"
+            @blur="touchField('form.glutenComment')"
+            name="create-issuance-gluten-comment"
+            :error-message="getFieldErrorMessage(
+              'form.glutenComment',
+              { length: REFERENCE_MAX_LENGTH }
+            )"
+            :label="'issuance-form.gluten-comment' | globalize"
+            :maxlength="REFERENCE_MAX_LENGTH"
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
+      </div>
+    </template>
+
+    <template v-if="form.asset.details.cornType === CORN_TYPE.barley">
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.contamination"
+            @blur="touchField('form.contamination')"
+            name="create-issuance-reference"
+            :error-message="getFieldErrorMessage(
+              'form.contamination',
+              { from: 0, to: 100 }
+            )"
+            type="number"
+            :label="'issuance-form.contamination' | globalize"
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
+      </div>
+    </template>
 
     <div class="app__form-row">
       <div class="app__form-field">
@@ -171,6 +284,8 @@ import { MathUtil } from '@/js/utils'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
+import { CORN_TYPE } from '@/js/const/corn'
+
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
@@ -205,6 +320,7 @@ export default {
   },
 
   data: _ => ({
+    CORN_TYPE,
     form: {
       asset: {},
       amount: '0',
@@ -213,6 +329,11 @@ export default {
       reference: '',
       garbage: '0',
       humidity: '0',
+      fusarium: '',
+      contamination: '',
+      protein: '',
+      glutenPercent: '',
+      glutenComment: '',
     },
     fees: {},
     feesDebouncedRequest: null,
@@ -225,7 +346,7 @@ export default {
   }),
 
   validations () {
-    return {
+    let validation = {
       form: {
         asset: { required },
         physicalWeight: {
@@ -260,6 +381,47 @@ export default {
         value: { amount },
       },
     }
+    if (this.form.asset.details.cornType === CORN_TYPE.wheat) {
+      validation.form.fusarium = {
+        required,
+        amountRange: amountRange(
+          0,
+          100
+        ),
+      }
+      validation.form.contamination = {
+        required,
+        maxLength: maxLength(REFERENCE_MAX_LENGTH),
+      }
+      validation.form.protein = {
+        required,
+        amountRange: amountRange(
+          0,
+          100
+        ),
+      }
+      validation.form.glutenPercent = {
+        required,
+        amountRange: amountRange(
+          0,
+          100
+        ),
+      }
+      validation.form.glutenComment = {
+        required,
+        maxLength: maxLength(REFERENCE_MAX_LENGTH),
+      }
+    }
+    if (this.form.asset.details.cornType === CORN_TYPE.barley) {
+      validation.form.contamination = {
+        required,
+        amountRange: amountRange(
+          0,
+          100
+        ),
+      }
+    }
+    return validation
   },
 
   computed: {

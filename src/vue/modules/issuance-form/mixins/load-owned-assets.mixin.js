@@ -1,5 +1,5 @@
 import { api } from '@/api'
-import { Asset } from '../wrappers/asset'
+import { AssetRecord } from '@/js/records/entities/asset.record'
 
 export default {
   data: _ => ({
@@ -15,7 +15,7 @@ export default {
 
       this.ownedAssets = account.balances
         .map(b => b.asset)
-        .map(a => new Asset(a))
+        .map(a => new AssetRecord(a))
         .filter(a => a.owner === ownerAccountId)
     },
   },

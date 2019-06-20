@@ -209,9 +209,9 @@ export default {
       }
       if (this.assetType.value === ASSET_TYPES.corn) {
         switch (this.cornType.value) {
-          case CORN_TYPE.corn:
+          case CORN_TYPE.barley:
             filteredAssets = filteredAssets
-              .filter(item => item.details.cornType === CORN_TYPE.corn)
+              .filter(item => item.details.cornType === CORN_TYPE.barley)
             break
           case CORN_TYPE.wheat:
             filteredAssets = filteredAssets
@@ -258,8 +258,8 @@ export default {
           value: CORN_TYPE.wheat,
         },
         {
-          labelTranslationId: 'assets.corn',
-          value: CORN_TYPE.corn,
+          labelTranslationId: 'assets.barley',
+          value: CORN_TYPE.barley,
         },
       ]
     },
