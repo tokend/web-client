@@ -6,7 +6,7 @@ export class Collection {
   constructor (loader) {
     this._loader = loader
     this._isLoading = false
-    this._isEmpty = true
+    this._isEmpty = true // delete
     this._isFailed = false
     this._isNoMoreEntries = false
     this._isFetchedFirst = true
@@ -16,6 +16,7 @@ export class Collection {
 
   async loadPage () {
     this._isLoading = true
+
     try {
       let response
       if (this._isFetchedFirst) {
@@ -26,22 +27,25 @@ export class Collection {
         response = await this._nextPageLoader()
         this._list = this._list.concat(response.data)
       }
+
       this._nextPageLoader = response.fetchNext
       this._isFetchedFirst = false
-      this._isNoMoreEntries = response.data.length < DEFAULT_PAGE_LIMIT
+      this._isNoMoreEntries = response.data.length < DEFAULT_PAGE_LIMIT // сеттром пробрасывать
 
       return this._list
     } catch (e) {
       this._isFailed = true
-      ErrorHandler.processWithoutFeedback(e)
+      ErrorHandler.processWithoutFeedback(e) // сеттером пробрасывать ф-цю
     }
+
     this._isLoading = false
   }
+
   get list () {
     return this._list
   }
 
-  set setLoader (loader) {
+  set setLoader (loader) { // delete set
     this._loader = loader
   }
 
@@ -58,7 +62,7 @@ export class Collection {
   }
 
   get isEmpty () {
-    return this._isEmpty
+    return this._isEmpty // listlength>0
   }
 
   reload () {

@@ -64,7 +64,7 @@ export default {
   },
   props: {
     movements: {
-      type: Array, /** {@link Movement} **/
+      type: Array,
       required: true,
     },
     isMovementsLoaded: {
@@ -75,6 +75,12 @@ export default {
   data: _ => ({
     itemPerSkeletonLoader: 3,
   }),
+  watch: {
+    movements (value) {
+      console.log('movements-table', value)
+    },
+    deep: true
+  }
 }
 </script>
 

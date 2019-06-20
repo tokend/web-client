@@ -52,7 +52,6 @@
 </template>
 
 <script>
-import { Movement } from '../wrappers/movement'
 import {
   BalanceChangedEffect,
   ParticularBalanceChangeEffect,
@@ -99,7 +98,7 @@ export default {
   },
   props: {
     movement: {
-      type: Movement,
+      type: Object,
       required: true,
     },
   },
@@ -116,6 +115,11 @@ export default {
     CreateIssuanceRequestOp,
     CreateWithdrawRequestOp,
   }),
+  watch: {
+    movement (value) {
+      console.log('attribut-viewer', value)
+    }
+  }
 }
 </script>
 

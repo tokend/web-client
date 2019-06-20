@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import { Movement } from '../wrappers/movement'
 
 import TranslationFiltersMixin from '../mixins/translation-filters.mixin'
 
@@ -37,10 +36,15 @@ export default {
   mixins: [TranslationFiltersMixin],
   props: {
     movement: {
-      type: Movement,
+      type: Object,
       required: true,
     },
   },
+  watch: {
+    movement (value) {
+      console.log('summary-viewer', value)
+    }
+  }
 }
 </script>
 

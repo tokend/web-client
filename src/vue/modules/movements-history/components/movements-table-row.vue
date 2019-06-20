@@ -54,7 +54,7 @@
     >
       <td colspan="5">
         <div class="movements-table-row__attributes-viewer-wrp">
-          <movement-attributes-viewer :movement="movement" />
+          <movement-attributes-viewer :movement="movement"/>
         </div>
       </td>
     </tr>
@@ -62,8 +62,6 @@
 </template>
 
 <script>
-import { Movement } from '../wrappers/movement'
-
 import TranslationFiltersMixin from '../mixins/translation-filters.mixin'
 
 import MovementAttributesViewer from './movement-attributes-viewer'
@@ -101,12 +99,19 @@ export default {
   mixins: [TranslationFiltersMixin],
 
   props: {
-    movement: { type: Movement, required: true },
+    movement: { type: Object, required: true },
   },
 
   data: () => ({
     isAttributesViewerShown: false,
   }),
+
+  watch: {
+    movement (value) {
+      console.log('table-row', value)
+    },
+    deep: true
+  }
 }
 </script>
 

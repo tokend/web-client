@@ -3,13 +3,12 @@
 </template>
 
 <script>
-import { Movement } from '../wrappers/movement'
 
 export default {
   name: 'movement-direction-mark',
   props: {
     movement: {
-      type: Movement,
+      type: Object,
       required: true,
     },
   },
@@ -31,6 +30,11 @@ export default {
       }
     },
   },
+  watch: {
+    movement (value) {
+      console.log('direction-mark', value)
+    }
+  }
 }
 </script>
 

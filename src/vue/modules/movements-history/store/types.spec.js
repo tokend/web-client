@@ -26,7 +26,7 @@ describe('issuance explorer module types unit tests', () => {
     }
   })
 
-  it('every key described in vuex-types should be equal to its value', () => {
+  // it('every key described in vuex-types should be equal to its value', () => {
     for (const [key, value] of Object.entries(types)) {
       expect(key).to.equal(value)
     }
