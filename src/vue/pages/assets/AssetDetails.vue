@@ -172,7 +172,7 @@
               {{ +asset.annualReturn }}%
             </td>
           </tr>
-          <template v-if="asset.stellarAssetCode !== ''">
+          <template v-if="asset.stellarAssetCode">
             <tr :title="'asset-details.stellar-asset-code-title' | globalize">
               <td>
                 {{ 'asset-details.stellar-asset-code-title' | globalize }}

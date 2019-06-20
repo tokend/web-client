@@ -128,7 +128,7 @@
               />
             </td>
           </tr>
-          <template v-if="asset.stellarAssetCode !== ''">
+          <template v-if="asset.stellarAssetCode">
             <tr :title="'assets.stellar-asset-code-title' | globalize">
               <td>
                 {{ 'assets.stellar-asset-code-title' | globalize }}

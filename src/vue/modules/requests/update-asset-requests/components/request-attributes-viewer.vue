@@ -44,7 +44,7 @@
             </template>
           </td>
         </tr>
-        <template v-if="request.stellarAssetCode !== ''">
+        <template v-if="request.stellarAssetCode">
           <!-- eslint-disable-next-line max-len -->
           <tr :title="'update-asset-requests.stellar-asset-code-title' | globalize">
             <td>
