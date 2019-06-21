@@ -88,8 +88,12 @@ export default {
 
   watch: {
     async assetCode () {
-      this.collection.reload() // reload without assetCode doesn't works
+      this.collection.reload()
     },
+  },
+
+  async mounted () {
+    if (this.assetCode) this.collection.reload()
   },
 
   methods: {
