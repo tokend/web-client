@@ -9,18 +9,21 @@
  * - Styles are customizable
  *
  * Value variants:
- * - Type: 'click', 'hover': 'hover' by default
- * - Position: 'top', 'right', 'bottom', 'left'; 'top' by default
- * - Width: number, without css units like px/em; 'auto' by default
+ * - type: 'click', 'hover': 'hover' by default
+ * - position: 'top', 'right', 'bottom', 'left'; 'top' by default
+ * - anchor: DOM element, into which the tooltip will be inserted. Allow you to
+ *           prevent problems with elements that have own scrolling. Inserts
+ *           into '#app' by default
+ * - width: number, without css units like px/em; 'auto' by default
  * - height: number, without css units like px/em; 'auto' by default
  * - bgColor: any legal color values; #000 by default
  * - textColor: any legal color values; #fff by default
  * - fontSize: number with css units like px/em; '1.4rem' by default
  *
  * Example of usage is described below.
- *  <element
- *    v-tooltip="{
- *      type: 'hover',
+    <element
+      v-tooltip="{
+        type: 'hover',
         text: 'Lorem ipsum',
         position: 'top',
         style: {
@@ -71,6 +74,7 @@ export const tooltip = (() => {
     bottom: 'bottom',
     left: 'left',
   }
+  const ANCHOR = document.getElementById('app')
   let tooltipText
   let tooltipWrapper
   let tooltipArrow
@@ -270,8 +274,8 @@ export const tooltip = (() => {
   }
 
   function renderTooltip (e, binding) {
-    const appContainer = document.getElementById('app')
     target = e.target ? e.target : e
+    const tooltipContainer = safeGet(binding, 'value.anchor', ANCHOR)
     targetRect = target.getBoundingClientRect()
     position = safeGet(binding, 'value.position', DIRECTIONS.top)
     currentPosition = position
@@ -303,7 +307,7 @@ export const tooltip = (() => {
     tooltipWrapper.appendChild(tooltipText)
     tooltipWrapper.appendChild(tooltipArrow)
     tooltipWrapper.appendChild(tooltipBridge)
-    appContainer.appendChild(tooltipWrapper)
+    tooltipContainer.appendChild(tooltipWrapper)
     target.classList.add('tooltip-container')
 
     twRect = tooltipWrapper.getBoundingClientRect()
