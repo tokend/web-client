@@ -80,9 +80,7 @@ export default {
       }
     },
     isHaveBalance () {
-      return Number.isInteger(
-        +this.accountBalanceByCode(this.asset.code).balance
-      )
+      return !!this.accountBalanceByCode(this.asset.code).id
     },
   },
   methods: {
