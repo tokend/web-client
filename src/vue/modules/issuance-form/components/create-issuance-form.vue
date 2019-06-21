@@ -584,7 +584,7 @@ export default {
     calculateAmount () {
       const amount = +this.form.physicalWeight -
         (+this.form.physicalWeight * ((this.cc + this.xB) / 100))
-      this.form.amount = amount > 0 ? amount : 0
+      this.form.amount = amount > 0 ? amount.toFixed(6) + '' : '0'
     },
   },
 }
