@@ -22,7 +22,7 @@
         <button
           v-show="!collection.isNoMoreEntries"
           class="collection__more-button app__button-flat"
-          @click="loadCollection"
+          @click="collection.loadPage()"
         >
           {{ 'common.more-btn' | globalize }}
         </button>
@@ -33,9 +33,8 @@
 
 <script>
 import MovementsTable from './components/movements-table'
+import Movement from './wrappers/movement'
 
-// import { mapActions, mapMutations, mapGetters } from 'vuex'
-// import { types } from './store/types'
 import { vueRoutes } from '@/vue-router/routes'
 import { Collection } from '@/vue/common/collection.js'
 import { api } from '@/api'
@@ -62,13 +61,20 @@ export default {
 
   data () {
     return ({
-      movements: [],
-      collection: new Collection(() => {
+      collection: new Collection(_ => {
+        const balance = this.accountBalanceByCode(this.assetCode)
         if (this.isSharesPage) {
-          return this.loadShareMovements(this.assetCode)
+          return api.getWithSignature('/v3/history', {
+            page: {
+              order: 'desc',
+              limit: 10,
+            },
+            filter: {
+              asset: this.assetCode
+            },
+            include: ['effect', 'operation.details'],
+          })
         } else {
-          // return this.loadMovements(this.assetCode)
-          const balance = this.accountBalanceByCode(this.assetCode)
           return api.getWithSignature('/v3/history', {
             page: {
               order: 'desc',
@@ -86,20 +92,13 @@ export default {
   },
 
   computed: {
-    // ...mapGetters('movements-history', {
-    //   movements: types.movements,
-    // }),
-    // firstPageLoader () {
-    //   const assetCode = this.assetCode
-    // HACK: passing this.assetCode directly
-    //   // to function will lead to losing reactivity
-
-    //   return _ => this.loadMovementsFirstPage(assetCode)
-    // },
     ...mapGetters({
       accountId: vuexTypes.accountId,
       accountBalanceByCode: vuexTypes.accountBalanceByCode,
     }),
+    movements () {
+      return this.collection.list.map(m => new Movement(m))
+    },
     isSharesPage () {
       return this.$route.name === vueRoutes.registerOfShares.name
     },
@@ -107,37 +106,10 @@ export default {
 
   watch: {
     async assetCode () {
-      // this.collection.setLoader = this.firstPageLoader
-      this.movements = await this.collection.reload()
-      // this.reloadCollectionLoader()
-    },
-  },
-
-  methods: {
-    // ...mapMutations('movements-history', {
-    //   setMovements: types.SET_MOVEMENTS,
-    // }),
-    // ...mapActions('movements-history', {
-    //   loadMovements: types.LOAD_MOVEMENTS,
-    //   loadShareMovements: types.LOAD_SHARE_MOVEMENTS,
-    // }),
-
-    async loadMovementsFirstPage (assetCode) {
-      let response
-      if (this.isSharesPage) {
-        response = await this.loadShareMovements(assetCode)
-      } else {
-        response = await this.loadMovements(assetCode)
-      }
-      return response
-    },
-    async loadCollection () {
-      this.movements = await this.collection.loadPage()
+      this.collection.reload()
     },
   },
 }
-// удалить стор мувмента, но проверить нигде ли он больше
-//  не используеться ------------------------------------
 </script>
 
 <style lang="scss" scoped>

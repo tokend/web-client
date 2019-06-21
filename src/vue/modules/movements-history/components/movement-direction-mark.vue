@@ -30,11 +30,6 @@ export default {
       }
     },
   },
-  watch: {
-    movement (value) {
-      console.log('direction-mark', value)
-    }
-  }
 }
 </script>
 

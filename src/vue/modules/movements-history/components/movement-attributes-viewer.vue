@@ -115,11 +115,6 @@ export default {
     CreateIssuanceRequestOp,
     CreateWithdrawRequestOp,
   }),
-  watch: {
-    movement (value) {
-      console.log('attribut-viewer', value)
-    }
-  }
 }
 </script>
 

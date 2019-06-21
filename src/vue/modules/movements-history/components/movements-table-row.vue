@@ -105,13 +105,6 @@ export default {
   data: () => ({
     isAttributesViewerShown: false,
   }),
-
-  watch: {
-    movement (value) {
-      console.log('table-row', value)
-    },
-    deep: true
-  }
 }
 </script>
 

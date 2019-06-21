@@ -40,11 +40,6 @@ export default {
       required: true,
     },
   },
-  watch: {
-    movement (value) {
-      console.log('summary-viewer', value)
-    }
-  }
 }
 </script>
 

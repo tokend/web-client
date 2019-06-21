@@ -75,12 +75,6 @@ export default {
   data: _ => ({
     itemPerSkeletonLoader: 3,
   }),
-  watch: {
-    movements (value) {
-      console.log('movements-table', value)
-    },
-    deep: true
-  }
 }
 </script>
 
