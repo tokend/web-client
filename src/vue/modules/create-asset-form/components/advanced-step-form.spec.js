@@ -43,9 +43,11 @@ describe('Advanced step form', () => {
     }
 
     for (const [selector, model] of Object.entries(fieldBindings)) {
-      it(`$v.form.${model} is touched after blur event emitted on ${selector}`, () => {
+      it(`$v.form.${model} is touched after blur event emitted on ${selector}`, async () => {
         sandbox.stub(wrapper.vm, 'touchField')
 
+        wrapper.setData({ form: { isPreIssuanceEnabled: true } })
+        await localVue.nextTick()
         wrapper.find(selector).vm.$emit('blur')
 
         expect(wrapper.vm.touchField.calledOnce).to.be.true
@@ -90,7 +92,7 @@ describe('Advanced step form', () => {
 
         wrapper.vm.populateForm()
 
-        expect(wrapper.vm.form.isPreissuanceDisabled).to.be.false
+        expect(wrapper.vm.form.isPreIssuanceEnabled).to.be.true
         expect(wrapper.vm.form.preIssuanceAssetSigner).to.equal('SIGNER_ID')
         expect(wrapper.vm.form.initialPreissuedAmount).to.equal('500.000000')
       })

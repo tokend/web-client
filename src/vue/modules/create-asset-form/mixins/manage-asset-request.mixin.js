@@ -17,15 +17,15 @@ const EMPTY_DOCUMENT = {
 export default {
   computed: {
     preIssuanceAssetSigner () {
-      return this.advancedStepForm.isPreissuanceDisabled
-        ? config.NULL_ASSET_SIGNER
-        : this.advancedStepForm.preIssuanceAssetSigner
+      return this.advancedStepForm.isPreIssuanceEnabled
+        ? this.advancedStepForm.preIssuanceAssetSigner
+        : config.NULL_ASSET_SIGNER
     },
 
     initialPreissuedAmount () {
-      return this.advancedStepForm.isPreissuanceDisabled
-        ? this.informationStepForm.maxIssuanceAmount
-        : this.advancedStepForm.initialPreissuedAmount
+      return this.advancedStepForm.isPreIssuanceEnabled
+        ? this.advancedStepForm.initialPreissuedAmount
+        : this.informationStepForm.maxIssuanceAmount
     },
 
     assetRequestOpts () {

@@ -3,15 +3,14 @@
     class="app__form advanced-step-form"
     @submit.prevent="isFormValid() && setConfirmationState()"
   >
-    <!-- eslint-disable-next-line max-len -->
-    <h3 class="advanced-step-form__stellar-integration-subheading app__form-subheading">
+    <h3 class="advanced-step-form__subheading app__form-subheading">
       {{ 'update-asset-form.stellar-integration-subheading' | globalize }}
     </h3>
 
     <div class="app__form-row">
       <div class="app__form-field">
         <tick-field
-          class="advanced-step-form__stellar-integration-enablement-tick-field"
+          class="advanced-step-form__stellar-integration-tick-field"
           v-model="form.isStellarIntegrationEnabled"
           :disabled="true || isDisabled"
           :cb-value="true"
@@ -82,14 +81,16 @@
               length: getAssetCodeMaxLength(),
               minLength: CREDIT_ALPHANUM12_MIN_LENGTH
             })"
-            :disabled="isDisabled || form.stellar.assetType === STELLAR_TYPES.native"
+            :disabled="isDisabled || !form.stellar.assetType ||
+              form.stellar.assetType === STELLAR_TYPES.native
+            "
           />
         </div>
       </div>
       <!-- eslint-enable max-len -->
     </template>
 
-    <h3 class="advanced-step-form__terms-subheading app__form-subheading">
+    <h3 class="advanced-step-form__subheading app__form-subheading">
       {{ 'update-asset-form.terms-subheading' | globalize }}
     </h3>
     <div class="app__form-row">
@@ -291,13 +292,11 @@ export default {
   width: 100%;
 }
 
-.advanced-step-form__stellar-integration-subheading {
-  margin-top: 2rem;
-  margin-bottom: -1rem;
-}
+.advanced-step-form__subheading {
+  margin: 2.4rem 0 0;
 
-.advanced-step-form__terms-subheading {
-  margin-top: 5rem;
-  margin-bottom: -1rem;
+  & + .app__form-row {
+    margin-top: 1.2rem;
+  }
 }
 </style>

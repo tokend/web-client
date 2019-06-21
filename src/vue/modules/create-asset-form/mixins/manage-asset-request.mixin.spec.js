@@ -25,7 +25,7 @@ const Component = {
       assetType: '',
     },
     advancedStepForm: {
-      isPreissuanceDisabled: false,
+      isPreIssuanceEnabled: true,
       preIssuanceAssetSigner: '',
       initialPreissuedAmount: '',
       terms: null,
@@ -55,7 +55,7 @@ describe('Manage asset request mixin', () => {
         () => {
           wrapper.setData({
             advancedStepForm: {
-              isPreissuanceDisabled: false,
+              isPreIssuanceEnabled: true,
               preIssuanceAssetSigner: 'SIGNER_ID',
             },
           })
@@ -69,13 +69,13 @@ describe('Manage asset request mixin', () => {
         () => {
           wrapper.setData({
             informationStepForm: { maxIssuanceAmount: '1000.000000' },
-            advancedStepForm: { isPreissuanceDisabled: true },
+            advancedStepForm: { isPreIssuanceEnabled: false },
           })
           expect(wrapper.vm.initialPreissuedAmount).to.equal('1000.000000')
 
           wrapper.setData({
             advancedStepForm: {
-              isPreissuanceDisabled: false,
+              isPreIssuanceEnabled: true,
               initialPreissuedAmount: '500.000000',
             },
           })
@@ -98,7 +98,7 @@ describe('Manage asset request mixin', () => {
             assetType: 1,
           },
           advancedStepForm: {
-            isPreissuanceDisabled: false,
+            isPreIssuanceEnabled: true,
             preIssuanceAssetSigner: 'SIGNER_ID',
             initialPreissuedAmount: '500.000000',
           },

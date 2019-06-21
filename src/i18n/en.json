@@ -1088,7 +1088,7 @@
       "file-corrupted-err": "Your file is corrupted. Please, try to upload another one",
       "pre-issuance-details-title": "Pre-issuance info",
       "pre-issuance-uploaded-msg": "Pre-issuance request was successfully uploaded",
-      "pre-issuance-guide-link": "Learn more about pre-issuance"
+      "pre-issuance-guide-link": "More on pre-issuance"
     },
     "issuance-explorer": {
       "table": {
@@ -1138,16 +1138,16 @@
       "verification-not-required-lbl": "Does not require verification",
       "security-asset-lbl": "Security (requires accreditation for US residents)",
       "verification-required-lbl": "Requires verification",
-      "additional-issuance-check": "I do not want to make additional issuance later",
+      "additional-issuance-check": "I want to make additional issuance later",
       "pre-issuance-signer-lbl": "Pre-issuance asset signer ID",
-      "pre-issuance-disclaimer": "**WARNING!** Please, save your current secret seed to make pre-issuance after recovery or password change. To pre-issue your asset use offline issuance application. See more details <a target=\"_blank\" href=\"https://docs.tokend.io/#operation/token_lifecycle\">here</a>",
+      "pre-issuance-disclaimer": "**WARNING!** Please, save your current secret seed to make pre-issuance after recovery or password change. To pre-issue your asset use offline issuance application. See more details <a target=\"_blank\" href=\"https://docs.tokend.io/#operation/token_lifecycle\">here</a> (opens in a new tab).",
       "use-my-account-id-btn": "Use mine",
       "preissued-amount-lbl": "Initial pre-issued amount",
       "terms-lbl": "Upload terms",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
       "request-submitted-msg": "Your request was successfully processed. Please, wait for approval",
-      "pre-issuance-guide-link": "Learn more about pre-issuance",
-      "stellar-integration-subheading": "Stellar integration",
+      "pre-issuance-guide-link": "More on pre-issuance",
+      "stellar-integration-subheading": "Stellar network",
       "issuance-subheading": "Issuance",
       "deposit-lbl": "Deposit",
       "withdraw-lbl": "Withdraw",
@@ -1156,7 +1156,8 @@
       "native-stellar-asset-type-lbl": "Native",
       "stellar-asset-type-lbl": "Type",
       "stellar-asset-code-lbl": "Asset code",
-      "integration-with-stellar-check": "Integration with stellar"
+      "integration-with-stellar-check": "I want to integrate with Stellar network",
+      "terms-subheading": "Terms"
     },
     "update-asset-form": {
       "loading-msg": "Loading…",
@@ -1175,7 +1176,7 @@
       "terms-lbl": "Upload terms",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
       "request-submitted-msg": "Your request was successfully processed. Please, wait for approval",
-      "stellar-integration-subheading": "Stellar integration",
+      "stellar-integration-subheading": "Stellar network",
       "terms-subheading": "Terms",
       "deposit-lbl": "Deposit",
       "withdraw-lbl": "Withdraw",
@@ -1184,7 +1185,7 @@
       "native-stellar-asset-type-lbl": "Native",
       "stellar-asset-type-lbl": "Type",
       "stellar-asset-code-lbl": "Asset code",
-      "integration-with-stellar-check": "Integration with stellar"
+      "integration-with-stellar-check": "I want to integrate with Stellar network"
     },
     "assets-list": {
       "update-asset-title": "Update asset",
@@ -1208,7 +1209,7 @@
       "transferable-lbl": "Transferable",
       "withdrawable-lbl": "Withdrawable",
       "kyc-required-lbl": "Requires KYC",
-      "additional-issuance-check": "I do not want to make additional issuance later",
+      "additional-issuance-check": "I want to make additional issuance later",
       "preissued-asset-signer-lbl": "Pre-issued asset signer",
       "use-my-account-id-btn": "Use mine",
       "initial-preissued-amount-lbl": "Initial pre-issued amount",
