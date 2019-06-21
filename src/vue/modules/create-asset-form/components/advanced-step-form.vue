@@ -100,13 +100,46 @@
       <div class="app__form-field">
         <tick-field
           class="advanced-step-form__pre-issuance-tick-field"
-          v-model="form.isPreIssuanceEnabled"
+          v-model="form.isMaxAmountRestricted"
           :disabled="isDisabled"
         >
-          {{ 'create-asset-form.additional-issuance-check' | globalize }}
+          {{ 'create-asset-form.restrict-max-amount-check' | globalize }}
         </tick-field>
       </div>
     </div>
+
+    <template v-if="form.isMaxAmountRestricted">
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            type="number"
+            :min="0"
+            :max="MAX_AMOUNT"
+            :step="MIN_AMOUNT"
+            v-model="form.maxIssuanceAmount"
+            @blur="touchField('form.maxIssuanceAmount')"
+            name="create-asset-max-issuance-amount"
+            :label="'create-asset-form.max-issuance-amount-lbl' | globalize"
+            :error-message="getFieldErrorMessage(
+              'form.maxIssuanceAmount', { from: MIN_AMOUNT, to: MAX_AMOUNT }
+            )"
+          />
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <tick-field
+            class="advanced-step-form__pre-issuance-tick-field"
+            v-model="form.isPreIssuanceEnabled"
+            :disabled="isDisabled"
+          >
+            {{ 'create-asset-form.additional-issuance-check' | globalize }}
+          </tick-field>
+        </div>
+      </div>
+    </template>
 
     <template v-if="form.isPreIssuanceEnabled">
       <div class="app__form-row">
@@ -237,6 +270,7 @@ import {
   minLength,
   maxLength,
   alphaNum,
+  required,
 } from '@validators'
 import { vueRoutes } from '@/vue-router/routes'
 
@@ -284,6 +318,8 @@ export default {
 
   data: _ => ({
     form: {
+      isMaxAmountRestricted: false,
+      maxIssuanceAmount: '',
       isPreIssuanceEnabled: false,
       isStellarIntegrationEnabled: false,
       preIssuanceAssetSigner: '',
@@ -297,6 +333,7 @@ export default {
       },
     },
     MIN_AMOUNT: config.MIN_AMOUNT,
+    MAX_AMOUNT: config.MAX_AMOUNT,
     DOCUMENT_TYPES,
     vueRoutes,
     STELLAR_ASSET_TYPES,
@@ -307,6 +344,10 @@ export default {
   validations () {
     let validations = {
       form: {
+        maxIssuanceAmount: {
+          required,
+          amountRange: amountRange(this.MIN_AMOUNT, this.MAX_AMOUNT),
+        },
         preIssuanceAssetSigner: {
           required: requiredIf(function () {
             return this.form.isPreIssuanceEnabled
@@ -371,12 +412,20 @@ export default {
 
   methods: {
     populateForm () {
+      const isMaxAmountRestricted =
+        this.request.maxIssuanceAmount !== this.MAX_AMOUNT
+
       const isPreIssuanceEnabled =
         this.request.preIssuanceAssetSigner !== config.NULL_ASSET_SIGNER
-      const isStellarIntegrationEnabled = this.request.stellarAssetCode !== ''
+
+      const isStellarIntegrationEnabled = Boolean(this.request.stellarAssetCode)
 
       this.form = {
-        isPreIssuanceEnabled: isPreIssuanceEnabled,
+        isMaxAmountRestricted,
+        maxIssuanceAmount: isMaxAmountRestricted
+          ? this.request.maxIssuanceAmount
+          : '',
+        isPreIssuanceEnabled,
         preIssuanceAssetSigner: isPreIssuanceEnabled
           ? this.request.preIssuanceAssetSigner
           : '',

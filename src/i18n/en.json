@@ -1139,6 +1139,7 @@
       "security-asset-lbl": "Security (requires accreditation for US residents)",
       "verification-required-lbl": "Requires verification",
       "additional-issuance-check": "I want to make additional issuance later",
+      "restrict-max-amount-check": "I want to restrict max asset amount",
       "pre-issuance-signer-lbl": "Pre-issuance asset signer ID",
       "pre-issuance-disclaimer": "**WARNING!** Please, save your current secret seed to make pre-issuance after recovery or password change. To pre-issue your asset use offline issuance application. See more details <a target=\"_blank\" href=\"https://docs.tokend.io/#operation/token_lifecycle\">here</a> (opens in a new tab).",
       "use-my-account-id-btn": "Use mine",
