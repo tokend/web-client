@@ -54,6 +54,12 @@ export function buildRouter (store) {
         component: resolve => require(['@/vue/pages/PreIssuanceGuide'], resolve),
       },
       {
+        path: '/kyc-recovery-management',
+        name: vueRoutes.kycRecoveryManagement.name,
+        component: resolve => require(['@/vue/pages/KycRecoveryManagement'], resolve),
+        beforeEnter: buildKycRecoveryPageGuard(store),
+      },
+      {
         path: '/auth',
         name: vueRoutes.auth.name,
         redirect: vueRoutes.login,
@@ -110,30 +116,57 @@ export function buildRouter (store) {
 }
 
 // doesn't allow to visit auth page if user is already logged in
+// or kyc recovery is initialized
 function buildAuthPageGuard (store) {
   return function authPageGuard (to, from, next) {
     const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
+    const isNoKycRecoveryInProgress = store
+      .getters[vuexTypes.isNoKycRecoveryInProgress]
 
     isLoggedIn
-      ? next(vueRoutes.app)
+      ? !isNoKycRecoveryInProgress
+        ? next({
+          name: vueRoutes.kycRecoveryManagement.name,
+        })
+        : next(vueRoutes.app)
       : next()
   }
 }
 
 // doesn't allow to visit in-app page if user is not already logged in
+// or kyc recovery is initialized
 function buildInAppRouteGuard ({ store, scheme }) {
   return function inAppRouteGuard (to, from, next) {
     const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
+    const isNoKycRecoveryInProgress = store
+      .getters[vuexTypes.isNoKycRecoveryInProgress]
     // TODO: remove when all components modulerized
     const isAccessible = scheme.findModuleByPath(to.path)
       ? scheme.findModuleByPath(to.path).isAccessible
       : true
 
     isLoggedIn && isAccessible
-      ? next()
+      ? !isNoKycRecoveryInProgress
+        ? next({
+          name: vueRoutes.kycRecoveryManagement.name,
+        })
+        : next()
       : next({
         name: vueRoutes.login.name,
         query: { redirectPath: to.fullPath },
       })
+  }
+}
+
+// doesn't allow to visit kyc recovery management page if user's kyc recovery
+// is not initialized
+function buildKycRecoveryPageGuard (store) {
+  return function inAppRouteGuard (to, from, next) {
+    const isNoKycRecoveryInProgress = store
+      .getters[vuexTypes.isNoKycRecoveryInProgress]
+
+    !isNoKycRecoveryInProgress
+      ? next()
+      : next(vueRoutes.app)
   }
 }

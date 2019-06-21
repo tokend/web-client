@@ -33,6 +33,9 @@ const mutations = {
   SET_ACCOUNT_ROLE_RESETED: 'SET_ACCOUNT_ROLE_RESETED',
   SET_KYC_LATEST_REQUEST_DATA: 'SET_KYC_LATEST_REQUEST_DATA',
 
+  // kyc recovery
+  SET_KYC_RECOVERY_LATEST_REQUEST: 'SET_KYC_RECOVERY_LATEST_REQUEST',
+
   // assets
   SET_ASSETS: 'SET_ASSETS',
   UPDATE_ASSETS: 'UPDATE_ASSETS',
@@ -61,6 +64,10 @@ const actions = {
   LOAD_KYC_RELATED_REQUEST: 'LOAD_KYC_RELATED_REQUEST',
   LOAD_KYC_LATEST_DATA: 'LOAD_KYC_LATEST_DATA',
 
+  // kyc recovery
+  LOAD_KYC_RECOVERY_LATEST_REQUEST: 'LOAD_KYC_RECOVERY_LATEST_REQUEST',
+  LOAD_KYC_RECOVERY: 'LOAD_KYC_RECOVERY',
+
   // assets
   LOAD_ASSETS: 'LOAD_ASSETS',
 }
@@ -79,6 +86,7 @@ const getters = {
   kvAssetTypeKycRequired: 'kvAssetTypeKycRequired',
   kvAssetTypeSecurity: 'kvAssetTypeSecurity',
   defaultQuoteAsset: 'defaultQuoteAsset',
+  kvDefaultSignerRoleId: 'kvDefaultSignerRoleId',
 
   // account
   account: 'account',
@@ -125,6 +133,16 @@ const getters = {
   kycLatestRequestData: 'kycLatestRequestData',
   kycAvatarKey: 'kycAvatarKey',
   isAccountRoleReseted: 'isAccountRoleReseted',
+
+  // kyc recovery
+  kycRecoveryRequestId: 'kycRecoveryRequestId',
+  kycRecoveryState: 'kycRecoveryState',
+  kycRecoveryStateI: 'kycRecoveryStateI',
+  isNoKycRecoveryInProgress: 'isNoKycRecoveryInProgress',
+  isKycRecoveryInited: 'isKycRecoveryInited',
+  isKycRecoveryPending: 'isKycRecoveryPending',
+  isKycRecoveryRejected: 'isKycRecoveryRejected',
+  isKycRecoveryPermanentlyRejected: 'isKycRecoveryPermanentlyRejected',
 
   // assets
   assets: 'assets',

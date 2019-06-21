@@ -44,4 +44,5 @@ export const vueRoutes = Object.freeze({
   iosInstallationGuide: { name: 'ios-installation-guide' },
   supportedBrowsers: { name: 'supported-browsers' },
   preIssuanceGuide: { name: 'pre-issuance-guide' },
+  kycRecoveryManagement: { name: 'kyc-recovery-management' },
 })
