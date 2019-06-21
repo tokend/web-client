@@ -9,6 +9,7 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
+        <!-- stellar integration is fully coming in 1.9.0 -->
         <tick-field
           class="advanced-step-form__stellar-integration-tick-field"
           v-model="form.isStellarIntegrationEnabled"
@@ -275,7 +276,7 @@ export default {
     getAssetCodeMaxLength () {
       if (this.form.stellar.assetType === STELLAR_TYPES.creditAlphanum4) {
         return CREDIT_ALPHANUM4_MAX_LENGTH
-      // eslint-disable-next-line max-len
+        // eslint-disable-next-line max-len
       } else if (this.form.stellar.assetType === STELLAR_TYPES.creditAlphanum12) {
         return CREDIT_ALPHANUM12_MAX_LENGTH
       }

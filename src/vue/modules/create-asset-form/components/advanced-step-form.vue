@@ -10,6 +10,7 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
+        <!-- stellar integration is fully coming in 1.9.0 -->
         <tick-field
           class="advanced-step-form__stellar-integration-tick-field"
           v-model="form.isStellarIntegrationEnabled"
