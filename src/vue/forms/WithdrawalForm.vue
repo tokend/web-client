@@ -28,8 +28,8 @@
                   {{
                     'withdrawal-form.balance' | globalize({
                       balance: {
-                        value: form.asset.balance.value,
-                        currency: form.asset.code
+                        value: selectedAssetBalance.balance,
+                        currency: selectedAssetBalance.asset.code
                       }
                     })
                   }}
