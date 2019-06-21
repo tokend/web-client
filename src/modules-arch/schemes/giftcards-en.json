@@ -1,0 +1,18 @@
+{
+  "config": {},
+  "translations": {
+    "passport": {
+      "account-unverified": "General account",
+      "account-corporate": "Business level 1 account"
+    },
+    "verification-form": {
+      "avatar-lbl": "Logo"
+    },
+    "verification-page": {
+      "account-type-corporate-title": "Business level 1"
+    },
+    "sidebar": {
+      "section-corporate": "Business level 1"
+    }
+  }
+}

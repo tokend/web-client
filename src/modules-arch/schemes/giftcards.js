@@ -38,6 +38,9 @@ import { MyAssetsPageModule } from '@/vue/pages/my-assets-page-module'
 import { MyAssetsExplorerModule } from '@/vue/modules/assets/my-assets-explorer/module'
 
 export default {
+  importEnLocaleFile () {
+    return import('@/modules-arch/schemes/giftcards-en.json')
+  },
   pages: [
     new DashboardPageModule(
       {
