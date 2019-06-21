@@ -61,6 +61,8 @@ export const getters = {
   ),
   [vuexTypes.accountDepositAddresses]: state =>
     state.account.externalSystemIds || {},
+  [vuexTypes.accountKycRecoveryStatus]: state =>
+    _get(state.account, 'kycRecoveryStatus.value'),
 
   [vuexTypes.isAccountGeneral]: (a, getters, b, rootGetters) =>
     getters[vuexTypes.accountRoleId] ===

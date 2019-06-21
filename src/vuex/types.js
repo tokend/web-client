@@ -87,6 +87,7 @@ const getters = {
   accountBalanceByCode: 'accountBalanceByCode',
   accountRoleId: 'accountRoleId',
   accountDepositAddresses: 'accountDepositAddresses',
+  accountKycRecoveryStatus: 'accountKycRecoveryStatus',
 
   isAccountGeneral: 'isAccountGeneral',
   isAccountCorporate: 'isAccountCorporate',
