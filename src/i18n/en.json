@@ -2273,7 +2273,18 @@
       "new-atomic-swap": "New atomic swap"
     },
     "create-atomic-swap-form": {
-      "asset-lbl": "Asset"
+      "asset-lbl": "Asset",
+      "no-owned-assets-title": "No owned assets yet",
+      "no-owned-assets-msg": "Please create an asset to create atomic swap",
+      "load-failed-msg": "There was an error while loading. Please, try again later",
+      "amount-lbl": "Amount",
+      "available-amount-hint": "Available: {{amount, money}}",
+      "create-btn": "Create",
+      "price-lbl": "Price",
+      "address-lbl": "Address",
+      "add-quote-asset-btn": "Add quote asset",
+      "quote-assets-subheading": "Quote asset {{ number }}",
+      "created-atomic-swap-msg": "Atomic swap request successfully created"
     }
   }
 }

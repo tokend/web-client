@@ -7,13 +7,18 @@
         </router-link>
       </template>
       <template slot="extra">
-        <button
-          v-ripple
-          class="app__button-raised"
-          @click="isAtomicSwapsCreateDrawerShown = true"
+        <template
+          slot="extra"
+          v-if="getModule().canRenderSubmodule(CreateAtomicSwapFormModule)"
         >
-          {{ 'atomic-swaps.create-atomic-swap-bth' | globalize }}
-        </button>
+          <button
+            v-ripple
+            class="app__button-raised"
+            @click="isAtomicSwapsCreateDrawerShown = true"
+          >
+            {{ 'atomic-swaps.create-atomic-swap-bth' | globalize }}
+          </button>
+        </template>
       </template>
     </top-bar>
 
