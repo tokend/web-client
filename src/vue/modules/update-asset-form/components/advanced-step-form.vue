@@ -13,7 +13,7 @@
         <tick-field
           class="advanced-step-form__stellar-integration-enablement-tick-field"
           v-model="form.isStellarIntegrationEnabled"
-          :disabled="true"
+          :disabled="true || isDisabled"
           :cb-value="true"
         >
           {{ 'update-asset-form.integration-with-stellar-check' | globalize }}
