@@ -1,5 +1,4 @@
 import MovementsHistoryModule from './index'
-import { movementsHistoryModule } from './store/index'
 
 import Vuex from 'vuex'
 import { createLocalVue, shallowMount } from '@vue/test-utils'
@@ -14,16 +13,6 @@ describe('Movements history module', () => {
     assetCode: 'BTC',
   }
 
-  let store
-
-  beforeEach(() => {
-    store = new Vuex.Store({
-      modules: {
-        'movements-history': movementsHistoryModule,
-      },
-    })
-  })
-
   describe('component', () => {
     let wrapper
 
@@ -33,7 +22,6 @@ describe('Movements history module', () => {
       }
 
       wrapper = shallowMount(MovementsHistoryModule, {
-        store,
         localVue,
         propsData: props,
         mocks: {
@@ -56,7 +44,7 @@ describe('Movements history module', () => {
           wrapper.vm.loadMovements.restore()
         })
 
-        it('sets isMovementsLoaded property to true if loading was succeded',
+        it('sets collection.isLoaded property to true if loading was succeded',
           async () => {
             sinon.stub(wrapper.vm, 'isSharesPage').returns(false)
             sinon.stub(wrapper.vm, 'loadMovements')
@@ -65,7 +53,7 @@ describe('Movements history module', () => {
 
             await wrapper.vm.loadMovementsFirstPage()
 
-            expect(wrapper.vm.isMovementsLoaded).to.be.true
+            expect(wrapper.vm.collection.isLoaded).to.be.true
 
             wrapper.vm.loadMovements.restore()
           })
@@ -79,20 +67,20 @@ describe('Movements history module', () => {
 
           expect(ErrorHandler.processWithoutFeedback)
             .to.have.been.calledOnce
-          expect(wrapper.vm.isMovementsLoadFailed).to.be.true
+          expect(wrapper.vm.collection.isFailed).to.be.true
 
           wrapper.vm.loadMovements.restore()
           ErrorHandler.processWithoutFeedback.restore()
         })
 
-        it('sets isMovementsLoadFailed to true', async () => {
+        it('sets collection.isFailed to true', async () => {
           sinon.stub(wrapper.vm, 'loadMovements')
             .throws()
           sinon.stub(ErrorHandler, 'processWithoutFeedback')
 
           await wrapper.vm.loadMovementsFirstPage()
 
-          expect(wrapper.vm.isMovementsLoadFailed).to.be.true
+          expect(wrapper.vm.collection.isFailed).to.be.true
 
           wrapper.vm.loadMovements.restore()
           ErrorHandler.processWithoutFeedback.restore()

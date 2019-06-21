@@ -3,15 +3,18 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 const DEFAULT_PAGE_LIMIT = 10
 
 export class Collection {
-  constructor (loader) {
+  constructor (loader, mapper) {
     this._loader = loader
     this._isLoading = false
+    this._isLoaded = false
     this._isFailed = false
     this._isNoMoreEntries = false
     this._isFetchedFirst = true
     this._pageLimit = DEFAULT_PAGE_LIMIT
     this._errorHandler = ErrorHandler.processWithoutFeedback
     this._list = []
+    this._rawList = []
+    this._mapper = mapper
     this._nextPageLoader = () => {}
   }
 
@@ -22,12 +25,19 @@ export class Collection {
       let response
       if (this._isFetchedFirst) {
         response = await this._loader()
-        this._list = response.data
+        this._rawList = response.data
       } else {
         response = await this._nextPageLoader()
-        this._list = this._list.concat(response.data)
+        this._rawList = this._rawList.concat(response.data)
       }
 
+      if (this._mapper) {
+        this._list = this._mapper(this._rawList)
+      } else {
+        this._list = this._rawList
+      }
+
+      this._isLoaded = true
       this._nextPageLoader = response.fetchNext
       this._isFetchedFirst = false
       this._isNoMoreEntries = response.data.length < this._pageLimit
@@ -65,7 +75,7 @@ export class Collection {
   }
 
   get isEmpty () {
-    return this._list.length > 0
+    return this._list.length === 0
   }
 
   set pageLimit (value) {
@@ -74,5 +84,12 @@ export class Collection {
 
   set errorHandler (handler) {
     this._errorHandler = handler
+  }
+
+  set mapper (mapper) {
+    this._mapper = mapper
+  }
+  get isLoaded () {
+    return this._isLoaded
   }
 }

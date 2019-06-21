@@ -54,7 +54,7 @@
     >
       <td colspan="5">
         <div class="movements-table-row__attributes-viewer-wrp">
-          <movement-attributes-viewer :movement="movement"/>
+          <movement-attributes-viewer :movement="movement" />
         </div>
       </td>
     </tr>

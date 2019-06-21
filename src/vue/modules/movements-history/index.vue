@@ -7,8 +7,8 @@
         </h2>
         <div class="movements-history__list-wrp">
           <movements-table
-            :is-movements-loaded="!collection.isLoading"
-            :movements="movements"
+            :is-movements-loaded="collection.isLoaded"
+            :movements="collection.list"
           />
         </div>
       </template>
@@ -64,30 +64,15 @@ export default {
       collection: new Collection(_ => {
         const balance = this.accountBalanceByCode(this.assetCode)
         if (this.isSharesPage) {
-          return api.getWithSignature('/v3/history', {
-            page: {
-              order: 'desc',
-              limit: 10,
-            },
-            filter: {
-              asset: this.assetCode
-            },
-            include: ['effect', 'operation.details'],
-          })
+          return this.loadData({ asset: this.assetCode })
         } else {
-          return api.getWithSignature('/v3/history', {
-            page: {
-              order: 'desc',
-              limit: 10,
-            },
-            filter: {
-              account: this.accountId,
-              balance: balance.id,
-            },
-            include: ['effect', 'operation.details'],
+          return this.loadData({
+            account: this.accountId,
+            balance: balance.id,
           })
         }
-      }),
+      },
+      array => array.map(m => new Movement(m))),
     })
   },
 
@@ -96,9 +81,6 @@ export default {
       accountId: vuexTypes.accountId,
       accountBalanceByCode: vuexTypes.accountBalanceByCode,
     }),
-    movements () {
-      return this.collection.list.map(m => new Movement(m))
-    },
     isSharesPage () {
       return this.$route.name === vueRoutes.registerOfShares.name
     },
@@ -106,7 +88,20 @@ export default {
 
   watch: {
     async assetCode () {
-      this.collection.reload()
+      this.collection.reload() // reload without assetCode doesn't works
+    },
+  },
+
+  methods: {
+    loadData (filter) {
+      return api.getWithSignature('/v3/history', {
+        page: {
+          order: 'desc',
+          limit: 10,
+        },
+        filter,
+        include: ['effect', 'operation.details'],
+      })
     },
   },
 }
@@ -116,5 +111,9 @@ export default {
 .movements-history__list-wrp {
   overflow-x: auto;
   width: 100%;
+}
+
+.collection__more-button {
+  margin: auto;
 }
 </style>
