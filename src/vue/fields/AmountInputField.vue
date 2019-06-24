@@ -8,12 +8,18 @@
       v-on="listeners"
       autocomplete="off"
       :label="label"
-      :min="min"
-      :max="max"
-      :step="minAmount"
+      :min="minAmount"
+      :max="maxAmount"
+      :step="step"
       :error-message="getFieldErrorMessage('value', {
-        from: minAmount,
-        to: maxIncomingAmount
+        from: {
+          value: minAmount,
+          currency: assetRecord.code,
+        },
+        to: {
+          value: maxAmount,
+          currency: assetRecord.code,
+        },
       })"
       @blur="touchField('value')"
     />
@@ -22,7 +28,7 @@
       v-if="isMaxButtonShown"
       class="amount-input-field__max-btn"
       type="button"
-      @click="$emit(EVENTS.input, maxIncomingAmount)"
+      @click="$emit(EVENTS.input, maxAmount)"
       :disabled="$attrs.disabled || $attrs.readonly"
     >
       <i class="mdi mdi-arrow-up-bold amount-input-field__max-icon" />
@@ -39,12 +45,7 @@ import { MathUtil } from '@/js/utils/math.util'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import config from '@/config'
-import {
-  required,
-  amountRange,
-  maxValueBig,
-  minValueBig,
-} from '@validators'
+import { required, amountRange } from '@validators'
 
 const EVENTS = {
   input: 'input',
@@ -57,12 +58,15 @@ const AMOUNT_VALIDATION_TYPE = {
 
 export default {
   name: 'asset-input-field',
+
   components: {
     InputField,
   },
+
   mixins: [FormValidationMixin],
+
   props: {
-    asset: { type: AssetRecord, required: true },
+    asset: { type: [AssetRecord, String], required: true },
     label: { type: String, default: '' },
     value: { type: [Number, String], default: undefined },
     validationType: { type: String, required: true },
@@ -70,71 +74,80 @@ export default {
     min: { type: [Number, String], default: config.MIN_AMOUNT },
     max: { type: [Number, String], default: config.MAX_AMOUNT },
   },
+
   data: _ => ({
     EVENTS,
   }),
+
   validations () {
-    let validations = {
+    return {
       value: {
         required,
+        amountRange: amountRange(this.minAmount, this.maxAmount)
       },
     }
-    switch (this.validationType) {
-      case AMOUNT_VALIDATION_TYPE.incoming:
-        validations.value.amountRange = amountRange(
-          this.minAmount,
-          MathUtil.subtract(config.MAX_AMOUNT, this.balance)
-        )
-        break
-      case AMOUNT_VALIDATION_TYPE.outgoing:
-        validations.value.amountRange =
-          amountRange(this.minAmount, this.balance)
-        break
-      case AMOUNT_VALIDATION_TYPE.issuance:
-        validations.value.maxForIssuance =
-          maxValueBig(+this.assetAttributes.availableForIssuance)
-        validations.value.minForIssuance =
-          minValueBig(this.minAmount)
-        break
-    }
-    return validations
   },
+
   computed: {
     ...mapGetters([
+      vuexTypes.assetByCode,
       vuexTypes.accountBalanceByCode,
     ]),
-    minAmount () {
-      return this.asset.trailingDigitsCount
-        ? Math.pow(10, (-1) * this.asset.trailingDigitsCount)
+
+    assetRecord () {
+      let result
+
+      if (typeof this.asset === 'string') {
+        result = this.assetByCode(this.asset)
+      } else if (this.asset instanceof AssetRecord) {
+        result = this.asset
+      }
+
+      return result || new AssetRecord()
+    },
+
+    step () {
+      return this.assetRecord.trailingDigitsCount
+        ? Math.pow(10, (-1) * this.assetRecord.trailingDigitsCount)
         : Math.pow(10, (-1) * config.DECIMAL_POINTS)
     },
-    maxIncomingAmount () {
-      let maxAvailableAmount
+
+    minAmount () {
+      return this.min || this.step
+    },
+
+    maxAmount () {
+      let result
 
       switch (this.validationType) {
         case AMOUNT_VALIDATION_TYPE.incoming:
-          maxAvailableAmount = MathUtil.subtract(
+          result = MathUtil.subtract(
             config.MAX_AMOUNT, this.balance
           )
           break
+
         case AMOUNT_VALIDATION_TYPE.outgoing:
-          maxAvailableAmount = this.balance
+          result = this.balance
           break
+
         case AMOUNT_VALIDATION_TYPE.issuance:
-          maxAvailableAmount = this.asset.availableForIssuance
+          result = this.assetRecord.availableForIssuance
           break
+
         default:
-          maxAvailableAmount = config.MAX_AMOUNT
+          result = config.MAX_AMOUNT
           break
       }
 
-      return MathUtil.compare(this.max, maxAvailableAmount) >= 0
-        ? maxAvailableAmount
+      return MathUtil.compare(this.max, result) >= 0
+        ? result
         : this.max
     },
+
     balance () {
-      return this.accountBalanceByCode(this.asset.code).balance || 0
+      return this.accountBalanceByCode(this.assetRecord.code).balance || 0
     },
+
     listeners () {
       return {
         ...this.$listeners,

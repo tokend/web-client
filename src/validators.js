@@ -76,6 +76,7 @@ export const noMoreThanAvailableForIssuance = available => value => {
 export const minValueBig = min => value => {
   return MathUtil.compare(value, min) >= 0
 }
+
 export const maxValueBig = max => value => {
   return MathUtil.compare(value, max) <= 0
 }
