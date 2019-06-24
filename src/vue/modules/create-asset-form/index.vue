@@ -9,8 +9,6 @@
         <information-step-form
           v-show="currentStep === STEPS.information.number"
           :request="request"
-          :kyc-required-asset-type="kycRequiredAssetType"
-          :security-asset-type="securityAssetType"
           @submit="setInformationStepForm($event) || moveToNextStep()"
         />
 
@@ -38,7 +36,6 @@
 </template>
 
 <script>
-import LoadAssetTypesMixin from './mixins/load-asset-types.mixin'
 import ManageAssetRequestMixin from './mixins/manage-asset-request.mixin'
 
 import InformationStepForm from './components/information-step-form'
@@ -76,7 +73,7 @@ export default {
     AdvancedStepForm,
     SkeletonLoaderStepForm,
   },
-  mixins: [LoadAssetTypesMixin, ManageAssetRequestMixin],
+  mixins: [ManageAssetRequestMixin],
   props: {
     requestId: {
       type: String,
@@ -108,9 +105,6 @@ export default {
   methods: {
     async init () {
       try {
-        await this.loadKycRequiredAssetType()
-        await this.loadSecurityAssetType()
-
         await this.tryLoadRequest()
 
         this.isLoaded = true

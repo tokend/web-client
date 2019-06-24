@@ -36,28 +36,6 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <select-field
-          v-model="form.assetType"
-          name="create-asset-type"
-          :label="'create-asset-form.asset-type-lbl' | globalize"
-          @blur="touchField('form.assetType')"
-          :error-message="getFieldErrorMessage(
-            'form.assetType',
-          )"
-        >
-          <option
-            v-for="assetType in assetTypes"
-            :key="assetType.value"
-            :value="assetType.value"
-          >
-            {{ assetType.labelTranslationId | globalize }}
-          </option>
-        </select-field>
-      </div>
-    </div>
-
-    <div class="app__form-row">
-      <div class="app__form-field">
         <tick-field
           v-model="form.policies"
           :cb-value="ASSET_POLICIES.transferable"
@@ -152,8 +130,6 @@ export default {
   mixins: [FormMixin],
   props: {
     request: { type: CreateAssetRequest, default: null },
-    kycRequiredAssetType: { type: Number, required: true },
-    securityAssetType: { type: Number, required: true },
   },
 
   data: _ => ({
@@ -162,7 +138,6 @@ export default {
       code: '',
       logo: null,
       policies: 0,
-      assetType: '',
     },
     MIN_AMOUNT: config.MIN_AMOUNT,
     ASSET_POLICIES,
@@ -181,30 +156,8 @@ export default {
           required,
           assetCode,
         },
-        assetType: {
-          required,
-        },
       },
     }
-  },
-
-  computed: {
-    assetTypes () {
-      return [
-        {
-          labelTranslationId: 'create-asset-form.verification-not-required-lbl',
-          value: 0,
-        },
-        {
-          labelTranslationId: 'create-asset-form.verification-required-lbl',
-          value: this.kycRequiredAssetType,
-        },
-        {
-          labelTranslationId: 'create-asset-form.security-asset-lbl',
-          value: this.securityAssetType,
-        },
-      ]
-    },
   },
 
   created () {
@@ -218,7 +171,6 @@ export default {
       this.form = {
         name: this.request.assetName,
         code: this.request.assetCode,
-        assetType: String(this.request.assetType),
         logo: this.request.logoKey
           ? new DocumentContainer(this.request.logo)
           : null,

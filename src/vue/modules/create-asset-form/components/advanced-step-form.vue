@@ -200,10 +200,52 @@
             rel="noopener"
           >
             {{ 'create-asset-form.pre-issuance-guide-link' | globalize }}
-            <i
-              class="mdi mdi-launch
-            advanced-step-form__pre-issuance-guide-link-launch-icon" />
+            <!-- eslint-disable-next-line max-len -->
+            <i class="mdi mdi-launch advanced-step-form__pre-issuance-guide-link-launch-icon" />
           </router-link>
+        </div>
+      </div>
+    </template>
+
+    <h3 class="advanced-step-form__subheading app__form-subheading">
+      {{ 'create-asset-form.permissions-subheading' | globalize }}
+    </h3>
+
+    <div class="app__form-row">
+      <div class="app__from-field">
+        <tick-field
+          class="advanced-step-form__stellar-integration-tick-field"
+          v-model="form.isUsageRestricted"
+          :disabled="isDisabled"
+          :cb-value="true"
+        >
+          {{ 'create-asset-form.restrict-who-can-use' | globalize }}
+        </tick-field>
+      </div>
+    </div>
+
+    <template v-if="form.isUsageRestricted">
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <select-field
+            v-model="form.assetType"
+            name="create-asset-type"
+            :label="'create-asset-form.asset-type-lbl' | globalize"
+            @blur="touchField('form.assetType')"
+            :error-message="getFieldErrorMessage(
+              'form.assetType',
+            )"
+          >
+            <option :value="kvAssetTypeDefault">
+              {{ translateAssetType(kvAssetTypeDefault) }}
+            </option>
+            <option :value="kvAssetTypeKycRequired">
+              {{ translateAssetType(kvAssetTypeKycRequired) }}
+            </option>
+            <option :value="kvAssetTypeSecurity">
+              {{ translateAssetType(kvAssetTypeSecurity) }}
+            </option>
+          </select-field>
         </div>
       </div>
     </template>
@@ -253,6 +295,8 @@
 </template>
 
 <script>
+// TODO: split to components
+
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import VueMarkdown from 'vue-markdown'
@@ -270,9 +314,10 @@ import {
   minLength,
   maxLength,
   alphaNum,
-  required,
 } from '@validators'
 import { vueRoutes } from '@/vue-router/routes'
+import { mapGetters } from 'vuex'
+import { vuexTypes, store } from '@/vuex'
 
 const EVENTS = {
   submit: 'submit',
@@ -322,6 +367,8 @@ export default {
       maxIssuanceAmount: '',
       isPreIssuanceEnabled: false,
       isStellarIntegrationEnabled: false,
+      isUsageRestricted: false,
+      assetType: String(store.getters[vuexTypes.kvAssetTypeDefault]),
       preIssuanceAssetSigner: '',
       initialPreissuedAmount: '',
       terms: null,
@@ -345,7 +392,9 @@ export default {
     let validations = {
       form: {
         maxIssuanceAmount: {
-          required,
+          required: requiredIf(function () {
+            return this.form.isMaxAmountRestricted
+          }),
           amountRange: amountRange(this.MIN_AMOUNT, this.MAX_AMOUNT),
         },
         preIssuanceAssetSigner: {
@@ -361,6 +410,11 @@ export default {
             this.MIN_AMOUNT,
             this.maxIssuanceAmount,
           ),
+        },
+        assetType: {
+          required: requiredIf(function () {
+            return this.form.isUsageRestricted
+          }),
         },
         stellar: {
           assetType: {
@@ -396,6 +450,14 @@ export default {
     return validations
   },
 
+  computed: {
+    ...mapGetters({
+      kvAssetTypeDefault: vuexTypes.kvAssetTypeDefault,
+      kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
+      kvAssetTypeSecurity: vuexTypes.kvAssetTypeSecurity,
+    }),
+  },
+
   watch: {
     'form.stellar.assetType' (val) {
       if (val === STELLAR_TYPES.native) {
@@ -412,13 +474,16 @@ export default {
 
   methods: {
     populateForm () {
-      const isMaxAmountRestricted =
+      const isMaxAmountRestricted = this.request.maxIssuanceAmount &&
         this.request.maxIssuanceAmount !== this.MAX_AMOUNT
 
       const isPreIssuanceEnabled =
         this.request.preIssuanceAssetSigner !== config.NULL_ASSET_SIGNER
 
       const isStellarIntegrationEnabled = Boolean(this.request.stellarAssetCode)
+
+      const isUsageRestricted = this.request.assetType &&
+        this.request.assetType !== this.kvAssetTypeDefault
 
       this.form = {
         isMaxAmountRestricted,
@@ -432,6 +497,8 @@ export default {
         initialPreissuedAmount: isPreIssuanceEnabled
           ? this.request.initialPreissuedAmount
           : '',
+        isUsageRestricted,
+        assetType: String(this.request.assetType),
         terms: this.request.termsKey
           ? new DocumentContainer(this.request.terms)
           : null,
@@ -463,6 +530,7 @@ export default {
     emitEnabledState () {
       this.$emit(EVENTS.updateIsDisabled, false)
     },
+
     getAssetCodeMaxLength () {
       if (this.form.stellar.assetType === STELLAR_TYPES.creditAlphanum4) {
         return CREDIT_ALPHANUM4_MAX_LENGTH
@@ -470,6 +538,16 @@ export default {
       } else if (this.form.stellar.assetType === STELLAR_TYPES.creditAlphanum12) {
         return CREDIT_ALPHANUM12_MAX_LENGTH
       }
+    },
+
+    translateAssetType (value) {
+      const translationId = {
+        [+this.kvAssetTypeDefault]: 'create-asset-form.verification-not-required-lbl',
+        [+this.kvAssetTypeKycRequired]: 'create-asset-form.verification-required-lbl',
+        [+this.kvAssetTypeSecurity]: 'create-asset-form.security-asset-lbl',
+      }[+value]
+
+      return this.$options.filters.globalize(translationId)
     },
   },
 }

@@ -1128,7 +1128,7 @@
       "name-lbl": "Asset name",
       "code-lbl": "Asset code",
       "max-issuance-amount-lbl": "Max issuance amount",
-      "asset-type-lbl": "Type",
+      "asset-type-lbl": "Permission type",
       "logo-lbl": "Asset icon",
       "logo-note": "JPG or PNG, no less than 120x120 px",
       "transferable-lbl": "Transferable",
@@ -1158,7 +1158,9 @@
       "stellar-asset-type-lbl": "Type",
       "stellar-asset-code-lbl": "Asset code",
       "integration-with-stellar-check": "I want to integrate with Stellar network",
-      "terms-subheading": "Terms"
+      "restrict-who-can-use": "I want to restrict who can use this asset",
+      "terms-subheading": "Terms",
+      "permissions-subheading": "Permissions"
     },
     "update-asset-form": {
       "loading-msg": "Loading…",
