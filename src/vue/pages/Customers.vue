@@ -34,10 +34,10 @@
       <template slot="heading">
         {{ 'users-page.issue-drawer-heading' | globalize }}
       </template>
-      TODO
-      <!-- <document-upload-form-module
+
+      <mass-issuance-form
         @submit="(isDrawerShown = false) || (isDocumentUploaded = true)"
-      /> -->
+      />
     </drawer>
 
     <router-view />
@@ -48,12 +48,15 @@
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
 
+import MassIssuanceForm from '@/vue/forms/MassIssuanceForm'
+
 export default {
   name: 'users-page',
 
   components: {
     TopBar,
     Drawer,
+    MassIssuanceForm,
   },
 
   data: _ => ({

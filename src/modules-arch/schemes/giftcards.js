@@ -2,7 +2,7 @@ import { vueRoutes } from '@/vue-router/routes'
 
 import { MovementsHistoryModule } from '@modules/movements-history/module'
 import { MovementsHistoryPageModule } from '@/vue/pages/movements-page-module'
-import { UsersPageModule } from '@/vue/pages/users-page-module'
+import { CustomersPageModule } from '@/vue/pages/customers-page-module'
 import { AssetsPageModule } from '@/vue/pages/assets-page-module'
 import { CreateAssetFormSimplifiedModule } from '@modules/create-asset-form-simplified/module'
 import { SalesPageModule } from '@/vue/pages/sales-page-module'
@@ -40,14 +40,14 @@ export default {
     return import('@/modules-arch/schemes/giftcards-en.json')
   },
   pages: [
-    new UsersPageModule(
+    new CustomersPageModule(
       {
         routerEntry: {
-          path: '/users',
-          name: vueRoutes.users.name,
-          meta: { pageNameTranslationId: 'pages-names.users' },
+          path: '/customers',
+          name: vueRoutes.customers.name,
+          meta: { pageNameTranslationId: 'pages-names.customers' },
         },
-        menuButtonTranslationId: 'pages-names.users',
+        menuButtonTranslationId: 'pages-names.customers',
         menuButtonMdiName: 'account',
         submodules: [
         ],
