@@ -33,7 +33,7 @@
 
 <script>
 import MovementsTable from './components/movements-table'
-import Movement from './wrappers/movement'
+import { Movement } from './wrappers/movement'
 
 import { vueRoutes } from '@/vue-router/routes'
 import { Collection } from '@/vue/common/collection.js'
@@ -61,18 +61,10 @@ export default {
 
   data () {
     return ({
-      collection: new Collection(_ => {
-        const balance = this.accountBalanceByCode(this.assetCode)
-        if (this.isSharesPage) {
-          return this.loadData({ asset: this.assetCode })
-        } else {
-          return this.loadData({
-            account: this.accountId,
-            balance: balance.id,
-          })
-        }
-      },
-      array => array.map(m => new Movement(m))),
+      collection: new Collection(
+        _ => this.load(),
+        array => array.map(item => new Movement(item))
+      ),
     })
   },
 
@@ -97,13 +89,16 @@ export default {
   },
 
   methods: {
-    loadData (filter) {
+    load () {
+      const balance = this.accountBalanceByCode(this.assetCode)
+      const filter = { account: this.accountId, balance: balance.id, }
+      const sharePageFilter = { asset: this.assetCode }
       return api.getWithSignature('/v3/history', {
         page: {
           order: 'desc',
           limit: 10,
         },
-        filter,
+        filter: this.isSharesPage ? sharePageFilter : filter,
         include: ['effect', 'operation.details'],
       })
     },

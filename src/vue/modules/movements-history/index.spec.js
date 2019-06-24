@@ -2,8 +2,8 @@ import MovementsHistoryModule from './index'
 
 import Vuex from 'vuex'
 import { createLocalVue, shallowMount } from '@vue/test-utils'
-
-import { ErrorHandler } from '@/js/helpers/error-handler'
+import { store } from '@/vuex/index'
+import { api } from '@/api'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
@@ -11,6 +11,10 @@ localVue.use(Vuex)
 describe('Movements history module', () => {
   const props = {
     assetCode: 'BTC',
+  }
+  const response = {
+    data: [],
+    fetchNext: () => {},
   }
 
   describe('component', () => {
@@ -22,6 +26,7 @@ describe('Movements history module', () => {
       }
 
       wrapper = shallowMount(MovementsHistoryModule, {
+        store,
         localVue,
         propsData: props,
         mocks: {
@@ -29,61 +34,21 @@ describe('Movements history module', () => {
         },
       })
     })
+    after(() => api.getWithSignature.restore())
 
     describe('method', () => {
-      describe('loadMovementsFirstPage', () => {
-        it('calls loadMovements method', async () => {
-          sinon.stub(wrapper.vm, 'loadMovements')
-            .withArgs(props.assetCode)
-            .resolves()
+      describe('load', () => {
+        it('calls api.getWithSignature method', async () => {
+          const api = {
+            getWithSignature: () => {}
+          }
+          sinon.stub(api, 'getWithSignature').resolves(response)
 
-          await wrapper.vm.loadMovementsFirstPage()
+          await wrapper.vm.load()
 
-          expect(wrapper.vm.loadMovements).to.have.been.calledOnce
-
-          wrapper.vm.loadMovements.restore()
-        })
-
-        it('sets collection.isLoaded property to true if loading was succeded',
-          async () => {
-            sinon.stub(wrapper.vm, 'isSharesPage').returns(false)
-            sinon.stub(wrapper.vm, 'loadMovements')
-              .withArgs(props.assetCode)
-              .resolves()
-
-            await wrapper.vm.loadMovementsFirstPage()
-
-            expect(wrapper.vm.collection.isLoaded).to.be.true
-
-            wrapper.vm.loadMovements.restore()
-          })
-
-        it('calls ErrorHandler.processWithoutFeedback', async () => {
-          sinon.stub(wrapper.vm, 'loadMovements')
-            .throws()
-          sinon.stub(ErrorHandler, 'processWithoutFeedback')
-
-          await wrapper.vm.loadMovementsFirstPage()
-
-          expect(ErrorHandler.processWithoutFeedback)
-            .to.have.been.calledOnce
-          expect(wrapper.vm.collection.isFailed).to.be.true
-
-          wrapper.vm.loadMovements.restore()
-          ErrorHandler.processWithoutFeedback.restore()
-        })
-
-        it('sets collection.isFailed to true', async () => {
-          sinon.stub(wrapper.vm, 'loadMovements')
-            .throws()
-          sinon.stub(ErrorHandler, 'processWithoutFeedback')
-
-          await wrapper.vm.loadMovementsFirstPage()
-
-          expect(wrapper.vm.collection.isFailed).to.be.true
-
-          wrapper.vm.loadMovements.restore()
-          ErrorHandler.processWithoutFeedback.restore()
+          expect(api.getWithSignature).to.have.been.calledOnce
+          // api.getWithSignature.restore()
+          // sinon.restore()
         })
       })
     })

@@ -55,7 +55,7 @@ const EFFECT_TYPES = Object.freeze({
  *  effect - the entity that defines the exact action happened with balance
  *  operation - the cause of balance movement
  */
-export default class Movement {
+export class Movement {
   constructor (record) {
     this.id = record.id
     this.balanceId = record.balance.id
