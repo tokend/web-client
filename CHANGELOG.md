@@ -59,6 +59,35 @@ for further information about branching and tagging conventions.
 #### Changed
 - Accept investments in `isBaseAsset` assets for create opportunity form
 
+## [1.8.0] - 2019-06-22
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.8.0
+
+## [1.8.0-rc.3] - 2019-06-21
+#### Fixed
+- Resolved an error of inexistent CODE_MAX_LENGTH thrown on open of asset
+  creation form
+- Resolved an issue of wrongly displayed asset type in asset attributes viewer
+  on "Assets" page
+- Stopped overriding of user input when entered value was lesser than "min"
+  attribute of the field
+- Resolved an issue when "0" was displayed instead of current balance value in
+  withdrawal form
+
+## [1.8.0-rc.2] - 2019-06-17
+#### Changed
+- Disable withdraw for unverified users
+
+#### Fixed
+- Display of "add to balance" button in asset attributes
+- Fixed timeout of status message self-close
+- Bug when "Balance is invalid" error appeared on withdraw submitting
+
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.8.0-rc.1
+
 ## [1.8.0-rc.1] - 2019-06-07
 #### Changed
 - Some design improvements to fields and rendered fees:
@@ -81,6 +110,15 @@ for further information about branching and tagging conventions.
 
 #### Fixed
 - Restored images line endings
+
+### Experimental features changes
+#### Added
+- Balances panel to the invoice form (Loyalty)
+
+#### Changed
+- Invoice form width to full screen
+- Now displaying customer's & merchant's balances on the invoice form
+  confirmation
 
 ## [1.8.0-rc.0] - 2019-06-06
 #### Fixed
@@ -763,7 +801,10 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.8.0-rc.1...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.8.0...HEAD
+[1.8.0]: https://github.com/tokend/web-client/compare/1.8.0-rc.3...1.8.0
+[1.8.0-rc.3]: https://github.com/tokend/web-client/compare/1.8.0-rc.2...1.8.0-rc.3
+[1.8.0-rc.2]: https://github.com/tokend/web-client/compare/1.8.0-rc.1...1.8.0-rc.2
 [1.8.0-rc.1]: https://github.com/tokend/web-client/compare/1.8.0-rc.0...1.8.0-rc.1
 [1.8.0-rc.0]: https://github.com/tokend/web-client/compare/1.8.0-x.3...1.8.0-rc.0
 [1.8.0-x.3]: https://github.com/tokend/web-client/compare/1.8.0-x.2...1.8.0-x.3

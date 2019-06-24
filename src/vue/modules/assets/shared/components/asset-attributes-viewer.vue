@@ -100,11 +100,11 @@
               {{ 'assets.asset-type' | globalize }}
             </td>
             <td>
-              <template v-if="asset.type === kycRequiredAssetType">
+              <template v-if="asset.assetType === kycRequiredAssetType">
                 {{ 'assets.verification-required-title' | globalize }}
               </template>
 
-              <template v-else-if="asset.type === securityAssetType">
+              <template v-else-if="asset.assetType === securityAssetType">
                 {{ 'assets.security-asset-title' | globalize }}
               </template>
 
