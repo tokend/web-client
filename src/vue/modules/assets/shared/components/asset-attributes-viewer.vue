@@ -79,6 +79,34 @@
           </tr>
           <tr>
             <td>
+              {{ 'assets.can-be-base-in-atomic-swap-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.isBaseInAtomicSwap">
+                {{ 'assets.present-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'assets.absent-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'assets.can-be-quote-in-atomic-swap-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.isQuoteInAtomicSwap">
+                {{ 'assets.present-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'assets.absent-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
               {{ 'assets.deposit-method-title' | globalize }}
             </td>
             <td>

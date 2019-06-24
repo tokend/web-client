@@ -6,19 +6,17 @@
           <span>{{ 'atomic-swaps.explore-atomic-swaps' | globalize }}</span>
         </router-link>
       </template>
-      <template slot="extra">
-        <template
-          slot="extra"
-          v-if="getModule().canRenderSubmodule(CreateAtomicSwapFormModule)"
+      <template
+        slot="extra"
+        v-if="getModule().canRenderSubmodule(CreateAtomicSwapFormModule)"
+      >
+        <button
+          v-ripple
+          class="app__button-raised"
+          @click="isAtomicSwapsCreateDrawerShown = true"
         >
-          <button
-            v-ripple
-            class="app__button-raised"
-            @click="isAtomicSwapsCreateDrawerShown = true"
-          >
-            {{ 'atomic-swaps.create-atomic-swap-bth' | globalize }}
-          </button>
-        </template>
+          {{ 'atomic-swaps.create-atomic-swap-bth' | globalize }}
+        </button>
       </template>
     </top-bar>
 
@@ -32,6 +30,7 @@
 
       <submodule-importer
         :submodule="getModule().getSubmodule(CreateAtomicSwapFormModule)"
+        @created-atomic-swap="isAtomicSwapsCreateDrawerShown = false"
       />
     </drawer>
 
