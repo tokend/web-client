@@ -73,19 +73,11 @@ export const noMoreThanAvailableForIssuance = available => value => {
   return MathUtil.compare(available, value) >= 0
 }
 
-export const moreThenMin = minValue => value => {
-  if (MathUtil.compare(minValue, value) === -1) {
-    return false
-  } else {
-    return true
-  }
+export const minValueBig = min => value => {
+  return MathUtil.compare(value, min) >= 0
 }
-export const lessThenMax = maxValue => value => {
-  if (MathUtil.compare(value, maxValue) === 1) {
-    return false
-  } else {
-    return true
-  }
+export const maxValueBig = max => value => {
+  return MathUtil.compare(value, max) <= 0
 }
 
 export const maxDecimalDigitsCount = maxDecimalDigitsCount => value => {

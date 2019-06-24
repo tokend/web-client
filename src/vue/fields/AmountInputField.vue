@@ -42,8 +42,8 @@ import config from '@/config'
 import {
   required,
   amountRange,
-  lessThenMax,
-  moreThenMin,
+  maxValueBig,
+  minValueBig,
 } from '@validators'
 
 const EVENTS = {
@@ -92,9 +92,9 @@ export default {
         break
       case AMOUNT_VALIDATION_TYPE.issuance:
         validations.value.maxForIssuance =
-          lessThenMax(+this.asset.availableForIssuance)
+          maxValueBig(+this.assetAttributes.availableForIssuance)
         validations.value.minForIssuance =
-          moreThenMin(this.minAmount)
+          minValueBig(this.minAmount)
         break
     }
     return validations
