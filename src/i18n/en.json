@@ -692,7 +692,8 @@
       "documents": "Documents",
       "register-of-shares": "Register of shares",
       "polls": "Polls",
-      "atomic-swaps": "Atomic swaps"
+      "atomic-swaps": "Atomic swaps",
+      "users": "Users"
     },
     "limits": {
       "explore-limits": "Explore limits",
@@ -2300,6 +2301,12 @@
     },
     "atomic-swaps-explore": {
       "no-list-title":"Atomic swaps will be coming soon"
+    },
+    "users-page": {
+      "invite-btn": "Invite",
+      "issue-btn": "Issue",
+      "invite-drawer-heading": "Invite new users",
+      "issue-drawer-heading": "Mass issue"
     }
   }
 }

@@ -2,7 +2,7 @@ import { vueRoutes } from '@/vue-router/routes'
 
 import { MovementsHistoryModule } from '@modules/movements-history/module'
 import { MovementsHistoryPageModule } from '@/vue/pages/movements-page-module'
-import { DashboardPageModule } from '@/vue/pages/dashboard-page-module'
+import { UsersPageModule } from '@/vue/pages/users-page-module'
 import { AssetsPageModule } from '@/vue/pages/assets-page-module'
 import { CreateAssetFormSimplifiedModule } from '@modules/create-asset-form-simplified/module'
 import { SalesPageModule } from '@/vue/pages/sales-page-module'
@@ -12,10 +12,8 @@ import { VerificationCorporatePageModule } from '@/vue/pages/verification-corpor
 import { VerificationPageModule } from '@/vue/pages/verification-page-module'
 import { SecurityPageModule } from '@/vue/pages/security-page-module'
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
-import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { CreateSaleFormModule } from '@modules/create-sale-form/module'
-import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
 import { SalesListPageModule } from '@/vue/pages/sales/investable-sales-page-module'
 import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
 import { SaleCampaignViewerPageModule } from '@/vue/pages/sale-details/sale-campaign-viewer-page-module'
@@ -42,22 +40,16 @@ export default {
     return import('@/modules-arch/schemes/giftcards-en.json')
   },
   pages: [
-    new DashboardPageModule(
+    new UsersPageModule(
       {
         routerEntry: {
-          path: '/dashboard',
-          name: vueRoutes.dashboard.name,
-          meta: { pageNameTranslationId: 'pages-names.dashboard' },
+          path: '/users',
+          name: vueRoutes.users.name,
+          meta: { pageNameTranslationId: 'pages-names.users' },
         },
-        menuButtonTranslationId: 'pages-names.dashboard',
-        menuButtonMdiName: 'view-dashboard',
+        menuButtonTranslationId: 'pages-names.users',
+        menuButtonMdiName: 'account',
         submodules: [
-          new MovementsHistoryModule(),
-          new IssuanceFormModule({
-            isCorporateOnly: true,
-          }),
-          new TransferDrawerPseudoModule(),
-          new DashboardChartPseudoModule(),
         ],
       },
     ),
