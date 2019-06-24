@@ -294,7 +294,11 @@ export default {
 }
 
 .advanced-step-form__subheading {
-  margin: 2.4rem 0 0;
+  margin: 0;
+
+  &:not(:first-of-type) {
+    margin-top: 3.2rem;
+  }
 
   & + .app__form-row {
     margin-top: 1.2rem;

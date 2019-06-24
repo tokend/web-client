@@ -526,7 +526,6 @@ export default {
 
   & + .app__form-row {
     margin-top: 1.2rem;
-    margin-bottom: 3.2rem;
   }
 }
 </style>
