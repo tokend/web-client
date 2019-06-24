@@ -30,6 +30,7 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 import { required } from '@validators'
 import { errors } from '@/js/errors'
+import { vueRoutes } from '@/vue-router/routes'
 
 import { factorsManager } from '@/api'
 
@@ -52,8 +53,6 @@ export default {
       code: { required },
     },
   },
-  computed: {
-  },
   methods: {
     async submit () {
       if (!this.isFormValid()) {
@@ -63,6 +62,7 @@ export default {
       try {
         await factorsManager
           .verifyTotpFactorAndRetry(this.error, this.form.code)
+        this.$router.push(vueRoutes.login)
       } catch (err) {
         alert('aaaa')
         console.error(err)
