@@ -40,7 +40,7 @@ describe('Movements history module', () => {
       describe('load', () => {
         it('calls api.getWithSignature method', async () => {
           const api = {
-            getWithSignature: () => {}
+            getWithSignature: () => {},
           }
           sinon.stub(api, 'getWithSignature').resolves(response)
 
