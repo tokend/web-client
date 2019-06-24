@@ -203,8 +203,8 @@ export default {
               required,
               selectedSameAssetCode: (asset, quoteAsset) => {
                 /* eslint-disable max-len */
-                const selectedAssetsCode = this.getSelectedAssetsCode(asset.code)
-                return selectedSameAssetCode(asset.code, quoteAsset.number, selectedAssetsCode)
+                const selectedAssets = this.getSelectedAssetsByAssetCode(asset.code)
+                return selectedSameAssetCode(quoteAsset.number, selectedAssets)
                 /* eslint-enable max-len */
               },
             },
@@ -233,7 +233,7 @@ export default {
     this.form.quoteAssets[0].asset = this.quoteAtomicSwapBalancesAssets[0] || {}
   },
   methods: {
-    getSelectedAssetsCode (assetCode) {
+    getSelectedAssetsByAssetCode (assetCode) {
       const selectedAssetsCode = []
       this.form.quoteAssets.forEach(quoteAsset => {
         if (quoteAsset.asset.code === assetCode) {

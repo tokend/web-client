@@ -158,13 +158,13 @@ export const assetCode = value => {
   return _isString(value) && /^[a-z\d]{1,16}$/i.test(value)
 }
 
-export const selectedSameAssetCode = (asset, assetNumber, assets) => {
+export const selectedSameAssetCode = (assetNumber, selectedAssetsByCode) => {
   const FIRST_ASSET_NUMBER = 0
   const ONE_ASSET_CODE = 1
 
-  const countSameAssetCode = assets.length
+  const countSameAssetCode = selectedAssetsByCode.length
   if (countSameAssetCode > ONE_ASSET_CODE && assetNumber > FIRST_ASSET_NUMBER) {
-    return !assets.includes(asset)
+    return false
   } else {
     return true
   }
