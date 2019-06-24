@@ -300,7 +300,7 @@ export default {
       const addresses = {}
 
       this.form.quoteAssets.forEach(quoteAsset => {
-        addresses['qasa'] = quoteAsset.address
+        addresses[quoteAsset.asset.code] = quoteAsset.address
         quoteAssets.push({
           price: quoteAsset.price,
           asset: quoteAsset.asset.code,
