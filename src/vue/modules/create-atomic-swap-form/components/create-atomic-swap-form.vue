@@ -67,12 +67,14 @@
 
         <div class="app__form-row">
           <div class="app__form-field">
+            <!-- eslint-disable max-len -->
             <select-field
               :value="form.quoteAssets[index].asset.code"
               @input="setQuoteAssetByCode($event, index)"
               name="create-atomic-swap-asset"
               :label="'create-atomic-swap-form.asset-lbl' | globalize"
               @blur="touchField(`form.quoteAssets[${index}].asset`)"
+              :error-message="getFieldErrorMessage(`form.quoteAssets[${index}].asset`)"
               :disabled="formMixin.isDisabled"
             >
               <option
@@ -83,6 +85,7 @@
                 {{ asset.nameAndCode }}
               </option>
             </select-field>
+            <!-- eslint-enable max-len -->
           </div>
         </div>
 
@@ -123,7 +126,7 @@
           <button
             class="create-atomic-swap-form__add-quote-asset-btn"
             type="button"
-            @click="addQuoteAsset()"
+            @click="addQuoteAsset(index)"
             :disabled="formMixin.isDisabled"
           >
             {{ 'create-atomic-swap-form.add-quote-asset-btn' | globalize }}
@@ -156,6 +159,8 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 import {
   required,
+  address,
+  selectedSameAssetCode,
 } from '@validators'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -175,7 +180,7 @@ export default {
     form: {
       asset: {},
       amount: '',
-      quoteAssets: [{ price: '', asset: {}, address: '' }],
+      quoteAssets: [{ number: 0, price: '', asset: {}, address: '' }],
     },
     isLoaded: false,
     isLoadFailed: false,
@@ -194,9 +199,20 @@ export default {
             price: {
               required,
             },
-            asset: { required },
+            asset: {
+              required,
+              selectedSameAssetCode: (asset, quoteAsset) => {
+                /* eslint-disable max-len */
+                const selectedAssetsCode = this.getSelectedAssetsCode(asset.code)
+                return selectedSameAssetCode(asset.code, quoteAsset.number, selectedAssetsCode)
+                /* eslint-enable max-len */
+              },
+            },
             address: {
               required,
+              address: (value, quoteAsset) => {
+                return address(quoteAsset.asset.code)(value)
+              },
             },
           },
         },
@@ -217,6 +233,16 @@ export default {
     this.form.quoteAssets[0].asset = this.quoteAtomicSwapBalancesAssets[0] || {}
   },
   methods: {
+    getSelectedAssetsCode (assetCode) {
+      const selectedAssetsCode = []
+      this.form.quoteAssets.forEach(quoteAsset => {
+        if (quoteAsset.asset.code === assetCode) {
+          selectedAssetsCode.push(quoteAsset.asset.code)
+        }
+      })
+      return selectedAssetsCode
+    },
+
     setAssetByCode (code) {
       this.form.asset = this.baseAtomicSwapBalancesAssets
         .find(item => item.code === code)
@@ -242,8 +268,9 @@ export default {
       this.hideConfirmation()
     },
 
-    addQuoteAsset () {
+    addQuoteAsset (index) {
       this.form.quoteAssets.push({
+        number: index + 1,
         price: '',
         address: '',
         asset: this.quoteAtomicSwapBalancesAssets[0],
@@ -252,6 +279,9 @@ export default {
 
     deleteQuoteAsset (index) {
       this.form.quoteAssets.splice(index, 1)
+      this.form.quoteAssets.forEach((asset, index) => {
+        asset.number = index
+      })
     },
 
     canAddQuoteAsset (index) {
@@ -270,7 +300,7 @@ export default {
       const addresses = {}
 
       this.form.quoteAssets.forEach(quoteAsset => {
-        addresses[quoteAsset.asset.code] = quoteAsset.address
+        addresses['qasa'] = quoteAsset.address
         quoteAssets.push({
           price: quoteAsset.price,
           asset: quoteAsset.asset.code,

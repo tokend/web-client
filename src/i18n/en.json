@@ -121,7 +121,8 @@
       "field-error_minForIssuance": "Min amount for issuance: {{from, money}}",
       "field-error_assetCode": "Asset code must contain maximum 16 symbols and consist of alphanumeric values (A-Z, a-z, 0-9)",
       "field-error_alphaNum": "Accepts only alphanumerics",
-      "field-error_minLength": "This field must contain minimum {{minLength}} symbols"
+      "field-error_minLength": "This field must contain minimum {{minLength}} symbols",
+      "field-error_selectedSameAssetCode": "Not allowed duplicated quote asset codes"
     },
     "errors": {
       "default": "Something bad happened. Please try again later",
