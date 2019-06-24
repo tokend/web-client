@@ -175,7 +175,7 @@ export default {
   computed: {
     ...mapGetters({
       balancesAssets: vuexTypes.balancesAssets,
-      ownedAssets: vuexTypes.ownedAssets,
+      ownedAssets: vuexTypes.ownedBalancesAssets,
       isAccountUnverified: vuexTypes.isAccountUnverified,
     }),
 

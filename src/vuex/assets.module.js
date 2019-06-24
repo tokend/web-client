@@ -78,7 +78,7 @@ export const getters = {
       .filter(item => {
         return item.isStatsQuoteAsset
       })[0] || {},
-  [vuexTypes.ownedAssets]: (a, getters, b, rootGetters) =>
+  [vuexTypes.ownedBalancesAssets]: (a, getters, b, rootGetters) =>
     rootGetters[vuexTypes.accountBalances]
       .map(item => item.asset)
       .filter(item => item.owner === rootGetters[vuexTypes.accountId]),
