@@ -4,7 +4,7 @@ import { MovementsHistoryModule } from '@modules/movements-history/module'
 import { MovementsHistoryPageModule } from '@/vue/pages/movements-page-module'
 import { DashboardPageModule } from '@/vue/pages/dashboard-page-module'
 import { AssetsPageModule } from '@/vue/pages/assets-page-module'
-import { CreateAssetFormModule } from '@modules/create-asset-form/module'
+import { CreateAssetFormSimplifiedModule } from '@modules/create-asset-form-simplified/module'
 import { SalesPageModule } from '@/vue/pages/sales-page-module'
 import { SaleDetailsPageModule } from '@/vue/pages/sale-details-page-module'
 import { SettingsPageModule } from '@/vue/pages/settings-page-module'
@@ -127,7 +127,7 @@ export default {
             ],
             isCorporateOnly: true,
           }),
-          new CreateAssetFormModule({
+          new CreateAssetFormSimplifiedModule({
             isCorporateOnly: true,
           }),
         ],
