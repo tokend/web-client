@@ -1,12 +1,9 @@
 <template>
   <div class="kyc-recovery-management">
-    <button
-      v-ripple
-      class="app__button-raised asd"
-      @click="submit"
-    >
-      {{ 'lorem ipsum' | globalize }}
-    </button>
+    <kyc-recovery-general-form
+      @submit="submit"
+      :is-disabled="isSubmitting"
+    />
   </div>
 </template>
 
@@ -19,13 +16,17 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 
+import KycRecoveryGeneralForm from './KycRecovery/KycRecovery.GeneralForm'
+
 export default {
   name: 'kyc-recovery-management',
   components: {
+    KycRecoveryGeneralForm,
   },
   data: _ => ({
     isLoaded: false,
     isLoadingFailed: false,
+    isSubmitting: false,
   }),
   computed: {
     ...mapGetters([
@@ -33,6 +34,7 @@ export default {
       vuexTypes.kvDefaultSignerRoleId,
       vuexTypes.walletAccountId,
       vuexTypes.kycRecoveryState,
+      vuexTypes.kycRecoveryRequestId,
       vuexTypes.isAccountGeneral,
       vuexTypes.isAccountCorporate,
       vuexTypes.isAccountUnverified,
@@ -54,16 +56,19 @@ export default {
       loadKycRecovery: vuexTypes.LOAD_KYC_RECOVERY,
     }),
 
-    async submit () {
+    async submit (requestData) {
+      this.isSubmitting = true
       try {
-        await this.createRequest()
+        await this.createRequest(requestData)
         Bus.success('Request sent successfully')
       } catch (error) {
+        this.isSubmitting = false
         ErrorHandler.process(error)
       }
+      this.isSubmitting = false
     },
 
-    async createRequest () {
+    async createRequest (requestData) {
       const isExistingRequest =
         this.kycRecoveryState === REQUEST_STATES_STR.rejected ||
         this.kycRecoveryState === REQUEST_STATES_STR.pending
@@ -87,7 +92,7 @@ export default {
           },
         ],
         creatorDetails: {
-          foo: 'bar',
+          verification_data: JSON.stringify(requestData),
         },
       }
 
