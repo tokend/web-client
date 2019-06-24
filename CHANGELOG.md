@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
-## [Unreleased]
+## [1.9.0-rc.0] - 2019-06-24
 #### Added
 - New "My assets" page
 - New "Register of shares" page
@@ -801,7 +801,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.8.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.9.0-rc.0...HEAD
+[1.9.0-rc.0]: https://github.com/tokend/web-client/compare/1.8.0...1.9.0-rc.0
 [1.8.0]: https://github.com/tokend/web-client/compare/1.8.0-rc.3...1.8.0
 [1.8.0-rc.3]: https://github.com/tokend/web-client/compare/1.8.0-rc.2...1.8.0-rc.3
 [1.8.0-rc.2]: https://github.com/tokend/web-client/compare/1.8.0-rc.1...1.8.0-rc.2
