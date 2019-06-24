@@ -140,13 +140,10 @@ export default {
 
     normalizeRange (value) {
       const max = this.$attrs.max
-      const min = this.$attrs.min
 
       let result = value
       if (max && MathUtil.compare(value, max) > 0) {
         result = max
-      } else if (min && MathUtil.compare(min, value) > 0) {
-        result = min
       }
 
       return result
@@ -167,10 +164,12 @@ export default {
 
       let result = value
       if (precision) {
-        const detectRe = new RegExp(`(?:\\.|,)\\d{${precision + 1},}$`)
-        if (detectRe.test(value)) {
-          const replaceRe = new RegExp(`((?:\\.|,)\\d{${precision}})\\d*`)
-          result = value.replace(replaceRe, '$1')
+        const decimalsLongerThanPrecisionRe =
+          new RegExp(`(?:\\.|,)\\d{${precision + 1},}$`)
+        if (decimalsLongerThanPrecisionRe.test(value)) {
+          const truncateExtraDecimalsRe =
+            new RegExp(`((?:\\.|,)\\d{${precision}})\\d*`)
+          result = value.replace(truncateExtraDecimalsRe, '$1')
         }
       }
 

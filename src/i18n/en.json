@@ -854,7 +854,8 @@
       "not-depositable-msg": "{{asset}} is not depositable",
       "not-withdrawable-msg": "{{asset}} is not withdrawable",
       "not-transferable-msg": "{{asset}} is not transferable",
-      "not-redeemable-msg": "{{asset}} is not redeemable"
+      "not-redeemable-msg": "{{asset}} is not redeemable",
+      "unverified-cant-do-msg": "Unverified account can't perform this operation"
     },
     "op-details": {
       "fixed-fee-lbl": "Fixed fee",
@@ -1266,7 +1267,7 @@
       "can-be-base-in-atomic-swap-title": "Can be base in atomic swap",
       "can-be-quote-in-atomic-swap-title": "Can be quote in atomic swap",
       "requires-kyc-title": "Requires verification",
-      "security-asset-title": "Is security (requires accreditation for US residents)",
+      "security-asset-title": "Security",
       "yes-msg": "Yes",
       "no-msg": "No",
       "cancellation-msg": "Are you sure to cancel the request?",
@@ -1436,7 +1437,7 @@
       "asset-type": "Asset type",
       "verification-required-title": "Requires verification",
       "does-not-require-verification-title": "Does not require verification",
-      "security-asset-title": "Is security (requires accreditation for US residents)",
+      "security-asset-title": "Security",
       "terms-title": "Terms",
       "download-terms-btn": "Download terms",
       "no-terms-msg": "No terms",
@@ -1997,7 +1998,7 @@
       "verification-required-title": "Requires verification",
       "asset-type": "Asset type",
       "does-not-require-verification-title": "Does not require verification",
-      "security-asset-title": "Is security (requires accreditation for US residents)",
+      "security-asset-title": "Security",
       "present-msg": "Yes",
       "absent-msg": "No",
       "default-msg": "Default",

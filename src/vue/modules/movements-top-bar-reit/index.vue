@@ -34,7 +34,8 @@
             v-ripple
             class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isFiatWithdrawalFormShown = true"
-            :disabled="!asset.isFiat && !asset.isWithdrawable"
+            :disabled="!asset.isFiat && !asset.isWithdrawable ||
+              isAccountUnverified"
             :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isWithdrawable) |
               globalize({ asset: asset.code })
             "
@@ -312,6 +313,7 @@ export default {
     }),
     ...mapGetters([
       vuexTypes.accountId,
+      vuexTypes.isAccountUnverified,
     ]),
     isOwnedAsset () {
       return this.asset.owner.id === this.accountId
@@ -379,7 +381,11 @@ export default {
         if (policy === ASSET_POLICIES_STR.isDepositable) {
           messageId = 'op-pages.not-depositable-msg'
         } else if (policy === ASSET_POLICIES_STR.isWithdrawable) {
-          messageId = 'op-pages.not-withdrawable-msg'
+          if (this.isAccountUnverified) {
+            messageId = 'op-pages.unverified-cant-do-msg'
+          } else {
+            messageId = 'op-pages.not-withdrawable-msg'
+          }
         } else if (policy === ASSET_POLICIES_STR.isTransferable) {
           messageId = 'op-pages.not-transferable-msg'
         } else if (policy === ASSET_POLICIES_STR.isBond && this.isOwnedAsset) {

@@ -68,7 +68,7 @@ export default {
       accountBalanceByCode: vuexTypes.accountBalanceByCode,
     }),
     isBalanceCreationAllowed () {
-      switch (this.asset.type) {
+      switch (this.asset.assetType) {
         case this.kycRequiredAssetType:
           return !this.isAccountUnverified
         case this.securityAssetType:
