@@ -124,6 +124,7 @@
             :error-message="getFieldErrorMessage(
               'form.maxIssuanceAmount', { from: MIN_AMOUNT, to: MAX_AMOUNT }
             )"
+            :disabled="isDisabled"
           />
         </div>
       </div>
@@ -161,14 +162,14 @@
               type="button"
               class="app__button-flat advanced-step-form__insert-account-id-btn"
               :disabled="isDisabled"
-              @click="form.preIssuanceAssetSigner = mainSignerAccountId"
+              @click="form.preIssuanceAssetSigner = accountId"
             >
               {{ 'create-asset-form.use-my-account-id-btn' | globalize }}
             </button>
           </div>
 
           <vue-markdown
-            v-if="form.preIssuanceAssetSigner === mainSignerAccountId"
+            v-if="form.preIssuanceAssetSigner === accountId"
             class="advanced-step-form__pre-issuance-disclaimer"
             :source="'create-asset-form.pre-issuance-disclaimer' | globalize"
           />
@@ -181,7 +182,7 @@
             white-autofill
             type="number"
             :min="0"
-            :max="maxIssuanceAmount"
+            :max="form.maxIssuanceAmount"
             :step="MIN_AMOUNT"
             v-model="form.initialPreissuedAmount"
             @blur="touchField('form.initialPreissuedAmount')"
@@ -189,7 +190,7 @@
             :label="'create-asset-form.preissued-amount-lbl' | globalize"
             :error-message="getFieldErrorMessage(
               'form.initialPreissuedAmount',
-              { from: MIN_AMOUNT, to: maxIssuanceAmount }
+              { from: MIN_AMOUNT, to: form.maxIssuanceAmount }
             )"
             :disabled="isDisabled"
           />
@@ -235,6 +236,7 @@
             :error-message="getFieldErrorMessage(
               'form.assetType',
             )"
+            :disabled="isDisabled"
           >
             <option :value="kvAssetTypeDefault">
               {{ translateAssetType(kvAssetTypeDefault) }}
@@ -357,8 +359,6 @@ export default {
   props: {
     request: { type: CreateAssetRequest, default: null },
     isDisabled: { type: Boolean, default: false },
-    mainSignerAccountId: { type: String, required: true },
-    maxIssuanceAmount: { type: String, default: '0' },
   },
 
   data: _ => ({
@@ -368,7 +368,9 @@ export default {
       isPreIssuanceEnabled: false,
       isStellarIntegrationEnabled: false,
       isUsageRestricted: false,
-      assetType: String(store.getters[vuexTypes.kvAssetTypeDefault]),
+      assetType: store
+        ? String(store.getters[vuexTypes.kvAssetTypeDefault])
+        : '0',
       preIssuanceAssetSigner: '',
       initialPreissuedAmount: '',
       terms: null,
@@ -451,11 +453,12 @@ export default {
   },
 
   computed: {
-    ...mapGetters({
-      kvAssetTypeDefault: vuexTypes.kvAssetTypeDefault,
-      kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
-      kvAssetTypeSecurity: vuexTypes.kvAssetTypeSecurity,
-    }),
+    ...mapGetters([
+      vuexTypes.kvAssetTypeDefault,
+      vuexTypes.kvAssetTypeKycRequired,
+      vuexTypes.kvAssetTypeSecurity,
+      vuexTypes.accountId,
+    ]),
   },
 
   watch: {
@@ -532,10 +535,11 @@ export default {
     },
 
     getAssetCodeMaxLength () {
-      if (this.form.stellar.assetType === STELLAR_TYPES.creditAlphanum4) {
+      const assetType = this.form.stellar.assetType
+
+      if (assetType === STELLAR_TYPES.creditAlphanum4) {
         return CREDIT_ALPHANUM4_MAX_LENGTH
-        // eslint-disable-next-line max-len
-      } else if (this.form.stellar.assetType === STELLAR_TYPES.creditAlphanum12) {
+      } else if (assetType === STELLAR_TYPES.creditAlphanum12) {
         return CREDIT_ALPHANUM12_MAX_LENGTH
       }
     },

@@ -9,16 +9,14 @@
         <information-step-form
           v-show="currentStep === STEPS.information.number"
           :request="request"
-          @submit="setInformationStepForm($event) || moveToNextStep()"
+          @submit="collectAssetAttributes($event) || moveToNextStep()"
         />
 
         <advanced-step-form
           v-show="currentStep === STEPS.advanced.number"
           :request="request"
           :is-disabled.sync="isDisabled"
-          :main-signer-account-id="accountId"
-          :max-issuance-amount="informationStepForm.maxIssuanceAmount"
-          @submit="setAdvancedStepForm($event) || submit()"
+          @submit="collectAssetAttributes($event) || submit()"
         />
       </form-stepper>
     </template>
@@ -60,6 +58,7 @@ const STEPS = {
     titleId: 'create-asset-form.advanced-step',
   },
 }
+
 const EVENTS = {
   requestUpdated: 'request-updated',
   close: 'close',
@@ -83,8 +82,6 @@ export default {
 
   data: _ => ({
     request: null,
-    informationStepForm: {},
-    advancedStepForm: {},
     isLoaded: false,
     isLoadFailed: false,
     isDisabled: false,
@@ -106,7 +103,6 @@ export default {
     async init () {
       try {
         await this.tryLoadRequest()
-
         this.isLoaded = true
       } catch (e) {
         this.isLoadFailed = true
@@ -130,18 +126,10 @@ export default {
       }
     },
 
-    setInformationStepForm (value) {
-      this.informationStepForm = value
-    },
-
-    setAdvancedStepForm (value) {
-      this.advancedStepForm = value
-    },
-
     async submit () {
       this.isDisabled = true
       try {
-        await this.submitCreateAssetRequest()
+        await this.submitCreateAssetRequest(this.requestId)
         Bus.success('create-asset-form.request-submitted-msg')
         this.emitSubmitEvents()
       } catch (e) {
