@@ -268,7 +268,7 @@ export default {
       this.hideConfirmation()
     },
 
-    addQuoteAsset (index) {
+    addQuoteAsset () {
       this.form.quoteAssets.push({
         price: '',
         address: '',
