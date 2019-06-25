@@ -2300,11 +2300,11 @@
     "atomic-swaps-explore": {
       "no-list-title":"Atomic swaps will be coming soon"
     },
-    "users-page": {
+    "customers-page": {
       "invite-btn": "Invite",
       "issue-btn": "Issue",
-      "invite-drawer-heading": "Invite new users",
-      "issue-drawer-heading": "Mass issuance"
+      "mass-invitation-drawer-heading": "Invite new users",
+      "mass-issuance-drawer-heading": "Mass issuance"
     },
     "mass-issuance-form": {
       "asset-lbl": "Asset",
@@ -2317,6 +2317,18 @@
       "no-assets-msg-description": "Unfortunately, you do not have any assets now, please create an asset and try again.",
       "issued-successful-notification": "Mass issuance performed successfully.",
       "no-receivers-found": "Receivers you provided not found or cannot receive the issuance. Please ensure you specified the valid receivers list and try again."
+    },
+    "mass-invitation-form": {
+      "asset-lbl": "Asset",
+      "available-for-issuance-hint": "Available for issuance: {{amount, money}}",
+      "amount-lbl": "Amount",
+      "how-to-invitees-paragraph": "List all invitees emails in the box below, separate them with commas.",
+      "invitees-lbl": "Invitees",
+      "submit-btn": "Issue",
+      "no-assets-msg-title": "No issuable assets yet",
+      "no-assets-msg-description": "Unfortunately, you do not have any assets now, please create an asset and try again.",
+      "issued-successful-notification": "Mass issuance performed successfully.",
+      "no-invitees-found": "Receivers you provided not found or cannot receive the issuance. Please ensure you specified the valid receivers list and try again."
     }
   }
 }
