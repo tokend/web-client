@@ -51,4 +51,5 @@ export const vueRoutes = Object.freeze({
   atomicSwaps: { name: 'app.atomic-swaps' },
   atomicSwapsExplore: { name: 'app.atomic-swaps-explore' },
   customers: { name: 'app.customers' },
+  customersList: { name: 'app.customers.list' },
 })

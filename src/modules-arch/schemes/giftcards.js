@@ -34,6 +34,7 @@ import { CreatePollFormModule } from '@/vue/modules/create-poll-form/module'
 
 import { MyAssetsPageModule } from '@/vue/pages/my-assets-page-module'
 import { MyAssetsExplorerModule } from '@/vue/modules/assets/my-assets-explorer/module'
+import { CustomersListPageModule } from '@/vue/pages/customers-list-page-module'
 
 export default {
   importEnLocaleFile () {
@@ -49,8 +50,17 @@ export default {
         },
         menuButtonTranslationId: 'pages-names.customers',
         menuButtonMdiName: 'account',
+        isAutoRedirectToFirstChild: true,
         submodules: [
+          new CustomersListPageModule({
+            routerEntry: {
+              path: '/customers/explore',
+              name: vueRoutes.customersList.name,
+              meta: { pageNameTranslationId: 'pages-names.customers-list' },
+            },
+          }),
         ],
+        isCorporateOnly: true,
       },
     ),
 

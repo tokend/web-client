@@ -1,6 +1,14 @@
 <template>
   <div class="users">
     <top-bar>
+      <template slot="main">
+        <router-link :to="vueRoutes.customersList">
+          <span>
+            {{ 'customers-page.customers-list-page' | globalize }}
+          </span>
+        </router-link>
+      </template>
+
       <template slot="extra">
         <button
           v-ripple
@@ -43,6 +51,7 @@
 <script>
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
+import { vueRoutes } from '@/vue-router/routes'
 
 import MassIssuanceForm from '@/vue/forms/MassIssuanceForm'
 import MassInvitationForm from '@/vue/forms/MassInvitationForm'
@@ -60,6 +69,7 @@ export default {
   data: _ => ({
     isInviteDrawerShown: false,
     isIssueDrawerShown: false,
+    vueRoutes,
   }),
 }
 </script>

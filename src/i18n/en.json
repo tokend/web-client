@@ -691,7 +691,8 @@
       "register-of-shares": "Register of shares",
       "polls": "Polls",
       "atomic-swaps": "Atomic swaps",
-      "customers": "Customers"
+      "customers": "Customers",
+      "customers-list": "Customers list"
     },
     "limits": {
       "explore-limits": "Explore limits",
@@ -2304,7 +2305,8 @@
       "invite-btn": "Invite",
       "issue-btn": "Issue",
       "mass-invitation-drawer-heading": "Invite new users",
-      "mass-issuance-drawer-heading": "Mass issuance"
+      "mass-issuance-drawer-heading": "Mass issuance",
+      "customers-list-page": "Customers list"
     },
     "mass-issuance-form": {
       "asset-lbl": "Asset",
