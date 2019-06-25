@@ -24,6 +24,7 @@ export const mutations = {
       secretSeed: wallet.secretSeed,
       email: wallet.email,
       id: wallet.id,
+      publicKey: wallet.keypair.accountId(),
     }
   },
 }
@@ -54,8 +55,7 @@ export const getters = {
   },
   [vuexTypes.walletSeed]: (state, getters) =>
     state.wallet.secretSeed,
-  [vuexTypes.walletPublicKey]: (state, getters) =>
-    state.wallet.keypair.accountId(),
+  [vuexTypes.walletPublicKey]: (state, getters) => state.wallet.publicKey
 }
 
 export default {
