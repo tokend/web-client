@@ -77,6 +77,8 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base } from '@tokend/js-sdk'
 import { api } from '@/api'
 import { isUSResidence } from './is-us-residence'
+import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
+import { vueRoutes } from '@/vue-router/routes'
 
 const EVENTS = {
   submit: 'submit',
@@ -95,11 +97,6 @@ export default {
   mixins: [FormMixin],
   props: {
     blobId: { type: String, default: '' },
-    requestId: { type: String, required: true },
-
-    generalRoleId: { type: String, required: true },
-    usVerifiedRoleId: { type: String, required: true },
-    usAccreditedRoleId: { type: String, required: true },
   },
   data: _ => ({
     isInitialized: false,
@@ -114,6 +111,14 @@ export default {
     }),
     ...mapGetters([
       vuexTypes.accountId,
+      vuexTypes.kvDefaultSignerRoleId,
+      vuexTypes.walletAccountId,
+      vuexTypes.kycRecoveryState,
+      vuexTypes.kycRecoveryRequestId,
+      vuexTypes.kvEntryGeneralRoleId,
+      vuexTypes.kvEntryUsVerifiedRoleId,
+      vuexTypes.kvEntryUsAccreditedRoleId,
+      vuexTypes.kycRequestId,
     ]),
     verificationCode () {
       return this.accountId.slice(1, 6)
@@ -124,11 +129,20 @@ export default {
     accountRoleToSet () {
       if (this.isUSResident) {
         return this.isAccredited
-          ? this.usAccreditedRoleId
-          : this.usVerifiedRoleId
+          ? this.kvEntryUsAccreditedRoleId
+          : this.kvEntryUsVerifiedRoleId
       }
 
-      return this.generalRoleId
+      return this.kvEntryGeneralRoleId
+    },
+    isKycVerificationUpdateable () {
+      return (
+        this.kycState &&
+        (
+          this.kycState === REQUEST_STATES_STR.pending ||
+          this.kycState === REQUEST_STATES_STR.rejected
+        )
+      )
     },
   },
   async created () {
@@ -171,27 +185,74 @@ export default {
       this.disableForm()
       try {
         await this.uploadDocuments()
-        const blobId = await this.createBlob(this.accountId)
-        await this.createRequest(blobId)
-        // we duplicating enabling form in try/catch blocks to prevent race
-        // condition - the outer component disables the form after submit event
-        // again and can does it before we enable it here.
-        this.enableForm()
-        this.$emit(EVENTS.submit)
+        if (this.$route.name === vueRoutes.kycRecoveryManagement.name) {
+          await this.createKycRecoveryRequest()
+          this.enableForm()
+        } else {
+          const blobId = await this.createBlob(this.accountId)
+          await this.createVerificationRequest(blobId)
+          // we duplicating enabling form in try/catch blocks to prevent race
+          // condition - the outer component disables the form after submit
+          // event again and can does it before we enable it here.
+          this.enableForm()
+          this.$emit(EVENTS.submit)
+        }
       } catch (e) {
         this.enableForm()
         ErrorHandler.process(e)
       }
     },
-    async createRequest (blobId) {
+    async createVerificationRequest (blobId) {
+      const isExistingRequest = this.kycState &&
+        (
+          this.kycState === REQUEST_STATES_STR.pending ||
+          this.kycState === REQUEST_STATES_STR.rejected
+        )
       const operation = base.CreateChangeRoleRequestBuilder
         .createChangeRoleRequest({
-          requestID: this.requestId,
+          requestID: isExistingRequest ? String(this.kycRequestId) : '0',
           destinationAccount: this.accountId,
           accountRoleToSet: this.accountRoleToSet,
           creatorDetails: { blob_id: blobId },
         })
 
+      await api.postOperations(operation)
+    },
+
+    async createKycRecoveryRequest () {
+      const isExistingRequest = this.kycRecoveryState &&
+        (
+          this.kycRecoveryState === REQUEST_STATES_STR.pending ||
+          this.kycRecoveryState === REQUEST_STATES_STR.rejected
+        )
+      const newSigner = base.Keypair.random()
+      const opts = {
+        targetAccount: this.accountId,
+        signers: [
+          {
+            publicKey: newSigner.accountId(),
+            roleID: '1',
+            weight: '1000',
+            identity: '1',
+            details: {},
+          },
+          {
+            publicKey: this.walletAccountId,
+            roleID: `${this.kvDefaultSignerRoleId}`,
+            weight: '1000',
+            identity: '1',
+            details: {},
+          },
+        ],
+        creatorDetails: {
+          verification_data: JSON.stringify(this.blobData),
+        },
+      }
+
+      const operation = isExistingRequest
+        ? base.CreateKYCRecoveryRequestBuilder.update(opts,
+          this.kycRecoveryRequestId)
+        : base.CreateKYCRecoveryRequestBuilder.create(opts)
       await api.postOperations(operation)
     },
   },
