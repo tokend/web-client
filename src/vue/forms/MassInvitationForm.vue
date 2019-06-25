@@ -42,6 +42,8 @@
 </template>
 
 <script>
+// TODO: integrate with issuance
+
 import FormMixin from '@/vue/mixins/form.mixin'
 import { required } from '@validators'
 
@@ -103,7 +105,7 @@ export default {
           type: 'clients',
           attributes: { email },
         }))
-        await api.post(endpoint, body)
+        await api.postWithSignature(endpoint, body)
 
         this.$emit(EVENTS.submitted)
         Bus.success('mass-invitation-form.invited-successfully-notification')
