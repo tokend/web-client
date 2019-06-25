@@ -68,6 +68,8 @@ const actions = {
   // kyc recovery
   LOAD_KYC_RECOVERY_LATEST_REQUEST: 'LOAD_KYC_RECOVERY_LATEST_REQUEST',
   LOAD_KYC_RECOVERY: 'LOAD_KYC_RECOVERY',
+  LOAD_KYC_RECOVERY_LATEST_REQUEST_DATA:
+    'LOAD_KYC_RECOVERY_LATEST_REQUEST_DATA',
 
   // assets
   LOAD_ASSETS: 'LOAD_ASSETS',
@@ -141,6 +143,7 @@ const getters = {
   kycRecoveryState: 'kycRecoveryState',
   kycRecoveryStateI: 'kycRecoveryStateI',
   kycRecoveryRequestData: 'kycRecoveryRequestData',
+  kycRecoveryLatestRequestBlobId: 'kycRecoveryLatestRequestBlobId',
   isNoKycRecoveryInProgress: 'isNoKycRecoveryInProgress',
   isKycRecoveryInited: 'isKycRecoveryInited',
   isKycRecoveryPending: 'isKycRecoveryPending',

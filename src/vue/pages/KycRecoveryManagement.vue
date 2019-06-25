@@ -1,7 +1,8 @@
 <template>
   <div class="kyc-recovery-management">
     <template v-if="isLoaded">
-      <verification-general-form />
+      <verification-general-form v-if="isAccountGeneral" />
+      <verification-corporate-form />
     </template>
   </div>
 </template>
@@ -14,10 +15,13 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 // import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 
 import VerificationGeneralForm from '@/vue/modules/verification/general-form/index'
+import VerificationCorporateForm from '@/vue/pages/VerificationCorporate'
+
 export default {
   name: 'kyc-recovery-management',
   components: {
     VerificationGeneralForm,
+    VerificationCorporateForm,
   },
   data: _ => ({
     isLoaded: false,
@@ -28,7 +32,6 @@ export default {
     ...mapGetters([
       vuexTypes.accountId,
       vuexTypes.kvDefaultSignerRoleId,
-      vuexTypes.walletAccountId,
       vuexTypes.kycRecoveryState,
       vuexTypes.kycRecoveryRequestId,
       vuexTypes.isAccountGeneral,

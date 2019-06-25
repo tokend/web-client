@@ -55,7 +55,7 @@ export const getters = {
   },
   [vuexTypes.walletSeed]: (state, getters) =>
     state.wallet.secretSeed,
-  [vuexTypes.walletPublicKey]: (state, getters) => state.wallet.publicKey
+  [vuexTypes.walletPublicKey]: (state, getters) => state.wallet.publicKey,
 }
 
 export default {

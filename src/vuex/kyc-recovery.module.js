@@ -14,8 +14,8 @@ export const mutations = {
   [vuexTypes.SET_KYC_RECOVERY_LATEST_REQUEST] (state, request) {
     state.request = request
   },
-  [vuexTypes.SET_KYC_RECOVERY_LATEST_REQUEST_DATA] (state, request) {
-    state.requestData = request
+  [vuexTypes.SET_KYC_RECOVERY_LATEST_REQUEST_DATA] (state, requestData) {
+    state.requestData = requestData
   },
 }
 
@@ -24,6 +24,7 @@ export const actions = {
     dispatch,
   }) {
     await dispatch(vuexTypes.LOAD_KYC_RECOVERY_LATEST_REQUEST)
+    await dispatch(vuexTypes.LOAD_KYC_RECOVERY_LATEST_REQUEST_DATA)
   },
 
   async [vuexTypes.LOAD_KYC_RECOVERY_LATEST_REQUEST] ({
@@ -40,10 +41,21 @@ export const actions = {
       include: ['request_details'],
     })
     const request = response.data[0]
-    const requestData = safeGet(request,
-      'requestDetails.creatorDetails.verificationData')
     commit(vuexTypes.SET_KYC_RECOVERY_LATEST_REQUEST, request)
-    commit(vuexTypes.SET_KYC_RECOVERY_LATEST_REQUEST_DATA, requestData)
+  },
+
+  async [vuexTypes.LOAD_KYC_RECOVERY_LATEST_REQUEST_DATA] (
+    { getters, rootGetters, commit }
+  ) {
+    const latestBlobId = getters[vuexTypes.kycRecoveryLatestRequestBlobId]
+    if (!latestBlobId) {
+      return
+    }
+
+    const { data: blob } = await api.getWithSignature(
+      `/accounts/${rootGetters[vuexTypes.accountId]}/blobs/${latestBlobId}`
+    )
+    commit(vuexTypes.SET_KYC_RECOVERY_LATEST_REQUEST_DATA, blob.value)
   },
 }
 
@@ -71,6 +83,8 @@ export const getters = {
   [vuexTypes.isKycRecoveryPermanentlyRejected]: (a, getters, b, rootGetters) =>
     getters[vuexTypes.accountKycRecoveryStatus] ===
     KYC_RECOVERY_STATES.permanently_rejected,
+  [vuexTypes.kycRecoveryLatestRequestBlobId]: state => safeGet(state,
+    'request.requestDetails.creatorDetails.verificationData.blobId'),
 }
 
 export default {
