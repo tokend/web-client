@@ -109,6 +109,12 @@ export default {
         }
       }
       this.$v.$reset()
+
+      if (this.$children && this.$children.length) {
+        this.$children
+          .filter(item => item.$v)
+          .forEach(item => item.$v.$reset())
+      }
     },
 
     touchField (fieldName) {
