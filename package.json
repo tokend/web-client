@@ -11,7 +11,7 @@
     }
   },
   "scripts": {
-    "dev": "webpack-dev-server --config ./webpack/local.conf.js",
+    "dev": "webpack-dev-server --config ./webpack/local.conf.js --client-log-level warning",
     "start": "yarn dev",
     "build": "node webpack/build.js",
     "test": "karma start --reporters spec",
