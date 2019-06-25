@@ -1,5 +1,5 @@
 <template>
-  <div class="users">
+  <div class="customers-page">
     <top-bar>
       <template slot="main">
         <router-link :to="vueRoutes.customersList">
