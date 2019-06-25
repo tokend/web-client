@@ -45,6 +45,12 @@ describe('CsvUtil', () => {
             expected: [['item1', 'item2', 'item3', 'item4', '']],
           },
           {
+            name: 'whitespace trimmed to both, variant 2',
+            in: 'item1 , item2, item3 , item4, ',
+            inParams: { trim: true },
+            expected: [['item1', 'item2', 'item3', 'item4', '']],
+          },
+          {
             name: 'multiple rows',
             in: 'col1,col2\nitem11,item12\nitem21,item22',
             inParams: { trimLeft: true, trimRight: true },

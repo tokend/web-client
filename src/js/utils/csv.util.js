@@ -17,6 +17,8 @@ export class CsvUtil {
    * @param {boolean} [options.trimRight=false] Ignore whitespace to right of
    * all fields. Does not remove whitespace in a quoted field.
    *
+   * @param {boolean} [options.trim=false] Enables both trimLeft and trimRight
+   *
    * @returns {Array} Array of arrays.  Each nester array represents a row.
    */
   static parse (input, options = {}) {
@@ -26,8 +28,8 @@ export class CsvUtil {
 
     const csvParseSyncOpts = {
       delimiter: options.delimiters || ',',
-      ltrim: options.trimLeft || false,
-      rtrim: options.trimRight || false,
+      ltrim: options.trim || options.trimLeft || false,
+      rtrim: options.trim || options.trimRight || false,
     }
 
     return csvParseSync(input, csvParseSyncOpts)
