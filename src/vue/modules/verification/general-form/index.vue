@@ -49,7 +49,7 @@
           class="verification-general-form__submit-btn"
           :disabled="formMixin.isDisabled"
         >
-          {{ (Number(requestId) > 0
+          {{ (Number(kycRequestId) > 0
             ? 'verification-form.update-btn'
             : 'verification-form.create-btn'
           ) | globalize }}
@@ -112,13 +112,14 @@ export default {
     ...mapGetters([
       vuexTypes.accountId,
       vuexTypes.kvDefaultSignerRoleId,
-      vuexTypes.walletAccountId,
+      vuexTypes.walletPublicKey,
       vuexTypes.kycRecoveryState,
       vuexTypes.kycRecoveryRequestId,
       vuexTypes.kvEntryGeneralRoleId,
       vuexTypes.kvEntryUsVerifiedRoleId,
       vuexTypes.kvEntryUsAccreditedRoleId,
       vuexTypes.kycRequestId,
+      vuexTypes.kycRecoveryRequestData,
     ]),
     verificationCode () {
       return this.accountId.slice(1, 6)
@@ -135,30 +136,22 @@ export default {
 
       return this.kvEntryGeneralRoleId
     },
-    isKycVerificationUpdateable () {
-      return (
-        this.kycState &&
-        (
-          this.kycState === REQUEST_STATES_STR.pending ||
-          this.kycState === REQUEST_STATES_STR.rejected
-        )
-      )
-    },
   },
   async created () {
-    if (this.blobId) {
-      try {
+    try {
+      if (this.blobId) {
         this.populateForm(await this.getBlobData(this.blobId))
-      } catch (e) {
-        ErrorHandler.processWithoutFeedback(e)
+
+        // Disabling country change to prevent updating role for
+        // unfulfilled requests. Is temporary until canceling change
+        // role requests is implemented on backend:
+        this.isCountryChangeDisabled = true
+      } else if (this.kycRecoveryRequestId) {
+        this.populateForm(this.kycRecoveryRequestData)
       }
-
-      // Disabling country change to prevent updating role for
-      // unfulfilled requests. Is temporary until canceling change
-      // role requests is implemented on backend:
-      this.isCountryChangeDisabled = true
+    } catch (e) {
+      ErrorHandler.processWithoutFeedback(e)
     }
-
     this.isInitialized = true
   },
   methods: {
@@ -237,7 +230,7 @@ export default {
             details: {},
           },
           {
-            publicKey: this.walletAccountId,
+            publicKey: this.walletPublicKey,
             roleID: `${this.kvDefaultSignerRoleId}`,
             weight: '1000',
             identity: '1',

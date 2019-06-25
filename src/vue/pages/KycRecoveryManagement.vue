@@ -1,6 +1,8 @@
 <template>
   <div class="kyc-recovery-management">
-    <verification-general-form />
+    <template v-if="isLoaded">
+      <verification-general-form />
+    </template>
   </div>
 </template>
 

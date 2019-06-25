@@ -7,14 +7,15 @@ import { KYC_RECOVERY_STATES } from '@/js/const/kyc-recovery-states.const'
 
 export const state = {
   request: {},
-
-  latestData: '{}', // JSON string
-  latestRequestData: '{}',
+  requestData: '{}', // JSON string
 }
 
 export const mutations = {
   [vuexTypes.SET_KYC_RECOVERY_LATEST_REQUEST] (state, request) {
     state.request = request
+  },
+  [vuexTypes.SET_KYC_RECOVERY_LATEST_REQUEST_DATA] (state, request) {
+    state.requestData = request
   },
 }
 
@@ -23,7 +24,6 @@ export const actions = {
     dispatch,
   }) {
     await dispatch(vuexTypes.LOAD_KYC_RECOVERY_LATEST_REQUEST)
-    // await dispatch(vuexTypes.LOAD_KYC_LATEST_DATA)
   },
 
   async [vuexTypes.LOAD_KYC_RECOVERY_LATEST_REQUEST] ({
@@ -40,8 +40,10 @@ export const actions = {
       include: ['request_details'],
     })
     const request = response.data[0]
-
+    const requestData = safeGet(request,
+      'requestDetails.creatorDetails.verificationData')
     commit(vuexTypes.SET_KYC_RECOVERY_LATEST_REQUEST, request)
+    commit(vuexTypes.SET_KYC_RECOVERY_LATEST_REQUEST_DATA, requestData)
   },
 }
 
@@ -52,6 +54,7 @@ export const getters = {
     'request.state'),
   [vuexTypes.kycRecoveryStateI]: state => safeGet(state,
     'request.stateI'),
+  [vuexTypes.kycRecoveryRequestData]: state => JSON.parse(state.requestData),
 
   [vuexTypes.isNoKycRecoveryInProgress]: (a, getters, b, rootGetters) =>
     getters[vuexTypes.accountKycRecoveryStatus] ===
