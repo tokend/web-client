@@ -24,6 +24,7 @@ export const mutations = {
       secretSeed: wallet.secretSeed,
       email: wallet.email,
       id: wallet.id,
+      sessionId: wallet.sessionId,
     }
   },
 }
