@@ -184,7 +184,7 @@ export default {
         await this.loadAssets()
         this.clearFieldsWithOverriding({ assetCode: this.form.assetCode })
         this.$emit(EVENTS.submitted)
-        Bus.success('mass-issuance-form.issued-successful-notification')
+        Bus.success('mass-issuance-form.issued-successfully-notification')
       } catch (error) {
         ErrorHandler.process(error)
       }

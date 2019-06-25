@@ -1,118 +1,58 @@
 <template>
   <div class="mass-invitation-form">
-    <template v-if="ownedAssets.length">
-      <form @submit.prevent="isFormValid() && showConfirmation()">
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <p class="mass-invitation-form__how-to-invitees">
-              {{ 'mass-invitation-form.how-to-invitees-paragraph' | globalize }}
-            </p>
+    <form @submit.prevent="isFormValid() && showConfirmation()">
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <p class="mass-invitation-form__how-to-invitees">
+            {{ 'mass-invitation-form.how-to-invitees-paragraph' | globalize }}
+          </p>
 
-            <textarea-field
-              name="mass-invitation-invitees"
-              v-model="form.invitees"
-              :label="'mass-invitation-form.invitees-lbl' | globalize"
-              :disabled="formMixin.isDisabled"
-              @blur="touchField('form.invitees')"
-              :error-message="getFieldErrorMessage('form.invitees')"
-              rows="6"
-            />
-          </div>
-        </div>
-
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <select-field
-              name="mass-invitation-asset-code"
-              v-model="form.assetCode"
-              :label="'mass-invitation-form.asset-lbl' | globalize"
-              @blur="touchField('form.assetCode')"
-              :error-message="getFieldErrorMessage('form.assetCode')"
-              :disabled="formMixin.isDisabled"
-            >
-              <option
-                v-for="asset in ownedAssets"
-                :key="asset.code"
-                :value="asset.code"
-              >
-                {{ asset.nameAndCode }}
-              </option>
-            </select-field>
-
-            <template v-if="form.assetCode">
-              <p class="app__form-field-description">
-                {{
-                  'mass-invitation-form.available-for-issuance-hint' | globalize({
-                    amount: {
-                      value: assetByCode(form.assetCode).availableForIssuance,
-                      currency: form.assetCode
-                    }
-                  })
-                }}
-              </p>
-            </template>
-          </div>
-        </div>
-
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <amount-input-field
-              v-model="form.amount"
-              name="mass-invitation-amount"
-              validation-type="issuance"
-              :label="'mass-invitation-form.amount-lbl' | globalize"
-              :asset="assetByCode(form.assetCode)"
-              :disabled="formMixin.isDisabled"
-            />
-          </div>
-        </div>
-
-        <div class="app__form-actions">
-          <form-confirmation
-            v-if="formMixin.isConfirmationShown"
-            :is-pending="formMixin.isPending"
-            @cancel="hideConfirmation"
-            @ok="hideConfirmationAfterSubmit(submit)"
-          />
-
-          <button
-            v-else
-            v-ripple
+          <textarea-field
+            name="mass-invitation-invitees"
+            v-model="form.invitees"
+            :label="'mass-invitation-form.invitees-lbl' | globalize"
             :disabled="formMixin.isDisabled"
-            class="app__form-submit-btn app__button-raised"
-            type="submit"
-          >
-            {{ 'mass-invitation-form.submit-btn' | globalize }}
-          </button>
+            @blur="touchField('form.invitees')"
+            :error-message="getFieldErrorMessage('form.invitees')"
+            rows="6"
+          />
         </div>
-      </form>
-    </template>
+      </div>
 
-    <template v-else>
-      <no-data-message
-        class="mass-invitation-form__no-data-message"
-        :title="'mass-invitation-form.no-assets-msg-title' | globalize"
-        :message="'mass-invitation-form.no-assets-msg-description' | globalize"
-      />
-    </template>
+      <div class="app__form-actions">
+        <form-confirmation
+          v-if="formMixin.isConfirmationShown"
+          :is-pending="formMixin.isPending"
+          @cancel="hideConfirmation"
+          @ok="hideConfirmationAfterSubmit(submit)"
+        />
+
+        <button
+          v-else
+          v-ripple
+          :disabled="formMixin.isDisabled"
+          class="app__form-submit-btn app__button-raised"
+          type="submit"
+        >
+          {{ 'mass-invitation-form.submit-btn' | globalize }}
+        </button>
+      </div>
+    </form>
   </div>
 </template>
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-import IdentityGetterMixin from '@/vue/mixins/identity-getter'
-import NoDataMessage from '@/vue/common/NoDataMessage'
 import { required } from '@validators'
 
 import { CsvUtil } from '@/js/utils/csv.util'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 
-import { mapGetters, mapActions } from 'vuex'
-import { store, vuexTypes } from '@/vuex'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 import { api } from '@/api'
-import { base } from '@tokend/js-sdk'
 
 const EVENTS = {
   submitted: 'submitted',
@@ -121,24 +61,16 @@ const EVENTS = {
 export default {
   name: 'mass-invitation-form',
 
-  components: { NoDataMessage },
-
-  mixins: [FormMixin, IdentityGetterMixin],
+  mixins: [FormMixin],
 
   props: {
-    assetCode: { type: String, default: '' },
     invitees: { type: String, default: '' },
-    amount: { type: [String, Number], default: '' },
   },
 
   data () {
     return {
       form: {
-        assetCode: this.assetCode ||
-          store.getters[vuexTypes.ownedAssets][0].code ||
-          '',
         invitees: this.invitees || '',
-        amount: String(this.amount) || '',
       },
     }
   },
@@ -146,9 +78,6 @@ export default {
   validations () {
     return {
       form: {
-        assetCode: {
-          required,
-        },
         invitees: {
           required,
         },
@@ -158,67 +87,31 @@ export default {
 
   computed: {
     ...mapGetters({
-      ownedAssets: vuexTypes.ownedAssets,
-      assetByCode: vuexTypes.assetByCode,
+      accountId: vuexTypes.accountId,
     }),
   },
 
   methods: {
-    ...mapActions({
-      loadAssets: vuexTypes.LOAD_ASSETS,
-    }),
-
     async submit () {
       this.disableForm()
 
       try {
-        const operations = await this.buildOperationsToSubmit()
+        const emails = CsvUtil.parseConcat(this.form.invitees, { trim: true })
 
-        if (!operations.length) {
-          Bus.error('mass-invitation-form.no-invitees-found')
-          return
-        }
+        const endpoint = `/integrations/dns/businesses/${this.accountId}/clients`
+        const body = emails.map(email => ({
+          type: 'clients',
+          attributes: { email },
+        }))
+        await api.post(endpoint, body)
 
-        await api.postOperations(...operations)
-
-        await this.loadAssets()
-        this.clearFieldsWithOverriding({ assetCode: this.form.assetCode })
         this.$emit(EVENTS.submitted)
-        Bus.success('mass-invitation-form.issued-successful-notification')
+        Bus.success('mass-invitation-form.invited-successfully-notification')
       } catch (error) {
         ErrorHandler.process(error)
       }
 
       this.enableForm()
-    },
-
-    async buildOperationsToSubmit () {
-      const emails =
-        CsvUtil.parseConcat(this.form.invitees, { trim: true })
-
-      const balanceIds =
-        await this.getBalanceIdByEmailMass(emails, this.form.assetCode)
-
-      const operations = balanceIds.map((balId, id) => base
-        .CreateIssuanceRequestBuilder.createIssuanceRequest({
-          receiver: balId,
-          asset: this.form.assetCode,
-          amount: String(this.form.amount),
-          reference: new Date().toISOString() + id,
-          creatorDetails: {},
-        }))
-
-      return operations
-    },
-
-    buildCreateIssuanceRequestOp (balanceId) {
-      return base.CreateIssuanceRequestBuilder.createIssuanceRequest({
-        receiver: balanceId,
-        asset: this.form.assetCode,
-        amount: String(this.form.amount),
-        reference: new Date().toISOString(),
-        creatorDetails: {},
-      })
     },
   },
 }
