@@ -75,13 +75,7 @@
             "
           >
             <i
-              class="
-                mdi
-                mdi-rotate-315
-                mdi-transfer
-                movements-top-bar__btn-icon
-                movements-top-bar__btn-icon--rotate-315
-              "
+              class="mdi mdi-send movements-top-bar__btn-icon"
             />
             {{ 'op-pages.send' | globalize }}
           </button>
@@ -260,10 +254,6 @@ export default {
 .movements-top-bar__btn-icon {
   font-size: 1.8rem;
   margin-right: 0.5rem;
-}
-
-.movements-top-bar__btn-icon--rotate-315 {
-  transform: translateY(-0.2rem);
 }
 
 .movements-top-bar__filters {
