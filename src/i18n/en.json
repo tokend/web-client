@@ -2329,6 +2329,29 @@
       "submit-btn": "Invite",
       "invited-successfully-notification": "Mass invitation performed successfully.",
       "no-invitees-found": "Receivers you provided not found or cannot receive the issuance. Please ensure you specified the valid receivers list and try again."
+    },
+    "customer-attributes": {
+      "id-key": "ID",
+      "email-key": "Email",
+      "status-key": "Status",
+      "balance-key": "{{assetCode}} balance",
+      "not-registered-status-val": "Not registered",
+      "active-status-val": "Active",
+      "blocked-status-val": "Blocked"
+    },
+    "customers-table": {
+      "email-th": "Email",
+      "balances-th": "Balances",
+      "status-th": "Status",
+      "details-btn": "Show details",
+      "no-data-msg": "You have no associated customers yet. Invite some and they will appear in this list.",
+      "error-msg": "An error occurred while loading the list, please contact system owner to resolve the issue.",
+      "not-registered-status-td": "Not registered",
+      "active-status-td": "Active",
+      "blocked-status-td": "Blocked"
+    },
+    "customers-list": {
+      "customer-drawer-title": "View customer"
     }
   }
 }
