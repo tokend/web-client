@@ -51,7 +51,7 @@ describe.only('CsvUtil', () => {
             expected: [
               ['col1', 'col2'],
               ['item11', 'item12'],
-              ['item21', 'item22']
+              ['item21', 'item22'],
             ],
           },
           {
