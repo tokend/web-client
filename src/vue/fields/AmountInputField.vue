@@ -83,7 +83,7 @@ export default {
     return {
       value: {
         required,
-        amountRange: amountRange(this.minAmount, this.maxAmount)
+        amountRange: amountRange(this.minAmount, this.maxAmount),
       },
     }
   },

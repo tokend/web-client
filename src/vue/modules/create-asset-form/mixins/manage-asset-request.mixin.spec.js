@@ -301,7 +301,7 @@ describe('Manage asset request mixin', () => {
     })
 
     describe('$getDocumentDetailsOrEmptyDocument()', () => {
-      it('when instance of DocumentContainer provided returns result of `doc#getDetailsForSave()`', () => {
+      it('when instance of DocumentContainer provided returns result of `doc.getDetailsForSave()`', () => {
         const document = new DocumentContainer({ key: 'some-key' })
         sandbox.stub(document, 'getDetailsForSave')
           .returns(4242) // we do not care of what returned actually
@@ -310,7 +310,7 @@ describe('Manage asset request mixin', () => {
           .equal(4242)
       })
 
-      it('when not an instance of DocumentContainer provided returns result of `DocumentContainer#getEmptyDetailsForSave()`', () => {
+      it('when not an instance of DocumentContainer provided returns result of `DocumentContainer.getEmptyDetailsForSave()`', () => {
         sandbox.stub(DocumentContainer, 'getEmptyDetailsForSave')
           .returns(848484) // we do not care of what returned actually
 
