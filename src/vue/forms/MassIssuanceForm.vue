@@ -70,8 +70,9 @@
         <div class="app__form-actions">
           <form-confirmation
             v-if="formMixin.isConfirmationShown"
+            :is-pending="formMixin.isPending"
             @cancel="hideConfirmation"
-            @ok="submit"
+            @ok="hideConfirmationAfterSubmit(submit)"
           />
 
           <button
@@ -103,11 +104,19 @@ import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import { required } from '@validators'
 
+import { CsvUtil } from '@/js/utils/csv.util'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-// import { CsvUtil } from '@/js/utils/csv.util'
+import { Bus } from '@/js/helpers/event-bus'
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { store, vuexTypes } from '@/vuex'
+
+import { api } from '@/api'
+import { base } from '@tokend/js-sdk'
+
+const EVENTS = {
+  submitted: 'submitted',
+}
 
 export default {
   name: 'mass-issuance-form',
@@ -116,14 +125,20 @@ export default {
 
   mixins: [FormMixin, IdentityGetterMixin],
 
-  props: {},
+  props: {
+    assetCode: { type: String, default: '' },
+    receivers: { type: String, default: '' },
+    amount: { type: [String, Number], default: '' },
+  },
 
   data () {
     return {
       form: {
-        assetCode: store.getters[vuexTypes.ownedAssets][0].code || '',
-        receivers: '',
-        amount: '',
+        assetCode: this.assetCode ||
+          store.getters[vuexTypes.ownedAssets][0].code ||
+          '',
+        receivers: this.receivers || '',
+        amount: String(this.amount) || '',
       },
     }
   },
@@ -149,15 +164,61 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      loadAssets: vuexTypes.LOAD_ASSETS,
+    }),
+
     async submit () {
+      this.disableForm()
+
       try {
-        // TODO
-        // const parsed = CsvUtil.parse(this.form.receivers)[0]
-        // console.log(parsed)
-        // console.log(await this.getAccountIdByEmailMass())
+        const operations = await this.buildOperationsToSubmit()
+
+        if (!operations.length) {
+          Bus.error('mass-issuance-form.no-receivers-found')
+          return
+        }
+
+        await api.postOperations(...operations)
+
+        await this.loadAssets()
+        this.clearFieldsWithOverriding({ assetCode: this.form.assetCode })
+        this.$emit(EVENTS.submitted)
+        Bus.success('mass-issuance-form.issued-successful-notification')
       } catch (error) {
         ErrorHandler.process(error)
       }
+
+      this.enableForm()
+    },
+
+    async buildOperationsToSubmit () {
+      const emails =
+        CsvUtil.parseConcat(this.form.receivers, { trim: true })
+
+      const balanceIds =
+        await this.getBalanceIdByEmailMass(emails, this.form.assetCode)
+
+      const operations = balanceIds.map((balId, id) => base
+        .CreateIssuanceRequestBuilder.createIssuanceRequest({
+          receiver: balId,
+          asset: this.form.assetCode,
+          amount: String(this.form.amount),
+          reference: new Date().toISOString() + id,
+          creatorDetails: {},
+        }))
+
+      return operations
+    },
+
+    buildCreateIssuanceRequestOp (balanceId) {
+      return base.CreateIssuanceRequestBuilder.createIssuanceRequest({
+        receiver: balanceId,
+        asset: this.form.assetCode,
+        amount: String(this.form.amount),
+        reference: new Date().toISOString(),
+        creatorDetails: {},
+      })
     },
   },
 }

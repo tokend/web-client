@@ -2304,17 +2304,19 @@
       "invite-btn": "Invite",
       "issue-btn": "Issue",
       "invite-drawer-heading": "Invite new users",
-      "issue-drawer-heading": "Mass issue"
+      "issue-drawer-heading": "Mass issuance"
     },
     "mass-issuance-form": {
       "asset-lbl": "Asset",
       "available-for-issuance-hint": "Available for issuance: {{amount, money}}",
       "amount-lbl": "Amount",
-      "how-to-receivers-paragraph": "List all receivers emails in the box below, separate them with commas. Each receiver will gain the amount you specified in the “Amount” field. If the available amount is insufficient the operation will fail and no asset will be issued to anyone.",
+      "how-to-receivers-paragraph": "List all receivers emails in the box below, separate them with commas. Each receiver will gain the amount you specified in the “Amount” field. If the available amount is insufficient the operation will fail and no asset will be issued to anyone. Not found users and the ones that do not have balance in the selected asset will not receive the issuance but all the others will.",
       "receivers-lbl": "Receivers",
       "submit-btn": "Issue",
       "no-assets-msg-title": "No issuable assets yet",
-      "no-assets-msg-description": "Unfortunately, you do not have any assets now, please create an asset and try again."
+      "no-assets-msg-description": "Unfortunately, you do not have any assets now, please create an asset and try again.",
+      "issued-successful-notification": "Mass issuance performed successfully.",
+      "no-receivers-found": "Receivers you provided not found or cannot receive the issuance. Please ensure you specified the valid receivers list and try again."
     }
   }
 }
