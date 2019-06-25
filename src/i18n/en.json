@@ -2305,6 +2305,16 @@
       "issue-btn": "Issue",
       "invite-drawer-heading": "Invite new users",
       "issue-drawer-heading": "Mass issue"
+    },
+    "mass-issuance-form": {
+      "asset-lbl": "Asset",
+      "available-for-issuance-hint": "Available for issuance: {{amount, money}}",
+      "amount-lbl": "Amount",
+      "how-to-receivers-paragraph": "List all receivers emails in the box below, separate them with commas. Each receiver will gain the amount you specified in the “Amount” field. If the available amount is insufficient the operation will fail and no asset will be issued to anyone.",
+      "receivers-lbl": "Receivers",
+      "submit-btn": "Issue",
+      "no-assets-msg-title": "No issuable assets yet",
+      "no-assets-msg-description": "Unfortunately, you do not have any assets now, please create an asset and try again."
     }
   }
 }
