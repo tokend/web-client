@@ -35,6 +35,7 @@ const mutations = {
 
   // kyc recovery
   SET_KYC_RECOVERY_LATEST_REQUEST: 'SET_KYC_RECOVERY_LATEST_REQUEST',
+  SET_KYC_RECOVERY_LATEST_REQUEST_DATA: 'SET_KYC_RECOVERY_LATEST_REQUEST_DATA',
 
   // assets
   SET_ASSETS: 'SET_ASSETS',
@@ -109,6 +110,7 @@ const getters = {
   walletAccountId: 'walletAccountId',
   walletEmail: 'walletEmail',
   walletSeed: 'walletSeed',
+  walletPublicKey: 'walletPublicKey',
 
   // factors
   factors: 'factors',
@@ -138,6 +140,7 @@ const getters = {
   kycRecoveryRequestId: 'kycRecoveryRequestId',
   kycRecoveryState: 'kycRecoveryState',
   kycRecoveryStateI: 'kycRecoveryStateI',
+  kycRecoveryRequestData: 'kycRecoveryRequestData',
   isNoKycRecoveryInProgress: 'isNoKycRecoveryInProgress',
   isKycRecoveryInited: 'isKycRecoveryInited',
   isKycRecoveryPending: 'isKycRecoveryPending',
