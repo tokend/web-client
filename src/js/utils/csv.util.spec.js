@@ -77,5 +77,28 @@ describe('CsvUtil', () => {
         }
       })
     })
+
+    describe('parseConcat()', () => {
+      it('returns concatenated result of CsvUtil.parse()', () => {
+        sinon.stub(CsvUtil, 'parse')
+        CsvUtil.parse
+          .withArgs('item1,item2', { delimiters: ',' })
+          .returns([['item1', 'item2']])
+          .withArgs('item1\nitem2\nitem3', { delimiters: ',' })
+          .returns([['item1'], ['item2'], ['item3']])
+
+        expect(
+          CsvUtil.parseConcat('item1,item2', { delimiters: ',' }),
+          'variant 1'
+        ).to.eql(['item1', 'item2'])
+
+        expect(
+          CsvUtil.parseConcat('item1\nitem2\nitem3', { delimiters: ',' }),
+          'variant 2'
+        ).to.eql(['item1', 'item2', 'item3'])
+
+        CsvUtil.parse.restore()
+      })
+    })
   })
 })

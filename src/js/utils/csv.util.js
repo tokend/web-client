@@ -32,4 +32,13 @@ export class CsvUtil {
 
     return csvParseSync(input, csvParseSyncOpts)
   }
+
+  /**
+   * The same as CsvUtil.parse() but returns concatenated result
+   * @param  {...any} args
+   */
+  static parseConcat (...args) {
+    const result = this.parse(...args)
+    return [].concat(...result)
+  }
 }
