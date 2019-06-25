@@ -180,7 +180,7 @@ export default {
     form: {
       asset: {},
       amount: '',
-      quoteAssets: [{ number: 0, price: '', asset: {}, address: '' }],
+      quoteAssets: [{ price: '', asset: {}, address: '' }],
     },
     isLoaded: false,
     isLoadFailed: false,
@@ -201,10 +201,10 @@ export default {
             },
             asset: {
               required,
-              selectedSameAssetCode: (asset, quoteAsset) => {
+              selectedSameAssetCode: asset => {
                 /* eslint-disable max-len */
                 const selectedAssets = this.getSelectedAssetsByAssetCode(asset.code)
-                return selectedSameAssetCode(quoteAsset.number, selectedAssets)
+                return selectedSameAssetCode(selectedAssets)
                 /* eslint-enable max-len */
               },
             },
@@ -270,7 +270,6 @@ export default {
 
     addQuoteAsset (index) {
       this.form.quoteAssets.push({
-        number: index + 1,
         price: '',
         address: '',
         asset: this.quoteAtomicSwapBalancesAssets[0],
@@ -279,9 +278,6 @@ export default {
 
     deleteQuoteAsset (index) {
       this.form.quoteAssets.splice(index, 1)
-      this.form.quoteAssets.forEach((asset, index) => {
-        asset.number = index
-      })
     },
 
     canAddQuoteAsset (index) {
