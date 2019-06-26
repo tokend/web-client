@@ -64,7 +64,7 @@ export default {
   },
   props: {
     movements: {
-      type: Array,
+      type: Array, /** {@link Movement} **/
       required: true,
     },
     isMovementsLoaded: {

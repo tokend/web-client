@@ -21,12 +21,8 @@ describe('Load asset types mixin', () => {
   beforeEach(() => {
     store = new Vuex.Store({
       getters: {
-        accountId: () => (
-          'GDLI4EG4S5Q6G2JOM3OVVMODNE25OBYDKPUR2IKDTDRDP5ZNO57HGZ6D'
-        ),
-        accountBalanceByCode: () => () => (
-          { id: 'GDLI4EG4S5Q6G2JOM3OVVMODNE25OBYDKPUR2IKDTDRDP5ZNO57HGZ6D' }
-        ),
+        accountId: () => ({}),
+        accountBalanceByCode: () => () => ({}),
       },
     })
     wrapper = mount(MovementsHistoryModule, {

@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import { Movement } from '../wrappers/movement'
 import {
   BalanceChangedEffect,
   ParticularBalanceChangeEffect,
@@ -98,7 +99,7 @@ export default {
   },
   props: {
     movement: {
-      type: Object,
+      type: Movement,
       required: true,
     },
   },

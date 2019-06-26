@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { Movement } from '../wrappers/movement'
 
 import TranslationFiltersMixin from '../mixins/translation-filters.mixin'
 
@@ -36,7 +37,7 @@ export default {
   mixins: [TranslationFiltersMixin],
   props: {
     movement: {
-      type: Object,
+      type: Movement,
       required: true,
     },
   },
