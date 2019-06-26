@@ -18,7 +18,6 @@ module.exports = {
     'font-family-no-duplicate-names': [true, { severity: 'warning' }],
     'font-family-no-missing-generic-family-keyword': [true, { severity: 'warning' }],
 
-    'function-calc-no-invalid': [true, { severity: 'warning' }],
     'function-calc-no-unspaced-operator': [true, { severity: 'warning' }],
     'function-linear-gradient-no-nonstandard-direction': [true, { severity: 'warning' }],
 
@@ -43,11 +42,6 @@ module.exports = {
     'selector-type-no-unknown': [true, { severity: 'warning' }],
 
     'media-feature-name-no-unknown': [true, { severity: 'warning' }],
-
-    'at-rule-no-unknown': [true, {
-      severity: 'warning',
-      ignoreAtRules: ['mixin', 'include'],
-    }],
 
     'comment-no-empty': [true, { severity: 'warning' }],
 
@@ -162,30 +156,6 @@ module.exports = {
     'selector-pseudo-element-case': ['lower', { severity: 'warning' }],
     'selector-pseudo-element-colon-notation': ['single', { severity: 'warning' }],
     'selector-type-case': ['lower', { severity: 'warning' }],
-    /**
-     * selector-nested-pattern
-     *
-     * Only followed patterns allowed:
-     * 1. selector & {
-     *      ...code
-     *    }
-     * 2. &:[any pseudo-class|element] OR &::[any pseudo-class|element] {
-     *      ...code
-     *    }
-     * 3. &--[class modifier name] {
-     *      ...code
-     *    }
-     * 4. & + & {
-     *      ...code
-     *    }
-     * 5. &[any attr] {
-     *      ...code
-     *    }
-     */
-    'selector-nested-pattern': [
-      '(^(.*\\s&(,?)+(\\s*)?)+$|^(&(:{1,2}|\\[{1})[a-z-]{1}[0-9a-z()[\\],._:+="\'-]+(\\s*)?)+$|^(&-{2}[a-z]{1}[0-9a-z-()[\\]:,]+(\\s*)?)+)$',
-      { severity: 'warning' },
-    ],
 
     'selector-list-comma-newline-after': ['always', { severity: 'warning' }],
     'selector-list-comma-space-after': ['always-single-line', { severity: 'warning' }],

@@ -15,6 +15,10 @@
         <button
           type="submit"
           class="form-confirmation__ok-btn app__button-raised"
+          :class="isDangerColor
+            ? 'app__button-raised--danger'
+            : 'app__button-raised'
+          "
           @click.prevent="emitOk"
           :disabled="isPending || isDisabled">
           <template v-if="!isPending">
@@ -57,6 +61,10 @@ export default {
     cancelEvent: {
       type: String,
       default: 'cancel',
+    },
+    isDangerColor: {
+      type: Boolean,
+      default: false,
     },
   },
   data: _ => ({

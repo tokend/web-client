@@ -57,6 +57,7 @@ export class EventBus extends Vue {
       warning: 'warning',
       error: 'error',
       info: 'info',
+      updatePollRequests: 'polls:updateRequestsList',
     }
   }
 
