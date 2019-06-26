@@ -3,9 +3,9 @@
     <div
       v-if="isLoaded"
       class="kyc-recovery-management__inner">
-      <kyc-recovery-unverified />
-      <verification-general-form />
-      <verification-corporate-form />
+      <kyc-recovery-unverified v-if="isAccountUnverified" />
+      <verification-general-form v-else-if="isAccountGeneral" />
+      <verification-corporate-form v-else-if="isAccountCorporate" />
     </div>
   </div>
 </template>
