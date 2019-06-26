@@ -54,7 +54,7 @@ export default {
         submodules: [
           new CustomersListPageModule({
             routerEntry: {
-              path: '/customers/explore',
+              path: '/customers/list',
               name: vueRoutes.customersList.name,
               meta: { pageNameTranslationId: 'pages-names.customers-list' },
             },

@@ -1,8 +1,7 @@
 <template>
   <div class="customers-table">
-    <div class="app__table app__table--with-shadow
-        app__table--last-td-to-right
-      ">
+    <!-- eslint-disable-next-line max-len -->
+    <div class="app__table app__table--with-shadow app__table--last-td-to-right">
       <table>
         <thead>
           <tr>
