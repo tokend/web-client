@@ -13,7 +13,8 @@ describe('wallet.module', () => {
     'alice@mail.com',
     mockSeed,
     'GA7QET54X3WDJPMGRKTE32WKM4NRLKKKHHI74NXNMNTQR3VONA3XGIBP',
-    '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
+    '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c',
+    ''
   )
 
   afterEach(() => {
@@ -52,11 +53,14 @@ describe('wallet.module', () => {
       sinon.stub(walletsManager, 'get').resolves(mockWallet)
 
       const credentials = { email: 'bob@mail.com', password: 'qweqweqwe' }
-      const expectedMutations = { [vuexTypes.SET_WALLET]: mockWallet }
-
+      const expectedMutations = {
+        [vuexTypes.SET_SESSION]: mockWallet,
+        [vuexTypes.SET_WALLET]: mockWallet,
+      }
       await actions[vuexTypes.LOAD_WALLET](store, credentials)
 
-      expect(store.commit.args).to.deep.equal(Object.entries(expectedMutations))
+      expect(store.commit.args)
+        .to.deep.equal(Object.entries(expectedMutations))
     })
   })
 

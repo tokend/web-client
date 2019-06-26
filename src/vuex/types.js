@@ -39,7 +39,6 @@ const mutations = {
   UPDATE_ASSETS: 'UPDATE_ASSETS',
 
   // session
-  SET_SESSION_ID: 'SET_SESSION_ID',
   SET_SESSION: 'SET_SESSION',
 }
 
