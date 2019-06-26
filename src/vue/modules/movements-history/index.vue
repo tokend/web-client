@@ -93,6 +93,7 @@ export default {
       const balance = this.accountBalanceByCode(this.assetCode)
       const filter = { account: this.accountId, balance: balance.id }
       const sharePageFilter = { asset: this.assetCode }
+
       return api.getWithSignature('/v3/history', {
         page: {
           order: 'desc',
