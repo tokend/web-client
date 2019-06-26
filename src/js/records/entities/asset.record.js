@@ -41,6 +41,11 @@ export class AssetRecord {
 
     this.balance = this._getBalance(balances)
     this.convertedBalance = this._getConvertedBalance(balances)
+
+    this.stellarAssetCode = safeGet(record, 'details.stellar.assetCode') || ''
+    this.stellarAssetType = safeGet(record, 'details.stellar.assetType') || ''
+    this.stellarWithdraw = safeGet(record, 'details.stellar.withdraw') || false
+    this.stellarDeposit = safeGet(record, 'details.stellar.deposit') || false
   }
 
   _getBalance (balances) {

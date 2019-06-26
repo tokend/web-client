@@ -662,7 +662,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      baseAssets: vuexTypes.balancesAssets,
+      baseAssets: vuexTypes.fiatAssets,
       assets: vuexTypes.assets,
       statsQuoteAsset: vuexTypes.statsQuoteAsset,
     }),

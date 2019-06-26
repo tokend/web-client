@@ -4,7 +4,7 @@
       class="radio-field__input"
       type="radio"
       :disabled="disabled"
-      :name="name"
+      :name="name || id"
       :id="id"
       :value="cbValue"
       :required="required"
@@ -12,7 +12,7 @@
       @change="onChange"
     >
 
-    <div class="radio-field__input-custom" />
+    <div class="radio-field__tick" />
 
     <label
       class="radio-field__label"
@@ -32,12 +32,11 @@ const EVENTS = {
 
 export default {
   props: {
-    name: { type: String, default: null },
+    name: { type: String, default: '' },
     disabled: { type: Boolean, default: false },
-    // TODO: remove `Array` type from allowed
-    active: { type: [Number, String, Array], default: null },
-    cbValue: { type: [Number, String], default: null },
-    title: { type: [String, Number], default: null },
+    value: { type: [String, Number], required: true },
+    cbValue: { type: [String, Number], default: '' },
+    title: { type: [String, Number], default: '' },
     required: { type: Boolean, default: false },
   },
 
@@ -46,7 +45,10 @@ export default {
       return `radio-field-${this._uid}`
     },
     isChecked () {
-      return this.active === this.cbValue
+      if (typeof this.cbValue === 'number') {
+        return +this.cbValue === +this.value
+      }
+      return this.cbValue === this.value
     },
   },
 
@@ -59,40 +61,94 @@ export default {
 </script>
 
 <style lang="scss">
+@import './scss/variables';
 @import '~@scss/variables';
 
+// HACK: fix cut of transforms on some browsers (chrome)
+$z-index-radio-field: 0;
+$tick-size: 1.8rem;
+
 .radio-field {
-  width: 100%;
+  position: relative;
   display: flex;
-  align-items: center;
-  padding: 0.8rem 0;
+  width: fit-content;
+  z-index: $z-index-radio-field;
+}
+
+.radio-field__label {
+  font-size: 1.4rem;
+  color: $field-color-focused;
+  vertical-align: middle;
+  padding-left: 2.8rem;
+  cursor: pointer;
+
+  .radio-field__input:disabled ~ & {
+    filter: grayscale(100%);
+    cursor: default;
+    color: $field-color-unfocused;
+  }
+}
+
+.radio-field__tick {
+  width: $tick-size;
+  min-width: $tick-size;
+  height: $tick-size;
+  cursor: pointer;
+  margin: 0 1.3rem 0 0;
+  z-index: $z-index-radio-field;
+  border: solid 0.1rem;
+  border-radius: 50%;
+  border-color: $field-color-unfocused;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: block;
+  pointer-events: none;
+  transition: outline-color $field-transition-duration;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+    border-radius: 50%;
+    height: $tick-size * 0.5;
+    width: $tick-size * 0.5;
+    background-color: $field-color-focused;
+    opacity: 0;
+  }
+
+  .radio-field__input:checked ~ & {
+    &:after {
+      opacity: 1;
+    }
+  }
+
+  .radio-field__input:disabled ~ & {
+    filter: grayscale(100%);
+    cursor: default;
+    color: $field-color-unfocused;
+  }
+
+  .radio-field:hover > & {
+    outline-color: $field-color-unfocused;
+  }
+
+  .radio-field__input:focus ~ & {
+    outline-color: $field-color-unfocused;
+  }
 }
 
 .radio-field__input {
-  display: none;
-}
-
-.radio-field__input-custom {
-  width: 1.5rem;
-  height: 1.5rem;
-  background-color: $col-radio-field-background;
-  border: 0.1rem solid $col-radio-field-border;
-  border-radius: 50%;
-  margin-right: 0.8rem;
-
-  .radio-field__input:checked + & {
-    position: relative;
-
-    &:after {
-      content: '';
-      position: absolute;
-      top: 0.3rem;
-      left: 0.3rem;
-      width: 0.7rem;
-      height: 0.7rem;
-      background-color: $col-radio-field-border;
-      border-radius: 50%;
-    }
-  }
+  position: absolute;
+  opacity: 0;
+  height: $tick-size;
+  width: $tick-size;
+  top: 0;
+  left: 0;
+  cursor: pointer;
 }
 </style>
