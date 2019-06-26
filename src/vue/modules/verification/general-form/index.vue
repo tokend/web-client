@@ -50,7 +50,7 @@
           class="verification-general-form__submit-btn"
           :disabled="formMixin.isDisabled"
         >
-          {{ (Number(kycRequestId) > 0
+          {{ (isExistingRequest
             ? 'verification-form.update-btn'
             : 'verification-form.create-btn'
           ) | globalize }}
@@ -112,16 +112,12 @@ export default {
     }),
     ...mapGetters([
       vuexTypes.accountId,
-      vuexTypes.kvDefaultSignerRoleId,
-      vuexTypes.walletPublicKey,
-      vuexTypes.kycRecoveryState,
-      vuexTypes.kycRecoveryRequestId,
       vuexTypes.kvEntryGeneralRoleId,
       vuexTypes.kvEntryUsVerifiedRoleId,
       vuexTypes.kvEntryUsAccreditedRoleId,
       vuexTypes.kycRequestId,
-      vuexTypes.kycRecoveryRequestData,
-      vuexTypes.kycRecoveryLatestRequestBlobId,
+      vuexTypes.kycRecoveryBlobId,
+      vuexTypes.kycRecoveryState,
     ]),
     verificationCode () {
       return this.accountId.slice(1, 6)
@@ -142,6 +138,22 @@ export default {
     isKycRecoveryPage () {
       return this.$route.name === vueRoutes.kycRecoveryManagement.name
     },
+
+    isExistingRequest () {
+      if (this.isKycRecoveryPage) {
+        return this.kycRecoveryState &&
+        (
+          this.kycRecoveryState === REQUEST_STATES_STR.pending ||
+          this.kycRecoveryState === REQUEST_STATES_STR.rejected
+        )
+      } else {
+        return this.kycState &&
+        (
+          this.kycState === REQUEST_STATES_STR.pending ||
+          this.kycState === REQUEST_STATES_STR.rejected
+        )
+      }
+    },
   },
   async created () {
     try {
@@ -152,9 +164,9 @@ export default {
         // unfulfilled requests. Is temporary until canceling change
         // role requests is implemented on backend:
         this.isCountryChangeDisabled = true
-      } else if (this.kycRecoveryLatestRequestBlobId) {
+      } else if (this.kycRecoveryBlobId) {
         this.populateForm(await this.getBlobData(
-          this.kycRecoveryLatestRequestBlobId
+          this.kycRecoveryBlobId
         ))
       }
     } catch (e) {
@@ -168,6 +180,9 @@ export default {
       populateForm: types.POPULATE_STATE,
       uploadDocuments: types.UPLOAD_DOCUMENTS,
       createBlob: types.CREATE_BLOB,
+    }),
+    ...mapActions({
+      sendKycRecoveryRequest: vuexTypes.SEND_KYC_RECOVERY_REQUEST,
     }),
     isAllFormsValid () {
       let isValid = true
@@ -188,10 +203,10 @@ export default {
         await this.uploadDocuments()
         const blobId = await this.createBlob(this.accountId)
         if (this.isKycRecoveryPage) {
-          await this.createKycRecoveryRequest(blobId)
+          await this.sendKycRecoveryRequest(blobId)
           this.enableForm()
         } else {
-          await this.createVerificationRequest(blobId)
+          await this.createKycVerificationRequest(blobId)
           // we duplicating enabling form in try/catch blocks to prevent race
           // condition - the outer component disables the form after submit
           // event again and can does it before we enable it here.
@@ -203,57 +218,15 @@ export default {
         ErrorHandler.process(e)
       }
     },
-    async createVerificationRequest (blobId) {
-      const isExistingRequest = this.kycState &&
-        (
-          this.kycState === REQUEST_STATES_STR.pending ||
-          this.kycState === REQUEST_STATES_STR.rejected
-        )
+    async createKycVerificationRequest (blobId) {
       const operation = base.CreateChangeRoleRequestBuilder
         .createChangeRoleRequest({
-          requestID: isExistingRequest ? String(this.kycRequestId) : '0',
+          requestID: this.isExistingRequest ? String(this.kycRequestId) : '0',
           destinationAccount: this.accountId,
           accountRoleToSet: this.accountRoleToSet + '',
           creatorDetails: { blob_id: blobId },
         })
 
-      await api.postOperations(operation)
-    },
-
-    async createKycRecoveryRequest (blobId) {
-      const isExistingRequest = this.kycRecoveryState &&
-        (
-          this.kycRecoveryState === REQUEST_STATES_STR.pending ||
-          this.kycRecoveryState === REQUEST_STATES_STR.rejected
-        )
-      const newSigner = base.Keypair.random()
-      const opts = {
-        targetAccount: this.accountId,
-        signers: [
-          {
-            publicKey: newSigner.accountId(),
-            roleID: '1',
-            weight: '1000',
-            identity: '1',
-            details: {},
-          },
-          {
-            publicKey: this.walletPublicKey,
-            roleID: `${this.kvDefaultSignerRoleId}`,
-            weight: '1000',
-            identity: '1',
-            details: {},
-          },
-        ],
-        creatorDetails: {
-          blob_id: blobId,
-        },
-      }
-
-      const operation = isExistingRequest
-        ? base.CreateKYCRecoveryRequestBuilder.update(opts,
-          this.kycRecoveryRequestId)
-        : base.CreateKYCRecoveryRequestBuilder.create(opts)
       await api.postOperations(operation)
     },
   },

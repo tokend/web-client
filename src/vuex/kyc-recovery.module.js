@@ -1,6 +1,7 @@
 import { vuexTypes } from './types'
 
 import { api } from '@/api'
+import { base } from '@tokend/js-sdk'
 
 import safeGet from 'lodash/get'
 import { KYC_RECOVERY_STATES } from '@/js/const/kyc-recovery-states.const'
@@ -47,7 +48,7 @@ export const actions = {
   async [vuexTypes.LOAD_KYC_RECOVERY_LATEST_REQUEST_DATA] (
     { getters, rootGetters, commit }
   ) {
-    const latestBlobId = getters[vuexTypes.kycRecoveryLatestRequestBlobId]
+    const latestBlobId = getters[vuexTypes.kycRecoveryBlobId]
     if (!latestBlobId) {
       return
     }
@@ -56,6 +57,42 @@ export const actions = {
       `/accounts/${rootGetters[vuexTypes.accountId]}/blobs/${latestBlobId}`
     )
     commit(vuexTypes.SET_KYC_RECOVERY_LATEST_REQUEST_DATA, blob.value)
+  },
+
+  // If blobId is empty, account request will be defined as a request
+  // for unverified user
+  async [vuexTypes.SEND_KYC_RECOVERY_REQUEST] (
+    { getters, rootGetters, commit },
+    blobId
+  ) {
+    const newSigner = base.Keypair.random()
+    const opts = {
+      targetAccount: rootGetters[vuexTypes.accountId],
+      signers: [
+        {
+          publicKey: newSigner.accountId(),
+          roleID: '1',
+          weight: '1000',
+          identity: '1',
+          details: {},
+        },
+        {
+          publicKey: rootGetters[vuexTypes.walletPublicKey],
+          roleID: String(rootGetters[vuexTypes.kvDefaultSignerRoleId]),
+          weight: '1000',
+          identity: '1',
+          details: {},
+        },
+      ],
+      creatorDetails: {
+        blob_id: blobId,
+      },
+    }
+    const operation = getters[vuexTypes.isKycRecoveryInited]
+      ? base.CreateKYCRecoveryRequestBuilder.create(opts)
+      : base.CreateKYCRecoveryRequestBuilder.update(opts,
+        getters[vuexTypes.kycRecoveryRequestId])
+    await api.postOperations(operation)
   },
 }
 
@@ -83,7 +120,7 @@ export const getters = {
   [vuexTypes.isKycRecoveryPermanentlyRejected]: (a, getters, b, rootGetters) =>
     getters[vuexTypes.accountKycRecoveryStatus] ===
     KYC_RECOVERY_STATES.permanently_rejected,
-  [vuexTypes.kycRecoveryLatestRequestBlobId]: state => safeGet(state,
+  [vuexTypes.kycRecoveryBlobId]: state => safeGet(state,
     'request.requestDetails.creatorDetails.blobId'),
 }
 

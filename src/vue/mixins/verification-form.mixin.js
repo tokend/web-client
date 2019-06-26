@@ -19,13 +19,6 @@ export default {
       kycRequestId: vuexTypes.kycRequestId,
       accountId: vuexTypes.accountId,
     }),
-
-    isUpdatableKycRequest () {
-      return (
-        this.kycState === REQUEST_STATES_STR.rejected ||
-        this.kycState === REQUEST_STATES_STR.pending
-      )
-    },
   },
   methods: {
     ...mapActions({

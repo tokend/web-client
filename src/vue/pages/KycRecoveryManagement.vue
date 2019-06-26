@@ -1,9 +1,12 @@
 <template>
   <div class="kyc-recovery-management">
-    <template v-if="isLoaded">
+    <div
+      v-if="isLoaded"
+      class="kyc-recovery-management__inner">
+      <kyc-recovery-unverified />
       <verification-general-form />
-      <verification-corporate-form v-if="isAccountGeneral" />
-    </template>
+      <verification-corporate-form />
+    </div>
   </div>
 </template>
 
@@ -12,40 +15,39 @@ import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 // import { Bus } from '@/js/helpers/event-bus'
-// import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
-
+import KycRecoveryUnverified from '@/vue/pages/KycRecoveryUnverified'
 import VerificationGeneralForm from '@/vue/modules/verification/general-form/index'
 import VerificationCorporateForm from '@/vue/pages/VerificationCorporate'
 
 export default {
   name: 'kyc-recovery-management',
   components: {
+    KycRecoveryUnverified,
     VerificationGeneralForm,
     VerificationCorporateForm,
   },
   data: _ => ({
     isLoaded: false,
-    isLoadingFailed: false,
-    isSubmitting: false,
   }),
   computed: {
     ...mapGetters([
       vuexTypes.accountId,
-      vuexTypes.kvDefaultSignerRoleId,
       vuexTypes.kycRecoveryState,
       vuexTypes.kycRecoveryRequestId,
       vuexTypes.isAccountGeneral,
       vuexTypes.isAccountCorporate,
       vuexTypes.isAccountUnverified,
+      vuexTypes.isKycRecoveryInited,
     ]),
   },
 
   async created () {
     try {
-      await this.loadKycRecovery()
+      if (!this.isKycRecoveryInited) {
+        await this.loadKycRecovery()
+      }
       this.isLoaded = true
     } catch (e) {
-      this.isLoadingFailed = true
       ErrorHandler.processWithoutFeedback(e)
     }
   },
@@ -62,8 +64,12 @@ export default {
 @import '~@scss/variables';
 @import '~@scss/mixins';
 
-.kyc-recovery-management {
-  display: flex;
-  justify-content: center;
+// .kyc-recovery-management {
+//   // display: flex;
+//   // justify-content: center;
+// }
+
+.kyc-recovery-management__inner {
+  padding: 3.5rem 16rem;
 }
 </style>

@@ -127,7 +127,7 @@
           class="verification-corporate-form__submit-btn app__button-raised"
           :disabled="formMixin.isDisabled"
         >
-          {{ (isUpdatableKycRequest
+          {{ (isExistingRequest
             ? 'verification-form.update-btn'
             : 'verification-form.create-btn'
           ) | globalize }}
@@ -143,10 +143,10 @@ import _get from 'lodash/get'
 
 import { api } from '@/api'
 
-import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
+import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 
-import { base, BLOB_TYPES } from '@tokend/js-sdk'
+import { BLOB_TYPES } from '@tokend/js-sdk'
 
 import { uploadDocument } from '@/js/helpers/upload-documents'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
@@ -154,7 +154,7 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import { required, validateUrl, integer, minValue } from '@validators'
@@ -213,42 +213,60 @@ export default {
       previousAccountRole: vuexTypes.kycPreviousRequestAccountRoleToSet,
       kycRecoveryState: vuexTypes.kycRecoveryState,
       kycRecoveryRequestId: vuexTypes.kycRecoveryRequestId,
-      kycRecoveryLatestRequestBlobId: vuexTypes.kycRecoveryLatestRequestBlobId,
+      kycRecoveryBlobId: vuexTypes.kycRecoveryBlobId,
       kycRecoveryRequestData: vuexTypes.kycRecoveryRequestData,
-      kvDefaultSignerRoleId: vuexTypes.kvDefaultSignerRoleId,
-      walletPublicKey: vuexTypes.walletPublicKey,
     }),
+
     isFormPopulatable () {
       return this.isAccountRoleReseted
         ? this.previousAccountRole === this.kvEntryCorporateRoleId
         : this.accountRoleToSet === this.kvEntryCorporateRoleId
     },
+
     isKycRecoveryPage () {
       return this.$route.name === vueRoutes.kycRecoveryManagement.name
+    },
+
+    isExistingRequest () {
+      if (this.isKycRecoveryPage) {
+        return this.kycRecoveryState &&
+        (
+          this.kycRecoveryState === REQUEST_STATES_STR.pending ||
+          this.kycRecoveryState === REQUEST_STATES_STR.rejected
+        )
+      } else {
+        return this.kycState &&
+        (
+          this.kycState === REQUEST_STATES_STR.pending ||
+          this.kycState === REQUEST_STATES_STR.rejected
+        )
+      }
     },
   },
 
   created () {
     if (this.isFormPopulatable) {
       this.form = this.parseKycData(this.kycLatestRequestData)
-    } else if (this.kycRecoveryLatestRequestBlobId) {
+    } else if (this.kycRecoveryBlobId) {
       this.form = this.parseKycData(this.kycRecoveryRequestData)
     }
   },
 
   methods: {
+    ...mapActions({
+      sendKycRecoveryRequest: vuexTypes.SEND_KYC_RECOVERY_REQUEST,
+    }),
     async submit () {
       if (!this.isFormValid()) return
       this.disableForm()
       this.isFormSubmitting = true
       try {
-        let operation
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycCorporate)
         if (this.isKycRecoveryPage) {
-          await this.createKycRecoveryRequest(kycBlobId)
+          await this.sendKycRecoveryRequest(kycBlobId)
         } else {
           await uploadDocument(this.form.avatar)
-          operation = this.createKycOperation(
+          const operation = this.createKycOperation(
             kycBlobId,
             this.kvEntryCorporateRoleId
           )
@@ -311,42 +329,6 @@ export default {
         teamSize: kycData.team_size,
         website: kycData.homepage,
       }
-    },
-    async createKycRecoveryRequest (blobId) {
-      const isExistingRequest = this.kycRecoveryState &&
-        (
-          this.kycRecoveryState === REQUEST_STATES_STR.pending ||
-          this.kycRecoveryState === REQUEST_STATES_STR.rejected
-        )
-      const newSigner = base.Keypair.random()
-      const opts = {
-        targetAccount: this.accountId,
-        signers: [
-          {
-            publicKey: newSigner.accountId(),
-            roleID: '1',
-            weight: '1000',
-            identity: '1',
-            details: {},
-          },
-          {
-            publicKey: this.walletPublicKey,
-            roleID: `${this.kvDefaultSignerRoleId}`,
-            weight: '1000',
-            identity: '1',
-            details: {},
-          },
-        ],
-        creatorDetails: {
-          blob_id: blobId,
-        },
-      }
-
-      const operation = isExistingRequest
-        ? base.CreateKYCRecoveryRequestBuilder.update(opts,
-          this.kycRecoveryRequestId)
-        : base.CreateKYCRecoveryRequestBuilder.create(opts)
-      await api.postOperations(operation)
     },
   },
 }
