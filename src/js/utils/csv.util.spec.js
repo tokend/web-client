@@ -72,6 +72,12 @@ describe('CsvUtil', () => {
               ['', ''],
             ],
           },
+          {
+            name: 'empty results filtered',
+            in: ',, ,,,,,   ,item1,item2,,item3,item4,',
+            inParams: { filterEmpty: true },
+            expected: [['item1', 'item2', 'item3', 'item4']],
+          },
         ]
 
         for (const item of suite) {

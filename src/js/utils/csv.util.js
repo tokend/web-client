@@ -19,6 +19,9 @@ export class CsvUtil {
    *
    * @param {boolean} [options.trim=false] Enables both trimLeft and trimRight
    *
+   * @param {boolean} [options.filterEmpty=false] Filters out empty
+   * strings (`/^\s*$/`), null and undefined values.
+   *
    * @returns {Array} Array of arrays.  Each nester array represents a row.
    */
   static parse (input, options = {}) {
@@ -32,7 +35,18 @@ export class CsvUtil {
       rtrim: options.trim || options.trimRight || false,
     }
 
-    return csvParseSync(input, csvParseSyncOpts)
+    const parsed = csvParseSync(input, csvParseSyncOpts)
+
+    if (options.filterEmpty) {
+      return parsed.map(row => {
+        return row.filter(item => item !== undefined &&
+          item !== null &&
+          !/^\s*$/gi.test(item)
+        )
+      })
+    } else {
+      return parsed
+    }
   }
 
   /**
