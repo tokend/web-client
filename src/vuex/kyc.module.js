@@ -140,7 +140,7 @@ export const actions = {
       { include: ['kyc_data'] }
     )
 
-    const latestBlobId = account.kycData.kycData.blobId
+    const latestBlobId = safeGet(account, 'kycData.kycData.blobId')
     if (!latestBlobId) {
       return
     }

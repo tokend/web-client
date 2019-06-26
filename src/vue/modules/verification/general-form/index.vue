@@ -205,7 +205,7 @@ export default {
         .createChangeRoleRequest({
           requestID: isExistingRequest ? String(this.kycRequestId) : '0',
           destinationAccount: this.accountId,
-          accountRoleToSet: this.accountRoleToSet,
+          accountRoleToSet: this.accountRoleToSet + '',
           creatorDetails: { blob_id: blobId },
         })
 
