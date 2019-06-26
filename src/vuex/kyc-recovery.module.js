@@ -84,7 +84,7 @@ export const getters = {
     getters[vuexTypes.accountKycRecoveryStatus] ===
     KYC_RECOVERY_STATES.permanently_rejected,
   [vuexTypes.kycRecoveryLatestRequestBlobId]: state => safeGet(state,
-    'request.requestDetails.creatorDetails.verificationData.blobId'),
+    'request.requestDetails.creatorDetails.blobId'),
 }
 
 export default {

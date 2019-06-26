@@ -1,8 +1,8 @@
 <template>
   <div class="kyc-recovery-management">
     <template v-if="isLoaded">
-      <verification-general-form v-if="isAccountGeneral" />
-      <verification-corporate-form />
+      <verification-general-form />
+      <verification-corporate-form v-if="isAccountGeneral" />
     </template>
   </div>
 </template>
