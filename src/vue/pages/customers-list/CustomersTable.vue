@@ -35,14 +35,8 @@
                   v-for="(balance, index) in customer.balances"
                   :key="balance.id"
                 >
-                  {{
-                    {
-                      value: balance.amount,
-                      currency: balance.assetCode
-                    } | formatMoney
-                  }}<template v-if="index < customer.balances.length - 1">
-                    ,
-                  </template>
+                  <!-- eslint-disable-next-line max-len -->
+                  {{ { value: balance.amount, currency: balance.assetCode } | formatMoney }}<template v-if="index < customer.balances.length - 1">,</template>
                 </span>
               </template>
 
