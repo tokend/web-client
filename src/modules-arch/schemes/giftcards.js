@@ -58,6 +58,7 @@ export default {
               name: vueRoutes.customersList.name,
               meta: { pageNameTranslationId: 'pages-names.customers-list' },
             },
+            isCorporateOnly: true,
           }),
         ],
         isCorporateOnly: true,
