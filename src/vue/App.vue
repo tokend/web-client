@@ -120,6 +120,7 @@ export default {
       loadKvEntries: vuexTypes.LOAD_KV_ENTRIES,
       loadAssets: vuexTypes.LOAD_ASSETS,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
+      loadSession: vuexTypes.LOAD_SESSION,
     }),
     async initApp () {
       api.useBaseURL(config.HORIZON_SERVER)
@@ -131,6 +132,7 @@ export default {
       await this.loadKvEntries()
 
       if (this[vuexTypes.isLoggedIn]) {
+        await this.loadSession()
         const wallet = new Wallet(
           this.walletEmail,
           this.walletSeed,

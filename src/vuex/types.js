@@ -37,6 +37,10 @@ const mutations = {
   // assets
   SET_ASSETS: 'SET_ASSETS',
   UPDATE_ASSETS: 'UPDATE_ASSETS',
+
+  // session
+  SET_SESSION_ID: 'SET_SESSION_ID',
+  SET_SESSION: 'SET_SESSION',
 }
 
 const actions = {
@@ -64,6 +68,9 @@ const actions = {
 
   // assets
   LOAD_ASSETS: 'LOAD_ASSETS',
+
+  // session
+  LOAD_SESSION: 'LOAD_SESSION',
 }
 
 const getters = {
@@ -142,6 +149,9 @@ const getters = {
   ownedAssets: 'ownedAssets',
   baseAtomicSwapBalancesAssets: 'baseAtomicSwapBalancesAssets',
   quoteAtomicSwapBalancesAssets: 'quoteAtomicSwapBalancesAssets',
+
+  // session
+  sessionId: 'sessionId',
 }
 
 export const vuexTypes = {

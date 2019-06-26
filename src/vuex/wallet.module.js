@@ -24,7 +24,6 @@ export const mutations = {
       secretSeed: wallet.secretSeed,
       email: wallet.email,
       id: wallet.id,
-      sessionId: wallet.sessionId,
     }
   },
 }
@@ -33,6 +32,7 @@ export const actions = {
   async [vuexTypes.LOAD_WALLET] ({ commit }, { email, password }) {
     const wallet = await walletsManager.get(email, password)
     useWallet(wallet)
+    commit(vuexTypes.SET_SESSION, wallet)
     commit(vuexTypes.SET_WALLET, wallet)
   },
   async [vuexTypes.STORE_WALLET] ({ commit }, wallet) {
