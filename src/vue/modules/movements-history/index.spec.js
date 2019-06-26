@@ -1,6 +1,7 @@
 import MovementsHistoryModule from './index'
 
 import { Wallet } from '@tokend/js-sdk'
+
 import Vuex from 'vuex'
 
 import { mount, createLocalVue } from '@vue/test-utils'

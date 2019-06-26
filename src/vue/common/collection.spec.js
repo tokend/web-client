@@ -1,30 +1,29 @@
 import { Collection } from './collection'
-// import { ErrorHandler } from '@/js/helpers/error-handler'
 
-describe('Collection object', () => {
+describe('Collection', () => {
+  const response = {
+    data: [],
+    fetchNext: () => {},
+  }
   let sandbox
+  let loader
+  let mapper
 
   beforeEach(() => {
     sandbox = sinon.createSandbox()
+    loader = sandbox.stub().resolves(response)
+    mapper = sandbox.stub()
   })
 
   afterEach(() => {
     sandbox.restore()
   })
 
-  const response = {
-    data: [1, 2],
-    fetchNext: () => {},
-  }
-
-  describe('method', () => {
+  describe('methods', () => {
     describe('loadPage', () => {
-      const loader = sinon.stub().resolves(response)
-      const mapper = sinon.stub()
-
       it('loads data if called once and extends previously loaded data if called repeatedly', async () => {
         const collection = new Collection(loader)
-        const fetchNext = sinon.stub(response, 'fetchNext').resolves(response)
+        const fetchNext = sandbox.stub(response, 'fetchNext').resolves(response)
 
         await collection.loadPage()
 
@@ -57,9 +56,9 @@ describe('Collection object', () => {
 
       it('sets isFail to true and handles error if error thrown', async () => {
         const error = new Error('Error')
-        const errorThrownFn = sinon.stub().throws(error)
+        const errorThrownFn = sandbox.stub().throws(error)
         const collection = new Collection(errorThrownFn)
-        sinon.stub(collection, '_errorHandler')
+        sandbox.stub(collection, '_errorHandler')
 
         await collection.loadPage()
 
@@ -71,14 +70,36 @@ describe('Collection object', () => {
     })
 
     describe('reload', () => {
-      it('calls loadPage method', async () => {
+      it('calls loadPage method as fetched first', async () => {
         const collection = new Collection()
-        sinon.stub(collection, 'loadPage')
+        sandbox.stub(collection, 'loadPage')
 
         collection.reload()
 
         expect(collection.loadPage).to.have.been.calledOnce
         collection.loadPage.restore()
+      })
+    })
+  })
+  describe('setters', () => {
+    describe('mapper', () => {
+      it('sets function witch used for map loaded data array', async () => {
+        const collection = new Collection(loader)
+        collection.mapper = mapper
+
+        await collection.loadPage()
+
+        expect(mapper).to.have.been.calledOnce
+      })
+    })
+    describe('loader', () => {
+      it('sets function witch load data', async () => {
+        const collection = new Collection()
+        collection.loader = loader
+
+        await collection.loadPage()
+
+        expect(loader).to.have.been.calledOnce
       })
     })
   })
