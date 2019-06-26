@@ -193,8 +193,10 @@ export default {
     },
 
     async buildOperationsToSubmit () {
-      const emails =
-        CsvUtil.parseConcat(this.form.receivers, { trim: true })
+      const emails = CsvUtil.parseConcat(this.form.receivers, {
+        trim: true,
+        filterEmpty: true,
+      })
 
       const balanceIds =
         await this.getBalanceIdByEmailMass(emails, this.form.assetCode)

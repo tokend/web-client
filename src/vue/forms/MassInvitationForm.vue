@@ -98,7 +98,10 @@ export default {
       this.disableForm()
 
       try {
-        const emails = CsvUtil.parseConcat(this.form.invitees, { trim: true })
+        const emails = CsvUtil.parseConcat(this.form.invitees, {
+          trim: true,
+          filterEmpty: true,
+        })
 
         const endpoint = `/integrations/dns/businesses/${this.accountId}/clients`
         const body = emails.map(email => ({
