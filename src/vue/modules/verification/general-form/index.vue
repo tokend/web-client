@@ -33,6 +33,7 @@
       />
       <section-avatar
         :is-disabled="formMixin.isDisabled"
+        v-if="!isKycRecoveryPage"
         ref="section-avatar"
       />
 
@@ -120,6 +121,7 @@ export default {
       vuexTypes.kvEntryUsAccreditedRoleId,
       vuexTypes.kycRequestId,
       vuexTypes.kycRecoveryRequestData,
+      vuexTypes.kycRecoveryLatestRequestBlobId,
     ]),
     verificationCode () {
       return this.accountId.slice(1, 6)
@@ -136,6 +138,10 @@ export default {
 
       return this.kvEntryGeneralRoleId
     },
+
+    isKycRecoveryPage () {
+      return this.$route.name === vueRoutes.kycRecoveryManagement.name
+    },
   },
   async created () {
     try {
@@ -146,8 +152,10 @@ export default {
         // unfulfilled requests. Is temporary until canceling change
         // role requests is implemented on backend:
         this.isCountryChangeDisabled = true
-      } else if (this.kycRecoveryRequestId) {
-        this.populateForm(this.kycRecoveryRequestData)
+      } else if (this.kycRecoveryLatestRequestBlobId) {
+        this.populateForm(await this.getBlobData(
+          this.kycRecoveryLatestRequestBlobId
+        ))
       }
     } catch (e) {
       ErrorHandler.processWithoutFeedback(e)
@@ -178,11 +186,11 @@ export default {
       this.disableForm()
       try {
         await this.uploadDocuments()
-        if (this.$route.name === vueRoutes.kycRecoveryManagement.name) {
-          await this.createKycRecoveryRequest()
+        const blobId = await this.createBlob(this.accountId)
+        if (this.isKycRecoveryPage) {
+          await this.createKycRecoveryRequest(blobId)
           this.enableForm()
         } else {
-          const blobId = await this.createBlob(this.accountId)
           await this.createVerificationRequest(blobId)
           // we duplicating enabling form in try/catch blocks to prevent race
           // condition - the outer component disables the form after submit
@@ -212,7 +220,7 @@ export default {
       await api.postOperations(operation)
     },
 
-    async createKycRecoveryRequest () {
+    async createKycRecoveryRequest (blobId) {
       const isExistingRequest = this.kycRecoveryState &&
         (
           this.kycRecoveryState === REQUEST_STATES_STR.pending ||
@@ -238,7 +246,7 @@ export default {
           },
         ],
         creatorDetails: {
-          verification_data: JSON.stringify(this.blobData),
+          blob_id: blobId,
         },
       }
 

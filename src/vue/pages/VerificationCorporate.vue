@@ -338,7 +338,7 @@ export default {
           },
         ],
         creatorDetails: {
-          verification_data: { blob_id: blobId },
+          blob_id: blobId,
         },
       }
 
