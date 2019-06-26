@@ -1,7 +1,6 @@
 <template>
   <div class="customers-table">
-    <div
-      class="app__table app__table--with-shadow
+    <div class="app__table app__table--with-shadow
         app__table--last-td-to-right
       ">
       <table>
@@ -32,7 +31,25 @@
             </td>
 
             <td :title="customer.balances">
-              {{ customer.balances }}
+              <template v-if="customer.balances && customer.balances.length">
+                <span
+                  v-for="(balance, index) in customer.balances"
+                  :key="balance.id"
+                >
+                  {{
+                    {
+                      value: balance.amount,
+                      currency: balance.assetCode
+                    } | formatMoney
+                  }}<template v-if="index < customer.balances.length - 1">
+                    ,
+                  </template>
+                </span>
+              </template>
+
+              <template v-else>
+                &mdash;
+              </template>
             </td>
 
             <td :title="getCustomerStatusTranslated(customer)">
