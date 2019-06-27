@@ -2356,6 +2356,9 @@
     },
     "businesses": {
       "all-tab": "All businesses"
+    },
+    "current-business-indicator": {
+      "browsing-lbl": "Browsing:"
     }
   }
 }

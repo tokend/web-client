@@ -37,11 +37,15 @@ import { MyAssetsExplorerModule } from '@/vue/modules/assets/my-assets-explorer/
 import { CustomersListPageModule } from '@/vue/pages/customers-list-page-module'
 import { BusinessesPageModule } from '@/vue/pages/businesses-page'
 import { BusinessesAllPageModule } from '@/vue/pages/businesses-all-page-module'
+import { CurrentBusinessIndicatorModule } from '@/vue/navigation/navbar/current-business-indicator/module'
 
 export default {
   importEnLocaleFile () {
     return import('@/modules-arch/schemes/conto-en.json')
   },
+  modules: [
+    new CurrentBusinessIndicatorModule(),
+  ],
   pages: [
     new CustomersPageModule(
       {

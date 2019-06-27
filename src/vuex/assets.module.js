@@ -48,6 +48,8 @@ export const getters = {
   [vuexTypes.assets]: state => state.assets.map(a => new AssetRecord(a)),
   [vuexTypes.assetByCode]: (_, getters) => assetCode =>
     getters[vuexTypes.assets].find(item => item.code === assetCode),
+  [vuexTypes.assetsByOwner]: (_, getters) => accountId =>
+    getters[vuexTypes.assets].filter(item => item.owner === accountId),
 
   [vuexTypes.ownedAssets]: (a, getters, b, rootGetters) =>
     getters[vuexTypes.assets]
