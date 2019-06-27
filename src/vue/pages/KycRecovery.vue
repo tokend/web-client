@@ -30,8 +30,8 @@
 </template>
 
 <script>
-import WalletRecoveryForm from '../forms/WalletRecoveryForm'
-import WalletRecoveryTfaCodeForm from '../forms/WalletRecoveryTfaCodeForm'
+import WalletRecoveryForm from '@/vue/forms/WalletRecoveryForm'
+import WalletRecoveryTfaCodeForm from '@/vue/forms/WalletRecoveryTfaCodeForm'
 
 import { vueRoutes } from '@/vue-router/routes'
 
