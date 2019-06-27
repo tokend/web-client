@@ -1,31 +1,37 @@
 import { vuexTypes } from './types'
 import { api } from '@/api'
+import { encryptSecretSeed, decryptSecretSeed } from '@tokend/js-sdk'
 
 export const state = {
   sessionId: '',
-  secretSeed: '',
+  encryptSecretSeed: '',
 }
 
 export const mutations = {
   [vuexTypes.SET_SESSION] (state, session) {
     state.sessionId = session.sessionId
-    state.secretSeed = session.secretSeed
+    const encryptWalletSeed = encryptSecretSeed(
+      session.secretSeed,
+      session.sessionKey
+    )
+    state.encryptSecretSeed = encryptWalletSeed
   },
 }
 
 export const actions = {
-  async [vuexTypes.LOAD_SESSION] ({ commit, getters }) {
+  async [vuexTypes.DECRYPT_SECRET_SEED] ({ commit, getters }) {
     const sessionId = getters[vuexTypes.sessionId]
+    const encryptSecretSeed = getters[vuexTypes.encryptWalletSeed]
     const { data } = await api.get(`/sessions/${sessionId}`)
-    commit(vuexTypes.SET_SESSION, {
-      sessionId: data.id,
-      sessionKey: data.encryptionKey,
-    })
+
+    const secretSeed = decryptSecretSeed(encryptSecretSeed, data.encryptionKey)
+    return secretSeed
   },
 }
 
 export const getters = {
   [vuexTypes.sessionId]: state => state.sessionId,
+  [vuexTypes.encryptWalletSeed]: (state, getters) => state.encryptSecretSeed,
 }
 
 export default {

@@ -57,6 +57,7 @@ import { isCompatibleBrowser } from '@/js/helpers/is-compatible-browser'
 import {
   mapGetters,
   mapActions,
+  mapMutations,
 } from 'vuex'
 import {
   api,
@@ -92,7 +93,7 @@ export default {
   computed: {
     ...mapGetters([
       vuexTypes.walletEmail,
-      vuexTypes.walletSeed,
+      vuexTypes.encryptWalletSeed,
       vuexTypes.walletAccountId,
       vuexTypes.walletId,
       vuexTypes.isLoggedIn,
@@ -120,7 +121,10 @@ export default {
       loadKvEntries: vuexTypes.LOAD_KV_ENTRIES,
       loadAssets: vuexTypes.LOAD_ASSETS,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
-      loadSession: vuexTypes.LOAD_SESSION,
+      decryptSecretSeed: vuexTypes.DECRYPT_SECRET_SEED,
+    }),
+    ...mapMutations({
+      clearState: vuexTypes.CLEAR_STATE,
     }),
     async initApp () {
       api.useBaseURL(config.HORIZON_SERVER)
@@ -132,10 +136,10 @@ export default {
       await this.loadKvEntries()
 
       if (this[vuexTypes.isLoggedIn]) {
-        await this.loadSession()
+        const walletSeed = await this.getDecryptWalletKey()
         const wallet = new Wallet(
           this.walletEmail,
-          this.walletSeed,
+          walletSeed,
           this.walletAccountId,
           this.walletId
         )
@@ -153,6 +157,21 @@ export default {
     },
     detectIncompatibleBrowser () {
       this.isNotSupportedBrowser = !isCompatibleBrowser()
+    },
+    async getDecryptWalletKey () {
+      try {
+        return await this.decryptSecretSeed()
+      } catch (error) {
+        this.clearState()
+        this.$router.push({
+          // preserve the current route name so router guards will remember the
+          // route and Login form will redirect the user to the previous route
+          // after next successful login
+          name: this.$route.name,
+          query: { isSessionExpired: true },
+        })
+        location.reload()
+      }
     },
   },
 }

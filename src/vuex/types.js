@@ -23,6 +23,7 @@ const mutations = {
 
   // wallet
   SET_WALLET: 'SET_WALLET',
+  SET_SECRET_SEED: 'SET_SECRET_SEED',
 
   // factors
   SET_FACTORS: 'SET_FACTORS',
@@ -69,7 +70,7 @@ const actions = {
   LOAD_ASSETS: 'LOAD_ASSETS',
 
   // session
-  LOAD_SESSION: 'LOAD_SESSION',
+  DECRYPT_SECRET_SEED: 'DECRYPT_SECRET_SEED',
 }
 
 const getters = {
@@ -109,7 +110,6 @@ const getters = {
   walletId: 'walletId',
   walletAccountId: 'walletAccountId',
   walletEmail: 'walletEmail',
-  walletSeed: 'walletSeed',
 
   // factors
   factors: 'factors',
@@ -151,6 +151,7 @@ const getters = {
 
   // session
   sessionId: 'sessionId',
+  encryptWalletSeed: 'encryptWalletSeed',
 }
 
 export const vuexTypes = {

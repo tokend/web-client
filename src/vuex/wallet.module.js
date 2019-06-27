@@ -21,7 +21,6 @@ export const mutations = {
     //  custom toJSON in the sdk Wallet class
     state.wallet = {
       accountId: wallet.accountId,
-      secretSeed: wallet.secretSeed,
       email: wallet.email,
       id: wallet.id,
     }
@@ -53,8 +52,6 @@ export const getters = {
   [vuexTypes.walletEmail]: (state, getters) => {
     return state.wallet.email
   },
-  [vuexTypes.walletSeed]: (state, getters) =>
-    state.wallet.secretSeed,
 }
 
 export default {
