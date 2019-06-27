@@ -553,6 +553,19 @@
       "permanently-rejected-reason": "Rejection reason:",
       "additional-info-title": "Additional information (provided by admin or KYC service): "
     },
+    "kyc-recovery-state-message": {
+      "approved-title": "KYC recovery approved",
+      "pending-title": "KYC recovery in progress",
+      "rejected-title": "KYC recovery rejected",
+      "permanently-rejected-title": "KYC recovery rejected permanently",
+      "approved-desc": "Your KYC recovery request was approved by administrator. Now you can access all the features.",
+      "pending-desc": "Your KYC recovery request is being processed. You will be able access all the features once the request is reviewed.",
+      "rejected-desc": "Your KYC recovery request was rejected by administrator. Please, resolve all the issues and send the request again.",
+      "permanently-rejected-desc": "Your KYC recovery request was permanently rejected by administrator.",
+      "rejected-reason": "Rejection reason:",
+      "permanently-rejected-reason": "Rejection reason:",
+      "limited-functionality-msg": "Currently application functionality is limited"
+    },
     "general-form": {
       "address-postal-code-lbl'": "Postal code",
       "documents-lbl": "Documents",
@@ -680,7 +693,8 @@
       "sale-details": "Sale details",
       "loyalty-points": "Loyalty points",
       "statistics": "Statistics",
-      "documents": "Documents"
+      "documents": "Documents",
+      "kyc-recovery": "KYC Recovery"
     },
     "limits": {
       "explore-limits": "Explore limits",
@@ -2055,6 +2069,10 @@
     "asset-select-field": {
       "failed-loading-msg": "Assets loading failed!",
       "no-assets-for-select": "No assets for select"
+    },
+    "kyc-recovery": {
+      "submit-again-lbl": "Submit again",
+      "request-submitted-msg": "Your request has been submitted successfully. Please wait for review."
     }
   }
 }
