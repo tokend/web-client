@@ -1,6 +1,8 @@
 <template>
   <div class="passport">
-    <button @click="toggleDropdown">
+    <button
+      v-if="isNoKycRecoveryInProgress"
+      @click="toggleDropdown">
       <img
         v-if="avatarLogoUrl"
         class="passport__avatar passport__avatar-image"
@@ -53,6 +55,7 @@
 
         <div
           class="passport__dropdown-balances-wrp"
+          v-if="isNoKycRecoveryInProgress"
         >
           <passport-balances
             @more-link-followed="toggleDropdown"
@@ -64,6 +67,7 @@
           <button
             class="app__button-flat
                    passport__dropdown-btn"
+            v-if="isNoKycRecoveryInProgress"
             @click="goSettings"
           >
             {{ 'passport.settings-btn' | globalize }}
@@ -117,6 +121,7 @@ export default {
       isAccountGeneral: vuexTypes.isAccountGeneral,
       isAccountBlocked: vuexTypes.isAccountBlocked,
       accountId: vuexTypes.accountId,
+      isNoKycRecoveryInProgress: vuexTypes.isNoKycRecoveryInProgress,
     }),
     accountRoleTranslationId () {
       if (this.isAccountGeneral) {
@@ -225,7 +230,6 @@ $dropdown-item-side-padding: 2.4rem;
 }
 
 .passport {
-  width: 100%;
   position: relative;
   display: flex;
   align-items: center;
