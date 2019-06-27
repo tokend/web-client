@@ -83,6 +83,7 @@ import { vueRoutes } from '@/vue-router/routes'
 
 const EVENTS = {
   submit: 'submit',
+  kycRecoverySubmit: 'kyc-recovery-submit',
 }
 
 export default {
@@ -204,6 +205,7 @@ export default {
         const blobId = await this.createBlob(this.accountId)
         if (this.isKycRecoveryPage) {
           await this.sendKycRecoveryRequest(blobId)
+          this.$emit(EVENTS.kycRecoverySubmit)
           this.enableForm()
         } else {
           await this.createKycVerificationRequest(blobId)

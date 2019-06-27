@@ -168,6 +168,10 @@ const EMPTY_DOCUMENT = {
   key: '',
 }
 
+const EVENTS = {
+  kycRecoverySubmit: 'kyc-recovery-submit',
+}
+
 export default {
   name: 'verification-corporate-form',
   mixins: [VerificationFormMixin],
@@ -245,7 +249,7 @@ export default {
   },
 
   created () {
-    if (this.isFormPopulatable) {
+    if (this.isFormPopulatable && !this.isKycRecoveryPage) {
       this.form = this.parseKycData(this.kycLatestRequestData)
     } else if (this.kycRecoveryBlobId) {
       this.form = this.parseKycData(this.kycRecoveryRequestData)
@@ -264,6 +268,7 @@ export default {
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycCorporate)
         if (this.isKycRecoveryPage) {
           await this.sendKycRecoveryRequest(kycBlobId)
+          this.$emit(EVENTS.kycRecoverySubmit)
         } else {
           await uploadDocument(this.form.avatar)
           const operation = this.createKycOperation(
@@ -275,8 +280,8 @@ export default {
             await this.loadKyc()
             await this.delay(3000)
           } while (this.kycState !== REQUEST_STATES_STR.pending)
+          Bus.success('verification-form.request-submitted-msg')
         }
-        Bus.success('verification-form.request-submitted-msg')
         this.scrollTop()
       } catch (e) {
         ErrorHandler.process(e)
