@@ -26,7 +26,6 @@ describe('wallet.module', () => {
       const state = { wallet: {} }
       const expectedWallet = {
         email: mockWallet.email,
-        secretSeed: mockWallet.secretSeed,
         id: mockWallet.id,
         accountId: mockWallet.accountId,
       }
@@ -89,19 +88,6 @@ describe('wallet.module', () => {
       expect(getters[vuexTypes.walletEmail](_state, {}))
         .to
         .equal(email)
-    })
-
-    it('walletSeed', () => {
-      const secretSeed = 'SB5N5RG66UKMZWPY6WRHFCASAIUHGNA3TIG5TOLGROLN67XQDCLWFVPG'
-      const _state = {
-        wallet: {
-          secretSeed,
-        },
-      }
-
-      expect(getters[vuexTypes.walletSeed](_state, {}))
-        .to
-        .equal(secretSeed)
     })
   })
 })

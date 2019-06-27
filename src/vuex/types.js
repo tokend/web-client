@@ -23,7 +23,6 @@ const mutations = {
 
   // wallet
   SET_WALLET: 'SET_WALLET',
-  SET_SECRET_SEED: 'SET_SECRET_SEED',
 
   // factors
   SET_FACTORS: 'SET_FACTORS',

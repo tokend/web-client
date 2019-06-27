@@ -62,10 +62,5 @@ describe('wallet.module end-to-end test', () => {
         .to
         .equal(email)
     })
-    it('walletSeed', () => {
-      expect(store.getters[vuexTypes.walletSeed])
-        .to
-        .equal(seed)
-    })
   })
 })
