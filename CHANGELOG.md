@@ -12,6 +12,7 @@ for further information about branching and tagging conventions.
 - Waiting email verification
 - Scrolling to top of the page after sending KYC corporate request
 - URLs normalization in env.js
+- KYC Recovery
 
 #### Changed
 - Now loading KYC latest data from account endpoint
@@ -33,7 +34,7 @@ for further information about branching and tagging conventions.
 
 #### Changed
 - Invoice form width to full screen
-- Now displaying customer's & merchant's balances on the invoice form 
+- Now displaying customer's & merchant's balances on the invoice form
   confirmation
 
 #### Fixed
