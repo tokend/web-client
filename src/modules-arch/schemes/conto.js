@@ -40,7 +40,7 @@ import { BusinessesAllPageModule } from '@/vue/pages/businesses-all-page-module'
 
 export default {
   importEnLocaleFile () {
-    return import('@/modules-arch/schemes/giftcards-en.json')
+    return import('@/modules-arch/schemes/conto-en.json')
   },
   pages: [
     new CustomersPageModule(
