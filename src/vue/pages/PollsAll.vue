@@ -1,22 +1,6 @@
 <template>
   <div class="polls-all">
     <div class="polls-all__filters">
-      <template v-if="balances.length">
-        <select-filter-field
-          v-model="filters.assetCode"
-          class="polls-all__filter-field"
-          :disabled="filters.isOwnedByCurrentUser"
-        >
-          <option
-            v-for="balance in balances"
-            :key="balance.asset.code"
-            :value="balance.asset.code"
-          >
-            {{ balance.asset.nameAndCode }}
-          </option>
-        </select-filter-field>
-      </template>
-
       <select-filter-field
         v-model="filters.state"
         class="polls-all__filter-field app__select app__select--no-border"
@@ -74,7 +58,7 @@
       </div>
     </template>
 
-    <template v-else-if="!list.length && !isLoading && isInitialized">
+    <template v-else-if="!list.length && !isLoading">
       <no-data-message
         class="polls-all__no-data-message"
         icon-name="vote"
@@ -157,7 +141,6 @@ export default {
         isOwnedByCurrentUser: false,
       },
       isLoading: false,
-      isInitialized: false,
       list: [],
       isDrawerShown: false,
       pollToBrowse: {},
@@ -167,7 +150,6 @@ export default {
 
   computed: {
     ...mapGetters({
-      balances: vuexTypes.accountBalances,
       accountId: vuexTypes.accountId,
       isCorporate: vuexTypes.isAccountCorporate,
     }),
@@ -175,54 +157,22 @@ export default {
 
   watch: {
     'filters.assetCode' () {
-      this.reloadListIfInitialized()
+      this.reloadList()
     },
 
     'filters.state' () {
-      this.reloadListIfInitialized()
+      this.reloadList()
     },
 
     'filters.isOwnedByCurrentUser' () {
-      this.reloadListIfInitialized()
+      this.reloadList()
     },
-  },
-
-  async created () {
-    try {
-      await this.initAssetCodeFilter()
-    } catch (error) {
-      ErrorHandler.processWithoutFeedback(error)
-    }
-    this.isInitialized = true
   },
 
   methods: {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
-
-    async initAssetCodeFilter () {
-      if (!this.balances.length) {
-        await this.loadBalances()
-      }
-
-      this.preSetAssetCodeFilter()
-    },
-
-    preSetAssetCodeFilter () {
-      if (!this.balances.length || this.filters.assetCode) {
-        return
-      }
-
-      const isQueryAssetCodePresentInBalances = Boolean(
-        this.$route.query.asset &&
-        this.balances.find(i => i.asset.code === this.$route.query.asset)
-      )
-
-      this.filters.assetCode = isQueryAssetCodePresentInBalances
-        ? this.$route.query.asset
-        : this.balances[0].asset.code
-    },
 
     async getList () {
       this.isLoading = true
@@ -231,12 +181,11 @@ export default {
       try {
         result = await api.getWithSignature('/v3/polls', {
           filter: {
-            owner: this.filters.isOwnedByCurrentUser
-              ? this.accountId
-              : this.balances
-                .find(i => i.asset.code === this.filters.assetCode)
-                .asset.owner,
-
+            ...(
+              this.filters.isOwnedByCurrentUser
+                ? { owner: this.accountId }
+                : {}
+            ),
             state: this.filters.state,
           },
         })
@@ -260,13 +209,6 @@ export default {
 
     reloadList () {
       return this.$refs.listCollectionLoader.loadFirstPage()
-    },
-
-    reloadListIfInitialized () {
-      if (!this.isInitialized) {
-        return
-      }
-      this.reloadList()
     },
 
     selectItem (item) {
