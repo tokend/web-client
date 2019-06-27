@@ -172,6 +172,10 @@ export default {
           break
       }
 
+      if (this.$route.query.owner) {
+        opts.filter.owner = this.$route.query.owner
+      }
+
       return function () {
         return api.getWithSignature(endpoint, opts)
       }
