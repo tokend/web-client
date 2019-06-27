@@ -63,7 +63,7 @@ export const actions = {
   // for unverified user
   async [vuexTypes.SEND_KYC_RECOVERY_REQUEST] (
     { getters, rootGetters, commit },
-    blobId
+    blobId = ''
   ) {
     const newSigner = base.Keypair.random()
     const opts = {
@@ -104,15 +104,23 @@ export const getters = {
   [vuexTypes.kycRecoveryStateI]: state => safeGet(state,
     'request.stateI'),
   [vuexTypes.kycRecoveryRequestData]: state => JSON.parse(state.requestData),
+  [vuexTypes.kycRecoveryRejectReason]: state => safeGet(state,
+    'request.rejectReason'),
 
   [vuexTypes.isNoKycRecoveryInProgress]: (a, getters, b, rootGetters) =>
     getters[vuexTypes.accountKycRecoveryStatus] ===
     KYC_RECOVERY_STATES.none,
+  [vuexTypes.isKycRecoveryInProgress]: (a, getters, b, rootGetters) =>
+    getters[vuexTypes.accountKycRecoveryStatus] !==
+    KYC_RECOVERY_STATES.none,
   [vuexTypes.isKycRecoveryInited]: (a, getters, b, rootGetters) =>
     getters[vuexTypes.accountKycRecoveryStatus] ===
     KYC_RECOVERY_STATES.inited,
+  [vuexTypes.isKycRecoveryApproved]: (a, getters, b, rootGetters) =>
+    getters[vuexTypes.accountKycRecoveryStatus] ===
+    KYC_RECOVERY_STATES.approved,
   [vuexTypes.isKycRecoveryPending]: (a, getters, b, rootGetters) =>
-    getters[vuexTypes.accountKycRecoveryPending] ===
+    getters[vuexTypes.accountKycRecoveryStatus] ===
     KYC_RECOVERY_STATES.pending,
   [vuexTypes.isKycRecoveryRejected]: (a, getters, b, rootGetters) =>
     getters[vuexTypes.accountKycRecoveryStatus] ===
