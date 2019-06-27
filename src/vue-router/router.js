@@ -56,7 +56,7 @@ export function buildRouter (store) {
       {
         path: '/kyc-recovery-management',
         name: vueRoutes.kycRecoveryManagement.name,
-        component: resolve => require(['@/vue/pages/KycRecoveryManagement'], resolve),
+        component: resolve => require(['@/vue/pages/KycRecovery/KycRecoveryManagement'], resolve),
         beforeEnter: buildKycRecoveryPageGuard(store),
       },
       {
@@ -162,10 +162,11 @@ function buildInAppRouteGuard ({ store, scheme }) {
 // is not initialized
 function buildKycRecoveryPageGuard (store) {
   return function inAppRouteGuard (to, from, next) {
-    const isNoKycRecoveryInProgress = store
-      .getters[vuexTypes.isNoKycRecoveryInProgress]
+    const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
+    const isKycRecoveryInProgress = store
+      .getters[vuexTypes.accountKycRecoveryStatus]
 
-    !isNoKycRecoveryInProgress
+    isLoggedIn && isKycRecoveryInProgress
       ? next()
       : next(vueRoutes.app)
   }
