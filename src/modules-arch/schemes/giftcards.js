@@ -35,6 +35,8 @@ import { CreatePollFormModule } from '@/vue/modules/create-poll-form/module'
 import { MyAssetsPageModule } from '@/vue/pages/my-assets-page-module'
 import { MyAssetsExplorerModule } from '@/vue/modules/assets/my-assets-explorer/module'
 import { CustomersListPageModule } from '@/vue/pages/customers-list-page-module'
+import { BusinessesPageModule } from '@/vue/pages/businesses-page'
+import { BusinessesAllPageModule } from '@/vue/pages/businesses-all-page-module'
 
 export default {
   importEnLocaleFile () {
@@ -62,6 +64,28 @@ export default {
           }),
         ],
         isCorporateOnly: true,
+      },
+    ),
+
+    new BusinessesPageModule(
+      {
+        routerEntry: {
+          path: '/businesses',
+          name: vueRoutes.businesses.name,
+          meta: { pageNameTranslationId: 'pages-names.businesses' },
+        },
+        menuButtonTranslationId: 'pages-names.businesses',
+        menuButtonMdiName: 'domain',
+        isAutoRedirectToFirstChild: true,
+        submodules: [
+          new BusinessesAllPageModule({
+            routerEntry: {
+              path: '/businesses/all',
+              name: vueRoutes.allBusinesses.name,
+              props: true,
+            },
+          }),
+        ],
       },
     ),
 

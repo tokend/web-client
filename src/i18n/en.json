@@ -692,7 +692,8 @@
       "polls": "Polls",
       "atomic-swaps": "Atomic swaps",
       "customers": "Customers",
-      "customers-list": "Customers list"
+      "customers-list": "Customers list",
+      "businesses": "Businesses"
     },
     "limits": {
       "explore-limits": "Explore limits",
@@ -2352,6 +2353,9 @@
     },
     "customers-list": {
       "customer-drawer-title": "View customer"
+    },
+    "businesses": {
+      "all-tab": "All businesses"
     }
   }
 }
