@@ -32,6 +32,7 @@ import { vueRoutes } from '@/vue-router/routes'
 import CurrentBusinessLogo from './current-business-logo'
 
 const ROUTES_WITH_OWNER_FILTER = [
+  vueRoutes.movements.name,
   vueRoutes.assets.name,
   vueRoutes.balances.name,
   vueRoutes.assetsExplore.name,

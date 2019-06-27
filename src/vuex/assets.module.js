@@ -59,6 +59,14 @@ export const getters = {
     return rootGetters[vuexTypes.accountBalances]
       .map(item => item.asset)
   },
+
+  // eslint-disable-next-line max-len
+  [vuexTypes.balancesAssetsByOwner]: (a, getters, b, rootGetters) => accountId => {
+    return rootGetters[vuexTypes.accountBalances]
+      .map(item => item.asset)
+      .filter(item => item.owner === accountId)
+  },
+
   [vuexTypes.fiatAssets]: (a, getters, b, rootGetters) =>
     rootGetters[vuexTypes.accountBalances]
       .map(item => item.asset)

@@ -134,7 +134,9 @@ const getters = {
   // assets
   assets: 'assets',
   assetByCode: 'assetByCode',
+  assetsByOwner: 'assetsByOwner',
   balancesAssets: 'balancesAssets',
+  balancesAssetsByOwner: 'balancesAssetsByOwner',
   fiatAssets: 'fiatAssets',
   depositableAssets: 'depositableAssets',
   coinpaymentsAssets: 'coinpaymentsAssets',

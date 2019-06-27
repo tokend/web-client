@@ -74,9 +74,7 @@
               globalize({ asset: asset.code })
             "
           >
-            <i
-              class="mdi mdi-send movements-top-bar__btn-icon"
-            />
+            <i class="mdi mdi-send movements-top-bar__btn-icon" />
             {{ 'op-pages.send' | globalize }}
           </button>
         </template>
@@ -169,6 +167,7 @@ export default {
   computed: {
     ...mapGetters({
       balancesAssets: vuexTypes.balancesAssets,
+      balancesAssetsByOwner: vuexTypes.balancesAssetsByOwner,
       ownedAssets: vuexTypes.ownedBalancesAssets,
       isAccountUnverified: vuexTypes.isAccountUnverified,
     }),
@@ -178,7 +177,13 @@ export default {
     },
 
     assets () {
-      return this.isSharesPage ? this.ownedAssets : this.balancesAssets
+      if (this.isSharesPage) {
+        return this.ownedAssets
+      } else if (this.$route.query.owner) {
+        return this.balancesAssetsByOwner(this.$route.query.owner)
+      } else {
+        return this.balancesAssets
+      }
     },
   },
   watch: {
