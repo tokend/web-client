@@ -140,6 +140,8 @@ const getters = {
   withdrawableBalancesAssets: 'withdrawableBalancesAssets',
   statsQuoteAsset: 'statsQuoteAsset',
   ownedAssets: 'ownedAssets',
+  baseAtomicSwapBalancesAssets: 'baseAtomicSwapBalancesAssets',
+  quoteAtomicSwapBalancesAssets: 'quoteAtomicSwapBalancesAssets',
 }
 
 export const vuexTypes = {

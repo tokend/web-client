@@ -100,6 +100,28 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
+        <tick-field
+          v-model="form.policies"
+          :cb-value="ASSET_POLICIES.canBeBaseInAtomicSwap"
+        >
+          {{ 'create-asset-form.can-be-base-in-atomic-swap-lbl' | globalize }}
+        </tick-field>
+      </div>
+    </div>
+
+    <div class="app__form-row">
+      <div class="app__form-field">
+        <tick-field
+          v-model="form.policies"
+          :cb-value="ASSET_POLICIES.canBeQuoteInAtomicSwap"
+        >
+          {{ 'create-asset-form.can-be-quote-in-atomic-swap-lbl' | globalize }}
+        </tick-field>
+      </div>
+    </div>
+
+    <div class="app__form-row">
+      <div class="app__form-field">
         <file-field
           name="create-asset-logo"
           v-model="form.logo"

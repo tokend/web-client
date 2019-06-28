@@ -41,4 +41,12 @@ export class CreateAssetRequest extends Request {
   get isWithdrawable () {
     return Boolean(this.policy & ASSET_POLICIES.withdrawable)
   }
+
+  get isBaseInAtomicSwap () {
+    return Boolean(this.policy & ASSET_POLICIES.canBeBaseInAtomicSwap)
+  }
+
+  get isQuoteInAtomicSwap () {
+    return Boolean(this.policy & ASSET_POLICIES.canBeQuoteInAtomicSwap)
+  }
 }

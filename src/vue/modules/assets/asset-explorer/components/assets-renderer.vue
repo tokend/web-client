@@ -73,7 +73,7 @@
 
     <template v-if="isLoadFailed">
       <p class="assets-renderer__error-msg">
-        {{ 'assets.loading-error-msg' | globalize }}
+        {{ 'assets.load-failed-msg' | globalize }}
       </p>
     </template>
   </div>

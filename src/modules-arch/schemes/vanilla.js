@@ -60,6 +60,9 @@ import { VerificationGeneralFormModule } from '@/vue/modules/verification/genera
 import { MyAssetsPageModule } from '@/vue/pages/my-assets-page-module'
 import { MyAssetsExplorerModule } from '@/vue/modules/assets/my-assets-explorer/module'
 import { SharesPageModule } from '@/vue/pages/shares-page-module'
+import { AtomicSwapsPageModule } from '@/vue/pages/atomic-swaps-page-module'
+import { AtomicSwapsExplorePageModule } from '@/vue/pages/atomic-swaps/atomic-swaps-explore-page-module'
+import { CreateAtomicSwapFormModule } from '@/vue/modules/create-atomic-swap-form/module'
 
 export default {
   pages: [
@@ -403,6 +406,31 @@ export default {
         menuButtonMdiName: 'flash',
         submodules: [
           new FeesModule(),
+        ],
+      },
+    ),
+
+    new AtomicSwapsPageModule(
+      {
+        routerEntry: {
+          path: '/atomic-swaps',
+          name: vueRoutes.atomicSwaps.name,
+          meta: { pageNameTranslationId: 'pages-names.atomic-swaps' },
+        },
+        menuButtonTranslationId: 'pages-names.atomic-swaps',
+        menuButtonMdiName: 'swap-horizontal',
+        isAutoRedirectToFirstChild: true,
+        submodules: [
+          new AtomicSwapsExplorePageModule({
+            routerEntry: {
+              path: '/atomic-swaps/explore',
+              name: vueRoutes.atomicSwapsExplore.name,
+              props: true,
+            },
+          }),
+          new CreateAtomicSwapFormModule({
+            isCorporateOnly: true,
+          }),
         ],
       },
     ),

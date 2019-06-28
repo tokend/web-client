@@ -121,7 +121,8 @@
       "field-error_minForIssuance": "Min amount for issuance: {{from, money}}",
       "field-error_assetCode": "Asset code must contain maximum 16 symbols and consist of alphanumeric values (A-Z, a-z, 0-9)",
       "field-error_alphaNum": "Accepts only alphanumerics",
-      "field-error_minLength": "This field must contain minimum {{minLength}} symbols"
+      "field-error_minLength": "This field must contain minimum {{minLength}} symbols",
+      "field-error_selectedSameAssetCode": "Not allowed duplicated quote asset codes"
     },
     "errors": {
       "default": "Something bad happened. Please try again later",
@@ -690,7 +691,8 @@
       "statistics": "Statistics",
       "documents": "Documents",
       "register-of-shares": "Register of shares",
-      "polls": "Polls"
+      "polls": "Polls",
+      "atomic-swaps": "Atomic swaps"
     },
     "limits": {
       "explore-limits": "Explore limits",
@@ -1131,6 +1133,8 @@
       "logo-note": "JPG or PNG, no less than 120x120 px",
       "transferable-lbl": "Transferable",
       "withdrawable-lbl": "Withdrawable",
+      "can-be-base-in-atomic-swap-lbl": "Can be base in atomic swap",
+      "can-be-quote-in-atomic-swap-lbl": "Can be quote in atomic swap",
       "verification-not-required-lbl": "Does not require verification",
       "security-asset-lbl": "Security (requires accreditation for US residents)",
       "verification-required-lbl": "Requires verification",
@@ -1166,6 +1170,8 @@
       "logo-note": "JPG or PNG, no less than 120x120 px",
       "transferable-lbl": "Transferable",
       "withdrawable-lbl": "Withdrawable",
+      "can-be-base-in-atomic-swap-lbl": "Can be base in atomic swap",
+      "can-be-quote-in-atomic-swap-lbl": "Can be quote in atomic swap",
       "terms-lbl": "Upload terms",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
       "request-submitted-msg": "Your request was successfully processed. Please, wait for approval",
@@ -1258,6 +1264,8 @@
       "download-terms-btn": "Download terms",
       "transferable-title": "Transferable",
       "withdrawable-title": "Withdrawable",
+      "can-be-base-in-atomic-swap-title": "Can be base in atomic swap",
+      "can-be-quote-in-atomic-swap-title": "Can be quote in atomic swap",
       "requires-kyc-title": "Requires verification",
       "security-asset-title": "Security",
       "yes-msg": "Yes",
@@ -1291,6 +1299,8 @@
       "download-terms-btn": "Download terms",
       "transferable-title": "Transferable",
       "withdrawable-title": "Withdrawable",
+      "can-be-base-in-atomic-swap-title": "Can be base in atomic swap",
+      "can-be-quote-in-atomic-swap-title": "Can be quote in atomic swap",
       "yes-msg": "Yes",
       "no-msg": "No",
       "cancellation-msg": "Are you sure to cancel the request?",
@@ -1415,6 +1425,8 @@
       "available-title": "Available",
       "transferable-title": "Transferable",
       "withdrawable-title": "Withdrawable",
+      "can-be-base-in-atomic-swap-title": "Can be base in atomic swap",
+      "can-be-quote-in-atomic-swap-title": "Can be quote in atomic swap",
       "deposit-method-title": "Deposit method",
       "requires-kyc-title": "Requires KYC",
       "present-msg": "Yes",
@@ -1980,6 +1992,8 @@
       "available-title": "Available",
       "transferable-title": "Transferable",
       "withdrawable-title": "Withdrawable",
+      "can-be-base-in-atomic-swap-title": "Can be base in atomic swap",
+      "can-be-quote-in-atomic-swap-title": "Can be quote in atomic swap",
       "deposit-method-title": "Deposit method",
       "verification-required-title": "Requires verification",
       "asset-type": "Asset type",
@@ -2266,6 +2280,30 @@
       "permission-type-unrestricted-val": "Unrestricted",
       "yes-val": "Yes",
       "no-val": "No"
+    },
+    "atomic-swaps": {
+      "explore-atomic-swaps": "Explore atomic swaps",
+      "create-atomic-swap-bth": "Create atomic swap",
+      "new-atomic-swap": "New atomic swap"
+    },
+    "create-atomic-swap-form": {
+      "asset-lbl": "Asset",
+      "no-base-atomic-swap-assets-title": "No base atomic swap assets yet",
+      "no-base-atomic-swap-assets-msg": "Please create an asset to create atomic swap",
+      "no-quote-atomic-swap-assets-title": "No quote atomic swap assets yet",
+      "no-quote-atomic-swap-assets-msg": "Please create an asset to create atomic swap",
+      "load-failed-msg": "There was an error while loading. Please, try again later",
+      "amount-lbl": "Amount",
+      "available-amount-hint": "Available: {{amount, money}}",
+      "create-btn": "Create",
+      "price-lbl": "Price",
+      "address-lbl": "Address",
+      "add-quote-asset-btn": "Add quote asset",
+      "quote-assets-subheading": "Quote asset {{ number }}",
+      "created-atomic-swap-msg": "Atomic swap request successfully created"
+    },
+    "atomic-swaps-explore": {
+      "no-list-title":"Atomic swaps will be coming soon"
     }
   }
 }

@@ -157,3 +157,14 @@ export const validateUrl = url => {
 export const assetCode = value => {
   return _isString(value) && /^[a-z\d]{1,16}$/i.test(value)
 }
+
+export const selectedSameAssetCode = (selectedAssetsByCode) => {
+  const ONE_ASSET_CODE = 1
+
+  const countSameAssetCode = selectedAssetsByCode.length
+  if (countSameAssetCode > ONE_ASSET_CODE) {
+    return false
+  } else {
+    return true
+  }
+}
