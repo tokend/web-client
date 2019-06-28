@@ -38,10 +38,11 @@ export class ModuleDescriptor {
    * @param {ModuleDescriptor.constructor[]} [opts.incompatibles]
    * Constructors of modules that cannot be used simultaneously with the module.
    *
-   *
    * @param {Boolean} [opts.isCorporateOnly]
    * If `true` the component will be accessible only by corporate accounts
    *
+   * @param {Boolean} [opts.isUnverifiedOnly]
+   * If `true` the component will be accessible only by unverified accounts
    */
   constructor (opts = {}) {
     // will be assigned automatically while the component renders
@@ -56,6 +57,7 @@ export class ModuleDescriptor {
       importComponentFn = null,
       importStoreFn = null,
       isCorporateOnly = false,
+      isUnverifiedOnly = false,
     } = opts
 
     if (typeof importComponentFn !== 'function') {
@@ -72,6 +74,7 @@ export class ModuleDescriptor {
     this._incompatibles = incompatibles
     this._allowedSubmodules = allowedSubmodules
     this._isCorporateOnly = isCorporateOnly
+    this._isUnverifiedOnly = isUnverifiedOnly
 
     this.validateSubmodules(submodules)
     this._submodules = submodules
@@ -84,9 +87,13 @@ export class ModuleDescriptor {
   get submodules () { return this._submodules }
   get incompatibles () { return this._incompatibles }
   get isAccessible () {
-    return this._isCorporateOnly
-      ? store.getters[vuexTypes.isAccountCorporate]
-      : true
+    if (this._isCorporateOnly) {
+      return store.getters[vuexTypes.isAccountCorporate]
+    } else if (this._isUnverifiedOnly) {
+      return store.getters[vuexTypes.isAccountUnverified]
+    } else {
+      return true
+    }
   }
   get createdComponentUid () { return this._createdComponentUid }
   get createdComponent () { return this._createdComponent }
