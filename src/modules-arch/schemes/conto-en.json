@@ -13,6 +13,140 @@
     },
     "sidebar": {
       "section-corporate": "Business level 1"
+    },
+    "validation": {
+      "field-error_noMoreThanSaleCap": "Provided amount has exceeded the goal {{saleCap, money}}"
+    },
+    "transaction-errors": {
+      "op_start_end_invalid": "Crowdfund should not end before start",
+      "op_invalid_end": "Trying to create crowdfund which already ended",
+      "op_request_or_sale_already_exists": "Crowdfund creation request or crowdfund already exists for specified asset",
+      "op_order_book_does_not_exists": "Specified crowdfund does not exists or already closed",
+      "op_sale_is_not_started_yet": "Crowdfund has not been started yet",
+      "op_sale_already_ended": "Crowdfund already ended",
+      "op_order_violates_hard_cap": "Offer violates hard goal restriction of the crowdfund",
+      "op_cant_participate_own_sale": "Can not participate in the own crowdfund",
+      "op_sale_is_not_active": "Crowdfund is not active",
+      "op_sale_not_found": "Crowdfund not found",
+      "op_invalid_new_details": "New crowdfund details is invalid JSON",
+      "op_update_details_request_already_exists": "Update crowdfund details request already exists",
+      "op_update_details_request_not_found": "Update crowdfund details request to amend not found",
+      "op_invalid_sale_state": "Invalid crowdfund state",
+      "op_promotion_update_request_start_end_invalid": "Crowdfund should not end before start",
+      "op_invalid_sale_new_end_time": "New crowdfund end time is before start time or current ledger close time",
+      "op_update_end_time_request_already_exists": "This request already exists",
+      "op_update_end_time_request_not_found": "Associated request cannot not found",
+      "op_sale_create_tasks_not_found": "There is no key value for crowdfund creation tasks",
+      "op_sale_update_details_tasks_not_found": "There is no key value for crowdfund details update tasks"
+    },
+    "document-types": {
+      "sale-logo": "Crowdfund Logo",
+      "sale-document": "Crowdfund Document"
+    },
+    "pages-names": {
+      "sales": "Crowdfunds",
+      "sale-details": "Crowdfund details"
+    },
+    "op-details": {
+      "sale-name-lbl": "Crowdfund name",
+      "asset-sale-val": "{{asset}} crowdfund"
+    },
+    "movements-history": {
+      "operations": {
+        "check-sale-state": "Crowdfund closed",
+        "investment": "Crowdfund contribution"
+      },
+      "sale-id-lbl": "Crowdfund ID",
+      "sale-state-lbl": "Crowdfund state",
+      "sale-closed-msg": "Crowdfund funded and closed",
+      "sale-canceled-msg": "Crowdfund not funded and canceled"
+    },
+    "requests-page": {
+      "sale-creation-title": "Crowdfund creation"
+    },
+    "create-sale-requests": {
+      "update-sale-title": "Update crowdfund",
+      "details-title": "Crowdfund creation request",
+      "loading-msg": "Loading your requests…",
+      "sale-name-header": "Crowdfund name",
+      "no-request-history-title": "No crowdfund requests",
+      "no-request-history-desc": "Here will be the list of your crowdfund creation requests",
+      "name-title": "Crowdfund name",
+      "soft-cap-title": "Minimal goal",
+      "hard-cap-title": "Maximal goal",
+      "sell-title": "{{asset}} to sell",
+      "video-about-sale-title": "Video about crowdfund",
+      "view-btn": "View the crowdfund"
+    },
+    "sales": {
+      "no-sales-title": "No crowdfunds found",
+      "no-sales-desc": "Unfortunately, there are no crowdfunds matching your criteria",
+      "update-sale": "Update crowdfund",
+      "overview-title": "Crowdfund overview",
+      "new-sale": "New crowdfund",
+      "investable-sales": "Discover crowdfunds",
+      "my-sales": "My crowdfunds"
+    },
+    "sale-card": {
+      "funded": "{{funded, percent}} done so far",
+      "invested": "{{invested, money}} gathered",
+      "days-to-end": "{{days}} days to close"
+    },
+    "sale-details": {
+      "investable-sales-tab": "Crowdfunds",
+      "invest-title": "Contribute in this crowdfund",
+      "overview-title": "Crowdfund overview",
+      "sale-not-found-title": "Crowdfund not found",
+      "sale-not-found-desc": "There are no crowdfunds with the provided ID",
+      "funded": "{{funded, percent}} done fo far"
+    },
+    "sale-overview": {
+      "soft-cap-title": "Minimal goal",
+      "hard-cap-title": "Maximal goal",
+      "asset-to-sell-title": "{{asset}} to sell",
+      "video-about-sale-title": "Video about crowdfund"
+    },
+    "sale-statistics": {
+      "loading-msg": "Loading crowdfund participations…",
+      "participation-title": "Contribution",
+      "participant-th": "Contributor",
+      "investment-th": "Contribution",
+      "no-investments-title": "No contributions yet",
+      "no-investments-msg": "No one has contributed to this crowdfund yet"
+    },
+    "whitelist-invite-form": {
+      "invite-hint": "Invite a user to the crowdfund whitelist. After invitation he/she will be able to contribute in the crowdfund",
+      "user-invited-msg": "The user was successfully invited to the crowdfund whitelist"
+    },
+    "invest-form": {
+      "current-investment": "Current contribution: **{{amount, money}}**",
+      "invest-btn": "Contribute",
+      "update-offer-btn": "Update contribution",
+      "cancel-offer-btn": "CANCEL CONTRIBUTION",
+      "sale-owner-msg": "Owners of the crowdfund cannot contribute in their crowdfunds",
+      "closed-sale-msg": "Closed crowdfunds are not contributable",
+      "upcoming-sale-msg": "Upcoming crowdfunds are not contributable",
+      "canceled-sale-msg": "Cancelled crowdfunds are not contributable",
+      "cap-exceeded-msg": "Contribution amount has exceeded the crowdfund goal **{{amount, money}}**",
+      "investment-submitted-msg": "Contributed successfully. Your account will be gained with {{asset}} once the crowdfund succeeds",
+      "offer-canceled-msg": "Your contribution was successfully cancelled",
+      "requires-verification-desc": "Please, verify your account to contribute in this crowdfund",
+      "investment-disabled-title": "Cannot contribute in this crowdfund"
+    },
+    "create-sale-form": {
+      "no-owned-assets-desc": "Please, create an asset before creating a crowdfund",
+      "short-blurb-step-title": "Short description",
+      "full-description-step-title": "Full description",
+      "sale-name-lbl": "Crowdfund name",
+      "base-asset-lbl": "Asset to sale",
+      "cap-asset-lbl": "Asset to count gathered amount",
+      "whitelisted-lbl": "Invitation required before contribution",
+      "soft-cap-lbl": "Minimal goal ({{asset}})",
+      "hard-cap-lbl": "Maximal goal ({{asset}})",
+      "assets-to-sell-lbl": "{{asset}} to sell",
+      "price-for-asset-hint": "Change ({{quote}} for 1 {{base}}) ≈ {{value, money}}",
+      "accept-investments-msg": "Accept contributions in:",
+      "no-investable-assets-err": "This asset has no acceptable contribution asset pairs. Please, select another one"
     }
   }
 }
