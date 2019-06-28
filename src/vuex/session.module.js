@@ -23,7 +23,6 @@ export const actions = {
     const sessionId = getters[vuexTypes.sessionId]
     const encryptSecretSeed = getters[vuexTypes.encryptWalletSeed]
     const { data } = await api.get(`/sessions/${sessionId}`)
-
     const secretSeed = decryptSecretSeed(encryptSecretSeed, data.encryptionKey)
     return secretSeed
   },

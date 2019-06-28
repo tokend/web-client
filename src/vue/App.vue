@@ -160,7 +160,8 @@ export default {
     },
     async getDecryptWalletKey () {
       try {
-        return await this.decryptSecretSeed()
+        const key = await this.decryptSecretSeed()
+        return key
       } catch (error) {
         this.clearState()
         this.$router.push({

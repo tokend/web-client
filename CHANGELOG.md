@@ -12,6 +12,7 @@ for further information about branching and tagging conventions.
 - New Atomic swap feature:
   - Create atomic swap form
 - `canBeBaseInAtomicSwap` and `canBeQuoteInAtomicSwap` policy for assets
+- Integration with session key server
 
 ## [1.9.0-rc.0] - 2019-06-24
 #### Added
