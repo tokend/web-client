@@ -59,7 +59,8 @@ export default {
   created () {
     this.checkCurrentRouteAccessible()
     this.listen()
-    this.initRouterBeforeEach()
+    this.initRouterHooks()
+    this.hideUnreachable()
   },
 
   methods: {
@@ -68,7 +69,12 @@ export default {
         ROUTES_WITH_OWNER_FILTER.includes(this.$route.name) &&
         !this.currentBusiness.accountId
       ) {
-        this.$router.push(vueRoutes.businesses)
+        this.$router.push(vueRoutes.businesses, () => {
+          this.hideUnreachable()
+          setTimeout(() => this.hideUnreachable(), 50)
+          setTimeout(() => this.hideUnreachable(), 150)
+          setTimeout(() => this.hideUnreachable(), 250)
+        })
       }
     },
 
@@ -76,6 +82,7 @@ export default {
       Bus.$on('businesses:setCurrentBusiness', payload => {
         this.setCurrentBusiness(payload.business)
 
+        this.hideUnreachable()
         if (payload.redirectTo) {
           this.$router.push(payload.redirectTo)
         }
@@ -90,7 +97,7 @@ export default {
       this.currentBusiness = value
     },
 
-    initRouterBeforeEach () {
+    initRouterHooks () {
       this.$router.beforeEach((to, from, next) => {
         if (!ROUTES_WITH_OWNER_FILTER.includes(to.name)) {
           next()
@@ -103,12 +110,39 @@ export default {
           next()
         }
       })
+
+      this.$router.afterEach(() => {
+        this.hideUnreachable()
+      })
+    },
+
+    hideUnreachable () {
+      document.querySelectorAll('.sidebar__link').forEach(item => {
+        // console.log(ROUTES_WITH_OWNER_FILTER)
+        // console.log()
+        const routeEntry = this.routeByPath(item.getAttribute('href'))
+        if (
+          ROUTES_WITH_OWNER_FILTER.includes(routeEntry.name) &&
+          !this.currentBusiness.accountId
+        ) {
+          item.classList.add('current-business-indicator__link-hidden')
+        } else {
+          item.classList.remove('current-business-indicator__link-hidden')
+        }
+        // console.log(item.getAttribute('href'))
+      })
+    },
+
+    routeByPath (routePath) {
+      return this.$router.options.routes
+        .find(i => i.name === 'app').children
+        .find(i => i.path === routePath)
     },
   },
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .current-business-indicator__browsing-lbl {
   font-size: 1.3rem;
   font-weight: 700;
@@ -129,5 +163,9 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.current-business-indicator__link-hidden {
+  display: none !important; /* stylelint-disable-line */
 }
 </style>
