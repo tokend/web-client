@@ -67,22 +67,15 @@
       />
     </template>
 
-    <!--
-        HACK: collection loader tries to fetch the first page at any cost, but
-        getList required filters.assetCode to be assigned. so the loader
-        should be rendered only after filters.assetCode assigned any value
-     -->
-    <template v-if="filters.assetCode">
-      <div class="polls-all__requests-collection-loader">
-        <collection-loader
-          class="polls-all__loader"
-          :first-page-loader="getList"
-          @first-page-load="setList"
-          @next-page-load="concatList"
-          ref="listCollectionLoader"
-        />
-      </div>
-    </template>
+    <div class="polls-all__requests-collection-loader">
+      <collection-loader
+        class="polls-all__loader"
+        :first-page-loader="getList"
+        @first-page-load="setList"
+        @next-page-load="concatList"
+        ref="listCollectionLoader"
+      />
+    </div>
 
     <drawer :is-shown.sync="isDrawerShown">
       <template slot="heading">
@@ -136,7 +129,6 @@ export default {
   data () {
     return {
       filters: {
-        assetCode: '',
         state: PollRecord.states.open,
         isOwnedByCurrentUser: false,
       },
@@ -156,10 +148,6 @@ export default {
   },
 
   watch: {
-    'filters.assetCode' () {
-      this.reloadList()
-    },
-
     'filters.state' () {
       this.reloadList()
     },
@@ -184,6 +172,11 @@ export default {
             ...(
               this.filters.isOwnedByCurrentUser
                 ? { owner: this.accountId }
+                : {}
+            ),
+            ...(
+              this.$route.query.owner
+                ? { owner: this.$route.query.owner }
                 : {}
             ),
             state: this.filters.state,
