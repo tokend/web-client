@@ -30,14 +30,9 @@ export default {
 @import '~@scss/variables';
 
 .current-business-logo {
-  $height: 4rem;
-
-  width: $height * (16 / 9);
-  height: $height;
-
-  // width: 5.3rem;
-  // height: 5.3rem;
-  // border-radius: 50%;
+  width: 4.8rem;
+  height: 4.8rem;
+  border-radius: 50%;
 }
 
 .current-business-logo__image {

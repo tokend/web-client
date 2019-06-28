@@ -62,7 +62,6 @@ export default {
   border-radius: 0.4rem;
   box-shadow: 0 0.5rem 1rem 0 $col-sale-card-shadow;
   background-color: $col-sale-card-background;
-  padding: 1.6rem;
   min-width: 0;
   width: 100%;
   max-width: 100%;
@@ -70,18 +69,9 @@ export default {
   overflow-x: hidden;
 }
 
-.business-card__logo-wrp {
-  text-align: center;
-  margin: 1.2rem 0;
-}
-
-.business-card__logo {
-  margin: auto;
-}
-
 .business-card__name {
   font-size: 1.6em;
   text-align: center;
-  margin-top: 2.4rem;
+  padding: 1.6rem 2.4rem;
 }
 </style>

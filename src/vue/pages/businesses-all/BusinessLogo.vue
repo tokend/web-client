@@ -1,15 +1,17 @@
 <template>
-  <img
-    v-if="logoUrl"
-    class="business-logo business-logo__image"
-    :src="logoUrl"
-  >
-  <p
-    v-else
-    class="business-logo business-logo__code-abbr"
-  >
-    {{ name | abbreviate }}
-  </p>
+  <div class="business-logo">
+    <img
+      v-if="logoUrl"
+      class=" business-logo__image"
+      :src="logoUrl"
+    >
+    <p
+      v-else
+      class="business-logo business-logo__code-abbr"
+    >
+      {{ name | abbreviate }}
+    </p>
+  </div>
 </template>
 
 <script>
@@ -26,13 +28,15 @@ export default {
 @import '~@scss/variables';
 
 .business-logo {
-  width: 5.3rem;
-  height: 5.3rem;
-  border-radius: 50%;
+  position: relative;
+  padding-bottom: 56.2%;
 }
 
 .business-logo__image {
-  display: block;
+  position: absolute;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
 }
 
 .business-logo__code-abbr {
