@@ -1,10 +1,46 @@
 <template>
   <div class="customers-table">
+    <div class="customers-table__head-actions">
+      <template v-if="!isIssuanceMode">
+        <button
+          class="app__button-raised"
+          @click="toggleIssuanceMode"
+        >
+          {{ 'customers-table.enable-mass-issuance-btn' | globalize }}
+        </button>
+      </template>
+
+      <template v-else>
+        <div class="customers-table__head-actions-group">
+          <button
+            class="app__button-raised"
+            @click="doMassIssuance"
+            :disabled="!issuanceReceivers.length"
+          >
+            {{ 'customers-table.do-mass-issue-btn' | globalize }}
+          </button>
+
+          <button
+            class="app__button-flat app__button-flat--danger"
+            @click="toggleIssuanceMode"
+          >
+            {{ 'customers-table.cancel-mass-issue-btn' | globalize }}
+          </button>
+        </div>
+      </template>
+    </div>
+
     <!-- eslint-disable-next-line max-len -->
     <div class="app__table app__table--with-shadow app__table--last-td-to-right">
-      <table>
+      <table class="customers-table__table">
         <thead>
           <tr>
+            <th
+              class="customers-table__cb-td"
+              v-if="isIssuanceMode"
+            >
+              <!-- checkbox -->
+            </th>
             <th :title="'customers-table.email-th' | globalize">
               {{ 'customers-table.email-th' | globalize }}
             </th>
@@ -14,7 +50,7 @@
             <th :title="'customers-table.status-th' | globalize">
               {{ 'customers-table.status-th' | globalize }}
             </th>
-            <th>
+            <th class="customers-table__btn-td">
               <!-- actions -->
             </th>
           </tr>
@@ -25,18 +61,26 @@
             v-for="customer in customersList"
             :key="customer.id"
           >
+            <td
+              class="customers-table__cb-td"
+              v-if="isIssuanceMode"
+            >
+              <tick-field
+                class="customers-table__cb"
+                v-model="issuanceReceivers"
+                :cb-value="customer"
+                :disabled="!customer.isActive"
+              />
+            </td>
+
             <td :title="customer.email">
               {{ customer.email }}
             </td>
 
-            <td :title="customer.balances">
+            <td :title="formatBalancesOf(customer)">
               <template v-if="customer.balances && customer.balances.length">
-                <span
-                  v-for="(balance, index) in customer.balances"
-                  :key="balance.id"
-                >
-                  <!-- eslint-disable-next-line max-len -->
-                  {{ { value: balance.amount, currency: balance.assetCode } | formatMoney }}<template v-if="index < customer.balances.length - 1">,</template>
+                <span>
+                  {{ formatBalancesOf(customer) }}
                 </span>
               </template>
 
@@ -49,7 +93,7 @@
               {{ getCustomerStatusTranslated(customer) }}
             </td>
 
-            <td>
+            <td class="customers-table__btn-td">
               <button
                 class="customers-table__details-btn"
                 @click="$emit(EVENTS.detailsButtonClicked, customer)"
@@ -84,12 +128,19 @@
 
 <script>
 import { CustomerRecord } from './customer.record'
+import TickField from '@/vue/fields/TickField'
+import { Bus } from '@/js/helpers/event-bus'
 
 const EVENTS = {
   detailsButtonClicked: 'details-button-clicked',
 }
 
 export default {
+  name: 'customers-table',
+
+  components: {
+    TickField,
+  },
 
   props: {
     customersList: {
@@ -105,8 +156,11 @@ export default {
       require: true,
     },
   },
+
   data () {
     return {
+      isIssuanceMode: false,
+      issuanceReceivers: [],
       EVENTS,
     }
   },
@@ -127,6 +181,26 @@ export default {
 
       return this.$options.filters.globalize(translationId)
     },
+
+    toggleIssuanceMode () {
+      if (this.isIssuanceMode) {
+        this.isIssuanceMode = false
+        this.issuanceReceivers = []
+      } else {
+        this.isIssuanceMode = true
+      }
+    },
+
+    doMassIssuance () {
+      Bus.emit('customers:massIssue', { receivers: this.issuanceReceivers })
+    },
+
+    formatBalancesOf (customer) {
+      return customer.balances
+        .map(item => this.$options.filters
+          .formatMoney({ value: item.amount, currency: item.assetCode })
+        ).join(', ')
+    },
   },
 }
 </script>
@@ -134,8 +208,58 @@ export default {
 <style lang="scss" scoped>
 @import '~@scss/variables';
 
+// TODO: move to tick field
+$disabled-tick-bg: #eeeeee;
+$disabled-tick-border: #e9e9e9;
+
 .customers-table__details-btn {
   font-size: 1.2rem;
   color: $col-primary-lighten;
+}
+
+.customers-table__cb-td {
+  min-width: 4.4rem;
+  width: 4.4rem;
+  padding-right: 0;
+
+  & + td,
+  & + th {
+    padding-left: 1rem;
+  }
+}
+
+.customers-table__cb {
+  position: relative;
+  top: 0.2rem;
+
+  &[disabled] /deep/ .tick-field__tick,
+  &[disabled] /deep/ .tick-field__input {
+    cursor: not-allowed;
+    background-color: $disabled-tick-bg;
+    border-color: $disabled-tick-border;
+  }
+}
+
+.customers-table__btn-td {
+  min-width: 12rem;
+  width: 12rem;
+}
+
+.customers-table__table {
+  table-layout: fixed;
+  min-width: 60rem;
+}
+
+.customers-table__head-actions {
+  margin-bottom: 2.4rem;
+  display: flex;
+}
+
+.customers-table__head-actions-group {
+  display: flex;
+
+  & > button + button {
+    margin-left: 1.2rem;
+  }
 }
 </style>

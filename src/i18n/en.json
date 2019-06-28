@@ -2349,7 +2349,10 @@
       "error-msg": "An error occurred while loading the list, please contact system owner to resolve the issue.",
       "not-registered-status-td": "Not registered",
       "active-status-td": "Active",
-      "blocked-status-td": "Blocked"
+      "blocked-status-td": "Blocked",
+      "enable-mass-issuance-btn": "Select for issuance",
+      "do-mass-issue-btn": "Perform issuance",
+      "cancel-mass-issue-btn": "Cancel issuance"
     },
     "customers-list": {
       "customer-drawer-title": "View customer"

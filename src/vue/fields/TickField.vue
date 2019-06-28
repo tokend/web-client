@@ -32,7 +32,7 @@ const EVENTS = {
 export default {
   props: {
     value: { type: [String, Number, Array, Boolean], required: true },
-    cbValue: { type: [String, Number, Boolean], default: false },
+    cbValue: { type: [String, Number, Boolean, Object], default: false },
   },
   computed: {
     id () {

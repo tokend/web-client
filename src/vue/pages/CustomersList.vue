@@ -47,6 +47,7 @@ import Drawer from '@/vue/common/Drawer'
 import { CustomerRecord } from './customers-list/customer.record'
 import CustomerAttributes from './customers-list/CustomerAttributes'
 import CustomersTable from './customers-list/CustomersTable'
+import { Bus } from '@/js/helpers/event-bus'
 
 export default {
   name: 'customers-list',
@@ -72,9 +73,18 @@ export default {
     ...mapGetters([vuexTypes.accountId]),
   },
 
+  created () {
+    this.listen()
+  },
+
   methods: {
+    listen () {
+      Bus.on('customers:updateList', () => this.reloadList())
+    },
+
     async getList () {
       let result
+
       try {
         result = await api.getWithSignature(
           `/integrations/dns/businesses/${this.accountId}/clients`,
@@ -98,6 +108,10 @@ export default {
       this.list = this.list.concat(
         newChunk.map(i => new CustomerRecord(i))
       )
+    },
+
+    reloadList () {
+      return this.$refs.listCollectionLoader.loadFirstPage()
     },
   },
 }

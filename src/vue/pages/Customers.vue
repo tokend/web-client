@@ -33,7 +33,7 @@
         {{ 'customers-page.mass-invitation-drawer-heading' | globalize }}
       </template>
 
-      <mass-invitation-form />
+      <mass-invitation-form @submitted="emitUpdateList" />
     </drawer>
 
     <drawer :is-shown.sync="isIssueDrawerShown">
@@ -41,7 +41,10 @@
         {{ 'customers-page.mass-issuance-drawer-heading' | globalize }}
       </template>
 
-      <mass-issuance-form />
+      <mass-issuance-form
+        :receivers="massIssuanceReceivers"
+        @submitted="emitUpdateList"
+      />
     </drawer>
 
     <router-view />
@@ -55,6 +58,7 @@ import { vueRoutes } from '@/vue-router/routes'
 
 import MassIssuanceForm from '@/vue/forms/MassIssuanceForm'
 import MassInvitationForm from '@/vue/forms/MassInvitationForm'
+import { Bus } from '@/js/helpers/event-bus'
 
 export default {
   name: 'customers-page',
@@ -69,7 +73,34 @@ export default {
   data: _ => ({
     isInviteDrawerShown: false,
     isIssueDrawerShown: false,
+    massIssuanceReceivers: '',
     vueRoutes,
   }),
+
+  watch: {
+    isIssueDrawerShown (value) {
+      if (value === false) {
+        this.massIssuanceReceivers = ''
+      }
+    },
+  },
+
+  created () {
+    this.listen()
+  },
+
+  methods: {
+    emitUpdateList () {
+      Bus.emit('customers:updateList')
+    },
+
+    listen () {
+      Bus.on('customers:massIssue', payload => {
+        const receivers = ((payload || {}).receivers || [])
+        this.massIssuanceReceivers = receivers.map(i => i.email).join(',')
+        this.isIssueDrawerShown = true
+      })
+    },
+  },
 }
 </script>
