@@ -147,6 +147,37 @@
       "price-for-asset-hint": "Change ({{quote}} for 1 {{base}}) ≈ {{value, money}}",
       "accept-investments-msg": "Accept contributions in:",
       "no-investable-assets-err": "This asset has no acceptable contribution asset pairs. Please, select another one"
+    },
+    "assets": {
+      "can-be-base-in-atomic-swap-title": "Can be base in aexchange offerp",
+      "can-be-quote-in-atomic-swap-title": "Can be quote in exchange offer"
+    },
+    "asset-details": {
+      "can-be-base-in-atomic-swap-title": "Can be base in exchange offer",
+      "can-be-quote-in-atomic-swap-title": "Can be quote in exchange offer"
+    },
+    "update-asset-requests": {
+      "can-be-base-in-atomic-swap-title": "Can be base in exchange offer",
+      "can-be-quote-in-atomic-swap-title": "Can be quote in exchange offer"
+    },
+    "create-asset-requests": {
+      "can-be-base-in-atomic-swap-title": "Can be base in exchange offer",
+      "can-be-quote-in-atomic-swap-title": "Can be quote in exchange offer"
+    },
+    "atomic-swaps": {
+      "explore-atomic-swaps": "Explore exchange offers",
+      "create-atomic-swap-bth": "Create exchange offer",
+      "new-atomic-swap": "New exchange offer"
+    },
+    "create-atomic-swap-form": {
+      "no-base-atomic-swap-assets-title": "No base exchange offer assets yet",
+      "no-base-atomic-swap-assets-msg": "Please create an asset to create exchange offer",
+      "no-quote-atomic-swap-assets-title": "No quote exchange offer assets yet",
+      "no-quote-atomic-swap-assets-msg": "Please create an asset to create exchange offer",
+      "created-atomic-swap-msg": "Exchange offer request successfully created"
+    },
+    "atomic-swaps-explore": {
+      "no-list-title": "Exchange offer list is coming soon"
     }
   }
 }
