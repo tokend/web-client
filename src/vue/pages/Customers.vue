@@ -97,7 +97,7 @@ export default {
     listen () {
       Bus.on('customers:massIssue', payload => {
         const receivers = ((payload || {}).receivers || [])
-        this.massIssuanceReceivers = receivers.map(i => i.email).join(',')
+        this.massIssuanceReceivers = receivers.map(i => i.email).join(', ')
         this.isIssueDrawerShown = true
       })
     },
