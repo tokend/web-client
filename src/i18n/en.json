@@ -2300,7 +2300,7 @@
       "created-atomic-swap-msg": "Atomic swap request successfully created"
     },
     "atomic-swaps-explore": {
-      "no-list-title":"Atomic swaps will be coming soon"
+      "no-list-title":"Atomic swap list is coming soon"
     },
     "customers-page": {
       "invite-btn": "Invite",
