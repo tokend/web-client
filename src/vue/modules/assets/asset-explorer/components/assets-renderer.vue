@@ -158,7 +158,7 @@ export default {
 
     assets () {
       try {
-        if (this.$route.query.owner) {
+        if (this.$route && this.$route.query && this.$route.query.owner) {
           return this.assetsByOwner(this.$route.query.owner)
         } else {
           return this.assetsAll
