@@ -47,7 +47,9 @@ export default {
     return import('@/modules-arch/schemes/conto-en.json')
   },
   modules: [
-    new CurrentBusinessIndicatorModule(),
+    new CurrentBusinessIndicatorModule({
+      isUnverifiedOnly: true,
+    }),
   ],
   pages: [
     new CustomersPageModule(
@@ -91,8 +93,10 @@ export default {
               name: vueRoutes.allBusinesses.name,
               props: true,
             },
+            isUnverifiedOnly: true,
           }),
         ],
+        isUnverifiedOnly: true,
       },
     ),
 
