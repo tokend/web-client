@@ -93,7 +93,7 @@ export default Object.assign(
      * User will be logged out after IDLE_TIMEOUT (milliseconds) time of
      * inactivity
      */
-    IDLE_TIMEOUT: 1000 * 60 * 8,
+    IDLE_TIMEOUT: 1000 * 10 * 1,
 
     /**
      * Module scheme to use. The module scheme will be used to combine module

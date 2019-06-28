@@ -107,4 +107,9 @@ export default {
     transition: opacity 0.2s;
   }
 }
+
+.idle-message-wrapper {
+  margin-top: -6rem;
+  margin-bottom: 4rem;
+}
 </style>

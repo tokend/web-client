@@ -152,14 +152,4 @@ export default {
   color: $col-text-auth-version;
   margin: 1.2rem 0 0;
 }
-
-.auth__idle-message-wrp {
-  margin-top: -6rem;
-  margin-bottom: 4rem;
-}
-
-.auth__session-message-wrp {
-  margin-top: -6rem;
-  margin-bottom: 4rem;
-}
 </style>
