@@ -33,6 +33,15 @@
             </submodule-importer>
           </div>
         </template>
+
+        <template v-else>
+          <router-link
+            @click.native="closeSidebar"
+            :to="vueRoutes.app"
+          >
+            <logo class="sidebar__logo" />
+          </router-link>
+        </template>
       </section>
 
       <section class="sidebar__scheme-label-section">
