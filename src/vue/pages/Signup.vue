@@ -129,7 +129,7 @@ export default {
           this.recoveryKeypair
         )
         if (response.data.verified) {
-          await this.storeWallet(wallet)
+          await this.storeWallet({ wallet, session: response.data.session })
           await this.loadAccount(this.walletAccountId)
           await this.loadKyc()
           this.$router.push(vueRoutes.app)

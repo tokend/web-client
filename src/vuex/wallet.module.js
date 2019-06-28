@@ -34,15 +34,18 @@ export const actions = {
     commit(vuexTypes.SET_SESSION, wallet)
     commit(vuexTypes.SET_WALLET, wallet)
   },
-  async [vuexTypes.STORE_WALLET] ({ commit }, wallet) {
+  async [vuexTypes.STORE_WALLET] ({ commit }, { wallet, session }) {
     const newWallet = new Wallet(
       wallet.email,
       wallet.secretSeed,
       wallet.accountId,
-      wallet.id
+      wallet.id,
+      session.id,
+      session.encryptionKey,
     )
     useWallet(newWallet)
     commit(vuexTypes.SET_WALLET, wallet)
+    commit(vuexTypes.SET_SESSION, newWallet)
   },
 }
 
