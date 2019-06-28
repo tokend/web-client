@@ -35,15 +35,12 @@
 </template>
 
 <script>
-// import { vuexTypes } from '@/vuex'
-// import { mapGetters, mapActions } from 'vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { api } from '@/api'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
-// TODO: remove if unneeded
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import Drawer from '@/vue/common/Drawer'
 
