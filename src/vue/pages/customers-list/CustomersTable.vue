@@ -39,7 +39,11 @@
               class="customers-table__cb-td"
               v-if="isIssuanceMode"
             >
-              <!-- checkbox -->
+              <tick-field
+                class="customers-table__cb"
+                v-model="issuanceReceivers"
+                :cb-value="customersList.filter(i => i.isActive)"
+              />
             </th>
             <th :title="'customers-table.email-th' | globalize">
               {{ 'customers-table.email-th' | globalize }}

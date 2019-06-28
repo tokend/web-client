@@ -110,7 +110,7 @@ export default {
     },
     arrayIncludes (array, value) {
       return Boolean(array.find(item => item === value))
-    }
+    },
   },
 }
 </script>
