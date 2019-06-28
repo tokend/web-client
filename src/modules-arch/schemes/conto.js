@@ -38,6 +38,9 @@ import { CustomersListPageModule } from '@/vue/pages/customers-list-page-module'
 import { BusinessesPageModule } from '@/vue/pages/businesses-page'
 import { BusinessesAllPageModule } from '@/vue/pages/businesses-all-page-module'
 import { CurrentBusinessIndicatorModule } from '@/vue/navigation/navbar/current-business-indicator/module'
+import { AtomicSwapsPageModule } from '@/vue/pages/atomic-swaps-page-module'
+import { AtomicSwapsExplorePageModule } from '@/vue/pages/atomic-swaps/atomic-swaps-explore-page-module'
+import { CreateAtomicSwapFormModule } from '@/vue/modules/create-atomic-swap-form/module'
 
 export default {
   importEnLocaleFile () {
@@ -258,6 +261,31 @@ export default {
             ],
           }),
           new CreatePollFormModule({
+            isCorporateOnly: true,
+          }),
+        ],
+      },
+    ),
+
+    new AtomicSwapsPageModule(
+      {
+        routerEntry: {
+          path: '/atomic-swaps',
+          name: vueRoutes.atomicSwaps.name,
+          meta: { pageNameTranslationId: 'pages-names.atomic-swaps' },
+        },
+        menuButtonTranslationId: 'pages-names.atomic-swaps',
+        menuButtonMdiName: 'swap-horizontal',
+        isAutoRedirectToFirstChild: true,
+        submodules: [
+          new AtomicSwapsExplorePageModule({
+            routerEntry: {
+              path: '/atomic-swaps/explore',
+              name: vueRoutes.atomicSwapsExplore.name,
+              props: true,
+            },
+          }),
+          new CreateAtomicSwapFormModule({
             isCorporateOnly: true,
           }),
         ],
