@@ -282,7 +282,7 @@ export default {
       const operation = {
         permissionType: Number(this.form.permissionType),
         voteConfirmationRequired: false,
-        resultProviderID: api.networkDetails.masterAccount,
+        resultProviderID: api.networkDetails.masterAccountId,
         startTime: DateUtil.toTimestamp(this.form.startTime),
         endTime: DateUtil.toTimestamp(this.form.endTime),
         numberOfChoices: this.form.choices.length,
