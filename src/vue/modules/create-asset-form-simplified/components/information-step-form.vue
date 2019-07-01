@@ -50,30 +50,6 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <tick-field
-          v-model="form.policies"
-          :cb-value="ASSET_POLICIES.canBeBaseInAtomicSwap"
-          :disabled="isDisabled"
-        >
-          {{ 'create-asset-form.can-be-base-in-atomic-swap-lbl' | globalize }}
-        </tick-field>
-      </div>
-    </div>
-
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <tick-field
-          v-model="form.policies"
-          :cb-value="ASSET_POLICIES.canBeQuoteInAtomicSwap"
-          :disabled="isDisabled"
-        >
-          {{ 'create-asset-form.can-be-quote-in-atomic-swap-lbl' | globalize }}
-        </tick-field>
-      </div>
-    </div>
-
-    <div class="app__form-row">
-      <div class="app__form-field">
         <file-field
           name="create-asset-logo"
           v-model="form.logo"
@@ -142,7 +118,9 @@ export default {
       name: '',
       code: '',
       logo: null,
-      policies: 0,
+      policies:
+        ASSET_POLICIES.canBeBaseInAtomicSwap |
+        ASSET_POLICIES.canBeQuoteInAtomicSwap,
     },
     MIN_AMOUNT: config.MIN_AMOUNT,
     ASSET_POLICIES,
