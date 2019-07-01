@@ -53,6 +53,7 @@
         <tick-field
           v-model="form.policies"
           :cb-value="ASSET_POLICIES.canBeBaseInAtomicSwap"
+          :disabled="isDisabled"
         >
           {{ 'create-asset-form.can-be-base-in-atomic-swap-lbl' | globalize }}
         </tick-field>
@@ -64,6 +65,7 @@
         <tick-field
           v-model="form.policies"
           :cb-value="ASSET_POLICIES.canBeQuoteInAtomicSwap"
+          :disabled="isDisabled"
         >
           {{ 'create-asset-form.can-be-quote-in-atomic-swap-lbl' | globalize }}
         </tick-field>
