@@ -45,7 +45,8 @@
     },
     "pages-names": {
       "sales": "Crowdfundings",
-      "sale-details": "Crowdfunding details"
+      "sale-details": "Crowdfunding details",
+      "atomic-swaps": "Direct buy"
     },
     "op-details": {
       "sale-name-lbl": "Crowdfunding name",
@@ -149,35 +150,35 @@
       "no-investable-assets-err": "This asset has no acceptable contribution asset pairs. Please, select another one"
     },
     "assets": {
-      "can-be-base-in-atomic-swap-title": "Can be base in exchange offer",
-      "can-be-quote-in-atomic-swap-title": "Can be quote in exchange offer"
+      "can-be-base-in-atomic-swap-title": "Can be base in direct buy",
+      "can-be-quote-in-atomic-swap-title": "Can be quote in direct buy"
     },
     "asset-details": {
-      "can-be-base-in-atomic-swap-title": "Can be base in exchange offer",
-      "can-be-quote-in-atomic-swap-title": "Can be quote in exchange offer"
+      "can-be-base-in-atomic-swap-title": "Can be base in direct buy",
+      "can-be-quote-in-atomic-swap-title": "Can be quote in direct buy"
     },
     "update-asset-requests": {
-      "can-be-base-in-atomic-swap-title": "Can be base in exchange offer",
-      "can-be-quote-in-atomic-swap-title": "Can be quote in exchange offer"
+      "can-be-base-in-atomic-swap-title": "Can be base in direct buy",
+      "can-be-quote-in-atomic-swap-title": "Can be quote in direct buy"
     },
     "create-asset-requests": {
-      "can-be-base-in-atomic-swap-title": "Can be base in exchange offer",
-      "can-be-quote-in-atomic-swap-title": "Can be quote in exchange offer"
+      "can-be-base-in-atomic-swap-title": "Can be base in direct buy",
+      "can-be-quote-in-atomic-swap-title": "Explore direct buy offeringsCan be quote in direct buy"
     },
     "atomic-swaps": {
-      "explore-atomic-swaps": "Explore exchange offers",
-      "create-atomic-swap-bth": "Create exchange offer",
-      "new-atomic-swap": "New exchange offer"
+      "explore-atomic-swaps": "Explore direct buy offerings",
+      "create-atomic-swap-bth": "Create",
+      "new-atomic-swap": "New direct buy offering"
     },
     "create-atomic-swap-form": {
-      "no-base-atomic-swap-assets-title": "No base exchange offer assets yet",
-      "no-base-atomic-swap-assets-msg": "Please create an asset to create exchange offer",
-      "no-quote-atomic-swap-assets-title": "No quote exchange offer assets yet",
-      "no-quote-atomic-swap-assets-msg": "Please create an asset to create exchange offer",
-      "created-atomic-swap-msg": "Exchange offer request successfully created"
+      "no-base-atomic-swap-assets-title": "No base direct buy assets yet",
+      "no-base-atomic-swap-assets-msg": "Please create an asset to create direct buy",
+      "no-quote-atomic-swap-assets-title": "No quote direct buy assets yet",
+      "no-quote-atomic-swap-assets-msg": "Please create an asset to create direct buy",
+      "created-atomic-swap-msg": "Direct buy offering successfully created"
     },
     "atomic-swaps-explore": {
-      "no-list-title": "Exchange offer list is coming soon"
+      "no-list-title": "Direct buy list is coming soon"
     }
   }
 }
