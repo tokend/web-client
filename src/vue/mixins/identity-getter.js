@@ -19,7 +19,7 @@ export default {
       }
 
       const { data } = await api.get('/identities', {
-        filter: { email },
+        filter: { email: email.toLowerCase() },
         page: { limit: 1 },
       })
 
