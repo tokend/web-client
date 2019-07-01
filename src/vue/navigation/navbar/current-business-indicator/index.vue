@@ -118,8 +118,6 @@ export default {
 
     hideUnreachable () {
       document.querySelectorAll('.sidebar__link').forEach(item => {
-        // console.log(ROUTES_WITH_OWNER_FILTER)
-        // console.log()
         const routeEntry = this.routeByPath(item.getAttribute('href'))
         if (
           ROUTES_WITH_OWNER_FILTER.includes(routeEntry.name) &&
@@ -129,7 +127,6 @@ export default {
         } else {
           item.classList.remove('current-business-indicator__link-hidden')
         }
-        // console.log(item.getAttribute('href'))
       })
     },
 

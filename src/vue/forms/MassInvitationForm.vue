@@ -42,8 +42,6 @@
 </template>
 
 <script>
-// TODO: integrate with issuance
-
 import FormMixin from '@/vue/mixins/form.mixin'
 import { required } from '@validators'
 
