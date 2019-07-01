@@ -113,6 +113,8 @@ export default {
 
     this.detectIncompatibleBrowser()
 
+    this.watchChangesInLocalStorage()
+
     this.isAppInitialized = true
   },
 
@@ -125,6 +127,7 @@ export default {
     }),
     ...mapMutations({
       clearState: vuexTypes.CLEAR_STATE,
+      popState: vuexTypes.POP_STATE,
     }),
     async initApp () {
       api.useBaseURL(config.HORIZON_SERVER)
@@ -172,6 +175,18 @@ export default {
           query: { isSessionExpired: true },
         })
         location.reload()
+      }
+    },
+    watchChangesInLocalStorage () {
+      window.onstorage = (storage) => {
+        if (this[vuexTypes.isLoggedIn]) {
+          this.popState()
+          this.$router.push({
+            name: this.$route.name,
+          })
+        } else if (!this[vuexTypes.isLoggedIn]) {
+          location.reload()
+        }
       }
     },
   },

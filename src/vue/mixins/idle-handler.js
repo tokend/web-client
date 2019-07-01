@@ -6,7 +6,7 @@ import { vuexTypes } from '@/vuex/types'
 
 export default {
   onIdle () {
-    if (!this.isLoggedIn) {
+    if (!this.isLoggedIn || !document.hasFocus()) {
       return
     }
 

@@ -19,6 +19,7 @@ export const sessionStoragePlugin = store => {
         }
 
         savedStore = JSON.parse(savedStore)
+
         store.replaceState({
           ...state,
           account: savedStore.account,
