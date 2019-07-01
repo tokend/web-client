@@ -185,7 +185,6 @@ export default {
   watch: {
     'recordsLoader': function () {
       this.saleRecords = []
-      this.isLoaded = false
     },
     isUserSales () {
       this.recordsLoader()
