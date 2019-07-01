@@ -113,6 +113,7 @@ import { store, vuexTypes } from '@/vuex'
 
 import { api } from '@/api'
 import { base } from '@tokend/js-sdk'
+import { MathUtil } from '@/js/utils'
 
 const EVENTS = {
   submitted: 'submitted',
@@ -176,6 +177,15 @@ export default {
 
         if (!operations.length) {
           Bus.error('mass-issuance-form.no-receivers-found')
+          return
+        }
+
+        const isOverissue = MathUtil.compare(
+          MathUtil.multiply(operations.length, this.form.amount),
+          this.assetByCode(this.form.assetCode).availableForIssuance,
+        ) > 0
+        if (isOverissue) {
+          Bus.error('mass-issuance-form.overissue-error-notif')
           return
         }
 

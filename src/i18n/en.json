@@ -2319,7 +2319,8 @@
       "no-assets-msg-title": "No issuable assets yet",
       "no-assets-msg-description": "Unfortunately, you do not have any assets now, please create an asset and try again.",
       "issued-successfully-notification": "Mass issuance performed successfully.",
-      "no-receivers-found": "Receivers you provided not found or cannot receive the issuance. Please ensure you specified the valid receivers list and try again."
+      "no-receivers-found": "Receivers you provided not found or cannot receive the issuance. Please ensure you specified the valid receivers list and try again.",
+      "overissue-error-notif": "The total amount is bigger than the available for issuance amount. Please decrease the amount to issue and try again."
     },
     "mass-invitation-form": {
       "asset-lbl": "Asset",
