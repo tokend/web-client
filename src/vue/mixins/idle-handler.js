@@ -1,8 +1,10 @@
-import { mapMutations, mapGetters } from 'vuex'
+import { mapMutations, mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 
 // docs of idle-vue:
 // https://www.npmjs.com/package/idle-vue
+
+const UPDATE_SESSION_INTERVAL = 1000 * 60 * 2
 
 export default {
   onIdle () {
@@ -21,6 +23,10 @@ export default {
     this.reloadApp()
   },
 
+  data: () => ({
+    sessionKeeperInterval: '',
+  }),
+
   computed: {
     ...mapGetters({
       isLoggedIn: vuexTypes.isLoggedIn,
@@ -28,6 +34,9 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      updateSession: vuexTypes.UPDATE_SESSION,
+    }),
     ...mapMutations({
       clearState: vuexTypes.CLEAR_STATE,
     }),
@@ -35,6 +44,40 @@ export default {
     reloadApp () {
       // wrapped for testing purposes
       return location.reload()
+    },
+
+    updateSessionWithInterval () {
+      if (this.isLoggedIn) {
+        if (document.hasFocus()) {
+          this.setSessionKeeperInterval()
+        }
+        window.addEventListener('focus', () => {
+          this.keepSession()
+          this.setSessionKeeperInterval()
+        })
+        window.addEventListener('blur', () => {
+          clearInterval(this.sessionKeeperInterval)
+        })
+      }
+    },
+
+    async keepSession () {
+      try {
+        await this.updateSession()
+      } catch (error) {
+        this.clearState()
+        this.$router.push({
+          name: this.$route.name,
+          query: { isSessionExpired: true },
+        })
+        this.reloadApp()
+      }
+    },
+
+    setSessionKeeperInterval () {
+      this.sessionKeeperInterval = setInterval(async () => {
+        await this.keepSession()
+      }, UPDATE_SESSION_INTERVAL)
     },
   },
 }

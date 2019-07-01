@@ -70,6 +70,7 @@ const actions = {
 
   // session
   DECRYPT_SECRET_SEED: 'DECRYPT_SECRET_SEED',
+  UPDATE_SESSION: 'UPDATE_SESSION',
 }
 
 const getters = {
