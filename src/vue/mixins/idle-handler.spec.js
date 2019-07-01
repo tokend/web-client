@@ -65,6 +65,7 @@ describe('idle-handler.js mixin', () => {
     describe('on onIdle() hook', () => {
       it('logs the user out and reloads the application', () => {
         mixin.isLoggedIn = true
+        window.focus()
 
         mixin.onIdle()
 
