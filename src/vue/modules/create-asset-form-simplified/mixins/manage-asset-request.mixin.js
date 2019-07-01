@@ -67,6 +67,7 @@ export default {
           logo: this.$getDocumentDetailsOrEmptyDocument(logo),
           terms: this.$getDocumentDetailsOrEmptyDocument(terms),
           stellar: {},
+          description: this.collectedCreateAssetAttributes.description,
         },
       }
 

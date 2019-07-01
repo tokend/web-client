@@ -1161,7 +1161,8 @@
       "integration-with-stellar-check": "I want to integrate with Stellar network",
       "restrict-who-can-use": "I want to restrict who can use this asset",
       "terms-subheading": "Terms",
-      "permissions-subheading": "Permissions"
+      "permissions-subheading": "Permissions",
+      "description-lbl": "Asset description (optional)"
     },
     "update-asset-form": {
       "loading-msg": "Loading…",
@@ -1422,6 +1423,7 @@
     },
     "asset-details": {
       "balance-title": "Balance",
+      "description-title": "Description",
       "converted-balance-title": "Converted balance",
       "maximum-title": "Maximum",
       "issued-title": "Issued",
@@ -1990,6 +1992,7 @@
       "update-btn": "Update",
       "no-terms-msg": "No terms",
       "balance-title": "Balance",
+      "description-title": "Description",
       "maximum-title": "Maximum",
       "issued-title": "Issued",
       "available-title": "Available",

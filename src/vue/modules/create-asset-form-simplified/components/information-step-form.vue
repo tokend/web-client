@@ -38,6 +38,21 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
+        <input-field
+          white-autofill
+          v-model="form.description"
+          @blur="touchField('form.description')"
+          name="create-asset-form-description"
+          :label="'create-asset-form.description-lbl' | globalize"
+          :error-message="getFieldErrorMessage('form.description')"
+          :maxlength="DESCRIPTION_MAX_LENGTH"
+          :disabled="isDisabled"
+        />
+      </div>
+    </div>
+
+    <div class="app__form-row">
+      <div class="app__form-field">
         <tick-field
           v-model="form.policies"
           :cb-value="ASSET_POLICIES.transferable"
@@ -104,6 +119,7 @@ const EVENTS = {
 }
 
 const NAME_MAX_LENGTH = 255
+const DESCRIPTION_MAX_LENGTH = 255
 
 export default {
   name: 'information-step-form',
@@ -121,11 +137,13 @@ export default {
       policies:
         ASSET_POLICIES.canBeBaseInAtomicSwap |
         ASSET_POLICIES.canBeQuoteInAtomicSwap,
+      description: '',
     },
     MIN_AMOUNT: config.MIN_AMOUNT,
     ASSET_POLICIES,
     DOCUMENT_TYPES,
     NAME_MAX_LENGTH,
+    DESCRIPTION_MAX_LENGTH,
   }),
 
   validations () {
@@ -138,6 +156,9 @@ export default {
         code: {
           required,
           assetCode,
+        },
+        description: {
+          maxLength: maxLength(DESCRIPTION_MAX_LENGTH),
         },
       },
     }
