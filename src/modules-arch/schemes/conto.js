@@ -288,11 +288,13 @@ export default {
               name: vueRoutes.atomicSwapsExplore.name,
               props: true,
             },
+            isCorporateOnly: true,
           }),
           new CreateAtomicSwapFormModule({
             isCorporateOnly: true,
           }),
         ],
+        isCorporateOnly: true,
       },
     ),
 
