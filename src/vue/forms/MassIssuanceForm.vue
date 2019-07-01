@@ -180,6 +180,12 @@ export default {
           return
         }
 
+        // Core cannot handle more than 100 operations per transaction
+        if (operations.length >= 100) {
+          Bus.error('mass-issuance-form.too-much-op-error-notif')
+          return
+        }
+
         const isOverissue = MathUtil.compare(
           MathUtil.multiply(operations.length, this.form.amount),
           this.assetByCode(this.form.assetCode).availableForIssuance,
