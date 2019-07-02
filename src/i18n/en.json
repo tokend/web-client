@@ -2365,6 +2365,10 @@
     "businesses": {
       "all-tab": "All businesses"
     },
+    "businesses-all": {
+      "no-list-title": "No businesses here yet",
+      "no-list-msg": "Here will be the list of businesses associated with you"
+    },
     "current-business-indicator": {
       "browsing-lbl": "Browsing:"
     }
