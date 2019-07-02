@@ -41,6 +41,9 @@ describe('idle-handler.js mixin', () => {
       expect(wrapper.vm.isLoggedIn, 'isLoggedIn getter').to.exist
       expect(wrapper.vm.clearState, 'clearState action').to.exist
       expect(wrapper.vm.reloadApp, 'reloadApp method').to.exist
+      expect(wrapper.vm.updateSessionWithInterval, 'updateSessionWithInterval method').to.exist
+      expect(wrapper.vm.keepSession, 'keepSession method').to.exist
+      expect(wrapper.vm.setSessionKeeperInterval, 'setSessionKeeperInterval method').to.exist
       expect(wrapper.vm.$router, '$router').to.exist
       expect(wrapper.vm.$route, '$route').to.exist
     })
@@ -58,6 +61,9 @@ describe('idle-handler.js mixin', () => {
       mixin.isLoggedIn = undefined
       mixin.clearState = sinon.spy()
       mixin.reloadApp = sinon.spy()
+      mixin.updateSessionWithInterval = sinon.spy()
+      mixin.keepSession = sinon.spy()
+      mixin.setSessionKeeperInterval = sinon.spy()
       mixin.$router = { push: sinon.spy() }
       mixin.$route = { name: 'SOME_ROUTE_NAME' }
     })
@@ -85,6 +91,24 @@ describe('idle-handler.js mixin', () => {
         expect(mixin.clearState).to.has.not.been.called
         expect(mixin.reloadApp).to.has.not.been.called
         expect(mixin.$router.push).to.has.not.been.called
+      })
+    })
+
+    describe('update session with interval', () => {
+      it('set session interval if document has focus', () => {
+        window.focus()
+
+        expect(mixin.setSessionKeeperInterval)
+          .to.has.been.calledOnceWithExactly()
+      })
+
+      it('set addEventListener for focus/blur event', () => {
+        sinon.spy(window, 'addEventListener')
+        expect(window.addEventListener.calledOnce).not.to.be.true
+        window.focus()
+        expect(window.addEventListener.calledOnce).to.be.true
+        window.blur()
+        expect(window.addEventListener.calledOnce).not.to.be.true
       })
     })
   })

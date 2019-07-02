@@ -115,7 +115,9 @@ export default {
 
     this.watchChangesInLocalStorage()
 
-    this.updateSessionWithInterval()
+    if (this[vuexTypes.isLoggedIn]) {
+      this.updateSessionWithInterval()
+    }
 
     this.isAppInitialized = true
   },

@@ -47,18 +47,16 @@ export default {
     },
 
     updateSessionWithInterval () {
-      if (this.isLoggedIn) {
-        if (document.hasFocus()) {
-          this.setSessionKeeperInterval()
-        }
-        window.addEventListener('focus', () => {
-          this.keepSession()
-          this.setSessionKeeperInterval()
-        })
-        window.addEventListener('blur', () => {
-          clearInterval(this.sessionKeeperInterval)
-        })
+      if (document.hasFocus()) {
+        this.setSessionKeeperInterval()
       }
+      window.addEventListener('focus', () => {
+        this.keepSession()
+        this.setSessionKeeperInterval()
+      })
+      window.addEventListener('blur', () => {
+        clearInterval(this.sessionKeeperInterval)
+      })
     },
 
     async keepSession () {
@@ -79,5 +77,14 @@ export default {
         await this.keepSession()
       }, UPDATE_SESSION_INTERVAL)
     },
+  },
+
+  watch: {
+    isLoggedIn (value) {
+      if (value) {
+        this.updateSessionWithInterval()
+      }
+    },
+
   },
 }
