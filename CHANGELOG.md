@@ -13,6 +13,9 @@ for further information about branching and tagging conventions.
   - Create atomic swap form
 - `canBeBaseInAtomicSwap` and `canBeQuoteInAtomicSwap` policy for assets
 
+#### Fixed
+- Resolved an issue when user can't update sale request
+
 ## [1.9.0-rc.0] - 2019-06-24
 #### Added
 - New "My assets" page
