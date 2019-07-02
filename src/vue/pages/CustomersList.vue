@@ -1,17 +1,15 @@
 <template>
   <div class="customers-list">
-    <template v-if="list.length">
-      <div class="customers-list__table-wrp">
-        <customers-table
-          :customers-list="list"
-          :is-loaded="isLoaded"
-          :is-load-failed="isLoadFailed"
-          @details-button-clicked="
-            (customerToBrowse = $event) && (isDrawerShown = true)
-          "
-        />
-      </div>
-    </template>
+    <div class="customers-list__table-wrp">
+      <customers-table
+        :customers-list="list"
+        :is-loaded="isLoaded"
+        :is-load-failed="isLoadFailed"
+        @details-button-clicked="
+          (customerToBrowse = $event) && (isDrawerShown = true)
+        "
+      />
+    </div>
 
     <collection-loader
       class="customers-list__loader"
