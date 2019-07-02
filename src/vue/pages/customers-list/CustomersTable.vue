@@ -1,34 +1,36 @@
 <template>
   <div class="customers-table">
-    <div class="customers-table__head-actions">
-      <template v-if="!isIssuanceMode">
-        <button
-          class="app__button-raised"
-          @click="toggleIssuanceMode"
-        >
-          {{ 'customers-table.enable-mass-issuance-btn' | globalize }}
-        </button>
-      </template>
-
-      <template v-else>
-        <div class="customers-table__head-actions-group">
+    <template v-if="customersList.length">
+      <div class="customers-table__head-actions">
+        <template v-if="!isIssuanceMode">
           <button
             class="app__button-raised"
-            @click="doMassIssuance"
-            :disabled="!issuanceReceivers.length"
-          >
-            {{ 'customers-table.do-mass-issue-btn' | globalize }}
-          </button>
-
-          <button
-            class="app__button-flat app__button-flat--danger"
             @click="toggleIssuanceMode"
           >
-            {{ 'customers-table.cancel-mass-issue-btn' | globalize }}
+            {{ 'customers-table.enable-mass-issuance-btn' | globalize }}
           </button>
-        </div>
-      </template>
-    </div>
+        </template>
+
+        <template v-else>
+          <div class="customers-table__head-actions-group">
+            <button
+              class="app__button-raised"
+              @click="doMassIssuance"
+              :disabled="!issuanceReceivers.length"
+            >
+              {{ 'customers-table.do-mass-issue-btn' | globalize }}
+            </button>
+
+            <button
+              class="app__button-flat app__button-flat--danger"
+              @click="toggleIssuanceMode"
+            >
+              {{ 'customers-table.cancel-mass-issue-btn' | globalize }}
+            </button>
+          </div>
+        </template>
+      </div>
+    </template>
 
     <!-- eslint-disable-next-line max-len -->
     <div class="app__table app__table--with-shadow app__table--last-td-to-right">
@@ -109,20 +111,20 @@
         </tbody>
 
         <empty-tbody-placeholder
-          v-else-if="isLoaded && !customersList.length"
-          :colspan="3"
+          v-else-if="isLoaded"
+          :colspan="4"
           :message="'customers-table.no-data-msg' | globalize"
         />
 
         <empty-tbody-placeholder
           v-else-if="isLoadFailed"
-          :colspan="3"
+          :colspan="4"
           :message="'customers-table.error-msg' | globalize"
         />
 
         <skeleton-loader-table-body
           v-else
-          :cells="3"
+          :cells="4"
           template="smallString"
         />
       </table>
@@ -134,6 +136,8 @@
 import { CustomerRecord } from './customer.record'
 import TickField from '@/vue/fields/TickField'
 import { Bus } from '@/js/helpers/event-bus'
+import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
+import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 
 const EVENTS = {
   detailsButtonClicked: 'details-button-clicked',
@@ -144,6 +148,8 @@ export default {
 
   components: {
     TickField,
+    EmptyTbodyPlaceholder,
+    SkeletonLoaderTableBody,
   },
 
   props: {
@@ -156,6 +162,11 @@ export default {
     },
 
     isLoaded: {
+      type: Boolean,
+      require: true,
+    },
+
+    isLoadFailed: {
       type: Boolean,
       require: true,
     },
