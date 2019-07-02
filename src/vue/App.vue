@@ -185,7 +185,7 @@ export default {
           this.$router.push({
             name: this.$route.name,
           })
-        } else if (!this[vuexTypes.isLoggedIn]) {
+        } else {
           location.reload()
         }
       }
