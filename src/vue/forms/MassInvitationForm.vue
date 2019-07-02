@@ -102,10 +102,12 @@ export default {
         })
 
         const endpoint = `/integrations/dns/businesses/${this.accountId}/clients`
-        const body = emails.map(email => ({
-          type: 'clients',
-          attributes: { email },
-        }))
+        const body = {
+          data: emails.map(email => ({
+            type: 'clients',
+            attributes: { email },
+          })),
+        }
         await api.postWithSignature(endpoint, body)
 
         this.$emit(EVENTS.submitted)
