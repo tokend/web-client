@@ -1,31 +1,6 @@
 <template>
   <div class="auth-page">
-    <template v-if="!recoveryKeypair">
-      <h2 class="auth-page__title">
-        {{ 'auth-pages.signup-title' | globalize }}
-      </h2>
-
-      <div class="auth-page__content">
-        <signup-form
-          :submit-event="'submit'"
-          @submit="handleChildFormSubmit"
-        />
-
-        <div class="auth-page__tips">
-          <div class="auth-page__tip">
-            {{ 'auth-pages.have-an-account-question' | globalize }}
-            <router-link
-              class="auth-page__tip-link"
-              :to="vueRoutes.login"
-            >
-              {{ 'auth-pages.have-an-account-answer' | globalize }}
-            </router-link>
-          </div>
-        </div>
-      </div>
-    </template>
-
-    <template v-else>
+    <template v-if="recoveryKeypair && isRecoverySeedModeEnabled">
       <h2 class="auth-page__title signup__seed-title">
         {{ 'auth-pages.save-recovery-seed-title' | globalize }}
       </h2>
@@ -33,9 +8,8 @@
       <div class="auth-page__content">
         <div class="signup__seed-wrp">
           <div class="signup__seed-disclaimer">
-            <vue-markdown
-              :source="'auth-pages.save-recovery-seed-explanation' | globalize"
-            />
+            <!-- eslint-disable-next-line max-len -->
+            <vue-markdown :source="'auth-pages.save-recovery-seed-explanation' | globalize" />
           </div>
 
           <key-viewer
@@ -68,6 +42,32 @@
         </div>
       </div>
     </template>
+
+    <template v-else>
+      <h2 class="auth-page__title">
+        {{ 'auth-pages.signup-title' | globalize }}
+      </h2>
+
+      <div class="auth-page__content">
+        <signup-form
+          :is-disabled="formMixin.isDisabled"
+          :submit-event="'submit'"
+          @submit="handleChildFormSubmit"
+        />
+
+        <div class="auth-page__tips">
+          <div class="auth-page__tip">
+            {{ 'auth-pages.have-an-account-question' | globalize }}
+            <router-link
+              class="auth-page__tip-link"
+              :to="vueRoutes.login"
+            >
+              {{ 'auth-pages.have-an-account-answer' | globalize }}
+            </router-link>
+          </div>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -84,6 +84,7 @@ import { walletsManager } from '@/api'
 import { vueRoutes } from '@/vue-router/routes'
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import config from '@/config'
 
 export default {
   name: 'signup',
@@ -100,6 +101,7 @@ export default {
     email: null,
     vueRoutes,
     isConfirmedSeedCopied: false,
+    isRecoverySeedModeEnabled: config.RECOVERY_MODE === 'seed',
   }),
   computed: {
     ...mapGetters({
@@ -119,6 +121,10 @@ export default {
       this.recoveryKeypair = base
         .Keypair
         .random()
+
+      if (!this.isRecoverySeedModeEnabled) {
+        this.submit()
+      }
     },
     async submit () {
       this.disableForm()

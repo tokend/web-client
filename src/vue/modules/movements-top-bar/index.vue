@@ -74,15 +74,7 @@
               globalize({ asset: asset.code })
             "
           >
-            <i
-              class="
-                mdi
-                mdi-rotate-315
-                mdi-transfer
-                movements-top-bar__btn-icon
-                movements-top-bar__btn-icon--rotate-315
-              "
-            />
+            <i class="mdi mdi-send movements-top-bar__btn-icon" />
             {{ 'op-pages.send' | globalize }}
           </button>
         </template>
@@ -175,7 +167,8 @@ export default {
   computed: {
     ...mapGetters({
       balancesAssets: vuexTypes.balancesAssets,
-      ownedAssets: vuexTypes.ownedAssets,
+      balancesAssetsByOwner: vuexTypes.balancesAssetsByOwner,
+      ownedAssets: vuexTypes.ownedBalancesAssets,
       isAccountUnverified: vuexTypes.isAccountUnverified,
     }),
 
@@ -184,7 +177,13 @@ export default {
     },
 
     assets () {
-      return this.isSharesPage ? this.ownedAssets : this.balancesAssets
+      if (this.isSharesPage) {
+        return this.ownedAssets
+      } else if (this.$route.query.owner) {
+        return this.balancesAssetsByOwner(this.$route.query.owner)
+      } else {
+        return this.balancesAssets
+      }
     },
   },
   watch: {
@@ -260,10 +259,6 @@ export default {
 .movements-top-bar__btn-icon {
   font-size: 1.8rem;
   margin-right: 0.5rem;
-}
-
-.movements-top-bar__btn-icon--rotate-315 {
-  transform: translateY(-0.2rem);
 }
 
 .movements-top-bar__filters {

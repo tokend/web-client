@@ -18,6 +18,15 @@
     <div class="app__table asset-attributes-viewer__table-wrp">
       <table>
         <tbody>
+          <template v-if="asset.description">
+            <tr>
+              <td>{{ 'assets.description-title' | globalize }}</td>
+              <td>
+                {{ asset.description }}
+              </td>
+            </tr>
+          </template>
+
           <tr v-if="balance">
             <td>{{ 'assets.balance-title' | globalize }}</td>
             <td>

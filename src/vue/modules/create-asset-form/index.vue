@@ -9,18 +9,14 @@
         <information-step-form
           v-show="currentStep === STEPS.information.number"
           :request="request"
-          :kyc-required-asset-type="kycRequiredAssetType"
-          :security-asset-type="securityAssetType"
-          @submit="setInformationStepForm($event) || moveToNextStep()"
+          @submit="collectAssetAttributes($event) || moveToNextStep()"
         />
 
         <advanced-step-form
           v-show="currentStep === STEPS.advanced.number"
           :request="request"
           :is-disabled.sync="isDisabled"
-          :main-signer-account-id="accountId"
-          :max-issuance-amount="informationStepForm.maxIssuanceAmount"
-          @submit="setAdvancedStepForm($event) || submit()"
+          @submit="collectAssetAttributes($event) || submit()"
         />
       </form-stepper>
     </template>
@@ -38,7 +34,6 @@
 </template>
 
 <script>
-import LoadAssetTypesMixin from './mixins/load-asset-types.mixin'
 import ManageAssetRequestMixin from './mixins/manage-asset-request.mixin'
 
 import InformationStepForm from './components/information-step-form'
@@ -63,6 +58,7 @@ const STEPS = {
     titleId: 'create-asset-form.advanced-step',
   },
 }
+
 const EVENTS = {
   requestUpdated: 'request-updated',
   close: 'close',
@@ -76,7 +72,7 @@ export default {
     AdvancedStepForm,
     SkeletonLoaderStepForm,
   },
-  mixins: [LoadAssetTypesMixin, ManageAssetRequestMixin],
+  mixins: [ManageAssetRequestMixin],
   props: {
     requestId: {
       type: String,
@@ -86,8 +82,6 @@ export default {
 
   data: _ => ({
     request: null,
-    informationStepForm: {},
-    advancedStepForm: {},
     isLoaded: false,
     isLoadFailed: false,
     isDisabled: false,
@@ -108,11 +102,7 @@ export default {
   methods: {
     async init () {
       try {
-        await this.loadKycRequiredAssetType()
-        await this.loadSecurityAssetType()
-
         await this.tryLoadRequest()
-
         this.isLoaded = true
       } catch (e) {
         this.isLoadFailed = true
@@ -136,18 +126,10 @@ export default {
       }
     },
 
-    setInformationStepForm (value) {
-      this.informationStepForm = value
-    },
-
-    setAdvancedStepForm (value) {
-      this.advancedStepForm = value
-    },
-
     async submit () {
       this.isDisabled = true
       try {
-        await this.submitCreateAssetRequest()
+        await this.submitCreateAssetRequest(this.requestId)
         Bus.success('create-asset-form.request-submitted-msg')
         this.emitSubmitEvents()
       } catch (e) {

@@ -13,6 +13,14 @@ for further information about branching and tagging conventions.
   - Create atomic swap form
 - `canBeBaseInAtomicSwap` and `canBeQuoteInAtomicSwap` policy for assets
 
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.9.0-x.0
+
+### Experimental features changes
+#### Added
+- New use case - conto
+
 ## [1.9.0-rc.0] - 2019-06-24
 #### Added
 - New "My assets" page

@@ -95,6 +95,7 @@ export default {
     ...mapActions({
       loadWallet: vuexTypes.LOAD_WALLET,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
+      loadAssets: vuexTypes.LOAD_ASSETS,
       loadKyc: vuexTypes.LOAD_KYC,
       loadKvEntries: vuexTypes.LOAD_KV_ENTRIES,
     }),
@@ -115,6 +116,7 @@ export default {
         await this.loadAccount(accountId)
         await this.loadKvEntries()
         await this.loadKyc()
+        await this.loadAssets()
         if (Object.keys(this.$route.query).includes('redirectPath')) {
           this.$router.push({ path: this.$route.query.redirectPath })
         } else {

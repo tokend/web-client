@@ -17,6 +17,16 @@
     <div class="app__table asset-details__table">
       <table>
         <tbody>
+          <template v-if="asset.description">
+            <tr>
+              <td>
+                {{ 'asset-details.description-title' | globalize }}
+              </td>
+              <td>
+                {{ asset.description }}
+              </td>
+            </tr>
+          </template>
           <tr v-if="asset.balance.value">
             <td>
               {{ 'asset-details.balance-title' | globalize }}
@@ -344,8 +354,8 @@ export default {
           return !this.isAccountUnverified
         case this.securityAssetType:
           return this.isAccountGeneral ||
-                 this.isAccountUsAccredited ||
-                 this.isAccountCorporate
+            this.isAccountUsAccredited ||
+            this.isAccountCorporate
         default:
           return true
       }

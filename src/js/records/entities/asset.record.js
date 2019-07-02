@@ -46,6 +46,8 @@ export class AssetRecord {
     this.stellarAssetType = safeGet(record, 'details.stellar.assetType') || ''
     this.stellarWithdraw = safeGet(record, 'details.stellar.withdraw') || false
     this.stellarDeposit = safeGet(record, 'details.stellar.deposit') || false
+
+    this.description = safeGet(record, 'details.description') || ''
   }
 
   _getBalance (balances) {

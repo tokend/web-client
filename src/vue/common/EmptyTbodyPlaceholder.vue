@@ -1,11 +1,11 @@
 <template>
   <tbody class="empty-tbody-placeholder">
-    <tr
-      class="empty-tbody-placeholder__brief"
-    >
+    <tr class="empty-tbody-placeholder__brief">
       <td
         :colspan="colspan"
-        class="empty-tbody-placeholder__cell--align-center"
+        class="empty-tbody-placeholder__cell
+          empty-tbody-placeholder__cell--align-center
+        "
       >
         {{ message }}
       </td>

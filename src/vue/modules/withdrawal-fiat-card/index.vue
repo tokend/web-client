@@ -183,7 +183,7 @@ import { base } from '@tokend/js-sdk'
 import { api } from '@/api'
 import {
   required,
-  lessThenMax,
+  maxValueBig,
   maxDecimalDigitsCount,
   cardNumber,
 } from '@validators'
@@ -255,7 +255,7 @@ export default {
         asset: { required },
         amount: {
           required,
-          noMoreThanAvailableOnBalance: lessThenMax(
+          noMoreThanAvailableOnBalance: maxValueBig(
             this.form.asset.balance.value
           ),
           maxDecimalDigitsCount: maxDecimalDigitsCount(

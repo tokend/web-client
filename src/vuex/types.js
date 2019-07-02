@@ -10,11 +10,12 @@ const mutations = {
   SET_KV_ENTRY_BLOCKED_ROLE_ID: 'SET_KV_ENTRY_BLOCKED_ROLE_ID',
   SET_KV_ENTRY_US_VERIFIED_ROLE_ID: 'SET_KV_ENTRY_US_VERIFIED_ROLE_ID',
   SET_KV_ENTRY_US_ACCREDITED_ROLE_ID: 'SET_KV_ENTRY_US_ACCREDITED_ROLE_ID',
+  SET_KV_ASSET_TYPE_DEFAULT: 'SET_KV_ASSET_TYPE_DEFAULT',
+  SET_KV_ASSET_TYPE_KYC_REQUIRED: 'SET_KV_ASSET_TYPE_KYC_REQUIRED',
   SET_KV_ASSET_TYPE_SECURITY: 'SET_KV_ASSET_TYPE_SECURITY',
   SET_KV_POLL_TYPE_RESTRICTED: 'SET_KV_POLL_TYPE_RESTRICTED',
   SET_KV_POLL_TYPE_UNRESTRICTED: 'SET_KV_POLL_TYPE_UNRESTRICTED',
 
-  SET_KV_KYC_REQUIRED: 'SET_KV_KYC_REQUIRED',
   SET_DEFAULT_QUOTE_ASSET: 'SET_DEFAULT_QUOTE_ASSET',
 
   // account
@@ -77,6 +78,7 @@ const getters = {
   kvEntryBlockedRoleId: 'kvEntryBlockedRoleId',
   kvEntryUsVerifiedRoleId: 'kvEntryUsVerifiedRoleId',
   kvEntryUsAccreditedRoleId: 'kvEntryUsAccreditedRoleId',
+  kvAssetTypeDefault: 'kvAssetTypeDefault',
   kvAssetTypeKycRequired: 'kvAssetTypeKycRequired',
   kvAssetTypeSecurity: 'kvAssetTypeSecurity',
   kvPollTypeRestricted: 'kvPollTypeRestricted',
@@ -132,7 +134,9 @@ const getters = {
   // assets
   assets: 'assets',
   assetByCode: 'assetByCode',
+  assetsByOwner: 'assetsByOwner',
   balancesAssets: 'balancesAssets',
+  balancesAssetsByOwner: 'balancesAssetsByOwner',
   fiatAssets: 'fiatAssets',
   depositableAssets: 'depositableAssets',
   coinpaymentsAssets: 'coinpaymentsAssets',
@@ -140,6 +144,7 @@ const getters = {
   withdrawableBalancesAssets: 'withdrawableBalancesAssets',
   statsQuoteAsset: 'statsQuoteAsset',
   ownedAssets: 'ownedAssets',
+  ownedBalancesAssets: 'ownedBalancesAssets',
   baseAtomicSwapBalancesAssets: 'baseAtomicSwapBalancesAssets',
   quoteAtomicSwapBalancesAssets: 'quoteAtomicSwapBalancesAssets',
 }

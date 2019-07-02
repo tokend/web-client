@@ -94,8 +94,12 @@ export function buildRouter (store) {
         beforeEnter: buildInAppRouteGuard({
           scheme: SchemeRegistry.current,
           store,
+          userRoutes,
         }),
-        redirect: userRoutes[0],
+        redirect: _ => {
+          return getFirstAccessibleUserRoute(userRoutes, SchemeRegistry.current)
+        },
+        // TODO: beforeEnter should be applied to every entry of userRoutes
         children: userRoutes,
       },
     ],
@@ -115,19 +119,81 @@ function buildAuthPageGuard (store) {
 }
 
 // doesn't allow to visit in-app page if user is not already logged in
-function buildInAppRouteGuard ({ store, scheme }) {
-  return function inAppRouteGuard (to, from, next) {
+function buildInAppRouteGuard ({ store, scheme, userRoutes }) {
+  return function inAppRouteGuard (to, from, next, ...args) {
     const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
-    // TODO: remove when all components modulerized
-    const isAccessible = scheme.findModuleByPath(to.path)
-      ? scheme.findModuleByPath(to.path).isAccessible
-      : true
+    // TODO: remove when all components modularized
+    const isAccessible = checkPathAccessible(to.path, scheme)
 
-    isLoggedIn && isAccessible
-      ? next()
-      : next({
+    if (!isLoggedIn) {
+      next({
         name: vueRoutes.login.name,
         query: { redirectPath: to.fullPath },
       })
+    } else if (!isAccessible) {
+      const parent = to.matched[to.matched.length - 1].parent
+      const isParentAccessible = parent && parent.path &&
+        checkPathAccessible(parent.path, scheme)
+
+      let accessibleRoute
+
+      if (isParentAccessible) {
+        const siblings = userRoutes.find(r => r.path === parent.path).children
+        const otherAccessibleSibling = findAccessibleRoute(siblings, scheme)
+        accessibleRoute = otherAccessibleSibling
+      }
+
+      if (!accessibleRoute) {
+        accessibleRoute = getFirstAccessibleUserRoute(userRoutes, scheme)
+      }
+
+      if (!accessibleRoute) {
+        throw new Error('router: no accessible routes to redirect the user!')
+      }
+
+      next(accessibleRoute)
+    } else {
+      next()
+    }
   }
+}
+
+function getFirstAccessibleUserRoute (userRoutes, scheme) {
+  return userRoutes.find(item => {
+    const isAccessible = checkPathAccessible(item.path, scheme)
+    const hasChildren = item.children && item.children.length
+
+    if (isAccessible && hasChildren) {
+      const isAnyChildAccessible = findAccessibleRouteDeep(item, scheme)
+      return Boolean(isAnyChildAccessible)
+    } else {
+      return isAccessible
+    }
+  })
+}
+
+function checkPathAccessible (path, scheme) {
+  const routeModule = scheme.findModuleByPath(path)
+
+  return routeModule
+    ? routeModule.isAccessible
+    : true
+}
+
+function findAccessibleRoute (array = [], scheme) {
+  return array.find(item => checkPathAccessible(item.path, scheme))
+}
+
+function findAccessibleRouteDeep (value, scheme) {
+  if (!value) {
+    return
+  }
+
+  let result
+  if (Array.isArray(value)) {
+    result = findAccessibleRoute(value, scheme)
+  } else if (value.children) {
+    result = findAccessibleRouteDeep(value.children, scheme)
+  }
+  return result
 }

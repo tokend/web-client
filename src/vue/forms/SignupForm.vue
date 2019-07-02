@@ -1,5 +1,8 @@
 <template>
-  <form class="app-form auth-form" @submit.prevent="submit">
+  <form
+    class="app-form auth-form"
+    @submit.prevent="submit"
+  >
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
@@ -9,6 +12,7 @@
           :label="'auth-pages.email' | globalize"
           :error-message="getFieldErrorMessage('form.email')"
           :white-autofill="false"
+          :disabled="isDisabled || formMixin.isDisabled"
         />
       </div>
     </div>
@@ -22,6 +26,7 @@
           :error-message="getFieldErrorMessage('form.password')"
           :white-autofill="false"
           :label="'auth-pages.password' | globalize"
+          :disabled="isDisabled || formMixin.isDisabled"
         />
       </div>
     </div>
@@ -35,6 +40,7 @@
           :error-message="getFieldErrorMessage('form.confirmPassword')"
           :white-autofill="false"
           :label="'auth-pages.confirm-password' | globalize"
+          :disabled="isDisabled || formMixin.isDisabled"
         />
       </div>
     </div>
@@ -44,7 +50,7 @@
         v-ripple
         type="submit"
         class="auth-form__submit-btn app__button-raised"
-        :disabled="formMixin.isDisabled"
+        :disabled="isDisabled || formMixin.isDisabled"
       >
         {{ 'auth-pages.sign-up' | globalize }}
       </button>
@@ -73,6 +79,10 @@ export default {
     submitEvent: {
       type: String,
       required: true,
+    },
+    isDisabled: {
+      type: Boolean,
+      default: false,
     },
   },
   data: _ => ({

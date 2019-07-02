@@ -43,7 +43,10 @@
       </div>
 
       <template v-if="isAccredited">
-        <div class="app__form-row" v-if="isAccredited">
+        <div
+          class="app__form-row"
+          v-if="isAccredited"
+        >
           <div class="app__form-field">
             <p class="verification-general-form__usa-accredited-explain-msg">
               {{ 'general-form.usa-accredited-exp-msg' | globalize }}
@@ -107,7 +110,7 @@ export default {
       set (v) { this.setIsAccredited(v) },
     },
     country: {
-      get () { return this.callGetter(types.country) },
+      get () { return this.callGetter(types.country) || { code: '' } },
       set (v) { this.setCountry(v) },
     },
     proofOfInvestor: {

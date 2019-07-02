@@ -2,7 +2,10 @@ import AdvancedStepForm from './advanced-step-form'
 
 import Vuelidate from 'vuelidate'
 
-import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
+import { createLocalVue, shallowMount } from '@vue/test-utils'
+import Vuex from 'vuex'
+import accountModule from '@/vuex/account.module'
+import { vuexTypes } from '@/vuex/types'
 
 const localVue = createLocalVue()
 localVue.use(Vuelidate)
@@ -18,40 +21,7 @@ describe('Advanced step form', () => {
     sandbox.restore()
   })
 
-  describe('validation rules assigned correctly', () => {
-    let wrapper
-
-    beforeEach(() => {
-      wrapper = mount(AdvancedStepForm, { localVue })
-    })
-
-    const expectedResults = {
-      preIssuanceAssetSigner: ['required'],
-      initialPreissuedAmount: ['required', 'amountRange'],
-    }
-
-    for (const [model, rules] of Object.entries(expectedResults)) {
-      it(`${model} model is validating by proper set of rules`, () => {
-        expect(Object.keys(wrapper.vm.$v.form[model].$params))
-          .to.deep.equal(rules)
-      })
-    }
-
-    const fieldBindings = {
-      '[name=create-asset-pre-issuance-asset-signer]': 'preIssuanceAssetSigner',
-      '[name=create-asset-initial-preissued-amount]': 'initialPreissuedAmount',
-    }
-
-    for (const [selector, model] of Object.entries(fieldBindings)) {
-      it(`$v.form.${model} is touched after blur event emitted on ${selector}`, () => {
-        sandbox.stub(wrapper.vm, 'touchField')
-
-        wrapper.find(selector).vm.$emit('blur')
-
-        expect(wrapper.vm.touchField.calledOnce).to.be.true
-      })
-    }
-  })
+  // TODO: test validation rules
 
   describe('created hook', () => {
     it('calls populateForm only if request was passed as a prop', () => {
@@ -76,7 +46,10 @@ describe('Advanced step form', () => {
     let wrapper
 
     beforeEach(() => {
-      wrapper = shallowMount(AdvancedStepForm, { localVue })
+      sandbox.stub(accountModule.getters, vuexTypes.accountId)
+        .returns('SOME_ACCOUNT_ID')
+      const store = new Vuex.Store({ getters: accountModule.getters })
+      wrapper = shallowMount(AdvancedStepForm, { localVue, store })
     })
 
     describe('populateForm', () => {
@@ -90,7 +63,7 @@ describe('Advanced step form', () => {
 
         wrapper.vm.populateForm()
 
-        expect(wrapper.vm.form.isPreissuanceDisabled).to.be.false
+        expect(wrapper.vm.form.isPreIssuanceEnabled).to.be.true
         expect(wrapper.vm.form.preIssuanceAssetSigner).to.equal('SIGNER_ID')
         expect(wrapper.vm.form.initialPreissuedAmount).to.equal('500.000000')
       })

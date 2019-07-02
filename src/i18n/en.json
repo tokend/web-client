@@ -117,8 +117,6 @@
       "field-error_softCapMoreThanHardCap": "Soft cap should be between zero and \"Hard cap\" value. Hard cap: {{hardCap}}",
       "field-error_hardCapLessThanSoftCap": "Hard cap cannot be less than \"Soft cap\" value. Soft cap: {{softCap}}",
       "field-error_noMoreThanSaleCap": "Investing amount has exceeded the sale cap {{saleCap, money}}",
-      "field-error_maxForIssuance": "Max amount for issuance: {{to, money}}",
-      "field-error_minForIssuance": "Min amount for issuance: {{from, money}}",
       "field-error_assetCode": "Asset code must contain maximum 16 symbols and consist of alphanumeric values (A-Z, a-z, 0-9)",
       "field-error_alphaNum": "Accepts only alphanumerics",
       "field-error_minLength": "This field must contain minimum {{minLength}} symbols",
@@ -692,7 +690,10 @@
       "documents": "Documents",
       "register-of-shares": "Register of shares",
       "polls": "Polls",
-      "atomic-swaps": "Atomic swaps"
+      "atomic-swaps": "Atomic swaps",
+      "customers": "Customers",
+      "customers-list": "Customers list",
+      "businesses": "Businesses"
     },
     "limits": {
       "explore-limits": "Explore limits",
@@ -1088,7 +1089,7 @@
       "file-corrupted-err": "Your file is corrupted. Please, try to upload another one",
       "pre-issuance-details-title": "Pre-issuance info",
       "pre-issuance-uploaded-msg": "Pre-issuance request was successfully uploaded",
-      "pre-issuance-guide-link": "Learn more about pre-issuance"
+      "pre-issuance-guide-link": "More on pre-issuance"
     },
     "issuance-explorer": {
       "table": {
@@ -1128,7 +1129,7 @@
       "name-lbl": "Asset name",
       "code-lbl": "Asset code",
       "max-issuance-amount-lbl": "Max issuance amount",
-      "asset-type-lbl": "Type",
+      "asset-type-lbl": "Permission type",
       "logo-lbl": "Asset icon",
       "logo-note": "JPG or PNG, no less than 120x120 px",
       "transferable-lbl": "Transferable",
@@ -1138,16 +1139,17 @@
       "verification-not-required-lbl": "Does not require verification",
       "security-asset-lbl": "Security (requires accreditation for US residents)",
       "verification-required-lbl": "Requires verification",
-      "additional-issuance-check": "I do not want to make additional issuance later",
+      "additional-issuance-check": "I want to make additional issuance later",
+      "restrict-max-amount-check": "I want to restrict max asset amount",
       "pre-issuance-signer-lbl": "Pre-issuance asset signer ID",
-      "pre-issuance-disclaimer": "**WARNING!** Please, save your current secret seed to make pre-issuance after recovery or password change. To pre-issue your asset use offline issuance application. See more details <a target=\"_blank\" href=\"https://docs.tokend.io/#operation/token_lifecycle\">here</a>",
+      "pre-issuance-disclaimer": "**WARNING!** Please, save your current secret seed to make pre-issuance after recovery or password change. To pre-issue your asset use offline issuance application. See more details <a target=\"_blank\" href=\"https://docs.tokend.io/#operation/token_lifecycle\">here</a> (opens in a new tab).",
       "use-my-account-id-btn": "Use mine",
       "preissued-amount-lbl": "Initial pre-issued amount",
       "terms-lbl": "Upload terms",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
       "request-submitted-msg": "Your request was successfully processed. Please, wait for approval",
-      "pre-issuance-guide-link": "Learn more about pre-issuance",
-      "stellar-integration-subheading": "Stellar integration",
+      "pre-issuance-guide-link": "More on pre-issuance",
+      "stellar-integration-subheading": "Stellar network",
       "issuance-subheading": "Issuance",
       "deposit-lbl": "Deposit",
       "withdraw-lbl": "Withdraw",
@@ -1156,7 +1158,11 @@
       "native-stellar-asset-type-lbl": "Native",
       "stellar-asset-type-lbl": "Type",
       "stellar-asset-code-lbl": "Asset code",
-      "integration-with-stellar-check": "Integration with stellar"
+      "integration-with-stellar-check": "I want to integrate with Stellar network",
+      "restrict-who-can-use": "I want to restrict who can use this asset",
+      "terms-subheading": "Terms",
+      "permissions-subheading": "Permissions",
+      "description-lbl": "Asset description (optional)"
     },
     "update-asset-form": {
       "loading-msg": "Loading…",
@@ -1175,7 +1181,7 @@
       "terms-lbl": "Upload terms",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
       "request-submitted-msg": "Your request was successfully processed. Please, wait for approval",
-      "stellar-integration-subheading": "Stellar integration",
+      "stellar-integration-subheading": "Stellar network",
       "terms-subheading": "Terms",
       "deposit-lbl": "Deposit",
       "withdraw-lbl": "Withdraw",
@@ -1184,7 +1190,7 @@
       "native-stellar-asset-type-lbl": "Native",
       "stellar-asset-type-lbl": "Type",
       "stellar-asset-code-lbl": "Asset code",
-      "integration-with-stellar-check": "Integration with stellar"
+      "integration-with-stellar-check": "I want to integrate with Stellar network"
     },
     "assets-list": {
       "update-asset-title": "Update asset",
@@ -1208,7 +1214,7 @@
       "transferable-lbl": "Transferable",
       "withdrawable-lbl": "Withdrawable",
       "kyc-required-lbl": "Requires KYC",
-      "additional-issuance-check": "I do not want to make additional issuance later",
+      "additional-issuance-check": "I want to make additional issuance later",
       "preissued-asset-signer-lbl": "Pre-issued asset signer",
       "use-my-account-id-btn": "Use mine",
       "initial-preissued-amount-lbl": "Initial pre-issued amount",
@@ -1403,9 +1409,7 @@
       "start-time-title": "Start time",
       "end-time-title": "End time",
       "number-of-choices-title": "Number of choices",
-      "permission-type-title": "Permission type",
-      "vote-confirmation-required-title": "Vote confirmation required",
-      "result-provider": "Result provider",
+      "permission-type-title": "Can voters re-vote?",
       "poll-data-title": "Poll data",
       "question-title": "Question:",
       "yes-msg": "Yes",
@@ -1414,11 +1418,12 @@
       "update-btn": "Update",
       "cancel-btn": "CANCEL",
       "choice-title": "Option {{number}}",
-      "restricted-type-desc": "Restricted",
-      "unrestricted-type-desc": "Unrestricted"
+      "restricted-type-desc": "Re-vote disallowed",
+      "unrestricted-type-desc": "Re-vote allowed"
     },
     "asset-details": {
       "balance-title": "Balance",
+      "description-title": "Description",
       "converted-balance-title": "Converted balance",
       "maximum-title": "Maximum",
       "issued-title": "Issued",
@@ -1987,6 +1992,7 @@
       "update-btn": "Update",
       "no-terms-msg": "No terms",
       "balance-title": "Balance",
+      "description-title": "Description",
       "maximum-title": "Maximum",
       "issued-title": "Issued",
       "available-title": "Available",
@@ -2176,21 +2182,17 @@
       "requests": "Polls requests"
     },
     "create-poll-form": {
-      "permission-type-lbl": "Permission type",
+      "permission-type-lbl": "Can voters re-vote?",
       "start-time-lbl": "Start time",
       "end-time-lbl": "End time",
-      "vote-confirmation-required-lbl": "Vote confirmation required",
-      "result-provider-id-lbl": "Result provider id",
       "question-lbl": "Question",
       "description-lbl": "Option {{number}}",
       "create-btn": "Create",
       "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
-      "restricted-poll-lbl": "Restricted",
-      "unrestricted-poll-lbl": "Unrestricted",
+      "restricted-poll-lbl": "Re-vote disallowed",
+      "unrestricted-poll-lbl": "Re-vote allowed",
       "load-failed-msg": "There was an error while loading. Please, try again later",
-      "add-choice-btn": "Add option",
-      "vote-confirmation-required-disabled-tooltip": "Not supported at the moment",
-      "result-provider-disabled-tooltip": "Not supported at the moment"
+      "add-choice-btn": "Add option"
     },
     "polls-all": {
       "state-open": "Open",
@@ -2267,17 +2269,15 @@
       "start-time-key": "Start time",
       "end-time-key": "End time",
       "state-key": "State",
-      "permission-type-key": "Permission type",
-      "result-provider-key": "Result provider",
+      "permission-type-key": "Can voters re-vote?",
       "number-of-choices-key": "Number of choices",
-      "vote-confirmation-required-key": "Vote confirmation required",
-      "is-ongoing-key": "Is in progress",
+      "is-ongoing-key": "Is in progress?",
       "state-open-val": "Open",
       "state-passed-val": "Passed",
       "state-failed-val": "Failed",
       "state-canceled-val": "Canceled",
-      "permission-type-restricted-val": "Restricted",
-      "permission-type-unrestricted-val": "Unrestricted",
+      "permission-type-restricted-val": "Re-vote disallowed",
+      "permission-type-unrestricted-val": "Re-vote allowed",
       "yes-val": "Yes",
       "no-val": "No"
     },
@@ -2303,7 +2303,74 @@
       "created-atomic-swap-msg": "Atomic swap request successfully created"
     },
     "atomic-swaps-explore": {
-      "no-list-title":"Atomic swaps will be coming soon"
+      "no-list-title":"Atomic swap list is coming soon"
+    },
+    "customers-page": {
+      "invite-btn": "Invite",
+      "issue-btn": "Issue",
+      "mass-invitation-drawer-heading": "Invite new users",
+      "mass-issuance-drawer-heading": "Mass issuance",
+      "customers-list-page": "Customers list"
+    },
+    "mass-issuance-form": {
+      "asset-lbl": "Asset",
+      "available-for-issuance-hint": "Available for issuance: {{amount, money}}",
+      "amount-lbl": "Amount",
+      "how-to-receivers-paragraph": "List all receivers emails in the box below, separate them with commas. Each receiver will gain the amount you specified in the “Amount” field. If the available amount is insufficient the operation will fail and no asset will be issued to anyone. Not found users and the ones that do not have balance in the selected asset will not receive the issuance but all the others will. Receivers number is limited up to 100 for now.",
+      "receivers-lbl": "Receivers",
+      "submit-btn": "Issue",
+      "no-assets-msg-title": "No issuable assets yet",
+      "no-assets-msg-description": "Unfortunately, you do not have any assets now, please create an asset and try again.",
+      "issued-successfully-notification": "Mass issuance performed successfully.",
+      "no-receivers-found": "Receivers you provided not found or cannot receive the issuance. Please ensure you specified the valid receivers list and try again.",
+      "overissue-error-notif": "The total amount is bigger than the available for issuance amount. Please decrease the amount to issue and try again.",
+      "too-much-op-error-notif": "Too many receivers, the current limit is 100 receivers, please decrease the receivers count and try again."
+    },
+    "mass-invitation-form": {
+      "asset-lbl": "Asset",
+      "available-for-issuance-hint": "Available for issuance: {{amount, money}}",
+      "amount-lbl": "Amount",
+      "how-to-invitees-paragraph": "List all invitees emails in the box below, separate them with commas.",
+      "invitees-lbl": "Invitees",
+      "submit-btn": "Invite",
+      "invited-successfully-notification": "Mass invitation performed successfully.",
+      "no-invitees-found": "Receivers you provided not found or cannot receive the issuance. Please ensure you specified the valid receivers list and try again."
+    },
+    "customer-attributes": {
+      "id-key": "ID",
+      "email-key": "Email",
+      "status-key": "Status",
+      "balance-key": "{{assetCode}} balance",
+      "not-registered-status-val": "Not registered",
+      "active-status-val": "Active",
+      "blocked-status-val": "Blocked"
+    },
+    "customers-table": {
+      "email-th": "Email",
+      "balances-th": "Balances",
+      "status-th": "Status",
+      "details-btn": "Show details",
+      "no-data-msg": "You have no associated customers yet. Invite some and they will appear in this list.",
+      "error-msg": "An error occurred while loading the list, please contact system owner to resolve the issue.",
+      "not-registered-status-td": "Not registered",
+      "active-status-td": "Active",
+      "blocked-status-td": "Blocked",
+      "enable-mass-issuance-btn": "Select for issuance",
+      "do-mass-issue-btn": "Perform issuance",
+      "cancel-mass-issue-btn": "Cancel issuance"
+    },
+    "customers-list": {
+      "customer-drawer-title": "View customer"
+    },
+    "businesses": {
+      "all-tab": "All businesses"
+    },
+    "businesses-all": {
+      "no-list-title": "No businesses here yet",
+      "no-list-msg": "Here will be the list of businesses associated with you"
+    },
+    "current-business-indicator": {
+      "browsing-lbl": "Browsing:"
     }
   }
 }
