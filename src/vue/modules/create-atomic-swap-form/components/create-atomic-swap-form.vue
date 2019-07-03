@@ -94,7 +94,6 @@
             <amount-input-field
               v-model="form.quoteAssets[index].price"
               name="create-atomic-swap-quote-asset-price"
-              validation-type="outgoing"
               :label="'create-atomic-swap-form.price-lbl' | globalize"
               :asset="form.quoteAssets[index].asset"
               :disabled="formMixin.isDisabled"
