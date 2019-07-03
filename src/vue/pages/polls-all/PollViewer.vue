@@ -79,8 +79,8 @@ export default {
   },
 
   props: {
-    pollId: {
-      type: String,
+    currentPoll: {
+      type: PollRecord,
       required: true,
     },
   },
@@ -106,14 +106,19 @@ export default {
 
   methods: {
     async loadPoll () {
-      const endpoint = `/v3/polls/${this.pollId}`
-      try {
-        const { data } = await api.getWithSignature(endpoint, {
-          include: ['participation', 'participation.votes'],
-        })
-        this.poll = new PollRecord(data)
-      } catch (error) {
-        ErrorHandler.processWithoutFeedback(error)
+      const endpoint = `/v3/polls/${this.currentPoll.id}`
+
+      if (this.isPollResultProvider() || this.isPollOwner()) {
+        try {
+          const { data } = await api.getWithSignature(endpoint, {
+            include: ['participation', 'participation.votes'],
+          })
+          this.poll = new PollRecord(data)
+        } catch (error) {
+          ErrorHandler.processWithoutFeedback(error)
+        }
+      } else {
+        this.poll = this.currentPoll
       }
     },
 
@@ -127,11 +132,11 @@ export default {
     },
 
     isPollOwner () {
-      return this.accountId === this.poll.ownerId
+      return this.accountId === this.currentPoll.ownerId
     },
 
     isPollResultProvider () {
-      return this.accountId === this.poll.resultProviderId
+      return this.accountId === this.currentPoll.resultProviderId
     },
   },
 }
