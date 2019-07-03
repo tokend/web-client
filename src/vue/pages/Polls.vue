@@ -4,12 +4,6 @@
       <top-bar>
         <template slot="main">
           <router-link
-            v-if="getModule().canRenderSubmodule(PollsAllPageModule)"
-            :to="vueRoutes.allPolls"
-          >
-            <span>{{ 'polls.all' | globalize }}</span>
-          </router-link>
-          <router-link
             v-if="getModule().canRenderSubmodule(PollRequestsPageModule)"
             :to="vueRoutes.pollRequests"
           >

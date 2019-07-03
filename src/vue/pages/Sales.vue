@@ -2,14 +2,6 @@
   <div class="sales">
     <top-bar>
       <template slot="main">
-        <router-link
-          :to="vueRoutes.investableSales"
-        >
-          <span>
-            {{ 'sales.investable-sales' | globalize }}
-          </span>
-        </router-link>
-
         <template
           v-if="getModule().canRenderSubmodule(SalesListOwnedPageModule)"
         >

@@ -14,7 +14,6 @@ import { SecurityPageModule } from '@/vue/pages/security-page-module'
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { CreateSaleFormModule } from '@modules/create-sale-form/module'
-import { SalesListPageModule } from '@/vue/pages/sales/investable-sales-page-module'
 import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
 import { SaleCampaignViewerPageModule } from '@/vue/pages/sale-details/sale-campaign-viewer-page-module'
 import { SaleStateWidgetModule } from '@/vue/pages/sale-details/sale-sate-widget-module'
@@ -22,14 +21,9 @@ import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments-deposit/mo
 import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
 import { DepositFormPseudoModule } from '@/modules-arch/pseudo-modules/deposit-form-pseudo-module'
-import { AssetExplorerPageModule } from '@/vue/pages/asset-explorer-page'
-import { BalancesPageModule } from '@/vue/pages/balances-page'
-import { AssetExplorerModule } from '@/vue/modules/assets/asset-explorer/module'
-import { BalanceExplorerModule } from '@/vue/modules/assets/balance-explorer/module'
 import { PollsPageModule } from '@/vue/pages/polls-page-module'
 import { PollRequestsModule } from '@/vue/modules/requests/poll-requests/module'
 import { PollRequestsPageModule } from '@/vue/pages/polls/poll-requests-page'
-import { PollsAllPageModule } from '@/vue/pages/polls-all-page-module'
 import { CreatePollFormModule } from '@/vue/modules/create-poll-form/module'
 
 import { MyAssetsPageModule } from '@/vue/pages/my-assets-page-module'
@@ -134,26 +128,6 @@ export default {
         menuButtonMdiName: 'coins',
         isAutoRedirectToFirstChild: true,
         submodules: [
-          new AssetExplorerPageModule({
-            routerEntry: {
-              path: '/assets/explore',
-              name: vueRoutes.assetsExplore.name,
-              meta: { pageNameTranslationId: 'pages-names.assets' },
-            },
-            submodules: [
-              new AssetExplorerModule(),
-            ],
-          }),
-          new BalancesPageModule({
-            routerEntry: {
-              path: '/assets/balances',
-              name: vueRoutes.balances.name,
-              meta: { pageNameTranslationId: 'pages-names.assets' },
-            },
-            submodules: [
-              new BalanceExplorerModule(),
-            ],
-          }),
           new MyAssetsPageModule({
             routerEntry: {
               path: '/assets/my-assets',
@@ -183,16 +157,6 @@ export default {
         menuButtonMdiName: 'trending-up',
         isAutoRedirectToFirstChild: true,
         submodules: [
-          new SalesListPageModule({
-            routerEntry: {
-              path: '/sales/all',
-              name: vueRoutes.investableSales.name,
-              props: {
-                default: true,
-                isUserSales: false,
-              },
-            },
-          }),
           new SalesListOwnedPageModule({
             routerEntry: {
               path: '/sales/my',
@@ -246,13 +210,6 @@ export default {
         menuButtonMdiName: 'vote',
         isAutoRedirectToFirstChild: true,
         submodules: [
-          new PollsAllPageModule({
-            routerEntry: {
-              path: '/polls/all',
-              name: vueRoutes.allPolls.name,
-              props: true,
-            },
-          }),
           new PollRequestsPageModule({
             routerEntry: {
               path: '/polls/poll-requests',
