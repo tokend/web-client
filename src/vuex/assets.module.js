@@ -101,8 +101,7 @@ export const getters = {
       .map(item => item.asset)
       .filter(item => item.isBaseInAtomicSwap),
   [vuexTypes.quoteAtomicSwapBalancesAssets]: (a, getters, b, rootGetters) =>
-    rootGetters[vuexTypes.accountBalances]
-      .map(item => item.asset)
+    rootGetters[vuexTypes.assets]
       .filter(item => item.isQuoteInAtomicSwap),
 }
 
