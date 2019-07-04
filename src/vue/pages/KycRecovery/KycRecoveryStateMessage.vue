@@ -65,11 +65,12 @@ export default {
   &--approved { background-color: $col-request-approved; }
   &--pending { background-color: $col-request-pending; }
 
+  /* stylelint-disable selector-nested-pattern */
   &--rejected,
-/* stylelint-disable selector-nested-pattern */
   &--permanently_rejected {
     background-color: $col-request-rejected;
   }
+  /* stylelint-enable selector-nested-pattern */
 }
 
 .kyc-recovery-state-message__content {
