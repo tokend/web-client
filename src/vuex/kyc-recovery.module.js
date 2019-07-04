@@ -5,6 +5,7 @@ import { base } from '@tokend/js-sdk'
 
 import safeGet from 'lodash/get'
 import { KYC_RECOVERY_STATES } from '@/js/const/kyc-recovery-states.const'
+import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 
 export const state = {
   request: {},
@@ -88,7 +89,11 @@ export const actions = {
         blob_id: blobId,
       },
     }
-    const operation = getters[vuexTypes.isKycRecoveryInited]
+    const operation = (
+      getters[vuexTypes.isKycRecoveryInited] ||
+      (getters[vuexTypes.kycRecoveryState] ===
+        REQUEST_STATES_STR.permanentlyRejected)
+    )
       ? base.CreateKYCRecoveryRequestBuilder.create(opts)
       : base.CreateKYCRecoveryRequestBuilder.update(opts,
         getters[vuexTypes.kycRecoveryRequestId])

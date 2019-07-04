@@ -165,7 +165,10 @@ export default {
         // unfulfilled requests. Is temporary until canceling change
         // role requests is implemented on backend:
         this.isCountryChangeDisabled = true
-      } else if (this.kycRecoveryBlobId) {
+      } else if (
+        this.kycRecoveryBlobId &&
+        (this.kycRecoveryState !== REQUEST_STATES_STR.permanentlyRejected)
+      ) {
         this.populateForm(await this.getBlobData(
           this.kycRecoveryBlobId
         ))

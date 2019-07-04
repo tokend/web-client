@@ -251,7 +251,10 @@ export default {
   created () {
     if (this.isFormPopulatable && !this.isKycRecoveryPage) {
       this.form = this.parseKycData(this.kycLatestRequestData)
-    } else if (this.kycRecoveryBlobId) {
+    } else if (
+      this.kycRecoveryBlobId &&
+      (this.kycRecoveryState !== REQUEST_STATES_STR.permanentlyRejected)
+    ) {
       this.form = this.parseKycData(this.kycRecoveryRequestData)
     }
   },

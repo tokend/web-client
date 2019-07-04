@@ -557,13 +557,13 @@
       "approved-title": "KYC recovery approved",
       "pending-title": "KYC recovery in progress",
       "rejected-title": "KYC recovery rejected",
-      "permanently-rejected-title": "KYC recovery rejected permanently",
+      "permanently_rejected-title": "KYC recovery rejected permanently",
       "approved-desc": "Your KYC recovery request was approved by administrator. Now you can access all the features.",
       "pending-desc": "Your KYC recovery request is being processed. You will be able access all the features once the request is reviewed.",
       "rejected-desc": "Your KYC recovery request was rejected by administrator. Please, resolve all the issues and send the request again.",
-      "permanently-rejected-desc": "Your KYC recovery request was permanently rejected by administrator.",
+      "permanently_rejected-desc": "Your KYC recovery request was permanently rejected by administrator.",
       "rejected-reason": "Rejection reason:",
-      "permanently-rejected-reason": "Rejection reason:",
+      "permanently_rejected-reason": "Rejection reason:",
       "limited-functionality-msg": "Currently application functionality is limited"
     },
     "general-form": {

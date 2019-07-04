@@ -66,7 +66,8 @@ export default {
   &--pending { background-color: $col-request-pending; }
 
   &--rejected,
-  &--permanently-rejected {
+/* stylelint-disable selector-nested-pattern */
+  &--permanently_rejected {
     background-color: $col-request-rejected;
   }
 }
