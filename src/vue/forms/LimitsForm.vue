@@ -7,7 +7,7 @@
           v-model="selectedOpType"
           :label="'limits-form.operation-type' | globalize"
           :key="`limits-asset-selector-${selectedOpType}`"
-          class="limits__assets-select app__select--no-border"
+          class="limits__assets-select app__select-with-label--no-border"
         >
           <option
             v-for="type in FORMATTED_STATS_OPERATION_TYPES"
