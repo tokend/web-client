@@ -6,27 +6,30 @@ export class LimitsRecord {
     this._record = record
 
     this.assetCode =
-      _get(record, 'asset.id') ||
-      _get(record, 'statistics.assetCode') ||
+      _get(record, 'limits.relationships.asset.data.id') ||
+      _get(record, 'statistics.relationships.asset.data.id') ||
       details.assetCode ||
       null
 
-    this.annualOut = _get(record, 'annualOut') || null
-    this.dailyOut = _get(record, 'dailyOut') || null
-    this.weeklyOut = _get(record, 'weeklyOut') || null
-    this.monthlyOut = _get(record, 'monthlyOut') || null
+    this.annualOut = _get(record, 'limits.attributes.annualOut') || null
+    this.dailyOut = _get(record, 'limits.attributes.dailyOut') || null
+    this.weeklyOut = _get(record, 'limits.attributes.weeklyOut') || null
+    this.monthlyOut = _get(record, 'limits.attributes.monthlyOut') || null
 
     this.statsOpType =
-      _get(record, 'statsOpType') ||
-      _get(record, 'statistics.statsOpType') ||
+      _get(record, 'limits.attributes.statsOpType') ||
+      _get(record, 'statistics.attributes.operationType') ||
       details.statsOpType ||
       null
 
-    this.id = _get(record, 'id') || '0'
+    this.id =
+      _get(record, 'limits.id') ||
+      _get(record, 'statistics.id') ||
+      '0'
   }
 
   get annualLeft () {
-    const annualOutcome = _get(this._record, 'statistics.annualOutcome')
+    const annualOutcome = _get(this._record, 'statistics.attributes.annualOut')
     if (!annualOutcome) {
       return this.annualOut
     }
@@ -35,7 +38,7 @@ export class LimitsRecord {
   }
 
   get dailyLeft () {
-    const dailyOutcome = _get(this._record, 'statistics.dailyOutcome')
+    const dailyOutcome = _get(this._record, 'statistics.attributes.dailyOut')
     if (!dailyOutcome) {
       return this.dailyOut
     }
@@ -44,7 +47,7 @@ export class LimitsRecord {
   }
 
   get weeklyLeft () {
-    const weeklyOutcome = _get(this._record, 'statistics.weeklyOutcome')
+    const weeklyOutcome = _get(this._record, 'statistics.attributes.weeklyOut')
     if (!weeklyOutcome) {
       return this.weeklyOut
     }
@@ -53,7 +56,7 @@ export class LimitsRecord {
   }
 
   get monthlyLeft () {
-    const monthlyOutcome = _get(this._record, 'statistics.monthlyOutcome')
+    const monthlyOutcome = _get(this._record, 'statistics.attributes.monthlyOut')
     if (!monthlyOutcome) {
       return this.monthlyOut
     }

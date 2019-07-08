@@ -9,6 +9,9 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Fixed
+- Resolved issue when select was without margin on the changing limits form
+- Resolved issue when you can set amount much bigger than the max amount of asset
+- Resolved an issue when limit left amount not updated on the client side
 - Resolved an issue when in select field quote assets on the atomic swap form
  show only assets in user balance
 
