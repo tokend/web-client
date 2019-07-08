@@ -352,7 +352,7 @@ h6.app__page-heading {
   }
 
   &--last-td-to-right {
-    & > table > tbody > tr > td:last-of-type {
+    & > table > tbody > tr > td:not(:only-of-type):last-of-type {
       text-align: right;
     }
   }
@@ -410,6 +410,23 @@ h6.app__page-heading {
 
     i {
       top: 0.3rem;
+    }
+  }
+}
+
+
+.app__select-with-label {
+
+  &--no-border {
+    // to remove the borders and background of the asset-selector-with-label
+    // to use the component outside forms
+    div span {
+      border-bottom: 0 !important;
+      background-size: 0 !important;
+    }
+
+    i {
+      top: 1.8rem;
     }
   }
 }

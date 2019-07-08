@@ -2,27 +2,24 @@
   <div>
     <top-bar>
       <template slot="main">
-        <router-link
-          :to="vueRoutes.assetsExplore"
-        >
+        <router-link :to="vueRoutes.assetsExplore">
           <span>{{ 'assets-page.explore-title' | globalize }}</span>
         </router-link>
-        <router-link
-          :to="vueRoutes.balances"
-        >
+        <router-link :to="vueRoutes.balances">
           <span>{{ 'assets-page.balances-title' | globalize }}</span>
         </router-link>
         <template v-if="getModule().canRenderSubmodule(MyAssetsPageModule)">
-          <router-link
-            :to="vueRoutes.myAssets"
-          >
+          <router-link :to="vueRoutes.myAssets">
             <span>{{ 'assets-page.my-assets-title' | globalize }}</span>
           </router-link>
         </template>
       </template>
       <template
         slot="extra"
-        v-if="getModule().canRenderSubmodule(CreateAssetFormModule)"
+        v-if="
+          getModule().canRenderSubmodule(CreateAssetFormModule) ||
+            getModule().canRenderSubmodule(CreateAssetFormSimplifiedModule)
+        "
       >
         <button
           v-ripple
@@ -50,6 +47,20 @@
       </drawer>
     </template>
 
+    <!-- eslint-disable-next-line max-len -->
+    <template v-if="getModule().canRenderSubmodule(CreateAssetFormSimplifiedModule)">
+      <drawer :is-shown.sync="isAssetDrawerShown">
+        <template slot="heading">
+          {{ 'assets-page.create-asset-title' | globalize }}
+        </template>
+
+        <submodule-importer
+          :submodule="getModule().getSubmodule(CreateAssetFormSimplifiedModule)"
+          @close="isAssetDrawerShown = false"
+        />
+      </drawer>
+    </template>
+
     <router-view />
   </div>
 </template>
@@ -65,6 +76,7 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import { CreateAssetFormModule } from '@modules/create-asset-form/module'
+import { CreateAssetFormSimplifiedModule } from '@modules/create-asset-form-simplified/module'
 import { MyAssetsPageModule } from './my-assets-page-module'
 
 export default {
@@ -77,6 +89,7 @@ export default {
   data: _ => ({
     vueRoutes,
     CreateAssetFormModule,
+    CreateAssetFormSimplifiedModule,
     MyAssetsPageModule,
     isAssetDrawerShown: false,
   }),

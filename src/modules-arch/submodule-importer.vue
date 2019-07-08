@@ -5,7 +5,9 @@
       :is="component"
       v-bind="$attrs"
       v-on="$listeners"
-    />
+    >
+      <slot />
+    </component>
   </keep-alive>
   <div
     v-else

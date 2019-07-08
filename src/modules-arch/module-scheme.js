@@ -1,5 +1,6 @@
 import { PageModuleDescriptor } from './page-module-descriptor'
 import { SchemeRegistry } from './scheme-registry'
+import { ModuleDescriptor } from './module-descriptor'
 
 /**
  * Represents module set to be used by the application.
@@ -20,6 +21,7 @@ export class ModuleScheme {
    * Example: _ => import('./path').
    *
    * @param {PageModuleDescriptor[]} scheme.pages
+   * @param {ModuleDescriptor[]} scheme.modules
    */
   constructor (scheme) {
     this._validateRawScheme(scheme)
@@ -28,6 +30,7 @@ export class ModuleScheme {
     this._sidebarLabel = scheme.sidebarLabel
     this._appLogoUrl = scheme.appLogoUrl
     this._pages = scheme.pages
+    this._modules = scheme.modules
     this._importEnLocaleFile = scheme.importEnLocaleFile
 
     // To validate the whole bunch of modules for compatibility
@@ -38,6 +41,7 @@ export class ModuleScheme {
   get sidebarLabel () { return this._sidebarLabel }
   get appLogoUrl () { return this._appLogoUrl }
   get pages () { return this._pages }
+  get modules () { return this._modules || [] }
   get cache () { return this._cache }
   get importEnLocaleFile () { return this._importEnLocaleFile }
 
@@ -53,11 +57,17 @@ export class ModuleScheme {
     if (!scheme.pages.every(item => item instanceof PageModuleDescriptor)) {
       throw new Error('ModuleScheme: scheme.pages should contain only PageModuleDescriptor instances!')
     }
+
+    // eslint-disable-next-line max-len
+    if (!(scheme.modules || []).every(item => item instanceof ModuleDescriptor)) {
+      throw new Error('ModuleScheme: scheme.pages should contain only ModuleDescriptor instances!')
+    }
   }
 
   _createCache () {
-    const cache = this._flattenDeep(this._rawScheme.pages)
-    return cache
+    const pages = this._flattenDeep(this._rawScheme.pages)
+    const modules = this._flattenDeep(this._rawScheme.modules)
+    return [].concat(pages, modules)
   }
 
   _validateCache () {
@@ -83,6 +93,23 @@ export class ModuleScheme {
       return SchemeRegistry.current.cache
         .find(item => item.createdComponentUid === this._uid)
     }
+    Vue.prototype.getScheme = function () {
+      return SchemeRegistry.current
+    }
+  }
+
+  canRenderModule (moduleConstructor) {
+    const theModule = this.findModule(moduleConstructor)
+
+    if (theModule) {
+      return theModule.isAccessible
+    }
+
+    return false
+  }
+
+  findModule (moduleConstructor) {
+    return this.cache.find(item => item instanceof moduleConstructor)
   }
 
   findModuleByPath (path) {

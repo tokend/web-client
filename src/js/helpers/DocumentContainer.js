@@ -8,18 +8,19 @@ import { api } from '@/api'
  */
 export class DocumentContainer {
   /**
-   * @param {object} [opts]
-   * @param {File} [opts.file] - file representing a document
-   * @param {string} [opts.key] - key to access file in storage
-   * @param {string} opts.name - file name
-   * @param {string} opts.mimeType - file MIME type
-   * @param {string} opts.type - document type {@link documentTypes} of the
+   * @param {object} opts
+   * @param {File} opts.file - file representing a document
+   * @param {string} opts.key - key to access file in storage
+   * @param {string} [opts.name] - file name
+   * @param {string} [opts.mimeType] - file MIME type
+   * @param {string} [opts.type] - document type {@link documentTypes} of the
    *        document (!! nothing common with MIME-type)
    */
   constructor (opts) {
     if (!opts.file && !opts.key) {
       throw new Error('Document initialized without raw file or file key')
     }
+
     this.mimeType = opts.mimeType || opts.mime_type
     this.file = opts.file
     this.name = opts.name
@@ -36,6 +37,14 @@ export class DocumentContainer {
       mime_type: this.mimeType,
       name: this.name,
       key: this.key,
+    }
+  }
+
+  static getEmptyDetailsForSave () {
+    return {
+      mime_type: '',
+      name: '',
+      key: '',
     }
   }
 

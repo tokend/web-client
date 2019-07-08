@@ -7,6 +7,7 @@ const SCHEME_IMPORTERS = {
   reit: _ => import('@/modules-arch/schemes/reit'),
   loyaltyPointsMerchant: _ => import('@/modules-arch/schemes/loyalty-points-merchant'),
   loyaltyPointsReconciliation: _ => import('@/modules-arch/schemes/loyalty-points-reconciliation'),
+  conto: _ => import('@/modules-arch/schemes/conto'),
 }
 
 /**

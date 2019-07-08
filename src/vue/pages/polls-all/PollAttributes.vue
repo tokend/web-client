@@ -76,36 +76,10 @@
 
           <tr>
             <td>
-              {{ 'poll-attributes.result-provider-key' | globalize }}
-            </td>
-            <td>
-              <email-getter
-                right-side
-                :account-id="poll.resultProviderId"
-              />
-            </td>
-          </tr>
-
-          <tr>
-            <td>
               {{ 'poll-attributes.number-of-choices-key' | globalize }}
             </td>
             <td>
               {{ poll.numberOfChoices | formatNumber }}
-            </td>
-          </tr>
-
-          <tr>
-            <td>
-              {{ 'poll-attributes.vote-confirmation-required-key' | globalize }}
-            </td>
-            <td>
-              <template v-if="poll.isVoteConfirmationRequired">
-                {{ 'poll-attributes.yes-val' | globalize }}
-              </template>
-              <template v-else>
-                {{ 'poll-attributes.no-val' | globalize }}
-              </template>
             </td>
           </tr>
         </tbody>

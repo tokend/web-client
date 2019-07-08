@@ -66,6 +66,7 @@ export default {
     isMovementsLoadFailed: false,
     REFS,
   }),
+
   computed: {
     ...mapGetters('movements-history', {
       movements: types.movements,
@@ -80,6 +81,16 @@ export default {
     isSharesPage () {
       return this.$route.name === vueRoutes.registerOfShares.name
     },
+  },
+
+  created () {
+    // HACK: fix display of no-data-message if no assetCode can be get. To
+    // prevent infinite display of skeleton screen
+    setTimeout(() => {
+      if (!this.assetCode) {
+        this.isMovementsLoaded = true
+      }
+    }, 1000)
   },
 
   methods: {

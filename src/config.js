@@ -116,6 +116,14 @@ export default Object.assign(
      * required by the Sentry SDKs.
      */
     SENTRY_DSN: '',
+
+    /**
+     * Change over different recovery modes. To disable recovery, leave the
+     * field empty or give it any unacceptable value, i.e.: 'none'.
+     *
+     * Acceptable values: 'seed' - enables recovery by seed
+     */
+    RECOVERY_MODE: 'seed',
   },
   // process.env,
   process.env
