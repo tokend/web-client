@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+#### Fixed
+- Resolved issue when select was without margin on the changing limits form
+
 ## [1.10.0-x.0] - 2019-07-02
 #### Added
 - New Atomic swap feature:
