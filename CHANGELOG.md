@@ -9,6 +9,7 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Fixed
+- Resolved issue when select was without margin on the changing limits form
 - Resolved issue when you can set amount much bigger than the max amount of asset
 
 ## [1.10.0-x.0] - 2019-07-02
