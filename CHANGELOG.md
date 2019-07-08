@@ -9,16 +9,9 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Fixed
-- Resolved issue when select was without margin on the changing limits form
-- Resolved issue when you can set amount much bigger than the max amount of asset
-- Resolved an issue when limit left amount not updated on the client side
-- Resolved an issue when poll don't load for a user
-- Resolved an issue when participant email doesn't show on `Participants` tab
-  on `Poll` page
-- Resolved an issue when user can't update sale request
 - Resolved an issue when in select field quote assets on the atomic swap form
  show only assets in user balance
- 
+
 ## [1.10.0-x.0] - 2019-07-02
 #### Added
 - New Atomic swap feature:
@@ -32,6 +25,17 @@ for further information about branching and tagging conventions.
 ### Experimental features changes
 #### Added
 - New use case - conto
+
+## [1.9.0-rc.1] - 2019-07-08
+#### Fixed
+- Resolved an issue when has absent margin and present label overlap on
+  limits changing form
+- Resolved an issue when you can set amount bigger than max asset’s amount
+- Resolved an issue when limits leftover amount was not updated
+- Resolved an issue when poll failed to load for a user that is not sale owner
+- Resolved an issue when participant emails did not show on the "Participants"
+  tab
+- Resolved an issue when the user could not update a sale request
 
 ## [1.9.0-rc.0] - 2019-06-24
 #### Added
@@ -828,7 +832,8 @@ for further information about branching and tagging conventions.
 ## [1.3.0] - 2019-03-01
 
 [Unreleased]: https://github.com/tokend/web-client/compare/1.10.0-x.0...HEAD
-[1.10.0-x.0]: https://github.com/tokend/web-client/compare/1.9.0-rc.0...1.10.0-x.0
+[1.10.0-x.0]: https://github.com/tokend/web-client/compare/1.9.0-rc.1...1.10.0-x.0
+[1.9.0-rc.1]: https://github.com/tokend/web-client/compare/1.9.0-rc.0...1.9.0-rc.1
 [1.9.0-rc.0]: https://github.com/tokend/web-client/compare/1.8.0...1.9.0-rc.0
 [1.8.0]: https://github.com/tokend/web-client/compare/1.8.0-rc.3...1.8.0
 [1.8.0-rc.3]: https://github.com/tokend/web-client/compare/1.8.0-rc.2...1.8.0-rc.3
