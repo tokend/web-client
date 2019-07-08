@@ -24,7 +24,7 @@ export class PollRecord {
     this.question = _get(record, 'creatorDetails.question')
     this.participants = _get(record, 'participation.votes', [])
       .map(item => ({
-        id: item.id,
+        id: item.voter.id,
         choice: item.voteData.singleChoice,
       }))
 

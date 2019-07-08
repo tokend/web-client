@@ -12,6 +12,9 @@ for further information about branching and tagging conventions.
 - Resolved issue when select was without margin on the changing limits form
 - Resolved issue when you can set amount much bigger than the max amount of asset
 - Resolved an issue when limit left amount not updated on the client side
+- Resolved an issue when poll don't load for a user
+- Resolved an issue when participant email doesn't show on `Participants` tab
+  on `Poll` page
 
 ## [1.10.0-x.0] - 2019-07-02
 #### Added
