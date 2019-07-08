@@ -15,6 +15,7 @@ for further information about branching and tagging conventions.
 - Resolved an issue when poll don't load for a user
 - Resolved an issue when participant email doesn't show on `Participants` tab
   on `Poll` page
+- Resolved an issue when user can't update sale request
 
 ## [1.10.0-x.0] - 2019-07-02
 #### Added
