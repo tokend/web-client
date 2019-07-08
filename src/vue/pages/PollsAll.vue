@@ -83,7 +83,7 @@
       </template>
 
       <poll-viewer
-        :poll-id="pollToBrowse.id"
+        :current-poll="pollToBrowse"
         @close-drawer="isDrawerShown = false"
         @end-time-updated="refreshPollsList()"
         @poll-canceled="refreshPollsListWithCloseDrawer()"
