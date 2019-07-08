@@ -7,15 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
-## [Unreleased]
+## [1.9.0-rc.1] - 2019-07-08
 #### Fixed
-- Resolved issue when select was without margin on the changing limits form
-- Resolved issue when you can set amount much bigger than the max amount of asset
-- Resolved an issue when limit left amount not updated on the client side
-- Resolved an issue when poll don't load for a user
-- Resolved an issue when participant email doesn't show on `Participants` tab
-  on `Poll` page
-- Resolved an issue when user can't update sale request
+- Resolved an issue when has absent margin and present label overlap on
+  limits changing form
+- Resolved an issue when you can set amount bigger than max asset’s amount
+- Resolved an issue when limits leftover amount was not updated
+- Resolved an issue when poll failed to load for a user that is not sale owner
+- Resolved an issue when participant emails did not show on the "Participants"
+  tab
+- Resolved an issue when the user could not update a sale request
 
 ## [1.9.0-rc.0] - 2019-06-24
 #### Added
@@ -811,7 +812,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.9.0-rc.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.9.0-rc.1...HEAD
+[1.9.0-rc.1]: https://github.com/tokend/web-client/compare/1.9.0-rc.0...1.9.0-rc.1
 [1.9.0-rc.0]: https://github.com/tokend/web-client/compare/1.8.0...1.9.0-rc.0
 [1.8.0]: https://github.com/tokend/web-client/compare/1.8.0-rc.3...1.8.0
 [1.8.0-rc.3]: https://github.com/tokend/web-client/compare/1.8.0-rc.2...1.8.0-rc.3
