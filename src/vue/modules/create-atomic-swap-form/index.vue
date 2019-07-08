@@ -3,7 +3,7 @@
     <template
       v-if="isLoaded &&
         baseAtomicSwapBalancesAssets.length &&
-        quoteAtomicSwapBalancesAssets.length"
+        quoteAtomicSwapAssets.length"
     >
       <create-atomic-swap-form
         @created-atomic-swap="$emit(EVENTS.createdAtomicSwap)"
@@ -18,7 +18,7 @@
     />
 
     <no-data-message
-      v-else-if="isLoaded && !quoteAtomicSwapBalancesAssets.length"
+      v-else-if="isLoaded && !quoteAtomicSwapAssets.length"
       icon-name="alert-circle"
       :title="'create-atomic-swap-form.no-quote-atomic-swap-assets-title' | globalize"
       :message="'create-atomic-swap-form.no-quote-atomic-swap-assets-msg' | globalize"
@@ -65,7 +65,7 @@ export default {
   computed: {
     ...mapGetters({
       baseAtomicSwapBalancesAssets: vuexTypes.baseAtomicSwapBalancesAssets,
-      quoteAtomicSwapBalancesAssets: vuexTypes.quoteAtomicSwapBalancesAssets,
+      quoteAtomicSwapAssets: vuexTypes.quoteAtomicSwapAssets,
     }),
   },
 
