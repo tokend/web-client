@@ -114,7 +114,7 @@ export default {
       switch (this.validationType) {
         case AMOUNT_VALIDATION_TYPE.incoming:
           maxAvailableAmount = MathUtil.subtract(
-            config.MAX_AMOUNT, this.balance
+            this.asset.maxIssuanceAmount, this.balance
           )
           break
         case AMOUNT_VALIDATION_TYPE.outgoing:
