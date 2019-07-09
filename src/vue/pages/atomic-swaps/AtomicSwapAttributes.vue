@@ -73,18 +73,21 @@
               {{ atomicSwap.createdAt | formatDateDMYT }}
             </td>
           </tr>
+        </tbody>
 
-          <template
-            v-for="(quoteAsset, index) in atomicSwap.quoteAssets"
-          >
-            <tr :key="quoteAsset.id">
-              <td>
-                {{ index + 1 }}
+        <template
+          v-for="(quoteAsset, index) in atomicSwap.quoteAssets"
+        >
+          <tbody :key="quoteAsset.id">
+            <tr>
+              <td colspan="2">
+                {{ 'atomic-swap-attributes.quote-assets-subheading'
+                  | globalize({ number: index + 1 })
+                }}
               </td>
-              <td />
             </tr>
 
-            <tr :key="quoteAsset.id">
+            <tr>
               <td>
                 {{ 'atomic-swap-attributes.quote-asset-key' | globalize }}
               </td>
@@ -93,7 +96,7 @@
               </td>
             </tr>
 
-            <tr :key="quoteAsset.id">
+            <tr>
               <td>
                 {{ 'atomic-swap-attributes.current-cap-key' | globalize }}
               </td>
@@ -102,7 +105,7 @@
               </td>
             </tr>
 
-            <tr :key="quoteAsset.id">
+            <tr>
               <td>
                 {{ 'atomic-swap-attributes.hard-cap-key' | globalize }}
               </td>
@@ -111,7 +114,7 @@
               </td>
             </tr>
 
-            <tr :key="quoteAsset.id">
+            <tr>
               <td>
                 {{ 'atomic-swap-attributes.total-current-cap-key' | globalize }}
               </td>
@@ -120,7 +123,7 @@
               </td>
             </tr>
 
-            <tr :key="quoteAsset.id">
+            <tr>
               <td>
                 {{ 'atomic-swap-attributes.price-key' | globalize }}
               </td>
@@ -137,8 +140,8 @@
                 {{ quoteAsset.address }}
               </td>
             </tr>
-          </template>
-        </tbody>
+          </tbody>
+        </template>
       </table>
     </div>
   </div>
@@ -163,3 +166,15 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+@import '~@scss/variables';
+
+.app__table table tbody:nth-child(even) tr:nth-child(even) {
+  background-color: $col-table-alt-row-background;
+}
+
+.app__table table tbody:nth-child(even) tr:nth-child(odd) {
+  background-color: transparent;
+}
+</style>

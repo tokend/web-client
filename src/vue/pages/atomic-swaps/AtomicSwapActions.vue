@@ -4,7 +4,7 @@
       v-ripple
       v-if="!formMixin.isConfirmationShown"
       class="app__button-raised app__button-raised--danger"
-      :disabled="isAtomicSwapCanceling"
+      :disabled="isAtomicSwapCanceling || atomicSwap.isCanceled"
       @click="showConfirmation"
     >
       {{ 'atomic-swap-actions.cancel-btn' | globalize }}
@@ -24,11 +24,11 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-
 import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
-
+import { api } from '@/api'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { base } from '@tokend/js-sdk'
 
 const EVENTS = {
   cancel: 'cancel',
@@ -50,16 +50,24 @@ export default {
   methods: {
     async cancelRequest () {
       this.hideConfirmation()
-      this.isRequestCanceling = true
+      this.isAtomicSwapCanceling = true
 
       try {
-        await this.cancelUpdateAssetRequest(this.request.id)
+        await api.postOperations(
+          this.buildCancelAtomicSwapOperation(),
+        )
         Bus.success('atomic-swap-actions.atomic-swap-canceled-msg')
         this.$emit(EVENTS.cancel)
       } catch (e) {
-        this.isRequestCanceling = false
+        this.isAtomicSwapCanceling = false
         ErrorHandler.process(e)
       }
+    },
+
+    buildCancelAtomicSwapOperation () {
+      return base.CancelAtomicSwapAskBuilder.cancelAtomicSwapAsk({
+        askID: this.atomicSwap.id,
+      })
     },
   },
 }
