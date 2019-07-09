@@ -336,11 +336,12 @@ export default {
 
   computed: {
     priceForAsset () {
+      let value = MathUtil.divide(
+        this.form.hardCap,
+        this.form.assetsToSell
+      )
       return {
-        value: MathUtil.divide(
-          this.form.hardCap,
-          this.form.assetsToSell
-        ),
+        value: isNaN(value) ? 0 : value,
         currency: this.form.capAsset.code,
       }
     },
