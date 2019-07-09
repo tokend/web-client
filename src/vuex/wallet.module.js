@@ -46,6 +46,7 @@ export const actions = {
       sessionKey: wallet.sessionKey,
     })
   },
+
   async [vuexTypes.STORE_WALLET] ({ commit }, { wallet }) {
     const newWallet = new Wallet(
       wallet.email,
@@ -62,24 +63,27 @@ export const actions = {
       sessionKey: newWallet.sessionKey,
     })
   },
+
   async [vuexTypes.DECRYPT_SECRET_SEED] ({ commit, getters, dispatch }) {
     const encryptedSecretSeed = getters[vuexTypes.encryptedSecretSeed]
-    const sessionKey = await dispatch(vuexTypes.GET_SESSION_KEY)
+    const session = await dispatch(vuexTypes.GET_SESSION)
     const decreptedSecretSeed = decryptSecretSeed(
       encryptedSecretSeed,
-      sessionKey
+      session.encryptionKey
     )
     return decreptedSecretSeed
   },
-  async [vuexTypes.GET_SESSION_KEY] ({ commit, getters }) {
+
+  async [vuexTypes.GET_SESSION] ({ commit, getters }) {
     const sessionId = getters[vuexTypes.sessionId]
     const { data: session } = await api.get(`/sessions/${sessionId}`)
-    return session.encryptionKey
+    return session
   },
 
-  async [vuexTypes.PROLONGATE_SESSION] ({ commit, getters }) {
-    const sessionId = getters[vuexTypes.sessionId]
-    await api.get(`/sessions/${sessionId}`)
+  async [vuexTypes.PROLONGATE_SESSION] ({ dispatch }) {
+    // we use GET_SESSION action here because we have only one endpoint for
+    // prolongate and get session
+    await dispatch(vuexTypes.GET_SESSION)
   },
 }
 
