@@ -62,6 +62,7 @@ export class EventBus extends Vue {
       customersMassIssue: 'customers:massIssue',
       // TODO: should not be here
       businessesSetCurrentBusiness: 'businesses:setCurrentBusiness',
+      atomicSwapsUpdateList: 'atomicSwaps:updateList',
     }
   }
 

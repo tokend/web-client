@@ -2303,7 +2303,9 @@
       "created-atomic-swap-msg": "Atomic swap request successfully created"
     },
     "atomic-swaps-explore": {
-      "atomic-swap-drawer-title": "Atomic swap details"
+      "atomic-swap-drawer-title": "Atomic swap details",
+      "no-list-title":"No atomic swaps yet",
+      "no-list-msg":"Here will be the list of atomic swaps"
     },
     "atomic-swap-actions": {
       "cancel-btn": "Cancel",
@@ -2327,7 +2329,8 @@
       "hard-cap-key": "Hard cap",
       "price-key": "Price",
       "total-current-cap-key": "Total current cap",
-      "address-key": "Address"
+      "address-key": "Address",
+      "quote-assets-subheading": "Quote asset {{ number }}"
     },
     "customers-page": {
       "invite-btn": "Invite",

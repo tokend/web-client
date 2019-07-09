@@ -17,6 +17,15 @@
       </div>
     </template>
 
+    <template v-else-if="!list.length && !isLoading">
+      <no-data-message
+        class="atomic-swaps-explore__no-data-message"
+        icon-name="swap-horizontal"
+        :title="'atomic-swaps-explore.no-list-title' | globalize"
+        :message="'atomic-swaps-explore.no-list-msg' | globalize"
+      />
+    </template>
+
     <div class="atomic-swaps-explore__requests-collection-loader">
       <collection-loader
         class="atomic-swaps-explore__loader"
@@ -34,7 +43,7 @@
 
       <atomic-swap-viewer
         :current-atomic-swap="atomicSwapToBrowse"
-        @close-drawer="isDrawerShown = false"
+        @close-drawer-and-update-list="closeDrawerAndUpdateList"
       />
     </drawer>
   </div>
@@ -48,6 +57,8 @@ import Drawer from '@/vue/common/Drawer'
 import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
 import AtomicSwapCard from './AtomicSwapCard'
 import AtomicSwapViewer from './AtomicSwapViewer'
+import NoDataMessage from '@/vue/common/NoDataMessage'
+import { Bus } from '@/js/helpers/event-bus'
 
 export default {
   name: 'atomic-swaps-explore',
@@ -57,6 +68,7 @@ export default {
     Drawer,
     AtomicSwapCard,
     AtomicSwapViewer,
+    NoDataMessage,
   },
 
   data () {
@@ -66,6 +78,12 @@ export default {
       isDrawerShown: false,
       atomicSwapToBrowse: {},
     }
+  },
+
+  created () {
+    Bus.on('atomicSwaps:updateList', () =>
+      this.reloadList()
+    )
   },
 
   methods: {
@@ -102,6 +120,11 @@ export default {
     selectItem (item) {
       this.atomicSwapToBrowse = item
       this.isDrawerShown = true
+    },
+
+    closeDrawerAndUpdateList () {
+      this.isDrawerShown = false
+      this.reloadList()
     },
   },
 }
