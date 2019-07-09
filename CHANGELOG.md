@@ -11,6 +11,7 @@ for further information about branching and tagging conventions.
 #### Fixed
 - Resolved an issue when in select field quote assets on the atomic swap form
  show only assets in user balance
+- Fixed display price on form when create new sale
 
 ## [1.10.0-x.0] - 2019-07-02
 #### Added
