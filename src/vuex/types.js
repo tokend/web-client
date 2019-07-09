@@ -146,7 +146,7 @@ const getters = {
   ownedAssets: 'ownedAssets',
   ownedBalancesAssets: 'ownedBalancesAssets',
   baseAtomicSwapBalancesAssets: 'baseAtomicSwapBalancesAssets',
-  quoteAtomicSwapBalancesAssets: 'quoteAtomicSwapBalancesAssets',
+  quoteAtomicSwapAssets: 'quoteAtomicSwapAssets',
 }
 
 export const vuexTypes = {

@@ -414,6 +414,23 @@ h6.app__page-heading {
   }
 }
 
+
+.app__select-with-label {
+
+  &--no-border {
+    // to remove the borders and background of the asset-selector-with-label
+    // to use the component outside forms
+    div span {
+      border-bottom: 0 !important;
+      background-size: 0 !important;
+    }
+
+    i {
+      top: 1.8rem;
+    }
+  }
+}
+
 #nprogress {
   z-index: 5;
 
