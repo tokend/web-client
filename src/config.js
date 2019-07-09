@@ -116,6 +116,11 @@ export default Object.assign(
      * required by the Sentry SDKs.
      */
     SENTRY_DSN: '',
+
+    /**
+     * Update session interval
+     */
+    UPDATE_SESSION_INTERVAL: 1000 * 60 * 2,
   },
   // process.env,
   process.env

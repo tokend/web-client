@@ -211,13 +211,7 @@ export default {
           throw e
         }
       }
-      await this.storeWallet({
-        wallet: newWallet,
-        session: {
-          id: newWallet.sessionId,
-          encryptionKey: newWallet.sessionKey,
-        },
-      })
+      await this.storeWallet({ wallet: newWallet })
     },
   },
 }

@@ -143,7 +143,7 @@ export default {
       await this.loadKvEntries()
 
       if (this[vuexTypes.isLoggedIn]) {
-        const walletSeed = await this.getDecryptWalletKey()
+        const walletSeed = await this.getDecryptedSecretSeed()
         const wallet = new Wallet(
           this.walletEmail,
           walletSeed,
@@ -165,7 +165,7 @@ export default {
     detectIncompatibleBrowser () {
       this.isNotSupportedBrowser = !isCompatibleBrowser()
     },
-    async getDecryptWalletKey () {
+    async getDecryptedSecretSeed () {
       try {
         const key = await this.decryptSecretSeed()
         return key

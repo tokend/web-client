@@ -23,6 +23,7 @@ const mutations = {
 
   // wallet
   SET_WALLET: 'SET_WALLET',
+  SET_ENCRYPTED_SECRET_SEED: 'SET_ENCRYPTED_SECRET_SEED',
 
   // factors
   SET_FACTORS: 'SET_FACTORS',
@@ -37,9 +38,6 @@ const mutations = {
   // assets
   SET_ASSETS: 'SET_ASSETS',
   UPDATE_ASSETS: 'UPDATE_ASSETS',
-
-  // session
-  SET_SESSION: 'SET_SESSION',
 }
 
 const actions = {
@@ -54,6 +52,9 @@ const actions = {
   // wallet
   LOAD_WALLET: 'LOAD_WALLET',
   STORE_WALLET: 'STORE_WALLET',
+  DECRYPT_SECRET_SEED: 'DECRYPT_SECRET_SEED',
+  GET_SESSION_KEY: 'GET_SESSION_KEY',
+  PROLONGATE_SESSION: 'PROLONGATE_SESSION',
 
   // factors
   LOAD_FACTORS: 'LOAD_FACTORS',
@@ -67,10 +68,6 @@ const actions = {
 
   // assets
   LOAD_ASSETS: 'LOAD_ASSETS',
-
-  // session
-  DECRYPT_SECRET_SEED: 'DECRYPT_SECRET_SEED',
-  UPDATE_SESSION: 'UPDATE_SESSION',
 }
 
 const getters = {
@@ -110,6 +107,8 @@ const getters = {
   walletId: 'walletId',
   walletAccountId: 'walletAccountId',
   walletEmail: 'walletEmail',
+  sessionId: 'sessionId',
+  encryptedSecretSeed: 'encryptedSecretSeed',
 
   // factors
   factors: 'factors',
@@ -148,10 +147,6 @@ const getters = {
   ownedAssets: 'ownedAssets',
   baseAtomicSwapBalancesAssets: 'baseAtomicSwapBalancesAssets',
   quoteAtomicSwapBalancesAssets: 'quoteAtomicSwapBalancesAssets',
-
-  // session
-  sessionId: 'sessionId',
-  encryptWalletSeed: 'encryptWalletSeed',
 }
 
 export const vuexTypes = {

@@ -35,7 +35,7 @@ export default {
 
   methods: {
     ...mapActions({
-      updateSession: vuexTypes.UPDATE_SESSION,
+      updateSession: vuexTypes.PROLONGATE_SESSION,
     }),
     ...mapMutations({
       clearState: vuexTypes.CLEAR_STATE,

@@ -7,7 +7,6 @@ import factors from './factors.module'
 import wallet from './wallet.module'
 import kyc from './kyc.module'
 import keyValue from './key-value.module'
-import session from './session.module'
 import { vuexTypes } from '@/vuex/types'
 import { sessionStoragePlugin } from './plugins/session-storage'
 
@@ -38,7 +37,6 @@ function buildStore (storeModules = []) {
       account,
       assets,
       factors,
-      session,
       wallet,
       kyc,
       keyValue,
