@@ -38,6 +38,10 @@ const mutations = {
   // assets
   SET_ASSETS: 'SET_ASSETS',
   UPDATE_ASSETS: 'UPDATE_ASSETS',
+
+  // idle
+  KEEP_SESSION: 'KEEP_SESSION',
+  STOP_IDLE: 'STOP_IDLE',
 }
 
 const actions = {
@@ -68,6 +72,9 @@ const actions = {
 
   // assets
   LOAD_ASSETS: 'LOAD_ASSETS',
+
+  // idle
+  START_IDLE: 'START_IDLE',
 }
 
 const getters = {

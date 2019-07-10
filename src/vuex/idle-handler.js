@@ -1,14 +1,14 @@
 import config from '@/config'
+import { vuexTypes } from './types'
 
 const state = {
   logoutTimer: null,
-  timestamp: null,
 }
 
 const mutations = {
-  'KEEP_SESSION': (state) => {},
+  [vuexTypes.KEEP_SESSION] () {},
 
-  'STOP_IDLE': (state) => {
+  [vuexTypes.STOP_IDLE] (state) {
     clearTimeout(state.logoutTimer)
     state.logoutTimer = null
 
@@ -23,7 +23,7 @@ const mutations = {
 }
 
 const actions = {
-  'START_IDLE' ({ dispatch, commit, state }) {
+  [vuexTypes.START_IDLE] ({ dispatch, commit, state }) {
     function resetTimer () {
       clearTimeout(state.logoutTimer)
 
@@ -42,13 +42,8 @@ const actions = {
   },
 }
 
-const getters = {
-  logoutTimer: state => state.logoutTimer,
-}
-
 export default {
   state,
-  getters,
   actions,
   mutations,
 }

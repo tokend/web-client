@@ -84,7 +84,6 @@ import { walletsManager } from '@/api'
 import { vueRoutes } from '@/vue-router/routes'
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { WalletRecord } from '@/js/records/entities/wallet.record'
 
 export default {
   name: 'signup',
@@ -130,8 +129,7 @@ export default {
           this.recoveryKeypair
         )
         if (response.data.verified) {
-          const newWallet = new WalletRecord(wallet, response.data.session)
-          await this.storeWallet({ wallet: newWallet })
+          await this.storeWallet({ wallet })
           await this.loadAccount(this.walletAccountId)
           await this.loadKyc()
           this.$router.push(vueRoutes.app)
