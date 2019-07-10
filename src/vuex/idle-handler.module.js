@@ -58,12 +58,12 @@ const actions = {
 
   [vuexTypes.LOGOUT_IDLE] ({ commit }) {
     commit(vuexTypes.CLEAR_STATE)
-    location.href = location.href + '&isIdle=true'
+    location.href = location.origin + location.pathname + '?isIdle=true'
   },
 
   [vuexTypes.LOGOUT_SESSION] ({ commit }) {
     commit(vuexTypes.CLEAR_STATE)
-    location.href = location.href + '?isSessionExpired=true'
+    location.href = location.origin + location.pathname + '?isSessionExpired=true'
   },
 
 }

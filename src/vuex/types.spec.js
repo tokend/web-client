@@ -6,6 +6,7 @@ import factors from './factors.module'
 import kyc from './kyc.module'
 import wallet from './wallet.module'
 import keyValue from './key-value.module'
+import idleHandler from './idle-handler.module'
 
 describe('vuex types unit tests', () => {
   const getModuleKeys = (module) => {
@@ -38,6 +39,9 @@ describe('vuex types unit tests', () => {
     for (const key of getModuleKeys(keyValue)) {
       expect(vuexTypes).to.have.property(key)
     }
+    for (const key of getModuleKeys(idleHandler)) {
+      expect(vuexTypes).to.have.property(key)
+    }
   })
 
   it('every key described in vuex-types should be a real vuex-entity', () => {
@@ -49,6 +53,7 @@ describe('vuex types unit tests', () => {
       ...getModuleKeys(factors),
       ...getModuleKeys(wallet),
       ...getModuleKeys(keyValue),
+      ...getModuleKeys(idleHandler),
     ]
 
     for (const key of Object.keys(vuexTypes)) {
