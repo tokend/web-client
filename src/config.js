@@ -90,10 +90,10 @@ export default Object.assign(
     BUILD_VERSION: packageJson.version,
 
     /**
-     * User will be logged out after IDLE_TIMEOUT (milliseconds) time of
+     * User will be logged out after IDLE_TIMEOUT (minutes) time of
      * inactivity
      */
-    IDLE_TIMEOUT: 1000 * 60 * 15,
+    IDLE_TIMEOUT: 15,
 
     /**
      * Module scheme to use. The module scheme will be used to combine module
@@ -118,9 +118,10 @@ export default Object.assign(
     SENTRY_DSN: '',
 
     /**
-     * Update session interval
+     * Keep session interval
      */
-    UPDATE_SESSION_INTERVAL: 1000 * 60 * 2,
+    KEEP_SESSION_INTERVAL: 1000 * 60 * 2,
+
   },
   // process.env,
   process.env

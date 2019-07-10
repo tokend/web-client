@@ -40,8 +40,7 @@ const mutations = {
   UPDATE_ASSETS: 'UPDATE_ASSETS',
 
   // idle
-  KEEP_SESSION: 'KEEP_SESSION',
-  STOP_IDLE: 'STOP_IDLE',
+  UPDATE_LOGOUT_AT: 'UPDATE_LOGOUT_AT',
 }
 
 const actions = {
@@ -75,6 +74,10 @@ const actions = {
 
   // idle
   START_IDLE: 'START_IDLE',
+  LOGOUT_IDLE: 'LOGOUT_IDLE',
+  INIT_IDLE_TICKER: 'INIT_IDLE_TICKER',
+  KEEP_SESSION: 'KEEP_SESSION',
+  LOGOUT_SESSION: 'LOGOUT_SESSION',
 }
 
 const getters = {

@@ -9,6 +9,7 @@ import kyc from './kyc.module'
 import keyValue from './key-value.module'
 import { vuexTypes } from '@/vuex/types'
 import { sessionStoragePlugin } from './plugins/session-storage'
+import idleHandler from './idle-handler.module'
 
 import _isEmpty from 'lodash/isEmpty'
 
@@ -40,6 +41,7 @@ function buildStore (storeModules = []) {
       wallet,
       kyc,
       keyValue,
+      idleHandler,
       ...storeModules,
     },
     plugins: [sessionStoragePlugin],

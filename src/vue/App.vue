@@ -50,7 +50,6 @@ import StatusMessage from '@/vue/common/StatusMessage'
 import Navbar from '@/vue/navigation/Navbar.vue'
 import Sidebar from '@/vue/navigation/Sidebar.vue'
 import WarningBanner from '@/vue/common/WarningBanner'
-import IdleHandlerMixin from '@/vue/mixins/idle-handler'
 
 import { isCompatibleBrowser } from '@/js/helpers/is-compatible-browser'
 
@@ -69,6 +68,8 @@ import { vuexTypes } from '@/vuex'
 import { Wallet } from '@tokend/js-sdk'
 import { ErrorTracker } from '@/js/helpers/error-tracker'
 import { vueRoutes } from '@/vue-router/routes'
+import { errors } from '@/js/errors'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import config from '@/config'
 
@@ -81,8 +82,6 @@ export default {
     StatusMessage,
     WarningBanner,
   },
-
-  mixins: [IdleHandlerMixin],
 
   data: () => ({
     isNotSupportedBrowser: false,
@@ -111,13 +110,11 @@ export default {
   async created () {
     await this.initApp()
 
+    this.startIdle()
+
     this.detectIncompatibleBrowser()
 
     this.watchChangesInLocalStorage()
-
-    if (this[vuexTypes.isLoggedIn]) {
-      this.updateSessionWithInterval()
-    }
 
     this.isAppInitialized = true
   },
@@ -128,9 +125,10 @@ export default {
       loadAssets: vuexTypes.LOAD_ASSETS,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
       decryptSecretSeed: vuexTypes.DECRYPT_SECRET_SEED,
+      startIdle: vuexTypes.START_IDLE,
+      logoutSession: vuexTypes.LOGOUT_SESSION,
     }),
     ...mapMutations({
-      clearState: vuexTypes.CLEAR_STATE,
       popState: vuexTypes.POP_STATE,
     }),
     async initApp () {
@@ -169,22 +167,20 @@ export default {
       try {
         const key = await this.decryptSecretSeed()
         return key
-      } catch (error) {
-        this.clearState()
-        this.$router.push({
-          name: this.$route.name,
-          query: { isSessionExpired: true },
-        })
-        location.reload()
+      } catch (e) {
+        switch (e.constructor) {
+          case errors.NotFoundError:
+            this.logoutSession()
+            break
+          default:
+            ErrorHandler.process(e)
+        }
       }
     },
     watchChangesInLocalStorage () {
       window.onstorage = (storage) => {
         if (this[vuexTypes.isLoggedIn]) {
           this.popState()
-          this.$router.push({
-            name: this.$route.name,
-          })
         } else {
           location.reload()
         }

@@ -27,6 +27,7 @@ export const sessionStoragePlugin = store => {
           kyc: savedStore.kyc,
           keyValue: savedStore.keyValue,
           session: savedStore.session,
+          idleHandler: savedStore.idleHandler,
         })
 
         break
@@ -38,6 +39,7 @@ export const sessionStoragePlugin = store => {
           kyc: state.kyc,
           keyValue: state.keyValue,
           session: state.session,
+          idleHandler: state.idleHandler,
         }))
     }
   })
