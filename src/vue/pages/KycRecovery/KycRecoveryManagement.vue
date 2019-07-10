@@ -11,7 +11,7 @@
           class="app__button-flat"
           @click="logOut"
         >
-          {{ 'passport.sign-out-btn' | globalize }}
+          {{ 'kyc-recovery-state-message.sign-out-btn' | globalize }}
         </button>
       </div>
       <h3>

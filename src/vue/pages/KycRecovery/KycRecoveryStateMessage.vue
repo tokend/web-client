@@ -33,6 +33,8 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 
+import { ErrorHandler } from '@/js/helpers/error-handler'
+
 export default {
   name: 'kyc-recovery-state-message',
 
@@ -43,33 +45,57 @@ export default {
     }),
 
     kycRecoveryTitleTranslationId () {
-      return this.getKycRecoveryLocalizationSegment('title')
+      switch (this.kycRecoveryState) {
+        case REQUEST_STATES_STR.permanentlyRejected:
+          return 'kyc-recovery-state-message.permanently-rejected-title'
+        case REQUEST_STATES_STR.pending:
+          return 'kyc-recovery-state-message.pending-title'
+        case REQUEST_STATES_STR.approved:
+          return 'kyc-recovery-state-message.approved-title'
+        case REQUEST_STATES_STR.rejected:
+          return 'kyc-recovery-state-message.rejected-title'
+        default:
+          ErrorHandler.processWithoutFeedback(new Error(
+            'Unknown kyc recovery state. kycRecoveryState = ' +
+            this.kycRecoveryState)
+          )
+          return ''
+      }
     },
 
     kycRecoveryDescriptionTranslationId () {
-      return this.getKycRecoveryLocalizationSegment('desc')
+      switch (this.kycRecoveryState) {
+        case REQUEST_STATES_STR.permanentlyRejected:
+          return 'kyc-recovery-state-message.permanently-rejected-desc'
+        case REQUEST_STATES_STR.pending:
+          return 'kyc-recovery-state-message.pending-desc'
+        case REQUEST_STATES_STR.approved:
+          return 'kyc-recovery-state-message.approved-desc'
+        case REQUEST_STATES_STR.rejected:
+          return 'kyc-recovery-state-message.rejected-desc'
+        default:
+          ErrorHandler.processWithoutFeedback(new Error(
+            'Unknown kyc recovery state. kycRecoveryState = ' +
+            this.kycRecoveryState)
+          )
+          return ''
+      }
     },
 
     kycRecoveryReasonTranslationId () {
-      return this.getKycRecoveryLocalizationSegment('reason')
-    },
-  },
-  methods: {
-    getKycRecoveryLocalizationSegment (type) {
-      const segment = 'kyc-recovery-state-message.'
       switch (this.kycRecoveryState) {
         case REQUEST_STATES_STR.permanentlyRejected:
-          return segment + 'permanently-rejected-' + type
+          return 'kyc-recovery-state-message.permanently-rejected-reason'
         case REQUEST_STATES_STR.pending:
-          return segment + 'pending-' + type
+          return 'kyc-recovery-state-message.pending-reason'
         case REQUEST_STATES_STR.approved:
-          return segment + 'approved-' + type
+          return 'kyc-recovery-state-message.approved-reason'
         case REQUEST_STATES_STR.rejected:
-          return segment + 'rejected-' + type
+          return 'kyc-recovery-state-message.rejected-reason'
         default:
-          console.error(
+          ErrorHandler.processWithoutFeedback(new Error(
             'Unknown kyc recovery state. kycRecoveryState = ' +
-            this.kycRecoveryState
+            this.kycRecoveryState)
           )
           return ''
       }

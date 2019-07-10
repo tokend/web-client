@@ -12,7 +12,10 @@
           <span>
             {{ 'auth-pages.lost-seed-question' | globalize }}
           </span>
-          <router-link class="auth-page__tip-link" :to="vueRoutes.kycRecovery">
+          <router-link
+            class="auth-page__tip-link"
+            :to="vueRoutes.kycRecoveryInit"
+          >
             {{ 'auth-pages.lost-seed-answer' | globalize }}
           </router-link>
         </div>

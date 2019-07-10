@@ -29,6 +29,7 @@
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 
 const EVENTS = {
   kycRecoverySubmit: 'kyc-recovery-submit',
@@ -53,7 +54,22 @@ export default {
     },
 
     kycRecoveryMessageTranslationId () {
-      return `kyc-recovery-state-message.${this.kycRecoveryState}-title`
+      switch (this.kycRecoveryState) {
+        case REQUEST_STATES_STR.permanentlyRejected:
+          return 'kyc-recovery-state-message.permanently-rejected-title'
+        case REQUEST_STATES_STR.pending:
+          return 'kyc-recovery-state-message.pending-title'
+        case REQUEST_STATES_STR.approved:
+          return 'kyc-recovery-state-message.approved-title'
+        case REQUEST_STATES_STR.rejected:
+          return 'kyc-recovery-state-message.rejected-title'
+        default:
+          ErrorHandler.processWithoutFeedback(new Error(
+            'Unknown kyc recovery state. kycRecoveryState = ' +
+            this.kycRecoveryState)
+          )
+          return ''
+      }
     },
   },
 
