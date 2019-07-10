@@ -28,10 +28,10 @@ describe('wallet.module', () => {
         email: mockWallet.email,
         id: mockWallet.id,
         accountId: mockWallet.accountId,
+        sessionId: mockWallet.sessionId,
       }
 
       mutations[vuexTypes.SET_WALLET](state, mockWallet)
-
       expect(state).to.deep.equal({ wallet: expectedWallet })
     })
   })
@@ -53,11 +53,13 @@ describe('wallet.module', () => {
 
       const credentials = { email: 'bob@mail.com', password: 'qweqweqwe' }
       const expectedMutations = {
-        [vuexTypes.SET_SESSION]: mockWallet,
         [vuexTypes.SET_WALLET]: mockWallet,
+        [vuexTypes.SET_ENCRYPTED_SECRET_SEED]: {
+          secretSeed: mockWallet.secretSeed,
+          sessionKey: mockWallet.sessionKey,
+        },
       }
       await actions[vuexTypes.LOAD_WALLET](store, credentials)
-
       expect(store.commit.args)
         .to.deep.equal(Object.entries(expectedMutations))
     })
