@@ -7,7 +7,12 @@
             {{ 'pages-names.kyc-recovery' | globalize }}
           </h1>
         </div>
-        <passport />
+        <button
+          class="app__button-flat"
+          @click="logOut"
+        >
+          {{ 'passport.sign-out-btn' | globalize }}
+        </button>
       </div>
       <h3>
         {{ 'kyc-recovery-state-message.limited-functionality-msg' | globalize }}
@@ -30,14 +35,13 @@
 
 <script>
 import { vuexTypes } from '@/vuex'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 import KycRecoveryUnverified from '@/vue/pages/KycRecovery/KycRecoveryUnverified'
 import VerificationGeneralForm from '@/vue/modules/verification/general-form/index'
 import VerificationCorporateForm from '@/vue/pages/VerificationCorporate'
 import KycRecoveryStateMessage from '@/vue/pages/KycRecovery/KycRecoveryStateMessage'
-import Passport from '@/vue/navigation/Passport'
 
 export default {
   name: 'kyc-recovery-management',
@@ -46,7 +50,6 @@ export default {
     KycRecoveryStateMessage,
     VerificationGeneralForm,
     VerificationCorporateForm,
-    Passport,
   },
   data: _ => ({
     isLoaded: false,
@@ -79,6 +82,9 @@ export default {
       loadKycRecovery: vuexTypes.LOAD_KYC_RECOVERY,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
     }),
+    ...mapMutations({
+      clearState: vuexTypes.CLEAR_STATE,
+    }),
 
     async onSubmit () {
       await this.delay(3000)
@@ -94,6 +100,10 @@ export default {
       return new Promise((resolve, reject) => {
         resolve(setTimeout(resolve, ms))
       })
+    },
+    logOut () {
+      this.clearState()
+      location.reload()
     },
   },
 }

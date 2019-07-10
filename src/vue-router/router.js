@@ -91,7 +91,7 @@ export function buildRouter (store) {
             beforeEnter: buildAuthPageGuard(store),
           },
           {
-            path: '/kyc-recovery',
+            path: '/kyc-recovery-init',
             name: vueRoutes.kycRecovery.name,
             component: resolve => require(['@/vue/pages/KycRecovery'], resolve),
             beforeEnter: buildAuthPageGuard(store),
@@ -120,16 +120,17 @@ export function buildRouter (store) {
 function buildAuthPageGuard (store) {
   return function authPageGuard (to, from, next) {
     const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
-    const isNoKycRecoveryInProgress = store
-      .getters[vuexTypes.isNoKycRecoveryInProgress]
-
-    isLoggedIn
-      ? !isNoKycRecoveryInProgress
-        ? next({
-          name: vueRoutes.kycRecoveryManagement.name,
-        })
-        : next(vueRoutes.app)
-      : next()
+    const isKycRecoveryInProgress = store
+      .getters[vuexTypes.isKycRecoveryInProgress]
+    if (isLoggedIn) {
+      if (isKycRecoveryInProgress) {
+        next({ name: vueRoutes.kycRecoveryManagement.name })
+      } else {
+        next(vueRoutes.app)
+      }
+    } else {
+      next()
+    }
   }
 }
 
@@ -138,23 +139,24 @@ function buildAuthPageGuard (store) {
 function buildInAppRouteGuard ({ store, scheme }) {
   return function inAppRouteGuard (to, from, next) {
     const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
-    const isNoKycRecoveryInProgress = store
-      .getters[vuexTypes.isNoKycRecoveryInProgress]
+    const isKycRecoveryInProgress = store
+      .getters[vuexTypes.isKycRecoveryInProgress]
     // TODO: remove when all components modulerized
     const isAccessible = scheme.findModuleByPath(to.path)
       ? scheme.findModuleByPath(to.path).isAccessible
       : true
-
-    isLoggedIn && isAccessible
-      ? !isNoKycRecoveryInProgress
-        ? next({
-          name: vueRoutes.kycRecoveryManagement.name,
-        })
-        : next()
-      : next({
+    if (isLoggedIn && isAccessible) {
+      if (isKycRecoveryInProgress) {
+        next({ name: vueRoutes.kycRecoveryManagement.name })
+      } else {
+        next()
+      }
+    } else {
+      next({
         name: vueRoutes.login.name,
         query: { redirectPath: to.fullPath },
       })
+    }
   }
 }
 

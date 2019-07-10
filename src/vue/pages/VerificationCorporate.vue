@@ -158,7 +158,6 @@ import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import { required, validateUrl, integer, minValue } from '@validators'
-import { vueRoutes } from '@/vue-router/routes'
 
 const MIN_TEAM_SIZE = 1
 
@@ -218,33 +217,13 @@ export default {
       kycRecoveryState: vuexTypes.kycRecoveryState,
       kycRecoveryRequestId: vuexTypes.kycRecoveryRequestId,
       kycRecoveryBlobId: vuexTypes.kycRecoveryBlobId,
-      kycRecoveryRequestData: vuexTypes.kycRecoveryRequestData,
+      kycRecoveryRequestBlob: vuexTypes.kycRecoveryRequestBlob,
     }),
 
     isFormPopulatable () {
       return this.isAccountRoleReseted
         ? this.previousAccountRole === this.kvEntryCorporateRoleId
         : this.accountRoleToSet === this.kvEntryCorporateRoleId
-    },
-
-    isKycRecoveryPage () {
-      return this.$route.name === vueRoutes.kycRecoveryManagement.name
-    },
-
-    isExistingRequest () {
-      if (this.isKycRecoveryPage) {
-        return this.kycRecoveryState &&
-        (
-          this.kycRecoveryState === REQUEST_STATES_STR.pending ||
-          this.kycRecoveryState === REQUEST_STATES_STR.rejected
-        )
-      } else {
-        return this.kycState &&
-        (
-          this.kycState === REQUEST_STATES_STR.pending ||
-          this.kycState === REQUEST_STATES_STR.rejected
-        )
-      }
     },
   },
 
@@ -255,7 +234,7 @@ export default {
       this.kycRecoveryBlobId &&
       (this.kycRecoveryState !== REQUEST_STATES_STR.permanentlyRejected)
     ) {
-      this.form = this.parseKycData(this.kycRecoveryRequestData)
+      this.form = this.parseKycData(this.kycRecoveryRequestBlob)
     }
   },
 
@@ -263,22 +242,29 @@ export default {
     ...mapActions({
       sendKycRecoveryRequest: vuexTypes.SEND_KYC_RECOVERY_REQUEST,
     }),
+
     async submit () {
       if (!this.isFormValid()) return
+
       this.disableForm()
       this.isFormSubmitting = true
+
       try {
+        if (!this.isKycRecoveryPage) await uploadDocument(this.form.avatar)
+
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycCorporate)
+
         if (this.isKycRecoveryPage) {
           await this.sendKycRecoveryRequest(kycBlobId)
           this.$emit(EVENTS.kycRecoverySubmit)
         } else {
-          await uploadDocument(this.form.avatar)
           const operation = this.createKycOperation(
             kycBlobId,
             this.kvEntryCorporateRoleId
           )
+
           await api.postOperations(operation)
+
           do {
             await this.loadKyc()
             await this.delay(3000)
@@ -289,6 +275,7 @@ export default {
       } catch (e) {
         ErrorHandler.process(e)
       }
+
       this.isFormSubmitting = false
       this.hideConfirmation()
       this.enableForm()

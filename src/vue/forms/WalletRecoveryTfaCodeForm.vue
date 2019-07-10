@@ -58,7 +58,7 @@ export default {
   data: _ => ({
     FACTOR_TYPES,
     form: {
-      code: '000000',
+      code: '',
     },
   }),
   validations: {

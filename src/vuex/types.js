@@ -35,7 +35,7 @@ const mutations = {
 
   // kyc recovery
   SET_KYC_RECOVERY_LATEST_REQUEST: 'SET_KYC_RECOVERY_LATEST_REQUEST',
-  SET_KYC_RECOVERY_LATEST_REQUEST_DATA: 'SET_KYC_RECOVERY_LATEST_REQUEST_DATA',
+  SET_KYC_RECOVERY_LATEST_REQUEST_BLOB: 'SET_KYC_RECOVERY_LATEST_REQUEST_BLOB',
 
   // assets
   SET_ASSETS: 'SET_ASSETS',
@@ -68,8 +68,8 @@ const actions = {
   // kyc recovery
   LOAD_KYC_RECOVERY_LATEST_REQUEST: 'LOAD_KYC_RECOVERY_LATEST_REQUEST',
   LOAD_KYC_RECOVERY: 'LOAD_KYC_RECOVERY',
-  LOAD_KYC_RECOVERY_LATEST_REQUEST_DATA:
-    'LOAD_KYC_RECOVERY_LATEST_REQUEST_DATA',
+  LOAD_KYC_RECOVERY_LATEST_REQUEST_BLOB:
+    'LOAD_KYC_RECOVERY_LATEST_REQUEST_BLOB',
   SEND_KYC_RECOVERY_REQUEST: 'SEND_KYC_RECOVERY_REQUEST',
 
   // assets
@@ -143,7 +143,7 @@ const getters = {
   kycRecoveryRequestId: 'kycRecoveryRequestId',
   kycRecoveryState: 'kycRecoveryState',
   kycRecoveryStateI: 'kycRecoveryStateI',
-  kycRecoveryRequestData: 'kycRecoveryRequestData',
+  kycRecoveryRequestBlob: 'kycRecoveryRequestBlob',
   kycRecoveryRejectReason: 'kycRecoveryRejectReason',
   kycRecoveryBlobId: 'kycRecoveryBlobId',
   isNoKycRecoveryInProgress: 'isNoKycRecoveryInProgress',

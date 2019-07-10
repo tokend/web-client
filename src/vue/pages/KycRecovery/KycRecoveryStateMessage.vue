@@ -31,6 +31,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 
 export default {
   name: 'kyc-recovery-state-message',
@@ -42,15 +43,36 @@ export default {
     }),
 
     kycRecoveryTitleTranslationId () {
-      return `kyc-recovery-state-message.${this.kycRecoveryState}-title`
+      return this.getKycRecoveryLocalizationSegment('title')
     },
 
     kycRecoveryDescriptionTranslationId () {
-      return `kyc-recovery-state-message.${this.kycRecoveryState}-desc`
+      return this.getKycRecoveryLocalizationSegment('desc')
     },
 
     kycRecoveryReasonTranslationId () {
-      return `kyc-recovery-state-message.${this.kycRecoveryState}-reason`
+      return this.getKycRecoveryLocalizationSegment('reason')
+    },
+  },
+  methods: {
+    getKycRecoveryLocalizationSegment (type) {
+      const segment = 'kyc-recovery-state-message.'
+      switch (this.kycRecoveryState) {
+        case REQUEST_STATES_STR.permanentlyRejected:
+          return segment + 'permanently-rejected-' + type
+        case REQUEST_STATES_STR.pending:
+          return segment + 'pending-' + type
+        case REQUEST_STATES_STR.approved:
+          return segment + 'approved-' + type
+        case REQUEST_STATES_STR.rejected:
+          return segment + 'rejected-' + type
+        default:
+          console.error(
+            'Unknown kyc recovery state. kycRecoveryState = ' +
+            this.kycRecoveryState
+          )
+          return ''
+      }
     },
   },
 }

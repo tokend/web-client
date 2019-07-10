@@ -7,7 +7,6 @@
     <div class="auth-page__content">
       <wallet-recovery-form
         v-if="isWalletRecoveryFormDisplay"
-        @submit="isEmailSent = true"
         @error="checkError"
       />
       <wallet-recovery-tfa-code-form
@@ -42,7 +41,6 @@ export default {
     WalletRecoveryTfaCodeForm,
   },
   data: _ => ({
-    isEmailSent: false,
     isWalletRecoveryFormDisplay: true,
     recoveryError: {},
     vueRoutes,

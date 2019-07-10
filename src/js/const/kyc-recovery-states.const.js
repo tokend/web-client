@@ -3,5 +3,5 @@ export const KYC_RECOVERY_STATES = Object.freeze({
   inited: 1,
   pending: 2,
   rejected: 3,
-  permanently_rejected: 4,
+  permanentlyRejected: 4,
 })

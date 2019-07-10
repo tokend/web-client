@@ -62,6 +62,7 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
+import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 
 import SectionCountry from './components/section-country'
 import SectionPersonal from './components/section-personal'
@@ -79,7 +80,6 @@ import { base } from '@tokend/js-sdk'
 import { api } from '@/api'
 import { isUSResidence } from './is-us-residence'
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
-import { vueRoutes } from '@/vue-router/routes'
 
 const EVENTS = {
   submit: 'submit',
@@ -96,7 +96,7 @@ export default {
     SectionSelfie,
     SectionAvatar,
   },
-  mixins: [FormMixin],
+  mixins: [FormMixin, VerificationFormMixin],
   props: {
     blobId: { type: String, default: '' },
   },
@@ -134,26 +134,6 @@ export default {
       }
 
       return this.kvEntryGeneralRoleId
-    },
-
-    isKycRecoveryPage () {
-      return this.$route.name === vueRoutes.kycRecoveryManagement.name
-    },
-
-    isExistingRequest () {
-      if (this.isKycRecoveryPage) {
-        return this.kycRecoveryState &&
-        (
-          this.kycRecoveryState === REQUEST_STATES_STR.pending ||
-          this.kycRecoveryState === REQUEST_STATES_STR.rejected
-        )
-      } else {
-        return this.kycState &&
-        (
-          this.kycState === REQUEST_STATES_STR.pending ||
-          this.kycState === REQUEST_STATES_STR.rejected
-        )
-      }
     },
   },
   async created () {
