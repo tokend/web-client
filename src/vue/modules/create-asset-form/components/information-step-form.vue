@@ -36,48 +36,6 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <input-field
-          white-autofill
-          type="number"
-          :min="0"
-          :max="MAX_AMOUNT"
-          :step="MIN_AMOUNT"
-          v-model="form.maxIssuanceAmount"
-          @blur="touchField('form.maxIssuanceAmount')"
-          name="create-asset-max-issuance-amount"
-          :label="'create-asset-form.max-issuance-amount-lbl' | globalize"
-          :error-message="getFieldErrorMessage(
-            'form.maxIssuanceAmount',
-            { from: MIN_AMOUNT, to: MAX_AMOUNT }
-          )"
-        />
-      </div>
-    </div>
-
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <select-field
-          v-model="form.assetType"
-          name="create-asset-type"
-          :label="'create-asset-form.asset-type-lbl' | globalize"
-          @blur="touchField('form.assetType')"
-          :error-message="getFieldErrorMessage(
-            'form.assetType',
-          )"
-        >
-          <option
-            v-for="assetType in assetTypes"
-            :key="assetType.value"
-            :value="assetType.value"
-          >
-            {{ assetType.labelTranslationId | globalize }}
-          </option>
-        </select-field>
-      </div>
-    </div>
-
-    <div class="app__form-row">
-      <div class="app__form-field">
         <tick-field
           v-model="form.policies"
           :cb-value="ASSET_POLICIES.transferable"
@@ -157,7 +115,7 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
-import { required, amountRange, maxLength, assetCode } from '@validators'
+import { required, maxLength, assetCode } from '@validators'
 
 import config from '@/config'
 
@@ -172,21 +130,16 @@ export default {
   mixins: [FormMixin],
   props: {
     request: { type: CreateAssetRequest, default: null },
-    kycRequiredAssetType: { type: Number, required: true },
-    securityAssetType: { type: Number, required: true },
   },
 
   data: _ => ({
     form: {
       name: '',
       code: '',
-      maxIssuanceAmount: '',
       logo: null,
       policies: 0,
-      assetType: '',
     },
     MIN_AMOUNT: config.MIN_AMOUNT,
-    MAX_AMOUNT: config.MAX_AMOUNT,
     ASSET_POLICIES,
     DOCUMENT_TYPES,
     NAME_MAX_LENGTH,
@@ -203,34 +156,8 @@ export default {
           required,
           assetCode,
         },
-        maxIssuanceAmount: {
-          required,
-          amountRange: amountRange(this.MIN_AMOUNT, this.MAX_AMOUNT),
-        },
-        assetType: {
-          required,
-        },
       },
     }
-  },
-
-  computed: {
-    assetTypes () {
-      return [
-        {
-          labelTranslationId: 'create-asset-form.verification-not-required-lbl',
-          value: 0,
-        },
-        {
-          labelTranslationId: 'create-asset-form.verification-required-lbl',
-          value: this.kycRequiredAssetType,
-        },
-        {
-          labelTranslationId: 'create-asset-form.security-asset-lbl',
-          value: this.securityAssetType,
-        },
-      ]
-    },
   },
 
   created () {
@@ -244,8 +171,6 @@ export default {
       this.form = {
         name: this.request.assetName,
         code: this.request.assetCode,
-        assetType: String(this.request.assetType),
-        maxIssuanceAmount: this.request.maxIssuanceAmount,
         logo: this.request.logoKey
           ? new DocumentContainer(this.request.logo)
           : null,

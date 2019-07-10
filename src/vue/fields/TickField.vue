@@ -32,7 +32,7 @@ const EVENTS = {
 export default {
   props: {
     value: { type: [String, Number, Array, Boolean], required: true },
-    cbValue: { type: [String, Number, Boolean], default: false },
+    cbValue: { type: [String, Number, Boolean, Array, Object], default: false },
   },
   computed: {
     id () {
@@ -50,7 +50,9 @@ export default {
           result = model & +value
           break
         case 'array':
-          result = ~model.findIndex((item) => item === value)
+          result = this.typeof(value) !== 'array'
+            ? ~model.findIndex((item) => item === value)
+            : value.every(item => this.arrayIncludes(model, item))
           break
         default:
           result = model
@@ -76,10 +78,15 @@ export default {
           )
           break
         case 'array':
-          this.$emit(EVENTS.input, isChecked
-            ? model.concat(value)
-            : model.filter((item) => item !== value)
-          )
+          if (this.typeof(value) !== 'array') {
+            this.$emit(EVENTS.input, isChecked
+              ? model.concat(value)
+              : model.filter((item) => item !== value))
+          } else {
+            this.$emit(EVENTS.input, isChecked
+              ? model.concat(value)
+              : model.filter((item) => !this.arrayIncludes(value, item)))
+          }
           break
         default:
           this.$emit(EVENTS.input, isChecked)
@@ -100,6 +107,9 @@ export default {
           break
       }
       return result
+    },
+    arrayIncludes (array, value) {
+      return Boolean(array.find(item => item === value))
     },
   },
 }

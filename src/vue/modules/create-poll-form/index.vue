@@ -27,17 +27,19 @@
       <div class="app__form-field">
         <div class="create-poll-form__choice-wrp">
           <div class="create-poll-form__choice">
-            <!-- eslint-disable max-len -->
             <input-field
               white-autofill
               v-model="form.choices[index].description"
               @blur="touchField(`form.choices[${index}].description`)"
               :name="'create-poll-description'"
-              :label="'create-poll-form.description-lbl' | globalize({ number: index + 1 })"
+              :label="'create-poll-form.description-lbl' | globalize({
+                number: index + 1
+              })"
               :disabled="formMixin.isDisabled"
-              :error-message="getFieldErrorMessage(`form.choices[${index}].description`)"
+              :error-message="getFieldErrorMessage(`
+                form.choices[${index}].description
+              `)"
             />
-            <!-- eslint-enable max-len -->
 
             <button
               v-if="canDeleteChoice(index + 1)"
@@ -50,6 +52,7 @@
               <i class="mdi mdi-minus-circle-outline create-poll-form__delete-choice-icon" />
             </button>
           </div>
+
           <div
             v-if="canAddChoice(index + 1)"
             class="create-poll-form__add-choice-wrp"
@@ -126,70 +129,6 @@
       </div>
     </div>
 
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <div class="create-poll-form__result-provider-id-wrp">
-          <!--
-            The field and button are disabled because of module that takes over
-            responsibility for closing and vote counting. The module requires
-            result provider ID set to master account ID. Input is not removed
-            because we were planning of making this feature to be changed from
-            auto-mode to manual-mode, manual-mode enabled by setting any other
-            account ID in this field.
-          -->
-          <input-field
-            white-autofill
-            v-model="form.resultProviderID"
-            @blur="touchField('form.resultProviderID')"
-            name="create-poll-result-provider-id"
-            :label="'create-poll-form.result-provider-id-lbl' | globalize"
-            :disabled="true || formMixin.isDisabled"
-            :error-message="getFieldErrorMessage(
-              'form.resultProviderID',
-            )"
-            v-tooltip="{
-              type: 'hover',
-              text: $options.filters.globalize(
-                'create-poll-form.result-provider-disabled-tooltip'
-              ),
-            }"
-          />
-          <button
-            v-ripple
-            type="button"
-            class="app__button-flat create-poll-form__insert-account-id-btn"
-            @click="form.resultProviderID = accountId"
-            :disabled="true || formMixin.isDisabled"
-          >
-            {{ 'create-asset-form.use-my-account-id-btn' | globalize }}
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <!--
-          The tick field is disabled because result provider ID should review
-          the votes than, but module described in result-provider-id-wrp field’s
-          comment is not prepared for this and behavior is undefined.
-        -->
-        <tick-field
-          name="create-poll-vote-confirmation-required"
-          v-model="form.isVoteConfirmationRequired"
-          :disabled="true || formMixin.isDisabled"
-          v-tooltip="{
-            type: 'hover',
-            text: $options.filters.globalize(
-              'create-poll-form.vote-confirmation-required-disabled-tooltip'
-            ),
-          }"
-        >
-          {{ 'create-poll-form.vote-confirmation-required-lbl' | globalize }}
-        </tick-field>
-      </div>
-    </div>
-
     <div class="app__form-actions">
       <form-confirmation
         v-if="formMixin.isConfirmationShown"
@@ -224,7 +163,6 @@ import {
   required,
   maxLength,
   minDate,
-  accountId,
 } from '@validators'
 import { base } from '@tokend/js-sdk'
 import { DateUtil } from '@/js/utils'
@@ -237,21 +175,21 @@ const EVENTS = {
 
 export default {
   name: 'create-poll-form-module',
+
   mixins: [FormMixin],
+
   data: _ => ({
     form: {
       question: '',
       permissionType: '',
-      numberOfChoices: '',
       endTime: '',
       startTime: '',
-      isVoteConfirmationRequired: false,
-      resultProviderID: api.networkDetails.masterAccountId,
       choices: [{ description: '', number: 1 }],
     },
     isSubmitting: false,
     QUESTION_MAX_LENGTH,
   }),
+
   validations () {
     return {
       form: {
@@ -269,10 +207,6 @@ export default {
           required,
           minDate: minDate(this.form.startTime || moment().toISOString()),
         },
-        resultProviderID: {
-          required,
-          accountId,
-        },
         choices: {
           $each: {
             description: {
@@ -283,9 +217,9 @@ export default {
       },
     }
   },
+
   computed: {
     ...mapGetters({
-      accountId: vuexTypes.accountId,
       restrictedPollType: vuexTypes.kvPollTypeRestricted,
       unrestrictedPollType: vuexTypes.kvPollTypeUnrestricted,
     }),
@@ -305,6 +239,13 @@ export default {
       ]
     },
   },
+
+  created () {
+    if (!this.form.permissionType) {
+      this.form.permissionType = this.unrestrictedPollType
+    }
+  },
+
   methods: {
     addChoice (choice) {
       this.form.choices.push({
@@ -340,8 +281,8 @@ export default {
     buildCreatePollOperation () {
       const operation = {
         permissionType: Number(this.form.permissionType),
-        voteConfirmationRequired: this.form.isVoteConfirmationRequired,
-        resultProviderID: this.form.resultProviderID,
+        voteConfirmationRequired: false,
+        resultProviderID: api.networkDetails.masterAccountId,
         startTime: DateUtil.toTimestamp(this.form.startTime),
         endTime: DateUtil.toTimestamp(this.form.endTime),
         numberOfChoices: this.form.choices.length,
@@ -370,15 +311,6 @@ export default {
 <style lang="scss" scoped>
 @import '~@/vue/forms/app-form';
 @import '~@scss/variables';
-
-.create-poll-form__result-provider-id-wrp {
-  display: flex;
-  align-items: center;
-}
-
-.create-poll-form__insert-account-id-btn {
-  margin-left: 0.4rem;
-}
 
 .create-poll-form__choice-wrp {
   display: flex;

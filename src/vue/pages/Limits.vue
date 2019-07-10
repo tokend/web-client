@@ -179,9 +179,9 @@ export default {
       try {
         const endpoint = `/v3/accounts/${this.accountId}`
         const { data: account } = await api.getWithSignature(endpoint, {
-          include: ['limits'],
+          include: ['limits', 'limits_with_stats'],
         })
-        this.formatLimits(account.limits)
+        this.formatLimits(account.limitsWithStats)
       } catch (error) {
         this.isLimitsLoadingFailed = true
         ErrorHandler.processWithoutFeedback(error)
@@ -216,14 +216,17 @@ export default {
           new LimitsUpdateRequestRecord(item)
         ))
     },
-    formatLimits (limits) {
+    formatLimits (limitsWithStats) {
       const formattedLimits = {}
       this.accountBalancesAssetsCodes.forEach(assetCode => {
-        if (!limits) limits = []
-        formattedLimits[assetCode] = limits
-          .filter(item => item.asset.id === assetCode)
+        if (!limitsWithStats) limitsWithStats = []
+        formattedLimits[assetCode] = limitsWithStats
+          .filter(item => {
+            const limitAssetCode = item.limits.relationships.asset.data.id
+            return limitAssetCode === assetCode
+          })
           .reduce((acc, item) => {
-            switch (item.statsOpType) {
+            switch (item.limits.attributes.statsOpType) {
               case STATS_OPERATION_TYPES.paymentOut:
                 return { ...acc, payment: new LimitsRecord(item) }
               case STATS_OPERATION_TYPES.withdraw:

@@ -78,6 +78,9 @@ export class MathUtil {
       .toFixed(DECIMAL_PLACES)
   }
 
+  // a > b => 1
+  // a < b => -1
+  // a === b => 0
   static compare (a, b) {
     if (!this._isValidParams('comparedTo', a, b)) return -1
 

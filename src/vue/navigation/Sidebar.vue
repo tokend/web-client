@@ -19,12 +19,29 @@
       :class="{ 'sidebar__aside--closed': !isOpened }"
     >
       <section class="sidebar__logo-section">
-        <router-link
-          @click.native="closeSidebar"
-          :to="vueRoutes.app"
-        >
-          <logo class="sidebar__logo" />
-        </router-link>
+        <!-- eslint-disable-next-line max-len -->
+        <template v-if="getScheme().canRenderModule(CurrentBusinessIndicatorModule)">
+          <div class="navbar__current-business-indicator">
+            <!-- eslint-disable-next-line max-len -->
+            <submodule-importer :submodule="getScheme().findModule(CurrentBusinessIndicatorModule)">
+              <router-link
+                @click.native="closeSidebar"
+                :to="vueRoutes.app"
+              >
+                <logo class="sidebar__logo" />
+              </router-link>
+            </submodule-importer>
+          </div>
+        </template>
+
+        <template v-else>
+          <router-link
+            @click.native="closeSidebar"
+            :to="vueRoutes.app"
+          >
+            <logo class="sidebar__logo" />
+          </router-link>
+        </template>
       </section>
 
       <section class="sidebar__scheme-label-section">
@@ -85,6 +102,9 @@ import { mapGetters } from 'vuex'
 import config from '@/config'
 import { SchemeRegistry } from '@/modules-arch/scheme-registry'
 
+import { CurrentBusinessIndicatorModule } from '@/vue/navigation/navbar/current-business-indicator/module'
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
+
 const DEFAULT_SECTION_NAME = 'default'
 
 export default {
@@ -93,6 +113,7 @@ export default {
   components: {
     Logo,
     AppFooter,
+    SubmoduleImporter,
   },
 
   data: () => ({
@@ -100,6 +121,7 @@ export default {
     config,
     vueRoutes,
     DEFAULT_SECTION_NAME,
+    CurrentBusinessIndicatorModule,
   }),
 
   computed: {
@@ -217,8 +239,7 @@ $content-item-right-padding: 2.4rem;
   opacity: 0;
   cursor: pointer;
   color: $col-sidebar-burger-icon-color;
-  transition:
-    opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+  transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1),
     transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
   @include respond-to-custom($sidebar-hide-bp) {

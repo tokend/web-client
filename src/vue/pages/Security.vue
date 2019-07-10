@@ -69,7 +69,6 @@
         <switch-field :value="isTotpEnabled" />
       </button>
     </div>
-    <hr>
 
     <template v-if="getModule().canRenderSubmodule(ChangePasswordPseudoModule)">
       <div class="security-page__row">
@@ -83,7 +82,6 @@
           {{ 'security-page.change-password-btn' | globalize }}
         </a>
       </div>
-      <hr>
     </template>
 
     <template v-if="getModule().canRenderSubmodule(ShowAccountIdPseudoModule)">
@@ -98,7 +96,6 @@
           {{ 'security-page.view-account-id-btn' | globalize }}
         </a>
       </div>
-      <hr>
     </template>
 
     <template v-if="getModule().canRenderSubmodule(ShowSeedPseudoModule)">
@@ -113,10 +110,10 @@
           {{ 'security-page.view-secret-seed-btn' | globalize }}
         </a>
       </div>
-      <hr>
     </template>
-    <template
-      v-if="getModule().canRenderSubmodule(ShowNetworkPassphrasePseudoModule)">
+
+    <!-- eslint-disable-next-line max-len -->
+    <template v-if="getModule().canRenderSubmodule(ShowNetworkPassphrasePseudoModule)">
       <div class="security-page__row">
         <p class="security-page__row-title">
           {{ 'security-page.network-passphrase-title' | globalize }}
@@ -227,21 +224,21 @@ export default {
 
 .security-page {
   background: $col-block-bg;
+  padding: 0 2.4rem;
 
   @include box-shadow();
 }
 
-.security-page hr {
-  margin: 0 2.4rem;
-  border: $col-block-line solid 0.05rem;
-}
-
 .security-page__row {
-  padding: 2.4rem;
+  padding: 2.4rem 0;
   height: 7.4rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  & + & {
+    border-top: $col-block-line solid 0.05rem;
+  }
 }
 
 .security-page__row-title {

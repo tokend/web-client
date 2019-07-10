@@ -78,7 +78,7 @@
               :disabled="formMixin.isDisabled"
             >
               <option
-                v-for="asset in quoteAtomicSwapBalancesAssets"
+                v-for="asset in quoteAtomicSwapAssets"
                 :key="asset.code"
                 :value="asset.code"
               >
@@ -94,7 +94,6 @@
             <amount-input-field
               v-model="form.quoteAssets[index].price"
               name="create-atomic-swap-quote-asset-price"
-              validation-type="outgoing"
               :label="'create-atomic-swap-form.price-lbl' | globalize"
               :asset="form.quoteAssets[index].asset"
               :disabled="formMixin.isDisabled"
@@ -223,14 +222,14 @@ export default {
   computed: {
     ...mapGetters({
       baseAtomicSwapBalancesAssets: vuexTypes.baseAtomicSwapBalancesAssets,
-      quoteAtomicSwapBalancesAssets: vuexTypes.quoteAtomicSwapBalancesAssets,
+      quoteAtomicSwapAssets: vuexTypes.quoteAtomicSwapAssets,
       accountBalanceByCode: vuexTypes.accountBalanceByCode,
     }),
   },
 
   async created () {
     this.form.asset = this.baseAtomicSwapBalancesAssets[0] || {}
-    this.form.quoteAssets[0].asset = this.quoteAtomicSwapBalancesAssets[0] || {}
+    this.form.quoteAssets[0].asset = this.quoteAtomicSwapAssets[0] || {}
   },
   methods: {
     getSelectedAssetsByAssetCode (assetCode) {
@@ -249,7 +248,7 @@ export default {
     },
 
     setQuoteAssetByCode (code, index) {
-      this.form.quoteAssets[index].asset = this.quoteAtomicSwapBalancesAssets
+      this.form.quoteAssets[index].asset = this.quoteAtomicSwapAssets
         .find(item => item.code === code)
     },
 
@@ -272,7 +271,7 @@ export default {
       this.form.quoteAssets.push({
         price: '',
         address: '',
-        asset: this.quoteAtomicSwapBalancesAssets[0],
+        asset: this.quoteAtomicSwapAssets[0],
       })
     },
 
