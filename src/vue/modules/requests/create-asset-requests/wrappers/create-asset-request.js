@@ -27,6 +27,11 @@ export class CreateAssetRequest extends Request {
 
     this.logo = safeGet(record, 'requestDetails.creatorDetails.logo')
     this.logoKey = safeGet(record, 'requestDetails.creatorDetails.logo.key')
+
+    this.stellarAssetCode = safeGet(record, 'requestDetails.creatorDetails.stellar.assetCode') || ''
+    this.stellarAssetType = safeGet(record, 'requestDetails.creatorDetails.stellar.assetType') || ''
+    this.stellarWithdraw = safeGet(record, 'requestDetails.creatorDetails.stellar.withdraw') || false
+    this.stellarDeposit = safeGet(record, 'requestDetails.creatorDetails.stellar.deposit') || false
   }
 
   get isTransferable () {
@@ -35,5 +40,13 @@ export class CreateAssetRequest extends Request {
 
   get isWithdrawable () {
     return Boolean(this.policy & ASSET_POLICIES.withdrawable)
+  }
+
+  get isBaseInAtomicSwap () {
+    return Boolean(this.policy & ASSET_POLICIES.canBeBaseInAtomicSwap)
+  }
+
+  get isQuoteInAtomicSwap () {
+    return Boolean(this.policy & ASSET_POLICIES.canBeQuoteInAtomicSwap)
   }
 }

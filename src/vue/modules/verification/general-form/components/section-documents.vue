@@ -42,7 +42,10 @@
       </div>
     </div>
 
-    <div class="app__form-row" v-if="needIdDocumentBack">
+    <div
+      class="app__form-row"
+      v-if="needIdDocumentBack"
+    >
       <div class="app__form-field">
         <file-field
           v-model="idDocumentBack"
@@ -84,7 +87,7 @@ export default {
   }),
   computed: {
     idDocumentType: {
-      get () { return this.callGetter(types.idDocumentType) },
+      get () { return this.callGetter(types.idDocumentType) || { value: '' } },
       set (v) { this.setIdDocumentType(v) },
     },
 
@@ -121,5 +124,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '../scss/styles';
+@import '../scss/styles';
 </style>

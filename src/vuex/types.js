@@ -10,9 +10,12 @@ const mutations = {
   SET_KV_ENTRY_BLOCKED_ROLE_ID: 'SET_KV_ENTRY_BLOCKED_ROLE_ID',
   SET_KV_ENTRY_US_VERIFIED_ROLE_ID: 'SET_KV_ENTRY_US_VERIFIED_ROLE_ID',
   SET_KV_ENTRY_US_ACCREDITED_ROLE_ID: 'SET_KV_ENTRY_US_ACCREDITED_ROLE_ID',
+  SET_KV_ASSET_TYPE_DEFAULT: 'SET_KV_ASSET_TYPE_DEFAULT',
+  SET_KV_ASSET_TYPE_KYC_REQUIRED: 'SET_KV_ASSET_TYPE_KYC_REQUIRED',
   SET_KV_ASSET_TYPE_SECURITY: 'SET_KV_ASSET_TYPE_SECURITY',
+  SET_KV_POLL_TYPE_RESTRICTED: 'SET_KV_POLL_TYPE_RESTRICTED',
+  SET_KV_POLL_TYPE_UNRESTRICTED: 'SET_KV_POLL_TYPE_UNRESTRICTED',
 
-  SET_KV_KYC_REQUIRED: 'SET_KV_KYC_REQUIRED',
   SET_DEFAULT_QUOTE_ASSET: 'SET_DEFAULT_QUOTE_ASSET',
   SET_KV_DEFAULT_SIGNER_ROLE_ID: 'SET_KV_DEFAULT_SIGNER_ROLE_ID',
 
@@ -87,8 +90,11 @@ const getters = {
   kvEntryBlockedRoleId: 'kvEntryBlockedRoleId',
   kvEntryUsVerifiedRoleId: 'kvEntryUsVerifiedRoleId',
   kvEntryUsAccreditedRoleId: 'kvEntryUsAccreditedRoleId',
+  kvAssetTypeDefault: 'kvAssetTypeDefault',
   kvAssetTypeKycRequired: 'kvAssetTypeKycRequired',
   kvAssetTypeSecurity: 'kvAssetTypeSecurity',
+  kvPollTypeRestricted: 'kvPollTypeRestricted',
+  kvPollTypeUnrestricted: 'kvPollTypeUnrestricted',
   defaultQuoteAsset: 'defaultQuoteAsset',
   kvDefaultSignerRoleId: 'kvDefaultSignerRoleId',
 
@@ -96,6 +102,7 @@ const getters = {
   account: 'account',
   accountId: 'accountId',
   accountBalances: 'accountBalances',
+  accountOwnedAssetsBalances: 'accountOwnedAssetsBalances',
   accountBalanceByCode: 'accountBalanceByCode',
   accountRoleId: 'accountRoleId',
   accountDepositAddresses: 'accountDepositAddresses',
@@ -157,13 +164,19 @@ const getters = {
   // assets
   assets: 'assets',
   assetByCode: 'assetByCode',
+  assetsByOwner: 'assetsByOwner',
   balancesAssets: 'balancesAssets',
+  balancesAssetsByOwner: 'balancesAssetsByOwner',
   fiatAssets: 'fiatAssets',
   depositableAssets: 'depositableAssets',
   coinpaymentsAssets: 'coinpaymentsAssets',
   transferableBalancesAssets: 'transferableBalancesAssets',
   withdrawableBalancesAssets: 'withdrawableBalancesAssets',
   statsQuoteAsset: 'statsQuoteAsset',
+  ownedAssets: 'ownedAssets',
+  ownedBalancesAssets: 'ownedBalancesAssets',
+  baseAtomicSwapBalancesAssets: 'baseAtomicSwapBalancesAssets',
+  quoteAtomicSwapAssets: 'quoteAtomicSwapAssets',
 }
 
 export const vuexTypes = {

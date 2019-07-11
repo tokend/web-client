@@ -29,6 +29,7 @@ export default {
   data: _ => ({
     formMixin: {
       isDisabled: false,
+      isPending: false,
       isConfirmationShown: false,
     },
   }),
@@ -46,6 +47,12 @@ export default {
     hideConfirmation () {
       this.enableForm()
       this.formMixin.isConfirmationShown = false
+    },
+    async hideConfirmationAfterSubmit (submit) {
+      this.formMixin.isPending = true
+      await submit()
+      this.hideConfirmation()
+      this.formMixin.isPending = false
     },
   },
 }

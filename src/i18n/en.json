@@ -35,14 +35,24 @@
         "time": "H:mm",
         "date": "MMMM D, YYYY",
         "datetime": "MMMM D, YYYY [at] H:mm",
-        "dmy": "DD MM YYYY"
+        "dmy": "DD.MM.YYYY",
+        "dmyt": "DD.MM.YYYY [at] H:mm"
       },
-      "formats": {
-        "same_day": "[Today at] H:mm",
-        "last_day": "[Yesterday at] H:mm",
-        "next_day": "[Tomorrow at] H:mm",
-        "last_week": "[Last] dddd [at] H:mm",
-        "next_week": "[Next] dddd [at] H:mm"
+      "calendar": {
+        "sameDay": "[Today at] H:mm",
+        "lastDay": "[Yesterday at] H:mm",
+        "nextDay": "[Tomorrow at] H:mm",
+        "lastWeek": "[Last] dddd [at] H:mm",
+        "nextWeek": "[Next] dddd [at] H:mm",
+        "sameElse": "MMMM D, YYYY [at] H:mm"
+      },
+      "calendarInline": {
+        "sameDay": "[today at] H:mm",
+        "lastDay": "[yesterday at] H:mm",
+        "nextDay": "[tomorrow at] H:mm",
+        "lastWeek": "[last] dddd [at] H:mm",
+        "nextWeek": "[next] dddd [at] H:mm",
+        "sameElse": "[at] MMMM D, YYYY [at] H:mm"
       }
     }
   },
@@ -50,11 +60,13 @@
     "formats": {
       "date": "{{value, date}}",
       "dmy": "{{value, dmy}}",
+      "dmyt": "{{value, dmyt}}",
       "money": "{{value, money}}",
       "number": "{{value, number}}",
       "integer": "{{value, integer}}",
       "calendar": "{{value, calendar}}",
-      "order_number": "{{value, order_number}}",
+      "calendar-inline": "{{value, calendar-inline}}",
+      "order-number": "{{value, orderNumber}}",
       "percent": "{{value, percent}}"
     },
     "common": {
@@ -90,6 +102,7 @@
       "field-error_minDate": "Date should be after {{ minDate, date }}",
       "field-error_maxDate": "Date should be before {{ maxDate, date }}",
       "field-error_emailOrAccountId": "This field should be a valid email or account ID",
+      "field-error_accountId": "This field should be a valid account ID",
       "field-error_maxDecimalPoints": "Only {{quantity}} digits after point are allowed",
       "field-error_noMoreThanAvailableOnBalance": "Insufficient balance. You have {{available, number}}",
       "field-error_noMoreThanAvailableForIssuance": "Insufficient available for issuance amount. You have {{available, number}}",
@@ -104,9 +117,10 @@
       "field-error_softCapMoreThanHardCap": "Soft cap should be between zero and \"Hard cap\" value. Hard cap: {{hardCap}}",
       "field-error_hardCapLessThanSoftCap": "Hard cap cannot be less than \"Soft cap\" value. Soft cap: {{softCap}}",
       "field-error_noMoreThanSaleCap": "Investing amount has exceeded the sale cap {{saleCap, money}}",
-      "field-error_maxForIssuance": "Max amount for issuance: {{to, money}}",
-      "field-error_minForIssuance": "Min amount for issuance: {{from, money}}",
-      "field-error_assetCode": "Asset code must contain maximum 16 symbols and consist of alphanumeric values (A-Z, a-z, 0-9)"
+      "field-error_assetCode": "Asset code must contain maximum 16 symbols and consist of alphanumeric values (A-Z, a-z, 0-9)",
+      "field-error_alphaNum": "Accepts only alphanumerics",
+      "field-error_minLength": "This field must contain minimum {{minLength}} symbols",
+      "field-error_selectedSameAssetCode": "Not allowed duplicated quote asset codes"
     },
     "errors": {
       "default": "Something bad happened. Please try again later",
@@ -418,20 +432,21 @@
       "op_number_of_admins_exceeds_license": "Number of admins violates license restriction. Please contact enterprise@distributedlab.com",
       "op_account_not_found": "There is no account with such id",
       "op_role_not_found": "There is no role with such id",
-      "op_pole_not_ready": "Cannot close ongoing poll",
-      "op_not_authorized_to_close_poll": "Not authorized to close poll",
-      "op_create_poll_tasks_not_found": "There is no key value by key \"create_poll_tasks:permission_type\" ",
-      "op_result_provider_not_found": "ResultProvider account not found",
-      "op_invalid_dates": "Start time of the poll is after end time",
-      "op_invalid_start_time": "Start time of the poll is in the past",
-      "op_invalid_vote": "Provided choice is not valid",
-      "op_poll_not_found": "CreatePoll with such ID does not exist",
-      "op_vote_exists": "Voter has already submitted his choice for poll",
-      "op_poll_type_mistmatched": "Type of the poll and poll type specified in vote are mismatched",
-      "op_poll_type_mismatched": "Type of the poll and poll type specified in vote are mismatched",
-      "op_poll_not_started": "CreatePoll has not started yet",
-      "op_poll_ended": "CreatePoll has ended, no votes can be accepted",
-      "op_vote_not_found": "Vote to remove cannot be found"
+      "op_poll_not_ready": "Cannot close ongoing poll, please wait until it end time is passed.",
+      "op_not_authorized_to_close_poll": "Not authorized to close poll, please contact poll owner to resolve the issue.",
+      "op_create_poll_tasks_not_found": "Create poll tasks not found, please contact admin to resolve the issue.",
+      "op_result_provider_not_found": "Result provider account not found, please check the field and retry.",
+      "op_invalid_dates": "Start time cannot be after end time, please check the fields and retry.",
+      "op_invalid_start_time": "Start time of the poll is in the past.",
+      "op_invalid_end_time": "End time cannot be in the past, please check the field and retry.",
+      "op_invalid_vote": "Invalid vote choice, please contact poll system owner to resolve the issue.",
+      "op_poll_not_found": "Poll with the provided ID not found, please contact system owner to resolve the issue,",
+      "op_vote_exists": "You already voted to this poll, please remove your current vote and retry.",
+      "op_poll_type_mistmatched": "Poll type specified in vote is mismatched with the one in poll. Please contact system owner to resolve the issue.",
+      "op_poll_type_mismatched": "Poll type specified in vote is mismatched with the one in poll. Please contact system owner to resolve the issue.",
+      "op_poll_not_started": "Poll is not started yet, please wait until start time passed and retry.",
+      "op_poll_ended": "Poll is ended. We so sorry, but you cannot vote in the poll anymore.",
+      "op_vote_not_found": "Cannot remove specified vote, please contact system owner to resolve the issue."
     },
     "idle-message": {
       "notification-message": "You have been logged out due to long inactivity."
@@ -695,6 +710,12 @@
       "loyalty-points": "Loyalty points",
       "statistics": "Statistics",
       "documents": "Documents",
+      "register-of-shares": "Register of shares",
+      "polls": "Polls",
+      "atomic-swaps": "Atomic swaps",
+      "customers": "Customers",
+      "customers-list": "Customers list",
+      "businesses": "Businesses",
       "kyc-recovery": "KYC Recovery"
     },
     "limits": {
@@ -857,7 +878,8 @@
       "not-depositable-msg": "{{asset}} is not depositable",
       "not-withdrawable-msg": "{{asset}} is not withdrawable",
       "not-transferable-msg": "{{asset}} is not transferable",
-      "not-redeemable-msg": "{{asset}} is not redeemable"
+      "not-redeemable-msg": "{{asset}} is not redeemable",
+      "unverified-cant-do-msg": "Unverified account can't perform this operation"
     },
     "op-details": {
       "fixed-fee-lbl": "Fixed fee",
@@ -979,7 +1001,9 @@
       "source-pays-for-destination-lbl": "Source pays for destination",
       "subject-lbl": "Subject",
       "payment-sender-lbl": "Payment sender",
+      "payment-sender-id-lbl": "Payment sender ID",
       "payment-recipient-lbl": "Payment recipient",
+      "payment-recipient-id-lbl": "Payment recipient ID",
       "request-state-lbl": "Request state",
       "request-rejected-msg": "Request rejected",
       "request-approved-msg": "Request approved",
@@ -1088,7 +1112,7 @@
       "file-corrupted-err": "Your file is corrupted. Please, try to upload another one",
       "pre-issuance-details-title": "Pre-issuance info",
       "pre-issuance-uploaded-msg": "Pre-issuance request was successfully uploaded",
-      "pre-issuance-guide-link": "Learn more about pre-issuance"
+      "pre-issuance-guide-link": "More on pre-issuance"
     },
     "issuance-explorer": {
       "table": {
@@ -1114,7 +1138,8 @@
       "no-assets-msg": "There are no available assets",
       "no-balances-title": "No balances",
       "no-balances-msg": "You do not have any balances yet",
-      "create-btn": "Create"
+      "create-btn": "Create",
+      "my-assets-title": "My assets"
     },
     "create-asset-form": {
       "loading-msg": "Loading…",
@@ -1127,23 +1152,40 @@
       "name-lbl": "Asset name",
       "code-lbl": "Asset code",
       "max-issuance-amount-lbl": "Max issuance amount",
-      "asset-type-lbl": "Type",
+      "asset-type-lbl": "Permission type",
       "logo-lbl": "Asset icon",
       "logo-note": "JPG or PNG, no less than 120x120 px",
       "transferable-lbl": "Transferable",
       "withdrawable-lbl": "Withdrawable",
+      "can-be-base-in-atomic-swap-lbl": "Can be base in atomic swap",
+      "can-be-quote-in-atomic-swap-lbl": "Can be quote in atomic swap",
       "verification-not-required-lbl": "Does not require verification",
       "security-asset-lbl": "Security (requires accreditation for US residents)",
       "verification-required-lbl": "Requires verification",
-      "additional-issuance-check": "I do not want to make additional issuance later",
+      "additional-issuance-check": "I want to make additional issuance later",
+      "restrict-max-amount-check": "I want to restrict max asset amount",
       "pre-issuance-signer-lbl": "Pre-issuance asset signer ID",
-      "pre-issuance-disclaimer": "**WARNING!** Please, save your current secret seed to make pre-issuance after recovery or password change. To pre-issue your asset use offline issuance application. See more details <a target=\"_blank\" href=\"https://docs.tokend.io/#operation/token_lifecycle\">here</a>",
+      "pre-issuance-disclaimer": "**WARNING!** Please, save your current secret seed to make pre-issuance after recovery or password change. To pre-issue your asset use offline issuance application. See more details <a target=\"_blank\" href=\"https://docs.tokend.io/#operation/token_lifecycle\">here</a> (opens in a new tab).",
       "use-my-account-id-btn": "Use mine",
       "preissued-amount-lbl": "Initial pre-issued amount",
       "terms-lbl": "Upload terms",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
       "request-submitted-msg": "Your request was successfully processed. Please, wait for approval",
-      "pre-issuance-guide-link": "Learn more about pre-issuance"
+      "pre-issuance-guide-link": "More on pre-issuance",
+      "stellar-integration-subheading": "Stellar network",
+      "issuance-subheading": "Issuance",
+      "deposit-lbl": "Deposit",
+      "withdraw-lbl": "Withdraw",
+      "credit-alphanum4-stellar-asset-type-lbl": "Alphanumeric 4",
+      "credit-alphanum12-stellar-asset-type-lbl": "Alphanumeric 12",
+      "native-stellar-asset-type-lbl": "Native",
+      "stellar-asset-type-lbl": "Type",
+      "stellar-asset-code-lbl": "Asset code",
+      "integration-with-stellar-check": "I want to integrate with Stellar network",
+      "restrict-who-can-use": "I want to restrict who can use this asset",
+      "terms-subheading": "Terms",
+      "permissions-subheading": "Permissions",
+      "description-lbl": "Asset description (optional)"
     },
     "update-asset-form": {
       "loading-msg": "Loading…",
@@ -1157,9 +1199,21 @@
       "logo-note": "JPG or PNG, no less than 120x120 px",
       "transferable-lbl": "Transferable",
       "withdrawable-lbl": "Withdrawable",
+      "can-be-base-in-atomic-swap-lbl": "Can be base in atomic swap",
+      "can-be-quote-in-atomic-swap-lbl": "Can be quote in atomic swap",
       "terms-lbl": "Upload terms",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
-      "request-submitted-msg": "Your request was successfully processed. Please, wait for approval"
+      "request-submitted-msg": "Your request was successfully processed. Please, wait for approval",
+      "stellar-integration-subheading": "Stellar network",
+      "terms-subheading": "Terms",
+      "deposit-lbl": "Deposit",
+      "withdraw-lbl": "Withdraw",
+      "credit-alphanum4-stellar-asset-type-lbl": "Alphanumeric 4",
+      "credit-alphanum12-stellar-asset-type-lbl": "Alphanumeric 12",
+      "native-stellar-asset-type-lbl": "Native",
+      "stellar-asset-type-lbl": "Type",
+      "stellar-asset-code-lbl": "Asset code",
+      "integration-with-stellar-check": "I want to integrate with Stellar network"
     },
     "assets-list": {
       "update-asset-title": "Update asset",
@@ -1183,7 +1237,7 @@
       "transferable-lbl": "Transferable",
       "withdrawable-lbl": "Withdrawable",
       "kyc-required-lbl": "Requires KYC",
-      "additional-issuance-check": "I do not want to make additional issuance later",
+      "additional-issuance-check": "I want to make additional issuance later",
       "preissued-asset-signer-lbl": "Pre-issued asset signer",
       "use-my-account-id-btn": "Use mine",
       "initial-preissued-amount-lbl": "Initial pre-issued amount",
@@ -1239,13 +1293,22 @@
       "download-terms-btn": "Download terms",
       "transferable-title": "Transferable",
       "withdrawable-title": "Withdrawable",
+      "can-be-base-in-atomic-swap-title": "Can be base in atomic swap",
+      "can-be-quote-in-atomic-swap-title": "Can be quote in atomic swap",
       "requires-kyc-title": "Requires verification",
-      "security-asset-title": "Is security (requires accreditation for US residents)",
+      "security-asset-title": "Security",
       "yes-msg": "Yes",
       "no-msg": "No",
       "cancellation-msg": "Are you sure to cancel the request?",
       "update-btn": "Update",
-      "cancel-btn": "CANCEL"
+      "cancel-btn": "CANCEL",
+      "stellar-asset-code-title": "Stellar asset code",
+      "stellar-asset-type-title": "Stellar asset type",
+      "stellar-withdraw-title": "Stellar withdraw",
+      "stellar-deposit-title": "Stellar deposit",
+      "credit-alphanum4-stellar-asset-type-lbl": "Alphanumeric 4",
+      "credit-alphanum12-stellar-asset-type-lbl": "Alphanumeric 12",
+      "native-stellar-asset-type-lbl": "Native"
     },
     "update-asset-requests": {
       "update-asset-title": "Update asset",
@@ -1265,11 +1328,20 @@
       "download-terms-btn": "Download terms",
       "transferable-title": "Transferable",
       "withdrawable-title": "Withdrawable",
+      "can-be-base-in-atomic-swap-title": "Can be base in atomic swap",
+      "can-be-quote-in-atomic-swap-title": "Can be quote in atomic swap",
       "yes-msg": "Yes",
       "no-msg": "No",
       "cancellation-msg": "Are you sure to cancel the request?",
       "update-btn": "Update",
-      "cancel-btn": "CANCEL"
+      "cancel-btn": "CANCEL",
+      "stellar-asset-code-title": "Stellar asset code",
+      "stellar-asset-type-title": "Stellar asset type",
+      "stellar-withdraw-title": "Stellar withdraw",
+      "stellar-deposit-title": "Stellar deposit",
+      "credit-alphanum4-stellar-asset-type-lbl": "Alphanumeric 4",
+      "credit-alphanum12-stellar-asset-type-lbl": "Alphanumeric 12",
+      "native-stellar-asset-type-lbl": "Native"
     },
     "create-sale-requests": {
       "update-sale-title": "Update sale",
@@ -1345,14 +1417,44 @@
       "approving-msg": "Are you sure to approve the request?",
       "rejecting-msg": "Are you sure to reject the request?"
     },
+    "poll-requests": {
+      "details-title": "Poll creation request",
+      "loading-msg": "Loading your requests…",
+      "loading-error-msg": "There was an error while loading.",
+      "poll-header": "Question",
+      "request-state-header": "Request state",
+      "created-header": "Created",
+      "last-updated-header": "Last updated",
+      "details-btn": "Details",
+      "no-request-history-title": "No request history",
+      "no-request-history-desc": "Here will be the list of your poll requests",
+      "request-canceled-msg": "Your request was successfully cancelled",
+      "start-time-title": "Start time",
+      "end-time-title": "End time",
+      "number-of-choices-title": "Number of choices",
+      "permission-type-title": "Can voters re-vote?",
+      "poll-data-title": "Poll data",
+      "question-title": "Question:",
+      "yes-msg": "Yes",
+      "no-msg": "No",
+      "cancellation-msg": "Are you sure to cancel the request?",
+      "update-btn": "Update",
+      "cancel-btn": "CANCEL",
+      "choice-title": "Option {{number}}",
+      "restricted-type-desc": "Re-vote disallowed",
+      "unrestricted-type-desc": "Re-vote allowed"
+    },
     "asset-details": {
       "balance-title": "Balance",
+      "description-title": "Description",
       "converted-balance-title": "Converted balance",
       "maximum-title": "Maximum",
       "issued-title": "Issued",
       "available-title": "Available",
       "transferable-title": "Transferable",
       "withdrawable-title": "Withdrawable",
+      "can-be-base-in-atomic-swap-title": "Can be base in atomic swap",
+      "can-be-quote-in-atomic-swap-title": "Can be quote in atomic swap",
       "deposit-method-title": "Deposit method",
       "requires-kyc-title": "Requires KYC",
       "present-msg": "Yes",
@@ -1363,7 +1465,7 @@
       "asset-type": "Asset type",
       "verification-required-title": "Requires verification",
       "does-not-require-verification-title": "Does not require verification",
-      "security-asset-title": "Is security (requires accreditation for US residents)",
+      "security-asset-title": "Security",
       "terms-title": "Terms",
       "download-terms-btn": "Download terms",
       "no-terms-msg": "No terms",
@@ -1374,7 +1476,16 @@
       "maturity-date": "Maturity Date",
       "annual-return": "Annual return in percents",
       "expected-revenue": "Expected revenue per year",
-      "verification-required-err": "You need to verify your account to add this asset to your balances"
+      "verification-required-err": "You need to verify your account to add this asset to your balances",
+      "stellar-asset-code-title": "Stellar asset code",
+      "stellar-asset-type-title": "Stellar asset type",
+      "stellar-withdraw-title": "Stellar withdraw",
+      "stellar-deposit-title": "Stellar deposit",
+      "credit-alphanum4-stellar-asset-type-lbl": "Alphanumeric 4",
+      "credit-alphanum12-stellar-asset-type-lbl": "Alphanumeric 12",
+      "native-stellar-asset-type-lbl": "Native",
+      "yes-msg": "Yes",
+      "no-msg": "No"
     },
     "file-field": {
       "upload-file-title": "Drag a file here or click to browse",
@@ -1890,6 +2001,7 @@
       "loading-error-msg": "There was an error while loading.",
       "no-assets-title": "No assets",
       "no-assets-msg": "There are no available assets",
+      "no-created-assets-msg": "You did not create any assets yet",
       "no-balances-title": "No balances",
       "no-balances-msg": "You do not have any balances yet",
       "list-item-balance-line": "Balance: {{value, money}}",
@@ -1903,16 +2015,19 @@
       "update-btn": "Update",
       "no-terms-msg": "No terms",
       "balance-title": "Balance",
+      "description-title": "Description",
       "maximum-title": "Maximum",
       "issued-title": "Issued",
       "available-title": "Available",
       "transferable-title": "Transferable",
       "withdrawable-title": "Withdrawable",
+      "can-be-base-in-atomic-swap-title": "Can be base in atomic swap",
+      "can-be-quote-in-atomic-swap-title": "Can be quote in atomic swap",
       "deposit-method-title": "Deposit method",
       "verification-required-title": "Requires verification",
       "asset-type": "Asset type",
       "does-not-require-verification-title": "Does not require verification",
-      "security-asset-title": "Is security (requires accreditation for US residents)",
+      "security-asset-title": "Security",
       "present-msg": "Yes",
       "absent-msg": "No",
       "default-msg": "Default",
@@ -1921,7 +2036,17 @@
       "terms-title": "Terms",
       "download-terms-btn": "Download terms",
       "already-in-your-balance-btn": "Already in your balances",
-      "owner-lbl": "Owner"
+      "owner-lbl": "Owner",
+      "view-shares-btn": "View shares",
+      "stellar-asset-code-title": "Stellar asset code",
+      "stellar-asset-type-title": "Stellar asset type",
+      "stellar-withdraw-title": "Stellar withdraw",
+      "stellar-deposit-title": "Stellar deposit",
+      "credit-alphanum4-stellar-asset-type-lbl": "Alphanumeric 4",
+      "credit-alphanum12-stellar-asset-type-lbl": "Alphanumeric 12",
+      "native-stellar-asset-type-lbl": "Native",
+      "yes-msg": "Yes",
+      "no-msg": "No"
     },
     "create-opportunity": {
       "maturity-date": "Maturity Date",
@@ -2071,11 +2196,210 @@
       "failed-loading-msg": "Assets loading failed!",
       "no-assets-for-select": "No assets for select"
     },
-    "kyc-recovery": {
-      "submit-again-lbl": "Submit again",
+    "polls": {
+      "create-poll": "Create",
+      "update-poll": "Update poll",
+      "overview-title": "Poll overview",
+      "new-poll": "New poll",
+      "all": "All polls",
+      "requests": "Polls requests"
+    },
+    "create-poll-form": {
+      "permission-type-lbl": "Can voters re-vote?",
+      "start-time-lbl": "Start time",
+      "end-time-lbl": "End time",
+      "question-lbl": "Question",
+      "description-lbl": "Option {{number}}",
+      "create-btn": "Create",
       "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
-      "email-code": "Enter the code sent to you by email",
-      "tfa-code": "Enter tfa code"
+      "restricted-poll-lbl": "Re-vote disallowed",
+      "unrestricted-poll-lbl": "Re-vote allowed",
+      "load-failed-msg": "There was an error while loading. Please, try again later",
+      "add-choice-btn": "Add option"
+    },
+    "polls-all": {
+      "state-open": "Open",
+      "state-passed": "Passed",
+      "state-failed": "Failed",
+      "state-canceled": "Canceled",
+      "vote-drawer-title": "Vote in poll",
+      "no-list-title": "No polls yet",
+      "no-list-msg": "No polls found by the provided criteria. Please try another search query.",
+      "owned-by-me-filter-lbl": "Owned by me",
+      "result-provided-by-me-filter-lbl": "Result provided by me"
+    },
+    "poll-card": {
+      "author-prefix": "By",
+      "id-prefix": "#{{id}}",
+      "ends-at-row": "Ends <span title='{{time, dmyt}}'>{{time, calendar-inline}}</span>",
+      "ended-at-row": "Ended <span title='{{time, dmyt}}'>{{time, calendar-inline}}</span>, {{state}}",
+      "state-inline-open": "open",
+      "state-inline-passed": "passed",
+      "state-inline-failed": "failed",
+      "state-inline-canceled": "canceled"
+    },
+    "poll-viewer": {
+      "vote-tab": "Vote",
+      "details-tab": "Details",
+      "manage-tab": "Manage",
+      "participants-tab": "Participants"
+    },
+    "poll-vote-form": {
+      "submit-btn": "Vote",
+      "submitted-notification": "Successfully voted",
+      "repeat-vote-msg": "You already voted in this poll, a new vote will replace the current one.",
+      "repeat-vote-disabled-msg": "You already voted in this poll, re-voting is not permitted in the current poll.",
+      "remove-vote-btn": "Remove  vote",
+      "remove-vote-confirmation-msg": "Are you sure you want to remove your current vote?",
+      "removed-notification": "Successfully removed vote"
+    },
+    "poll-update-end-time-form": {
+      "submit-btn": "Update",
+      "submitted-notification": "Successfully updated",
+      "new-end-time-lbl": "New end time",
+      "update-date-notification": "End time was updated",
+      "update-end-time-subheading": "Update end time",
+      "current-end-time-title": "Current end time: {{time, dmyt}}"
+    },
+    "cancel-poll-form": {
+      "cancel-poll-btn": "Cancel",
+      "cancel-poll-confirmation-msg": "Are you sure you want to cancel the poll?",
+      "cancel-notification": "Successfully canceled",
+      "cancel-poll-subheading": "Cancel poll",
+      "cancel-poll-description": "Allows to cancel poll",
+      "yes-btn": "Yes",
+      "no-btn": "No"
+    },
+    "close-poll-form": {
+      "close-poll-btn": "Close",
+      "close-poll-confirmation-msg": "Are you sure you want to close the poll?",
+      "close-notification": "Successfully closed",
+      "close-poll-subheading": "Close poll",
+      "close-poll-description": "Close existing poll with a result:",
+      "passed-poll-result": "Passed",
+      "failed-poll-result": "Failed",
+      "yes-btn": "Yes",
+      "no-btn": "No"
+    },
+    "poll-participants": {
+      "email-lbl": "Email",
+      "choice-lbl": "Choice",
+      "no-request-history-desc": "Here will be the list of poll participants"
+    },
+    "poll-attributes": {
+      "id-key": "Poll ID",
+      "owner-key": "Owner",
+      "start-time-key": "Start time",
+      "end-time-key": "End time",
+      "state-key": "State",
+      "permission-type-key": "Can voters re-vote?",
+      "number-of-choices-key": "Number of choices",
+      "is-ongoing-key": "Is in progress?",
+      "state-open-val": "Open",
+      "state-passed-val": "Passed",
+      "state-failed-val": "Failed",
+      "state-canceled-val": "Canceled",
+      "permission-type-restricted-val": "Re-vote disallowed",
+      "permission-type-unrestricted-val": "Re-vote allowed",
+      "yes-val": "Yes",
+      "no-val": "No"
+    },
+    "atomic-swaps": {
+      "explore-atomic-swaps": "Explore atomic swaps",
+      "create-atomic-swap-bth": "Create atomic swap",
+      "new-atomic-swap": "New atomic swap"
+    },
+    "create-atomic-swap-form": {
+      "asset-lbl": "Asset",
+      "no-base-atomic-swap-assets-title": "No base atomic swap assets yet",
+      "no-base-atomic-swap-assets-msg": "Please create an asset to create atomic swap",
+      "no-quote-atomic-swap-assets-title": "No quote atomic swap assets yet",
+      "no-quote-atomic-swap-assets-msg": "Please create an asset to create atomic swap",
+      "load-failed-msg": "There was an error while loading. Please, try again later",
+      "amount-lbl": "Amount",
+      "available-amount-hint": "Available: {{amount, money}}",
+      "create-btn": "Create",
+      "price-lbl": "Price",
+      "address-lbl": "Address",
+      "add-quote-asset-btn": "Add quote asset",
+      "quote-assets-subheading": "Quote asset {{ number }}",
+      "created-atomic-swap-msg": "Atomic swap request successfully created"
+    },
+    "atomic-swaps-explore": {
+      "no-list-title": "Atomic swap list is coming soon"
+    },
+    "customers-page": {
+      "invite-btn": "Invite",
+      "issue-btn": "Issue",
+      "mass-invitation-drawer-heading": "Invite new users",
+      "mass-issuance-drawer-heading": "Mass issuance",
+      "customers-list-page": "Customers list"
+    },
+    "mass-issuance-form": {
+      "asset-lbl": "Asset",
+      "available-for-issuance-hint": "Available for issuance: {{amount, money}}",
+      "amount-lbl": "Amount",
+      "how-to-receivers-paragraph": "List all receivers emails in the box below, separate them with commas. Each receiver will gain the amount you specified in the “Amount” field. If the available amount is insufficient the operation will fail and no asset will be issued to anyone. Not found users and the ones that do not have balance in the selected asset will not receive the issuance but all the others will. Receivers number is limited up to 100 for now.",
+      "receivers-lbl": "Receivers",
+      "submit-btn": "Issue",
+      "no-assets-msg-title": "No issuable assets yet",
+      "no-assets-msg-description": "Unfortunately, you do not have any assets now, please create an asset and try again.",
+      "issued-successfully-notification": "Mass issuance performed successfully.",
+      "no-receivers-found": "Receivers you provided not found or cannot receive the issuance. Please ensure you specified the valid receivers list and try again.",
+      "overissue-error-notif": "The total amount is bigger than the available for issuance amount. Please decrease the amount to issue and try again.",
+      "too-much-op-error-notif": "Too many receivers, the current limit is 100 receivers, please decrease the receivers count and try again."
+    },
+    "mass-invitation-form": {
+      "asset-lbl": "Asset",
+      "available-for-issuance-hint": "Available for issuance: {{amount, money}}",
+      "amount-lbl": "Amount",
+      "how-to-invitees-paragraph": "List all invitees emails in the box below, separate them with commas.",
+      "invitees-lbl": "Invitees",
+      "submit-btn": "Invite",
+      "invited-successfully-notification": "Mass invitation performed successfully.",
+      "no-invitees-found": "Receivers you provided not found or cannot receive the issuance. Please ensure you specified the valid receivers list and try again."
+    },
+    "customer-attributes": {
+      "id-key": "ID",
+      "email-key": "Email",
+      "status-key": "Status",
+      "balance-key": "{{assetCode}} balance",
+      "not-registered-status-val": "Not registered",
+      "active-status-val": "Active",
+      "blocked-status-val": "Blocked"
+    },
+    "customers-table": {
+      "email-th": "Email",
+      "balances-th": "Balances",
+      "status-th": "Status",
+      "details-btn": "Show details",
+      "no-data-msg": "You have no associated customers yet. Invite some and they will appear in this list.",
+      "error-msg": "An error occurred while loading the list, please contact system owner to resolve the issue.",
+      "not-registered-status-td": "Not registered",
+      "active-status-td": "Active",
+      "blocked-status-td": "Blocked",
+      "enable-mass-issuance-btn": "Select for issuance",
+      "do-mass-issue-btn": "Perform issuance",
+      "cancel-mass-issue-btn": "Cancel issuance"
+    },
+    "customers-list": {
+      "customer-drawer-title": "View customer"
+    },
+    "businesses": {
+      "all-tab": "All businesses"
+    },
+    "businesses-all": {
+      "no-list-title": "No businesses here yet",
+      "no-list-msg": "Here will be the list of businesses associated with you"
+    },
+    "current-business-indicator": {
+      "browsing-lbl": "Browsing:"
     }
+  },
+  "kyc-recovery": {
+    "submit-again-lbl": "Submit again",
+    "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
+    "email-code": "Enter the code sent to you by email",
+    "tfa-code": "Enter tfa code"
   }
 }

@@ -253,7 +253,7 @@ import {
   hardCapLessThanSoftCap,
   requiredAtLeastOne,
   minDate,
-  lessThenMax,
+  maxValueBig,
 } from '@validators'
 
 import config from '@/config'
@@ -325,7 +325,7 @@ export default {
         },
         assetsToSell: {
           required,
-          noMoreThanAvailableForIssuance: lessThenMax(
+          noMoreThanAvailableForIssuance: maxValueBig(
             this.availableForIssuance
           ),
         },
@@ -336,11 +336,12 @@ export default {
 
   computed: {
     priceForAsset () {
+      let value = MathUtil.divide(
+        this.form.hardCap,
+        this.form.assetsToSell
+      )
       return {
-        value: MathUtil.divide(
-          this.form.hardCap,
-          this.form.assetsToSell
-        ),
+        value: isNaN(value) ? 0 : value,
         currency: this.form.capAsset.code,
       }
     },
@@ -391,6 +392,9 @@ export default {
     },
 
     populateForm () {
+      const quoteAssets = this.request.quoteAssets
+        .filter(quoteAsset => this.request.defaultQuoteAsset !== quoteAsset)
+
       this.form.name = this.request.name
       this.form.baseAsset = this.ownedAssets
         .find(item => item.code === this.request.baseAsset)
@@ -401,7 +405,7 @@ export default {
       this.form.softCap = this.request.softCap
       this.form.hardCap = this.request.hardCap
       this.form.assetsToSell = this.request.assetsToSell
-      this.form.quoteAssets = this.request.quoteAssets
+      this.form.quoteAssets = quoteAssets
       this.form.isWhitelisted = this.request.isWhitelisted
     },
 

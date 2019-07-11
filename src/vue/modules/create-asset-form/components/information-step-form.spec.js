@@ -28,8 +28,6 @@ describe('Information step form', () => {
     const expectedResults = {
       name: ['required', 'maxLength'],
       code: ['required', 'assetCode'],
-      maxIssuanceAmount: ['required', 'amountRange'],
-      assetType: ['required'],
     }
 
     for (const [model, rules] of Object.entries(expectedResults)) {
@@ -42,8 +40,6 @@ describe('Information step form', () => {
     const fieldBindings = {
       '[name=create-asset-name]': 'name',
       '[name=create-asset-code]': 'code',
-      '[name=create-asset-max-issuance-amount]': 'maxIssuanceAmount',
-      '[name=create-asset-type]': 'assetType',
     }
 
     for (const [selector, model] of Object.entries(fieldBindings)) {
@@ -89,7 +85,6 @@ describe('Information step form', () => {
           request: {
             assetName: 'American dollar',
             assetCode: 'USD',
-            maxIssuanceAmount: '1000.000000',
             policy: 16,
           },
         })
@@ -98,7 +93,6 @@ describe('Information step form', () => {
 
         expect(wrapper.vm.form.name).to.equal('American dollar')
         expect(wrapper.vm.form.code).to.equal('USD')
-        expect(wrapper.vm.form.maxIssuanceAmount).to.equal('1000.000000')
         expect(wrapper.vm.form.policies).to.equal(16)
       })
     })

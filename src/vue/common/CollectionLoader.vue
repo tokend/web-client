@@ -74,6 +74,7 @@ export default {
         this.nextPageLoader = response.fetchNext
         this.isCollectionFetched = response.data.length < this.pageLimit
       } catch (e) {
+        this.isCollectionFetched = true
         this.$emit(EVENTS.error, e)
         ErrorHandler.processWithoutFeedback(e)
       }

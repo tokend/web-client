@@ -7,7 +7,7 @@
         </h2>
         <div class="movements-history__list-wrp">
           <movements-table
-            :is-movements-loaded="isMovementsLoaded && isInitialized"
+            :is-movements-loaded="isMovementsLoaded"
             :movements="movements"
           />
         </div>
@@ -20,7 +20,7 @@
 
       <div class="movements-history__collection-loader-wrp">
         <collection-loader
-          v-if="!isMovementsLoadFailed && isInitialized && assetCode"
+          v-if="!isMovementsLoadFailed && assetCode"
           v-show="isMovementsLoaded && !latestActivity"
           :first-page-loader="firstPageLoader"
           @first-page-load="setMovements"
@@ -39,6 +39,7 @@ import MovementsTable from './components/movements-table'
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { types } from './store/types'
+import { vueRoutes } from '@/vue-router/routes'
 
 const REFS = {
   collectionLoader: 'collection-loader',
@@ -61,14 +62,13 @@ export default {
     },
   },
   data: _ => ({
-    isInitialized: false,
     isMovementsLoaded: false,
     isMovementsLoadFailed: false,
     REFS,
   }),
+
   computed: {
     ...mapGetters('movements-history', {
-      balances: types.balances,
       movements: types.movements,
     }),
     firstPageLoader () {
@@ -77,11 +77,22 @@ export default {
 
       return _ => this.loadMovementsFirstPage(assetCode)
     },
+
+    isSharesPage () {
+      return this.$route.name === vueRoutes.registerOfShares.name
+    },
   },
-  async created () {
-    await this.loadBalances()
-    this.isInitialized = true
+
+  created () {
+    // HACK: fix display of no-data-message if no assetCode can be get. To
+    // prevent infinite display of skeleton screen
+    setTimeout(() => {
+      if (!this.assetCode) {
+        this.isMovementsLoaded = true
+      }
+    }, 1000)
   },
+
   methods: {
     ...mapMutations('movements-history', {
       setMovements: types.SET_MOVEMENTS,
@@ -89,7 +100,7 @@ export default {
     }),
     ...mapActions('movements-history', {
       loadMovements: types.LOAD_MOVEMENTS,
-      loadBalances: types.LOAD_BALANCES,
+      loadShareMovements: types.LOAD_SHARE_MOVEMENTS,
     }),
 
     reloadCollectionLoader () {
@@ -99,7 +110,12 @@ export default {
     async loadMovementsFirstPage (assetCode) {
       this.isMovementsLoaded = false
       try {
-        const response = await this.loadMovements(assetCode)
+        let response
+        if (this.isSharesPage) {
+          response = await this.loadShareMovements(assetCode)
+        } else {
+          response = await this.loadMovements(assetCode)
+        }
         this.isMovementsLoaded = true
         return response
       } catch (e) {

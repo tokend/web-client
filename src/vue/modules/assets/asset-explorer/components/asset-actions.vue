@@ -1,6 +1,6 @@
 <template>
   <div class="asset-actions">
-    <template v-if="!balance">
+    <template v-if="!isHaveBalance">
       <button
         v-if="isBalanceCreationAllowed"
         v-ripple
@@ -65,10 +65,10 @@ export default {
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
-      getAssetByCode: vuexTypes.assetByCode,
+      accountBalanceByCode: vuexTypes.accountBalanceByCode,
     }),
     isBalanceCreationAllowed () {
-      switch (this.asset.type) {
+      switch (this.asset.assetType) {
         case this.kycRequiredAssetType:
           return !this.isAccountUnverified
         case this.securityAssetType:
@@ -79,8 +79,10 @@ export default {
           return true
       }
     },
-    balance () {
-      return this.getAssetByCode(this.asset.code)
+    isHaveBalance () {
+      return Number.isInteger(
+        +this.accountBalanceByCode(this.asset.code).balance
+      )
     },
   },
   methods: {

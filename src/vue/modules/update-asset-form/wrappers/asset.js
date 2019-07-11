@@ -12,5 +12,10 @@ export class Asset {
 
     this.logo = safeGet(record, 'details.logo')
     this.logoKey = safeGet(record, 'details.logo.key')
+
+    this.stellarAssetCode = safeGet(record, 'details.stellar.assetCode') || ''
+    this.stellarAssetType = safeGet(record, 'details.stellar.assetType') || ''
+    this.stellarWithdraw = safeGet(record, 'details.stellar.withdraw') || false
+    this.stellarDeposit = safeGet(record, 'details.stellar.deposit') || false
   }
 }

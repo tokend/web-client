@@ -18,6 +18,15 @@
     <div class="app__table asset-attributes-viewer__table-wrp">
       <table>
         <tbody>
+          <template v-if="asset.description">
+            <tr>
+              <td>{{ 'assets.description-title' | globalize }}</td>
+              <td>
+                {{ asset.description }}
+              </td>
+            </tr>
+          </template>
+
           <tr v-if="balance">
             <td>{{ 'assets.balance-title' | globalize }}</td>
             <td>
@@ -79,6 +88,34 @@
           </tr>
           <tr>
             <td>
+              {{ 'assets.can-be-base-in-atomic-swap-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.isBaseInAtomicSwap">
+                {{ 'assets.present-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'assets.absent-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'assets.can-be-quote-in-atomic-swap-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.isQuoteInAtomicSwap">
+                {{ 'assets.present-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'assets.absent-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
               {{ 'assets.deposit-method-title' | globalize }}
             </td>
             <td>
@@ -100,11 +137,11 @@
               {{ 'assets.asset-type' | globalize }}
             </td>
             <td>
-              <template v-if="asset.type === kycRequiredAssetType">
+              <template v-if="asset.assetType === kycRequiredAssetType">
                 {{ 'assets.verification-required-title' | globalize }}
               </template>
 
-              <template v-else-if="asset.type === securityAssetType">
+              <template v-else-if="asset.assetType === securityAssetType">
                 {{ 'assets.security-asset-title' | globalize }}
               </template>
 
@@ -128,6 +165,53 @@
               />
             </td>
           </tr>
+          <template v-if="asset.stellarAssetCode">
+            <tr :title="'assets.stellar-asset-code-title' | globalize">
+              <td>
+                {{ 'assets.stellar-asset-code-title' | globalize }}
+              </td>
+              <td>
+                {{ asset.stellarAssetCode }}
+              </td>
+            </tr>
+
+            <tr :title="'assets.stellar-asset-type-title' | globalize">
+              <td>
+                {{ 'assets.stellar-asset-type-title' | globalize }}
+              </td>
+              <td>
+                {{ stellarAssetTypeTranslated }}
+              </td>
+            </tr>
+
+            <tr :title="'assets.stellar-withdraw-title' | globalize">
+              <td>
+                {{ 'assets.stellar-withdraw-title' | globalize }}
+              </td>
+              <td>
+                <template v-if="asset.stellarWithdraw">
+                  {{ 'assets.yes-msg' | globalize }}
+                </template>
+                <template v-else>
+                  {{ 'assets.no-msg' | globalize }}
+                </template>
+              </td>
+            </tr>
+
+            <tr :title="'assets.stellar-deposit-title' | globalize">
+              <td>
+                {{ 'assets.stellar-deposit-title' | globalize }}
+              </td>
+              <td>
+                <template v-if="asset.stellarDeposit">
+                  {{ 'assets.yes-msg' | globalize }}
+                </template>
+                <template v-else>
+                  {{ 'assets.no-msg' | globalize }}
+                </template>
+              </td>
+            </tr>
+          </template>
         </tbody>
       </table>
     </div>
@@ -141,6 +225,12 @@ import EmailGetter from '@/vue/common/EmailGetter'
 
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
+const STELLAR_TYPES = {
+  creditAlphanum4: 'credit_alphanum4',
+  creditAlphanum12: 'credit_alphanum12',
+  native: 'native',
+}
+
 export default {
   name: 'asset-attributes-viewer',
   components: {
@@ -153,6 +243,31 @@ export default {
     balance: { type: String, default: '' },
     kycRequiredAssetType: { type: Number, required: true },
     securityAssetType: { type: Number, required: true },
+  },
+  computed: {
+    stellarAssetTypeTranslated () {
+      let translationId
+
+      switch (this.asset.stellarAssetType) {
+        case STELLAR_TYPES.creditAlphanum4:
+          translationId = 'assets.credit-alphanum4-stellar-asset-type-lbl'
+          break
+
+        case STELLAR_TYPES.creditAlphanum12:
+          translationId = 'assets.credit-alphanum12-stellar-asset-type-lbl'
+          break
+
+        case STELLAR_TYPES.native:
+          translationId = 'assets.native-stellar-asset-type-lbl'
+          break
+
+        default:
+          translationId = '[UNKNOWN_STELLAR_ASSET_TYPE]'
+          break
+      }
+
+      return this.$options.filters.globalize(translationId)
+    },
   },
 }
 </script>

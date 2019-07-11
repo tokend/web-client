@@ -80,9 +80,12 @@ export class ErrorHandler {
         let errorCode
         const errorResults = error.errorResults
         if (!errorResults) {
-          errorCode = _get(error, '_resultCodes.operations[0]')
+          const operations = _get(error, '_resultCodes.operations', [])
+          errorCode = operations.find(i => i !== 'op_success') || ''
         } else {
-          errorCode = _get(errorResults[0], 'errorCode')
+          errorCode =
+            (errorResults.find(i => i.errorCode !== 'op_success') || {})
+              .errorCode
         }
         translationId = `transaction-errors.${errorCode}`
         if (!i18next.exists(translationId)) {

@@ -25,16 +25,19 @@
         </div>
       </template>
       <div
+        v-if="!isSharesPage"
         class="movements-top-bar__actions"
         slot="extra"
       >
         <!-- eslint-disable-next-line max-len -->
         <template v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)">
+          <!-- TODO, currently unverified users can't withdraw, wait for
+            devops initscripts update -->
           <button
             v-ripple
             class="app__button-raised movements-top-bar__actions-btn"
             @click="isWithdrawalDrawerShown = true"
-            :disabled="!asset.isWithdrawable"
+            :disabled="!asset.isWithdrawable || isAccountUnverified"
             :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isWithdrawable) |
               globalize({ asset: asset.code })
             "
@@ -71,15 +74,7 @@
               globalize({ asset: asset.code })
             "
           >
-            <i
-              class="
-                mdi
-                mdi-rotate-315
-                mdi-transfer
-                movements-top-bar__btn-icon
-                movements-top-bar__btn-icon--rotate-315
-              "
-            />
+            <i class="mdi mdi-send movements-top-bar__btn-icon" />
             {{ 'op-pages.send' | globalize }}
           </button>
         </template>
@@ -133,6 +128,7 @@ import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
 import { DepositFormPseudoModule } from '@/modules-arch/pseudo-modules/deposit-form-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
+import { vueRoutes } from '@/vue-router/routes'
 
 const EVENTS = {
   assetUpdated: 'asset-updated',
@@ -170,8 +166,25 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      assets: vuexTypes.balancesAssets,
+      balancesAssets: vuexTypes.balancesAssets,
+      balancesAssetsByOwner: vuexTypes.balancesAssetsByOwner,
+      ownedAssets: vuexTypes.ownedBalancesAssets,
+      isAccountUnverified: vuexTypes.isAccountUnverified,
     }),
+
+    isSharesPage () {
+      return this.$route.name === vueRoutes.registerOfShares.name
+    },
+
+    assets () {
+      if (this.isSharesPage) {
+        return this.ownedAssets
+      } else if (this.$route.query.owner) {
+        return this.balancesAssetsByOwner(this.$route.query.owner)
+      } else {
+        return this.balancesAssets
+      }
+    },
   },
   watch: {
     asset: {
@@ -207,7 +220,11 @@ export default {
         if (policy === ASSET_POLICIES_STR.isDepositable) {
           messageId = 'op-pages.not-depositable-msg'
         } else if (policy === ASSET_POLICIES_STR.isWithdrawable) {
-          messageId = 'op-pages.not-withdrawable-msg'
+          if (this.isAccountUnverified) {
+            messageId = 'op-pages.unverified-cant-do-msg'
+          } else {
+            messageId = 'op-pages.not-withdrawable-msg'
+          }
         } else if (policy === ASSET_POLICIES_STR.isTransferable) {
           messageId = 'op-pages.not-transferable-msg'
         }
@@ -242,10 +259,6 @@ export default {
 .movements-top-bar__btn-icon {
   font-size: 1.8rem;
   margin-right: 0.5rem;
-}
-
-.movements-top-bar__btn-icon--rotate-315 {
-  transform: translateY(-0.2rem);
 }
 
 .movements-top-bar__filters {

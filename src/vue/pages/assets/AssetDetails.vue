@@ -17,6 +17,16 @@
     <div class="app__table asset-details__table">
       <table>
         <tbody>
+          <template v-if="asset.description">
+            <tr>
+              <td>
+                {{ 'asset-details.description-title' | globalize }}
+              </td>
+              <td>
+                {{ asset.description }}
+              </td>
+            </tr>
+          </template>
           <tr v-if="asset.balance.value">
             <td>
               {{ 'asset-details.balance-title' | globalize }}
@@ -77,6 +87,35 @@
             </td>
             <td>
               <template v-if="asset.isWithdrawable">
+                {{ 'asset-details.present-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'asset-details.absent-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'asset-details.can-be-base-in-atomic-swap-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.isBaseInAtomicSwap">
+                {{ 'asset-details.present-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'asset-details.absent-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <!-- eslint-disable-next-line max-len -->
+              {{ 'asset-details.can-be-quote-in-atomic-swap-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.isQuoteInAtomicSwap">
                 {{ 'asset-details.present-msg' | globalize }}
               </template>
 
@@ -172,6 +211,53 @@
               {{ +asset.annualReturn }}%
             </td>
           </tr>
+          <template v-if="asset.stellarAssetCode">
+            <tr :title="'asset-details.stellar-asset-code-title' | globalize">
+              <td>
+                {{ 'asset-details.stellar-asset-code-title' | globalize }}
+              </td>
+              <td>
+                {{ asset.stellarAssetCode }}
+              </td>
+            </tr>
+
+            <tr :title="'asset-details.stellar-asset-type-title' | globalize">
+              <td>
+                {{ 'asset-details.stellar-asset-type-title' | globalize }}
+              </td>
+              <td>
+                {{ stellarAssetTypeTranslated }}
+              </td>
+            </tr>
+
+            <tr :title="'asset-details.stellar-withdraw-title' | globalize">
+              <td>
+                {{ 'asset-details.stellar-withdraw-title' | globalize }}
+              </td>
+              <td>
+                <template v-if="asset.stellarWithdraw">
+                  {{ 'asset-details.yes-msg' | globalize }}
+                </template>
+                <template v-else>
+                  {{ 'asset-details.no-msg' | globalize }}
+                </template>
+              </td>
+            </tr>
+
+            <tr :title="'asset-details.stellar-deposit-title' | globalize">
+              <td>
+                {{ 'asset-details.stellar-deposit-title' | globalize }}
+              </td>
+              <td>
+                <template v-if="asset.stellarDeposit">
+                  {{ 'asset-details.yes-msg' | globalize }}
+                </template>
+                <template v-else>
+                  {{ 'asset-details.no-msg' | globalize }}
+                </template>
+              </td>
+            </tr>
+          </template>
         </tbody>
       </table>
     </div>
@@ -219,6 +305,12 @@ import { ASSET_SUBTYPE } from '@/js/const/asset-subtypes.const'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
+const STELLAR_TYPES = {
+  creditAlphanum4: 'credit_alphanum4',
+  creditAlphanum12: 'credit_alphanum12',
+  native: 'native',
+}
+
 const EVENTS = {
   balanceAdded: 'balance-added',
   updateAsk: 'update-ask',
@@ -262,11 +354,34 @@ export default {
           return !this.isAccountUnverified
         case this.securityAssetType:
           return this.isAccountGeneral ||
-                 this.isAccountUsAccredited ||
-                 this.isAccountCorporate
+            this.isAccountUsAccredited ||
+            this.isAccountCorporate
         default:
           return true
       }
+    },
+    stellarAssetTypeTranslated () {
+      let translationId
+
+      switch (this.asset.stellarAssetType) {
+        case STELLAR_TYPES.creditAlphanum4:
+          translationId = 'assets.credit-alphanum4-stellar-asset-type-lbl'
+          break
+
+        case STELLAR_TYPES.creditAlphanum12:
+          translationId = 'assets.credit-alphanum12-stellar-asset-type-lbl'
+          break
+
+        case STELLAR_TYPES.native:
+          translationId = 'assets.native-stellar-asset-type-lbl'
+          break
+
+        default:
+          translationId = '[UNKNOWN_STELLAR_ASSET_TYPE]'
+          break
+      }
+
+      return this.$options.filters.globalize(translationId)
     },
   },
   async created () {

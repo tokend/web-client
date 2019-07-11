@@ -106,8 +106,12 @@ export function buildRouter (store) {
         beforeEnter: buildInAppRouteGuard({
           scheme: SchemeRegistry.current,
           store,
+          userRoutes,
         }),
-        redirect: userRoutes[0],
+        redirect: _ => {
+          return getFirstAccessibleUserRoute(userRoutes, SchemeRegistry.current)
+        },
+        // TODO: beforeEnter should be applied to every entry of userRoutes
         children: userRoutes,
       },
     ],
@@ -122,48 +126,80 @@ function buildAuthPageGuard (store) {
     const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
     const isKycRecoveryInProgress = store
       .getters[vuexTypes.isKycRecoveryInProgress]
-    if (isLoggedIn) {
-      if (isKycRecoveryInProgress) {
-        next({ name: vueRoutes.kycRecoveryManagement.name })
-      } else {
-        next(vueRoutes.app)
-      }
-    } else {
-      next()
+
+    if (isKycRecoveryInProgress) {
+      next({ name: vueRoutes.kycRecoveryManagement.name })
+      return
     }
+
+    if (isLoggedIn) {
+      next(vueRoutes.app)
+      return
+    }
+
+    next()
   }
 }
 
-// doesn't allow to visit in-app page if user is not already logged in
-// or kyc recovery is initialized
-function buildInAppRouteGuard ({ store, scheme }) {
-  return function inAppRouteGuard (to, from, next) {
+// doesn't allow to visit in-app page if user is not already logged inr
+function buildInAppRouteGuard ({ store, scheme, userRoutes }) {
+  return function inAppRouteGuard (to, from, next, ...args) {
     const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
     const isKycRecoveryInProgress = store
       .getters[vuexTypes.isKycRecoveryInProgress]
-    // TODO: remove when all components modulerized
-    const isAccessible = scheme.findModuleByPath(to.path)
-      ? scheme.findModuleByPath(to.path).isAccessible
-      : true
-    if (isLoggedIn && isAccessible) {
-      if (isKycRecoveryInProgress) {
-        next({ name: vueRoutes.kycRecoveryManagement.name })
-      } else {
-        next()
-      }
-    } else {
+    // TODO: remove when all components modularized
+    const isAccessible = checkPathAccessible(to.path, scheme)
+
+    if (!isLoggedIn) {
       next({
         name: vueRoutes.login.name,
         query: { redirectPath: to.fullPath },
       })
+      return
     }
+
+    if (isKycRecoveryInProgress) {
+      next({ name: vueRoutes.kycRecoveryManagement.name })
+      return
+    }
+
+    if (!isAccessible) {
+      const parent = to.matched[to.matched.length - 1].parent
+      const isParentAccessible = parent && parent.path &&
+        checkPathAccessible(parent.path, scheme)
+
+      let accessibleRoute
+
+      // if parent accessible try find other accessible sibling
+      if (isParentAccessible) {
+        const siblings = userRoutes.find(r => r.path === parent.path).children
+        const otherAccessibleSibling = findAccessibleRoute(siblings, scheme)
+        accessibleRoute = otherAccessibleSibling
+      }
+
+      // if parent unaccessible or no accessible sibling found - find first
+      // accessible user route
+      if (!accessibleRoute) {
+        accessibleRoute = getFirstAccessibleUserRoute(userRoutes, scheme)
+      }
+
+      // if no accessible user route found - we are helpless - throw an error
+      if (!accessibleRoute) {
+        throw new Error('router: no accessible routes to redirect the user!')
+      }
+
+      next(accessibleRoute)
+      return
+    }
+
+    next()
   }
 }
 
 // doesn't allow to visit kyc recovery management page if user's kyc recovery
 // is not initialized
 function buildKycRecoveryPageGuard (store) {
-  return function inAppRouteGuard (to, from, next) {
+  return function kycRecoveryRouteGuard (to, from, next) {
     const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
     const isKycRecoveryInProgress = store
       .getters[vuexTypes.accountKycRecoveryStatus]
@@ -172,4 +208,44 @@ function buildKycRecoveryPageGuard (store) {
       ? next()
       : next(vueRoutes.app)
   }
+}
+
+function getFirstAccessibleUserRoute (userRoutes, scheme) {
+  return userRoutes.find(item => {
+    const isAccessible = checkPathAccessible(item.path, scheme)
+    const hasChildren = item.children && item.children.length
+
+    if (isAccessible && hasChildren) {
+      const isAnyChildAccessible = findAccessibleRouteDeep(item, scheme)
+      return Boolean(isAnyChildAccessible)
+    } else {
+      return isAccessible
+    }
+  })
+}
+
+function checkPathAccessible (path, scheme) {
+  const routeModule = scheme.findModuleByPath(path)
+
+  return routeModule
+    ? routeModule.isAccessible
+    : true
+}
+
+function findAccessibleRoute (array = [], scheme) {
+  return array.find(item => checkPathAccessible(item.path, scheme))
+}
+
+function findAccessibleRouteDeep (value, scheme) {
+  if (!value) {
+    return
+  }
+
+  let result
+  if (Array.isArray(value)) {
+    result = findAccessibleRoute(value, scheme)
+  } else if (value.children) {
+    result = findAccessibleRouteDeep(value.children, scheme)
+  }
+  return result
 }

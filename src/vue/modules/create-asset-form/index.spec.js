@@ -64,25 +64,18 @@ describe('Create asset form module', () => {
       describe('init', () => {
         it('initializes API, calls load methods, and sets isLoaded property to true',
           async () => {
-            sandbox.stub(wrapper.vm, 'loadKycRequiredAssetType').resolves()
-            sandbox.stub(wrapper.vm, 'loadSecurityAssetType').resolves()
             sandbox.stub(wrapper.vm, 'tryLoadRequest').resolves()
 
             await wrapper.vm.init()
 
-            expect(wrapper.vm.loadKycRequiredAssetType)
-              .to.have.been.calledOnce
             expect(wrapper.vm.tryLoadRequest).to.have.been.calledOnce
-
             expect(wrapper.vm.isLoaded).to.be.true
           }
         )
 
         it('handles an error if it was thrown, and sets isLoadFailed property to true',
           async () => {
-            sandbox.stub(wrapper.vm, 'loadKycRequiredAssetType').rejects()
-            sandbox.stub(wrapper.vm, 'loadSecurityAssetType').resolves()
-            sandbox.stub(wrapper.vm, 'tryLoadRequest').resolves()
+            sandbox.stub(wrapper.vm, 'tryLoadRequest').rejects()
             sandbox.stub(ErrorHandler, 'processWithoutFeedback')
 
             await wrapper.vm.init()
@@ -133,7 +126,7 @@ describe('Create asset form module', () => {
       })
 
       describe('submit', () => {
-        it('calls proper methods and sets isDefault proeprty to true',
+        it('calls proper methods and sets isDefault property to true',
           async () => {
             sandbox.stub(wrapper.vm, 'submitCreateAssetRequest').resolves()
             sandbox.stub(Bus, 'success')

@@ -57,6 +57,11 @@ export class EventBus extends Vue {
       warning: 'warning',
       error: 'error',
       info: 'info',
+      updatePollRequests: 'polls:updateRequestsList',
+      customersUpdateList: 'customers:updateList',
+      customersMassIssue: 'customers:massIssue',
+      // TODO: should not be here
+      businessesSetCurrentBusiness: 'businesses:setCurrentBusiness',
     }
   }
 

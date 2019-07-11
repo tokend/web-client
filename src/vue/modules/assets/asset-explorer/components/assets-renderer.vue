@@ -43,9 +43,7 @@
       </drawer>
 
       <div class="assets-renderer__asset-list-wrp">
-        <div
-          class="assets-renderer__asset-list"
-        >
+        <div class="assets-renderer__asset-list">
           <template v-for="asset in assets">
             <card-viewer
               :asset="asset"
@@ -73,7 +71,7 @@
 
     <template v-if="isLoadFailed">
       <p class="assets-renderer__error-msg">
-        {{ 'assets.loading-error-msg' | globalize }}
+        {{ 'assets.load-failed-msg' | globalize }}
       </p>
     </template>
   </div>
@@ -142,9 +140,11 @@ export default {
 
   computed: {
     ...mapGetters({
-      assets: vuexTypes.assets,
+      assetsAll: vuexTypes.assets,
+      assetsByOwner: vuexTypes.assetsByOwner,
       accountBalances: vuexTypes.accountBalances,
     }),
+
     ...mapGetters('asset-explorer', {
       kycRequiredAssetType: types.kycRequiredAssetType,
       securityAssetType: types.securityAssetType,
@@ -154,6 +154,19 @@ export default {
       const record = this.accountBalances
         .find(item => item.asset.code === this.selectedAsset.code)
       return record ? record.balance : ''
+    },
+
+    assets () {
+      try {
+        if (this.$route && this.$route.query && this.$route.query.owner) {
+          return this.assetsByOwner(this.$route.query.owner)
+        } else {
+          return this.assetsAll
+        }
+      } catch (error) {
+        console.error(error)
+        return []
+      }
     },
   },
 

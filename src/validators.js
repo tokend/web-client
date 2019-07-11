@@ -54,6 +54,9 @@ export const address = (asset) => value => {
 export const emailOrAccountId = value => {
   return validateEmail(value) || base.Keypair.isValidPublicKey(value)
 }
+export const accountId = value => {
+  return base.Keypair.isValidPublicKey(value)
+}
 export const documentContainer = value => value instanceof DocumentContainer
 export const softCapMoreThanHardCap = (min, hardCap) => value => {
   return amountRange(min, hardCap)(value)
@@ -70,19 +73,12 @@ export const noMoreThanAvailableForIssuance = available => value => {
   return MathUtil.compare(available, value) >= 0
 }
 
-export const moreThenMin = minValue => value => {
-  if (MathUtil.compare(minValue, value) === -1) {
-    return false
-  } else {
-    return true
-  }
+export const minValueBig = min => value => {
+  return MathUtil.compare(value, min) >= 0
 }
-export const lessThenMax = maxValue => value => {
-  if (MathUtil.compare(value, maxValue) === 1) {
-    return false
-  } else {
-    return true
-  }
+
+export const maxValueBig = max => value => {
+  return MathUtil.compare(value, max) <= 0
 }
 
 export const maxDecimalDigitsCount = maxDecimalDigitsCount => value => {
@@ -153,4 +149,15 @@ export const validateUrl = url => {
 
 export const assetCode = value => {
   return _isString(value) && /^[a-z\d]{1,16}$/i.test(value)
+}
+
+export const selectedSameAssetCode = (selectedAssetsByCode) => {
+  const ONE_ASSET_CODE = 1
+
+  const countSameAssetCode = selectedAssetsByCode.length
+  if (countSameAssetCode > ONE_ASSET_CODE) {
+    return false
+  } else {
+    return true
+  }
 }

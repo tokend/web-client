@@ -1,0 +1,86 @@
+<template>
+  <div class="customer-attributes">
+    <div class="app__table app__table--last-td-to-right">
+      <table>
+        <tbody>
+          <tr>
+            <td>
+              {{ 'customer-attributes.id-key' | globalize }}
+            </td>
+            <td>
+              {{ customer.id }}
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              {{ 'customer-attributes.email-key' | globalize }}
+            </td>
+            <td>
+              {{ customer.email }}
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              {{ 'customer-attributes.status-key' | globalize }}
+            </td>
+            <td>
+              {{ customerStatusTranslated }}
+            </td>
+          </tr>
+
+          <tr
+            v-for="balance of customer.balances"
+            :key="balance.id"
+          >
+            <td>
+              <!-- eslint-disable-next-line max-len -->
+              {{ 'customer-attributes.balance-key' | globalize({ assetCode: balance.assetCode }) }}
+            </td>
+            <td>
+              <!-- eslint-disable-next-line max-len -->
+              {{ { value: balance.amount, currency: balance.assetCode } | formatMoney }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</template>
+
+<script>
+import { CustomerRecord } from './customer.record'
+
+export default {
+  name: 'customer-attributes',
+
+  props: {
+    customer: {
+      type: CustomerRecord,
+      required: true,
+    },
+  },
+
+  computed: {
+    customerStatusTranslated () {
+      let translationId
+
+      if (this.customer.isNotRegistered) {
+        translationId = 'customer-attributes.not-registered-status-val'
+      } else if (this.customer.isActive) {
+        translationId = 'customer-attributes.active-status-val'
+      } else if (this.customer.isBlocked) {
+        translationId = 'customer-attributes.blocked-status-val'
+      } else {
+        translationId = '[UNKNOWN]'
+      }
+
+      return this.$options.filters.globalize(translationId)
+    },
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+</style>

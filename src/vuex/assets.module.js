@@ -48,11 +48,25 @@ export const getters = {
   [vuexTypes.assets]: state => state.assets.map(a => new AssetRecord(a)),
   [vuexTypes.assetByCode]: (_, getters) => assetCode =>
     getters[vuexTypes.assets].find(item => item.code === assetCode),
+  [vuexTypes.assetsByOwner]: (_, getters) => accountId =>
+    getters[vuexTypes.assets].filter(item => item.owner === accountId),
+
+  [vuexTypes.ownedAssets]: (a, getters, b, rootGetters) =>
+    getters[vuexTypes.assets]
+      .filter(item => item.owner === rootGetters[vuexTypes.accountId]),
 
   [vuexTypes.balancesAssets]: (a, getters, b, rootGetters) => {
     return rootGetters[vuexTypes.accountBalances]
       .map(item => item.asset)
   },
+
+  // eslint-disable-next-line max-len
+  [vuexTypes.balancesAssetsByOwner]: (a, getters, b, rootGetters) => accountId => {
+    return rootGetters[vuexTypes.accountBalances]
+      .map(item => item.asset)
+      .filter(item => item.owner === accountId)
+  },
+
   [vuexTypes.fiatAssets]: (a, getters, b, rootGetters) =>
     rootGetters[vuexTypes.accountBalances]
       .map(item => item.asset)
@@ -78,6 +92,17 @@ export const getters = {
       .filter(item => {
         return item.isStatsQuoteAsset
       })[0] || {},
+  [vuexTypes.ownedBalancesAssets]: (a, getters, b, rootGetters) =>
+    rootGetters[vuexTypes.accountBalances]
+      .map(item => item.asset)
+      .filter(item => item.owner === rootGetters[vuexTypes.accountId]),
+  [vuexTypes.baseAtomicSwapBalancesAssets]: (a, getters, b, rootGetters) =>
+    rootGetters[vuexTypes.accountBalances]
+      .map(item => item.asset)
+      .filter(item => item.isBaseInAtomicSwap),
+  [vuexTypes.quoteAtomicSwapAssets]: (a, getters, b, rootGetters) =>
+    rootGetters[vuexTypes.assets]
+      .filter(item => item.isQuoteInAtomicSwap),
 }
 
 export default {

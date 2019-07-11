@@ -41,6 +41,13 @@ export class AssetRecord {
 
     this.balance = this._getBalance(balances)
     this.convertedBalance = this._getConvertedBalance(balances)
+
+    this.stellarAssetCode = safeGet(record, 'details.stellar.assetCode') || ''
+    this.stellarAssetType = safeGet(record, 'details.stellar.assetType') || ''
+    this.stellarWithdraw = safeGet(record, 'details.stellar.withdraw') || false
+    this.stellarDeposit = safeGet(record, 'details.stellar.deposit') || false
+
+    this.description = safeGet(record, 'details.description') || ''
   }
 
   _getBalance (balances) {
@@ -113,6 +120,14 @@ export class AssetRecord {
   get isWithdrawable () {
     return !!(this.policy & ASSET_POLICIES.withdrawable) ||
       !!(this.policy & ASSET_POLICIES.withdrawableV2)
+  }
+
+  get isBaseInAtomicSwap () {
+    return !!(this.policy & ASSET_POLICIES.canBeBaseInAtomicSwap)
+  }
+
+  get isQuoteInAtomicSwap () {
+    return !!(this.policy & ASSET_POLICIES.canBeQuoteInAtomicSwap)
   }
 
   get isFiat () {

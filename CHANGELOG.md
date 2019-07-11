@@ -9,13 +9,120 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Added
-- Waiting email verification
-- Scrolling to top of the page after sending KYC corporate request
-- URLs normalization in env.js
 - KYC Recovery
+
+#### Fixed
+- Resolved an issue when in select field quote assets on the atomic swap form
+ show only assets in user balance
+- Fixed display price on form when create new sale
+
+## [1.10.0-x.0] - 2019-07-02
+#### Added
+- New Atomic swap feature:
+  - Create atomic swap form
+- `canBeBaseInAtomicSwap` and `canBeQuoteInAtomicSwap` policy for assets
+
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.9.0-x.0
+
+### Experimental features changes
+#### Added
+- New use case - conto
+
+## [1.9.0] - 2019-07-10
+
+## [1.9.0-rc.1] - 2019-07-08
+#### Fixed
+- Resolved an issue when has absent margin and present label overlap on
+  limits changing form
+- Resolved an issue when you can set amount bigger than max asset’s amount
+- Resolved an issue when limits leftover amount was not updated
+- Resolved an issue when poll failed to load for a user that is not sale owner
+- Resolved an issue when participant emails did not show on the "Participants"
+  tab
+- Resolved an issue when the user could not update a sale request
+
+## [1.9.0-rc.0] - 2019-06-24
+#### Added
+- New "My assets" page
+- New "Register of shares" page
+- New page scroll to top behavior after KYC corporate request submitting
+- New a bit restyled version of select and checkbox fields to use them as
+  filters
+- New Voting feature:
+  - Create poll form
+  - Create poll requests pages
+  - Poll exploration pages
+  - Poll manage forms
+  - Poll vote form
+- Stellar integration
+
+#### Changed
+- Reordered sidebar menu items
+- Fixed some style issues with radio button and checkbox fields
+
+#### Fixed
+- Resolved an issue when the email verification still had been in progress but
+  the users was redirected to the application
+- Resolved an issue when select field was displayed glitchy if no value selected
+- Resolved an issue when disabled or readonly select field was rendered slightly
+  differ from other fields
+- Resolved an issue when date field was disabled after submit form
+- Issue with tooltip displaying inside elements with own scroll
+- Resolved an issue when tick field was displayed not checked if value checked
+
+### "Under the hood" changes
+#### Added
+- DMYT (DD.MM.YYYY at TIME) and calendar inline (like normal calendar but words
+  start from small letter) i18next filters
+- `@mixin multi-line-ellipsis` — scss mixin for easily setting up ellipsis of
+  multiline blocks
+- `width` property to skeleton loader for more flexible width setup
+- Now config urls are insensitive for presence of absence of trailing slash
+- New asset code validation rule
+- New account id validation rule
 
 #### Changed
 - Now loading KYC latest data from account endpoint
+- Now loading latest KYC data from account endpoint instead of the latest
+  request endpoint when possible
+
+#### Removed
+- Get rid of some ineffective style-lint rules
+
+### Experimental features changes
+#### Changed
+- Accept investments in `isBaseAsset` assets for create opportunity form
+
+## [1.8.0] - 2019-06-22
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.8.0
+
+## [1.8.0-rc.3] - 2019-06-21
+#### Fixed
+- Resolved an error of inexistent CODE_MAX_LENGTH thrown on open of asset
+  creation form
+- Resolved an issue of wrongly displayed asset type in asset attributes viewer
+  on "Assets" page
+- Stopped overriding of user input when entered value was lesser than "min"
+  attribute of the field
+- Resolved an issue when "0" was displayed instead of current balance value in
+  withdrawal form
+
+## [1.8.0-rc.2] - 2019-06-17
+#### Changed
+- Disable withdraw for unverified users
+
+#### Fixed
+- Display of "add to balance" button in asset attributes
+- Fixed timeout of status message self-close
+- Bug when "Balance is invalid" error appeared on withdraw submitting
+
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.8.0-rc.1
 
 ## [1.8.0-rc.1] - 2019-06-07
 #### Changed
@@ -39,6 +146,15 @@ for further information about branching and tagging conventions.
 
 #### Fixed
 - Restored images line endings
+
+### Experimental features changes
+#### Added
+- Balances panel to the invoice form (Loyalty)
+
+#### Changed
+- Invoice form width to full screen
+- Now displaying customer's & merchant's balances on the invoice form
+  confirmation
 
 ## [1.8.0-rc.0] - 2019-06-06
 #### Fixed
@@ -721,7 +837,14 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.8.0-rc.1...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.10.0-x.0...HEAD
+[1.10.0-x.0]: https://github.com/tokend/web-client/compare/1.9.0...1.10.0-x.0
+[1.9.0]: https://github.com/tokend/web-client/compare/1.9.0-rc.1...1.9.0
+[1.9.0-rc.1]: https://github.com/tokend/web-client/compare/1.9.0-rc.0...1.9.0-rc.1
+[1.9.0-rc.0]: https://github.com/tokend/web-client/compare/1.8.0...1.9.0-rc.0
+[1.8.0]: https://github.com/tokend/web-client/compare/1.8.0-rc.3...1.8.0
+[1.8.0-rc.3]: https://github.com/tokend/web-client/compare/1.8.0-rc.2...1.8.0-rc.3
+[1.8.0-rc.2]: https://github.com/tokend/web-client/compare/1.8.0-rc.1...1.8.0-rc.2
 [1.8.0-rc.1]: https://github.com/tokend/web-client/compare/1.8.0-rc.0...1.8.0-rc.1
 [1.8.0-rc.0]: https://github.com/tokend/web-client/compare/1.8.0-x.3...1.8.0-rc.0
 [1.8.0-x.3]: https://github.com/tokend/web-client/compare/1.8.0-x.2...1.8.0-x.3

@@ -41,12 +41,19 @@ const mockEn = {
         'date': 'MMMM D, YYYY',
         'datetime': 'MMMM D, YYYY [at] H:mm',
       },
-      'formats': {
-        'same_day': '[today at] H:mm',
-        'last_day': '[yesterday at] H:mm',
-        'next_day': '[tomorrow at] H:mm',
-        'last_week': '[last] dddd [at] H:mm',
-        'next_week': '[next] dddd [at] H:mm',
+      'calendar': {
+        'sameDay': '[Today at] H:mm',
+        'lastDay': '[Yesterday at] H:mm',
+        'nextDay': '[Tomorrow at] H:mm',
+        'lastWeek': '[Last] dddd [at] H:mm',
+        'nextWeek': '[Next] dddd [at] H:mm',
+      },
+      'calendarInline': {
+        'sameDay': '[today at] H:mm',
+        'lastDay': '[yesterday at] H:mm',
+        'nextDay': '[tomorrow at] H:mm',
+        'lastWeek': '[last] dddd [at] H:mm',
+        'nextWeek': '[next] dddd [at] H:mm',
       },
     },
   },
@@ -56,9 +63,10 @@ const mockEn = {
     'interpolated': 'The text with some {{stuff}}',
     'withFormattedNumber': 'Congrats, it is your {{count, number}} visit!',
     'withFormattedCurrency': 'Your balance is {{amount, money}}',
-    'withFormattedOrderNumber': 'You are in the {{place, order_number}} place',
+    'withFormattedOrderNumber': 'You are in the {{place, orderNumber}} place',
     'withFormattedCalendar': 'The offer end date is {{when, calendar}}',
-    'withFormattedDate': 'The offer end date is {{when, calendar}}',
+    'withFormattedCalendarInline': 'The offer end date is {{when, calendar-inline}}',
+    'withFormattedDate': 'The offer end date is {{when, date}}',
     'withFormattedInteger': 'John bought {{amount, integer}} apples',
     'withFormattedFeeType': 'It\'s the {{type, fee_type}} fee type',
     'withFormattedFeeSubtype': 'It\'s the {{value, fee_subtype}} fee subtype',
@@ -204,7 +212,33 @@ describe('the i18n is properly configured', () => {
     })
   })
 
-  describe('formats calendars', () => {
+  describe('formats calendar', () => {
+    beforeEach(() => {
+      sinon.useFakeTimers({
+        now: 1542968022000, // 23 Nov 2018
+      })
+    })
+
+    afterEach(() => {
+      sinon.restore()
+    })
+
+    const dates = {
+      '2018-11-23T17:40:30Z': 'Today at 17:40',
+      '2018-11-29T09:55:12Z': 'Next Thursday at 9:55',
+      '2018-11-24T11:11:40Z': 'Tomorrow at 11:11',
+      '2018-11-22T23:53:55Z': 'Yesterday at 23:53',
+      '2018-11-17T12:22:10Z': 'Last Saturday at 12:22',
+    }
+    for (const [given, expected] of Object.entries(dates)) {
+      it(expected, () => {
+        const result = i18next.t('withFormattedCalendar', { when: given })
+        expect(result).to.equal(`The offer end date is ${expected}`)
+      })
+    }
+  })
+
+  describe('formats calendarInline', () => {
     beforeEach(() => {
       sinon.useFakeTimers({
         now: 1542968022000, // 23 Nov 2018
@@ -222,10 +256,9 @@ describe('the i18n is properly configured', () => {
       '2018-11-22T23:53:55Z': 'yesterday at 23:53',
       '2018-11-17T12:22:10Z': 'last Saturday at 12:22',
     }
-
     for (const [given, expected] of Object.entries(dates)) {
       it(expected, () => {
-        const result = i18next.t('withFormattedCalendar', { when: given })
+        const result = i18next.t('withFormattedCalendarInline', { when: given })
         expect(result).to.equal(`The offer end date is ${expected}`)
       })
     }

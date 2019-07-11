@@ -141,7 +141,7 @@ export default {
       if (value) {
         this.flatpickr._input.setAttribute('disabled', 'disabled')
       } else {
-        this.flatpickr._input.setAttribute('disabled', '')
+        this.flatpickr._input.removeAttribute('disabled')
       }
     },
   },

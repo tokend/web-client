@@ -44,15 +44,13 @@ function buildI18nOptions (language, i18n) {
             return moment(param).format(i18n.config.date.presets.datetime)
           case 'dmy':
             return moment(param).format(i18n.config.date.presets.dmy)
+          case 'dmyt':
+            return moment(param).format(i18n.config.date.presets.dmyt)
           case 'calendar':
-            return moment(param).calendar(null, {
-              sameDay: i18n.config.date.formats.same_day,
-              lastDay: i18n.config.date.formats.last_day,
-              nextDay: i18n.config.date.formats.next_day,
-              lastWeek: i18n.config.date.formats.last_week,
-              nextWeek: i18n.config.date.formats.next_week,
-              sameElse: i18n.config.date.presets.datetime,
-            })
+            return moment(param).calendar(null, i18n.config.date.calendar)
+          case 'calendar-inline':
+            return moment(param)
+              .calendar(null, i18n.config.date.calendarInline)
           case 'money':
             const value = (_isObject(param) ? param.value : param) || '0'
             const defaultFormat = i18n.config.number.formats.amounts.default
