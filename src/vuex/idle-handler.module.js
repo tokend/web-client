@@ -6,8 +6,9 @@ import throttle from 'lodash/throttle'
 const IDLE_TICKER_INTERVAL = 1000
 const THROTTLE_DELAY = 3000
 
-function getQueryParameters (query) {
-  return location.search ? '&' + query : '?' + query
+function getQueryParameters (queryParametr) {
+  // location.search return the querystring part of a URL
+  return location.search ? '&' + queryParametr : '?' + queryParametr
 }
 
 const state = {
