@@ -140,7 +140,16 @@ export default {
       await this.loadKvEntries()
 
       if (this[vuexTypes.isLoggedIn]) {
-        const walletSeed = await this.getDecryptedSecretSeed()
+        let walletSeed
+        try {
+          walletSeed = await this.getDecryptedSecretSeed()
+        } catch (e) {
+          if (!(e instanceof errors.NotFoundError)) {
+            ErrorHandler.processWithoutFeedback(e)
+          }
+          this.logoutSession()
+        }
+
         const wallet = new Wallet(
           this.walletEmail,
           walletSeed,
@@ -148,6 +157,7 @@ export default {
           this.walletId
         )
         api.useWallet(wallet)
+
         ErrorTracker.setLoggedInUser({
           'accountId': this[vuexTypes.walletAccountId],
           'email': this[vuexTypes.walletEmail],
@@ -163,21 +173,13 @@ export default {
       this.isNotSupportedBrowser = !isCompatibleBrowser()
     },
     async getDecryptedSecretSeed () {
-      try {
-        const key = await this.decryptSecretSeed()
-        return key
-      } catch (e) {
-        switch (e.constructor) {
-          case errors.NotFoundError:
-            this.logoutSession()
-            break
-          default:
-            ErrorHandler.process(e)
-        }
-      }
+      const key = await this.decryptSecretSeed()
+      return key
     },
     watchChangesInLocalStorage () {
       window.onstorage = (storage) => {
+        // if the user is logged in, when the local storage changes,
+        // the other tabs will be updated else page is reloaded
         if (this[vuexTypes.isLoggedIn]) {
           this.popState()
         } else {

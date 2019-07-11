@@ -12,7 +12,7 @@ function getQueryParameters (queryParametr) {
 }
 
 const state = {
-  logoutAt: null,
+  logoutAt: '',
 }
 
 const mutations = {
