@@ -18,7 +18,7 @@ for further information about branching and tagging conventions.
 
 ### "Under the hood" changes
 #### Changed
-- Now using @tokend/js-sdk@1.9.0-x.0
+- Now using @tokend/js-sdk@1.9.0-rc.0
 
 ## [1.10.0-x.0] - 2019-07-02
 #### Added
