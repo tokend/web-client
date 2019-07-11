@@ -16,6 +16,10 @@ for further information about branching and tagging conventions.
  show only assets in user balance
 - Fixed display price on form when create new sale
 
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.9.0-x.0
+
 ## [1.10.0-x.0] - 2019-07-02
 #### Added
 - New Atomic swap feature:
