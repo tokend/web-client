@@ -47,7 +47,7 @@ export const actions = {
     })
   },
 
-  async [vuexTypes.STORE_WALLET] ({ commit }, { wallet }) {
+  async [vuexTypes.STORE_WALLET] ({ commit }, wallet) {
     const newWallet = new Wallet(
       wallet.email,
       wallet.secretSeed,

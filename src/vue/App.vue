@@ -92,7 +92,6 @@ export default {
   computed: {
     ...mapGetters([
       vuexTypes.walletEmail,
-      vuexTypes.encryptWalletSeed,
       vuexTypes.walletAccountId,
       vuexTypes.walletId,
       vuexTypes.isLoggedIn,

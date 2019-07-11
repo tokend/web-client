@@ -211,7 +211,7 @@ export default {
           throw e
         }
       }
-      await this.storeWallet({ wallet: newWallet })
+      await this.storeWallet(newWallet)
     },
   },
 }
