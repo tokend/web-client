@@ -1,6 +1,9 @@
 <template>
   <div class="key-viewer">
-    <div class="key-viewer__qr-wrp">
+    <div
+      v-if="isQrCodeShown"
+      class="key-viewer__qr-wrp"
+    >
       <qr-code-wrapper
         :value="value"
         :size="250"
@@ -44,6 +47,10 @@ export default {
       default: '',
     },
     isClipboardShown: {
+      type: Boolean,
+      default: true,
+    },
+    isQrCodeShown: {
       type: Boolean,
       default: true,
     },

@@ -1,7 +1,7 @@
 <template>
   <div class="coinpayments-form">
     <template v-if="!isFailed">
-      <template v-if="!depositDetails">
+      <template v-if="!depositDetails.address">
         <form
           @submit.prevent="isFormValid() && showConfirmation()"
           novalidate
@@ -41,6 +41,7 @@
         :asset-code="asset.code"
         :amount="depositDetails.amount"
         :address="depositDetails.address"
+        :payload="depositDetails.payload"
         :end-time="depositDetails.endTime"
       />
     </template>
@@ -68,6 +69,11 @@ const EVENTS = {
   submitted: 'submitted',
 }
 
+const DEPOSIT_TYPES = {
+  address: 'address',
+  addressWithPayload: 'address_with_payload',
+}
+
 const TRANSACTION_TIME_MARGIN = 600 // seconds
 
 export default {
@@ -88,7 +94,12 @@ export default {
         amount: '',
       },
       isFailed: false,
-      depositDetails: null,
+      depositDetails: {
+        address: '',
+        endTime: -1,
+        amount: '',
+        payload: '',
+      },
     }
   },
   methods: {
@@ -96,12 +107,19 @@ export default {
       if (!this.isFormValid()) return
       this.disableForm()
       try {
-        this.depositDetails = await this.loadDeposit(
+        let response = await this.loadDeposit(
           {
             amount: this.form.amount,
             receiver: this.balanceId,
           }
         )
+        this.depositDetails.amount = response.amount || response.data.amount
+        this.depositDetails.address = response.address || response.data.amount
+        this.depositDetails.timeout = response.timeout || response.data.timeout
+        if (this.depositDetails.type === DEPOSIT_TYPES.addressWithPayload) {
+          this.depositDetails.payload = response.payload ||
+            response.data.payload
+        }
         this.depositDetails.endTime = moment().unix() +
           this.depositDetails.timeout - TRANSACTION_TIME_MARGIN
         this.$emit(EVENTS.submitted)
