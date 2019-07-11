@@ -2397,12 +2397,12 @@
     },
     "current-business-indicator": {
       "browsing-lbl": "Browsing:"
+    },
+    "kyc-recovery": {
+      "submit-again-lbl": "Submit again",
+      "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
+      "email-code": "Enter the code sent to you by email",
+      "tfa-code": "Enter tfa code"
     }
-  },
-  "kyc-recovery": {
-    "submit-again-lbl": "Submit again",
-    "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
-    "email-code": "Enter the code sent to you by email",
-    "tfa-code": "Enter tfa code"
   }
 }
