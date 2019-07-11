@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - KYC Recovery
+- Integration with session key server
 
 #### Fixed
 - Resolved an issue when in select field quote assets on the atomic swap form
@@ -25,7 +26,6 @@ for further information about branching and tagging conventions.
 - New Atomic swap feature:
   - Create atomic swap form
 - `canBeBaseInAtomicSwap` and `canBeQuoteInAtomicSwap` policy for assets
-- Integration with session key server
 
 ### "Under the hood" changes
 #### Changed
