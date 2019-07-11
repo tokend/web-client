@@ -25,6 +25,7 @@ const mutations = {
 
   // wallet
   SET_WALLET: 'SET_WALLET',
+  SET_ENCRYPTED_SECRET_SEED: 'SET_ENCRYPTED_SECRET_SEED',
 
   // factors
   SET_FACTORS: 'SET_FACTORS',
@@ -43,6 +44,9 @@ const mutations = {
   // assets
   SET_ASSETS: 'SET_ASSETS',
   UPDATE_ASSETS: 'UPDATE_ASSETS',
+
+  // idle
+  UPDATE_LOGOUT_AT: 'UPDATE_LOGOUT_AT',
 }
 
 const actions = {
@@ -57,6 +61,9 @@ const actions = {
   // wallet
   LOAD_WALLET: 'LOAD_WALLET',
   STORE_WALLET: 'STORE_WALLET',
+  DECRYPT_SECRET_SEED: 'DECRYPT_SECRET_SEED',
+  GET_SESSION: 'GET_SESSION',
+  PROLONGATE_SESSION: 'PROLONGATE_SESSION',
 
   // factors
   LOAD_FACTORS: 'LOAD_FACTORS',
@@ -77,6 +84,13 @@ const actions = {
 
   // assets
   LOAD_ASSETS: 'LOAD_ASSETS',
+
+  // idle
+  START_IDLE: 'START_IDLE',
+  LOGOUT_IDLE: 'LOGOUT_IDLE',
+  INIT_IDLE_TICKER: 'INIT_IDLE_TICKER',
+  KEEP_SESSION: 'KEEP_SESSION',
+  LOGOUT_SESSION: 'LOGOUT_SESSION',
 }
 
 const getters = {
@@ -119,7 +133,8 @@ const getters = {
   walletId: 'walletId',
   walletAccountId: 'walletAccountId',
   walletEmail: 'walletEmail',
-  walletSeed: 'walletSeed',
+  sessionId: 'sessionId',
+  encryptedSecretSeed: 'encryptedSecretSeed',
   walletPublicKey: 'walletPublicKey',
 
   // factors

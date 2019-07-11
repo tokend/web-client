@@ -13,6 +13,7 @@ describe('wallet.module', () => {
     'alice@mail.com',
     mockSeed,
     'GA7QET54X3WDJPMGRKTE32WKM4NRLKKKHHI74NXNMNTQR3VONA3XGIBP',
+    '01DES43BFYPNHGRWY4TZKNC60W',
     '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
   )
 
@@ -26,14 +27,13 @@ describe('wallet.module', () => {
       sinon.stub(mockWallet.keypair, 'accountId').returns('GDYMQR4ZNISMAVBTEKNKD63JSWRR4D3FHNBZSW36MDM3E3J32QUOQLU2')
       const expectedWallet = {
         email: mockWallet.email,
-        secretSeed: mockWallet.secretSeed,
         id: mockWallet.id,
         accountId: mockWallet.accountId,
+        sessionId: mockWallet.sessionId,
         publicKey: mockWallet.keypair.accountId(),
       }
 
       mutations[vuexTypes.SET_WALLET](state, mockWallet)
-
       expect(state).to.deep.equal({ wallet: expectedWallet })
     })
   })
@@ -54,11 +54,16 @@ describe('wallet.module', () => {
       sinon.stub(walletsManager, 'get').resolves(mockWallet)
 
       const credentials = { email: 'bob@mail.com', password: 'qweqweqwe' }
-      const expectedMutations = { [vuexTypes.SET_WALLET]: mockWallet }
-
+      const expectedMutations = {
+        [vuexTypes.SET_WALLET]: mockWallet,
+        [vuexTypes.SET_ENCRYPTED_SECRET_SEED]: {
+          secretSeed: mockWallet.secretSeed,
+          sessionKey: mockWallet.sessionKey,
+        },
+      }
       await actions[vuexTypes.LOAD_WALLET](store, credentials)
-
-      expect(store.commit.args).to.deep.equal(Object.entries(expectedMutations))
+      expect(store.commit.args)
+        .to.deep.equal(Object.entries(expectedMutations))
     })
   })
 
@@ -87,19 +92,6 @@ describe('wallet.module', () => {
       expect(getters[vuexTypes.walletEmail](_state, {}))
         .to
         .equal(email)
-    })
-
-    it('walletSeed', () => {
-      const secretSeed = 'SB5N5RG66UKMZWPY6WRHFCASAIUHGNA3TIG5TOLGROLN67XQDCLWFVPG'
-      const _state = {
-        wallet: {
-          secretSeed,
-        },
-      }
-
-      expect(getters[vuexTypes.walletSeed](_state, {}))
-        .to
-        .equal(secretSeed)
     })
   })
 })

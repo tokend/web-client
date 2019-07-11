@@ -1,14 +1,14 @@
 <template>
   <div
     v-if="isMessageShown"
-    class="idle-message-wrapper"
+    class="session-message-wrapper"
   >
-    <div class="idle-message">
-      <p class="idle-message__text">
-        {{ "idle-message.notification-message" | globalize }}
+    <div class="session-message">
+      <p class="session-message__text">
+        {{ "session-message.notification-message" | globalize }}
       </p>
       <button
-        class="idle-message__close-btn"
+        class="session-message__close-btn"
         @click="isMessageShown = false"
       />
     </div>
@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  name: 'idle-message',
+  name: 'session-message',
 
   data: _ => ({
     isMessageShown: false,
@@ -29,28 +29,28 @@ export default {
 
   methods: {
     tryShowMessageOnce () {
-      if (this.queryHasIsIdle(this.$route.query)) {
+      if (this.queryHasIsSessionExpired(this.$route.query)) {
         this.isMessageShown = true
-        this.cleanQueryIsIdle(this.$route.query)
+        this.cleanQueryIsSessionExpired(this.$route.query)
       }
     },
 
-    queryHasIsIdle (query) {
-      return query.isIdle || /isIdle=true/ig.test(query.redirectPath)
+    queryHasIsSessionExpired (query) {
+      return query.isSessionExpired || /isSessionExpired=true/ig.test(query.redirectPath)
     },
 
-    cleanQueryIsIdle (query) {
-      const noIdleQuery = Object.assign({}, query)
-      delete noIdleQuery.isIdle
+    cleanQueryIsSessionExpired (query) {
+      const noSessionExpiredQuery = Object.assign({}, query)
+      delete noSessionExpiredQuery.isSessionExpired
 
-      if (noIdleQuery.redirectPath) {
-        noIdleQuery.redirectPath =
-          noIdleQuery.redirectPath.replace(/(\?|&)?isIdle=(true|false)/ig, '')
+      if (noSessionExpiredQuery.redirectPath) {
+        noSessionExpiredQuery.redirectPath =
+          noSessionExpiredQuery.redirectPath.replace(/(\?|&)?isSessionExpired=(true|false)/ig, '')
       }
 
       this.$router.push({
         path: this.$route.path,
-        query: noIdleQuery,
+        query: noSessionExpiredQuery,
       })
     },
   },
@@ -61,21 +61,21 @@ export default {
 @import '~@scss/variables';
 @import '~@scss/mixins';
 
-.idle-message {
+.session-message {
   align-items: center;
   padding: 2.4rem;
   background-color: $col-warning;
   position: relative;
 }
 
-.idle-message__text {
+.session-message__text {
   color: $col-text-on-dark-bg;
   font-size: 1.4rem;
   line-height: 1.25;
   font-weight: 700;
 }
 
-.idle-message__close-btn {
+.session-message__close-btn {
   position: absolute;
   width: 2.4rem;
   height: 2.4rem;
@@ -108,7 +108,7 @@ export default {
   }
 }
 
-.idle-message-wrapper {
+.session-message-wrapper {
   margin-top: -6rem;
   margin-bottom: 4rem;
 }

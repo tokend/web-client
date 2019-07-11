@@ -10,11 +10,16 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - KYC Recovery
+- Integration with session key server
 
 #### Fixed
 - Resolved an issue when in select field quote assets on the atomic swap form
  show only assets in user balance
 - Fixed display price on form when create new sale
+
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.9.0-rc.0
 
 ## [1.10.0-x.0] - 2019-07-02
 #### Added

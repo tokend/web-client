@@ -451,6 +451,9 @@
     "idle-message": {
       "notification-message": "You have been logged out due to long inactivity."
     },
+    "session-message": {
+      "notification-message": "Session has expired."
+    },
     "auth-pages": {
       "small-title": "Create, distribute and trade",
       "big-title": "Start tokenizing <br> your assets <br> in minutes",

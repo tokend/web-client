@@ -178,11 +178,11 @@ export default {
     ChangePasswordPseudoModule,
     ShowNetworkPassphrasePseudoModule,
     api,
+    walletSeed: '',
   }),
 
   computed: {
     ...mapGetters({
-      walletSeed: vuexTypes.walletSeed,
       accountId: vuexTypes.accountId,
       isTotpEnabled: vuexTypes.isTotpEnabled,
     }),
@@ -191,6 +191,7 @@ export default {
   async created () {
     try {
       await this.loadFactors()
+      this.walletSeed = await this.decryptSecretSeed()
     } catch (e) {
       ErrorHandler.processWithoutFeedback(e)
     }
@@ -199,6 +200,7 @@ export default {
   methods: {
     ...mapActions({
       loadFactors: vuexTypes.LOAD_FACTORS,
+      decryptSecretSeed: vuexTypes.DECRYPT_SECRET_SEED,
     }),
     showDrawer (viewMode) {
       this.viewMode = viewMode

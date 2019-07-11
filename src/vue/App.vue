@@ -50,13 +50,13 @@ import StatusMessage from '@/vue/common/StatusMessage'
 import Navbar from '@/vue/navigation/Navbar.vue'
 import Sidebar from '@/vue/navigation/Sidebar.vue'
 import WarningBanner from '@/vue/common/WarningBanner'
-import IdleHandlerMixin from '@/vue/mixins/idle-handler'
 
 import { isCompatibleBrowser } from '@/js/helpers/is-compatible-browser'
 
 import {
   mapGetters,
   mapActions,
+  mapMutations,
 } from 'vuex'
 import {
   api,
@@ -68,6 +68,8 @@ import { vuexTypes } from '@/vuex'
 import { Wallet } from '@tokend/js-sdk'
 import { ErrorTracker } from '@/js/helpers/error-tracker'
 import { vueRoutes } from '@/vue-router/routes'
+import { errors } from '@/js/errors'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import config from '@/config'
 
@@ -81,8 +83,6 @@ export default {
     WarningBanner,
   },
 
-  mixins: [IdleHandlerMixin],
-
   data: () => ({
     isNotSupportedBrowser: false,
     isAppInitialized: false,
@@ -92,7 +92,6 @@ export default {
   computed: {
     ...mapGetters([
       vuexTypes.walletEmail,
-      vuexTypes.walletSeed,
       vuexTypes.walletAccountId,
       vuexTypes.walletId,
       vuexTypes.isLoggedIn,
@@ -110,7 +109,11 @@ export default {
   async created () {
     await this.initApp()
 
+    this.startIdle()
+
     this.detectIncompatibleBrowser()
+
+    this.watchChangesInLocalStorage()
 
     this.isAppInitialized = true
   },
@@ -120,6 +123,12 @@ export default {
       loadKvEntries: vuexTypes.LOAD_KV_ENTRIES,
       loadAssets: vuexTypes.LOAD_ASSETS,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
+      decryptSecretSeed: vuexTypes.DECRYPT_SECRET_SEED,
+      startIdle: vuexTypes.START_IDLE,
+      logoutSession: vuexTypes.LOGOUT_SESSION,
+    }),
+    ...mapMutations({
+      popState: vuexTypes.POP_STATE,
     }),
     async initApp () {
       api.useBaseURL(config.HORIZON_SERVER)
@@ -131,13 +140,24 @@ export default {
       await this.loadKvEntries()
 
       if (this[vuexTypes.isLoggedIn]) {
+        let walletSeed
+        try {
+          walletSeed = await this.getDecryptedSecretSeed()
+        } catch (e) {
+          if (!(e instanceof errors.NotFoundError)) {
+            ErrorHandler.processWithoutFeedback(e)
+          }
+          this.logoutSession()
+        }
+
         const wallet = new Wallet(
           this.walletEmail,
-          this.walletSeed,
+          walletSeed,
           this.walletAccountId,
           this.walletId
         )
         api.useWallet(wallet)
+
         ErrorTracker.setLoggedInUser({
           'accountId': this[vuexTypes.walletAccountId],
           'email': this[vuexTypes.walletEmail],
@@ -151,6 +171,21 @@ export default {
     },
     detectIncompatibleBrowser () {
       this.isNotSupportedBrowser = !isCompatibleBrowser()
+    },
+    async getDecryptedSecretSeed () {
+      const key = await this.decryptSecretSeed()
+      return key
+    },
+    watchChangesInLocalStorage () {
+      window.onstorage = (storage) => {
+        // if the user is logged in, when the local storage changes,
+        // the other tabs will be updated else page is reloaded
+        if (this[vuexTypes.isLoggedIn]) {
+          this.popState()
+        } else {
+          location.reload()
+        }
+      }
     },
   },
 }

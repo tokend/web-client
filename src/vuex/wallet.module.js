@@ -1,7 +1,7 @@
-import { walletsManager, useWallet } from '@/api'
+import { walletsManager, useWallet, api } from '@/api'
 
 import { vuexTypes } from './types'
-import { Wallet } from '@tokend/js-sdk'
+import { Wallet, encryptSecretSeed, decryptSecretSeed } from '@tokend/js-sdk'
 
 export const state = {
   wallet: {},
@@ -21,11 +21,19 @@ export const mutations = {
     //  custom toJSON in the sdk Wallet class
     state.wallet = {
       accountId: wallet.accountId,
-      secretSeed: wallet.secretSeed,
       email: wallet.email,
       id: wallet.id,
+      sessionId: wallet.sessionId,
       publicKey: wallet.keypair.accountId(),
     }
+  },
+
+  [vuexTypes.SET_ENCRYPTED_SECRET_SEED] (state, { secretSeed, sessionKey }) {
+    const encryptedSecretSeed = encryptSecretSeed(
+      secretSeed,
+      sessionKey
+    )
+    state.wallet.encryptedSecretSeed = encryptedSecretSeed
   },
 }
 
@@ -34,16 +42,49 @@ export const actions = {
     const wallet = await walletsManager.get(email, password)
     useWallet(wallet)
     commit(vuexTypes.SET_WALLET, wallet)
+    commit(vuexTypes.SET_ENCRYPTED_SECRET_SEED, {
+      secretSeed: wallet.secretSeed,
+      sessionKey: wallet.sessionKey,
+    })
   },
+
   async [vuexTypes.STORE_WALLET] ({ commit }, wallet) {
     const newWallet = new Wallet(
       wallet.email,
       wallet.secretSeed,
       wallet.accountId,
-      wallet.id
+      wallet.id,
+      wallet.sessionId,
+      wallet.sessionKey
     )
     useWallet(newWallet)
-    commit(vuexTypes.SET_WALLET, wallet)
+    commit(vuexTypes.SET_WALLET, newWallet)
+    commit(vuexTypes.SET_ENCRYPTED_SECRET_SEED, {
+      secretSeed: newWallet.secretSeed,
+      sessionKey: newWallet.sessionKey,
+    })
+  },
+
+  async [vuexTypes.DECRYPT_SECRET_SEED] ({ commit, getters, dispatch }) {
+    const encryptedSecretSeed = getters[vuexTypes.encryptedSecretSeed]
+    const session = await dispatch(vuexTypes.GET_SESSION)
+    const decreptedSecretSeed = decryptSecretSeed(
+      encryptedSecretSeed,
+      session.encryptionKey
+    )
+    return decreptedSecretSeed
+  },
+
+  async [vuexTypes.GET_SESSION] ({ commit, getters }) {
+    const sessionId = getters[vuexTypes.sessionId]
+    const { data: session } = await api.get(`/sessions/${sessionId}`)
+    return session
+  },
+
+  async [vuexTypes.PROLONGATE_SESSION] ({ dispatch }) {
+    // we use GET_SESSION action here because we have only one endpoint for
+    // prolongate and get session
+    await dispatch(vuexTypes.GET_SESSION)
   },
 }
 
@@ -53,8 +94,10 @@ export const getters = {
   [vuexTypes.walletEmail]: (state, getters) => {
     return state.wallet.email
   },
-  [vuexTypes.walletSeed]: (state, getters) =>
-    state.wallet.secretSeed,
+  [vuexTypes.sessionId]: state => state.wallet.sessionId,
+  [vuexTypes.encryptedSecretSeed]: (state, getters) => {
+    return state.wallet.encryptedSecretSeed
+  },
   [vuexTypes.walletPublicKey]: (state, getters) => state.wallet.publicKey,
 }
 
