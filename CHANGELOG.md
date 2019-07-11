@@ -8,6 +8,9 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Added
+- KYC Recovery
+
 #### Fixed
 - Resolved an issue when in select field quote assets on the atomic swap form
  show only assets in user balance
@@ -67,7 +70,7 @@ for further information about branching and tagging conventions.
   differ from other fields
 - Resolved an issue when date field was disabled after submit form
 - Issue with tooltip displaying inside elements with own scroll
-- Resolved an issue when tick field was displayed not chacked if value checked
+- Resolved an issue when tick field was displayed not checked if value checked
 
 ### "Under the hood" changes
 #### Added

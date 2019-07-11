@@ -17,6 +17,7 @@ const mutations = {
   SET_KV_POLL_TYPE_UNRESTRICTED: 'SET_KV_POLL_TYPE_UNRESTRICTED',
 
   SET_DEFAULT_QUOTE_ASSET: 'SET_DEFAULT_QUOTE_ASSET',
+  SET_KV_DEFAULT_SIGNER_ROLE_ID: 'SET_KV_DEFAULT_SIGNER_ROLE_ID',
 
   // account
   SET_ACCOUNT: 'SET_ACCOUNT',
@@ -34,6 +35,10 @@ const mutations = {
   SET_KYC_LATEST_DATA: 'SET_KYC_LATEST_DATA',
   SET_ACCOUNT_ROLE_RESETED: 'SET_ACCOUNT_ROLE_RESETED',
   SET_KYC_LATEST_REQUEST_DATA: 'SET_KYC_LATEST_REQUEST_DATA',
+
+  // kyc recovery
+  SET_KYC_RECOVERY_LATEST_REQUEST: 'SET_KYC_RECOVERY_LATEST_REQUEST',
+  SET_KYC_RECOVERY_LATEST_REQUEST_BLOB: 'SET_KYC_RECOVERY_LATEST_REQUEST_BLOB',
 
   // assets
   SET_ASSETS: 'SET_ASSETS',
@@ -63,6 +68,13 @@ const actions = {
   LOAD_KYC_RELATED_REQUEST: 'LOAD_KYC_RELATED_REQUEST',
   LOAD_KYC_LATEST_DATA: 'LOAD_KYC_LATEST_DATA',
 
+  // kyc recovery
+  LOAD_KYC_RECOVERY_LATEST_REQUEST: 'LOAD_KYC_RECOVERY_LATEST_REQUEST',
+  LOAD_KYC_RECOVERY: 'LOAD_KYC_RECOVERY',
+  LOAD_KYC_RECOVERY_LATEST_REQUEST_BLOB:
+    'LOAD_KYC_RECOVERY_LATEST_REQUEST_BLOB',
+  SEND_KYC_RECOVERY_REQUEST: 'SEND_KYC_RECOVERY_REQUEST',
+
   // assets
   LOAD_ASSETS: 'LOAD_ASSETS',
 }
@@ -84,6 +96,7 @@ const getters = {
   kvPollTypeRestricted: 'kvPollTypeRestricted',
   kvPollTypeUnrestricted: 'kvPollTypeUnrestricted',
   defaultQuoteAsset: 'defaultQuoteAsset',
+  kvDefaultSignerRoleId: 'kvDefaultSignerRoleId',
 
   // account
   account: 'account',
@@ -93,6 +106,7 @@ const getters = {
   accountBalanceByCode: 'accountBalanceByCode',
   accountRoleId: 'accountRoleId',
   accountDepositAddresses: 'accountDepositAddresses',
+  accountKycRecoveryStatus: 'accountKycRecoveryStatus',
 
   isAccountGeneral: 'isAccountGeneral',
   isAccountCorporate: 'isAccountCorporate',
@@ -106,6 +120,7 @@ const getters = {
   walletAccountId: 'walletAccountId',
   walletEmail: 'walletEmail',
   walletSeed: 'walletSeed',
+  walletPublicKey: 'walletPublicKey',
 
   // factors
   factors: 'factors',
@@ -130,6 +145,21 @@ const getters = {
   kycLatestRequestData: 'kycLatestRequestData',
   kycAvatarKey: 'kycAvatarKey',
   isAccountRoleReseted: 'isAccountRoleReseted',
+
+  // kyc recovery
+  kycRecoveryRequestId: 'kycRecoveryRequestId',
+  kycRecoveryState: 'kycRecoveryState',
+  kycRecoveryStateI: 'kycRecoveryStateI',
+  kycRecoveryRequestBlob: 'kycRecoveryRequestBlob',
+  kycRecoveryRejectReason: 'kycRecoveryRejectReason',
+  kycRecoveryBlobId: 'kycRecoveryBlobId',
+  isNoKycRecoveryInProgress: 'isNoKycRecoveryInProgress',
+  isKycRecoveryInProgress: 'isKycRecoveryInProgress',
+  isKycRecoveryInited: 'isKycRecoveryInited',
+  isKycRecoveryApproved: 'isKycRecoveryApproved',
+  isKycRecoveryPending: 'isKycRecoveryPending',
+  isKycRecoveryRejected: 'isKycRecoveryRejected',
+  isKycRecoveryPermanentlyRejected: 'isKycRecoveryPermanentlyRejected',
 
   // assets
   assets: 'assets',

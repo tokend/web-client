@@ -4,9 +4,6 @@
       :submodule="getModule().getSubmodule(VerificationGeneralFormModule)"
       :blob-id="isFormPopulatable ? kycLatestRequestBlobId : ''"
       :request-id="isRequestUpdatable ? String(kycRequestId) : '0'"
-      :general-role-id="String(kvEntryGeneralRoleId)"
-      :us-verified-role-id="String(kvEntryUsVerifiedRoleId)"
-      :us-accredited-role-id="String(kvEntryUsAccreditedRoleId)"
 
       ref="form-module-importer"
       @submit="onFormSubmit"
@@ -61,7 +58,7 @@ export default {
         : (
           this.accountRoleToSet === this.kvEntryGeneralRoleId ||
           this.accountRoleToSet === this.kvEntryUsAccreditedRoleId ||
-          this.accountRoleToSet === this.kvEntryUsAccreditedRoleId
+          this.accountRoleToSet === this.kvEntryUsVerifiedRoleId
         )
     },
   },

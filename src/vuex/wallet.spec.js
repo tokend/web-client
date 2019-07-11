@@ -23,11 +23,13 @@ describe('wallet.module', () => {
   describe('mutations', () => {
     it('SET_WALLET should properly modify state', () => {
       const state = { wallet: {} }
+      sinon.stub(mockWallet.keypair, 'accountId').returns('GDYMQR4ZNISMAVBTEKNKD63JSWRR4D3FHNBZSW36MDM3E3J32QUOQLU2')
       const expectedWallet = {
         email: mockWallet.email,
         secretSeed: mockWallet.secretSeed,
         id: mockWallet.id,
         accountId: mockWallet.accountId,
+        publicKey: mockWallet.keypair.accountId(),
       }
 
       mutations[vuexTypes.SET_WALLET](state, mockWallet)
