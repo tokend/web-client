@@ -6,6 +6,10 @@ import throttle from 'lodash/throttle'
 const IDLE_TICKER_INTERVAL = 1000
 const THROTTLE_DELAY = 3000
 
+function getQueryParameters (query) {
+  return location.search ? '&' + query : '?' + query
+}
+
 const state = {
   logoutAt: null,
 }
@@ -58,12 +62,12 @@ const actions = {
 
   [vuexTypes.LOGOUT_IDLE] ({ commit }) {
     commit(vuexTypes.CLEAR_STATE)
-    location.href = location.origin + location.pathname + '?isIdle=true'
+    location.href = location.href + getQueryParameters('isIdle=true')
   },
 
   [vuexTypes.LOGOUT_SESSION] ({ commit }) {
     commit(vuexTypes.CLEAR_STATE)
-    location.href = location.origin + location.pathname + '?isSessionExpired=true'
+    location.href = location.href + getQueryParameters('isSessionExpired=true')
   },
 
 }
