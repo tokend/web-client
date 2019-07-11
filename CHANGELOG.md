@@ -8,6 +8,9 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Added
+- KYC Recovery
+
 #### Fixed
 - Resolved an issue when in select field quote assets on the atomic swap form
  show only assets in user balance
@@ -27,6 +30,8 @@ for further information about branching and tagging conventions.
 ### Experimental features changes
 #### Added
 - New use case - conto
+
+## [1.9.0] - 2019-07-10
 
 ## [1.9.0-rc.1] - 2019-07-08
 #### Fixed
@@ -66,7 +71,7 @@ for further information about branching and tagging conventions.
   differ from other fields
 - Resolved an issue when date field was disabled after submit form
 - Issue with tooltip displaying inside elements with own scroll
-- Resolved an issue when tick field was displayed not chacked if value checked
+- Resolved an issue when tick field was displayed not checked if value checked
 
 ### "Under the hood" changes
 #### Added
@@ -834,7 +839,8 @@ for further information about branching and tagging conventions.
 ## [1.3.0] - 2019-03-01
 
 [Unreleased]: https://github.com/tokend/web-client/compare/1.10.0-x.0...HEAD
-[1.10.0-x.0]: https://github.com/tokend/web-client/compare/1.9.0-rc.1...1.10.0-x.0
+[1.10.0-x.0]: https://github.com/tokend/web-client/compare/1.9.0...1.10.0-x.0
+[1.9.0]: https://github.com/tokend/web-client/compare/1.9.0-rc.1...1.9.0
 [1.9.0-rc.1]: https://github.com/tokend/web-client/compare/1.9.0-rc.0...1.9.0-rc.1
 [1.9.0-rc.0]: https://github.com/tokend/web-client/compare/1.8.0...1.9.0-rc.0
 [1.8.0]: https://github.com/tokend/web-client/compare/1.8.0-rc.3...1.8.0

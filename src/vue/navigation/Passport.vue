@@ -1,6 +1,7 @@
 <template>
   <div class="passport">
-    <button @click="toggleDropdown">
+    <button
+      @click="toggleDropdown">
       <img
         v-if="avatarLogoUrl"
         class="passport__avatar passport__avatar-image"
@@ -51,9 +52,7 @@
           </span>
         </div>
 
-        <div
-          class="passport__dropdown-balances-wrp"
-        >
+        <div class="passport__dropdown-balances-wrp">
           <passport-balances
             @more-link-followed="toggleDropdown"
           />
@@ -225,7 +224,6 @@ $dropdown-item-side-padding: 2.4rem;
 }
 
 .passport {
-  width: 100%;
   position: relative;
   display: flex;
   align-items: center;

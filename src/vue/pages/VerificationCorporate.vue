@@ -41,6 +41,7 @@
         <div class="app__form-field">
           <file-field
             v-model="form.avatar"
+            v-if="!isKycRecoveryPage"
             name="verification-corporate-avatar"
             :note="'verification-form.image-type-note' | globalize"
             :file-extensions="['jpg', 'png']"
@@ -126,7 +127,7 @@
           class="verification-corporate-form__submit-btn app__button-raised"
           :disabled="formMixin.isDisabled"
         >
-          {{ (isUpdatableKycRequest
+          {{ (isExistingRequest
             ? 'verification-form.update-btn'
             : 'verification-form.create-btn'
           ) | globalize }}
@@ -142,8 +143,8 @@ import _get from 'lodash/get'
 
 import { api } from '@/api'
 
-import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
+import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 
 import { BLOB_TYPES } from '@tokend/js-sdk'
 
@@ -153,7 +154,7 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import { required, validateUrl, integer, minValue } from '@validators'
@@ -164,6 +165,10 @@ const EMPTY_DOCUMENT = {
   mime_type: '',
   name: '',
   key: '',
+}
+
+const EVENTS = {
+  kycRecoverySubmit: 'kyc-recovery-submit',
 }
 
 export default {
@@ -209,7 +214,12 @@ export default {
       isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
       accountRoleToSet: vuexTypes.kycAccountRoleToSet,
       previousAccountRole: vuexTypes.kycPreviousRequestAccountRoleToSet,
+      kycRecoveryState: vuexTypes.kycRecoveryState,
+      kycRecoveryRequestId: vuexTypes.kycRecoveryRequestId,
+      kycRecoveryBlobId: vuexTypes.kycRecoveryBlobId,
+      kycRecoveryRequestBlob: vuexTypes.kycRecoveryRequestBlob,
     }),
+
     isFormPopulatable () {
       return this.isAccountRoleReseted
         ? this.previousAccountRole === this.kvEntryCorporateRoleId
@@ -218,34 +228,54 @@ export default {
   },
 
   created () {
-    if (this.isFormPopulatable) {
+    if (this.isFormPopulatable && !this.isKycRecoveryPage) {
       this.form = this.parseKycData(this.kycLatestRequestData)
+    } else if (
+      this.kycRecoveryBlobId &&
+      (this.kycRecoveryState !== REQUEST_STATES_STR.permanentlyRejected)
+    ) {
+      this.form = this.parseKycData(this.kycRecoveryRequestBlob)
     }
   },
 
   methods: {
+    ...mapActions({
+      sendKycRecoveryRequest: vuexTypes.SEND_KYC_RECOVERY_REQUEST,
+    }),
+
     async submit () {
       if (!this.isFormValid()) return
+
       this.disableForm()
       this.isFormSubmitting = true
-      try {
-        await uploadDocument(this.form.avatar)
-        const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycCorporate)
-        const operation = this.createKycOperation(
-          kycBlobId,
-          this.kvEntryCorporateRoleId
-        )
-        await api.postOperations(operation)
-        do {
-          await this.loadKyc()
-          await this.delay(3000)
-        } while (this.kycState !== REQUEST_STATES_STR.pending)
 
-        Bus.success('verification-form.request-submitted-msg')
+      try {
+        if (!this.isKycRecoveryPage) await uploadDocument(this.form.avatar)
+
+        const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycCorporate)
+
+        if (this.isKycRecoveryPage) {
+          await this.sendKycRecoveryRequest(kycBlobId)
+          this.$emit(EVENTS.kycRecoverySubmit)
+        } else {
+          const operation = this.createKycOperation(
+            kycBlobId,
+            this.kvEntryCorporateRoleId
+          )
+
+          await api.postOperations(operation)
+
+          do {
+            await this.loadKyc()
+            await this.delay(3000)
+          } while (this.kycState !== REQUEST_STATES_STR.pending)
+          Bus.success('verification-form.request-submitted-msg')
+        }
         this.scrollTop()
       } catch (e) {
         ErrorHandler.process(e)
       }
+
       this.isFormSubmitting = false
       this.hideConfirmation()
       this.enableForm()

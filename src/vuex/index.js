@@ -7,6 +7,7 @@ import factors from './factors.module'
 import wallet from './wallet.module'
 import kyc from './kyc.module'
 import keyValue from './key-value.module'
+import kycRecovery from './kyc-recovery.module'
 import { vuexTypes } from '@/vuex/types'
 import { sessionStoragePlugin } from './plugins/session-storage'
 import idleHandler from './idle-handler.module'
@@ -42,6 +43,7 @@ function buildStore (storeModules = []) {
       kyc,
       keyValue,
       idleHandler,
+      kycRecovery,
       ...storeModules,
     },
     plugins: [sessionStoragePlugin],

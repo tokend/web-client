@@ -1,25 +1,20 @@
 <template>
   <div class="auth-page">
     <h2 class="auth-page__title">
-      {{ 'auth-pages.recover-account' | globalize }}
+      {{ 'auth-pages.kyc-recovery' | globalize }}
     </h2>
 
     <div class="auth-page__content">
-      <recovery-form />
+      <wallet-recovery-form
+        v-if="isWalletRecoveryFormDisplay"
+        @error="checkError"
+      />
+      <wallet-recovery-tfa-code-form
+        v-if="!isWalletRecoveryFormDisplay"
+        :error="recoveryError"
+      />
 
       <div class="auth-page__tips">
-        <div class="auth-page__tip">
-          <span>
-            {{ 'auth-pages.lost-seed-question' | globalize }}
-          </span>
-          <router-link
-            class="auth-page__tip-link"
-            :to="vueRoutes.kycRecoveryInit"
-          >
-            {{ 'auth-pages.lost-seed-answer' | globalize }}
-          </router-link>
-        </div>
-
         <div class="auth-page__tip">
           <span>
             {{ 'auth-pages.know-credentials-question' | globalize }}
@@ -34,17 +29,28 @@
 </template>
 
 <script>
-import RecoveryForm from '../forms/RecoveryForm'
+import WalletRecoveryForm from '@/vue/forms/WalletRecoveryForm'
+import WalletRecoveryTfaCodeForm from '@/vue/forms/WalletRecoveryTfaCodeForm'
+
 import { vueRoutes } from '@/vue-router/routes'
 
 export default {
-  name: 'recovery',
+  name: 'kyc-recovery',
   components: {
-    RecoveryForm,
+    WalletRecoveryForm,
+    WalletRecoveryTfaCodeForm,
   },
   data: _ => ({
+    isWalletRecoveryFormDisplay: true,
+    recoveryError: {},
     vueRoutes,
   }),
+  methods: {
+    checkError (error) {
+      this.recoveryError = error
+      this.isWalletRecoveryFormDisplay = false
+    },
+  },
 }
 </script>
 

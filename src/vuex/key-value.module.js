@@ -26,6 +26,7 @@ export const state = {
   kvPollTypeRestricted: null,
   kvPollTypeUnrestricted: null,
   defaultQuoteAsset: '',
+  kvDefaultSignerRoleId: '',
 }
 
 export const mutations = {
@@ -76,6 +77,9 @@ export const mutations = {
   [vuexTypes.SET_DEFAULT_QUOTE_ASSET] (state, asset) {
     state.defaultQuoteAsset = asset
   },
+  [vuexTypes.SET_KV_DEFAULT_SIGNER_ROLE_ID] (state, kvDefaultSignerRoleId) {
+    state.kvDefaultSignerRoleId = kvDefaultSignerRoleId
+  },
 }
 
 export const actions = {
@@ -98,6 +102,7 @@ export const actions = {
     const assetTypeSecurity = getKvValue('asset_type:security', data)
     const restrictedPollType = getKvValue('poll_type:restricted', data)
     const unrestrictedPollType = getKvValue('poll_type:unrestricted', data)
+    const defaultSignerRoleId = getKvValue('signer_role:default', data)
 
     commit(vuexTypes.SET_KV_ENTRY_GENERAL_ROLE_ID, generalRoleId)
     commit(vuexTypes.SET_KV_ENTRY_CORPORATE_ROLE_ID, corporateRoleId)
@@ -110,6 +115,7 @@ export const actions = {
     commit(vuexTypes.SET_KV_ASSET_TYPE_SECURITY, assetTypeSecurity)
     commit(vuexTypes.SET_KV_POLL_TYPE_RESTRICTED, restrictedPollType)
     commit(vuexTypes.SET_KV_POLL_TYPE_UNRESTRICTED, unrestrictedPollType)
+    commit(vuexTypes.SET_KV_DEFAULT_SIGNER_ROLE_ID, defaultSignerRoleId)
   },
 }
 
@@ -128,6 +134,7 @@ export const getters = {
     rootGetters[vuexTypes.statsQuoteAsset].code,
   [vuexTypes.kvPollTypeRestricted]: state => state.kvPollTypeRestricted,
   [vuexTypes.kvPollTypeUnrestricted]: state => state.kvPollTypeUnrestricted,
+  [vuexTypes.kvDefaultSignerRoleId]: state => state.kvDefaultSignerRoleId,
 }
 
 export default {
