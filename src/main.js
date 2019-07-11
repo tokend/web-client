@@ -2,7 +2,6 @@ import './scss/app.scss'
 
 import Vue from 'vue'
 import App from '@/vue/App'
-import i18next from 'i18next'
 import Vuelidate from 'vuelidate'
 import VueResource from 'vue-resource'
 import log from 'loglevel'
@@ -14,7 +13,7 @@ import { buildRouter } from '@/vue-router'
 import { tableScrollShadow } from '@/vue/directives/tableScrollShadow'
 import { ripple } from '@/vue/directives/ripple'
 import { tooltip } from '@/vue/directives/tooltip'
-import { i18nOptions, mergeIntoI18nOptions } from '@/i18n'
+import { initI18n, mergeIntoI18nOptions } from '@/i18n'
 import { globalize } from '@/vue/filters/globalize'
 import { formatDate } from '@/vue/filters/formatDate'
 import { formatMoney } from '@/vue/filters/formatMoney'
@@ -39,7 +38,7 @@ async function init () {
     mergeIntoI18nOptions(enLocaleJson)
   }
 
-  i18next.init(i18nOptions)
+  initI18n()
 
   log.setDefaultLevel(config.LOG_LEVEL)
 

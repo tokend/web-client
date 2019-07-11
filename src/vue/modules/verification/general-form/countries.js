@@ -1,11 +1,18 @@
-import translations from '@/i18n/en.countries'
-
+import { getI18nNamespace, onI18nLanguageChange } from '@/i18n/index'
 import { byAlpha2 } from 'iso-country-codes'
 
-function getCountryCodes () {
+function getCountries () {
+  const translations = getI18nNamespace('countries')
+
   return Object
-    .keys(byAlpha2)
-    .map(code => ({ code, translation: translations[code] }))
+    .keys(byAlpha2 || {})
+    .map(code => ({ code, translation: translations[code] })) || []
 }
 
-export const COUNTRIES = getCountryCodes()
+let COUNTRIES = getCountries()
+
+onI18nLanguageChange(_ => {
+  COUNTRIES = getCountries()
+})
+
+export { COUNTRIES }
