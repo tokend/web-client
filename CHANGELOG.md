@@ -49,6 +49,7 @@ for further information about branching and tagging conventions.
 - Resolved an issue when in select field quote assets on the atomic swap form
  show only assets in user balance
 - Fixed display price on form when create new sale
+- Resolved an issue with undisplayed favicon
 
 ### "Under the hood" changes
 #### Changed
