@@ -15,6 +15,8 @@ export const vueRoutes = Object.freeze({
   userOwnedSales: { name: 'app.sales-user' },
   signup: { name: 'signup' },
   recovery: { name: 'recovery' },
+  kycRecoveryInit: { name: 'kyc-recovery-init' },
+  kycRecoveryManagement: { name: 'kyc-recovery-management' },
   settings: { name: 'app.settings' },
   verification: { name: 'app.verification' },
   verificationGeneral: { name: 'app.verification.general' },

@@ -63,6 +63,7 @@ export default {
     value: {
       type: [String, Number, Boolean, Object, Array, Date],
       required: true,
+      default: '',
     },
     errorMessage: {
       type: String,

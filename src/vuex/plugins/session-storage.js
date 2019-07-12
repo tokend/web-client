@@ -8,11 +8,11 @@ export const sessionStoragePlugin = store => {
   store.subscribe((mutation, state) => {
     switch (mutation.type) {
       case vuexTypes.CLEAR_STATE: {
-        sessionStorage.removeItem(config.STORAGE_KEY)
+        localStorage.removeItem(config.STORAGE_KEY)
         break
       }
       case vuexTypes.POP_STATE: {
-        let savedStore = sessionStorage.getItem(config.STORAGE_KEY)
+        let savedStore = localStorage.getItem(config.STORAGE_KEY)
 
         if (!savedStore) {
           break
@@ -26,16 +26,20 @@ export const sessionStoragePlugin = store => {
           wallet: savedStore.wallet,
           kyc: savedStore.kyc,
           keyValue: savedStore.keyValue,
+          session: savedStore.session,
+          idleHandler: savedStore.idleHandler,
         })
 
         break
       }
       default:
-        sessionStorage.setItem(config.STORAGE_KEY, JSON.stringify({
+        localStorage.setItem(config.STORAGE_KEY, JSON.stringify({
           account: state.account,
           wallet: state.wallet,
           kyc: state.kyc,
           keyValue: state.keyValue,
+          session: state.session,
+          idleHandler: state.idleHandler,
         }))
     }
   })
