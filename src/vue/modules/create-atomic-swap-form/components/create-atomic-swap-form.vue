@@ -26,9 +26,9 @@
           <p class="app__form-field-description">
             {{
               'create-atomic-swap-form.available-balance' | globalize({
-                amount: balance.balance,
+                amount: accountBalance.balance,
                 asset: form.asset.code,
-                available: balance.balance
+                available: accountBalance.balance
               })
             }}
           </p>
@@ -37,9 +37,9 @@
           <p class="app__form-field-description">
             {{
               'create-atomic-swap-form.available-for-issuance' | globalize({
-                amount: balance.asset.availableForIssuance,
+                amount: accountBalance.asset.availableForIssuance,
                 asset: form.asset.code,
-                available: balance.asset.availableForIssuance
+                available: accountBalance.asset.availableForIssuance
               })
             }}
           </p>
@@ -255,7 +255,7 @@ export default {
       accountId: vuexTypes.accountId,
     }),
 
-    balance () {
+    accountBalance () {
       return this.accountBalanceByCode(this.form.asset.code)
     },
 
@@ -299,7 +299,7 @@ export default {
       this.isFormSubmitting = true
       try {
         // eslint-disable-next-line max-len
-        const isAmountMoreThanBalance = +this.form.amount > +this.balance.balance
+        const isAmountMoreThanBalance = +this.form.amount > +this.accountBalance.balance
 
         if (this.isAssetOwner && isAmountMoreThanBalance) {
           await this.postIssuanceOperation()
@@ -370,7 +370,7 @@ export default {
         .createIssuanceRequest({
           asset: this.form.asset.code,
           amount: this.getIssuanceAmount(),
-          receiver: this.balance.id,
+          receiver: this.accountBalance.id,
           reference: this.getReference(),
           creatorDetails: {},
         })
@@ -383,7 +383,7 @@ export default {
     },
 
     getIssuanceAmount () {
-      const availbaleBalance = +this.balance.balance
+      const availbaleBalance = +this.accountBalance.balance
       const amount = +this.form.amount
       return amount > availbaleBalance
         ? MathUtil.subtract(
