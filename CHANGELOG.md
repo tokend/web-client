@@ -11,6 +11,8 @@ for further information about branching and tagging conventions.
 #### Added
 - KYC Recovery
 - Integration with session key server
+- Issuance operation in the `Create atomic swap` form for asset owner
+  if he doesn't have enough money
 
 #### Fixed
 - Resolved an issue when in select field quote assets on the atomic swap form
@@ -20,6 +22,9 @@ for further information about branching and tagging conventions.
 ### "Under the hood" changes
 #### Changed
 - Now using @tokend/js-sdk@1.9.0-rc.0
+
+#### Added
+- Validation case `atomicSwap` in `AmountInputField` component
 
 ## [1.10.0-x.0] - 2019-07-02
 #### Added

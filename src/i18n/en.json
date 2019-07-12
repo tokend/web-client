@@ -2326,7 +2326,9 @@
       "address-lbl": "Address",
       "add-quote-asset-btn": "Add quote asset",
       "quote-assets-subheading": "Quote asset {{ number }}",
-      "created-atomic-swap-msg": "Atomic swap request successfully created"
+      "created-atomic-swap-msg": "Atomic swap request successfully created",
+      "available-balance":"Balance: {{amount}} {{asset}}.",
+      "available-for-issuance": "Available for issuance: {{amount}} {{asset}}"
     },
     "atomic-swaps-explore": {
       "no-list-title": "Atomic swap list is coming soon"

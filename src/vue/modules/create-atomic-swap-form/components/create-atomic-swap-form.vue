@@ -22,6 +22,28 @@
             {{ asset.nameAndCode }}
           </option>
         </select-field>
+        <template v-if="form.asset.code">
+          <p class="app__form-field-description">
+            {{
+              'create-atomic-swap-form.available-balance' | globalize({
+                amount: balance.balance,
+                asset: form.asset.code,
+                available: balance.balance
+              })
+            }}
+          </p>
+        </template>
+        <template v-if="form.asset.code && isAssetOwner">
+          <p class="app__form-field-description">
+            {{
+              'create-atomic-swap-form.available-for-issuance' | globalize({
+                amount: balance.asset.availableForIssuance,
+                asset: form.asset.code,
+                available: balance.asset.availableForIssuance
+              })
+            }}
+          </p>
+        </template>
       </div>
     </div>
 
@@ -30,7 +52,7 @@
         <amount-input-field
           v-model="form.amount"
           name="create-atomic-swap-amount"
-          validation-type="outgoing"
+          :validation-type="getValidationType"
           :label="'create-atomic-swap-form.amount-lbl' | globalize"
           :asset="form.asset"
           :disabled="formMixin.isDisabled"
@@ -167,9 +189,15 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { api } from '@/api'
 import { base } from '@tokend/js-sdk'
+import { MathUtil } from '@/js/utils/math.util'
 
 const EVENTS = {
   createdAtomicSwap: 'created-atomic-swap',
+}
+
+const VALIDATION_TYPES = {
+  outgoing: 'outgoing',
+  atomicSwap: 'atomicSwap',
 }
 
 export default {
@@ -224,7 +252,22 @@ export default {
       baseAtomicSwapBalancesAssets: vuexTypes.baseAtomicSwapBalancesAssets,
       quoteAtomicSwapAssets: vuexTypes.quoteAtomicSwapAssets,
       accountBalanceByCode: vuexTypes.accountBalanceByCode,
+      accountId: vuexTypes.accountId,
     }),
+
+    balance () {
+      return this.accountBalanceByCode(this.form.asset.code)
+    },
+
+    isAssetOwner () {
+      return this.accountId === this.form.asset.owner
+    },
+
+    getValidationType () {
+      return this.isAssetOwner
+        ? VALIDATION_TYPES.atomicSwap
+        : VALIDATION_TYPES.outgoing
+    },
   },
 
   async created () {
@@ -255,8 +298,16 @@ export default {
     async submit () {
       this.isFormSubmitting = true
       try {
+        // eslint-disable-next-line max-len
+        const isAmountMoreThanBalance = +this.form.amount > +this.balance.balance
+
+        if (this.isAssetOwner && isAmountMoreThanBalance) {
+          await this.postIssuanceOperation()
+        }
+
         const createAtomicSwapOperation = this.buildCreateAtomicSwapOperation()
         await api.postOperations(createAtomicSwapOperation)
+
         Bus.success('create-atomic-swap-form.created-atomic-swap-msg')
         this.$emit(EVENTS.createdAtomicSwap)
       } catch (e) {
@@ -312,6 +363,38 @@ export default {
       }
       // eslint-disable-next-line max-len
       return base.CreateAtomicSwapAskRequestBuilder.createAtomicSwapAskRequest(operation)
+    },
+
+    async postIssuanceOperation () {
+      const operation = base.CreateIssuanceRequestBuilder
+        .createIssuanceRequest({
+          asset: this.form.asset.code,
+          amount: this.getIssuanceAmount(),
+          receiver: this.balance.id,
+          reference: this.getReference(),
+          creatorDetails: {},
+        })
+
+      await api.postOperations(operation)
+    },
+
+    getReference () {
+      return btoa(Math.random())
+    },
+
+    getIssuanceAmount () {
+      const availbaleBalance = +this.balance.balance
+      const amount = +this.form.amount
+      return amount > availbaleBalance
+        ? MathUtil.subtract(
+          amount,
+          availbaleBalance
+        )
+        : MathUtil.subtract(
+          availbaleBalance,
+          amount
+
+        )
     },
   },
 }
