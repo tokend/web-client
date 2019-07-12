@@ -8,8 +8,7 @@
         class="clipboard-field__value"
         :id="`clipboard-target-${_uid}`"
       >
-        {{ value }}
-      </span>
+        {{ value }}</span>
       <tooltip
         :show="isCopiedTooltipShown"
         :message="'clipboard-field.copied' | globalize"
