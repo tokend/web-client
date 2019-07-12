@@ -96,6 +96,7 @@ export default {
       isFailed: false,
       depositDetails: {
         address: '',
+        timeout: -1,
         endTime: -1,
         amount: '',
         payload: '',
