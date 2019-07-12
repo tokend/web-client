@@ -17,7 +17,8 @@ export class ModuleScheme {
    * @param {String} scheme.appLogoUrl
    * URL of the image that should be displayed as an application logo
    *
-   * @param {Function} scheme.importEnLocaleFile
+   * @param {Function} scheme.importLanguageResource
+   * Should accept lang key as an argument and return callback
    * Example: _ => import('./path').
    *
    * @param {PageModuleDescriptor[]} scheme.pages
@@ -31,7 +32,7 @@ export class ModuleScheme {
     this._appLogoUrl = scheme.appLogoUrl
     this._pages = scheme.pages
     this._modules = scheme.modules
-    this._importEnLocaleFile = scheme.importEnLocaleFile
+    this._importLanguageResources = scheme.importLanguageResource
 
     // To validate the whole bunch of modules for compatibility
     this._cache = this._createCache()
@@ -43,7 +44,7 @@ export class ModuleScheme {
   get pages () { return this._pages }
   get modules () { return this._modules || [] }
   get cache () { return this._cache }
-  get importEnLocaleFile () { return this._importEnLocaleFile }
+  get importLanguageResource () { return this._importLanguageResources }
 
   _validateRawScheme (scheme) {
     if (!scheme.pages) {

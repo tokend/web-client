@@ -13,8 +13,9 @@ import { buildRouter } from '@/vue-router'
 import { tableScrollShadow } from '@/vue/directives/tableScrollShadow'
 import { ripple } from '@/vue/directives/ripple'
 import { tooltip } from '@/vue/directives/tooltip'
-import { initI18n, mergeIntoI18nOptions } from '@/i18n'
+import { i18n } from '@/i18n'
 import { globalize } from '@/vue/filters/globalize'
+import { globalizeCountry } from './vue/filters/globalizeCountry'
 import { formatDate } from '@/vue/filters/formatDate'
 import { formatMoney } from '@/vue/filters/formatMoney'
 import { formatNumber } from '@/vue/filters/formatNumber'
@@ -33,12 +34,13 @@ async function init () {
   await SchemeRegistry.useScheme(config.MODULE_SCHEME_NAME)
   Vue.use(SchemeRegistry.current)
 
-  if (SchemeRegistry.current.importEnLocaleFile) {
-    const enLocaleJson = await SchemeRegistry.current.importEnLocaleFile()
-    mergeIntoI18nOptions(enLocaleJson)
-  }
+  await i18n.init()
 
-  initI18n()
+  if (SchemeRegistry.current.importLanguageResource) {
+    const resource = await SchemeRegistry.current
+      .importLanguageResource(i18n.language)
+    i18n._appendResources(i18n.language, resource)
+  }
 
   log.setDefaultLevel(config.LOG_LEVEL)
 
@@ -49,6 +51,7 @@ async function init () {
   Vue.directive('ripple', ripple)
   Vue.directive('tooltip', tooltip)
   Vue.filter('globalize', globalize)
+  Vue.filter('globalizeCountry', globalizeCountry)
   Vue.filter('formatDate', formatDate)
   Vue.filter('formatDateDMY', formatDateDMY)
   Vue.filter('formatDateDMYT', formatDateDMYT)

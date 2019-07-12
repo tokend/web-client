@@ -43,8 +43,11 @@ import { AtomicSwapsExplorePageModule } from '@/vue/pages/atomic-swaps/atomic-sw
 import { CreateAtomicSwapFormModule } from '@/vue/modules/create-atomic-swap-form/module'
 
 export default {
-  importEnLocaleFile () {
-    return import('@/modules-arch/schemes/conto-en.json')
+  importLanguageResource (lng) {
+    return {
+      'en': import('@/modules-arch/schemes/conto-en.json'),
+      'ru': import('@/modules-arch/schemes/conto-ru.json'),
+    }[lng]
   },
   modules: [
     new CurrentBusinessIndicatorModule({

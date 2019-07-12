@@ -1,5 +1,5 @@
-import i18next from 'i18next'
+import { globalize } from './globalize'
 
 export function formatCalendar (value) {
-  return i18next.t('formats.calendar', { value })
+  return globalize('formats.calendar', { value })
 }
