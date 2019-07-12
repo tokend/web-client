@@ -7,6 +7,8 @@ import i18nextBrowserLanguageDetector from 'i18next-browser-languagedetector'
 // list of iso639 codes on wiki
 // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
 
+// TODO: make i18n.language and i18n.languages responsive
+
 import moment from 'moment-timezone'
 
 import _isObject from 'lodash/isObject'

@@ -1,5 +1,7 @@
 <template>
   <footer class="footer">
+    <language-picker />
+
     <span class="footer__item footer__text">
       {{ 'footer.copyright' | globalize({ year: currentYear }) }}
     </span>
@@ -22,9 +24,14 @@
 
 <script>
 import { vueRoutes } from '@/vue-router/routes'
+import LanguagePicker from './footer/LanguagePicker'
 
 export default {
   name: 'app-footer',
+
+  components: {
+    LanguagePicker,
+  },
 
   data: () => ({
     vueRoutes,
