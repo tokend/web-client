@@ -10,6 +10,10 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Real time updates on all pages
+- Set up support of multiple languages
+
+#### Fixed
+- Now "Show password" buttons do not participate in tab order
 
 ### Experimental features changes
 #### Added
