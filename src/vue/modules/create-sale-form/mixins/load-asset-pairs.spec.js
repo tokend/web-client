@@ -4,7 +4,7 @@ import { ASSET_POLICIES } from '@tokend/js-sdk'
 
 import { mount, createLocalVue } from '@vue/test-utils'
 
-import { api } from '@/api'
+import * as apiWrp from '@/api'
 import { Asset } from '../wrappers/asset'
 
 const localVue = createLocalVue()
@@ -34,8 +34,10 @@ describe('Load asset pairs mixin', () => {
     describe('loadBaseAssetsByQuote', () => {
       it('calls api.get method with provided params and returns base assets',
         async () => {
-          sandbox.stub(api, 'get').resolves({
-            data: [
+          sandbox.stub(apiWrp.api, 'get').resolves('getResponseObject')
+          sandbox.stub(apiWrp, 'loadingDataViaLoop')
+            .withArgs('getResponseObject')
+            .resolves([
               {
                 baseAsset: {
                   id: 'BTC',
@@ -54,12 +56,11 @@ describe('Load asset pairs mixin', () => {
                   policies: { value: ASSET_POLICIES.baseAsset },
                 },
               },
-            ],
-          })
+            ])
 
           const result = await wrapper.vm.loadBaseAssetsByQuote('USD')
 
-          expect(api.get)
+          expect(apiWrp.api.get)
             .to.have.been.calledOnceWithExactly(
               '/v3/asset_pairs',
               {

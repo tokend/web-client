@@ -39,10 +39,7 @@ export default {
         softCap: this.informationStepForm.softCap,
         hardCap: this.informationStepForm.hardCap,
         requiredBaseAssetForHardCap: this.informationStepForm.assetsToSell,
-        quoteAssets: [
-          ...this.informationStepForm.quoteAssets,
-          this.informationStepForm.capAsset.code,
-        ].map((item) => ({
+        quoteAssets: this.informationStepForm.quoteAssets.map((item) => ({
           asset: item,
           price: DEFAULT_QUOTE_ASSET_PRICE,
         })),

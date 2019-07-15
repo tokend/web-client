@@ -35,6 +35,11 @@ for further information about branching and tagging conventions.
 #### Added
 - New use case - conto
 
+## [1.9.1] - 2019-07-15
+#### Changed
+- Allow sale cap asset to be picked as quote asset. Was: cap asset was
+  assigned automatically as a quote asset.
+
 ## [1.9.0] - 2019-07-10
 
 ## [1.9.0-rc.1] - 2019-07-08
@@ -844,7 +849,8 @@ for further information about branching and tagging conventions.
 
 [Unreleased]: https://github.com/tokend/web-client/compare/1.10.0-x.1...HEAD
 [1.10.0-x.1]: https://github.com/tokend/web-client/compare/1.10.0-x.0...1.10.0-x.1
-[1.10.0-x.0]: https://github.com/tokend/web-client/compare/1.9.0...1.10.0-x.0
+[1.10.0-x.0]: https://github.com/tokend/web-client/compare/1.9.1...1.10.0-x.0
+[1.9.1]: https://github.com/tokend/web-client/compare/1.9.0...1.9.1
 [1.9.0]: https://github.com/tokend/web-client/compare/1.9.0-rc.1...1.9.0
 [1.9.0-rc.1]: https://github.com/tokend/web-client/compare/1.9.0-rc.0...1.9.0-rc.1
 [1.9.0-rc.0]: https://github.com/tokend/web-client/compare/1.8.0...1.9.0-rc.0
