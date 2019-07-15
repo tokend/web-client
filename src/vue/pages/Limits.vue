@@ -109,6 +109,8 @@ import config from '@/config'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import { api } from '@/api'
 
+const DELAY_REFRESH_LIST_MS = 1000
+
 export default {
   name: 'limits',
   components: {
@@ -263,7 +265,9 @@ export default {
       this.reloadRequests()
     },
     reloadRequests () {
-      this.setLimitsRequestsLoader()
+      setTimeout(() => {
+        this.setLimitsRequestsLoader()
+      }, DELAY_REFRESH_LIST_MS)
     },
     setDefaultAssetCode () {
       this.selectedAsset = this.accountBalancesAssetsCodes

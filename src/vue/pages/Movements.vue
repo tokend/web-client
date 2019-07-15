@@ -46,6 +46,8 @@ import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
 import { MovementsTopBarReitModule } from '@modules/movements-top-bar-reit/module'
 
+const DELAY_REFRESH_LIST_MS = 1000
+
 export default {
   name: 'movements-page',
   components: {
@@ -86,7 +88,9 @@ export default {
     },
 
     updateList () {
-      this.historyState++
+      setTimeout(() => {
+        this.historyState++
+      }, DELAY_REFRESH_LIST_MS)
     },
   },
 }

@@ -110,7 +110,7 @@ import { PollRecord } from '@/js/records/entities/poll.record'
 import SelectFilterField from '@/vue/fields/SelectFilterField'
 import TickFilterField from '@/vue/fields/TickFilterField'
 
-const DELAY_REFRESH_LIST_TIME = 500
+const DELAY_REFRESH_LIST_MS = 1000
 
 export default {
   name: 'polls-all',
@@ -212,7 +212,7 @@ export default {
     refreshPollsList () {
       setTimeout(() => {
         this.reloadList()
-      }, DELAY_REFRESH_LIST_TIME)
+      }, DELAY_REFRESH_LIST_MS)
     },
 
     refreshPollsListWithCloseDrawer () {

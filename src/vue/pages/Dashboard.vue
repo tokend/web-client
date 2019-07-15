@@ -74,7 +74,7 @@
 
           <submodule-importer
             :submodule="getModule().getSubmodule(IssuanceFormModule)"
-            @issuance-created="showDrawer = false"
+            @issuance-created="closeDrawerAndUpdateList()"
           />
         </template>
 
@@ -109,6 +109,7 @@ import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashbo
 const REFS = {
   movementsHistory: 'movements-history',
 }
+const DELAY_REFRESH_LIST_MS = 1000
 
 export default {
   name: 'dashboard',
@@ -189,7 +190,7 @@ export default {
       this.showDrawer = false
       setTimeout(() => {
         this.updateBalancesAndList()
-      }, 1000)
+      }, DELAY_REFRESH_LIST_MS)
     },
     updateBalancesAndList () {
       return Promise.all([

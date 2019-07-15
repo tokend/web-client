@@ -47,6 +47,7 @@
             :page-limit="recordsToShow"
             @first-page-load="setTradeHistory"
             @next-page-load="extendTradeHistory"
+            :ref="REFS.tradeHistory"
           />
         </div>
       </div>
@@ -66,6 +67,11 @@ import CollectionLoader from '@/vue/common/CollectionLoader'
 import { mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
+const REFS = {
+  tradeHistory: 'trade-history',
+}
+
+const DELAY_REFRESH_LIST_MS = 1000
 export default {
   name: 'trade-exchange',
   components: {
@@ -88,6 +94,7 @@ export default {
     recordsToShow: config.TRANSACTIONS_PER_PAGE,
 
     loadTradeDataTickerIntervalId: -1,
+    REFS,
   }),
   computed: {
     assetPair () {
@@ -186,7 +193,6 @@ export default {
     },
     setTradeHistory (data) {
       this.tradeHistory = data
-      this.isTradeHistoryLoading = true
     },
     extendTradeHistory (data) {
       this.tradeHistory = this.tradeHistory.concat(data)
@@ -196,7 +202,7 @@ export default {
       this.assetPair.quote = assetPair.quote
     },
     async reloadTrades () {
-      await this.loadData()
+      await this.reloadData()
       await this.loadBalances()
     },
     sortOffersList (list, type) {
@@ -209,6 +215,17 @@ export default {
           return 0
         }
       })
+    },
+
+    reloadData () {
+      setTimeout(async () => {
+        await this.loadTradeOffers()
+        this.reloadCollectionLoader()
+      }, DELAY_REFRESH_LIST_MS)
+    },
+
+    reloadCollectionLoader () {
+      return this.$refs[REFS.tradeHistory].loadFirstPage()
     },
   },
 }

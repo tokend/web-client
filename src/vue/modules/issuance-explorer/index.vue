@@ -37,6 +37,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 const EVENTS = {
   shouldUpdate: 'update:shouldUpdate',
 }
+const DELAY_REFRESH_LIST_MS = 1000
 
 export default {
   name: 'issuance-explorer-module',
@@ -67,7 +68,9 @@ export default {
   watch: {
     shouldUpdate: function (value) {
       if (value) {
-        this.initFirstPageLoader()
+        setTimeout(() => {
+          this.initFirstPageLoader()
+        }, DELAY_REFRESH_LIST_MS)
         this.$emit(EVENTS.shouldUpdate, false)
       }
     },
