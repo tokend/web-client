@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [1.9.1] - 2019-07-15
+#### Changed
+- Allow sale quote cap asset to be picked as quote asset. Was: cap asset was
+  assigned automatically as a quote asset.
+
 ## [1.9.0] - 2019-07-10
 
 ## [1.9.0-rc.1] - 2019-07-08
@@ -814,7 +819,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.9.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.9.1...HEAD
+[1.9.1]: https://github.com/tokend/web-client/compare/1.9.0...1.9.1
 [1.9.0]: https://github.com/tokend/web-client/compare/1.9.0-rc.1...1.9.0
 [1.9.0-rc.1]: https://github.com/tokend/web-client/compare/1.9.0-rc.0...1.9.0-rc.1
 [1.9.0-rc.0]: https://github.com/tokend/web-client/compare/1.8.0...1.9.0-rc.0
