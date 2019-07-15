@@ -57,11 +57,15 @@ describe('Issuance explorer module', () => {
     describe('watcher', () => {
       describe('shouldUpdate', () => {
         it('should call initFirstPageLoader method if the passed value is true', async () => {
+          const clock = sinon.useFakeTimers()
+
           sinon.stub(wrapper.vm, 'initFirstPageLoader').resolves()
 
           wrapper.setProps({ shouldUpdate: true })
 
           await wrapper.vm.$nextTick()
+
+          clock.tick(1000)
 
           expect(wrapper.vm.initFirstPageLoader).to.have.been.calledOnce
 
@@ -69,11 +73,15 @@ describe('Issuance explorer module', () => {
         })
 
         it('should not call initFirstPageLoader method if the passed value is false', async () => {
+          const clock = sinon.useFakeTimers()
+
           sinon.stub(wrapper.vm, 'initFirstPageLoader').resolves()
 
           wrapper.setProps({ shouldUpdate: false })
 
           await wrapper.vm.$nextTick()
+
+          clock.tick(1000)
 
           expect(wrapper.vm.initFirstPageLoader).to.have.not.been.called
 
