@@ -550,7 +550,7 @@
       "account-type-general-title": "General",
       "account-type-corporate-title": "Corporate",
       "account-type-general-description": "Deposit, withdraw, buy, sell and transfer assets",
-      "account-type-corporate-description": "Deposit, withdraw, buy, sell, transfer and create assets "
+      "account-type-corporate-description": "Deposit, withdraw, buy, sell, transfer and create assets"
     },
     "verification-state-message": {
       "blocked-title": "Account blocked",
@@ -586,7 +586,6 @@
       "sign-out-btn": "Sign out"
     },
     "general-form": {
-      "address-postal-code-lbl'": "Postal code",
       "documents-lbl": "Documents",
       "id-document-face-lbl": "Identity document (face side)",
       "id-document-back-lbl": "Identity document (back side)",
