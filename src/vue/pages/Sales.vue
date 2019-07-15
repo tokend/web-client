@@ -24,7 +24,7 @@
       </template>
 
       <template
-        v-if="getModule().canRenderSubmodule(CreateSaleFormModule)"
+        v-if="getModule().canRenderSubmodule(CreateSaleFormModuleSimplified)"
         slot="extra"
       >
         <button
@@ -71,7 +71,8 @@
       </drawer>
     </template>
 
-    <template v-if="getModule().canRenderSubmodule(CreateSaleFormModule)">
+    <!-- eslint-disable-next-line max-len -->
+    <template v-if="getModule().canRenderSubmodule(CreateSaleFormModuleSimplified)">
       <drawer
         :is-shown.sync="isCreateSaleDrawerShown"
         :close-by-click-outside="false"
@@ -81,7 +82,7 @@
           {{ 'sales.new-sale' | globalize }}
         </template>
         <submodule-importer
-          :submodule="getModule().getSubmodule(CreateSaleFormModule)"
+          :submodule="getModule().getSubmodule(CreateSaleFormModuleSimplified)"
           @close="isCreateSaleDrawerShown = false"
         />
       </drawer>
@@ -100,7 +101,7 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
 
-import { CreateSaleFormModule } from '@modules/create-sale-form/module'
+import { CreateSaleFormModuleSimplified } from '@modules/create-sale-form-simplified/module'
 
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { CreateOpportunityModule } from '@/vue/modules/create-opportunity/module'
@@ -121,7 +122,7 @@ export default {
     MIN_AMOUNT: config.MIN_AMOUNT,
     MAX_AMOUNT: config.MAX_AMOUNT,
     DECIMAL_POINTS: config.DECIMAL_POINTS,
-    CreateSaleFormModule,
+    CreateSaleFormModuleSimplified,
     vueRoutes,
     CreateOpportunityModule,
     SalesListOwnedPageModule,
