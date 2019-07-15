@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [1.10.0-x.2] - 2019-07-15
+#### Fixed
+- Resolved a KYC recovery issue of unverified account where the request has
+  been sent but the screen was continued been showing blank
+- Resolved a small design issue on KYC recovery TFA form when hint text was
+  too close to the input field
+
 ## [1.10.0-x.1] - 2019-07-12
 #### Added
 - KYC Recovery
@@ -847,7 +854,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.10.0-x.1...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.10.0-x.2...HEAD
+[1.10.0-x.2]: https://github.com/tokend/web-client/compare/1.10.0-x.1...1.10.0-x.2
 [1.10.0-x.1]: https://github.com/tokend/web-client/compare/1.10.0-x.0...1.10.0-x.1
 [1.10.0-x.0]: https://github.com/tokend/web-client/compare/1.9.1...1.10.0-x.0
 [1.9.1]: https://github.com/tokend/web-client/compare/1.9.0...1.9.1
