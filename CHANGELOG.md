@@ -11,6 +11,8 @@ for further information about branching and tagging conventions.
 #### Added
 - KYC Recovery
 - Integration with session key server
+- Simplify form of create new sale
+- Simplify pages for sale details
 
 #### Fixed
 - Resolved an issue when in select field quote assets on the atomic swap form
