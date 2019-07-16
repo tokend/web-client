@@ -1,9 +1,9 @@
-import { api } from '@/api'
+import { api, loadingDataViaLoop } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { Asset } from '../wrappers/asset'
 
-const ASSET_PAIRS_PAGE_LIMIT = 100
+const MAX_PAGE_LIMIT = 100
 
 export default {
   methods: {
@@ -11,18 +11,12 @@ export default {
       let result
 
       try {
-        let pageResponse = await api.get('/v3/asset_pairs', {
+        let response = await api.get('/v3/asset_pairs', {
           filter: { quote_asset: quoteAssetCode },
-          page: { limit: ASSET_PAIRS_PAGE_LIMIT },
+          page: { limit: MAX_PAGE_LIMIT },
           include: ['base_asset'],
         })
-        let assetPairs = pageResponse.data
-
-        // TODO: replace by api method when it will be added
-        while (pageResponse.data.length === ASSET_PAIRS_PAGE_LIMIT) {
-          pageResponse = await pageResponse.fetchNext()
-          assetPairs.push(...pageResponse.data)
-        }
+        let assetPairs = await loadingDataViaLoop(response)
 
         result = assetPairs.map(a => a.baseAsset)
           .map(a => new Asset(a))
