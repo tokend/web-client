@@ -19,7 +19,7 @@
             :is-buy="true"
             :is-loading="isBuyOffersLoading"
             :offers-list="buyOffersList"
-            @reload-trades="reloadTrades"
+            @reload-trades="updateList"
           />
 
           <trade-offers-renderer
@@ -28,7 +28,7 @@
             :is-buy="false"
             :is-loading="isSellOffersLoading"
             :offers-list="sellOffersList"
-            @reload-trades="reloadTrades"
+            @reload-trades="updateList"
           />
         </div>
       </div>
@@ -66,12 +66,12 @@ import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import { mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 const REFS = {
   tradeHistory: 'trade-history',
 }
 
-const DELAY_REFRESH_LIST_MS = 1000
 export default {
   name: 'trade-exchange',
   components: {
@@ -80,9 +80,7 @@ export default {
     TradeOffersRenderer,
     CollectionLoader,
   },
-  props: {
-    isLoading: { type: Boolean, default: false },
-  },
+  mixins: [UpdateList],
   data: () => ({
     tradeHistory: [],
     buyOffersList: [],
@@ -115,10 +113,6 @@ export default {
         }
       },
     },
-    isLoading: async function () {
-      await this.loadData()
-      this.$emit('update:isLoading', false)
-    },
   },
   async created () {
     this.setCurrentAssets(this.assetPair)
@@ -126,6 +120,7 @@ export default {
       await this.loadData()
       this.createLoadTradeDataTicker()
     }
+    this.listenUpdateList(this.reloadTrades)
   },
   async beforeDestroy () {
     this.clearLoadTradeDataTicker()
@@ -217,11 +212,9 @@ export default {
       })
     },
 
-    reloadData () {
-      setTimeout(async () => {
-        await this.loadTradeOffers()
-        this.reloadCollectionLoader()
-      }, DELAY_REFRESH_LIST_MS)
+    async reloadData () {
+      await this.loadTradeOffers()
+      this.reloadCollectionLoader()
     },
 
     reloadCollectionLoader () {

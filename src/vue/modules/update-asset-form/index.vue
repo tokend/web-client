@@ -61,7 +61,7 @@ const STEPS = {
 }
 const EVENTS = {
   requestUpdated: 'request-updated',
-  close: 'close',
+  submitted: 'submitted',
 }
 
 export default {
@@ -162,8 +162,10 @@ export default {
       try {
         await this.submitUpdateAssetRequest()
         Bus.success('update-asset-form.request-submitted-msg')
-        this.$emit(EVENTS.requestUpdated)
-        this.$emit(EVENTS.close)
+        if (this.requestId) {
+          this.$emit(EVENTS.requestUpdated)
+        }
+        this.$emit(EVENTS.submitted)
       } catch (e) {
         this.isDisabled = false
         ErrorHandler.process(e)

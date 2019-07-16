@@ -62,7 +62,7 @@
         </template>
         <submodule-importer
           :submodule="getModule().getSubmodule(CreateOpportunityModule)"
-          @close="isAssetSaleDrawerShown = false"
+          @submitted="closeAssetSaleDrawerAndUpdateList()"
           :account-id="accountId"
           :min-amount="MIN_AMOUNT"
           :max-amount="MAX_AMOUNT"
@@ -82,7 +82,7 @@
         </template>
         <submodule-importer
           :submodule="getModule().getSubmodule(CreateSaleFormModule)"
-          @close="isCreateSaleDrawerShown = false"
+          @submitted="closeCreateSaleDrawerAndUpdateList()"
         />
       </drawer>
     </template>
@@ -105,6 +105,7 @@ import { CreateSaleFormModule } from '@modules/create-sale-form/module'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { CreateOpportunityModule } from '@/vue/modules/create-opportunity/module'
 import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
   name: 'sales',
@@ -113,6 +114,8 @@ export default {
     Drawer,
     SubmoduleImporter,
   },
+
+  mixins: [UpdateList],
 
   data: _ => ({
     isCreateSaleDrawerShown: false,
@@ -131,6 +134,18 @@ export default {
     ...mapGetters({
       accountId: vuexTypes.accountId,
     }),
+  },
+
+  methods: {
+    closeAssetSaleDrawerAndUpdateList () {
+      this.isAssetSaleDrawerShown = false
+      this.updateList()
+    },
+
+    closeCreateSaleDrawerAndUpdateList () {
+      this.isCreateSaleDrawerShown = false
+      this.updateList()
+    },
   },
 }
 </script>

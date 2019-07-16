@@ -9,7 +9,7 @@
 
           <update-asset-form-module
             :asset-code="selectedAsset.code"
-            @close="isDrawerShown = false"
+            @submitted="isDrawerShown = false"
           />
         </template>
 
@@ -93,6 +93,7 @@ import { types } from '../store/types'
 import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
   name: 'assets-renderer',
@@ -105,6 +106,8 @@ export default {
     UpdateAssetFormModule,
     AssetSkeletonLoader,
   },
+
+  mixins: [UpdateList],
 
   props: {
     isAccountUnverified: {
@@ -178,6 +181,8 @@ export default {
       this.isLoadFailed = true
       ErrorHandler.processWithoutFeedback()
     }
+
+    this.listenUpdateList(this.loadAssets)
   },
 
   methods: {

@@ -108,8 +108,7 @@ import { LimitsUpdateRequestRecord } from '@/js/records/requests/limits-update.r
 import config from '@/config'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import { api } from '@/api'
-
-const DELAY_REFRESH_LIST_MS = 1000
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
   name: 'limits',
@@ -123,6 +122,9 @@ export default {
     CollectionLoader,
     NoDataMessage,
   },
+
+  mixins: [UpdateList],
+
   data: () => ({
     selectedAsset: '',
     isLimitsChangeDrawerShown: false,
@@ -170,6 +172,7 @@ export default {
     if (this.accountBalancesAssetsCodes.length) this.setDefaultAssetCode()
     this.loadLimits()
     this.setLimitsRequestsLoader()
+    this.listenUpdateList(this.reloadRequests)
   },
   methods: {
     ...mapActions({
@@ -262,12 +265,10 @@ export default {
     },
     limitsChanged () {
       this.isLimitsChangeDrawerShown = false
-      this.reloadRequests()
+      this.updateList()
     },
     reloadRequests () {
-      setTimeout(() => {
-        this.setLimitsRequestsLoader()
-      }, DELAY_REFRESH_LIST_MS)
+      this.setLimitsRequestsLoader()
     },
     setDefaultAssetCode () {
       this.selectedAsset = this.accountBalancesAssetsCodes

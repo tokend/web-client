@@ -42,7 +42,7 @@
 
         <submodule-importer
           :submodule="getModule().getSubmodule(CreateAssetFormModule)"
-          @close="isAssetDrawerShown = false"
+          @submitted="closeDrawerAndUpdateList()"
         />
       </drawer>
     </template>
@@ -56,7 +56,7 @@
 
         <submodule-importer
           :submodule="getModule().getSubmodule(CreateAssetFormSimplifiedModule)"
-          @close="isAssetDrawerShown = false"
+          @submitted="closeDrawerAndUpdateList()"
         />
       </drawer>
     </template>
@@ -78,6 +78,7 @@ import { vuexTypes } from '@/vuex'
 import { CreateAssetFormModule } from '@modules/create-asset-form/module'
 import { CreateAssetFormSimplifiedModule } from '@modules/create-asset-form-simplified/module'
 import { MyAssetsPageModule } from './my-assets-page-module'
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
   name: 'assets',
@@ -86,6 +87,7 @@ export default {
     Drawer,
     SubmoduleImporter,
   },
+  mixins: [UpdateList],
   data: _ => ({
     vueRoutes,
     CreateAssetFormModule,
@@ -97,6 +99,12 @@ export default {
     ...mapGetters({
       account: vuexTypes.account,
     }),
+  },
+  methods: {
+    closeDrawerAndUpdateList () {
+      this.isAssetDrawerShown = false
+      this.updateList()
+    },
   },
 }
 </script>

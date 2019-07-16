@@ -43,7 +43,7 @@
 
           <submodule-importer
             :submodule="getModule().getSubmodule(CreatePollFormModule)"
-            @submitted="isCreatePollDrawerShown = false"
+            @submitted="closeDrawerAndUpdateList()"
           />
         </drawer>
       </template>
@@ -60,6 +60,7 @@ import { PollsAllPageModule } from '@/vue/pages/polls-all-page-module'
 import Drawer from '@/vue/common/Drawer'
 import { CreatePollFormModule } from '@/vue/modules/create-poll-form/module'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
   name: 'polls',
@@ -68,6 +69,9 @@ export default {
     Drawer,
     SubmoduleImporter,
   },
+
+  mixins: [UpdateList],
+
   data: _ => ({
     isCreatePollDrawerShown: false,
     isPollsLoading: false,
@@ -76,6 +80,13 @@ export default {
     PollsAllPageModule,
     CreatePollFormModule,
   }),
+
+  methods: {
+    closeDrawerAndUpdateList () {
+      this.isCreatePollDrawerShown = false
+      this.updateList()
+    },
+  },
 }
 </script>
 

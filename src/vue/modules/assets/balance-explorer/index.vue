@@ -9,7 +9,7 @@
 
           <update-asset-form-module
             :asset-code="selectedBalance.asset.code"
-            @close="isDrawerShown = false"
+            @submitted="closeDrawerAndUpdateList"
           />
         </template>
 
@@ -86,6 +86,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
   name: 'balance-explorer',
@@ -97,6 +98,9 @@ export default {
     UpdateAssetFormModule,
     BalanceSkeletonLoader,
   },
+
+  mixins: [UpdateList],
+
   props: {
     defaultQuoteAsset: {
       type: String,
@@ -129,6 +133,7 @@ export default {
 
   async created () {
     await this.load()
+    this.listenUpdateList(this.load)
   },
 
   methods: {
@@ -150,6 +155,11 @@ export default {
       this.selectedBalance = balance
       this.isUpdateMode = false
       this.isDrawerShown = true
+    },
+
+    closeDrawerAndUpdateList () {
+      this.isDrawerShown = false
+      this.updateList()
     },
   },
 }

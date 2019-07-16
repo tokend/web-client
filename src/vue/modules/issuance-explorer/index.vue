@@ -33,11 +33,7 @@ import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
-
-const EVENTS = {
-  shouldUpdate: 'update:shouldUpdate',
-}
-const DELAY_REFRESH_LIST_MS = 1000
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
   name: 'issuance-explorer-module',
@@ -46,12 +42,7 @@ export default {
     CollectionLoader,
   },
 
-  props: {
-    shouldUpdate: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  mixins: [UpdateList],
 
   data: _ => ({
     isLoaded: false,
@@ -65,19 +56,9 @@ export default {
     }),
   },
 
-  watch: {
-    shouldUpdate: function (value) {
-      if (value) {
-        setTimeout(() => {
-          this.initFirstPageLoader()
-        }, DELAY_REFRESH_LIST_MS)
-        this.$emit(EVENTS.shouldUpdate, false)
-      }
-    },
-  },
-
   created () {
     this.initFirstPageLoader()
+    this.listenUpdateList(this.initFirstPageLoader)
   },
   methods: {
     ...mapMutations('issuance-explorer', {

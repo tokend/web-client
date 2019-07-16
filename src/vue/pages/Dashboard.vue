@@ -105,11 +105,11 @@ import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 const REFS = {
   movementsHistory: 'movements-history',
 }
-const DELAY_REFRESH_LIST_MS = 1000
 
 export default {
   name: 'dashboard',
@@ -119,6 +119,9 @@ export default {
     Drawer,
     SubmoduleImporter,
   },
+
+  mixins: [UpdateList],
+
   data: () => ({
     currentAsset: null,
     isLoaded: false,
@@ -162,6 +165,7 @@ export default {
   async created () {
     await this.loadBalances()
     this.setCurrentAsset()
+    this.listenUpdateList(this.updateBalancesAndList)
     this.isLoaded = true
   },
   methods: {
@@ -179,7 +183,7 @@ export default {
     },
 
     // TODO: find a better way to execute child’s reload-list method
-    updateList () {
+    updateMovementsHistoryList () {
       if (!this.$refs[REFS.movementsHistory]) {
         return
       }
@@ -188,14 +192,12 @@ export default {
     },
     closeDrawerAndUpdateList () {
       this.showDrawer = false
-      setTimeout(() => {
-        this.updateBalancesAndList()
-      }, DELAY_REFRESH_LIST_MS)
+      this.updateList()
     },
     updateBalancesAndList () {
       return Promise.all([
         this.loadBalances(),
-        this.updateList(),
+        this.updateMovementsHistoryList(),
       ])
     },
   },

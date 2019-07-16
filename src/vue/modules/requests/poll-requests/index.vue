@@ -7,7 +7,7 @@
         </template>
         <request-viewer
           :request="selectedRequest"
-          @cancel="(isDrawerShown = false) || initFirstPageLoader()"
+          @cancel="(isDrawerShown = false) || updateList()"
         />
       </drawer>
 
@@ -40,7 +40,7 @@ import { types } from './store/types'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import RequestsTable from './components/requests-table'
 import RequestViewer from './components/request-viewer'
-import { Bus } from '@/js/helpers/event-bus'
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
   name: 'poll-requests',
@@ -50,6 +50,7 @@ export default {
     Drawer,
     RequestViewer,
   },
+  mixins: [UpdateList],
   data: _ => ({
     isLoaded: false,
     isLoadingFailed: false,
@@ -64,9 +65,7 @@ export default {
   },
   async created () {
     this.initFirstPageLoader()
-    Bus.on('polls:updateRequestsList', () =>
-      this.initFirstPageLoader()
-    )
+    this.listenUpdateList(this.initFirstPageLoader)
   },
   methods: {
     ...mapMutations('poll-requests', {

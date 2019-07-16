@@ -78,6 +78,7 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 const SALE_STATES = {
   live: {
@@ -106,6 +107,9 @@ export default {
     SelectField,
     SaleSkeletonLoader,
   },
+
+  mixins: [UpdateList],
+
   props: {
     isUserSales: {
       type: Boolean,
@@ -189,6 +193,10 @@ export default {
     isUserSales () {
       this.recordsLoader()
     },
+  },
+
+  created () {
+    this.listenUpdateList(this.recordsLoader)
   },
 
   methods: {

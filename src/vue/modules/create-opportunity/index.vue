@@ -494,7 +494,7 @@ const EMPTY_DOCUMENT = {
   key: '',
 }
 const EVENTS = {
-  close: 'close',
+  submitted: 'submitted',
 }
 const FORM_TYPES = [
   {
@@ -757,7 +757,7 @@ export default {
           saleCreationOperation
         )
         Bus.success('create-opportunity.successfully-submitted-msg')
-        this.$emit(EVENTS.close)
+        this.$emit(EVENTS.submitted)
       } catch (e) {
         this.enableForm()
         ErrorHandler.process(e)

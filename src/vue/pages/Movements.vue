@@ -45,8 +45,7 @@ import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
 import { MovementsTopBarReitModule } from '@modules/movements-top-bar-reit/module'
-
-const DELAY_REFRESH_LIST_MS = 1000
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
   name: 'movements-page',
@@ -54,6 +53,8 @@ export default {
     NoDataMessage,
     SubmoduleImporter,
   },
+
+  mixins: [UpdateList],
 
   data: _ => ({
     MovementsHistoryModule,
@@ -69,6 +70,10 @@ export default {
     },
     historyState: 0,
   }),
+
+  created () {
+    this.listenUpdateList(this.updateMovementsHistoryList)
+  },
 
   methods: {
     updateAsset (asset) {
@@ -87,10 +92,8 @@ export default {
       this.updateList()
     },
 
-    updateList () {
-      setTimeout(() => {
-        this.historyState++
-      }, DELAY_REFRESH_LIST_MS)
+    updateMovementsHistoryList () {
+      this.historyState++
     },
   },
 }
