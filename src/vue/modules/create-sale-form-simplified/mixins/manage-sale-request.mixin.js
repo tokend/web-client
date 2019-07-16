@@ -36,7 +36,8 @@ export default {
         endTime: DateUtil.toTimestamp(this.informationStepForm.endTime),
         baseAsset: this.informationStepForm.baseAsset.code,
         defaultQuoteAsset: this.informationStepForm.capAsset.code,
-        softCap: this.informationStepForm.softCap,
+        softCap: this.informationStepForm.softCap ||
+          this.informationStepForm.hardCap,
         hardCap: this.informationStepForm.hardCap,
         requiredBaseAssetForHardCap: this.informationStepForm.assetsToSell,
         quoteAssets: [
@@ -44,7 +45,8 @@ export default {
           this.informationStepForm.capAsset.code,
         ].map((item) => ({
           asset: item,
-          price: DEFAULT_QUOTE_ASSET_PRICE,
+          price: (this.informationStepForm.capAsset.code === item)
+            ? this.informationStepForm.price : DEFAULT_QUOTE_ASSET_PRICE,
         })),
         creatorDetails: {
           name: this.informationStepForm.name,

@@ -38,27 +38,6 @@
         </select-field>
       </div>
     </div>
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <select-field
-          :value="form.capAsset.code"
-          @input="setCapAssetByCode"
-          name="create-sale-base-asset"
-          :label="'create-sale-form.cap-asset-lbl' | globalize"
-          :error-message="!isQuoteAssetsLoaded || availableQuoteAssets.length
-            ? ''
-            : 'create-sale-form.no-investable-assets-err' | globalize"
-        >
-          <option
-            v-for="asset in baseAssets"
-            :key="asset.code"
-            :value="asset.code"
-          >
-            {{ asset.nameAndCode }}
-          </option>
-        </select-field>
-      </div>
-    </div>
 
     <div class="app__form-row">
       <div class="app__form-field">
@@ -96,35 +75,43 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <date-field
-          v-model="form.startTime"
-          name="create-sale-start-time"
-          :enable-time="true"
-          @input="touchField('form.startTime')"
-          @blur="touchField('form.startTime')"
-          :label="'create-sale-form.start-time-lbl' | globalize"
-          :error-message="getFieldErrorMessage('form.startTime')"
-        />
+        <select-field
+          :value="form.capAsset.code"
+          @input="setCapAssetByCode"
+          name="create-sale-base-asset"
+          :label="'create-sale-form.cap-asset-lbl' | globalize"
+          :error-message="!isQuoteAssetsLoaded || availableQuoteAssets.length
+            ? ''
+            : 'create-sale-form.no-investable-assets-err' | globalize"
+        >
+          <option
+            v-for="asset in baseAssets"
+            :key="asset.code"
+            :value="asset.code"
+          >
+            {{ asset.nameAndCode }}
+          </option>
+        </select-field>
       </div>
     </div>
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <date-field
-          v-model="form.endTime"
-          :enable-time="true"
-          :disable-before="yesterday"
-          @input="touchField('form.endTime')"
-          @blur="touchField('form.endTime')"
-          name="create-sale-end-time"
-          :label="'create-sale-form.close-time-lbl' | globalize"
-          :error-message="getFieldErrorMessage(
-            'form.endTime', { minDate: form.startTime || getCurrentDate() }
-          )"
+        <input-field
+          white-autofill
+          v-model="form.price"
+          @blur="touchField('form.price')"
+          name="create-sale-price"
+          type="number"
+          :min="0"
+          :max="MAX_AMOUNT"
+          :step="MIN_AMOUNT"
+          :label="'create-sale-form.price' |
+            globalize({ asset: form.capAsset.code })"
+          :error-message="getFieldErrorMessage('form.price')"
         />
       </div>
     </div>
-
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
@@ -149,21 +136,27 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <input-field
-          white-autofill
-          type="number"
-          :min="0"
-          :max="MAX_AMOUNT"
-          :step="MIN_AMOUNT"
-          v-model="form.hardCap"
-          @blur="touchField('form.hardCap')"
-          name="create-sale-hard-cap"
-          :label="'create-sale-form.hard-cap-lbl' | globalize({
-            asset: form.capAsset.code
-          })"
+        <date-field
+          v-model="form.startTime"
+          name="create-sale-start-time"
+          :enable-time="true"
+          @input="touchField('form.startTime')"
+          @blur="touchField('form.startTime')"
+          :label="'create-sale-form.start-time-lbl' | globalize"
+          :error-message="getFieldErrorMessage('form.startTime')"
+        />
+      </div>
+      <div class="app__form-field">
+        <date-field
+          v-model="form.endTime"
+          :enable-time="true"
+          :disable-before="yesterday"
+          @input="touchField('form.endTime')"
+          @blur="touchField('form.endTime')"
+          name="create-sale-end-time"
+          :label="'create-sale-form.close-time-lbl' | globalize"
           :error-message="getFieldErrorMessage(
-            'form.hardCap',
-            { softCap: form.softCap || '0' }
+            'form.endTime', { minDate: form.startTime || getCurrentDate() }
           )"
         />
       </div>
@@ -180,35 +173,6 @@
             })
           }}
         </p>
-      </div>
-    </div>
-
-    <div
-      v-if="availableQuoteAssets.length"
-      class="information-step-form__quote-assets"
-    >
-      <p class="information-step-form__quote-assets-title">
-        {{ 'create-sale-form.accept-investments-msg' | globalize }}
-      </p>
-
-      <div
-        class="app__form-row"
-        v-for="item in availableQuoteAssets"
-        :key="item.code"
-      >
-        <div class="app__form-field">
-          <tick-field
-            :name="`create-sale-tick-${item.code}`"
-            v-model="form.quoteAssets"
-            :cb-value="item.code"
-          >
-            {{ item.nameAndCode }}
-          </tick-field>
-        </div>
-      </div>
-
-      <div class="information-step-form__error-text">
-        {{ getFieldErrorMessage('form.quoteAssets') }}
       </div>
     </div>
 
@@ -274,6 +238,7 @@ export default {
       softCap: '',
       hardCap: '',
       assetsToSell: '',
+      price: '',
       quoteAssets: [],
       isWhitelisted: false,
     },
@@ -302,7 +267,6 @@ export default {
           minDate: minDate(this.form.startTime || moment().toISOString()),
         },
         softCap: {
-          required,
           softCapMoreThanHardCap: softCapMoreThanHardCap(
             this.MIN_AMOUNT, this.form.hardCap
           ),
@@ -319,6 +283,7 @@ export default {
             this.availableForIssuance
           ),
         },
+        price: { required },
         quoteAssets: { requiredAtLeastOne },
       },
     }
@@ -359,7 +324,16 @@ export default {
       }
 
       this.availableQuoteAssets = await this.loadBaseAssetsByQuote(value)
+      this.form.quoteAssets = this.availableQuoteAssets.map(item => item.code)
       this.isQuoteAssetsLoaded = true
+    },
+
+    'form.price' (value) {
+      this.setHardCapByPrice(this.form.assetsToSell, value)
+    },
+
+    'form.assetsToSell' (value) {
+      this.setHardCapByPrice(value, this.form.price)
     },
   },
 
@@ -375,6 +349,14 @@ export default {
   },
 
   methods: {
+    setHardCapByPrice (amount, price) {
+      if (amount && price) {
+        this.form.hardCap = (parseFloat(amount) * parseFloat(price)).toString()
+      } else {
+        this.form.hardCap = ''
+      }
+    },
+
     setBaseAssetByCode (code) {
       this.form.baseAsset = this.ownedAssets.find(item => item.code === code)
     },
