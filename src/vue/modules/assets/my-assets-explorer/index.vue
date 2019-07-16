@@ -9,7 +9,7 @@
 
           <update-asset-form-module
             :asset-code="selectedBalance.asset.code"
-            @close="isDrawerShown = false"
+            @submitted="closeDrawerAndUpdateList()"
           />
         </template>
 
@@ -172,6 +172,11 @@ export default {
       this.selectedBalance = balance
       this.isUpdateMode = false
       this.isDrawerShown = true
+    },
+
+    closeDrawerAndUpdateList () {
+      this.isDrawerShown = false
+      this.updateList()
     },
   },
 }

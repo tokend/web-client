@@ -177,7 +177,7 @@ describe('Create sale form module', () => {
             wrapper.vm.emitSubmitEvents()
 
             expect(wrapper.emitted()['request-updated']).to.exist
-            expect(wrapper.emitted()['submitted']).to.exist
+            expect(wrapper.emitted()['close']).to.exist
           }
         )
 
@@ -185,7 +185,7 @@ describe('Create sale form module', () => {
           () => {
             wrapper.vm.emitSubmitEvents()
 
-            expect(wrapper.emitted()['submitted']).to.exist
+            expect(wrapper.emitted()['close']).to.exist
             expect(wrapper.emitted()['request-updated']).to.not.exist
           }
         )

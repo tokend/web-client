@@ -9,7 +9,7 @@
 
           <update-asset-form-module
             :asset-code="selectedAsset.code"
-            @submitted="isDrawerShown = false"
+            @submitted="closeDrawerAndUpdateList()"
           />
         </template>
 
@@ -200,6 +200,11 @@ export default {
       const balanceRecord = this.accountBalances
         .find(b => b.asset.code === asset.code)
       return balanceRecord ? balanceRecord.balance : ''
+    },
+
+    closeDrawerAndUpdateList () {
+      this.isDrawerShown = false
+      this.updateList()
     },
   },
 }

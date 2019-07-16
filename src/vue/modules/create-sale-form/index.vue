@@ -85,7 +85,7 @@ const STEPS = {
   },
 }
 const EVENTS = {
-  submitted: 'submitted',
+  close: 'close',
   requestUpdated: 'request-updated',
 }
 
@@ -191,7 +191,7 @@ export default {
       if (this.requestId) {
         this.$emit(EVENTS.requestUpdated)
       }
-      this.$emit(EVENTS.submitted)
+      this.$emit(EVENTS.close)
     },
   },
 }

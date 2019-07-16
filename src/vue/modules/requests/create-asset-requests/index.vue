@@ -8,8 +8,8 @@
           </template>
           <create-asset-form-module
             :request-id="selectedRequest.id"
-            @close="isDrawerShown = false"
-            @request-updated="initFirstPageLoader"
+            @submitted="isDrawerShown = false"
+            @request-updated="updateList()"
           />
         </template>
 
@@ -20,7 +20,7 @@
           <request-viewer
             :request="selectedRequest"
             @update-click="isUpdateMode = true"
-            @cancel="(isDrawerShown = false) || initFirstPageLoader()"
+            @cancel="closeDrawerAndUpdateList()"
           />
         </template>
       </drawer>
@@ -59,6 +59,7 @@ import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
   name: 'create-asset-requests-module',
@@ -69,6 +70,8 @@ export default {
     RequestViewer,
     CreateAssetFormModule,
   },
+
+  mixins: [UpdateList],
 
   data: _ => ({
     isLoaded: false,
@@ -88,6 +91,7 @@ export default {
   async created () {
     this.initFirstPageLoader()
     await this.loadAssetTypes()
+    this.listenUpdateList(this.initFirstPageLoader)
   },
 
   methods: {
@@ -131,6 +135,11 @@ export default {
       this.isUpdateMode = false
       this.selectedRequest = request
       this.isDrawerShown = true
+    },
+
+    closeDrawerAndUpdateList () {
+      this.isDrawerShown = false
+      this.updateList()
     },
   },
 }

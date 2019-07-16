@@ -9,7 +9,7 @@
 
           <update-asset-form-module
             :asset-code="selectedBalance.asset.code"
-            @submitted="closeDrawerAndUpdateList"
+            @submitted="closeDrawerAndUpdateList()"
           />
         </template>
 
