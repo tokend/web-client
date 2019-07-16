@@ -19,7 +19,7 @@
             :is-buy="true"
             :is-loading="isBuyOffersLoading"
             :offers-list="buyOffersList"
-            @reload-trades="updateList"
+            @reload-trades="updateList()"
           />
 
           <trade-offers-renderer
@@ -28,7 +28,7 @@
             :is-buy="false"
             :is-loading="isSellOffersLoading"
             :offers-list="sellOffersList"
-            @reload-trades="updateList"
+            @reload-trades="updateList()"
           />
         </div>
       </div>
