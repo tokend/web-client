@@ -7,18 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
-## [Unreleased]
+## [1.10.0-rc.0] - 2019-07-16
 #### Added
-- Issuance operation in the `Create atomic swap` form for asset owner
+- Perform issuance operation in the "Create atomic swap" form for asset owner
   if he doesn't have enough money
 
 #### Fixed
-- Trailing whitespace for clipboardField component
+- Resolved an issue with extra trailing whitespace appeared in clipboard field
+  component
 
 ### "Under the hood" changes
 #### Added
 - Validation case `atomicSwap` in `AmountInputField` component
 - Handler for new deposit address
+
+#### Changed
+- Now using @tokend/js-sdk@1.9.0-rc.1
 
 ## [1.10.0-x.2] - 2019-07-15
 #### Fixed
@@ -867,7 +871,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.10.0-x.2...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.10.0-rc.0...HEAD
+[1.10.0-rc.0]: https://github.com/tokend/web-client/compare/1.10.0-x.2...1.10.0-rc.0
 [1.10.0-x.2]: https://github.com/tokend/web-client/compare/1.10.0-x.1...1.10.0-x.2
 [1.10.0-x.1]: https://github.com/tokend/web-client/compare/1.10.0-x.0...1.10.0-x.1
 [1.10.0-x.0]: https://github.com/tokend/web-client/compare/1.9.1...1.10.0-x.0
