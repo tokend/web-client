@@ -297,16 +297,22 @@ export default {
 
     async submit () {
       this.isFormSubmitting = true
+      let operations = []
+
       try {
-        // eslint-disable-next-line max-len
-        const isAmountMoreThanBalance = +this.form.amount > +this.accountBalance.balance
+        const isAmountMoreThanBalance = MathUtil.compare(
+          this.form.amount,
+          this.accountBalance.balance
+        )
 
         if (this.isAssetOwner && isAmountMoreThanBalance) {
-          await this.postIssuanceOperation()
+          const createIssuanceOperation = this.buildCreateIssuanceOperation()
+          operations.push(createIssuanceOperation)
         }
 
         const createAtomicSwapOperation = this.buildCreateAtomicSwapOperation()
-        await api.postOperations(createAtomicSwapOperation)
+        operations.push(createAtomicSwapOperation)
+        await api.postOperations(...operations)
 
         Bus.success('create-atomic-swap-form.created-atomic-swap-msg')
         this.$emit(EVENTS.createdAtomicSwap)
@@ -365,7 +371,7 @@ export default {
       return base.CreateAtomicSwapAskRequestBuilder.createAtomicSwapAskRequest(operation)
     },
 
-    async postIssuanceOperation () {
+    buildCreateIssuanceOperation () {
       const operation = base.CreateIssuanceRequestBuilder
         .createIssuanceRequest({
           asset: this.form.asset.code,
@@ -375,7 +381,7 @@ export default {
           creatorDetails: {},
         })
 
-      await api.postOperations(operation)
+      return operation
     },
 
     getReference () {
@@ -383,9 +389,9 @@ export default {
     },
 
     getIssuanceAmount () {
-      const availbaleBalance = +this.accountBalance.balance
-      const amount = +this.form.amount
-      return amount > availbaleBalance
+      const availbaleBalance = this.accountBalance.balance
+      const amount = this.form.amount
+      return MathUtil.compare(amount, availbaleBalance)
         ? MathUtil.subtract(
           amount,
           availbaleBalance
