@@ -1,6 +1,9 @@
 <template>
   <div>
-    <form class="app-form auth-form" @submit.prevent="submit">
+    <form
+      class="app-form auth-form"
+      @submit.prevent="submit"
+    >
       <div class="app__form-row">
         <div class="app__form-field">
           <input-field
@@ -13,11 +16,14 @@
           />
         </div>
       </div>
-      <p v-if="error.meta.factorType === FACTOR_TYPES.email">
-        {{ 'kyc-recovery.email-code' | globalize }}
-      </p>
-      <p v-if="error.meta.factorType === FACTOR_TYPES.totp">
-        {{ 'kyc-recovery.tfa-code' | globalize }}}
+
+      <p class="wallet-recovery-tfa-code-form__tfa-hint">
+        <template v-if="error.meta.factorType === FACTOR_TYPES.email">
+          {{ 'kyc-recovery.email-code' | globalize }}
+        </template>
+        <template v-if="error.meta.factorType === FACTOR_TYPES.totp">
+          {{ 'kyc-recovery.tfa-code' | globalize }}}
+        </template>
       </p>
 
       <div class="app__form-actions">
@@ -86,6 +92,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import './app-form';
-  @import './auth-form';
+@import './app-form';
+@import './auth-form';
+
+.wallet-recovery-tfa-code-form__tfa-hint {
+  margin-top: 0.6rem;
+  font-size: 1.4rem;
+  color: $col-text;
+}
 </style>

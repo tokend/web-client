@@ -87,7 +87,7 @@ export default {
     }),
 
     async onSubmit () {
-      await this.delay(3000)
+      await this.delay(6000)
       // eslint-disable-next-line
       const updatedAccount = await this.loadAccount(this.walletAccountId)
       // eslint-disable-next-line
