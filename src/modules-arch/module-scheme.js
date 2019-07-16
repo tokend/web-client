@@ -2,6 +2,31 @@ import { PageModuleDescriptor } from './page-module-descriptor'
 import { SchemeRegistry } from './scheme-registry'
 import { ModuleDescriptor } from './module-descriptor'
 
+function findRouteByName (routes, name) {
+  if (!Array.isArray(routes)) {
+    return undefined
+  }
+
+  let result
+  for (const route of routes) {
+    const item = route || {}
+
+    if (item.name === name) {
+      result = item
+    }
+
+    if (!result && item.children) {
+      result = findRouteByName(item.children, name)
+    }
+
+    if (result) {
+      break
+    }
+  }
+
+  return result
+}
+
 /**
  * Represents module set to be used by the application.
  */
@@ -97,6 +122,17 @@ export class ModuleScheme {
     Vue.prototype.getScheme = function () {
       return SchemeRegistry.current
     }
+    Vue.prototype.isAvailableRouteName = function (name) {
+      const routeByName = findRouteByName(this.$router.options.routes, name)
+      if (!routeByName) {
+        return false
+      }
+
+      const routeModule = SchemeRegistry.current.findModuleByName(name)
+      return routeModule
+        ? routeModule.isAccessible
+        : true
+    }
   }
 
   canRenderModule (moduleConstructor) {
@@ -116,5 +152,10 @@ export class ModuleScheme {
   findModuleByPath (path) {
     return this.cache
       .find(item => item.routerEntry && item.routerEntry.path === path)
+  }
+
+  findModuleByName (name) {
+    return this.cache
+      .find(item => item.routerEntry && item.routerEntry.name === name)
   }
 }

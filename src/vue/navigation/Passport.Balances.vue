@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="passport-balances
-           passport-balances--direction-column"
-  >
+  <div class="passport-balances">
     <span class="passport-balances__label">
       {{ 'passport.balances-subheading' | globalize }}
     </span>
@@ -13,13 +10,16 @@
     >
       {{ { value: item.balance, currency: item.asset.code } | formatMoney }}
     </span>
-    <router-link
-      class="passport-balances__more-link"
-      :to="vueRoutes.balances"
-      @click.native="showMoreBalances"
-    >
-      {{ 'passport.show-more-link' | globalize }}
-    </router-link>
+
+    <template v-if="isAvailableRouteName(vueRoutes.balances.name)">
+      <router-link
+        class="passport-balances__more-link"
+        :to="vueRoutes.balances"
+        @click.native="showMoreBalances"
+      >
+        {{ 'passport.show-more-link' | globalize }}
+      </router-link>
+    </template>
   </div>
 </template>
 
@@ -71,7 +71,7 @@ export default {
 <style scoped lang="scss">
 @import '~@scss/variables';
 
-.passport-balances--direction-column {
+.passport-balances {
   display: flex;
   flex-direction: column;
 }
