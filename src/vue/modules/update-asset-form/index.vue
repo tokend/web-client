@@ -162,9 +162,7 @@ export default {
       try {
         await this.submitUpdateAssetRequest()
         Bus.success('update-asset-form.request-submitted-msg')
-        if (this.requestId) {
-          this.$emit(EVENTS.requestUpdated)
-        }
+        this.$emit(EVENTS.requestUpdated)
         this.$emit(EVENTS.submitted)
       } catch (e) {
         this.isDisabled = false
