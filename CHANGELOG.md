@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+#### Fixed
+- Trailing whitespace for clipboardField component
+
 ## [1.10.0-x.2] - 2019-07-15
 #### Fixed
 - Resolved a KYC recovery issue of unverified account where the request has
@@ -23,7 +27,6 @@ for further information about branching and tagging conventions.
 - Resolved an issue when in select field quote assets on the atomic swap form
  show only assets in user balance
 - Fixed display price on form when create new sale
-- Trailing whitespace for clipboardField component
 
 ### "Under the hood" changes
 #### Changed
