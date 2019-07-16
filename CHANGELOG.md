@@ -11,6 +11,9 @@ for further information about branching and tagging conventions.
 #### Fixed
 - Trailing whitespace for clipboardField component
 
+### "Under the hood" changes
+- Handler for new deposit address
+
 ## [1.10.0-x.2] - 2019-07-15
 #### Fixed
 - Resolved a KYC recovery issue of unverified account where the request has

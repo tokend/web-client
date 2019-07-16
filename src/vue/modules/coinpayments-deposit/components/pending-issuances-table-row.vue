@@ -4,7 +4,10 @@
       class="pending-issuances-table-row__tr"
     >
       <td>
-        <timeout-ticker :end-time="endTime" />
+        <timeout-ticker
+          v-if="endTime"
+          :end-time="endTime"
+        />
       </td>
       <td class="pending-issuances-table-row__amount">
         {{ { value: amount, currency: asset } | formatMoney }}
