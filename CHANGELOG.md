@@ -8,10 +8,16 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Added
+- Issuance operation in the `Create atomic swap` form for asset owner
+  if he doesn't have enough money
+
 #### Fixed
 - Trailing whitespace for clipboardField component
 
 ### "Under the hood" changes
+#### Added
+- Validation case `atomicSwap` in `AmountInputField` component
 - Handler for new deposit address
 
 ## [1.10.0-x.2] - 2019-07-15
