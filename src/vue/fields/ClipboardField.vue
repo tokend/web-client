@@ -7,8 +7,11 @@
       <span
         class="clipboard-field__value"
         :id="`clipboard-target-${_uid}`"
-      >
-        {{ value }}</span>
+      >{{ value }}</span>
+      <!--
+        keep the formatting right above as is to prevent trailing
+        whitespace copying issue
+      -->
       <tooltip
         :show="isCopiedTooltipShown"
         :message="'clipboard-field.copied' | globalize"
