@@ -8,6 +8,20 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Fixed
+- Trailing whitespace for clipboardField component
+
+### "Under the hood" changes
+- Handler for new deposit address
+
+## [1.10.0-x.2] - 2019-07-15
+#### Fixed
+- Resolved a KYC recovery issue of unverified account where the request has
+  been sent but the screen was continued been showing blank
+- Resolved a small design issue on KYC recovery TFA form when hint text was
+  too close to the input field
+
+## [1.10.0-x.1] - 2019-07-12
 #### Added
 - KYC Recovery
 - Integration with session key server
@@ -39,6 +53,11 @@ for further information about branching and tagging conventions.
 ### Experimental features changes
 #### Added
 - New use case - conto
+
+## [1.9.1] - 2019-07-15
+#### Changed
+- Allow sale cap asset to be picked as quote asset. Was: cap asset was
+  assigned automatically as a quote asset.
 
 ## [1.9.0] - 2019-07-10
 
@@ -847,8 +866,11 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.10.0-x.0...HEAD
-[1.10.0-x.0]: https://github.com/tokend/web-client/compare/1.9.0...1.10.0-x.0
+[Unreleased]: https://github.com/tokend/web-client/compare/1.10.0-x.2...HEAD
+[1.10.0-x.2]: https://github.com/tokend/web-client/compare/1.10.0-x.1...1.10.0-x.2
+[1.10.0-x.1]: https://github.com/tokend/web-client/compare/1.10.0-x.0...1.10.0-x.1
+[1.10.0-x.0]: https://github.com/tokend/web-client/compare/1.9.1...1.10.0-x.0
+[1.9.1]: https://github.com/tokend/web-client/compare/1.9.0...1.9.1
 [1.9.0]: https://github.com/tokend/web-client/compare/1.9.0-rc.1...1.9.0
 [1.9.0-rc.1]: https://github.com/tokend/web-client/compare/1.9.0-rc.0...1.9.0-rc.1
 [1.9.0-rc.0]: https://github.com/tokend/web-client/compare/1.8.0...1.9.0-rc.0
