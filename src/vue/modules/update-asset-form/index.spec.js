@@ -173,7 +173,7 @@ describe('Update asset form module', () => {
             expect(Bus.success).to.have.been.calledOnce
 
             expect(wrapper.emitted()['request-updated']).to.exist
-            expect(wrapper.emitted()['close']).to.exist
+            expect(wrapper.emitted()['submitted']).to.exist
 
             expect(wrapper.vm.isDisabled).to.be.true
           }
