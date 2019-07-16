@@ -399,7 +399,6 @@ export default {
         : MathUtil.subtract(
           availbaleBalance,
           amount
-
         )
     },
   },
