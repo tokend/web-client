@@ -4,7 +4,7 @@
       <submodule-importer
         :submodule="getModule().getSubmodule(MovementsTopBarModule)"
         @asset-updated="updateAsset"
-        @movements-update-required="updateList"
+        @movements-update-required="updateList()"
       />
     </template>
 

@@ -170,7 +170,7 @@ describe('Create sale form module', () => {
       })
 
       describe('emitSubmitEvents', () => {
-        it('emits request updated and submitted events if request ID was passed as a prop',
+        it('emits request updated and close events if request ID was passed as a prop',
           () => {
             wrapper.setProps({ requestId: '1' })
 
@@ -181,7 +181,7 @@ describe('Create sale form module', () => {
           }
         )
 
-        it('emits only submitted event if request ID was not passed as a prop',
+        it('emits only close event if request ID was not passed as a prop',
           () => {
             wrapper.vm.emitSubmitEvents()
 
