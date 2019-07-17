@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
-## Unreleased
+## [Unreleased]
+#### Added
+- Real time updates on all pages
 
 #### Removed
 - Recovery seed screen on sign up 
@@ -15,6 +17,7 @@ for further information about branching and tagging conventions.
 - Remove recovery seed screens on auth
 
 #### Fixed
+- Bug about maximum call stack in buildKycRecoveryPageGuard
 - Bug about maximum call stack in buildKycRecoveryPageGuard
 
 ## [1.10.0-rc.1] - 2019-07-17
@@ -38,7 +41,7 @@ for further information about branching and tagging conventions.
 - Perform issuance operation in the "Create atomic swap" form for asset owner
   if he doesn't have enough money
 
-#### Fixedq
+#### Fixed
 - Resolved an issue with extra trailing whitespace appeared in clipboard field
   component
 
