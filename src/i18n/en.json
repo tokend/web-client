@@ -466,7 +466,7 @@
       "confirm-password": "Confirm password",
       "sign-in": "Sign In",
       "sign-up": "Sign Up",
-      "kyc-recovery": "KYC Recovery",
+      "kyc-recovery": "Recovery",
       "wrong-email-or-password-err": "Wrong email or password",
       "wrong-tfa-code-err": "Wrong 2FA code",
       "almost-done": "Almost done",
