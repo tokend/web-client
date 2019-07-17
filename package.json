@@ -1,6 +1,6 @@
 {
   "name": "tokend-web-client",
-  "version": "1.10.0-rc.0",
+  "version": "1.10.0-rc.1",
   "description": "TokenD web-client",
   "author": "Distributed Lab <contact@distributedlab.com>",
   "private": true,
@@ -36,6 +36,7 @@
     "flatpickr": "4.6.1",
     "husky": "2.4.0",
     "i18next": "17.0.2",
+    "i18next-browser-languagedetector": "3.0.1",
     "iban": "0.0.12",
     "iso-country-codes": "0.0.5",
     "lodash": "4.17.13",

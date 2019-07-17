@@ -143,6 +143,8 @@ const EVENTS = {
   detailsButtonClicked: 'details-button-clicked',
 }
 
+const NUMBER_DISPLAYING_BALANCES = 3
+
 export default {
   name: 'customers-table',
 
@@ -208,13 +210,26 @@ export default {
 
     doMassIssuance () {
       Bus.emit('customers:massIssue', { receivers: this.issuanceReceivers })
+      this.toggleIssuanceMode()
     },
 
     formatBalancesOf (customer) {
-      return customer.balances
+      let balances = customer.balances
+        .filter(item => +item.amount)
+      balances.sort(function (a, b) {
+        return b.amount - +a.amount
+      })
+      const slicedBalances = balances.slice(0, NUMBER_DISPLAYING_BALANCES)
+      let resolveString = slicedBalances
         .map(item => this.$options.filters
           .formatMoney({ value: item.amount, currency: item.assetCode })
-        ).join(', ')
+        )
+        .join(', ')
+      if (balances.length > NUMBER_DISPLAYING_BALANCES) {
+        return resolveString + '…'
+      } else {
+        return resolveString
+      }
     },
   },
 }

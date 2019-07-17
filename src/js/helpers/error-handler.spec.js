@@ -2,7 +2,7 @@ import { errors } from '@/js/errors'
 import { Bus } from '@/js/helpers/event-bus'
 import { TestHelper } from '@/test/test-helper'
 import log from 'loglevel'
-import i18next from 'i18next'
+import { i18n } from '@/i18n'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { ErrorTracker } from '@/js/helpers/error-tracker'
 
@@ -76,7 +76,7 @@ describe('error-handler helper', () => {
       englifyStub
         .withArgs('some-error.translation-id')
         .returns('some message')
-      sandbox.stub(i18next, 'getFixedT')
+      sandbox.stub(i18n, 'getFixedT')
         .withArgs('en')
         .returns(englifyStub)
       sandbox.stub(ErrorTracker, 'trackMessage')
@@ -93,7 +93,7 @@ describe('error-handler helper', () => {
       englifyStub
         .withArgs('custom-translation-id')
         .returns('some message')
-      sandbox.stub(i18next, 'getFixedT')
+      sandbox.stub(i18n, 'getFixedT')
         .withArgs('en')
         .returns(englifyStub)
       sandbox.stub(ErrorTracker, 'trackMessage')
@@ -110,7 +110,7 @@ describe('error-handler helper', () => {
 
     it('it does not track message if skipTrack = true', () => {
       sandbox.stub(ErrorHandler, '_getTranslationId')
-      sandbox.stub(i18next, 'getFixedT').returns(sinon.spy())
+      sandbox.stub(i18n, 'getFixedT').returns(sinon.spy())
       sandbox.stub(ErrorTracker, 'trackMessage')
 
       ErrorHandler.trackMessage(
@@ -119,7 +119,7 @@ describe('error-handler helper', () => {
       )
 
       expect(ErrorHandler._getTranslationId).to.have.not.been.called
-      expect(i18next.getFixedT).to.have.not.been.called
+      expect(i18n.getFixedT).to.have.not.been.called
       expect(ErrorTracker.trackMessage).to.have.not.been.called
     })
   })

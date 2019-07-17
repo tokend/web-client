@@ -4,7 +4,7 @@
       <submodule-importer
         :submodule="getModule().getSubmodule(MovementsTopBarModule)"
         @asset-updated="updateAsset"
-        @movements-update-required="updateList"
+        @movements-update-required="emitUpdateList('movements:updateList')"
       />
     </template>
 
@@ -45,6 +45,7 @@ import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
 import { MovementsTopBarReitModule } from '@modules/movements-top-bar-reit/module'
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
   name: 'movements-page',
@@ -52,6 +53,8 @@ export default {
     NoDataMessage,
     SubmoduleImporter,
   },
+
+  mixins: [UpdateList],
 
   data: _ => ({
     MovementsHistoryModule,
@@ -68,24 +71,32 @@ export default {
     historyState: 0,
   }),
 
+  created () {
+    this.listenUpdateList('movements:updateList', this.updateMovementsHistoryList)
+  },
+
+  beforeDestroy () {
+    this.resetUpdateListEvent('movements:updateList')
+  },
+
   methods: {
     updateAsset (asset) {
       this.asset = asset
     },
 
     withdrawalFiatModuleWithdrawn () {
-      this.updateList()
+      this.emitUpdateList('movements:updateList')
     },
 
     depositFiatModuleDeposited () {
-      this.updateList()
+      this.emitUpdateList('movements:updateList')
     },
 
     redeemModuleSubmitted () {
-      this.updateList()
+      this.emitUpdateList('movements:updateList')
     },
 
-    updateList () {
+    updateMovementsHistoryList () {
       this.historyState++
     },
   },

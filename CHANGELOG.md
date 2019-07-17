@@ -17,6 +17,22 @@ for further information about branching and tagging conventions.
 #### Fixed
 - Bug about maximum call stack in buildKycRecoveryPageGuard
 
+## [1.10.0-rc.1] - 2019-07-17
+#### Added
+- Real time updates on all pages
+- Set up support of multiple languages
+
+#### Changed
+- Hide fees report if no fees present. Not all screens affected yet
+
+#### Fixed
+- Now "Show password" buttons do not participate in tab order
+
+### Experimental features changes
+#### Added
+- Simplify form of create new sale (Conto)
+- Simplify pages for sale details (Conto)
+
 ## [1.10.0-rc.0] - 2019-07-16
 #### Added
 - Perform issuance operation in the "Create atomic swap" form for asset owner
@@ -50,6 +66,7 @@ for further information about branching and tagging conventions.
 - Resolved an issue when in select field quote assets on the atomic swap form
  show only assets in user balance
 - Fixed display price on form when create new sale
+- Resolved an issue with undisplayed favicon
 
 ### "Under the hood" changes
 #### Changed
@@ -881,7 +898,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.10.0-rc.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.10.0-rc.1...HEAD
+[1.10.0-rc.1]: https://github.com/tokend/web-client/compare/1.10.0-rc.0...1.10.0-rc.1
 [1.10.0-rc.0]: https://github.com/tokend/web-client/compare/1.10.0-x.2...1.10.0-rc.0
 [1.10.0-x.2]: https://github.com/tokend/web-client/compare/1.10.0-x.1...1.10.0-x.2
 [1.10.0-x.1]: https://github.com/tokend/web-client/compare/1.10.0-x.0...1.10.0-x.1

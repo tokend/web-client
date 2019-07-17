@@ -3,7 +3,7 @@
     <div class="business-card__logo-wrp">
       <business-logo
         class="business-card__logo"
-        :logo-url="business.logoLink"
+        :business="business"
         :name="business.name"
       />
     </div>

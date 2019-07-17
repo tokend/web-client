@@ -1,8 +1,8 @@
 <template>
   <img
-    v-if="business.logoLink"
+    v-if="url"
     class="current-business-logo current-business-logo__image"
-    :src="business.logoLink"
+    :src="url"
   >
   <p
     v-else
@@ -14,6 +14,7 @@
 
 <script>
 import { BusinessRecord } from '@/vue/pages/businesses-all/business.record'
+import { documentsManager } from '@/api'
 
 export default {
   name: 'current-business-logo',
@@ -21,6 +22,11 @@ export default {
     business: {
       type: BusinessRecord,
       required: true,
+    },
+  },
+  computed: {
+    url () {
+      return documentsManager.getDocumentUrlByKey(this.business.logoKey)
     },
   },
 }

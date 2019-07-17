@@ -9,7 +9,8 @@
       "avatar-lbl": "Logo"
     },
     "verification-page": {
-      "account-type-corporate-title": "Business level 1"
+      "account-type-corporate-title": "Business level 1",
+      "account-type-corporate-description": "Invite customers, create assets, polls, crowdfunds"
     },
     "sidebar": {
       "section-corporate": "Business level 1"
@@ -24,7 +25,7 @@
       "op_order_book_does_not_exists": "Specified crowdfunding does not exists or already closed",
       "op_sale_is_not_started_yet": "Crowdfunding has not been started yet",
       "op_sale_already_ended": "Crowdfunding already ended",
-      "op_order_violates_hard_cap": "Offer violates hard goal restriction of the crowdfunding",
+      "op_order_violates_hard_cap": "Offer violates maximal goal restriction of the crowdfunding",
       "op_cant_participate_own_sale": "Can not participate in the own crowdfunding",
       "op_sale_is_not_active": "Crowdfunding is not active",
       "op_sale_not_found": "Crowdfunding not found",
@@ -46,7 +47,7 @@
     "pages-names": {
       "sales": "Crowdfundings",
       "sale-details": "Crowdfunding details",
-      "atomic-swaps": "Direct buy"
+      "atomic-swaps": "Direct sell"
     },
     "op-details": {
       "sale-name-lbl": "Crowdfunding name",
@@ -142,43 +143,44 @@
       "base-asset-lbl": "Asset to sale",
       "cap-asset-lbl": "Asset to count gathered amount",
       "whitelisted-lbl": "Invitation required before contribution",
-      "soft-cap-lbl": "Minimal goal ({{asset}})",
+      "soft-cap-lbl": "Minimal goal in {{asset}} (optional)",
       "hard-cap-lbl": "Maximal goal ({{asset}})",
+      "price": "Price in {{asset}}",
       "assets-to-sell-lbl": "{{asset}} to sell",
       "price-for-asset-hint": "Change ({{quote}} for 1 {{base}}) ≈ {{value, money}}",
       "accept-investments-msg": "Accept contributions in:",
       "no-investable-assets-err": "This asset has no acceptable contribution asset pairs. Please, select another one"
     },
     "assets": {
-      "can-be-base-in-atomic-swap-title": "Can be base in direct buy",
-      "can-be-quote-in-atomic-swap-title": "Can be quote in direct buy"
+      "can-be-base-in-atomic-swap-title": "Can be base in direct sell",
+      "can-be-quote-in-atomic-swap-title": "Can be quote in direct sell"
     },
     "asset-details": {
-      "can-be-base-in-atomic-swap-title": "Can be base in direct buy",
-      "can-be-quote-in-atomic-swap-title": "Can be quote in direct buy"
+      "can-be-base-in-atomic-swap-title": "Can be base in direct sell",
+      "can-be-quote-in-atomic-swap-title": "Can be quote in direct sell"
     },
     "update-asset-requests": {
-      "can-be-base-in-atomic-swap-title": "Can be base in direct buy",
-      "can-be-quote-in-atomic-swap-title": "Can be quote in direct buy"
+      "can-be-base-in-atomic-swap-title": "Can be base in direct sell",
+      "can-be-quote-in-atomic-swap-title": "Can be quote in direct sell"
     },
     "create-asset-requests": {
-      "can-be-base-in-atomic-swap-title": "Can be base in direct buy",
-      "can-be-quote-in-atomic-swap-title": "Explore direct buy offeringsCan be quote in direct buy"
+      "can-be-base-in-atomic-swap-title": "Can be base in direct sell",
+      "can-be-quote-in-atomic-swap-title": "Can be quote in direct sell"
     },
     "atomic-swaps": {
-      "explore-atomic-swaps": "Explore direct buy offerings",
+      "explore-atomic-swaps": "Explore direct sell offerings",
       "create-atomic-swap-bth": "Create",
-      "new-atomic-swap": "New direct buy offering"
+      "new-atomic-swap": "New direct sell offering"
     },
     "create-atomic-swap-form": {
-      "no-base-atomic-swap-assets-title": "No base direct buy assets yet",
-      "no-base-atomic-swap-assets-msg": "Please create an asset to create direct buy",
-      "no-quote-atomic-swap-assets-title": "No quote direct buy assets yet",
-      "no-quote-atomic-swap-assets-msg": "Please create an asset to create direct buy",
-      "created-atomic-swap-msg": "Direct buy offering successfully created"
+      "no-base-atomic-swap-assets-title": "No base direct sell assets yet",
+      "no-base-atomic-swap-assets-msg": "Please create an asset to create direct sell",
+      "no-quote-atomic-swap-assets-title": "No quote direct sell assets yet",
+      "no-quote-atomic-swap-assets-msg": "Please create an asset to create direct sell",
+      "created-atomic-swap-msg": "Direct sell offering successfully created"
     },
     "atomic-swaps-explore": {
-      "no-list-title": "Direct buy list is coming soon"
+      "no-list-title": "Direct sell list is coming soon"
     }
   }
 }

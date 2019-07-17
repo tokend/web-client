@@ -13,11 +13,11 @@ import { VerificationPageModule } from '@/vue/pages/verification-page-module'
 import { SecurityPageModule } from '@/vue/pages/security-page-module'
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
-import { CreateSaleFormModule } from '@modules/create-sale-form/module'
+import { CreateSaleFormModuleSimplified } from '@modules/create-sale-form-simplified/module'
 import { SalesListPageModule } from '@/vue/pages/sales/investable-sales-page-module'
 import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
-import { SaleCampaignViewerPageModule } from '@/vue/pages/sale-details/sale-campaign-viewer-page-module'
-import { SaleStateWidgetModule } from '@/vue/pages/sale-details/sale-sate-widget-module'
+import { SimplifySaleCampaignViewerPageModule } from '@/vue/pages/sale-details-simplified/sale-campaign-viewer-page-module'
+import { SimplifySaleStateWidgetModule } from '@/vue/pages/sale-details-simplified/sale-sate-widget-module'
 import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments-deposit/module'
 import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
@@ -27,8 +27,6 @@ import { BalancesPageModule } from '@/vue/pages/balances-page'
 import { AssetExplorerModule } from '@/vue/modules/assets/asset-explorer/module'
 import { BalanceExplorerModule } from '@/vue/modules/assets/balance-explorer/module'
 import { PollsPageModule } from '@/vue/pages/polls-page-module'
-import { PollRequestsModule } from '@/vue/modules/requests/poll-requests/module'
-import { PollRequestsPageModule } from '@/vue/pages/polls/poll-requests-page'
 import { PollsAllPageModule } from '@/vue/pages/polls-all-page-module'
 import { CreatePollFormModule } from '@/vue/modules/create-poll-form/module'
 
@@ -38,17 +36,24 @@ import { CustomersListPageModule } from '@/vue/pages/customers-list-page-module'
 import { BusinessesPageModule } from '@/vue/pages/businesses-page'
 import { BusinessesAllPageModule } from '@/vue/pages/businesses-all-page-module'
 import { CurrentBusinessIndicatorModule } from '@/vue/navigation/navbar/current-business-indicator/module'
+import { BusinessOwnershipModule } from '@/vue/navigation/navbar/business-ownership/module'
 import { AtomicSwapsPageModule } from '@/vue/pages/atomic-swaps-page-module'
 import { AtomicSwapsExplorePageModule } from '@/vue/pages/atomic-swaps/atomic-swaps-explore-page-module'
 import { CreateAtomicSwapFormModule } from '@/vue/modules/create-atomic-swap-form/module'
 
 export default {
-  importEnLocaleFile () {
-    return import('@/modules-arch/schemes/conto-en.json')
+  importLanguageResource (lng) {
+    return {
+      'en': import('@/modules-arch/schemes/conto-en.json'),
+      'ru': import('@/modules-arch/schemes/conto-ru.json'),
+    }[lng]
   },
   modules: [
     new CurrentBusinessIndicatorModule({
       isUnverifiedOnly: true,
+    }),
+    new BusinessOwnershipModule({
+      isCorporateOnly: true,
     }),
   ],
   pages: [
@@ -121,6 +126,7 @@ export default {
             ],
           }),
         ],
+        isUnverifiedOnly: true,
       },
     ),
 
@@ -143,6 +149,7 @@ export default {
             submodules: [
               new AssetExplorerModule(),
             ],
+            isUnverifiedOnly: true,
           }),
           new BalancesPageModule({
             routerEntry: {
@@ -153,6 +160,7 @@ export default {
             submodules: [
               new BalanceExplorerModule(),
             ],
+            isUnverifiedOnly: true,
           }),
           new MyAssetsPageModule({
             routerEntry: {
@@ -192,6 +200,7 @@ export default {
                 isUserSales: false,
               },
             },
+            isUnverifiedOnly: true,
           }),
           new SalesListOwnedPageModule({
             routerEntry: {
@@ -204,7 +213,7 @@ export default {
             },
             isCorporateOnly: true,
           }),
-          new CreateSaleFormModule({
+          new CreateSaleFormModuleSimplified({
             isCorporateOnly: true,
           }),
         ],
@@ -221,14 +230,14 @@ export default {
           props: true,
         },
         submodules: [
-          new SaleCampaignViewerPageModule({
+          new SimplifySaleCampaignViewerPageModule({
             routerEntry: {
               path: '/sales/:id/campaign',
               name: vueRoutes.saleCampaign.name,
               props: true,
             },
             submodules: [
-              new SaleStateWidgetModule(),
+              new SimplifySaleStateWidgetModule(),
             ],
           }),
         ],
@@ -252,17 +261,6 @@ export default {
               name: vueRoutes.allPolls.name,
               props: true,
             },
-          }),
-          new PollRequestsPageModule({
-            routerEntry: {
-              path: '/polls/poll-requests',
-              name: vueRoutes.pollRequests.name,
-              props: true,
-            },
-            isCorporateOnly: true,
-            submodules: [
-              new PollRequestsModule(),
-            ],
           }),
           new CreatePollFormModule({
             isCorporateOnly: true,

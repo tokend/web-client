@@ -34,7 +34,7 @@ import { vuexTypes } from '@/vuex'
 
 const EVENTS = {
   requestUpdated: 'request-updated',
-  close: 'close',
+  submitted: 'submitted',
 }
 
 export default {
@@ -105,7 +105,7 @@ export default {
       if (this.requestId) {
         this.$emit(EVENTS.requestUpdated)
       }
-      this.$emit(EVENTS.close)
+      this.$emit(EVENTS.submitted)
     },
   },
 }

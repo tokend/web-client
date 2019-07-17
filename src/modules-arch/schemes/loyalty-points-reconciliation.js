@@ -15,8 +15,11 @@ import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
 import { PreIssuanceFormModule } from '@/vue/modules/pre-issuance-form/module'
 
 export default {
-  importEnLocaleFile () {
-    return import('@/modules-arch/schemes/loyalty-points-reconciliation.en.json')
+  importLanguageResource (lng) {
+    return {
+      'en': import('@/modules-arch/schemes/loyalty-points-reconciliation.en.json'),
+      'ru': import('@/modules-arch/schemes/loyalty-points-reconciliation.ru.json'),
+    }[lng]
   },
   pages: [
     new MovementsHistoryPageModule(

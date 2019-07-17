@@ -46,6 +46,8 @@ import { CustomerRecord } from './customers-list/customer.record'
 import CustomerAttributes from './customers-list/CustomerAttributes'
 import CustomersTable from './customers-list/CustomersTable'
 import { Bus } from '@/js/helpers/event-bus'
+import { errors } from '@tokend/js-sdk'
+import config from '@/config'
 
 export default {
   name: 'customers-list',
@@ -77,7 +79,9 @@ export default {
 
   methods: {
     listen () {
-      Bus.on('customers:updateList', () => this.reloadList())
+      Bus.on('customers:updateList', () => {
+        setTimeout(() => this.reloadList(), config.RELOAD_TIMEOUT)
+      })
     },
 
     async getList () {
@@ -90,9 +94,18 @@ export default {
         )
         this.isLoaded = true
       } catch (error) {
-        this.isLoaded = false
-        this.isLoadFailed = true
-        ErrorHandler.processWithoutFeedback(error)
+        // TODO: remove whe back-end returns empty data instead of 404
+        if (error instanceof errors.NotFoundError) {
+          this.isLoaded = true
+          result = {
+            data: [],
+            links: {},
+          }
+        } else {
+          this.isLoaded = false
+          this.isLoadFailed = true
+          ErrorHandler.processWithoutFeedback(error)
+        }
       }
 
       return result

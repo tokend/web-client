@@ -1,0 +1,22 @@
+{
+  "translations": {
+    "auth-pages": {
+      "small-title": "Data integrity verification solution",
+      "big-title": "Secure Healthcare Records Using Blockchain"
+    },
+    "document-uploader-viewer": {
+      "clinic-1-name":  "True life care clinic",
+      "clinic-2-name": "Angelwalk Hospital",
+      "clinic-3-name":  "Willow Green Hospital",
+      "no-organization-msg": "no organization",
+      "uploaded-by-lbl": "Owner:",
+      "organization-lbl": "Organization:",
+      "date-lbl": "Uploaded:"
+    },
+    "passport": {
+      "account-unverified": "Patient account",
+      "account-general": "Patient account",
+      "account-corporate": "Doctor account"
+    }
+  }
+}

@@ -95,7 +95,7 @@
       "field-error_password": "Password should contain minimum 6 symbols",
       "field-error_sameAsPassword": "Passwords don't match",
       "field-error_requiredAtLeastOne": "Choose at least one of the options",
-      "field-error_amount": "Amount must be a number, greater than {{ minValue }}",
+      "field-error_amount": "Amount must be a number, greater than {{ minValue, number }}",
       "field-error_maxValue": "Value should be less than {{maxValue, number}}",
       "field-error_decimal": "Allowed integer or decimal numbers only",
       "field-error_amountRange": "Amount should be in the range from {{from, money}} to {{to, money}}",
@@ -114,46 +114,46 @@
       "field-error_cardExpirationDate": "Make sure the expiration date is correct",
       "field-error_cardCVV3": "Make sure the CVV3 is correct",
       "field-error_bankBIC": "Make sure the BIC/SWIFT code is correct",
-      "field-error_softCapMoreThanHardCap": "Soft cap should be between zero and \"Hard cap\" value. Hard cap: {{hardCap}}",
-      "field-error_hardCapLessThanSoftCap": "Hard cap cannot be less than \"Soft cap\" value. Soft cap: {{softCap}}",
+      "field-error_softCapMoreThanHardCap": "Soft cap should be between zero and \"Hard cap\" value. Hard cap: {{hardCap, number}}",
+      "field-error_hardCapLessThanSoftCap": "Hard cap cannot be less than \"Soft cap\" value. Soft cap: {{softCap, number}}",
       "field-error_noMoreThanSaleCap": "Investing amount has exceeded the sale cap {{saleCap, money}}",
       "field-error_assetCode": "Asset code must contain maximum 16 symbols and consist of alphanumeric values (A-Z, a-z, 0-9)",
-      "field-error_alphaNum": "Accepts only alphanumerics",
+      "field-error_alphaNum": "Value should consists of alphanumeric values (A-Z, a-z, 0-9)",
       "field-error_minLength": "This field must contain minimum {{minLength}} symbols",
       "field-error_selectedSameAssetCode": "Not allowed duplicated quote asset codes"
     },
     "errors": {
-      "default": "Something bad happened. Please try again later",
-      "server": "This service is temporary unavailable. Please try again later",
-      "timeout": "Timeout exceeded. Please re-check your internet connection and try again",
-      "network": "Network error. Please re-check your internet connection and try again",
-      "internal": "This service is temporary unavailable. Please try again later",
-      "conflict": "Such item already exists",
-      "not-found": "Such item not found",
-      "forbidden": "Request forbidden",
-      "bad-request": "The request you sent is invalid in some way",
-      "not-allowed": "Your account don't have permissions to perform this request",
-      "unauthorized": "Access denied",
-      "tfa-required": "2FA required",
-      "verification-required": "Verification required",
-      "user-exists": "User with such email already exists",
-      "transaction": "The transaction you sent is invalid",
-      "account-blocked": "Your account is blocked",
-      "user-doesnt-exist": "This user doesn't exist in system",
-      "balance-not-found": "The user does not have this asset balance yet",
-      "file-upload": "Cannot upload a file to the storage. Please upload another file or try again later"
+      "default": "Something bad happened. Please try again later or contact the system owner.",
+      "server": "This service is temporary unavailable. Please try again later.",
+      "timeout": "Timeout exceeded. Please re-check your internet connection and try again.",
+      "network": "Network error. Please re-check your internet connection and try again.",
+      "internal": "Something bad happened. Please try again later or contact the system owner.",
+      "conflict": "Such item already exists.",
+      "not-found": "Such item not found.",
+      "forbidden": "Request forbidden.",
+      "bad-request": "The request you sent is invalid in some way.",
+      "not-allowed": "Your account don't have permissions to perform this request.",
+      "unauthorized": "Access denied.",
+      "tfa-required": "2FA required.",
+      "verification-required": "Verification required.",
+      "user-exists": "User with such email already exists.",
+      "transaction": "The transaction you sent is invalid.",
+      "account-blocked": "Your account is blocked.",
+      "user-doesnt-exist": "This user doesn't exist in system.",
+      "balance-not-found": "The user does not have this asset balance yet.",
+      "file-upload": "Cannot upload a file to the storage. Please upload another file or try again later."
     },
     "supported-browsers": {
       "title": "Browsers that support all of our features",
       "description": "Looks like your current browser cannot support some of our features. You need to update your current browser or download browser that supports all of our features by following links below.",
-      "app-store": "App store",
-      "google-play": "Google play",
+      "app-store": "App Store",
+      "google-play": "Google Play",
       "go-to-website": "Go to website",
       "system-update-required": "System update required",
       "google-chrome-title": "Google Chrome (68+)",
-      "google-chrome-img-alt": "Chrome logotype",
+      "google-chrome-img-alt": "Google Chrome logo",
       "mozilla-firefox-title": "Mozilla Firefox (61+)",
-      "mozilla-firefox-img-alt": "Firefox logotype",
+      "mozilla-firefox-img-alt": "Mozilla Firefox logo",
       "safari-title": "Safari (10+)",
       "safari-img-alt": "Safari logotype",
       "edge-title": "Edge (17+)",
@@ -227,7 +227,7 @@
       "op_reference_duplication": "You cannot make two issuances with the same reference",
       "op_stats_overflow": "Overflow during statistics calculation",
       "op_limits_exceeded": "The operation exceeds limits set to your account. Check \"Limits\" page for your current limits.",
-      "op_not_allowed_by_asset_policy": "This action is not allowed by token policy",
+      "op_not_allowed_by_asset_policy": "This action is not allowed by asset policy",
       "op_already_exists": "Entry already exists",
       "op_invalid_asset": "Invalid asset",
       "op_invalid_action": "Invalid action",
@@ -475,7 +475,7 @@
       "email-verified": "Email successfully verified",
       "signup-title": "Get started",
       "recover-account": "Recover your account",
-      "recover-lbl": "Recover",
+      "recover-btn": "Recover",
       "recovery-document": "Recovery document",
       "recovery-document-note": "JPG, PNG, PDF, max 32 mb.",
       "send-recovery-link-btn": "Send recovery link",
@@ -550,7 +550,7 @@
       "account-type-general-title": "General",
       "account-type-corporate-title": "Corporate",
       "account-type-general-description": "Deposit, withdraw, buy, sell and transfer assets",
-      "account-type-corporate-description": "Deposit, withdraw, buy, sell, transfer and create assets "
+      "account-type-corporate-description": "Deposit, withdraw, buy, sell, transfer and create assets"
     },
     "verification-state-message": {
       "blocked-title": "Account blocked",
@@ -586,7 +586,6 @@
       "sign-out-btn": "Sign out"
     },
     "general-form": {
-      "address-postal-code-lbl'": "Postal code",
       "documents-lbl": "Documents",
       "id-document-face-lbl": "Identity document (face side)",
       "id-document-back-lbl": "Identity document (back side)",
@@ -691,10 +690,10 @@
       "residence-permit": "Residence Permit"
     },
     "form-confirmation": {
-      "message-text-default": "Please recheck the form before confirmation",
+      "message-text-default": "Please recheck the form before confirmation.",
       "button-text-ok": "Confirm",
       "button-text-cancel": "Cancel",
-      "submit-processing": "Processing..."
+      "submit-processing": "Processing…"
     },
     "pages-names": {
       "dashboard": "Dashboard",
@@ -963,7 +962,7 @@
         "unknown": "Unknown type"
       },
       "operations": {
-        "create-issuance-request": "Issuance/deposit requested",
+        "create-issuance-request": "Issuance",
         "create-withdraw-request": "Withdraw requested",
         "check-sale-state": "Sale closed",
         "review-request": "Request reviewed",
@@ -1076,11 +1075,10 @@
       "insufficient-sales": "Insufficient balance",
       "recipient-lbl": "Recipient email or account ID",
       "subject-lbl": "Add note",
-      "total-amount": "Total amount",
       "continue-btn": "Continue",
       "recheck-form": "Please recheck the form before proceeding",
       "submit-btn": "Send",
-      "payment-successful": "Payment successful",
+      "payment-successful": "Transfer successful",
       "recipient-not-found": "Recipient not found"
     },
     "issuance-page": {
@@ -1440,7 +1438,7 @@
       "question-title": "Question:",
       "yes-msg": "Yes",
       "no-msg": "No",
-      "cancellation-msg": "Are you sure to cancel the request?",
+      "cancellation-msg": "Are you sure you want to cancel the request?",
       "update-btn": "Update",
       "cancel-btn": "CANCEL",
       "choice-title": "Option {{number}}",
@@ -1515,7 +1513,7 @@
       "sale-upcoming-state": "Upcoming only",
       "sale-all-state": "All",
       "new-sale": "New sale",
-      "investable-sales": "Investable sales",
+      "investable-sales": "Sales",
       "my-sales": "My sales"
     },
     "sale-card": {
@@ -1754,11 +1752,7 @@
       "requires-verification-desc": "Please, verify your account to invest in this sale",
       "requires-us-accreditation-title": "Accreditation required",
       "requires-us-accreditation-desc": "U.S. citizens are required to verify their accreditation before holding this asset",
-      "percent-fee-label": "Percent fee",
-      "total-amount-label": "Total amount",
       "recheck-form-msg": "Please recheck the form before proceeding",
-      "investment-fees-heading": "Investment fees",
-      "no-transaction-fees-msg": "No fees for this transaction",
       "investment-disabled-title": "Cannot invest in this sale"
     },
     "create-sale-form": {
@@ -1767,7 +1761,7 @@
       "no-owned-assets-title": "No owned assets yet",
       "no-owned-assets-desc": "Please, create an asset before creating a sale",
       "main-information-step-title": "Main information",
-      "short-blurb-step-title": "Short blurb",
+      "short-blurb-step-title": "Short description",
       "full-description-step-title": "Full description",
       "sale-name-lbl": "Sale name",
       "base-asset-lbl": "Base asset",
@@ -1782,7 +1776,7 @@
       "price-for-asset-hint": "Price ({{quote}} for 1 {{base}}) ≈ {{value, money}}",
       "accept-investments-msg": "Accept investments in:",
       "sale-logo-lbl": "Upload the image users will see first in their searcher",
-      "sale-logo-note": "JPG, PNG, max 5 mb.",
+      "sale-logo-note": "JPG, PNG max 5 mb.",
       "short-description-lbl": "Short description",
       "youtube-video-lbl": "Insert YouTube video link or ID",
       "preview-video-msg": "Preview your video",
@@ -1791,7 +1785,8 @@
       "create-request-btn": "Create request",
       "update-request-btn": "Update request",
       "no-investable-assets-err": "This asset has no acceptable investment assets. Please, select another one",
-      "request-submitted-msg": "Your request was successfully processed. Please, wait for approval"
+      "request-submitted-msg": "Your request was successfully processed. Please, wait for approval",
+      "price": "Price in {{asset}}"
     },
     "withdrawal-fiat-module": {
       "form-title": "Withdrawal fiat",
@@ -1971,8 +1966,8 @@
       "config-header": "One important step",
       "config-desc": "Scan this QR code with your application to provide correct configuration for TokenD environment",
       "pre-issuance-learn-more-link": "Learn more",
-      "pre-issuance-apps-header": "Pre-issue your tokens offline",
-      "pre-issuance-apps-desc": "To pre authorize your tokens to be issued, get the Offline Device Pre-issuance tool on your computer.",
+      "pre-issuance-apps-header": "Pre-issue your assets offline",
+      "pre-issuance-apps-desc": "To pre authorize your assets to be issued, get the Offline Device Pre-issuance tool on your computer.",
       "pre-issuance-app-sources-link": "Source code"
     },
     "ios-installation-guide": {
@@ -2329,8 +2324,8 @@
       "add-quote-asset-btn": "Add quote asset",
       "quote-assets-subheading": "Quote asset {{ number }}",
       "created-atomic-swap-msg": "Atomic swap request successfully created",
-      "available-balance":"Balance: {{amount}} {{asset}}.",
-      "available-for-issuance": "Available for issuance: {{amount}} {{asset}}"
+      "available-balance":"Balance: {{amount, number}} {{asset}}.",
+      "available-for-issuance": "Available for issuance: {{amount, number}} {{asset}}"
     },
     "atomic-swaps-explore": {
       "no-list-title": "Atomic swap list is coming soon"
@@ -2338,7 +2333,7 @@
     "customers-page": {
       "invite-btn": "Invite",
       "issue-btn": "Issue",
-      "mass-invitation-drawer-heading": "Invite new users",
+      "mass-invitation-drawer-heading": "Invite customers",
       "mass-issuance-drawer-heading": "Mass issuance",
       "customers-list-page": "Customers list"
     },
@@ -2357,14 +2352,11 @@
       "too-much-op-error-notif": "Too many receivers, the current limit is 100 receivers, please decrease the receivers count and try again."
     },
     "mass-invitation-form": {
-      "asset-lbl": "Asset",
-      "available-for-issuance-hint": "Available for issuance: {{amount, money}}",
-      "amount-lbl": "Amount",
       "how-to-invitees-paragraph": "List all invitees emails in the box below, separate them with commas.",
       "invitees-lbl": "Invitees",
       "submit-btn": "Invite",
       "invited-successfully-notification": "Mass invitation performed successfully.",
-      "no-invitees-found": "Receivers you provided not found or cannot receive the issuance. Please ensure you specified the valid receivers list and try again."
+      "no-invitees-found": "Receivers you provided not found or cannot receive the invitation. Please ensure you specified the valid receivers list and try again."
     },
     "customer-attributes": {
       "id-key": "ID",

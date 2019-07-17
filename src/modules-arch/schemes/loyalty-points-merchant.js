@@ -8,8 +8,11 @@ import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 
 export default {
-  importEnLocaleFile () {
-    return import('@/modules-arch/schemes/loyalty-points-merchant.en.json')
+  importLanguageResource (lng) {
+    return {
+      'en': import('@/modules-arch/schemes/loyalty-points-merchant.en.json'),
+      'ru': import('@/modules-arch/schemes/loyalty-points-merchant.ru.json'),
+    }[lng]
   },
   appLogoUrl: '/static/pet-shop.png',
   pages: [
