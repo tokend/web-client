@@ -26,6 +26,7 @@ import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { api } from '@/api'
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
   name: 'trade-user-offers',
@@ -33,9 +34,7 @@ export default {
     TradeOpenOffers,
     CollectionLoader,
   },
-  props: {
-    isLoading: { type: Boolean, default: false },
-  },
+  mixins: [UpdateList],
   data: () => ({
     openOffers: [],
     isOpenOffersLoading: false,
@@ -62,17 +61,15 @@ export default {
         }
       },
     },
-    isLoading: async function () {
-      await this.loadOffersHistory()
-      this.$emit('update:isLoading', false)
-    },
   },
   created () {
     this.setSelectedAssets(this.assetPair)
     if (this.assetPair.base) {
       this.initFirstPageLoader()
     }
+    this.listenUpdateList('trade:updateList', this.initFirstPageLoader)
   },
+
   methods: {
     initFirstPageLoader () {
       this.firstPageLoader = _ => this.loadOffersHistory()

@@ -143,6 +143,8 @@ const EVENTS = {
   detailsButtonClicked: 'details-button-clicked',
 }
 
+const NUMBER_DISPLAYING_BALANCES = 3
+
 export default {
   name: 'customers-table',
 
@@ -211,10 +213,22 @@ export default {
     },
 
     formatBalancesOf (customer) {
-      return customer.balances
+      let balances = customer.balances
+        .filter(item => +item.amount)
+      balances.sort(function (a, b) {
+        return b.amount - +a.amount
+      })
+      balances = balances.slice(0, NUMBER_DISPLAYING_BALANCES)
+      let resolveString = balances
         .map(item => this.$options.filters
           .formatMoney({ value: item.amount, currency: item.assetCode })
-        ).join(', ')
+        )
+        .join(', ')
+      if (balances.length > NUMBER_DISPLAYING_BALANCES - 1) {
+        return resolveString + '…'
+      } else {
+        return resolveString
+      }
     },
   },
 }

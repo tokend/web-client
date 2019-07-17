@@ -13,11 +13,11 @@ import { VerificationPageModule } from '@/vue/pages/verification-page-module'
 import { SecurityPageModule } from '@/vue/pages/security-page-module'
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
-import { CreateSaleFormModule } from '@modules/create-sale-form/module'
+import { CreateSaleFormModuleSimplified } from '@modules/create-sale-form-simplified/module'
 import { SalesListPageModule } from '@/vue/pages/sales/investable-sales-page-module'
 import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
-import { SaleCampaignViewerPageModule } from '@/vue/pages/sale-details/sale-campaign-viewer-page-module'
-import { SaleStateWidgetModule } from '@/vue/pages/sale-details/sale-sate-widget-module'
+import { SimplifySaleCampaignViewerPageModule } from '@/vue/pages/sale-details-simplified/sale-campaign-viewer-page-module'
+import { SimplifySaleStateWidgetModule } from '@/vue/pages/sale-details-simplified/sale-sate-widget-module'
 import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments-deposit/module'
 import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
@@ -204,7 +204,7 @@ export default {
             },
             isCorporateOnly: true,
           }),
-          new CreateSaleFormModule({
+          new CreateSaleFormModuleSimplified({
             isCorporateOnly: true,
           }),
         ],
@@ -221,14 +221,14 @@ export default {
           props: true,
         },
         submodules: [
-          new SaleCampaignViewerPageModule({
+          new SimplifySaleCampaignViewerPageModule({
             routerEntry: {
               path: '/sales/:id/campaign',
               name: vueRoutes.saleCampaign.name,
               props: true,
             },
             submodules: [
-              new SaleStateWidgetModule(),
+              new SimplifySaleStateWidgetModule(),
             ],
           }),
         ],

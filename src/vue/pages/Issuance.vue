@@ -55,14 +55,13 @@
 
       <submodule-importer
         :submodule="getModule().getSubmodule(IssuanceFormModule)"
-        @issuance-created="setIssuanceCreated() || closeIssuanceDrawer()"
+        @issuance-created="closeDrawerAndUpdateList()"
       />
     </drawer>
 
     <submodule-importer
       v-if="getModule().canRenderSubmodule(IssuanceExplorerModule)"
       :submodule="getModule().getSubmodule(IssuanceExplorerModule)"
-      :should-update.sync="isIssuanceCreated"
     />
   </div>
 </template>
@@ -80,6 +79,7 @@ import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { IssuanceExplorerModule } from '@modules/issuance-explorer/module'
 import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
 import { PreIssuanceFormModule } from '@modules/pre-issuance-form/module'
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
   name: 'issuance-page',
@@ -88,6 +88,8 @@ export default {
     TopBar,
     SubmoduleImporter,
   },
+
+  mixins: [UpdateList],
 
   data: _ => ({
     isIssuanceDrawerShown: false,
@@ -106,12 +108,9 @@ export default {
   },
 
   methods: {
-    setIssuanceCreated () {
-      this.isIssuanceCreated = true
-    },
-
-    closeIssuanceDrawer () {
+    closeDrawerAndUpdateList () {
       this.isIssuanceDrawerShown = false
+      this.emitUpdateList('issuance:updateList')
     },
   },
 }

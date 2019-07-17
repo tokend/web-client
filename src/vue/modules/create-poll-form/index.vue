@@ -268,7 +268,6 @@ export default {
           await api.postOperations(createPollOperation)
           Bus.success('create-poll-form.request-submitted-msg')
           this.$emit(EVENTS.submitted)
-          Bus.emit('polls:updateRequestsList')
         } catch (e) {
           this.enableForm()
           ErrorHandler.process(e)

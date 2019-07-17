@@ -85,7 +85,7 @@
       <poll-viewer
         :current-poll="pollToBrowse"
         @close-drawer="isDrawerShown = false"
-        @end-time-updated="refreshPollsList()"
+        @end-time-updated="emitUpdateList('polls:updateList')"
         @poll-canceled="refreshPollsListWithCloseDrawer()"
         @poll-closed="refreshPollsListWithCloseDrawer()"
       />
@@ -109,8 +109,7 @@ import { PollRecord } from '@/js/records/entities/poll.record'
 
 import SelectFilterField from '@/vue/fields/SelectFilterField'
 import TickFilterField from '@/vue/fields/TickFilterField'
-
-const DELAY_REFRESH_LIST_TIME = 500
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
   name: 'polls-all',
@@ -125,6 +124,8 @@ export default {
     SelectFilterField,
     TickFilterField,
   },
+
+  mixins: [UpdateList],
 
   data () {
     return {
@@ -155,6 +156,10 @@ export default {
     'filters.isOwnedByCurrentUser' () {
       this.reloadList()
     },
+  },
+
+  created () {
+    this.listenUpdateList('polls:updateList', this.reloadList)
   },
 
   methods: {
@@ -209,15 +214,9 @@ export default {
       this.isDrawerShown = true
     },
 
-    refreshPollsList () {
-      setTimeout(() => {
-        this.reloadList()
-      }, DELAY_REFRESH_LIST_TIME)
-    },
-
     refreshPollsListWithCloseDrawer () {
       this.isDrawerShown = false
-      this.refreshPollsList()
+      this.updateList('polls:updateList')
     },
   },
 }
