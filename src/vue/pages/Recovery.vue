@@ -9,7 +9,21 @@
 
       <div class="auth-page__tips">
         <div class="auth-page__tip">
-          {{ 'auth-pages.know-credentials-question' | globalize }}
+          <span>
+            {{ 'auth-pages.lost-seed-question' | globalize }}
+          </span>
+          <router-link
+            class="auth-page__tip-link"
+            :to="vueRoutes.kycRecoveryInit"
+          >
+            {{ 'auth-pages.lost-seed-answer' | globalize }}
+          </router-link>
+        </div>
+
+        <div class="auth-page__tip">
+          <span>
+            {{ 'auth-pages.know-credentials-question' | globalize }}
+          </span>
           <router-link class="auth-page__tip-link" :to="vueRoutes.login">
             {{ 'auth-pages.know-credentials-answer' | globalize }}
           </router-link>

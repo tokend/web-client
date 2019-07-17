@@ -14,6 +14,12 @@
               :value="address"
               :label="'deposit-form.address-lbl' | globalize"
             />
+            <key-viewer
+              v-if="payload"
+              :value="payload"
+              :label="'deposit-form.payload-lbl' | globalize"
+              :is-qr-code-shown="false"
+            />
           </div>
           <div class="address-loader__address-info-wrp">
             <timeout-ticker
@@ -68,6 +74,11 @@ const EVENTS = {
   ready: 'ready',
 }
 
+const DEPOSIT_TYPES = {
+  address: 'address',
+  addressWithPayload: 'address_with_payload',
+}
+
 const TRANSACTION_TIME_MARGIN = 600 // seconds
 
 export default {
@@ -92,14 +103,22 @@ export default {
       vuexTypes.accountDepositAddresses,
       vuexTypes.accountId,
     ]),
-    address () {
-      const externalSystemAccount = Object
+    externalSystemAccount () {
+      return Object
         .values(this[vuexTypes.accountDepositAddresses])
         .find(
           item => +item.externalSystemType === +this.externalSystemType
         ) || {}
-
-      return externalSystemAccount.data
+    },
+    address () {
+      return (typeof this.externalSystemAccount.data === 'string')
+        ? this.externalSystemAccount.data
+        : this.externalSystemAccount.data.address
+    },
+    payload () {
+      return (this.externalSystemAccount === DEPOSIT_TYPES.addressWithPayload)
+        ? this.externalSystemAccount.data.payload
+        : ''
     },
     endTime () {
       const externalSystemId = Object

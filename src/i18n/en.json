@@ -451,10 +451,14 @@
     "idle-message": {
       "notification-message": "You have been logged out due to long inactivity."
     },
+    "session-message": {
+      "notification-message": "Session has expired."
+    },
     "auth-pages": {
       "small-title": "Create, distribute and trade",
       "big-title": "Start tokenizing <br> your assets <br> in minutes",
       "email": "Email",
+      "code": "Code",
       "password": "Password",
       "new-password": "New password",
       "tfa-code": "2FA code",
@@ -462,6 +466,7 @@
       "confirm-password": "Confirm password",
       "sign-in": "Sign In",
       "sign-up": "Sign Up",
+      "kyc-recovery": "KYC Recovery",
       "wrong-email-or-password-err": "Wrong email or password",
       "wrong-tfa-code-err": "Wrong 2FA code",
       "almost-done": "Almost done",
@@ -471,6 +476,10 @@
       "signup-title": "Get started",
       "recover-account": "Recover your account",
       "recover-lbl": "Recover",
+      "recovery-document": "Recovery document",
+      "recovery-document-note": "JPG, PNG, PDF, max 32 mb.",
+      "send-recovery-link-btn": "Send recovery link",
+      "recovery-email-link-sent-msg": "The recovery link has been sent to your e-mail. Please, follow it to recover your account",
       "recovered": "Account recovered. You can now use the new credentials to sign in",
       "request-new-email": "Request new email",
       "email-requested": "Email sent. Please check your inbox",
@@ -483,6 +492,8 @@
       "forgot-pwd-answer": "Recover it",
       "know-credentials-question": "Know your credentials?",
       "know-credentials-answer": "Sign in now",
+      "lost-seed-question": "Lost your recovery seed?",
+      "lost-seed-answer": "Recover account by KYC",
       "have-an-account-question": "Already have an account?",
       "have-an-account-answer": "Sign in now",
       "verifying-email-msg": "Please wait while we verifying your email address."
@@ -559,6 +570,20 @@
       "rejected-reason": "Rejection reason:",
       "permanently-rejected-reason": "Rejection reason:",
       "additional-info-title": "Additional information (provided by admin or KYC service): "
+    },
+    "kyc-recovery-state-message": {
+      "approved-title": "KYC recovery approved",
+      "pending-title": "KYC recovery in progress",
+      "rejected-title": "KYC recovery rejected",
+      "permanently-rejected-title": "KYC recovery rejected permanently",
+      "approved-desc": "Your KYC recovery request was approved by administrator. Now you can access all the features.",
+      "pending-desc": "Your KYC recovery request is being processed. You will be able access all the features once the request is reviewed.",
+      "rejected-desc": "Your KYC recovery request was rejected by administrator. Please, resolve all the issues and send the request again.",
+      "permanently-rejected-desc": "Your KYC recovery request was permanently rejected by administrator.",
+      "rejected-reason": "Rejection reason:",
+      "permanently-rejected-reason": "Rejection reason:",
+      "limited-functionality-msg": "Currently application functionality is limited",
+      "sign-out-btn": "Sign out"
     },
     "general-form": {
       "address-postal-code-lbl'": "Postal code",
@@ -693,7 +718,8 @@
       "atomic-swaps": "Atomic swaps",
       "customers": "Customers",
       "customers-list": "Customers list",
-      "businesses": "Businesses"
+      "businesses": "Businesses",
+      "kyc-recovery": "KYC Recovery"
     },
     "limits": {
       "explore-limits": "Explore limits",
@@ -1863,7 +1889,8 @@
       "can-not-load-assets": "There was an error while loading assets. Please try again later",
       "loading-msg": "Loading…",
       "generate-new-address-btn": "Generate new",
-      "address-lbl": "Address"
+      "address-lbl": "Address",
+      "payload-lbl": "Payload"
     },
     "deposit-fiat-module": {
       "form-title": "Deposit fiat",
@@ -1922,6 +1949,7 @@
     "coinpayments-deposit": {
       "amount-lbl": "Amount",
       "address-lbl": "Address:",
+      "payload-lbl": "Payload:",
       "request-address-lbl": "Request the address",
       "no-address-msg": "No available addresses to deposit yet. Please try again later.",
       "time-left-msg": "Time left",
@@ -2300,7 +2328,9 @@
       "address-lbl": "Address",
       "add-quote-asset-btn": "Add quote asset",
       "quote-assets-subheading": "Quote asset {{ number }}",
-      "created-atomic-swap-msg": "Atomic swap request successfully created"
+      "created-atomic-swap-msg": "Atomic swap request successfully created",
+      "available-balance":"Balance: {{amount}} {{asset}}.",
+      "available-for-issuance": "Available for issuance: {{amount}} {{asset}}"
     },
     "atomic-swaps-explore": {
       "atomic-swap-drawer-title": "Atomic swap details",
@@ -2398,6 +2428,12 @@
     },
     "current-business-indicator": {
       "browsing-lbl": "Browsing:"
+    },
+    "kyc-recovery": {
+      "submit-again-lbl": "Submit again",
+      "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
+      "email-code": "Enter the code sent to you by email",
+      "tfa-code": "Enter tfa code"
     }
   }
 }

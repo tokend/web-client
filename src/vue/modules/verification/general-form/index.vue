@@ -33,6 +33,7 @@
       />
       <section-avatar
         :is-disabled="formMixin.isDisabled"
+        v-if="!isKycRecoveryPage"
         ref="section-avatar"
       />
 
@@ -49,7 +50,7 @@
           class="verification-general-form__submit-btn"
           :disabled="formMixin.isDisabled"
         >
-          {{ (Number(requestId) > 0
+          {{ (isExistingRequest
             ? 'verification-form.update-btn'
             : 'verification-form.create-btn'
           ) | globalize }}
@@ -61,6 +62,7 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
+import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 
 import SectionCountry from './components/section-country'
 import SectionPersonal from './components/section-personal'
@@ -77,9 +79,11 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base } from '@tokend/js-sdk'
 import { api } from '@/api'
 import { isUSResidence } from './is-us-residence'
+import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 
 const EVENTS = {
   submit: 'submit',
+  kycRecoverySubmit: 'kyc-recovery-submit',
 }
 
 export default {
@@ -92,14 +96,9 @@ export default {
     SectionSelfie,
     SectionAvatar,
   },
-  mixins: [FormMixin],
+  mixins: [FormMixin, VerificationFormMixin],
   props: {
     blobId: { type: String, default: '' },
-    requestId: { type: String, required: true },
-
-    generalRoleId: { type: String, required: true },
-    usVerifiedRoleId: { type: String, required: true },
-    usAccreditedRoleId: { type: String, required: true },
   },
   data: _ => ({
     isInitialized: false,
@@ -114,6 +113,12 @@ export default {
     }),
     ...mapGetters([
       vuexTypes.accountId,
+      vuexTypes.kvEntryGeneralRoleId,
+      vuexTypes.kvEntryUsVerifiedRoleId,
+      vuexTypes.kvEntryUsAccreditedRoleId,
+      vuexTypes.kycRequestId,
+      vuexTypes.kycRecoveryBlobId,
+      vuexTypes.kycRecoveryState,
     ]),
     verificationCode () {
       return this.accountId.slice(1, 6)
@@ -124,27 +129,33 @@ export default {
     accountRoleToSet () {
       if (this.isUSResident) {
         return this.isAccredited
-          ? this.usAccreditedRoleId
-          : this.usVerifiedRoleId
+          ? this.kvEntryUsAccreditedRoleId
+          : this.kvEntryUsVerifiedRoleId
       }
 
-      return this.generalRoleId
+      return this.kvEntryGeneralRoleId
     },
   },
   async created () {
-    if (this.blobId) {
-      try {
+    try {
+      if (this.blobId) {
         this.populateForm(await this.getBlobData(this.blobId))
-      } catch (e) {
-        ErrorHandler.processWithoutFeedback(e)
+
+        // Disabling country change to prevent updating role for
+        // unfulfilled requests. Is temporary until canceling change
+        // role requests is implemented on backend:
+        this.isCountryChangeDisabled = true
+      } else if (
+        this.kycRecoveryBlobId &&
+        (this.kycRecoveryState !== REQUEST_STATES_STR.permanentlyRejected)
+      ) {
+        this.populateForm(await this.getBlobData(
+          this.kycRecoveryBlobId
+        ))
       }
-
-      // Disabling country change to prevent updating role for
-      // unfulfilled requests. Is temporary until canceling change
-      // role requests is implemented on backend:
-      this.isCountryChangeDisabled = true
+    } catch (e) {
+      ErrorHandler.processWithoutFeedback(e)
     }
-
     this.isInitialized = true
   },
   methods: {
@@ -153,6 +164,9 @@ export default {
       populateForm: types.POPULATE_STATE,
       uploadDocuments: types.UPLOAD_DOCUMENTS,
       createBlob: types.CREATE_BLOB,
+    }),
+    ...mapActions({
+      sendKycRecoveryRequest: vuexTypes.SEND_KYC_RECOVERY_REQUEST,
     }),
     isAllFormsValid () {
       let isValid = true
@@ -172,23 +186,29 @@ export default {
       try {
         await this.uploadDocuments()
         const blobId = await this.createBlob(this.accountId)
-        await this.createRequest(blobId)
-        // we duplicating enabling form in try/catch blocks to prevent race
-        // condition - the outer component disables the form after submit event
-        // again and can does it before we enable it here.
-        this.enableForm()
-        this.$emit(EVENTS.submit)
+        if (this.isKycRecoveryPage) {
+          await this.sendKycRecoveryRequest(blobId)
+          this.$emit(EVENTS.kycRecoverySubmit)
+          this.enableForm()
+        } else {
+          await this.createKycVerificationRequest(blobId)
+          // we duplicating enabling form in try/catch blocks to prevent race
+          // condition - the outer component disables the form after submit
+          // event again and can does it before we enable it here.
+          this.enableForm()
+          this.$emit(EVENTS.submit)
+        }
       } catch (e) {
         this.enableForm()
         ErrorHandler.process(e)
       }
     },
-    async createRequest (blobId) {
+    async createKycVerificationRequest (blobId) {
       const operation = base.CreateChangeRoleRequestBuilder
         .createChangeRoleRequest({
-          requestID: this.requestId,
+          requestID: this.isExistingRequest ? String(this.kycRequestId) : '0',
           destinationAccount: this.accountId,
-          accountRoleToSet: this.accountRoleToSet,
+          accountRoleToSet: this.accountRoleToSet + '',
           creatorDetails: { blob_id: blobId },
         })
 

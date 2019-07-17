@@ -7,7 +7,6 @@ import Vuelidate from 'vuelidate'
 import VueResource from 'vue-resource'
 import log from 'loglevel'
 import config from './config'
-import IdleVue from 'idle-vue'
 import NProgress from 'nprogress'
 
 import { extendStoreWithScheme } from '@/vuex'
@@ -76,11 +75,6 @@ async function init () {
   NProgress.configure({ showSpinner: false })
   router.afterEach((to, from) => {
     NProgress.done()
-  })
-
-  Vue.use(IdleVue, {
-    eventEmitter: new Vue(),
-    idleTime: config.IDLE_TIMEOUT,
   })
 
   ErrorTracker.init(config)

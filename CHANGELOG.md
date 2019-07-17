@@ -8,17 +8,49 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+### Experimental features changes
+#### Added
+- Simplify form of create new sale (Conto)
+- Simplify pages for sale details (Conto)
+
+## [1.10.0-rc.0] - 2019-07-16
+#### Added
+- Perform issuance operation in the "Create atomic swap" form for asset owner
+  if he doesn't have enough money
+
 #### Fixed
-- Resolved issue when select was without margin on the changing limits form
-- Resolved issue when you can set amount much bigger than the max amount of asset
-- Resolved an issue when limit left amount not updated on the client side
-- Resolved an issue when poll don't load for a user
-- Resolved an issue when participant email doesn't show on `Participants` tab
-  on `Poll` page
-- Resolved an issue when user can't update sale request
+- Resolved an issue with extra trailing whitespace appeared in clipboard field
+  component
+
+### "Under the hood" changes
+#### Added
+- Validation case `atomicSwap` in `AmountInputField` component
+- Handler for new deposit address
+
+#### Changed
+- Now using @tokend/js-sdk@1.9.0-rc.1
+
+## [1.10.0-x.2] - 2019-07-15
+#### Fixed
+- Resolved a KYC recovery issue of unverified account where the request has
+  been sent but the screen was continued been showing blank
+- Resolved a small design issue on KYC recovery TFA form when hint text was
+  too close to the input field
+
+## [1.10.0-x.1] - 2019-07-12
+#### Added
+- KYC Recovery
+- Integration with session key server
+
+#### Fixed
 - Resolved an issue when in select field quote assets on the atomic swap form
  show only assets in user balance
- 
+- Fixed display price on form when create new sale
+
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.9.0-rc.0
+
 ## [1.10.0-x.0] - 2019-07-02
 #### Added
 - New Atomic swap feature:
@@ -32,6 +64,24 @@ for further information about branching and tagging conventions.
 ### Experimental features changes
 #### Added
 - New use case - conto
+
+## [1.9.1] - 2019-07-15
+#### Changed
+- Allow sale cap asset to be picked as quote asset. Was: cap asset was
+  assigned automatically as a quote asset.
+
+## [1.9.0] - 2019-07-10
+
+## [1.9.0-rc.1] - 2019-07-08
+#### Fixed
+- Resolved an issue when has absent margin and present label overlap on
+  limits changing form
+- Resolved an issue when you can set amount bigger than max asset’s amount
+- Resolved an issue when limits leftover amount was not updated
+- Resolved an issue when poll failed to load for a user that is not sale owner
+- Resolved an issue when participant emails did not show on the "Participants"
+  tab
+- Resolved an issue when the user could not update a sale request
 
 ## [1.9.0-rc.0] - 2019-06-24
 #### Added
@@ -60,7 +110,7 @@ for further information about branching and tagging conventions.
   differ from other fields
 - Resolved an issue when date field was disabled after submit form
 - Issue with tooltip displaying inside elements with own scroll
-- Resolved an issue when tick field was displayed not chacked if value checked
+- Resolved an issue when tick field was displayed not checked if value checked
 
 ### "Under the hood" changes
 #### Added
@@ -827,8 +877,14 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.10.0-x.0...HEAD
-[1.10.0-x.0]: https://github.com/tokend/web-client/compare/1.9.0-rc.0...1.10.0-x.0
+[Unreleased]: https://github.com/tokend/web-client/compare/1.10.0-rc.0...HEAD
+[1.10.0-rc.0]: https://github.com/tokend/web-client/compare/1.10.0-x.2...1.10.0-rc.0
+[1.10.0-x.2]: https://github.com/tokend/web-client/compare/1.10.0-x.1...1.10.0-x.2
+[1.10.0-x.1]: https://github.com/tokend/web-client/compare/1.10.0-x.0...1.10.0-x.1
+[1.10.0-x.0]: https://github.com/tokend/web-client/compare/1.9.1...1.10.0-x.0
+[1.9.1]: https://github.com/tokend/web-client/compare/1.9.0...1.9.1
+[1.9.0]: https://github.com/tokend/web-client/compare/1.9.0-rc.1...1.9.0
+[1.9.0-rc.1]: https://github.com/tokend/web-client/compare/1.9.0-rc.0...1.9.0-rc.1
 [1.9.0-rc.0]: https://github.com/tokend/web-client/compare/1.8.0...1.9.0-rc.0
 [1.8.0]: https://github.com/tokend/web-client/compare/1.8.0-rc.3...1.8.0
 [1.8.0-rc.3]: https://github.com/tokend/web-client/compare/1.8.0-rc.2...1.8.0-rc.3

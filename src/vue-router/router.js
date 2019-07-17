@@ -54,6 +54,12 @@ export function buildRouter (store) {
         component: resolve => require(['@/vue/pages/PreIssuanceGuide'], resolve),
       },
       {
+        path: '/kyc-recovery-management',
+        name: vueRoutes.kycRecoveryManagement.name,
+        component: resolve => require(['@/vue/pages/KycRecovery/KycRecoveryManagement'], resolve),
+        beforeEnter: buildKycRecoveryPageGuard(store),
+      },
+      {
         path: '/auth',
         name: vueRoutes.auth.name,
         redirect: vueRoutes.login,
@@ -84,6 +90,12 @@ export function buildRouter (store) {
             component: resolve => require(['@/vue/pages/Recovery'], resolve),
             beforeEnter: buildAuthPageGuard(store),
           },
+          {
+            path: '/kyc-recovery-init',
+            name: vueRoutes.kycRecoveryInit.name,
+            component: resolve => require(['@/vue/pages/KycRecovery'], resolve),
+            beforeEnter: buildAuthPageGuard(store),
+          },
         ],
       },
       {
@@ -108,20 +120,33 @@ export function buildRouter (store) {
 }
 
 // doesn't allow to visit auth page if user is already logged in
+// or kyc recovery is initialized
 function buildAuthPageGuard (store) {
   return function authPageGuard (to, from, next) {
     const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
+    const isKycRecoveryInProgress = store
+      .getters[vuexTypes.isKycRecoveryInProgress]
 
-    isLoggedIn
-      ? next(vueRoutes.app)
-      : next()
+    if (isLoggedIn && isKycRecoveryInProgress) {
+      next({ name: vueRoutes.kycRecoveryManagement.name })
+      return
+    }
+
+    if (isLoggedIn) {
+      next(vueRoutes.app)
+      return
+    }
+
+    next()
   }
 }
 
-// doesn't allow to visit in-app page if user is not already logged in
+// doesn't allow to visit in-app page if user is not already logged inr
 function buildInAppRouteGuard ({ store, scheme, userRoutes }) {
   return function inAppRouteGuard (to, from, next, ...args) {
     const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
+    const isKycRecoveryInProgress = store
+      .getters[vuexTypes.isKycRecoveryInProgress]
     // TODO: remove when all components modularized
     const isAccessible = checkPathAccessible(to.path, scheme)
 
@@ -130,31 +155,58 @@ function buildInAppRouteGuard ({ store, scheme, userRoutes }) {
         name: vueRoutes.login.name,
         query: { redirectPath: to.fullPath },
       })
-    } else if (!isAccessible) {
+      return
+    }
+
+    if (isKycRecoveryInProgress) {
+      next({ name: vueRoutes.kycRecoveryManagement.name })
+      return
+    }
+
+    if (!isAccessible) {
       const parent = to.matched[to.matched.length - 1].parent
       const isParentAccessible = parent && parent.path &&
         checkPathAccessible(parent.path, scheme)
 
       let accessibleRoute
 
+      // if parent accessible try find other accessible sibling
       if (isParentAccessible) {
         const siblings = userRoutes.find(r => r.path === parent.path).children
         const otherAccessibleSibling = findAccessibleRoute(siblings, scheme)
         accessibleRoute = otherAccessibleSibling
       }
 
+      // if parent unaccessible or no accessible sibling found - find first
+      // accessible user route
       if (!accessibleRoute) {
         accessibleRoute = getFirstAccessibleUserRoute(userRoutes, scheme)
       }
 
+      // if no accessible user route found - we are helpless - throw an error
       if (!accessibleRoute) {
         throw new Error('router: no accessible routes to redirect the user!')
       }
 
       next(accessibleRoute)
-    } else {
-      next()
+      return
     }
+
+    next()
+  }
+}
+
+// doesn't allow to visit kyc recovery management page if user's kyc recovery
+// is not initialized
+function buildKycRecoveryPageGuard (store) {
+  return function kycRecoveryRouteGuard (to, from, next) {
+    const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
+    const isKycRecoveryInProgress = store
+      .getters[vuexTypes.accountKycRecoveryStatus]
+
+    isLoggedIn && isKycRecoveryInProgress
+      ? next()
+      : next(vueRoutes.app)
   }
 }
 

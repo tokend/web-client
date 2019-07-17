@@ -23,6 +23,10 @@
         <idle-message />
       </div>
 
+      <div class="auth__session-message-wrp">
+        <session-message />
+      </div>
+
       <router-view />
 
       <section class="auth__footer-section">
@@ -35,6 +39,7 @@
 <script>
 import Logo from '../assets/Logo'
 import IdleMessage from '@/vue/common/IdleMessage'
+import SessionMessage from '@/vue/common/SessionMessage'
 import AppFooter from '@/vue/navigation/Footer'
 import config from '@/config'
 
@@ -43,6 +48,7 @@ export default {
   components: {
     Logo,
     IdleMessage,
+    SessionMessage,
     AppFooter,
   },
   data () {
@@ -145,10 +151,5 @@ export default {
   font-size: 1.2rem;
   color: $col-text-auth-version;
   margin: 1.2rem 0 0;
-}
-
-.auth__idle-message-wrp {
-  margin-top: -6rem;
-  margin-bottom: 4rem;
 }
 </style>
