@@ -1075,11 +1075,10 @@
       "insufficient-sales": "Insufficient balance",
       "recipient-lbl": "Recipient email or account ID",
       "subject-lbl": "Add note",
-      "total-amount": "Total amount",
       "continue-btn": "Continue",
       "recheck-form": "Please recheck the form before proceeding",
       "submit-btn": "Send",
-      "payment-successful": "Payment successful",
+      "payment-successful": "Transfer successful",
       "recipient-not-found": "Recipient not found"
     },
     "issuance-page": {
@@ -2324,8 +2323,8 @@
       "add-quote-asset-btn": "Add quote asset",
       "quote-assets-subheading": "Quote asset {{ number }}",
       "created-atomic-swap-msg": "Atomic swap request successfully created",
-      "available-balance":"Balance: {{amount}} {{asset}}.",
-      "available-for-issuance": "Available for issuance: {{amount}} {{asset}}"
+      "available-balance":"Balance: {{amount, number}} {{asset}}.",
+      "available-for-issuance": "Available for issuance: {{amount, number}} {{asset}}"
     },
     "atomic-swaps-explore": {
       "no-list-title": "Atomic swap list is coming soon"
