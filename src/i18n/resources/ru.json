@@ -1074,7 +1074,7 @@
       "amount-lbl": "Количество",
       "insufficient-sales": "Недостаточно средств",
       "recipient-lbl": "Имейл или идентификатор получателя",
-      "subject-lbl": "Добавить примечание",
+      "subject-lbl": "Добавить примечание (опц.)",
       "continue-btn": "Далее",
       "recheck-form": "Пожалуйста, перепроверьте форму.",
       "submit-btn": "Отправить",
@@ -1855,7 +1855,7 @@
     },
     "fees-renderer": {
       "network-fee-msg": "Комиссия внешней сети",
-      "network-fee-unknown-msg": "Неизвестно",
+      "network-fee-unknown-msg": "Неизвестна",
       "fixed-fee-msg": "Фиксированная комиссия",
       "calculated-percent-fee-msg": "Посчитанная процентная комиссия",
       "sender-fee-msg": "Комиссия отправителя",
