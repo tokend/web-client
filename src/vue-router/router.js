@@ -204,7 +204,7 @@ function buildKycRecoveryPageGuard (store) {
     const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
     const isKycRecoveryInProgress = store
       .getters[vuexTypes.accountKycRecoveryStatus]
-    isLoggedIn && !!isKycRecoveryInProgress
+    isLoggedIn && isKycRecoveryInProgress
       ? next()
       : next(vueRoutes.app)
   }

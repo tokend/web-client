@@ -115,7 +115,7 @@ export const getters = {
     KYC_RECOVERY_STATES.none,
   [vuexTypes.isKycRecoveryInProgress]: (a, getters, b, rootGetters) =>
     getters[vuexTypes.accountKycRecoveryStatus] !==
-    KYC_RECOVERY_STATES.none,
+    KYC_RECOVERY_STATES.none && !!getters[vuexTypes.accountKycRecoveryStatus],
   [vuexTypes.isKycRecoveryInited]: (a, getters, b, rootGetters) =>
     getters[vuexTypes.accountKycRecoveryStatus] ===
     KYC_RECOVERY_STATES.inited,
