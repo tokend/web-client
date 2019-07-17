@@ -167,7 +167,7 @@
       "can-be-quote-in-atomic-swap-title": "Может быть котируемым активом в прямой продаже"
     },
     "atomic-swaps": {
-      "explore-atomic-swaps": "Найти предложения",
+      "explore-atomic-swaps": "Предложения",
       "create-atomic-swap-bth": "Создать предложение",
       "new-atomic-swap": "Новое предложение"
     },
@@ -184,6 +184,9 @@
     "create-poll-form": {
       "create-btn": "Создать опрос",
       "request-submitted-msg": "Опрос создан."
+    },
+    "polls": {
+      "all": "Опросы"
     }
   }
 }

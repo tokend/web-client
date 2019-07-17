@@ -27,8 +27,6 @@ import { BalancesPageModule } from '@/vue/pages/balances-page'
 import { AssetExplorerModule } from '@/vue/modules/assets/asset-explorer/module'
 import { BalanceExplorerModule } from '@/vue/modules/assets/balance-explorer/module'
 import { PollsPageModule } from '@/vue/pages/polls-page-module'
-import { PollRequestsModule } from '@/vue/modules/requests/poll-requests/module'
-import { PollRequestsPageModule } from '@/vue/pages/polls/poll-requests-page'
 import { PollsAllPageModule } from '@/vue/pages/polls-all-page-module'
 import { CreatePollFormModule } from '@/vue/modules/create-poll-form/module'
 
@@ -38,6 +36,7 @@ import { CustomersListPageModule } from '@/vue/pages/customers-list-page-module'
 import { BusinessesPageModule } from '@/vue/pages/businesses-page'
 import { BusinessesAllPageModule } from '@/vue/pages/businesses-all-page-module'
 import { CurrentBusinessIndicatorModule } from '@/vue/navigation/navbar/current-business-indicator/module'
+import { BusinessOwnershipModule } from '@/vue/navigation/navbar/business-ownership/module'
 import { AtomicSwapsPageModule } from '@/vue/pages/atomic-swaps-page-module'
 import { AtomicSwapsExplorePageModule } from '@/vue/pages/atomic-swaps/atomic-swaps-explore-page-module'
 import { CreateAtomicSwapFormModule } from '@/vue/modules/create-atomic-swap-form/module'
@@ -52,6 +51,9 @@ export default {
   modules: [
     new CurrentBusinessIndicatorModule({
       isUnverifiedOnly: true,
+    }),
+    new BusinessOwnershipModule({
+      isCorporateOnly: true,
     }),
   ],
   pages: [
@@ -124,6 +126,7 @@ export default {
             ],
           }),
         ],
+        isUnverifiedOnly: true,
       },
     ),
 
@@ -146,6 +149,7 @@ export default {
             submodules: [
               new AssetExplorerModule(),
             ],
+            isUnverifiedOnly: true,
           }),
           new BalancesPageModule({
             routerEntry: {
@@ -156,6 +160,7 @@ export default {
             submodules: [
               new BalanceExplorerModule(),
             ],
+            isUnverifiedOnly: true,
           }),
           new MyAssetsPageModule({
             routerEntry: {
@@ -195,6 +200,7 @@ export default {
                 isUserSales: false,
               },
             },
+            isUnverifiedOnly: true,
           }),
           new SalesListOwnedPageModule({
             routerEntry: {
@@ -255,17 +261,6 @@ export default {
               name: vueRoutes.allPolls.name,
               props: true,
             },
-          }),
-          new PollRequestsPageModule({
-            routerEntry: {
-              path: '/polls/poll-requests',
-              name: vueRoutes.pollRequests.name,
-              props: true,
-            },
-            isCorporateOnly: true,
-            submodules: [
-              new PollRequestsModule(),
-            ],
           }),
           new CreatePollFormModule({
             isCorporateOnly: true,

@@ -19,14 +19,15 @@
         </option>
       </select-filter-field>
 
-      <tick-filter-field
+      <!-- TODO: temp. hidden -->
+      <!-- <tick-filter-field
         v-if="isCorporate"
         v-model="filters.isOwnedByCurrentUser"
         :cb-value="true"
         class="polls-all__filter-field"
       >
         {{ 'polls-all.owned-by-me-filter-lbl' | globalize }}
-      </tick-filter-field>
+      </tick-filter-field> -->
     </div>
 
     <template v-if="list.length">
@@ -108,7 +109,6 @@ import PollCardSkeleton from './polls-all/PollCardSkeleton'
 import { PollRecord } from '@/js/records/entities/poll.record'
 
 import SelectFilterField from '@/vue/fields/SelectFilterField'
-import TickFilterField from '@/vue/fields/TickFilterField'
 import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
@@ -122,7 +122,6 @@ export default {
     PollCardSkeleton,
     NoDataMessage,
     SelectFilterField,
-    TickFilterField,
   },
 
   mixins: [UpdateList],

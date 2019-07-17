@@ -42,6 +42,11 @@
             <logo class="sidebar__logo" />
           </router-link>
         </template>
+
+        <template v-if="getScheme().canRenderModule(BusinessOwnershipModule)">
+          <!-- eslint-disable-next-line max-len -->
+          <submodule-importer :submodule="getScheme().findModule(BusinessOwnershipModule)" />
+        </template>
       </section>
 
       <section class="sidebar__scheme-label-section">
@@ -103,6 +108,7 @@ import config from '@/config'
 import { SchemeRegistry } from '@/modules-arch/scheme-registry'
 
 import { CurrentBusinessIndicatorModule } from '@/vue/navigation/navbar/current-business-indicator/module'
+import { BusinessOwnershipModule } from '@/vue/navigation/navbar/business-ownership/module'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
 const DEFAULT_SECTION_NAME = 'default'
@@ -122,6 +128,7 @@ export default {
     vueRoutes,
     DEFAULT_SECTION_NAME,
     CurrentBusinessIndicatorModule,
+    BusinessOwnershipModule,
   }),
 
   computed: {
