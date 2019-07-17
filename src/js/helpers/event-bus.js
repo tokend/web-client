@@ -61,7 +61,6 @@ export class EventBus extends Vue {
       warning: 'warning',
       error: 'error',
       info: 'info',
-      updateList: 'updateList',
       customersUpdateList: 'customers:updateList',
       customersMassIssue: 'customers:massIssue',
       // TODO: should not be here
