@@ -54,6 +54,7 @@ const AMOUNT_VALIDATION_TYPE = {
   incoming: 'incoming',
   outgoing: 'outgoing',
   issuance: 'issuance',
+  atomicSwap: 'atomicSwap',
 }
 
 export default {
@@ -69,7 +70,7 @@ export default {
     asset: { type: [AssetRecord, String], required: true },
     label: { type: String, default: '' },
     value: { type: [Number, String], default: undefined },
-    validationType: { type: String, required: true },
+    validationType: { type: String, default: '' },
     isMaxButtonShown: { type: Boolean, default: false },
     min: { type: [Number, String], default: config.MIN_AMOUNT },
     max: { type: [Number, String], default: config.MAX_AMOUNT },
@@ -132,6 +133,12 @@ export default {
 
         case AMOUNT_VALIDATION_TYPE.issuance:
           result = this.assetRecord.availableForIssuance
+          break
+
+        case AMOUNT_VALIDATION_TYPE.atomicSwap:
+          result = MathUtil.add(
+            this.assetRecord.availableForIssuance, this.balance
+          )
           break
 
         default:
