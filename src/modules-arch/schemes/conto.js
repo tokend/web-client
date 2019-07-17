@@ -5,7 +5,7 @@ import { MovementsHistoryPageModule } from '@/vue/pages/movements-page-module'
 import { CustomersPageModule } from '@/vue/pages/customers-page-module'
 import { AssetsPageModule } from '@/vue/pages/assets-page-module'
 import { CreateAssetFormSimplifiedModule } from '@modules/create-asset-form-simplified/module'
-import { SalesPageModule } from '@/vue/pages/sales-page-module'
+import { SalesPageModuleSimplified } from '@/vue/pages/sales-page-module-simplified'
 import { SaleDetailsPageModule } from '@/vue/pages/sale-details-page-module'
 import { SettingsPageModule } from '@/vue/pages/settings-page-module'
 import { VerificationCorporatePageModule } from '@/vue/pages/verification-corporate-page-module'
@@ -172,7 +172,7 @@ export default {
       },
     ),
 
-    new SalesPageModule(
+    new SalesPageModuleSimplified(
       {
         routerEntry: {
           path: '/sales',
