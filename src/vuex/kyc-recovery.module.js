@@ -66,17 +66,9 @@ export const actions = {
     { getters, rootGetters, commit },
     blobId = ''
   ) {
-    const newSigner = base.Keypair.random()
     const opts = {
       targetAccount: rootGetters[vuexTypes.accountId],
       signers: [
-        {
-          publicKey: newSigner.accountId(),
-          roleID: '1',
-          weight: '1000',
-          identity: '1',
-          details: {},
-        },
         {
           publicKey: rootGetters[vuexTypes.walletPublicKey],
           roleID: String(rootGetters[vuexTypes.kvDefaultSignerRoleId]),
