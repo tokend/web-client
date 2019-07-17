@@ -2327,7 +2327,7 @@
       "available-for-issuance": "Доступно для выдачи: {{amount, number}} {{asset}}"
     },
     "atomic-swaps-explore": {
-      "no-list-title": "Список атомарных обменов в разработке"
+      "no-list-title": "Список предложений атомарных обменов в разработке"
     },
     "customers-page": {
       "invite-btn": "Пригласить",
