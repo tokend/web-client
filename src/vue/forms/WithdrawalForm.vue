@@ -320,6 +320,7 @@ export default {
       }
     },
     async reinitAssetSelector () {
+      await this.loadBalances()
       if (this.withdrawableBalancesAssets.length) {
         const updatedAsset = this.withdrawableBalancesAssets
           .find(item => item.code === this.form.asset.code)
