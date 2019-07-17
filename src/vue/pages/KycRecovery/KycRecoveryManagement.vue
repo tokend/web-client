@@ -42,6 +42,7 @@ import KycRecoveryUnverified from '@/vue/pages/KycRecovery/KycRecoveryUnverified
 import VerificationGeneralForm from '@/vue/modules/verification/general-form/index'
 import VerificationCorporateForm from '@/vue/pages/VerificationCorporate'
 import KycRecoveryStateMessage from '@/vue/pages/KycRecovery/KycRecoveryStateMessage'
+import config from '@/config'
 
 export default {
   name: 'kyc-recovery-management',
@@ -87,7 +88,7 @@ export default {
     }),
 
     async onSubmit () {
-      await this.delay(6000)
+      await this.delay(config.RELOAD_TIMEOUT)
       // eslint-disable-next-line
       const updatedAccount = await this.loadAccount(this.walletAccountId)
       // eslint-disable-next-line

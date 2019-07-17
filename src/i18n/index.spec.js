@@ -1,5 +1,4 @@
-import _cloneDeep from 'lodash/cloneDeep'
-import i18next from 'i18next'
+import { i18n } from '@/i18n'
 import moment from 'moment-timezone'
 
 const mockEn = {
@@ -86,27 +85,20 @@ const mockEn = {
   },
 }
 
-/* eslint-disable-next-line import/no-webpack-loader-syntax */
-const webpackInjector = require('inject-loader!babel-loader!./index.js')
-const { i18nOptions } = webpackInjector({
-  './en': mockEn,
-})
-
 describe('the i18n is properly configured', () => {
-  beforeEach(() => {
-    const options = _cloneDeep(i18nOptions)
-    options.lng = 'en'
-    options.debug = false // Set to true, if something is not working
+  beforeEach(async () => {
     moment.tz.setDefault('UTC') // Set timezone to 'UTC', so tests won't convert to local timezone
-    i18next.init(options)
+    await i18n.init()
+    await i18n.changeLanguage('en')
+    i18n._appendResources('en', mockEn)
   })
 
   it('init test', () => {
-    expect(i18next.t('simple')).to.equal('simple string')
+    expect(i18n.t('simple')).to.equal('simple string')
   })
 
   it('interpolates properly', () => {
-    const result = i18next.t('interpolated', {
+    const result = i18n.t('interpolated', {
       stuff: 'awesome stuff',
     })
     expect(result).to.equal('The text with some awesome stuff')
@@ -129,7 +121,7 @@ describe('the i18n is properly configured', () => {
 
       for (const [given, expected] of Object.entries(numbers)) {
         it(`given = ${given}`, () => {
-          const result = i18next.t('withFormattedNumber', { count: given })
+          const result = i18n.t('withFormattedNumber', { count: given })
           expect(result).to.equal(`Congrats, it is your ${expected} visit!`)
         })
       }
@@ -151,7 +143,7 @@ describe('the i18n is properly configured', () => {
 
       for (const [given, expected] of Object.entries(amounts)) {
         it(`given = ${given}`, () => {
-          const result = i18next.t('withFormattedCurrency', {
+          const result = i18n.t('withFormattedCurrency', {
             amount: {
               value: given,
               currency: 'ETH',
@@ -179,7 +171,7 @@ describe('the i18n is properly configured', () => {
 
       for (const [given, expected] of Object.entries(amounts)) {
         it(`given = ${given}`, () => {
-          const result = i18next.t('withFormattedCurrency', {
+          const result = i18n.t('withFormattedCurrency', {
             amount: given,
           })
           expect(result).to.equal(`Your balance is ${expected}`)
@@ -203,7 +195,7 @@ describe('the i18n is properly configured', () => {
 
       for (const [given, expected] of Object.entries(numbers)) {
         it(`given = ${given}`, () => {
-          const result = i18next.t('withFormattedInteger', {
+          const result = i18n.t('withFormattedInteger', {
             amount: given,
           })
           expect(result).to.equal(`John bought ${expected} apples`)
@@ -232,7 +224,7 @@ describe('the i18n is properly configured', () => {
     }
     for (const [given, expected] of Object.entries(dates)) {
       it(expected, () => {
-        const result = i18next.t('withFormattedCalendar', { when: given })
+        const result = i18n.t('withFormattedCalendar', { when: given })
         expect(result).to.equal(`The offer end date is ${expected}`)
       })
     }
@@ -258,7 +250,7 @@ describe('the i18n is properly configured', () => {
     }
     for (const [given, expected] of Object.entries(dates)) {
       it(expected, () => {
-        const result = i18next.t('withFormattedCalendarInline', { when: given })
+        const result = i18n.t('withFormattedCalendarInline', { when: given })
         expect(result).to.equal(`The offer end date is ${expected}`)
       })
     }
@@ -285,7 +277,7 @@ describe('the i18n is properly configured', () => {
 
     for (const [given, expected] of Object.entries(dates)) {
       it(expected, () => {
-        const result = i18next.t('withFormattedDate', { when: given })
+        const result = i18n.t('withFormattedDate', { when: given })
         expect(result).to.equal(`The offer end date is ${expected}`)
       })
     }

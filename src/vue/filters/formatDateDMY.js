@@ -1,5 +1,5 @@
-import i18next from 'i18next'
+import { globalize } from './globalize'
 
 export function formatDateDMY (value) {
-  return i18next.t('formats.dmy', { value })
+  return globalize('formats.dmy', { value })
 }

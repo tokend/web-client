@@ -90,7 +90,7 @@
           </div>
 
           <div class="app__form-row withdrawal__form-row">
-            <template v-if="isFeesLoaded">
+            <template v-if="isFeesLoaded && fees.isAny">
               <fees-renderer :fees-collection="fees" />
             </template>
 
@@ -320,6 +320,7 @@ export default {
       }
     },
     async reinitAssetSelector () {
+      await this.loadBalances()
       if (this.withdrawableBalancesAssets.length) {
         const updatedAsset = this.withdrawableBalancesAssets
           .find(item => item.code === this.form.asset.code)

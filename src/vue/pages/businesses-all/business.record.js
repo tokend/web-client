@@ -5,8 +5,19 @@ export class BusinessRecord {
     this._record = record
 
     this.id = record.id
-    this.logoLink = _get(record, 'logoLink')
     this.name = _get(record, 'name')
     this.accountId = _get(record, 'accountId')
+
+    try {
+      this.logo = JSON.parse(_get(this._record, 'logo'))
+      this.logoKey = _get(this.logo, 'key')
+      this.logoName = _get(this.logo, 'name')
+      this.logoType = _get(this.logo, 'type')
+    } catch (error) {
+      this.logo = undefined
+      this.logoKey = undefined
+      this.logoName = undefined
+      this.logoType = undefined
+    }
   }
 }

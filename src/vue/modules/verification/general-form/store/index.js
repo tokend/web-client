@@ -1,6 +1,5 @@
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { ID_DOCUMENT_TYPES } from '../id-document-types'
-import { COUNTRIES } from '../countries'
 import { BLOB_TYPES } from '@tokend/js-sdk'
 import { types } from './types'
 import { api } from '@/api'
@@ -110,9 +109,7 @@ const actions = {
     commit(types.SET_LINE_1, blobData.address.line_1)
     commit(types.SET_LINE_2, blobData.address.line_2)
     commit(types.SET_CITY, blobData.address.city)
-    commit(types.SET_COUNTRY,
-      COUNTRIES.find(c => c.code === blobData.address.country)
-    )
+    commit(types.SET_COUNTRY, blobData.address.country)
     commit(types.SET_STATE, blobData.address.state)
     commit(types.SET_POSTAL_CODE, blobData.address.postal_code)
 
@@ -197,7 +194,7 @@ const getters = {
   [types.city]: state => state.address.city,
   [types.state]: state => state.address.state,
   [types.country]: state => state.address.country,
-  [types.countryCode]: state => (state.address.country || {}).code,
+  [types.countryCode]: state => state.address.country,
   [types.postalCode]: state => state.address.postalCode,
 
   // documents

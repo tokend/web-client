@@ -159,9 +159,9 @@ export default {
 @import '@/scss/variables';
 
 .deposit-form__help-message {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   opacity: 0.7;
-  line-height: 1.25;
+  line-height: 1.5;
 }
 
 .deposit-form__discover-asset-btn {

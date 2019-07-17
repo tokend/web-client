@@ -210,6 +210,7 @@ export default {
 
     doMassIssuance () {
       Bus.emit('customers:massIssue', { receivers: this.issuanceReceivers })
+      this.toggleIssuanceMode()
     },
 
     formatBalancesOf (customer) {
@@ -218,13 +219,13 @@ export default {
       balances.sort(function (a, b) {
         return b.amount - +a.amount
       })
-      balances = balances.slice(0, NUMBER_DISPLAYING_BALANCES)
-      let resolveString = balances
+      const slicedBalances = balances.slice(0, NUMBER_DISPLAYING_BALANCES)
+      let resolveString = slicedBalances
         .map(item => this.$options.filters
           .formatMoney({ value: item.amount, currency: item.assetCode })
         )
         .join(', ')
-      if (balances.length > NUMBER_DISPLAYING_BALANCES - 1) {
+      if (balances.length > NUMBER_DISPLAYING_BALANCES) {
         return resolveString + '…'
       } else {
         return resolveString

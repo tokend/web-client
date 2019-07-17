@@ -11,15 +11,15 @@
         <router-link
           :to="vueRoutes.assets.name"
           tag="button"
-          class="app__button-raised transfer-form__discover-asset-btn">
+          class="app__button-raised transfer-form__discover-asset-btn"
+        >
           {{ 'transfer-form.discover-assets-btn' | globalize }}
         </router-link>
       </template>
 
       <template
         v-else-if="view.mode === VIEW_MODES.submit ||
-          view.mode === VIEW_MODES.confirm"
-      >
+          view.mode === VIEW_MODES.confirm">
         <form
           id="transfer-form"
           @submit.prevent="processTransfer"
@@ -98,7 +98,9 @@
 
           <div
             class="transfer__fee-box"
-            v-if="isFeesLoaded && view.mode === VIEW_MODES.confirm"
+            v-if="isFeesLoaded && view.mode === VIEW_MODES.confirm &&
+              fees.isAny
+            "
           >
             <fees-renderer
               :fees-collection="fees"

@@ -129,6 +129,13 @@ export default Object.assign(
      * Acceptable values: 'seed' - enables recovery by seed
      */
     RECOVERY_MODE: 'seed',
+
+    /**
+     * Sets timeout before reload on some screens. Depends on block close time
+     * of your instance configuration, we recommend using value equal to
+     * *block close time* + 500ms
+     */
+    RELOAD_TIMEOUT: 5500,
   },
   // process.env,
   process.env

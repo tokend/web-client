@@ -10,6 +10,13 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Real time updates on all pages
+- Set up support of multiple languages
+
+#### Changed
+- Hide fees report if no fees present. Not all screens affected yet
+
+#### Fixed
+- Now "Show password" buttons do not participate in tab order
 
 ### Experimental features changes
 #### Added
@@ -49,6 +56,7 @@ for further information about branching and tagging conventions.
 - Resolved an issue when in select field quote assets on the atomic swap form
  show only assets in user balance
 - Fixed display price on form when create new sale
+- Resolved an issue with undisplayed favicon
 
 ### "Under the hood" changes
 #### Changed

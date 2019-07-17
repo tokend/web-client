@@ -33,6 +33,7 @@
       :class="{
         'input-field__password-toggle--autofill-white': whiteAutofill
       }"
+      tabindex="-1"
       @click="isPasswordShown = !isPasswordShown"
     >
       <i

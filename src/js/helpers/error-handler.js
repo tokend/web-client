@@ -1,7 +1,7 @@
 import { errors } from '@/js/errors'
 import { Bus } from '@/js/helpers/event-bus'
 import log from 'loglevel'
-import i18next from 'i18next'
+import { i18n } from '@/i18n'
 import _get from 'lodash/get'
 import { ErrorTracker } from '@/js/helpers/error-tracker'
 
@@ -25,7 +25,7 @@ export class ErrorHandler {
     if (!skipTrack) {
       const msgTrId = translationId || ErrorHandler._getTranslationId(error)
 
-      const englify = i18next.getFixedT('en')
+      const englify = i18n.getFixedT('en')
       ErrorTracker.trackMessage(englify(msgTrId))
     }
   }
@@ -88,7 +88,7 @@ export class ErrorHandler {
               .errorCode
         }
         translationId = `transaction-errors.${errorCode}`
-        if (!i18next.exists(translationId)) {
+        if (!i18n.exists(translationId)) {
           // If there is no localized error code, display the message
           // that came from the backend
           translationId = error.errorResults[0].message
