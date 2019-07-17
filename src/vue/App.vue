@@ -66,6 +66,7 @@ import {
   documentsManager,
   walletsManager,
   factorsManager,
+  useWallet,
 } from '@/api'
 import { vuexTypes } from '@/vuex'
 import { Wallet } from '@tokend/js-sdk'
@@ -162,7 +163,7 @@ export default {
           this.walletAccountId,
           this.walletId
         )
-        api.useWallet(wallet)
+        useWallet(wallet)
 
         ErrorTracker.setLoggedInUser({
           'accountId': this[vuexTypes.walletAccountId],
