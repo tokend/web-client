@@ -26,15 +26,12 @@ import { types } from './store/types'
 import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
   name: 'asset-explorer',
   components: {
     AssetsRenderer,
   },
-
-  mixins: [UpdateList],
 
   props: {
     isAccountUnverified: {
@@ -66,7 +63,6 @@ export default {
 
   async created () {
     await this.load()
-    this.listenUpdateList(this.load)
   },
 
   methods: {

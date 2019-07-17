@@ -58,8 +58,13 @@ export default {
 
   created () {
     this.initFirstPageLoader()
-    this.listenUpdateList(this.initFirstPageLoader)
+    this.listenUpdateList('issuance:updateList', this.initFirstPageLoader)
   },
+
+  beforeDestroy () {
+    this.resetUpdateListEvent('issuance:updateList')
+  },
+
   methods: {
     ...mapMutations('issuance-explorer', {
       setIssuances: types.SET_ISSUANCES,

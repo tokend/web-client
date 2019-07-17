@@ -139,12 +139,12 @@ export default {
   methods: {
     closeAssetSaleDrawerAndUpdateList () {
       this.isAssetSaleDrawerShown = false
-      this.updateList()
+      this.emitUpdateList('sales:updateList')
     },
 
     closeCreateSaleDrawerAndUpdateList () {
       this.isCreateSaleDrawerShown = false
-      this.updateList()
+      this.emitUpdateList('sales:updateList')
     },
   },
 }

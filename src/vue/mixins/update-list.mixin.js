@@ -4,15 +4,19 @@ const DELAY_REFRESH_LIST_MS = 5000
 
 export default {
   methods: {
-    updateList () {
+    resetUpdateListEvent (event) {
+      Bus.resetEvent(event)
+    },
+
+    emitUpdateList (event) {
       setTimeout(() => {
-        Bus.emit('updateList')
+        Bus.emit(event)
       }, DELAY_REFRESH_LIST_MS)
     },
 
-    listenUpdateList (cb) {
-      Bus.on('updateList', async () => {
-        await cb()
+    listenUpdateList (event, cb) {
+      Bus.on(event, () => {
+        cb()
       })
     },
   },

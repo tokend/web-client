@@ -150,7 +150,11 @@ export default {
 
   async created () {
     await this.load()
-    this.listenUpdateList(this.load)
+    this.listenUpdateList('assets:updateList', this.load)
+  },
+
+  beforeDestroy () {
+    this.resetUpdateListEvent('assets:updateList')
   },
 
   methods: {
@@ -176,7 +180,7 @@ export default {
 
     closeDrawerAndUpdateList () {
       this.isDrawerShown = false
-      this.updateList()
+      this.emitUpdateList('assets:updateList')
     },
   },
 }

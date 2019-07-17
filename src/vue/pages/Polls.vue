@@ -81,10 +81,14 @@ export default {
     CreatePollFormModule,
   }),
 
+  beforeDestroy () {
+    this.resetUpdateListEvent('polls:updateList')
+  },
+
   methods: {
     closeDrawerAndUpdateList () {
       this.isCreatePollDrawerShown = false
-      this.updateList()
+      this.emitUpdateList('polls:updateList')
     },
   },
 }

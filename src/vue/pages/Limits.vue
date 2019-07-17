@@ -172,8 +172,13 @@ export default {
     if (this.accountBalancesAssetsCodes.length) this.setDefaultAssetCode()
     this.loadLimits()
     this.setLimitsRequestsLoader()
-    this.listenUpdateList(this.reloadRequests)
+    this.listenUpdateList('limits:updateList', this.reloadRequests)
   },
+
+  beforeDestroy () {
+    this.resetUpdateListEvent('limits:updateList')
+  },
+
   methods: {
     ...mapActions({
       loadCurrentBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
@@ -265,7 +270,7 @@ export default {
     },
     limitsChanged () {
       this.isLimitsChangeDrawerShown = false
-      this.updateList()
+      this.emitUpdateList('limits:updateList')
     },
     reloadRequests () {
       this.setLimitsRequestsLoader()

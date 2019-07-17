@@ -85,7 +85,7 @@
       <poll-viewer
         :current-poll="pollToBrowse"
         @close-drawer="isDrawerShown = false"
-        @end-time-updated="updateList()"
+        @end-time-updated="emitUpdateList('polls:updateList')"
         @poll-canceled="refreshPollsListWithCloseDrawer()"
         @poll-closed="refreshPollsListWithCloseDrawer()"
       />
@@ -159,7 +159,7 @@ export default {
   },
 
   created () {
-    this.listenUpdateList(this.reloadList)
+    this.listenUpdateList('polls:updateList', this.reloadList)
   },
 
   methods: {
@@ -216,7 +216,7 @@ export default {
 
     refreshPollsListWithCloseDrawer () {
       this.isDrawerShown = false
-      this.updateList()
+      this.updateList('polls:updateList')
     },
   },
 }

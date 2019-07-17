@@ -1,6 +1,6 @@
 <template>
   <div class="trade">
-    <trade-top-bar @reload-trade-data="updateList()" />
+    <trade-top-bar @reload-trade-data="emitUpdateList('trade:updateList')" />
     <router-view />
   </div>
 </template>
@@ -16,6 +16,10 @@ export default {
   },
 
   mixins: [UpdateList],
+
+  beforeDestroy () {
+    this.resetUpdateListEvent('trade:updateList')
+  },
 }
 </script>
 

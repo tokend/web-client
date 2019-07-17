@@ -103,7 +103,7 @@ export default {
   methods: {
     closeDrawerAndUpdateList () {
       this.isAssetDrawerShown = false
-      this.updateList()
+      this.emitUpdateList('assets:updateList')
     },
   },
 }

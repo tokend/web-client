@@ -19,7 +19,7 @@
             :is-buy="true"
             :is-loading="isBuyOffersLoading"
             :offers-list="buyOffersList"
-            @reload-trades="updateList()"
+            @reload-trades="emitUpdateList('trade:updateList')"
           />
 
           <trade-offers-renderer
@@ -28,7 +28,7 @@
             :is-buy="false"
             :is-loading="isSellOffersLoading"
             :offers-list="sellOffersList"
-            @reload-trades="updateList()"
+            @reload-trades="emitUpdateList('trade:updateList')"
           />
         </div>
       </div>
@@ -120,11 +120,13 @@ export default {
       await this.loadData()
       this.createLoadTradeDataTicker()
     }
-    this.listenUpdateList(this.reloadTrades)
+    this.listenUpdateList('trade:updateList', this.reloadTrades)
   },
-  async beforeDestroy () {
+
+  beforeDestroy () {
     this.clearLoadTradeDataTicker()
   },
+
   methods: {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,

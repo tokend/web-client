@@ -196,7 +196,11 @@ export default {
   },
 
   created () {
-    this.listenUpdateList(this.recordsLoader)
+    this.listenUpdateList('sales:updateList', this.recordsLoader)
+  },
+
+  beforeDestroy () {
+    this.resetUpdateListEvent('sales:updateList')
   },
 
   methods: {

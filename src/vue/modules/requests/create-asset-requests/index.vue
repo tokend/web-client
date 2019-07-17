@@ -9,7 +9,7 @@
           <create-asset-form-module
             :request-id="selectedRequest.id"
             @submitted="isDrawerShown = false"
-            @request-updated="updateList()"
+            @request-updated="closeDrawerAndUpdateList()"
           />
         </template>
 
@@ -91,7 +91,11 @@ export default {
   async created () {
     this.initFirstPageLoader()
     await this.loadAssetTypes()
-    this.listenUpdateList(this.initFirstPageLoader)
+    this.listenUpdateList('createAssetRequests:updateList', this.initFirstPageLoader)
+  },
+
+  beforeDestroy () {
+    this.resetUpdateListEvent('createAssetRequests:updateList')
   },
 
   methods: {
@@ -139,7 +143,7 @@ export default {
 
     closeDrawerAndUpdateList () {
       this.isDrawerShown = false
-      this.updateList()
+      this.emitUpdateList('createAssetRequests:updateList')
     },
   },
 }

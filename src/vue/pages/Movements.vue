@@ -4,7 +4,7 @@
       <submodule-importer
         :submodule="getModule().getSubmodule(MovementsTopBarModule)"
         @asset-updated="updateAsset"
-        @movements-update-required="updateList()"
+        @movements-update-required="emitUpdateList('movements:updateList')"
       />
     </template>
 
@@ -72,7 +72,11 @@ export default {
   }),
 
   created () {
-    this.listenUpdateList(this.updateMovementsHistoryList)
+    this.listenUpdateList('movements:updateList', this.updateMovementsHistoryList)
+  },
+
+  beforeDestroy () {
+    this.resetUpdateListEvent('movements:updateList')
   },
 
   methods: {
@@ -81,15 +85,15 @@ export default {
     },
 
     withdrawalFiatModuleWithdrawn () {
-      this.updateList()
+      this.emitUpdateList('movements:updateList')
     },
 
     depositFiatModuleDeposited () {
-      this.updateList()
+      this.emitUpdateList('movements:updateList')
     },
 
     redeemModuleSubmitted () {
-      this.updateList()
+      this.emitUpdateList('movements:updateList')
     },
 
     updateMovementsHistoryList () {

@@ -110,7 +110,7 @@ export default {
   methods: {
     closeDrawerAndUpdateList () {
       this.isIssuanceDrawerShown = false
-      this.updateList()
+      this.emitUpdateList('issuance:updateList')
     },
   },
 }

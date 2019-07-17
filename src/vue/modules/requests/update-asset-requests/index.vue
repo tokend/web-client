@@ -9,7 +9,7 @@
           <update-asset-form-module
             :request-id="selectedRequest.id"
             @close="isDrawerShown = false"
-            @request-updated="updateList()"
+            @request-updated="closeDrawerAndUpdateList()"
           />
         </template>
 
@@ -90,7 +90,11 @@ export default {
 
   created () {
     this.initFirstPageLoader()
-    this.listenUpdateList(this.initFirstPageLoader)
+    this.listenUpdateList('updateAssetRequests:updateList', this.initFirstPageLoader)
+  },
+
+  beforeDestroy () {
+    this.resetUpdateListEvent('updateAssetRequests:updateList')
   },
 
   methods: {
@@ -127,7 +131,7 @@ export default {
 
     closeDrawerAndUpdateList () {
       this.isDrawerShown = false
-      this.updateList()
+      this.emitUpdateList('updateAssetRequests:updateList')
     },
   },
 }

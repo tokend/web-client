@@ -182,7 +182,11 @@ export default {
       ErrorHandler.processWithoutFeedback()
     }
 
-    this.listenUpdateList(this.loadAssets)
+    this.listenUpdateList('assets:updateList', this.loadAssets)
+  },
+
+  beforeDestroy () {
+    this.resetUpdateListEvent('assets:updateList')
   },
 
   methods: {
@@ -204,7 +208,7 @@ export default {
 
     closeDrawerAndUpdateList () {
       this.isDrawerShown = false
-      this.updateList()
+      this.emitUpdateList('assets:updateList')
     },
   },
 }

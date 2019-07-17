@@ -67,8 +67,9 @@ export default {
     if (this.assetPair.base) {
       this.initFirstPageLoader()
     }
-    this.listenUpdateList(this.initFirstPageLoader)
+    this.listenUpdateList('trade:updateList', this.initFirstPageLoader)
   },
+
   methods: {
     initFirstPageLoader () {
       this.firstPageLoader = _ => this.loadOffersHistory()

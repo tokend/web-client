@@ -7,7 +7,7 @@
         </template>
         <request-viewer
           :request="selectedRequest"
-          @cancel="(isDrawerShown = false) || updateList()"
+          @cancel="closeDrawerAndUpdateList()"
         />
       </drawer>
 
@@ -65,8 +65,9 @@ export default {
   },
   async created () {
     this.initFirstPageLoader()
-    this.listenUpdateList(this.initFirstPageLoader)
+    this.listenUpdateList('polls:updateList', this.initFirstPageLoader)
   },
+
   methods: {
     ...mapMutations('poll-requests', {
       setRequests: types.SET_REQUESTS,
@@ -94,6 +95,11 @@ export default {
     showRequestDetails (request) {
       this.selectedRequest = request
       this.isDrawerShown = true
+    },
+
+    closeDrawerAndUpdateList () {
+      this.isDrawerShown = false
+      this.emitUpdateList('pollrequests:updateList')
     },
   },
 }

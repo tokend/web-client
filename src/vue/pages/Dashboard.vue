@@ -165,9 +165,14 @@ export default {
   async created () {
     await this.loadBalances()
     this.setCurrentAsset()
-    this.listenUpdateList(this.updateBalancesAndList)
+    this.listenUpdateList('dashboard:updateList', this.updateBalancesAndList)
     this.isLoaded = true
   },
+
+  beforeDestroy () {
+    this.resetUpdateListEvent('dashboard:updateList')
+  },
+
   methods: {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
@@ -192,7 +197,7 @@ export default {
     },
     closeDrawerAndUpdateList () {
       this.showDrawer = false
-      this.updateList()
+      this.emitUpdateList('dashboard:updateList')
     },
     updateBalancesAndList () {
       return Promise.all([
