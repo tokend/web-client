@@ -7,12 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## Unreleased
+
+#### Removed
+- Recovery seed screen on sign up 
+- Remove recovery signer from KYC recovery request building
+- Remove recovery seed screens on auth
+
+#### Fixed
+- Bug about maximum call stack in buildKycRecoveryPageGuard
+
 ## [1.10.0-rc.0] - 2019-07-16
 #### Added
 - Perform issuance operation in the "Create atomic swap" form for asset owner
   if he doesn't have enough money
 
-#### Fixed
+#### Fixedq
 - Resolved an issue with extra trailing whitespace appeared in clipboard field
   component
 
