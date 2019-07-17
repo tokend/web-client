@@ -21,6 +21,11 @@ for further information about branching and tagging conventions.
 - Validation case `atomicSwap` in `AmountInputField` component
 - Handler for new deposit address
 
+### Experimental features changes
+#### Added
+- Simplify form of create new sale (Conto)
+- Simplify pages for sale details (Conto)
+
 #### Changed
 - Now using @tokend/js-sdk@1.9.0-rc.1
 
@@ -35,8 +40,6 @@ for further information about branching and tagging conventions.
 #### Added
 - KYC Recovery
 - Integration with session key server
-- Simplify form of create new sale
-- Simplify pages for sale details
 
 #### Fixed
 - Resolved an issue when in select field quote assets on the atomic swap form
