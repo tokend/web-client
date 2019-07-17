@@ -34,13 +34,15 @@ async function init () {
   await SchemeRegistry.useScheme(config.MODULE_SCHEME_NAME)
   Vue.use(SchemeRegistry.current)
 
-  await i18n.init()
+  i18n.onLanguageChanged(async lang => {
+    if (SchemeRegistry.current.importLanguageResource) {
+      const resource = await SchemeRegistry.current
+        .importLanguageResource(lang)
+      i18n._appendResources(lang, resource)
+    }
+  })
 
-  if (SchemeRegistry.current.importLanguageResource) {
-    const resource = await SchemeRegistry.current
-      .importLanguageResource(i18n.language)
-    i18n._appendResources(i18n.language, resource)
-  }
+  await i18n.init()
 
   log.setDefaultLevel(config.LOG_LEVEL)
 
