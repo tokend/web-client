@@ -13,16 +13,18 @@
       </span>
     </p>
 
-    <div
-      v-for="(fee, i) in feesCollection.fees"
-      :key="i"
-      class="fees-renderer__fee-block"
-    >
-      <fee-viewer
-        :fee="fee"
-        :asset-code="feesCollection.assetCode"
-      />
-    </div>
+    <template v-if="feesCollection.isAnyValuable">
+      <div
+        v-for="(fee, i) in feesCollection.fees"
+        :key="i"
+        class="fees-renderer__fee-block"
+      >
+        <fee-viewer
+          :fee="fee"
+          :asset-code="feesCollection.assetCode"
+        />
+      </div>
+    </template>
 
     <template v-if="isAvailableRouteName(vueRoutes.fees.name)">
       <div class="fees-renderer__view-fees-link-wrp">

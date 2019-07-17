@@ -12,6 +12,9 @@ for further information about branching and tagging conventions.
 - Real time updates on all pages
 - Set up support of multiple languages
 
+#### Changed
+- Hide fees report if no fees present. Not all screens affected yet
+
 #### Fixed
 - Now "Show password" buttons do not participate in tab order
 

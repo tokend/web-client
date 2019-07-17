@@ -62,6 +62,14 @@ export class FeesCollection {
     return this.fees.filter(f => !f.isEmpty)
   }
 
+  get isAnyValuable () {
+    return this.valuableFees.length > 0
+  }
+
+  get isAny () {
+    return !this.isExternalFeePresent && this.valuableFees.length
+  }
+
   get sourceFee () {
     return this._outgoingFee
   }
