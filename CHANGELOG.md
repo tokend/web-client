@@ -8,6 +8,9 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Added
+- Real time updates on all pages
+
 ### Experimental features changes
 #### Added
 - Simplify form of create new sale (Conto)

@@ -7,7 +7,7 @@
         </template>
         <request-viewer
           :request="selectedRequest"
-          @request-updated="(isDrawerShown = false) || initFirstPageLoader()"
+          @request-updated="closeDrawerAndUpdateList()"
         />
       </drawer>
 
@@ -43,6 +43,7 @@ import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
   name: 'incoming-withdrawal-requests-module',
@@ -52,6 +53,8 @@ export default {
     RequestsTable,
     RequestViewer,
   },
+
+  mixins: [UpdateList],
 
   data: _ => ({
     isLoaded: false,
@@ -69,6 +72,11 @@ export default {
 
   created () {
     this.initFirstPageLoader()
+    this.listenUpdateList('incomingWithdrawalRequests:updateList', this.initFirstPageLoader)
+  },
+
+  beforeDestroy () {
+    this.resetUpdateListEvent('incomingWithdrawalRequests:updateList')
   },
 
   methods: {
@@ -100,6 +108,11 @@ export default {
     showRequestDetails (request) {
       this.selectedRequest = request
       this.isDrawerShown = true
+    },
+
+    closeDrawerAndUpdateList () {
+      this.isDrawerShown = false
+      this.emitUpdateList('incomingWithdrawalRequests:updateList')
     },
   },
 }

@@ -11,15 +11,12 @@ export class EventBus extends Vue {
     if (!this.eventExists(eventName)) {
       throw new Error(`EventBus.list has no ${eventName} event`)
     }
-
     const backloggedEvents = this._backlog.filter(e => e.name === eventName)
-
     for (const [index, event] of backloggedEvents.entries()) {
       handlerFn(event.payload)
       this._backlog.splice(index, 1)
       log.debug(`Event ${eventName} is backlogged. Handling...`)
     }
-
     this.$on(eventName, handlerFn)
   }
 
@@ -37,12 +34,19 @@ export class EventBus extends Vue {
       log.debug(`Backlogging event: ${eventName}`)
       return
     }
-
     this.$emit(eventName, payload)
   }
 
   reset () {
     this.$off()
+    this._backlog = []
+  }
+
+  resetEvent (eventName) {
+    if (!this.eventExists(eventName)) {
+      throw new Error(`EventBus.list has no ${eventName} event`)
+    }
+    this.$off(eventName)
     this._backlog = []
   }
 
@@ -57,11 +61,22 @@ export class EventBus extends Vue {
       warning: 'warning',
       error: 'error',
       info: 'info',
-      updatePollRequests: 'polls:updateRequestsList',
       customersUpdateList: 'customers:updateList',
       customersMassIssue: 'customers:massIssue',
       // TODO: should not be here
       businessesSetCurrentBusiness: 'businesses:setCurrentBusiness',
+      assetsUpdateList: 'assets:updateList',
+      dashboardUpdateList: 'dashboard:updateList',
+      issuanceUpdateList: 'issuance:updateList',
+      limitsUpdateList: 'limits:updateList',
+      movementsUpdateList: 'movements:updateList',
+      pollsUpdateList: 'polls:updateList',
+      salesUpdateList: 'sales:updateList',
+      tradeUpdateList: 'trade:updateList',
+      createSaleRequestsUpdateList: 'createSaleRequests:updateList',
+      incomingWithdrawalRequestsUpdateList: 'incomingWithdrawalRequests:updateList',
+      updateAssetRequestsUpdateList: 'updateAssetRequests:updateList',
+      createAssetRequestsUpdateList: 'createAssetRequests:updateList',
     }
   }
 

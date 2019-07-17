@@ -170,22 +170,22 @@ describe('Create sale form module', () => {
       })
 
       describe('emitSubmitEvents', () => {
-        it('emits request updated and close events if request ID was passed as a prop',
+        it('emits request updated and submitted events if request ID was passed as a prop',
           () => {
             wrapper.setProps({ requestId: '1' })
 
             wrapper.vm.emitSubmitEvents()
 
             expect(wrapper.emitted()['request-updated']).to.exist
-            expect(wrapper.emitted()['close']).to.exist
+            expect(wrapper.emitted()['submitted']).to.exist
           }
         )
 
-        it('emits only close event if request ID was not passed as a prop',
+        it('emits only submitted event if request ID was not passed as a prop',
           () => {
             wrapper.vm.emitSubmitEvents()
 
-            expect(wrapper.emitted()['close']).to.exist
+            expect(wrapper.emitted()['submitted']).to.exist
             expect(wrapper.emitted()['request-updated']).to.not.exist
           }
         )

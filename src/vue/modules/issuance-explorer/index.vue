@@ -33,10 +33,7 @@ import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
-
-const EVENTS = {
-  shouldUpdate: 'update:shouldUpdate',
-}
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
   name: 'issuance-explorer-module',
@@ -45,12 +42,7 @@ export default {
     CollectionLoader,
   },
 
-  props: {
-    shouldUpdate: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  mixins: [UpdateList],
 
   data: _ => ({
     isLoaded: false,
@@ -64,18 +56,15 @@ export default {
     }),
   },
 
-  watch: {
-    shouldUpdate: function (value) {
-      if (value) {
-        this.initFirstPageLoader()
-        this.$emit(EVENTS.shouldUpdate, false)
-      }
-    },
-  },
-
   created () {
     this.initFirstPageLoader()
+    this.listenUpdateList('issuance:updateList', this.initFirstPageLoader)
   },
+
+  beforeDestroy () {
+    this.resetUpdateListEvent('issuance:updateList')
+  },
+
   methods: {
     ...mapMutations('issuance-explorer', {
       setIssuances: types.SET_ISSUANCES,
