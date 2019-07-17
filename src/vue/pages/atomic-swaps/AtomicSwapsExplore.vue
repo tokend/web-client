@@ -1,5 +1,15 @@
 <template>
   <div class="atomic-swaps-explore">
+    <div class="atomic-swap-explore__filters">
+      <tick-filter-field
+        v-if="isCorporate"
+        v-model="filters.isOwnedByCurrentUser"
+        :cb-value="true"
+        class="atomic-swaps-explore__filter-field"
+      >
+        {{ 'atomic-swaps-explore.owned-by-me-filter-lbl' | globalize }}
+      </tick-filter-field>
+    </div>
     <template v-if="list.length">
       <div class="atomic-swaps-explore__list">
         <div
@@ -43,7 +53,7 @@
 
       <atomic-swap-viewer
         :current-atomic-swap="atomicSwapToBrowse"
-        @close-drawer-and-update-list="closeDrawerAndUpdateList"
+        @close-drawer-and-update-list="closeDrawerAndUpdateList()"
       />
     </drawer>
   </div>
@@ -59,6 +69,9 @@ import AtomicSwapCard from './AtomicSwapCard'
 import AtomicSwapViewer from './AtomicSwapViewer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import { Bus } from '@/js/helpers/event-bus'
+import { vuexTypes } from '@/vuex'
+import { mapGetters } from 'vuex'
+import TickFilterField from '@/vue/fields/TickFilterField'
 
 export default {
   name: 'atomic-swaps-explore',
@@ -69,6 +82,7 @@ export default {
     AtomicSwapCard,
     AtomicSwapViewer,
     NoDataMessage,
+    TickFilterField,
   },
 
   data () {
@@ -77,7 +91,23 @@ export default {
       list: [],
       isDrawerShown: false,
       atomicSwapToBrowse: {},
+      filters: {
+        isOwnedByCurrentUser: false,
+      },
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      accountId: vuexTypes.accountId,
+      isCorporate: vuexTypes.isAccountCorporate,
+    }),
+  },
+
+  watch: {
+    'filters.isOwnedByCurrentUser' () {
+      this.reloadList()
+    },
   },
 
   created () {
@@ -94,6 +124,13 @@ export default {
       try {
         result = await api.getWithSignature('/v3/atomic_swap_asks', {
           include: ['owner', 'base_asset', 'quote_assets'],
+          filter: {
+            ...(
+              this.filters.isOwnedByCurrentUser
+                ? { owner: this.accountId }
+                : {}
+            ),
+          },
         })
       } catch (error) {
         ErrorHandler.processWithoutFeedback(error)

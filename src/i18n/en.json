@@ -2329,13 +2329,14 @@
       "add-quote-asset-btn": "Add quote asset",
       "quote-assets-subheading": "Quote asset {{ number }}",
       "created-atomic-swap-msg": "Atomic swap request successfully created",
-      "available-balance":"Balance: {{amount}} {{asset}}.",
+      "available-balance": "Balance: {{amount}} {{asset}}.",
       "available-for-issuance": "Available for issuance: {{amount}} {{asset}}"
     },
     "atomic-swaps-explore": {
       "atomic-swap-drawer-title": "Atomic swap details",
-      "no-list-title":"No atomic swaps yet",
-      "no-list-msg":"Here will be the list of atomic swaps"
+      "no-list-title": "No atomic swaps yet",
+      "no-list-msg": "Here will be the list of atomic swaps",
+      "owned-by-me-filter-lbl": "Owned by me"
     },
     "atomic-swap-actions": {
       "cancel-btn": "Cancel",
