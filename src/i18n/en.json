@@ -1889,7 +1889,8 @@
       "can-not-load-assets": "There was an error while loading assets. Please try again later",
       "loading-msg": "Loading…",
       "generate-new-address-btn": "Generate new",
-      "address-lbl": "Address"
+      "address-lbl": "Address",
+      "payload-lbl": "Payload"
     },
     "deposit-fiat-module": {
       "form-title": "Deposit fiat",
@@ -1948,6 +1949,7 @@
     "coinpayments-deposit": {
       "amount-lbl": "Amount",
       "address-lbl": "Address:",
+      "payload-lbl": "Payload:",
       "request-address-lbl": "Request the address",
       "no-address-msg": "No available addresses to deposit yet. Please try again later.",
       "time-left-msg": "Time left",
@@ -2326,7 +2328,9 @@
       "address-lbl": "Address",
       "add-quote-asset-btn": "Add quote asset",
       "quote-assets-subheading": "Quote asset {{ number }}",
-      "created-atomic-swap-msg": "Atomic swap request successfully created"
+      "created-atomic-swap-msg": "Atomic swap request successfully created",
+      "available-balance":"Balance: {{amount}} {{asset}}.",
+      "available-for-issuance": "Available for issuance: {{amount}} {{asset}}"
     },
     "atomic-swaps-explore": {
       "no-list-title": "Atomic swap list is coming soon"
