@@ -29,7 +29,7 @@ for further information about branching and tagging conventions.
 - Perform issuance operation in the "Create atomic swap" form for asset owner
   if he doesn't have enough money
 
-#### Fixedq
+#### Fixed
 - Resolved an issue with extra trailing whitespace appeared in clipboard field
   component
 
