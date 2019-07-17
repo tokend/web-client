@@ -1785,7 +1785,8 @@
       "create-request-btn": "Create request",
       "update-request-btn": "Update request",
       "no-investable-assets-err": "This asset has no acceptable investment assets. Please, select another one",
-      "request-submitted-msg": "Your request was successfully processed. Please, wait for approval"
+      "request-submitted-msg": "Your request was successfully processed. Please, wait for approval",
+      "price": "Price in {{asset}}"
     },
     "withdrawal-fiat-module": {
       "form-title": "Withdrawal fiat",

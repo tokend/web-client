@@ -33,13 +33,16 @@
               {{ 'assets.update-btn' | globalize }}
             </button>
 
-            <router-link
-              :to="vueRoutes.registerOfShares"
-              tag="button"
-              class="app__button-flat my-assets-explorer__view-shares-btn"
-            >
-              {{ 'assets.view-shares-btn' | globalize }}
-            </router-link>
+            <!-- eslint-disable-next-line max-len -->
+            <template v-if="isAvailableRouteName(vueRoutes.registerOfShares.name)">
+              <router-link
+                :to="vueRoutes.registerOfShares"
+                tag="button"
+                class="app__button-flat my-assets-explorer__view-shares-btn"
+              >
+                {{ 'assets.view-shares-btn' | globalize }}
+              </router-link>
+            </template>
           </div>
         </template>
       </drawer>

@@ -90,7 +90,7 @@
       "my-sales": "Мои краудфанды"
     },
     "sale-card": {
-      "funded": "{{funded, percent}} собрано от цели",
+      "funded": "{{funded, percent}} от цели",
       "invested": "{{invested, money}} собрано",
       "days-to-end": "{{days}} дней до закрытия"
     },
@@ -100,7 +100,7 @@
       "overview-title": "Обзор краудфанда",
       "sale-not-found-title": "Краудфанд не найден",
       "sale-not-found-desc": "К сожалению, краудфанд, соответствующий предоставленному идентификатору не найден",
-      "funded": "{{funded, percent}} собрано от цели"
+      "funded": "{{funded, percent}} от цели"
     },
     "sale-overview": {
       "soft-cap-title": "Минимальная цель",

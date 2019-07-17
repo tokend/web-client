@@ -1656,7 +1656,7 @@
       "funded": "{{funded, percent}} профинансировано",
       "days-to-go": "осталось дней",
       "days-after-end": "дней с момента закрытия",
-      "days-to-end": "дни до закрытия",
+      "days-to-end": "дней до закрытия",
       "closed": "Закрыт",
       "canceled": "Отменен"
     },
@@ -1785,7 +1785,8 @@
       "create-request-btn": "Создать запрос",
       "update-request-btn": "Обновить запрос",
       "no-investable-assets-err": "Этот актив не имеет приемлемых инвестиционных активов. Пожалуйста, выберите другой",
-      "request-submitted-msg": "Запрос отправлен"
+      "request-submitted-msg": "Запрос отправлен",
+      "price": "Цена в {{asset}}"
     },
     "withdrawal-fiat-module": {
       "form-title": "Withdrawal fiat",

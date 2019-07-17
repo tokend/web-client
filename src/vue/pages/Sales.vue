@@ -108,7 +108,7 @@
         </template>
         <submodule-importer
           :submodule="getModule().getSubmodule(CreateSaleFormModuleSimplified)"
-          @close="isCreateSaleDrawerShown = false"
+          @close="closeCreateSaleDrawerAndUpdateList()"
         />
       </drawer>
     </template>
