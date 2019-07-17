@@ -198,7 +198,10 @@ export default {
         await api.postOperations(...operations)
 
         await this.loadAssets()
-        this.clearFieldsWithOverriding({ assetCode: this.form.assetCode })
+        this.clearFieldsWithOverriding({
+          receivers: this.form.receivers,
+          assetCode: this.form.assetCode,
+        })
         this.$emit(EVENTS.submitted)
         Bus.success('mass-issuance-form.issued-successfully-notification')
       } catch (error) {
