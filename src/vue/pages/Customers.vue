@@ -18,7 +18,9 @@
           {{ 'customers-page.invite-btn' | globalize }}
         </button>
 
+        <!-- Temp. hidden -->
         <button
+          v-if="false"
           v-ripple
           class="app__button-raised"
           @click="isIssueDrawerShown = true"
