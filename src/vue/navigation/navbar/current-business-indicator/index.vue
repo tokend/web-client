@@ -117,7 +117,15 @@ export default {
 
     initRouterHooks () {
       this.$router.beforeEach((to, from, next) => {
-        if (!ROUTES_WITH_OWNER_FILTER.includes(to.name)) {
+        if (
+          to.name === vueRoutes.businesses.name ||
+          to.name === vueRoutes.allBusinesses.name
+        ) {
+          this.currentBusiness = new BusinessRecord({})
+          setTimeout(() => this.hideUnreachable(), 0)
+
+          next()
+        } else if (!ROUTES_WITH_OWNER_FILTER.includes(to.name)) {
           next()
         } else if (!this.currentBusiness.accountId) {
           next(vueRoutes.businesses)
@@ -135,8 +143,13 @@ export default {
     },
 
     hideUnreachable () {
-      document.querySelectorAll('.sidebar__link').forEach(item => {
+      for (const item of document.querySelectorAll('a')) {
         const routeEntry = this.routeByPath(item.getAttribute('href'))
+
+        if (!routeEntry) {
+          continue
+        }
+
         if (
           ROUTES_WITH_OWNER_FILTER.includes(routeEntry.name) &&
           !this.currentBusiness.accountId
@@ -145,7 +158,7 @@ export default {
         } else {
           item.classList.remove('current-business-indicator__link-hidden')
         }
-      })
+      }
     },
 
     routeByPath (routePath) {
