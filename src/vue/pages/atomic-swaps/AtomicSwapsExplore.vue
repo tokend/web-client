@@ -68,10 +68,10 @@ import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
 import AtomicSwapCard from './AtomicSwapCard'
 import AtomicSwapViewer from './AtomicSwapViewer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
-import { Bus } from '@/js/helpers/event-bus'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 import TickFilterField from '@/vue/fields/TickFilterField'
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
   name: 'atomic-swaps-explore',
@@ -84,6 +84,8 @@ export default {
     NoDataMessage,
     TickFilterField,
   },
+
+  mixins: [UpdateList],
 
   data () {
     return {
@@ -111,9 +113,7 @@ export default {
   },
 
   created () {
-    Bus.on('atomicSwaps:updateList', () =>
-      this.reloadList()
-    )
+    this.listenUpdateList('atomicSwaps:updateList', this.reloadList)
   },
 
   methods: {
@@ -161,7 +161,7 @@ export default {
 
     closeDrawerAndUpdateList () {
       this.isDrawerShown = false
-      this.reloadList()
+      this.emitUpdateList('atomicSwaps:updateList')
     },
   },
 }
@@ -225,5 +225,9 @@ $filter-field-to-filter-field-margin: 2rem;
   @include respond-to(xsmall) {
     @include list-item-width(100%);
   }
+}
+
+.atomic-swaps-explore__loader {
+  margin-top: 1rem;
 }
 </style>

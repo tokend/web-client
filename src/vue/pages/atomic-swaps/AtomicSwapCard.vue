@@ -4,6 +4,28 @@
       <span class="atomic-swap-card__number">
         {{ 'poll-card.id-prefix' | globalize({ id: atomicSwap.id }) }}
       </span>
+      <span
+        class="atomic-swap-card__base-asset"
+      >
+        Base asset: {{ atomicSwap.baseAsset }}
+      </span>
+    </p>
+
+    <p class="atomic-swap-card__quote-assets">
+      <span>Quote assets: </span>
+      <span
+        class="atomic-swap-card__assets"
+        v-for="quoteAsset in atomicSwap.quoteAssets"
+        :key="quoteAsset.id"
+      >
+        {{ quoteAsset.id }}
+      </span>
+    </p>
+
+    <p class="atomic-swap-card__amount">
+      <span>
+        Amount {{ atomicSwap.availableAmount }}
+      </span>
     </p>
 
     <p class="atomic-swap-card__author">
@@ -56,10 +78,7 @@ export default {
 }
 
 .atomic-swap-card__title {
-  margin-bottom: 1.6rem;
   font-size: 1.6rem;
-
-  @include multi-line-ellipsis(1.6rem * 1.5, 2, true);
 }
 
 .atomic-swap-card__number {
@@ -75,5 +94,9 @@ export default {
   white-space: nowrap;
   max-width: 100%;
   overflow: hidden;
+}
+
+.atomic-swap-card__quote-assets {
+  margin-bottom: 1.6rem;
 }
 </style>

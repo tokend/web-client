@@ -316,7 +316,6 @@ export default {
 
         Bus.success('create-atomic-swap-form.created-atomic-swap-msg')
         this.$emit(EVENTS.createdAtomicSwap)
-        Bus.emit('atomicSwaps:updateList')
       } catch (e) {
         ErrorHandler.process(e)
       }
