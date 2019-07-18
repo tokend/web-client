@@ -11,13 +11,40 @@ import kycRecovery from './kyc-recovery.module'
 import { vuexTypes } from '@/vuex/types'
 import { sessionStoragePlugin } from './plugins/session-storage'
 import idleHandler from './idle-handler.module'
+import { errors } from '@/js/errors'
+import { ErrorHandler } from '@/js/helpers/error-handler'
+import { useWallet } from '@/api'
+import { Wallet } from '@tokend/js-sdk'
 
 import _isEmpty from 'lodash/isEmpty'
 
 Vue.use(Vuex)
 
 export const rootModule = {
-  actions: {},
+  actions: {
+    [vuexTypes.LOG_OUT] ({ commit }) {
+      commit(vuexTypes.CLEAR_STATE)
+    },
+    async [vuexTypes.LOG_IN] ({ getters, dispatch }) {
+      let walletSeed
+      try {
+        walletSeed = await dispatch(vuexTypes.DECRYPT_SECRET_SEED)
+      } catch (e) {
+        if (!(e instanceof errors.NotFoundError)) {
+          ErrorHandler.processWithoutFeedback(e)
+        }
+        dispatch(vuexTypes.LOGOUT_SESSION)
+      }
+
+      const wallet = new Wallet(
+        getters[vuexTypes.walletEmail],
+        walletSeed,
+        getters[vuexTypes.walletAccountId],
+        getters[vuexTypes.walletId],
+      )
+      useWallet(wallet)
+    },
+  },
   mutations: {
     // These mutations are being subscribed by plugins
     [vuexTypes.POP_STATE] () { },

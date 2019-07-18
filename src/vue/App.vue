@@ -66,14 +66,10 @@ import {
   documentsManager,
   walletsManager,
   factorsManager,
-  useWallet,
 } from '@/api'
 import { vuexTypes } from '@/vuex'
-import { Wallet } from '@tokend/js-sdk'
 import { ErrorTracker } from '@/js/helpers/error-tracker'
 import { vueRoutes } from '@/vue-router/routes'
-import { errors } from '@/js/errors'
-import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import config from '@/config'
 import { i18n } from '@/i18n'
@@ -133,6 +129,7 @@ export default {
       decryptSecretSeed: vuexTypes.DECRYPT_SECRET_SEED,
       startIdle: vuexTypes.START_IDLE,
       logoutSession: vuexTypes.LOGOUT_SESSION,
+      logIn: vuexTypes.LOG_IN,
     }),
     ...mapMutations({
       popState: vuexTypes.POP_STATE,
@@ -147,23 +144,7 @@ export default {
       await this.loadKvEntries()
 
       if (this[vuexTypes.isLoggedIn]) {
-        let walletSeed
-        try {
-          walletSeed = await this.getDecryptedSecretSeed()
-        } catch (e) {
-          if (!(e instanceof errors.NotFoundError)) {
-            ErrorHandler.processWithoutFeedback(e)
-          }
-          this.logoutSession()
-        }
-
-        const wallet = new Wallet(
-          this.walletEmail,
-          walletSeed,
-          this.walletAccountId,
-          this.walletId
-        )
-        useWallet(wallet)
+        await this.logIn()
 
         ErrorTracker.setLoggedInUser({
           'accountId': this[vuexTypes.walletAccountId],

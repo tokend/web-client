@@ -35,7 +35,7 @@
 
 <script>
 import { vuexTypes } from '@/vuex'
-import { mapGetters, mapActions, mapMutations } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 import KycRecoveryUnverified from '@/vue/pages/KycRecovery/KycRecoveryUnverified'
@@ -82,9 +82,7 @@ export default {
     ...mapActions({
       loadKycRecovery: vuexTypes.LOAD_KYC_RECOVERY,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
-    }),
-    ...mapMutations({
-      clearState: vuexTypes.CLEAR_STATE,
+      logOutAccount: vuexTypes.LOG_OUT,
     }),
 
     async onSubmit () {
@@ -103,7 +101,7 @@ export default {
       })
     },
     logOut () {
-      this.clearState()
+      this.logOutAccount()
       location.reload()
     },
   },

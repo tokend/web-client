@@ -50,6 +50,10 @@ const mutations = {
 }
 
 const actions = {
+  // root
+  LOG_OUT: 'LOG_OUT',
+  LOG_IN: 'LOG_IN',
+
   // key-value
   LOAD_KV_ENTRIES: 'LOAD_KV_ENTRIES',
   LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS: 'LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS',

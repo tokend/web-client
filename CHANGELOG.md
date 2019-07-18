@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Real time updates on all pages
+- `LOG_IN` and `LOG_OUT` vuex actions
 
 #### Removed
 - Recovery seed screen on sign up 
