@@ -30,7 +30,7 @@
               {{ 'auth-pages.forgot-pwd-question' | globalize }}
               <router-link
                 class="auth-page__tip-link"
-                :to="vueRoutes.recovery"
+                :to="vueRoutes.kycRecoveryInit"
               >
                 {{ 'auth-pages.forgot-pwd-answer' | globalize }}
               </router-link>
