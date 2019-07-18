@@ -14,7 +14,7 @@
             :disabled="formMixin.isDisabled"
             @blur="touchField('form.invitees')"
             :error-message="getFieldErrorMessage('form.invitees')"
-            rows="18"
+            rows="8"
           />
         </div>
       </div>
