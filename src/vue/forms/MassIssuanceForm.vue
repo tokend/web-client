@@ -156,6 +156,10 @@ export default {
     }),
   },
 
+  async created () {
+    await this.loadAssets()
+  },
+
   methods: {
     ...mapActions({
       loadAssets: vuexTypes.LOAD_ASSETS,
