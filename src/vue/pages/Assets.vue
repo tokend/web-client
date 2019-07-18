@@ -2,12 +2,17 @@
   <div>
     <top-bar>
       <template slot="main">
-        <router-link :to="vueRoutes.assetsExplore">
-          <span>{{ 'assets-page.explore-title' | globalize }}</span>
-        </router-link>
-        <router-link :to="vueRoutes.balances">
-          <span>{{ 'assets-page.balances-title' | globalize }}</span>
-        </router-link>
+        <!-- eslint-disable-next-line max-len -->
+        <template v-if="getModule().canRenderSubmodule(AssetExplorerPageModule)">
+          <router-link :to="vueRoutes.assetsExplore">
+            <span>{{ 'assets-page.explore-title' | globalize }}</span>
+          </router-link>
+        </template>
+        <template v-if="getModule().canRenderSubmodule(BalancesPageModule)">
+          <router-link :to="vueRoutes.balances">
+            <span>{{ 'assets-page.balances-title' | globalize }}</span>
+          </router-link>
+        </template>
         <template v-if="getModule().canRenderSubmodule(MyAssetsPageModule)">
           <router-link :to="vueRoutes.myAssets">
             <span>{{ 'assets-page.my-assets-title' | globalize }}</span>
@@ -42,7 +47,7 @@
 
         <submodule-importer
           :submodule="getModule().getSubmodule(CreateAssetFormModule)"
-          @close="isAssetDrawerShown = false"
+          @submitted="closeDrawerAndUpdateList()"
         />
       </drawer>
     </template>
@@ -56,7 +61,7 @@
 
         <submodule-importer
           :submodule="getModule().getSubmodule(CreateAssetFormSimplifiedModule)"
-          @close="isAssetDrawerShown = false"
+          @submitted="closeDrawerAndUpdateList()"
         />
       </drawer>
     </template>
@@ -77,7 +82,10 @@ import { vuexTypes } from '@/vuex'
 
 import { CreateAssetFormModule } from '@modules/create-asset-form/module'
 import { CreateAssetFormSimplifiedModule } from '@modules/create-asset-form-simplified/module'
+import { AssetExplorerPageModule } from './asset-explorer-page'
+import { BalancesPageModule } from './balances-page'
 import { MyAssetsPageModule } from './my-assets-page-module'
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
   name: 'assets',
@@ -86,10 +94,13 @@ export default {
     Drawer,
     SubmoduleImporter,
   },
+  mixins: [UpdateList],
   data: _ => ({
     vueRoutes,
     CreateAssetFormModule,
     CreateAssetFormSimplifiedModule,
+    AssetExplorerPageModule,
+    BalancesPageModule,
     MyAssetsPageModule,
     isAssetDrawerShown: false,
   }),
@@ -97,6 +108,12 @@ export default {
     ...mapGetters({
       account: vuexTypes.account,
     }),
+  },
+  methods: {
+    closeDrawerAndUpdateList () {
+      this.isAssetDrawerShown = false
+      this.emitUpdateList('assets:updateList')
+    },
   },
 }
 </script>

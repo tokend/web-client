@@ -66,17 +66,9 @@ export const actions = {
     { getters, rootGetters, commit },
     blobId = ''
   ) {
-    const newSigner = base.Keypair.random()
     const opts = {
       targetAccount: rootGetters[vuexTypes.accountId],
       signers: [
-        {
-          publicKey: newSigner.accountId(),
-          roleID: '1',
-          weight: '1000',
-          identity: '1',
-          details: {},
-        },
         {
           publicKey: rootGetters[vuexTypes.walletPublicKey],
           roleID: String(rootGetters[vuexTypes.kvDefaultSignerRoleId]),
@@ -123,7 +115,7 @@ export const getters = {
     KYC_RECOVERY_STATES.none,
   [vuexTypes.isKycRecoveryInProgress]: (a, getters, b, rootGetters) =>
     getters[vuexTypes.accountKycRecoveryStatus] !==
-    KYC_RECOVERY_STATES.none,
+    KYC_RECOVERY_STATES.none && !!getters[vuexTypes.accountKycRecoveryStatus],
   [vuexTypes.isKycRecoveryInited]: (a, getters, b, rootGetters) =>
     getters[vuexTypes.accountKycRecoveryStatus] ===
     KYC_RECOVERY_STATES.inited,

@@ -1,5 +1,5 @@
-import i18next from 'i18next'
+import { globalize } from './globalize'
 
 export function formatPercent (value) {
-  return i18next.t('formats.percent', { value: value / 100 })
+  return globalize('formats.percent', { value: value / 100 })
 }

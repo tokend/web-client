@@ -13,8 +13,19 @@ export function buildRouter (store) {
   // TODO: find a way to rebuild router’s routes.
   // Because would be nice if we do not even build routes that the logged in
   // user cannot access
-  const userRoutes = SchemeRegistry.current.pages
+  let userRoutes = SchemeRegistry.current.pages
     .map(page => page.routerEntry)
+
+  const inAppRouteGuard = buildInAppRouteGuard({
+    scheme: SchemeRegistry.current,
+    store,
+    userRoutes,
+  })
+
+  userRoutes = userRoutes.map(item => ({
+    ...item,
+    beforeEnter: inAppRouteGuard,
+  }))
 
   return new Router({
     mode: 'history',
@@ -85,12 +96,6 @@ export function buildRouter (store) {
             props: true,
           },
           {
-            path: '/recovery',
-            name: vueRoutes.recovery.name,
-            component: resolve => require(['@/vue/pages/Recovery'], resolve),
-            beforeEnter: buildAuthPageGuard(store),
-          },
-          {
             path: '/kyc-recovery-init',
             name: vueRoutes.kycRecoveryInit.name,
             component: resolve => require(['@/vue/pages/KycRecovery'], resolve),
@@ -103,11 +108,7 @@ export function buildRouter (store) {
         name: 'app',
         meta: { isNavigationRendered: true },
         component: resolve => require(['@/vue/AppContent'], resolve),
-        beforeEnter: buildInAppRouteGuard({
-          scheme: SchemeRegistry.current,
-          store,
-          userRoutes,
-        }),
+        beforeEnter: inAppRouteGuard,
         redirect: _ => {
           return getFirstAccessibleUserRoute(userRoutes, SchemeRegistry.current)
         },
@@ -203,7 +204,6 @@ function buildKycRecoveryPageGuard (store) {
     const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
     const isKycRecoveryInProgress = store
       .getters[vuexTypes.accountKycRecoveryStatus]
-
     isLoggedIn && isKycRecoveryInProgress
       ? next()
       : next(vueRoutes.app)

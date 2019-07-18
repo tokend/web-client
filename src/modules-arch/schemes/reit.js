@@ -40,8 +40,11 @@ import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments-deposit/mo
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
 
 export default {
-  importEnLocaleFile () {
-    return import('@/modules-arch/schemes/reit-en.json')
+  importLanguageResource (lng) {
+    return {
+      'en': import('@/modules-arch/schemes/reit-en.json'),
+      'ru': import('@/modules-arch/schemes/reit-ru.json'),
+    }[lng]
   },
   pages: [
     new DashboardPageModule(

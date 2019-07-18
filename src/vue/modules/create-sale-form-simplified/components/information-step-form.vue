@@ -162,20 +162,6 @@
       </div>
     </div>
 
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <p class="information-step-form__price">
-          {{
-            'create-sale-form.price-for-asset-hint' | globalize({
-              base: form.baseAsset.code,
-              quote: form.capAsset.code,
-              value: priceForAsset
-            })
-          }}
-        </p>
-      </div>
-    </div>
-
     <div class="app__form-actions">
       <button
         v-ripple

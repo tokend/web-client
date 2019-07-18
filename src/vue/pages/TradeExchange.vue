@@ -19,7 +19,7 @@
             :is-buy="true"
             :is-loading="isBuyOffersLoading"
             :offers-list="buyOffersList"
-            @reload-trades="reloadTrades"
+            @reload-trades="emitUpdateList('trade:updateList')"
           />
 
           <trade-offers-renderer
@@ -28,7 +28,7 @@
             :is-buy="false"
             :is-loading="isSellOffersLoading"
             :offers-list="sellOffersList"
-            @reload-trades="reloadTrades"
+            @reload-trades="emitUpdateList('trade:updateList')"
           />
         </div>
       </div>
@@ -47,6 +47,7 @@
             :page-limit="recordsToShow"
             @first-page-load="setTradeHistory"
             @next-page-load="extendTradeHistory"
+            :ref="REFS.tradeHistory"
           />
         </div>
       </div>
@@ -65,6 +66,11 @@ import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import { mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import UpdateList from '@/vue/mixins/update-list.mixin'
+
+const REFS = {
+  tradeHistory: 'trade-history',
+}
 
 export default {
   name: 'trade-exchange',
@@ -74,9 +80,7 @@ export default {
     TradeOffersRenderer,
     CollectionLoader,
   },
-  props: {
-    isLoading: { type: Boolean, default: false },
-  },
+  mixins: [UpdateList],
   data: () => ({
     tradeHistory: [],
     buyOffersList: [],
@@ -88,6 +92,7 @@ export default {
     recordsToShow: config.TRANSACTIONS_PER_PAGE,
 
     loadTradeDataTickerIntervalId: -1,
+    REFS,
   }),
   computed: {
     assetPair () {
@@ -108,10 +113,6 @@ export default {
         }
       },
     },
-    isLoading: async function () {
-      await this.loadData()
-      this.$emit('update:isLoading', false)
-    },
   },
   async created () {
     this.setCurrentAssets(this.assetPair)
@@ -119,10 +120,13 @@ export default {
       await this.loadData()
       this.createLoadTradeDataTicker()
     }
+    this.listenUpdateList('trade:updateList', this.reloadTrades)
   },
-  async beforeDestroy () {
+
+  beforeDestroy () {
     this.clearLoadTradeDataTicker()
   },
+
   methods: {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
@@ -186,7 +190,6 @@ export default {
     },
     setTradeHistory (data) {
       this.tradeHistory = data
-      this.isTradeHistoryLoading = true
     },
     extendTradeHistory (data) {
       this.tradeHistory = this.tradeHistory.concat(data)
@@ -196,7 +199,7 @@ export default {
       this.assetPair.quote = assetPair.quote
     },
     async reloadTrades () {
-      await this.loadData()
+      await this.reloadData()
       await this.loadBalances()
     },
     sortOffersList (list, type) {
@@ -209,6 +212,15 @@ export default {
           return 0
         }
       })
+    },
+
+    async reloadData () {
+      await this.loadTradeOffers()
+      this.reloadCollectionLoader()
+    },
+
+    reloadCollectionLoader () {
+      return this.$refs[REFS.tradeHistory].loadFirstPage()
     },
   },
 }

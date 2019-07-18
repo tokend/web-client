@@ -2,6 +2,31 @@ import { PageModuleDescriptor } from './page-module-descriptor'
 import { SchemeRegistry } from './scheme-registry'
 import { ModuleDescriptor } from './module-descriptor'
 
+function findRouteByName (routes, name) {
+  if (!Array.isArray(routes)) {
+    return undefined
+  }
+
+  let result
+  for (const route of routes) {
+    const item = route || {}
+
+    if (item.name === name) {
+      result = item
+    }
+
+    if (!result && item.children) {
+      result = findRouteByName(item.children, name)
+    }
+
+    if (result) {
+      break
+    }
+  }
+
+  return result
+}
+
 /**
  * Represents module set to be used by the application.
  */
@@ -17,7 +42,8 @@ export class ModuleScheme {
    * @param {String} scheme.appLogoUrl
    * URL of the image that should be displayed as an application logo
    *
-   * @param {Function} scheme.importEnLocaleFile
+   * @param {Function} scheme.importLanguageResource
+   * Should accept lang key as an argument and return callback
    * Example: _ => import('./path').
    *
    * @param {PageModuleDescriptor[]} scheme.pages
@@ -31,7 +57,7 @@ export class ModuleScheme {
     this._appLogoUrl = scheme.appLogoUrl
     this._pages = scheme.pages
     this._modules = scheme.modules
-    this._importEnLocaleFile = scheme.importEnLocaleFile
+    this._importLanguageResources = scheme.importLanguageResource
 
     // To validate the whole bunch of modules for compatibility
     this._cache = this._createCache()
@@ -43,7 +69,7 @@ export class ModuleScheme {
   get pages () { return this._pages }
   get modules () { return this._modules || [] }
   get cache () { return this._cache }
-  get importEnLocaleFile () { return this._importEnLocaleFile }
+  get importLanguageResource () { return this._importLanguageResources }
 
   _validateRawScheme (scheme) {
     if (!scheme.pages) {
@@ -96,6 +122,17 @@ export class ModuleScheme {
     Vue.prototype.getScheme = function () {
       return SchemeRegistry.current
     }
+    Vue.prototype.isAvailableRouteName = function (name) {
+      const routeByName = findRouteByName(this.$router.options.routes, name)
+      if (!routeByName) {
+        return false
+      }
+
+      const routeModule = SchemeRegistry.current.findModuleByName(name)
+      return routeModule
+        ? routeModule.isAccessible
+        : true
+    }
   }
 
   canRenderModule (moduleConstructor) {
@@ -115,5 +152,10 @@ export class ModuleScheme {
   findModuleByPath (path) {
     return this.cache
       .find(item => item.routerEntry && item.routerEntry.path === path)
+  }
+
+  findModuleByName (name) {
+    return this.cache
+      .find(item => item.routerEntry && item.routerEntry.name === name)
   }
 }

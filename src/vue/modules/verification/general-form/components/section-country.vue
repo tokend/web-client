@@ -7,8 +7,7 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <select-field
-          :value="country.code"
-          @input="country = COUNTRIES.find(item => item.code === $event)"
+          v-model="country"
           name="address-country"
           :label="'general-form.address-country-lbl' | globalize"
           @blur="touchField('country')"
@@ -16,11 +15,11 @@
           :disabled="isDisabled || isCountryChangeDisabled"
         >
           <option
-            v-for="countryItem in COUNTRIES"
-            :key="countryItem.code"
-            :value="countryItem.code"
+            v-for="item in COUNTRIES"
+            :key="item"
+            :value="item"
           >
-            {{ countryItem.translation | globalize }}
+            {{ item | globalizeCountry }}
           </option>
         </select-field>
       </div>
@@ -110,7 +109,7 @@ export default {
       set (v) { this.setIsAccredited(v) },
     },
     country: {
-      get () { return this.callGetter(types.country) || { code: '' } },
+      get () { return this.callGetter(types.country) || '' },
       set (v) { this.setCountry(v) },
     },
     proofOfInvestor: {

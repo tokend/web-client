@@ -1,5 +1,8 @@
 <template>
-  <div id="app" v-if="isAppInitialized">
+  <div
+    id="app"
+    v-if="isAppInitialized"
+    :key="lang">
     <warning-banner
       v-if="isNotSupportedBrowser && !isSupportedBrowsersPage"
       :message="'common.browser-not-supported' | globalize"
@@ -63,6 +66,7 @@ import {
   documentsManager,
   walletsManager,
   factorsManager,
+  useWallet,
 } from '@/api'
 import { vuexTypes } from '@/vuex'
 import { Wallet } from '@tokend/js-sdk'
@@ -72,6 +76,7 @@ import { errors } from '@/js/errors'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import config from '@/config'
+import { i18n } from '@/i18n'
 
 export default {
   name: 'app',
@@ -87,6 +92,7 @@ export default {
     isNotSupportedBrowser: false,
     isAppInitialized: false,
     vueRoutes,
+    lang: i18n.language,
   }),
 
   computed: {
@@ -112,6 +118,7 @@ export default {
     this.startIdle()
 
     this.detectIncompatibleBrowser()
+    i18n.onLanguageChanged(lng => (this.lang = lng))
 
     this.watchChangesInLocalStorage()
 
@@ -156,7 +163,7 @@ export default {
           this.walletAccountId,
           this.walletId
         )
-        api.useWallet(wallet)
+        useWallet(wallet)
 
         ErrorTracker.setLoggedInUser({
           'accountId': this[vuexTypes.walletAccountId],

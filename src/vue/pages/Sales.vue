@@ -2,23 +2,17 @@
   <div class="sales">
     <top-bar>
       <template slot="main">
-        <router-link
-          :to="vueRoutes.investableSales"
-        >
-          <span>
-            {{ 'sales.investable-sales' | globalize }}
-          </span>
-        </router-link>
+        <!-- eslint-disable-next-line max-len -->
+        <template v-if="getModule().canRenderSubmodule(SalesListPageModule)">
+          <router-link :to="vueRoutes.investableSales">
+            <span>{{ 'sales.investable-sales' | globalize }}</span>
+          </router-link>
+        </template>
 
-        <template
-          v-if="getModule().canRenderSubmodule(SalesListOwnedPageModule)"
-        >
-          <router-link
-            :to="vueRoutes.userOwnedSales"
-          >
-            <span>
-              {{ 'sales.my-sales' | globalize }}
-            </span>
+        <!-- eslint-disable-next-line max-len -->
+        <template v-if="getModule().canRenderSubmodule(SalesListOwnedPageModule)">
+          <router-link :to="vueRoutes.userOwnedSales">
+            <span>{{ 'sales.my-sales' | globalize }}</span>
           </router-link>
         </template>
       </template>
@@ -77,7 +71,7 @@
         </template>
         <submodule-importer
           :submodule="getModule().getSubmodule(CreateOpportunityModule)"
-          @close="isAssetSaleDrawerShown = false"
+          @submitted="closeAssetSaleDrawerAndUpdateList()"
           :account-id="accountId"
           :min-amount="MIN_AMOUNT"
           :max-amount="MAX_AMOUNT"
@@ -97,7 +91,7 @@
         </template>
         <submodule-importer
           :submodule="getModule().getSubmodule(CreateSaleFormModule)"
-          @close="isCreateSaleDrawerShown = false"
+          @submitted="closeCreateSaleDrawerAndUpdateList()"
         />
       </drawer>
     </template>
@@ -114,7 +108,7 @@
         </template>
         <submodule-importer
           :submodule="getModule().getSubmodule(CreateSaleFormModuleSimplified)"
-          @close="isCreateSaleDrawerShown = false"
+          @close="closeCreateSaleDrawerAndUpdateList()"
         />
       </drawer>
     </template>
@@ -137,7 +131,9 @@ import { CreateSaleFormModuleSimplified } from '@modules/create-sale-form-simpli
 
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { CreateOpportunityModule } from '@/vue/modules/create-opportunity/module'
+import { SalesListPageModule } from '@/vue/pages/sales/investable-sales-page-module'
 import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
   name: 'sales',
@@ -146,6 +142,8 @@ export default {
     Drawer,
     SubmoduleImporter,
   },
+
+  mixins: [UpdateList],
 
   data: _ => ({
     isCreateSaleDrawerShown: false,
@@ -158,6 +156,7 @@ export default {
     CreateSaleFormModuleSimplified,
     vueRoutes,
     CreateOpportunityModule,
+    SalesListPageModule,
     SalesListOwnedPageModule,
   }),
 
@@ -165,6 +164,18 @@ export default {
     ...mapGetters({
       accountId: vuexTypes.accountId,
     }),
+  },
+
+  methods: {
+    closeAssetSaleDrawerAndUpdateList () {
+      this.isAssetSaleDrawerShown = false
+      this.emitUpdateList('sales:updateList')
+    },
+
+    closeCreateSaleDrawerAndUpdateList () {
+      this.isCreateSaleDrawerShown = false
+      this.emitUpdateList('sales:updateList')
+    },
   },
 }
 </script>

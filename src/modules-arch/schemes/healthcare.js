@@ -9,8 +9,11 @@ import { DocumentExplorerPageModule } from '@/vue/pages/document-explorer-page-m
 import { DocumentManagerPageModule } from '@/vue/pages/document-manager-page-module'
 
 export default {
-  importEnLocaleFile () {
-    return import('@/modules-arch/schemes/healthcare.en.json')
+  importLanguageResource (lng) {
+    return {
+      'en': import('@/modules-arch/schemes/healthcare.en.json'),
+      'ru': import('@/modules-arch/schemes/healthcare.ru.json'),
+    }[lng]
   },
   pages: [
     new DocumentsPageModule({

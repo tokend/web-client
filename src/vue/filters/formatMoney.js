@@ -1,5 +1,5 @@
-import i18next from 'i18next'
+import { globalize } from './globalize'
 
 export function formatMoney (value) {
-  return i18next.t('formats.money', { value })
+  return globalize('formats.money', { value })
 }

@@ -1,5 +1,5 @@
-import i18next from 'i18next'
+import { globalize } from './globalize'
 
 export function formatDate (value) {
-  return i18next.t('formats.date', { value })
+  return globalize('formats.date', { value })
 }

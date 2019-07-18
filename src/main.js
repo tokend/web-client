@@ -2,7 +2,6 @@ import './scss/app.scss'
 
 import Vue from 'vue'
 import App from '@/vue/App'
-import i18next from 'i18next'
 import Vuelidate from 'vuelidate'
 import VueResource from 'vue-resource'
 import log from 'loglevel'
@@ -14,8 +13,9 @@ import { buildRouter } from '@/vue-router'
 import { tableScrollShadow } from '@/vue/directives/tableScrollShadow'
 import { ripple } from '@/vue/directives/ripple'
 import { tooltip } from '@/vue/directives/tooltip'
-import { i18nOptions, mergeIntoI18nOptions } from '@/i18n'
+import { i18n } from '@/i18n'
 import { globalize } from '@/vue/filters/globalize'
+import { globalizeCountry } from './vue/filters/globalizeCountry'
 import { formatDate } from '@/vue/filters/formatDate'
 import { formatMoney } from '@/vue/filters/formatMoney'
 import { formatNumber } from '@/vue/filters/formatNumber'
@@ -34,12 +34,15 @@ async function init () {
   await SchemeRegistry.useScheme(config.MODULE_SCHEME_NAME)
   Vue.use(SchemeRegistry.current)
 
-  if (SchemeRegistry.current.importEnLocaleFile) {
-    const enLocaleJson = await SchemeRegistry.current.importEnLocaleFile()
-    mergeIntoI18nOptions(enLocaleJson)
-  }
+  i18n.onLanguageChanged(async lang => {
+    if (SchemeRegistry.current.importLanguageResource) {
+      const resource = await SchemeRegistry.current
+        .importLanguageResource(lang)
+      i18n._appendResources(lang, resource)
+    }
+  })
 
-  i18next.init(i18nOptions)
+  await i18n.init()
 
   log.setDefaultLevel(config.LOG_LEVEL)
 
@@ -50,6 +53,7 @@ async function init () {
   Vue.directive('ripple', ripple)
   Vue.directive('tooltip', tooltip)
   Vue.filter('globalize', globalize)
+  Vue.filter('globalizeCountry', globalizeCountry)
   Vue.filter('formatDate', formatDate)
   Vue.filter('formatDateDMY', formatDateDMY)
   Vue.filter('formatDateDMYT', formatDateDMYT)

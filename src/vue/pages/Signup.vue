@@ -1,49 +1,6 @@
 <template>
   <div class="auth-page">
-    <template v-if="recoveryKeypair && isRecoverySeedModeEnabled">
-      <h2 class="auth-page__title signup__seed-title">
-        {{ 'auth-pages.save-recovery-seed-title' | globalize }}
-      </h2>
-
-      <div class="auth-page__content">
-        <div class="signup__seed-wrp">
-          <div class="signup__seed-disclaimer">
-            <!-- eslint-disable-next-line max-len -->
-            <vue-markdown :source="'auth-pages.save-recovery-seed-explanation' | globalize" />
-          </div>
-
-          <key-viewer
-            class="signup__key-viewer"
-            :value="recoveryKeypair.secret()"
-            :label="'auth-pages.recovery-seed' | globalize"
-          />
-
-          <div class="app__form-row">
-            <tick-field
-              v-model="isConfirmedSeedCopied"
-              :cb-value="false"
-              :required="true"
-              :disabled="formMixin.isDisabled"
-            >
-              {{ 'auth-pages.save-recovery-seed-confirmation' | globalize }}
-            </tick-field>
-          </div>
-
-          <div class="app__form-actions">
-            <button
-              v-ripple
-              @click="submit"
-              :disabled="!isConfirmedSeedCopied || formMixin.isDisabled"
-              class="auth-page__submit-btn app__button-raised"
-            >
-              {{ 'auth-pages.continue' | globalize }}
-            </button>
-          </div>
-        </div>
-      </div>
-    </template>
-
-    <template v-else>
+    <template>
       <h2 class="auth-page__title">
         {{ 'auth-pages.signup-title' | globalize }}
       </h2>
@@ -74,9 +31,6 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import SignupForm from '@/vue/forms/SignupForm'
-import KeyViewer from '@/vue/common/KeyViewer'
-import TickField from '@/vue/fields/TickField'
-import VueMarkdown from 'vue-markdown'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base } from '@tokend/js-sdk'
@@ -90,9 +44,6 @@ export default {
   name: 'signup',
   components: {
     SignupForm,
-    KeyViewer,
-    TickField,
-    VueMarkdown,
   },
   mixins: [FormMixin],
   data: _ => ({
@@ -122,9 +73,7 @@ export default {
         .Keypair
         .random()
 
-      if (!this.isRecoverySeedModeEnabled) {
-        this.submit()
-      }
+      this.submit()
     },
     async submit () {
       this.disableForm()
