@@ -87,6 +87,7 @@ export default {
         },
         menuButtonTranslationId: 'pages-names.businesses',
         menuButtonMdiName: 'domain',
+        menuSectionTranslationId: 'sidebar.section-explore',
         isAutoRedirectToFirstChild: true,
         submodules: [
           new BusinessesAllPageModule({
