@@ -300,12 +300,7 @@ export default {
       let operations = []
 
       try {
-        const isAmountMoreThanBalance = MathUtil.compare(
-          this.form.amount,
-          this.accountBalance.balance
-        )
-
-        if (this.isAssetOwner && isAmountMoreThanBalance) {
+        if (this.isAssetOwner && this.isAmountMoreThanBalance()) {
           const createIssuanceOperation = this.buildCreateIssuanceOperation()
           operations.push(createIssuanceOperation)
         }
@@ -391,15 +386,12 @@ export default {
     getIssuanceAmount () {
       const availbaleBalance = this.accountBalance.balance
       const amount = this.form.amount
-      return MathUtil.compare(amount, availbaleBalance)
-        ? MathUtil.subtract(
-          amount,
-          availbaleBalance
-        )
-        : MathUtil.subtract(
-          availbaleBalance,
-          amount
-        )
+      return MathUtil.subtract(amount, availbaleBalance)
+    },
+
+    isAmountMoreThanBalance () {
+      // eslint-disable-next-line max-len
+      return MathUtil.compare(this.form.amount, this.accountBalance.balance) >= 0
     },
   },
 }
