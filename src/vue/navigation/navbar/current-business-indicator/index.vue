@@ -43,6 +43,17 @@ const ROUTES_WITH_OWNER_FILTER = [
   vueRoutes.allPolls.name,
 ]
 
+/**
+ * Warn: conto dirty code
+ *
+ * This file is full of hacks related to simulation of the separation of
+ * business customer interfaces. To make the things look like "one customer
+ * connects to business and see resources of that business only (assets, sales,
+ * polls, etc)". To prevent messing up code used by most of the components of
+ * vanilla and other schemes, we extracted dirty conto-related parts to this
+ * file.
+ */
+
 export default {
   name: 'current-business-indicator',
 
@@ -94,7 +105,14 @@ export default {
         throw TypeError(`businesses:setCurrentBusiness: expects instance of BusinessRecord, got ${value}`)
       }
 
+      if (this.currentBusiness.name === value.name) {
+        return
+      }
+
       this.currentBusiness = value
+
+      // erase movements list
+      this.$store.commit('movements-history/SET_MOVEMENTS', [])
     },
 
     initRouterHooks () {
