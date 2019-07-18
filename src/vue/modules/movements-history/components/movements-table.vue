@@ -41,7 +41,7 @@
     <empty-tbody-placeholder
       v-if="!movements.length && isMovementsLoaded"
     />
-    <template v-for="index in itemPerSkeletonLoader">
+    <template v-for="index in 3">
       <movements-skeleton-loader
         v-if="!isMovementsLoaded && !movements.length"
         :key="index"
@@ -72,9 +72,6 @@ export default {
       required: true,
     },
   },
-  data: _ => ({
-    itemPerSkeletonLoader: 3,
-  }),
 }
 </script>
 

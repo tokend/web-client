@@ -43,6 +43,17 @@ const ROUTES_WITH_OWNER_FILTER = [
   vueRoutes.allPolls.name,
 ]
 
+/**
+ * Warn: conto dirty code
+ *
+ * This file is full of hacks related to simulation of the separation of
+ * business customer interfaces. To make the things look like "one customer
+ * connects to business and see resources of that business only (assets, sales,
+ * polls, etc)". To prevent messing up code used by most of the components of
+ * vanilla and other schemes, we extracted dirty conto-related parts to this
+ * file.
+ */
+
 export default {
   name: 'current-business-indicator',
 
@@ -94,12 +105,27 @@ export default {
         throw TypeError(`businesses:setCurrentBusiness: expects instance of BusinessRecord, got ${value}`)
       }
 
+      if (this.currentBusiness.name === value.name) {
+        return
+      }
+
       this.currentBusiness = value
+
+      // erase movements list
+      this.$store.commit('movements-history/SET_MOVEMENTS', [])
     },
 
     initRouterHooks () {
       this.$router.beforeEach((to, from, next) => {
-        if (!ROUTES_WITH_OWNER_FILTER.includes(to.name)) {
+        if (
+          to.name === vueRoutes.businesses.name ||
+          to.name === vueRoutes.allBusinesses.name
+        ) {
+          this.currentBusiness = new BusinessRecord({})
+          setTimeout(() => this.hideUnreachable(), 0)
+
+          next()
+        } else if (!ROUTES_WITH_OWNER_FILTER.includes(to.name)) {
           next()
         } else if (!this.currentBusiness.accountId) {
           next(vueRoutes.businesses)
@@ -117,8 +143,13 @@ export default {
     },
 
     hideUnreachable () {
-      document.querySelectorAll('.sidebar__link').forEach(item => {
+      for (const item of document.querySelectorAll('a')) {
         const routeEntry = this.routeByPath(item.getAttribute('href'))
+
+        if (!routeEntry) {
+          continue
+        }
+
         if (
           ROUTES_WITH_OWNER_FILTER.includes(routeEntry.name) &&
           !this.currentBusiness.accountId
@@ -127,7 +158,7 @@ export default {
         } else {
           item.classList.remove('current-business-indicator__link-hidden')
         }
-      })
+      }
     },
 
     routeByPath (routePath) {
