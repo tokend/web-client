@@ -1,6 +1,6 @@
 <template>
   <div class="mass-invitation-form">
-    <form @submit.prevent="isFormValid() && showConfirmation()">
+    <form @submit.prevent="submit()">
       <div class="app__form-row">
         <div class="app__form-field">
           <p class="mass-invitation-form__how-to-invitees">
@@ -20,15 +20,7 @@
       </div>
 
       <div class="app__form-actions">
-        <form-confirmation
-          v-if="formMixin.isConfirmationShown"
-          :is-pending="formMixin.isPending"
-          @cancel="hideConfirmation"
-          @ok="hideConfirmationAfterSubmit(submit)"
-        />
-
         <button
-          v-else
           v-ripple
           :disabled="formMixin.isDisabled"
           class="app__form-submit-btn app__button-raised"

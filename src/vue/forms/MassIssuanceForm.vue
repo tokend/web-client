@@ -1,7 +1,7 @@
 <template>
   <div class="mass-issuance-form">
     <template v-if="ownedAssets.length">
-      <form @submit.prevent="isFormValid() && showConfirmation()">
+      <form @submit.prevent="submit()">
         <div class="app__form-row">
           <div class="app__form-field">
             <p class="mass-issuance-form__how-to-receivers">
@@ -68,15 +68,7 @@
         </div>
 
         <div class="app__form-actions">
-          <form-confirmation
-            v-if="formMixin.isConfirmationShown"
-            :is-pending="formMixin.isPending"
-            @cancel="hideConfirmation"
-            @ok="hideConfirmationAfterSubmit(submit)"
-          />
-
           <button
-            v-else
             v-ripple
             :disabled="formMixin.isDisabled"
             class="app__form-submit-btn app__button-raised"
