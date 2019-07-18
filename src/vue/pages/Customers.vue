@@ -33,7 +33,8 @@
         {{ 'customers-page.mass-invitation-drawer-heading' | globalize }}
       </template>
 
-      <mass-invitation-form @submitted="emitUpdateList" />
+      <!-- eslint-disable-next-line max-len -->
+      <mass-invitation-form @submitted="(isInviteDrawerShown = false) || emitUpdateList()" />
     </drawer>
 
     <drawer :is-shown.sync="isIssueDrawerShown">
@@ -43,7 +44,7 @@
 
       <mass-issuance-form
         :receivers="massIssuanceReceivers"
-        @submitted="emitUpdateList"
+        @submitted="(isIssueDrawerShown = false) || emitUpdateList()"
       />
     </drawer>
 
