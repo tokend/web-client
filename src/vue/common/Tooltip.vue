@@ -62,7 +62,7 @@ export default {
   position: relative;
   top: 1.5rem;
   right: 50%;
-  width: 8rem;
+  width: 10rem;
   padding: 0.5rem 0;
   color: $col-tooltip-wrapper-msg-text;
   background: $col-tooltip-wrapper-msg-bg;
