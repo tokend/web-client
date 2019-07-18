@@ -1,6 +1,6 @@
 <template>
   <div class="atomic-swaps-explore">
-    <div class="atomic-swap-explore__filters">
+    <div class="atomic-swaps-explore__filters">
       <tick-filter-field
         v-if="isCorporate"
         v-model="filters.isOwnedByCurrentUser"
@@ -172,6 +172,17 @@ export default {
 @import '~@scss/variables.scss';
 
 $list-item-margin: 2rem;
+$filter-field-to-filter-field-margin: 2rem;
+
+.atomic-swaps-explore__filters {
+  margin: -$filter-field-to-filter-field-margin 0 2.4rem
+    (-$filter-field-to-filter-field-margin);
+}
+
+.atomic-swaps-explore__filter-field {
+  margin: $filter-field-to-filter-field-margin 0 0
+    $filter-field-to-filter-field-margin;
+}
 
 .atomic-swaps-explore__list-item-btn {
   display: block;
