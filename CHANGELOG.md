@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+#### Added
+- New 'Explore atomic swaps' page
+
+#### Fixed
+- Issue when a user could not create an atomic swap if an amount is less than 
+  an available balance
+
 ## [1.10.0-rc.2] - 2019-07-18
 #### Added
 - Real time updates on all pages
@@ -17,7 +25,6 @@ for further information about branching and tagging conventions.
 - Remove recovery seed screens on auth
 
 #### Fixed
-- Bug about maximum call stack in buildKycRecoveryPageGuard
 - Bug about maximum call stack in buildKycRecoveryPageGuard
 
 ## [1.10.0-rc.1] - 2019-07-17
