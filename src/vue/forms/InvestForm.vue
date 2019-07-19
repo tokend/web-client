@@ -586,7 +586,7 @@ export default {
         )
         await api.postOperations(operation)
         // eslint-disable-next-line
-        await new Promise(resolve => setTimeout(resolve, INGEST_TIMEOUT_MS))
+        await new Promise(resolve => setTimeout(resolve, config.RELOAD_TIMEOUT))
         await this.loadBalances()
 
         Bus.success('invest-form.offer-canceled-msg')
@@ -693,8 +693,6 @@ export default {
 
 .invest-form__fee-box {
   margin-top: 4rem;
-  padding-top: 4rem;
-  border-top: 0.1rem dashed $col-text-field-hint-inactive;
 }
 
 .invest-form__fee-box-heading:not(:first-child) {
