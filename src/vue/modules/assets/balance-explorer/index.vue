@@ -120,7 +120,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      accountBalances: vuexTypes.accountBalances,
+      accountBalancesByOwner: vuexTypes.accountBalancesByOwner,
       accountId: vuexTypes.accountId,
     }),
 
@@ -129,6 +129,10 @@ export default {
       vuexTypes.kvAssetTypeKycRequired,
       vuexTypes.kvAssetTypeSecurity,
     ]),
+
+    accountBalances () {
+      return this.accountBalancesByOwner(this.$route.query.owner)
+    },
   },
 
   async created () {
@@ -147,7 +151,7 @@ export default {
 
     async load () {
       try {
-        await this.loadAccountBalances(this.defaultQuoteAsset)
+        await this.loadAccountBalances()
         this.isLoaded = true
       } catch (e) {
         this.isLoadFailed = true

@@ -116,6 +116,7 @@ const getters = {
   account: 'account',
   accountId: 'accountId',
   accountBalances: 'accountBalances',
+  accountBalancesByOwner: 'accountBalancesByOwner',
   accountOwnedAssetsBalances: 'accountOwnedAssetsBalances',
   accountBalanceByCode: 'accountBalanceByCode',
   accountRoleId: 'accountRoleId',
