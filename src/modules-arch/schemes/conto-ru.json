@@ -145,7 +145,7 @@
       "whitelisted-lbl": "Требуется приглашение перед вкладом",
       "soft-cap-lbl": "Минимальная цель ({{asset}})",
       "hard-cap-lbl": "Максимальная цель ({{asset}})",
-      "assets-to-sell-lbl": "Количество {{asset}} на продажу",
+      "assets-to-sell-lbl": "{{asset}} на продажу",
       "price-for-asset-hint": "Курс: ({{quote}} за 1 {{base}}) ≈ {{value, money}}",
       "accept-investments-msg": "Принимаем вклады в:",
       "no-investable-assets-err": "Этот актив не имеет приемлемых пар активов. Пожалуйста, выберите другой."
