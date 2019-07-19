@@ -11,6 +11,9 @@ for further information about branching and tagging conventions.
 #### Added
 - New 'Explore atomic swaps' page
 
+#### Removed
+- Conto leftovers from vanilla
+
 #### Fixed
 - Issue when a user could not create an atomic swap if an amount is less than 
   an available balance
