@@ -713,8 +713,6 @@ export default {
 
 .invest-form__fee-box {
   margin-top: 4rem;
-  padding-top: 4rem;
-  border-top: 0.1rem dashed $col-text-field-hint-inactive;
 }
 
 .invest-form__fee-box-heading:not(:first-child) {
