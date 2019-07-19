@@ -5,7 +5,7 @@
       <form
         novalidate
         class="app__form"
-        @submit.prevent="processInvestment"
+        @submit.prevent="submit"
       >
         <message-box
           v-if="!canUpdateOffer"
@@ -116,22 +116,13 @@
         </transition>
 
         <div class="app__form-actions">
-          <form-confirmation
-            v-if="view.mode === VIEW_MODES.confirm"
-            :message="'invest-form.recheck-form-msg' | globalize"
-            :ok-button="'invest-form.invest-btn' | globalize"
-            :is-pending="isSubmitting"
-            @cancel="updateView(VIEW_MODES.submit)"
-            @ok="submit"
-          />
-
           <template
             v-if="currentInvestment.id &&
               view.mode === VIEW_MODES.submit">
             <button
               v-ripple
               type="button"
-              @click="processInvestment"
+              @click="submit"
               class="app__button-raised invest-form__submit-btn"
               :disabled="formMixin.isDisabled || !canSubmit"
             >
@@ -151,7 +142,7 @@
             <button
               v-ripple
               v-if="view.mode === VIEW_MODES.submit"
-              click="submit"
+              type="submit"
               class="app__button-raised"
               :disabled="formMixin.isDisabled || !canSubmit"
             >
@@ -343,10 +334,7 @@ export default {
         .find(balance => balance.asset.code === this.form.asset.code)
       let availableBalance
       if (this.currentInvestment.quoteAmount) {
-        const convertedAmount = MathUtil.add(
-          this.currentInvestment.quoteAmount,
-          this.currentInvestment.fee.calculatedPercent
-        )
+        const convertedAmount = this.currentInvestment.quoteAmount
         availableBalance = MathUtil.add(
           convertedAmount,
           quoteBalance.balance,
@@ -400,14 +388,6 @@ export default {
       return this.canUpdateOffer &&
         !this.isCapExceeded &&
         this.isAssetPairPriceLoaded
-    },
-
-    totalAmount () {
-      const fees = MathUtil.add(
-        this.fees.totalFee.fixed,
-        this.fees.totalFee.calculatedPercent
-      )
-      return MathUtil.add(fees, this.form.amount)
     },
 
     investmentDisabledMessageId () {
@@ -564,7 +544,7 @@ export default {
         base.ManageOfferBuilder.manageOffer(
           this.getOfferOpts(
             OFFER_CREATE_ID,
-            this.fees.totalFee.calculatedPercent
+            '0'
           )
         ),
       )
