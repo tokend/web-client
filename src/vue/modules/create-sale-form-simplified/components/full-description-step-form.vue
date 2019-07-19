@@ -1,7 +1,7 @@
 <template>
   <form
     class="app__form full-description-step-form"
-    @submit.prevent="setConfirmationState"
+    @submit.prevent="submit()"
   >
     <div class="app__form-row">
       <div class="app__form-field">
@@ -41,14 +41,7 @@
     </div>
 
     <div class="app__form-actions">
-      <form-confirmation
-        v-if="formMixin.isConfirmationShown"
-        @ok="hideConfirmation() || submit()"
-        @cancel="hideConfirmation() || emitEnabledState()"
-      />
-
       <button
-        v-else
         v-ripple
         type="submit"
         class="app__button-raised full-description-step-form__btn"
