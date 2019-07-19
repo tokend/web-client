@@ -117,16 +117,8 @@
               :disabled="formMixin.isDisabled"
               form="transfer-form"
             >
-              {{ 'transfer-form.continue-btn' | globalize }}
+              {{ 'transfer-form.submit-btn' | globalize }}
             </button>
-
-            <form-confirmation
-              v-if="view.mode === VIEW_MODES.confirm"
-              :message="'transfer-form.recheck-form' | globalize"
-              :ok-button="'transfer-form.submit-btn' | globalize"
-              @cancel="updateView(VIEW_MODES.submit)"
-              @ok="submit(form.isPaidForRecipient)"
-            />
           </div>
         </form>
       </template>
@@ -259,34 +251,26 @@ export default {
       this.enableForm()
     },
     async processTransfer () {
-      if (!await this.isFormValid()) return
+      if (!this.isFormValid()) return
       this.disableForm()
       try {
         const recipientAccountId =
           await this.getCounterparty(this.form.recipient)
 
-        this.fees = await this.calculateFees({
-          assetCode: this.form.asset.code,
-          amount: this.form.amount,
-          recipientAccountId: recipientAccountId,
-          senderAccountId: this.accountId,
-          type: FEE_TYPES.paymentFee,
-        })
-        this.isFeesLoaded = true
-
         const opts = {
           amount: this.form.amount,
           destinationAccountId: recipientAccountId,
-          destinationFixedFee: this.fees.destinationFee.fixed,
-          destinationPercentFee: this.fees.destinationFee.calculatedPercent,
+          destinationFixedFee: '0',
+          destinationPercentFee: '0',
           destinationFeeAsset: this.form.asset,
           sourceBalanceId: this.balance.id,
-          sourceFixedFee: this.fees.sourceFee.fixed,
-          sourcePercentFee: this.fees.sourceFee.calculatedPercent,
+          sourceFixedFee: '0',
+          sourcePercentFee: '0',
           sourceFeeAsset: this.form.asset,
           subject: this.form.subject,
         }
         this.updateView(VIEW_MODES.confirm, opts)
+        await this.submit()
       } catch (error) {
         ErrorHandler.process(error)
       }
