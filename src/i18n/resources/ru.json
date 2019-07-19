@@ -642,7 +642,8 @@
       "industry-lbl": "Индустрия",
       "team-size-lbl": "Размер команды",
       "website-lbl": "Веб-сайт",
-      "request-submitted-msg": "Запрос отправлен. Пожалуйста, дождитесь результатов рассмотрения."
+      "request-submitted-msg": "Запрос отправлен. Пожалуйста, дождитесь результатов рассмотрения.",
+      "bank-account-lbl": "Банковский счет"
     },
     "input-field": {
       "caps-lock-warning": "Внимание: Caps-Lock включен"
@@ -714,7 +715,7 @@
       "documents": "Документы",
       "register-of-shares": "Реестр акций",
       "polls": "Опросы",
-      "atomic-swaps": "Атомарный обмен",
+      "atomic-swaps": "Прямой обмен",
       "customers": "Клиенты",
       "customers-list": "Список клиентов",
       "businesses": "Бизнесы",
@@ -1158,8 +1159,8 @@
       "logo-note": "JPG или PNG, не менее 120x120 пикселей",
       "transferable-lbl": "Можно передавать",
       "withdrawable-lbl": "Можно выводить",
-      "can-be-base-in-atomic-swap-lbl": "Может быть базовым активом в атомарном обмене",
-      "can-be-quote-in-atomic-swap-lbl": "Можно быть котируемым активом в атомарном обмене",
+      "can-be-base-in-atomic-swap-lbl": "Может быть базовым активом в прямом обмене",
+      "can-be-quote-in-atomic-swap-lbl": "Можно быть котируемым активом в прямом обмене",
       "verification-not-required-lbl": "Не требуется подтверждение аккаунта",
       "security-asset-lbl": "Security (требуется аккредитация для резидентов США)",
       "verification-required-lbl": "Подтверждение аккаунта",
@@ -1200,8 +1201,8 @@
       "logo-note": "JPG или PNG, не менее 120x120 пикселей",
       "transferable-lbl": "Можно передавать",
       "withdrawable-lbl": "Можно выводить",
-      "can-be-base-in-atomic-swap-lbl": "Может быть базовым активом в атомарном обмене",
-      "can-be-quote-in-atomic-swap-lbl": "Можно быть котируемым активом в атомарном обмене",
+      "can-be-base-in-atomic-swap-lbl": "Может быть базовым активом в прямом обмене",
+      "can-be-quote-in-atomic-swap-lbl": "Можно быть котируемым активом в прямом обмене",
       "terms-lbl": "Соглашение",
       "terms-note": "JPG, PNG, PDF, максимум 5 МБ.",
       "request-submitted-msg": "Запрос отправлен",
@@ -1454,8 +1455,8 @@
       "available-title": "Доступна для выпуска",
       "transferable-title": "Можно передавать",
       "withdrawable-title": "Можно выводить",
-      "can-be-base-in-atomic-swap-title": "Может быть базовым активом в атомарном обмене",
-      "can-be-quote-in-atomic-swap-title": "Можно быть котируемым активом в атомарном обмене",
+      "can-be-base-in-atomic-swap-title": "Может быть базовым активом в прямом обмене",
+      "can-be-quote-in-atomic-swap-title": "Можно быть котируемым активом в прямом обмене",
       "deposit-method-title": "Способ депозита",
       "requires-kyc-title": "Требуется KYC",
       "present-msg": "Да",
@@ -2021,8 +2022,8 @@
       "available-title": "Доступно для выпуска",
       "transferable-title": "Можно передавать",
       "withdrawable-title": "Можно выводить",
-      "can-be-base-in-atomic-swap-title": "Может быть базовым активом в атомарном обмене",
-      "can-be-quote-in-atomic-swap-title": "Можно быть котируемым активом в атомарном обмене",
+      "can-be-base-in-atomic-swap-title": "Может быть базовым активом в прямом обмене",
+      "can-be-quote-in-atomic-swap-title": "Можно быть котируемым активом в прямом обмене",
       "deposit-method-title": "Способ депозита",
       "verification-required-title": "Требуется подтверждение аккаунта",
       "asset-type": "Тип актива",
@@ -2314,10 +2315,10 @@
     },
     "create-atomic-swap-form": {
       "asset-lbl": "Актив",
-      "no-base-atomic-swap-assets-title": "Нет активов, которые могли бы бить базовыми в атомарном обмене",
-      "no-base-atomic-swap-assets-msg": "Пожалуйста, создайте актив, который мог бы быть базовым в атомарном обмене.",
-      "no-quote-atomic-swap-assets-title": "Нет активов, которые могли бы бить котируемыми в атомарном обмене.",
-      "no-quote-atomic-swap-assets-msg": "Пожалуйста, создайте актив, который мог бы быть котируемым в атомарном обмене.",
+      "no-base-atomic-swap-assets-title": "Нет активов, которые могли бы бить базовыми в прямом обмене",
+      "no-base-atomic-swap-assets-msg": "Пожалуйста, создайте актив, который мог бы быть базовым в прямом обмене.",
+      "no-quote-atomic-swap-assets-title": "Нет активов, которые могли бы бить котируемыми в прямом обмене.",
+      "no-quote-atomic-swap-assets-msg": "Пожалуйста, создайте актив, который мог бы быть котируемым в прямом обмене.",
       "load-failed-msg": "Произошла ошибка при загрузке. Пожалуйста, попробуйте позже",
       "amount-lbl": "Количество",
       "available-amount-hint": "Доступно: {{amount, money}}",
@@ -2329,9 +2330,6 @@
       "created-atomic-swap-msg": "Запрос отправлен",
       "available-balance": "Баланс: {{amount, number}} {{asset}}.",
       "available-for-issuance": "Доступно для выдачи: {{amount, number}} {{asset}}"
-    },
-    "atomic-swaps-explore": {
-      "no-list-title": "Список предложений атомарных обменов в разработке"
     },
     "customers-page": {
       "invite-btn": "Пригласить",
@@ -2402,6 +2400,44 @@
       "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
       "email-code": "Enter the code sent to you by email",
       "tfa-code": "Enter tfa code"
+    },
+    "atomic-swap-attributes": {
+      "id-key": "Идентификатор",
+      "owner-key": "Владелец",
+      "created-key": "Создано",
+      "base-asset-key": "Базовый актив",
+      "available-amount-key": "Доступно",
+      "locked-amount-key": "Заблокировано",
+      "is-canceled-key": "Отменен?",
+      "yes-val": "Да",
+      "no-val": "Нет",
+      "quote-asset-key": "Код",
+      "current-cap-key": "Продано",
+      "hard-cap-key": "Максимум",
+      "price-key": "Цена",
+      "total-current-cap-key": "Суммарно продано",
+      "address-key": "Адрес",
+      "quote-assets-subheading": "Котируемый актив №{{ number }}"
+    },
+    "atomic-swap-card": {
+      "id-prefix": "#{{id}}",
+      "author-prefix": "От",
+      "base-asset": "База: {{ baseAsset }}",
+      "quote-assets": "Котируемые:",
+      "quote-asset-with-comma": "{{ quoteAsset }},"
+    },
+    "atomic-swaps-explore": {
+      "atomic-swap-drawer-title": "Детали прямого обмена",
+      "no-list-title": "Нет предложений",
+      "no-list-msg": "Здесь будут предложения прямого обмена",
+      "owned-by-me-filter-lbl": "Созданы мной"
+    },
+    "atomic-swap-actions": {
+      "cancel-btn": "Отменить",
+      "yes-msg": "Да",
+      "no-msg": "Нет",
+      "cancellation-msg": "Уверены, что хотите отменить предложение?",
+      "atomic-swap-canceled-msg": "Предложение отменено"
     }
   }
 }

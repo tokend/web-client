@@ -1,15 +1,5 @@
 <template>
   <div class="atomic-swaps-explore">
-    <div class="atomic-swaps-explore__filters">
-      <tick-filter-field
-        v-if="isCorporate"
-        v-model="filters.isOwnedByCurrentUser"
-        :cb-value="true"
-        class="atomic-swaps-explore__filter-field"
-      >
-        {{ 'atomic-swaps-explore.owned-by-me-filter-lbl' | globalize }}
-      </tick-filter-field>
-    </div>
     <template v-if="list.length">
       <div class="atomic-swaps-explore__list">
         <div
@@ -70,7 +60,6 @@ import AtomicSwapViewer from './AtomicSwapViewer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
-import TickFilterField from '@/vue/fields/TickFilterField'
 import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
@@ -82,7 +71,6 @@ export default {
     AtomicSwapCard,
     AtomicSwapViewer,
     NoDataMessage,
-    TickFilterField,
   },
 
   mixins: [UpdateList],
@@ -128,6 +116,11 @@ export default {
             ...(
               this.filters.isOwnedByCurrentUser
                 ? { owner: this.accountId }
+                : {}
+            ),
+            ...(
+              this.$route.query.owner
+                ? { owner: this.$route.query.owner }
                 : {}
             ),
           },

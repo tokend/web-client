@@ -113,6 +113,20 @@
         </div>
       </div>
 
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.bankAccount"
+            @blur="touchField('form.bankAccount')"
+            name="verification-corporate-bank-account"
+            :label="'verification-form.bank-account-lbl' | globalize"
+            :error-message="getFieldErrorMessage('form.bankAccount')"
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
+      </div>
+
       <div class="app__form-actions">
         <form-confirmation
           v-if="formMixin.isConfirmationShown"
@@ -184,6 +198,7 @@ export default {
       industry: '',
       teamSize: '0',
       website: '',
+      bankAccount: '',
     },
     isFormSubmitting: false,
     MIN_TEAM_SIZE,
@@ -309,6 +324,7 @@ export default {
             ? this.form.avatar.getDetailsForSave()
             : EMPTY_DOCUMENT,
         },
+        bank_account: this.form.bankAccount,
       }
     },
 
@@ -323,6 +339,7 @@ export default {
         industry: kycData.industry,
         teamSize: kycData.team_size,
         website: kycData.homepage,
+        bankAccount: kycData.bank_account,
       }
     },
   },

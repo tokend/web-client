@@ -642,7 +642,8 @@
       "industry-lbl": "Industry",
       "team-size-lbl": "Team size",
       "website-lbl": "Website",
-      "request-submitted-msg": "Your request has been submitted successfully. Please wait for review."
+      "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
+      "bank-account-lbl": "Bank account"
     },
     "input-field": {
       "caps-lock-warning": "Warning: Caps-Lock is ON"

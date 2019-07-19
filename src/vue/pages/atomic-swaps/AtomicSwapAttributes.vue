@@ -103,7 +103,8 @@
                 {{ 'atomic-swap-attributes.current-cap-key' | globalize }}
               </td>
               <td>
-                {{ quoteAsset.currentCap }}
+                <!-- eslint-disable-next-line max-len -->
+                {{ { value: quoteAsset.currentCap, currency: quoteAsset.id } | formatMoney }}
               </td>
             </tr>
 
@@ -112,7 +113,8 @@
                 {{ 'atomic-swap-attributes.hard-cap-key' | globalize }}
               </td>
               <td>
-                {{ quoteAsset.hardCap }}
+                <!-- eslint-disable-next-line max-len -->
+                {{ { value: quoteAsset.hardCap, currency: quoteAsset.id } | formatMoney }}
               </td>
             </tr>
 
@@ -121,7 +123,8 @@
                 {{ 'atomic-swap-attributes.total-current-cap-key'| globalize }}
               </td>
               <td>
-                {{ quoteAsset.totalCurrentCap }}
+                <!-- eslint-disable-next-line max-len -->
+                {{ { value: quoteAsset.totalCurrentCap, currency: quoteAsset.id } | formatMoney }}
               </td>
             </tr>
 
@@ -130,16 +133,8 @@
                 {{ 'atomic-swap-attributes.price-key' | globalize }}
               </td>
               <td>
-                {{ quoteAsset.price }}
-              </td>
-            </tr>
-
-            <tr :key="quoteAsset.id">
-              <td>
-                {{ 'atomic-swap-attributes.address-key' | globalize }}
-              </td>
-              <td>
-                {{ quoteAsset.address }}
+                <!-- eslint-disable-next-line max-len -->
+                {{ { value: quoteAsset.price, currency: quoteAsset.id } | formatMoney }}
               </td>
             </tr>
           </tbody>

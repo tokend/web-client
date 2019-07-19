@@ -5,20 +5,10 @@
       v-if="!formMixin.isConfirmationShown"
       class="app__button-raised app__button-raised--danger"
       :disabled="isAtomicSwapCanceling || atomicSwap.isCanceled"
-      @click="showConfirmation"
+      @click="cancelRequest"
     >
       {{ 'atomic-swap-actions.cancel-btn' | globalize }}
     </button>
-
-    <form-confirmation
-      v-if="formMixin.isConfirmationShown"
-      message-id="atomic-swap-actions.cancellation-msg"
-      ok-button-text-id="atomic-swap-actions.yes-msg"
-      cancel-button-text-id="atomic-swap-actions.no-msg"
-      is-danger-color
-      @ok="cancelRequest"
-      @cancel="hideConfirmation"
-    />
   </div>
 </template>
 

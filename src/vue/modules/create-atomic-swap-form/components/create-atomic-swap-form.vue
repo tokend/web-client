@@ -2,7 +2,7 @@
   <form
     novalidate
     class="app__form create-atomic-swap-form"
-    @submit.prevent="isFormValid() && showConfirmation()"
+    @submit.prevent="submit()"
   >
     <div class="app__form-row">
       <div class="app__form-field">
@@ -122,22 +122,6 @@
             />
           </div>
         </div>
-
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <!-- eslint-disable max-len -->
-            <input-field
-              white-autofill
-              v-model="form.quoteAssets[index].address"
-              @blur="touchField(`form.quoteAssets[${index}].address`)"
-              :name="'create-atomic-swap-quote-asset-address'"
-              :label="'create-atomic-swap-form.address-lbl' | globalize"
-              :disabled="formMixin.isDisabled"
-              :error-message="getFieldErrorMessage(`form.quoteAssets[${index}].address`)"
-            />
-            <!-- eslint-enable max-len -->
-          </div>
-        </div>
       </div>
       <div
         class="create-atomic-swap-form__add-quote-asset-wrp"
@@ -157,15 +141,7 @@
     </div>
 
     <div class="app__form-actions">
-      <form-confirmation
-        v-if="formMixin.isConfirmationShown"
-        :is-pending="isFormSubmitting"
-        @ok="submit"
-        @cancel="hideConfirmation"
-      />
-
       <button
-        v-else
         v-ripple
         class="create-atomic-swap-form__submit-btn app__button-raised"
         :disabled="formMixin.isDisabled"
@@ -180,7 +156,6 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 import {
   required,
-  address,
   selectedSameAssetCode,
 } from '@validators'
 import { mapGetters } from 'vuex'
@@ -207,7 +182,7 @@ export default {
     form: {
       asset: {},
       amount: '',
-      quoteAssets: [{ price: '', asset: {}, address: '' }],
+      quoteAssets: [{ price: '', asset: {} }],
     },
     isLoaded: false,
     isLoadFailed: false,
@@ -233,12 +208,6 @@ export default {
                 const selectedAssets = this.getSelectedAssetsByAssetCode(asset.code)
                 return selectedSameAssetCode(selectedAssets)
                 /* eslint-enable max-len */
-              },
-            },
-            address: {
-              required,
-              address: (value, quoteAsset) => {
-                return address(quoteAsset.asset.code)(value)
               },
             },
           },
@@ -298,6 +267,7 @@ export default {
     async submit () {
       this.isFormSubmitting = true
       let operations = []
+      this.disableForm()
 
       try {
         if (this.isAssetOwner && this.isAmountMoreThanBalance()) {
@@ -315,6 +285,7 @@ export default {
         ErrorHandler.process(e)
       }
 
+      this.enableForm()
       this.isFormSubmitting = false
       this.hideConfirmation()
     },
@@ -322,7 +293,6 @@ export default {
     addQuoteAsset () {
       this.form.quoteAssets.push({
         price: '',
-        address: '',
         asset: this.quoteAtomicSwapAssets[0],
       })
     },
@@ -344,10 +314,8 @@ export default {
     buildCreateAtomicSwapOperation () {
       const balanceID = this.accountBalanceByCode(this.form.asset.code).id
       const quoteAssets = []
-      const addresses = {}
 
       this.form.quoteAssets.forEach(quoteAsset => {
-        addresses[quoteAsset.asset.code] = quoteAsset.address
         quoteAssets.push({
           price: quoteAsset.price,
           asset: quoteAsset.asset.code,
@@ -358,9 +326,7 @@ export default {
         balanceID: balanceID,
         amount: this.form.amount,
         quoteAssets: quoteAssets,
-        creatorDetails: {
-          'addresses': addresses,
-        },
+        creatorDetails: {},
       }
       // eslint-disable-next-line max-len
       return base.CreateAtomicSwapAskRequestBuilder.createAtomicSwapAskRequest(operation)
