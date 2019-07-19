@@ -2328,7 +2328,42 @@
       "available-for-issuance": "Available for issuance: {{amount, number}} {{asset}}"
     },
     "atomic-swaps-explore": {
-      "no-list-title": "Atomic swap list is coming soon"
+      "atomic-swap-drawer-title": "Atomic swap details",
+      "no-list-title": "No atomic swaps yet",
+      "no-list-msg": "Here will be the list of atomic swaps",
+      "owned-by-me-filter-lbl": "Owned by me"
+    },
+    "atomic-swap-actions": {
+      "cancel-btn": "Cancel",
+      "yes-msg": "Yes",
+      "no-msg": "No",
+      "cancellation-msg": "Are you sure to cancel the atomic swap?",
+      "atomic-swap-canceled-msg": "Your atomic swap was successfully cancelled"
+    },
+    "atomic-swap-attributes": {
+      "id-key": "ID",
+      "owner-key": "Owner",
+      "created-key": "Created",
+      "base-asset-key": "Base asset",
+      "available-amount-key": "Available amount",
+      "locked-amount-key": "Locked amount",
+      "is-canceled-key": "Is canceled?",
+      "yes-val": "Yes",
+      "no-val": "No",
+      "quote-asset-key": "Code",
+      "current-cap-key": "Current cap",
+      "hard-cap-key": "Hard cap",
+      "price-key": "Price",
+      "total-current-cap-key": "Total current cap",
+      "address-key": "Address",
+      "quote-assets-subheading": "Quote asset #{{ number }}"
+    },
+    "atomic-swap-card": {
+      "id-prefix":"#{{id}}",
+      "author-prefix":"By",
+      "base-asset": "Base: {{ baseAsset }}",
+      "quote-assets": "Quote:",
+      "quote-asset-with-comma": "{{ quoteAsset }},"
     },
     "customers-page": {
       "invite-btn": "Invite",

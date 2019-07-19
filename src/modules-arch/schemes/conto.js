@@ -18,10 +18,7 @@ import { SalesListPageModule } from '@/vue/pages/sales/investable-sales-page-mod
 import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
 import { SimplifySaleCampaignViewerPageModule } from '@/vue/pages/sale-details-simplified/sale-campaign-viewer-page-module'
 import { SimplifySaleStateWidgetModule } from '@/vue/pages/sale-details-simplified/sale-sate-widget-module'
-import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments-deposit/module'
 import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
-import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
-import { DepositFormPseudoModule } from '@/modules-arch/pseudo-modules/deposit-form-pseudo-module'
 import { AssetExplorerPageModule } from '@/vue/pages/asset-explorer-page'
 import { BalancesPageModule } from '@/vue/pages/balances-page'
 import { AssetExplorerModule } from '@/vue/modules/assets/asset-explorer/module'
@@ -90,6 +87,7 @@ export default {
         },
         menuButtonTranslationId: 'pages-names.businesses',
         menuButtonMdiName: 'domain',
+        menuSectionTranslationId: 'sidebar.section-explore',
         isAutoRedirectToFirstChild: true,
         submodules: [
           new BusinessesAllPageModule({
@@ -118,10 +116,6 @@ export default {
           new MovementsHistoryModule(),
           new MovementsTopBarModule({
             submodules: [
-              new WithdrawalDrawerPseudoModule(),
-              new DepositFormPseudoModule({
-                submodules: [new CoinpaymentsDepositModule()],
-              }),
               new TransferDrawerPseudoModule(),
             ],
           }),

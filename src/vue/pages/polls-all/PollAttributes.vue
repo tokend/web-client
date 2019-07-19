@@ -51,7 +51,8 @@
             </td>
           </tr>
 
-          <tr>
+          <!-- Temp. hidden -->
+          <tr v-if="false">
             <td>
               {{ 'poll-attributes.is-ongoing-key' | globalize }}
             </td>
