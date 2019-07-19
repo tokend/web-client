@@ -40,7 +40,7 @@
               {{ 'asset-details.issued-title' | globalize }}
             </td>
             <td>
-              {{ asset.issued | formatMoney }}
+              {{ { value: asset.issued, currency: asset.code } | formatMoney }}
             </td>
           </tr>
 

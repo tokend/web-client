@@ -149,7 +149,7 @@ export default {
 }
 
 .sale-state-widget__invest-form-wrp {
-  margin-top: 3.2rem;
+  margin-top: 4.4rem;
 }
 
 .sale-state-widget__invest-form {
