@@ -390,8 +390,7 @@ export default {
     },
 
     isAmountMoreThanBalance () {
-      // eslint-disable-next-line max-len
-      return MathUtil.compare(this.form.amount, this.accountBalance.balance) >= 0
+      return MathUtil.compare(this.form.amount, this.accountBalance.balance) > 0
     },
   },
 }
