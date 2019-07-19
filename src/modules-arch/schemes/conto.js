@@ -11,6 +11,7 @@ import { SettingsPageModule } from '@/vue/pages/settings-page-module'
 import { VerificationCorporatePageModule } from '@/vue/pages/verification-corporate-page-module'
 import { VerificationPageModule } from '@/vue/pages/verification-page-module'
 import { SecurityPageModule } from '@/vue/pages/security-page-module'
+import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-account-id-pseudo-module'
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { CreateSaleFormModuleSimplified } from '@modules/create-sale-form-simplified/module'
@@ -324,6 +325,9 @@ export default {
             },
             submodules: [
               new ChangePasswordPseudoModule(),
+              new ShowAccountIdPseudoModule({
+                isCorporateOnly: true,
+              }),
             ],
           }),
         ],
