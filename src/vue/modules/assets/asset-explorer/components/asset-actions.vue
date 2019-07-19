@@ -19,14 +19,6 @@
         </template>
       </p>
     </template>
-    <button
-      v-else-if="asset.owner === accountId"
-      v-ripple
-      class="app__button-raised asset-actions__btn"
-      @click="$emit(EVENTS.updateClick)"
-    >
-      {{ 'assets.update-btn' | globalize }}
-    </button>
 
     <button
       v-ripple
