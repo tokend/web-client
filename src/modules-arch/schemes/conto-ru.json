@@ -154,6 +154,10 @@
       "can-be-base-in-atomic-swap-title": "Может быть базовым активом в прямой продаже",
       "can-be-quote-in-atomic-swap-title": "Может быть котируемым активом в прямой продаже"
     },
+    "assets-page": {
+      "explore-title": "Активы бизнеса",
+      "balances-title": "Мой кошелек"
+    },
     "asset-details": {
       "can-be-base-in-atomic-swap-title": "Может быть базовым активом в прямой продаже",
       "can-be-quote-in-atomic-swap-title": "Может быть котируемым активом в прямой продаже"
