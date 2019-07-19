@@ -74,19 +74,21 @@
             </td>
           </tr>
         </tbody>
+      </table>
+    </div>
 
-        <template
-          v-for="(quoteAsset, index) in atomicSwap.quoteAssets"
-        >
-          <tbody :key="quoteAsset.id">
-            <tr>
-              <td colspan="2">
-                {{ 'atomic-swap-attributes.quote-assets-subheading'
-                  | globalize({ number: index + 1 })
-                }}
-              </td>
-            </tr>
+    <template
+      v-for="(quoteAsset, index) in atomicSwap.quoteAssets"
+    >
+      <div class="app__table app__table--last-td-to-right" :key="quoteAsset.id">
+        <h4 class="atomic-swap-attributes__quote-asset-header">
+          {{ 'atomic-swap-attributes.quote-assets-subheading'
+            | globalize({ number: index + 1 })
+          }}
+        </h4>
 
+        <table>
+          <tbody>
             <tr>
               <td>
                 {{ 'atomic-swap-attributes.quote-asset-key' | globalize }}
@@ -116,7 +118,7 @@
 
             <tr>
               <td>
-                {{ 'atomic-swap-attributes.total-current-cap-key' | globalize }}
+                {{ 'atomic-swap-attributes.total-current-cap-key'| globalize }}
               </td>
               <td>
                 {{ quoteAsset.totalCurrentCap }}
@@ -141,9 +143,9 @@
               </td>
             </tr>
           </tbody>
-        </template>
-      </table>
-    </div>
+        </table>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -168,13 +170,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~@scss/variables';
-
-.app__table table tbody:nth-child(even) tr:nth-child(even) {
-  background-color: $col-table-alt-row-background;
-}
-
-.app__table table tbody:nth-child(even) tr:nth-child(odd) {
-  background-color: transparent;
+.atomic-swap-attributes__quote-asset-header {
+  margin: 2rem 0;
 }
 </style>

@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Real time updates on all pages
+- New 'Explore atomic swaps' page
 
 #### Removed
 - Recovery seed screen on sign up 
@@ -18,7 +19,8 @@ for further information about branching and tagging conventions.
 
 #### Fixed
 - Bug about maximum call stack in buildKycRecoveryPageGuard
-- Bug about maximum call stack in buildKycRecoveryPageGuard
+- Issue when a user could not create an atomic swap if an amount is less than 
+  an available balance
 
 ## [1.10.0-rc.1] - 2019-07-17
 #### Added

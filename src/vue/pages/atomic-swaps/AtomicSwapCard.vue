@@ -1,24 +1,33 @@
 <template>
   <div class="atomic-swap-card">
     <p class="atomic-swap-card__title">
-      <span class="atomic-swap-card__number">
-        {{ 'poll-card.id-prefix' | globalize({ id: atomicSwap.id }) }}
-      </span>
       <span
         class="atomic-swap-card__base-asset"
       >
-        Base asset: {{ atomicSwap.baseAsset }}
+        {{ 'atomic-swap-card.base-asset' | globalize({
+          baseAsset: atomicSwap.baseAsset
+        }) }}
+      </span>
+      <span class="atomic-swap-card__number">
+        {{ 'atomic-swap-card.id-prefix' | globalize({ id: atomicSwap.id }) }}
       </span>
     </p>
 
     <p class="atomic-swap-card__quote-assets">
-      <span>Quote assets: </span>
+      <span>{{ 'atomic-swap-card.quote-assets' | globalize }}</span>
       <span
         class="atomic-swap-card__assets"
-        v-for="quoteAsset in atomicSwap.quoteAssets"
+        v-for="(quoteAsset, index) in atomicSwap.quoteAssets"
         :key="quoteAsset.id"
       >
-        {{ quoteAsset.id }}
+        <span v-if="index + 1 !== atomicSwap.quoteAssets.length">
+          {{ 'atomic-swap-card.quote-asset-with-comma' | globalize({
+            quoteAsset: quoteAsset.id
+          }) }}
+        </span>
+        <span v-else>
+          {{ quoteAsset.id }}
+        </span>
       </span>
     </p>
 
@@ -30,7 +39,7 @@
 
     <p class="atomic-swap-card__author">
       <span class="atomic-swap-card__author-prefix">
-        {{ 'poll-card.author-prefix' | globalize }}
+        {{ 'atomic-swap-card.author-prefix' | globalize }}
       </span>
       <email-getter
         is-titled
@@ -79,6 +88,8 @@ export default {
 
 .atomic-swap-card__title {
   font-size: 1.6rem;
+  display: flex;
+  justify-content: space-between;
 }
 
 .atomic-swap-card__number {

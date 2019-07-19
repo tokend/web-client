@@ -2356,7 +2356,14 @@
       "price-key": "Price",
       "total-current-cap-key": "Total current cap",
       "address-key": "Address",
-      "quote-assets-subheading": "Quote asset {{ number }}"
+      "quote-assets-subheading": "Quote asset #{{ number }}"
+    },
+    "atomic-swap-card": {
+      "id-prefix":"#{{id}}",
+      "author-prefix":"By",
+      "base-asset": "Base: {{ baseAsset }}",
+      "quote-assets": "Quote:",
+      "quote-asset-with-comma": "{{ quoteAsset }},"
     },
     "customers-page": {
       "invite-btn": "Invite",
