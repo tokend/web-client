@@ -37,6 +37,8 @@ const ROUTES_WITH_OWNER_FILTER = [
   vueRoutes.balances.name,
   vueRoutes.assetsExplore.name,
   vueRoutes.sales.name,
+  vueRoutes.saleDetails.name,
+  vueRoutes.saleCampaign.name,
   vueRoutes.investableSales.name,
   vueRoutes.userOwnedSales.name,
   vueRoutes.polls.name,
