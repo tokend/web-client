@@ -18,7 +18,9 @@
           {{ 'customers-page.invite-btn' | globalize }}
         </button>
 
+        <!-- Temp. hidden -->
         <button
+          v-if="false"
           v-ripple
           class="app__button-raised"
           @click="isIssueDrawerShown = true"
@@ -33,7 +35,8 @@
         {{ 'customers-page.mass-invitation-drawer-heading' | globalize }}
       </template>
 
-      <mass-invitation-form @submitted="emitUpdateList" />
+      <!-- eslint-disable-next-line max-len -->
+      <mass-invitation-form @submitted="(isInviteDrawerShown = false) || emitUpdateList()" />
     </drawer>
 
     <drawer :is-shown.sync="isIssueDrawerShown">
@@ -43,7 +46,7 @@
 
       <mass-issuance-form
         :receivers="massIssuanceReceivers"
-        @submitted="emitUpdateList"
+        @submitted="(isIssueDrawerShown = false) || emitUpdateList()"
       />
     </drawer>
 

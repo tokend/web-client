@@ -5,15 +5,6 @@
         <tbody>
           <tr>
             <td>
-              {{ 'customer-attributes.id-key' | globalize }}
-            </td>
-            <td>
-              {{ customer.id }}
-            </td>
-          </tr>
-
-          <tr>
-            <td>
               {{ 'customer-attributes.email-key' | globalize }}
             </td>
             <td>
