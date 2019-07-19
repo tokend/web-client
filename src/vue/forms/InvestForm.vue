@@ -606,7 +606,7 @@ export default {
         )
         await api.postOperations(operation)
         // eslint-disable-next-line
-        await new Promise(resolve => setTimeout(resolve, INGEST_TIMEOUT_MS))
+        await new Promise(resolve => setTimeout(resolve, config.RELOAD_TIMEOUT))
         await this.loadBalances()
 
         Bus.success('invest-form.offer-canceled-msg')
