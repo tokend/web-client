@@ -30,34 +30,17 @@
           <tr v-if="balance">
             <td>{{ 'assets.balance-title' | globalize }}</td>
             <td>
-              {{
-                { value: balance, currency: asset.code } | formatMoney
-              }}
+              {{ { value: balance, currency: asset.code } | formatMoney }}
             </td>
           </tr>
-          <tr>
-            <td>{{ 'assets.maximum-title' | globalize }}</td>
-            <td>
-              {{
-                { value: asset.maxIssuanceAmount, currency: asset.code } |
-                  formatMoney
-              }}
-            </td>
-          </tr>
+
           <tr>
             <td>{{ 'assets.issued-title' | globalize }}</td>
             <td>
               {{ { value: asset.issued, currency: asset.code } | formatMoney }}
             </td>
           </tr>
-          <tr>
-            <td>{{ 'assets.available-title' | globalize }}</td>
-            <td>
-              {{ { value: asset.availableForIssuance, currency: asset.code } |
-                formatMoney
-              }}
-            </td>
-          </tr>
+
           <tr>
             <td>
               {{ 'assets.transferable-title' | globalize }}
@@ -72,146 +55,6 @@
               </template>
             </td>
           </tr>
-          <tr>
-            <td>
-              {{ 'assets.withdrawable-title' | globalize }}
-            </td>
-            <td>
-              <template v-if="asset.isWithdrawable">
-                {{ 'assets.present-msg' | globalize }}
-              </template>
-
-              <template v-else>
-                {{ 'assets.absent-msg' | globalize }}
-              </template>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'assets.can-be-base-in-atomic-swap-title' | globalize }}
-            </td>
-            <td>
-              <template v-if="asset.isBaseInAtomicSwap">
-                {{ 'assets.present-msg' | globalize }}
-              </template>
-
-              <template v-else>
-                {{ 'assets.absent-msg' | globalize }}
-              </template>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'assets.can-be-quote-in-atomic-swap-title' | globalize }}
-            </td>
-            <td>
-              <template v-if="asset.isQuoteInAtomicSwap">
-                {{ 'assets.present-msg' | globalize }}
-              </template>
-
-              <template v-else>
-                {{ 'assets.absent-msg' | globalize }}
-              </template>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'assets.deposit-method-title' | globalize }}
-            </td>
-            <td>
-              <template v-if="asset.isCoinpayments">
-                {{ 'assets.coinpayments-msg' | globalize }}
-              </template>
-
-              <template v-else-if="asset.externalSystemType">
-                {{ 'assets.default-msg' | globalize }}
-              </template>
-
-              <template v-else>
-                {{ 'assets.non-depositable-msg' | globalize }}
-              </template>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'assets.asset-type' | globalize }}
-            </td>
-            <td>
-              <template v-if="asset.assetType === kycRequiredAssetType">
-                {{ 'assets.verification-required-title' | globalize }}
-              </template>
-
-              <template v-else-if="asset.assetType === securityAssetType">
-                {{ 'assets.security-asset-title' | globalize }}
-              </template>
-
-              <template v-else>
-                {{ 'assets.does-not-require-verification-title' | globalize }}
-              </template>
-            </td>
-          </tr>
-          <tr>
-            <td>{{ 'assets.terms-title' | globalize }}</td>
-            <td>
-              <terms-viewer :asset="asset" />
-            </td>
-          </tr>
-          <tr>
-            <td>{{ 'assets.owner-lbl' | globalize }}</td>
-            <td>
-              <email-getter
-                right-side
-                :account-id="asset.owner"
-              />
-            </td>
-          </tr>
-          <template v-if="asset.stellarAssetCode">
-            <tr :title="'assets.stellar-asset-code-title' | globalize">
-              <td>
-                {{ 'assets.stellar-asset-code-title' | globalize }}
-              </td>
-              <td>
-                {{ asset.stellarAssetCode }}
-              </td>
-            </tr>
-
-            <tr :title="'assets.stellar-asset-type-title' | globalize">
-              <td>
-                {{ 'assets.stellar-asset-type-title' | globalize }}
-              </td>
-              <td>
-                {{ stellarAssetTypeTranslated }}
-              </td>
-            </tr>
-
-            <tr :title="'assets.stellar-withdraw-title' | globalize">
-              <td>
-                {{ 'assets.stellar-withdraw-title' | globalize }}
-              </td>
-              <td>
-                <template v-if="asset.stellarWithdraw">
-                  {{ 'assets.yes-msg' | globalize }}
-                </template>
-                <template v-else>
-                  {{ 'assets.no-msg' | globalize }}
-                </template>
-              </td>
-            </tr>
-
-            <tr :title="'assets.stellar-deposit-title' | globalize">
-              <td>
-                {{ 'assets.stellar-deposit-title' | globalize }}
-              </td>
-              <td>
-                <template v-if="asset.stellarDeposit">
-                  {{ 'assets.yes-msg' | globalize }}
-                </template>
-                <template v-else>
-                  {{ 'assets.no-msg' | globalize }}
-                </template>
-              </td>
-            </tr>
-          </template>
         </tbody>
       </table>
     </div>
@@ -220,8 +63,6 @@
 
 <script>
 import LogoViewer from './logo-viewer'
-import TermsViewer from './terms-viewer'
-import EmailGetter from '@/vue/common/EmailGetter'
 
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
@@ -235,8 +76,6 @@ export default {
   name: 'asset-attributes-viewer',
   components: {
     LogoViewer,
-    TermsViewer,
-    EmailGetter,
   },
   props: {
     asset: { type: AssetRecord, required: true },

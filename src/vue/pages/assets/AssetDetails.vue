@@ -35,22 +35,6 @@
               {{ asset.balance | formatMoney }}
             </td>
           </tr>
-          <tr v-if="asset.balance.value">
-            <td>
-              {{ 'asset-details.converted-balance-title' | globalize }}
-            </td>
-            <td>
-              {{ asset.convertedBalance | formatMoney }}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'asset-details.maximum-title' | globalize }}
-            </td>
-            <td>
-              {{ asset.maxIssuanceAmount | formatMoney }}
-            </td>
-          </tr>
           <tr>
             <td>
               {{ 'asset-details.issued-title' | globalize }}
@@ -59,14 +43,7 @@
               {{ asset.issued | formatMoney }}
             </td>
           </tr>
-          <tr>
-            <td>
-              {{ 'asset-details.available-title' | globalize }}
-            </td>
-            <td>
-              {{ asset.availableForIssuance | formatMoney }}
-            </td>
-          </tr>
+
           <tr>
             <td>
               {{ 'asset-details.transferable-title' | globalize }}
@@ -81,183 +58,6 @@
               </template>
             </td>
           </tr>
-          <tr>
-            <td>
-              {{ 'asset-details.withdrawable-title' | globalize }}
-            </td>
-            <td>
-              <template v-if="asset.isWithdrawable">
-                {{ 'asset-details.present-msg' | globalize }}
-              </template>
-
-              <template v-else>
-                {{ 'asset-details.absent-msg' | globalize }}
-              </template>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'asset-details.can-be-base-in-atomic-swap-title' | globalize }}
-            </td>
-            <td>
-              <template v-if="asset.isBaseInAtomicSwap">
-                {{ 'asset-details.present-msg' | globalize }}
-              </template>
-
-              <template v-else>
-                {{ 'asset-details.absent-msg' | globalize }}
-              </template>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <!-- eslint-disable-next-line max-len -->
-              {{ 'asset-details.can-be-quote-in-atomic-swap-title' | globalize }}
-            </td>
-            <td>
-              <template v-if="asset.isQuoteInAtomicSwap">
-                {{ 'asset-details.present-msg' | globalize }}
-              </template>
-
-              <template v-else>
-                {{ 'asset-details.absent-msg' | globalize }}
-              </template>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'asset-details.deposit-method-title' | globalize }}
-            </td>
-            <td>
-              <template v-if="asset.isCoinpayments">
-                {{ 'asset-details.coinpayments-msg' | globalize }}
-              </template>
-
-              <template v-else-if="asset.externalSystemType">
-                {{ 'asset-details.default-msg' | globalize }}
-              </template>
-
-              <template v-else>
-                {{ 'asset-details.non-depositable-msg' | globalize }}
-              </template>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'assets.asset-type' | globalize }}
-            </td>
-            <td>
-              <template v-if="asset.assetType === kvAssetTypeKycRequired">
-                {{ 'asset-details.verification-required-title' | globalize }}
-              </template>
-
-              <template v-else-if="asset.assetType === kvAssetTypeSecurity">
-                {{ 'asset-details.security-asset-title' | globalize }}
-              </template>
-
-              <template v-else>
-                <!-- eslint-disable-next-line -->
-                {{ 'asset-details.does-not-require-verification-title' | globalize }}
-              </template>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'asset-details.requires-kyc-title' | globalize }}
-            </td>
-            <td>
-              <template v-if="asset.assetType === kvAssetTypeKycRequired">
-                {{ 'asset-details.present-msg' | globalize }}
-              </template>
-
-              <template v-else>
-                {{ 'asset-details.absent-msg' | globalize }}
-              </template>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'asset-details.terms-title' | globalize }}
-            </td>
-            <td>
-              <a
-                v-if="asset.termsKey"
-                class="asset-details__terms"
-                :href="assetTermsUrl"
-              >
-                {{ 'asset-details.download-terms-btn' | globalize }}
-              </a>
-              <p v-else>
-                {{ 'asset-details.no-terms-msg' | globalize }}
-              </p>
-            </td>
-          </tr>
-          <tr v-if="asset.maturityDate">
-            <td>
-              {{ 'asset-details.maturity-date' | globalize }}
-            </td>
-            <td>
-              {{ +asset.maturityDate | formatCalendar }}
-            </td>
-          </tr>
-          <tr v-if="asset.annualReturn">
-            <td v-if="ASSET_SUBTYPE.bond === asset.subtype">
-              {{ 'asset-details.annual-return' | globalize }}
-            </td>
-            <td v-else>
-              {{ 'asset-details.expected-revenue' | globalize }}
-            </td>
-            <td>
-              {{ +asset.annualReturn }}%
-            </td>
-          </tr>
-          <template v-if="asset.stellarAssetCode">
-            <tr :title="'asset-details.stellar-asset-code-title' | globalize">
-              <td>
-                {{ 'asset-details.stellar-asset-code-title' | globalize }}
-              </td>
-              <td>
-                {{ asset.stellarAssetCode }}
-              </td>
-            </tr>
-
-            <tr :title="'asset-details.stellar-asset-type-title' | globalize">
-              <td>
-                {{ 'asset-details.stellar-asset-type-title' | globalize }}
-              </td>
-              <td>
-                {{ stellarAssetTypeTranslated }}
-              </td>
-            </tr>
-
-            <tr :title="'asset-details.stellar-withdraw-title' | globalize">
-              <td>
-                {{ 'asset-details.stellar-withdraw-title' | globalize }}
-              </td>
-              <td>
-                <template v-if="asset.stellarWithdraw">
-                  {{ 'asset-details.yes-msg' | globalize }}
-                </template>
-                <template v-else>
-                  {{ 'asset-details.no-msg' | globalize }}
-                </template>
-              </td>
-            </tr>
-
-            <tr :title="'asset-details.stellar-deposit-title' | globalize">
-              <td>
-                {{ 'asset-details.stellar-deposit-title' | globalize }}
-              </td>
-              <td>
-                <template v-if="asset.stellarDeposit">
-                  {{ 'asset-details.yes-msg' | globalize }}
-                </template>
-                <template v-else>
-                  {{ 'asset-details.no-msg' | globalize }}
-                </template>
-              </td>
-            </tr>
-          </template>
         </tbody>
       </table>
     </div>
@@ -304,6 +104,7 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ASSET_SUBTYPE } from '@/js/const/asset-subtypes.const'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import config from '@/config'
 
 const STELLAR_TYPES = {
   creditAlphanum4: 'credit_alphanum4',
@@ -329,6 +130,7 @@ export default {
     isBalanceCreating: false,
     EVENTS,
     ASSET_SUBTYPE,
+    config,
   }),
   computed: {
     ...mapGetters({
