@@ -2253,7 +2253,8 @@
       "repeat-vote-disabled-msg": "Вы уже проголосовали в этом опросе, повторное голосование не допускается в данном опросе.",
       "remove-vote-btn": "Отозвать голос",
       "remove-vote-confirmation-msg": "Вы уверены, что хотите отозвать свой текущий голос?",
-      "removed-notification": "Голос отозван"
+      "removed-notification": "Голос отозван",
+      "too-early-to-vote-msg": "Голосование еще не началось"
     },
     "poll-update-end-time-form": {
       "submit-btn": "Обновить",

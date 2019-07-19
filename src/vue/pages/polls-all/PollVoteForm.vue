@@ -1,4 +1,4 @@
-<template>
+fform<template>
   <div class="poll-vote-form">
     <div class="poll-vote-form__question-wrp">
       <p class="poll-vote-form__question">
@@ -8,7 +8,7 @@
 
     <form
       class="app__form"
-      @submit.prevent="showConfirmation()"
+      @submit.prevent="submitVote()"
     >
       <div class="poll-vote-form__choices">
         <div
@@ -27,7 +27,13 @@
         </div>
       </div>
 
-      <template v-if="isRepeatVote">
+      <template v-if="!(poll.isStarted && poll.isOpen)">
+        <p class="poll-vote-form__repeat-vote-msg">
+          {{ 'poll-vote-form.too-early-to-vote-msg' | globalize }}
+        </p>
+      </template>
+
+      <template v-else-if="isRepeatVote">
         <p class="poll-vote-form__repeat-vote-msg">
           <template v-if="!isRepeatVoteAllowed">
             {{ 'poll-vote-form.repeat-vote-disabled-msg' | globalize }}
@@ -40,43 +46,28 @@
       </template>
 
       <div class="poll-vote-form__form-actions app__form-actions">
-        <form-confirmation
-          v-if="formMixin.isConfirmationShown && !isRemovalConfirmationMode"
-          @ok="hideConfirmation() || submitVote()"
-          @cancel="hideConfirmation"
-        />
+        <button
+          type="submit"
+          class="app__button-raised"
+          :disabled="formMixin.isDisabled ||
+            !form.choice ||
+            form.choice < 0 ||
+            !(poll.isOpen && poll.isStarted) ||
+            (isRepeatVote && !isRepeatVoteAllowed)
+          "
+        >
+          {{ 'poll-vote-form.submit-btn' | globalize }}
+        </button>
 
-        <form-confirmation
-          v-if="formMixin.isConfirmationShown && isRemovalConfirmationMode"
-          message-id="poll-vote-form.remove-vote-confirmation-msg"
-          @ok="hideRemovalConfirmation() || removeVote()"
-          @cancel="hideRemovalConfirmation"
-        />
-
-        <template v-else-if="!formMixin.isConfirmationShown">
-          <button
-            type="submit"
-            class="app__button-raised"
-            :disabled="formMixin.isDisabled ||
-              !form.choice ||
-              form.choice < 0 ||
-              !poll.isOpen ||
-              (isRepeatVote && !isRepeatVoteAllowed)
-            "
-          >
-            {{ 'poll-vote-form.submit-btn' | globalize }}
-          </button>
-
-          <button
-            v-if="isRepeatVote && isRepeatVoteAllowed"
-            type="button"
-            class="app__button-raised app__button-raised--danger"
-            :disabled="formMixin.isDisabled || !poll.isOpen"
-            @click="showRemovalConfirmation"
-          >
-            {{ 'poll-vote-form.remove-vote-btn' | globalize }}
-          </button>
-        </template>
+        <button
+          v-if="isRepeatVote && isRepeatVoteAllowed"
+          type="button"
+          class="app__button-raised app__button-raised--danger"
+          :disabled="formMixin.isDisabled || !poll.isOpen"
+          @click="removeVote()"
+        >
+          {{ 'poll-vote-form.remove-vote-btn' | globalize }}
+        </button>
       </div>
     </form>
   </div>

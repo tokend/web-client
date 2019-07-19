@@ -2,7 +2,7 @@
   <form
     novalidate
     class="app__form create-poll-form"
-    @submit.prevent="isFormValid() && showConfirmation()"
+    @submit.prevent="submit()"
   >
     <div class="app__form-row">
       <div class="app__form-field">
@@ -130,15 +130,7 @@
     </div>
 
     <div class="app__form-actions">
-      <form-confirmation
-        v-if="formMixin.isConfirmationShown"
-        :is-pending="isSubmitting"
-        @ok="submit()"
-        @cancel="hideConfirmation()"
-      />
-
       <button
-        v-else
         v-ripple
         type="submit"
         :disabled="formMixin.isDisabled"
