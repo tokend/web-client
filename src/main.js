@@ -7,6 +7,7 @@ import VueResource from 'vue-resource'
 import log from 'loglevel'
 import config from './config'
 import NProgress from 'nprogress'
+import moment from 'moment'
 
 import { extendStoreWithScheme } from '@/vuex'
 import { buildRouter } from '@/vue-router'
@@ -40,6 +41,8 @@ async function init () {
         .importLanguageResource(lang)
       i18n._appendResources(lang, resource)
     }
+
+    moment.locale(lang)
   })
 
   await i18n.init()
