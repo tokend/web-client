@@ -25,24 +25,11 @@
           />
 
           <div class="my-assets-explorer__actions-wrapper">
-            <button
-              v-ripple
-              class="app__button-raised my-assets-explorer__update-btn"
-              @click="isUpdateMode = true"
-            >
-              {{ 'assets.update-btn' | globalize }}
-            </button>
-
-            <!-- eslint-disable-next-line max-len -->
-            <template v-if="isAvailableRouteName(vueRoutes.registerOfShares.name)">
-              <router-link
-                :to="vueRoutes.registerOfShares"
-                tag="button"
-                class="app__button-flat my-assets-explorer__view-shares-btn"
-              >
-                {{ 'assets.view-shares-btn' | globalize }}
-              </router-link>
-            </template>
+            <asset-actions
+              :asset="selectedBalance.asset"
+              @update-click="isUpdateMode = true"
+              @balance-added="loadAssets() || (isDrawerShown = false)"
+            />
           </div>
         </template>
       </drawer>
@@ -97,6 +84,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import CardViewer from '../shared/components/card-viewer'
 import AssetAttributesViewer from '../shared/components/asset-attributes-viewer'
 import AssetSkeletonLoader from './components/asset-skeleton-loader'
+import AssetActions from '../asset-explorer/components/asset-actions'
 
 import UpdateAssetFormModule from '@modules/update-asset-form'
 
@@ -116,6 +104,7 @@ export default {
     AssetAttributesViewer,
     UpdateAssetFormModule,
     AssetSkeletonLoader,
+    AssetActions,
   },
   mixins: [UpdateList],
   props: {

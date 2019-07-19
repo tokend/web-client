@@ -2046,7 +2046,10 @@
       "credit-alphanum12-stellar-asset-type-lbl": "Alphanumeric 12",
       "native-stellar-asset-type-lbl": "Native",
       "yes-msg": "Yes",
-      "no-msg": "No"
+      "no-msg": "No",
+      "send-btn": "Transfer",
+      "issue-btn": "Issue"
+
     },
     "create-opportunity": {
       "maturity-date": "Maturity Date",

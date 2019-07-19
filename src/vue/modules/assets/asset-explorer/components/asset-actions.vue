@@ -19,7 +19,6 @@
         </template>
       </p>
     </template>
-
     <button
       v-else-if="asset.owner === accountId"
       v-ripple
@@ -28,6 +27,45 @@
     >
       {{ 'assets.update-btn' | globalize }}
     </button>
+
+    <button
+      v-ripple
+      class="app__button-raised asset-actions__btn"
+      @click="isTransferDrawerShown = true"
+    >
+      {{ 'assets.send-btn' | globalize }}
+    </button>
+
+    <button
+      v-if="asset.owner === accountId"
+      v-ripple
+      class="app__button-raised asset-actions__btn"
+      @click="isMassIssueDrawerShown = true"
+    >
+      {{ 'assets.issue-btn' | globalize }}
+    </button>
+
+    <drawer :is-shown.sync="isTransferDrawerShown">
+      <template slot="heading">
+        {{ 'transfer-form.form-heading' | globalize }}
+      </template>
+      <transfer-form
+        @operation-submitted="
+          (isTransferDrawerShown = false) || updateAssetList()
+        "
+        :asset-to-transfer="asset.code"
+      />
+    </drawer>
+
+    <drawer :is-shown.sync="isMassIssueDrawerShown">
+      <template slot="heading">
+        {{ 'customers-page.mass-issuance-drawer-heading' | globalize }}
+      </template>
+
+      <mass-issuance-form
+        @submitted="(isMassIssueDrawerShown = false) || updateAssetList()"
+      />
+    </drawer>
   </div>
 </template>
 
@@ -40,6 +78,11 @@ import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
+import config from '@/config'
+
+import TransferForm from '@/vue/forms/TransferForm'
+import MassIssuanceForm from '@/vue/forms/MassIssuanceForm'
+import Drawer from '@/vue/common/Drawer'
 
 const EVENTS = {
   balanceAdded: 'balance-added',
@@ -48,25 +91,39 @@ const EVENTS = {
 
 export default {
   name: 'asset-actions',
+
+  components: {
+    TransferForm,
+    MassIssuanceForm,
+    Drawer,
+  },
   props: {
     asset: { type: AssetRecord, required: true },
-    kycRequiredAssetType: { type: Number, required: true },
-    securityAssetType: { type: Number, required: true },
-    isAccountUnverified: { type: Boolean, required: true },
-    isAccountUsVerified: { type: Boolean, required: true },
-    isAccountUsAccredited: { type: Boolean, required: true },
-    isAccountGeneral: { type: Boolean, required: true },
-    isAccountCorporate: { type: Boolean, required: true },
   },
   data: _ => ({
+    isTransferDrawerShown: false,
+    isMassIssueDrawerShown: false,
     isPending: false,
     EVENTS,
+    config,
   }),
+
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
       accountBalanceByCode: vuexTypes.accountBalanceByCode,
+      isAccountUnverified: vuexTypes.isAccountUnverified,
+      isAccountGeneral: vuexTypes.isAccountGeneral,
+      isAccountUsVerified: vuexTypes.isAccountUsVerified,
+      isAccountUsAccredited: vuexTypes.isAccountUsAccredited,
+      isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
+
+    ...mapGetters('asset-explorer', {
+      kycRequiredAssetType: types.kycRequiredAssetType,
+      securityAssetType: types.securityAssetType,
+    }),
+
     isBalanceCreationAllowed () {
       switch (this.asset.assetType) {
         case this.kycRequiredAssetType:
@@ -105,6 +162,10 @@ export default {
         ErrorHandler.process(e)
       }
     },
+    updateAssetList () {
+      this.loadAssets()
+      setTimeout(() => this.loadAssets(), config.RELOAD_TIMEOUT)
+    },
   },
 }
 </script>
@@ -112,9 +173,19 @@ export default {
 <style lang="scss" scoped>
 @import '~@scss/variables';
 
+.asset-actions {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: -1rem;
+  margin-left: -1rem;
+  width: calc(100% + 1rem);
+}
+
 .asset-actions__btn {
-  max-width: 18rem;
+  max-width: 12rem;
   width: 100%;
+  margin-top: 1rem;
+  margin-left: 1rem;
 }
 
 .asset-actions__not-allowed-msg {

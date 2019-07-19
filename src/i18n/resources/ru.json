@@ -1073,7 +1073,7 @@
       "balance": "Доступно {{amount}} {{asset}}.",
       "amount-lbl": "Количество",
       "insufficient-sales": "Недостаточно средств",
-      "recipient-lbl": "Имейл или идентификатор получателя",
+      "recipient-lbl": "Имейл получателя",
       "subject-lbl": "Добавить примечание (опц.)",
       "continue-btn": "Далее",
       "recheck-form": "Пожалуйста, перепроверьте форму.",
@@ -2046,7 +2046,9 @@
       "credit-alphanum12-stellar-asset-type-lbl": "Alphanumeric 12",
       "native-stellar-asset-type-lbl": "Родной",
       "yes-msg": "Да",
-      "no-msg": "Нет"
+      "no-msg": "Нет",
+      "send-btn": "Отправить",
+      "issue-btn": "Выпустить"
     },
     "create-opportunity": {
       "maturity-date": "Maturity Date",
