@@ -86,7 +86,7 @@
       "update-sale": "Обновление краудфанда",
       "overview-title": "Обзор краудфанда",
       "new-sale": "Новый краудфанд",
-      "investable-sales": "Найти краудфанды",
+      "investable-sales": "Краудфанды",
       "my-sales": "Мои краудфанды"
     },
     "sale-card": {
@@ -95,7 +95,7 @@
       "days-to-end": "{{days}} дней до закрытия"
     },
     "sale-details": {
-      "investable-sales-tab": "Найти краудфанды",
+      "investable-sales-tab": "Краудфанды",
       "invest-title": "Внести свой вклад",
       "overview-title": "Обзор краудфанда",
       "sale-not-found-title": "Краудфанд не найден",
