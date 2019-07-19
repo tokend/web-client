@@ -7,7 +7,11 @@
             HACK: we don't need any active-class here, so empty "active-class"
             attr prevents adding any active-class
            -->
-          <router-link :to="vueRoutes.sales" active-class>
+          <router-link
+            v-if="isAccountUnverified"
+            :to="vueRoutes.sales"
+            active-class
+          >
             <span>{{ 'sale-details.investable-sales-tab' | globalize }}</span>
           </router-link>
 
@@ -98,6 +102,7 @@ export default {
 
   computed: {
     ...mapGetters({
+      isAccountUnverified: vuexTypes.isAccountUnverified,
       isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
   },
