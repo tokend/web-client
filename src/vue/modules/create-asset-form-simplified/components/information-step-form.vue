@@ -127,9 +127,7 @@ export default {
       name: '',
       code: '',
       logo: null,
-      policies:
-        ASSET_POLICIES.canBeBaseInAtomicSwap |
-        ASSET_POLICIES.canBeQuoteInAtomicSwap,
+      policies: ASSET_POLICIES.canBeBaseInAtomicSwap,
       description: '',
     },
     MIN_AMOUNT: config.MIN_AMOUNT,

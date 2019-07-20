@@ -215,7 +215,7 @@ export default {
 
     formatBalancesOf (customer) {
       let balances = customer.balances
-        .filter(item => +item.amount)
+        .filter(item => +item.amount || +item.amount === 0)
       balances.sort(function (a, b) {
         return b.amount - +a.amount
       })
