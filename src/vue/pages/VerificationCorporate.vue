@@ -220,6 +220,9 @@ export default {
         required,
         validateUrl,
       },
+      bankAccount: {
+        required,
+      },
     },
   },
 
