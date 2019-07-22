@@ -66,7 +66,7 @@ export default {
   display: inline;
 }
 
-.tooltip__wrapper-boxgi {
+.tooltip__wrapper-box {
   position: absolute;
   visibility: hidden;
 
