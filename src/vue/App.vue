@@ -112,6 +112,12 @@ export default {
     },
   },
 
+  watch: {
+    isLoggedIn () {
+      location.reload()
+    },
+  },
+
   async created () {
     await this.initApp()
 
@@ -179,19 +185,15 @@ export default {
     detectIncompatibleBrowser () {
       this.isNotSupportedBrowser = !isCompatibleBrowser()
     },
+
     async getDecryptedSecretSeed () {
       const key = await this.decryptSecretSeed()
       return key
     },
+
     watchChangesInLocalStorage () {
       window.onstorage = (storage) => {
-        // if the user is logged in, when the local storage changes,
-        // the other tabs will be updated else page is reloaded
-        if (this[vuexTypes.isLoggedIn]) {
-          this.popState()
-        } else {
-          location.reload()
-        }
+        this.popState()
       }
     },
   },
