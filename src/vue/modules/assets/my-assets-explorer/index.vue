@@ -49,7 +49,7 @@
 
       <div class="my-assets-explorer__asset-list-wrp">
         <div
-          v-if="assets.length"
+          v-if="accountOwnedAssetsBalances.length"
           class="my-assets-explorer__asset-list"
         >
           <template v-for="item in accountOwnedAssetsBalances">
