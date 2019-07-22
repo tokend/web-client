@@ -193,7 +193,11 @@ export default {
 
     watchChangesInLocalStorage () {
       window.onstorage = (storage) => {
-        this.popState()
+        const storageKey = 'TokenDStore-v2'
+        if (storage.key === storageKey &&
+            storage.oldValue !== storage.newValue) {
+          this.popState()
+        }
       }
     },
   },
