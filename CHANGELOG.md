@@ -8,6 +8,31 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Fixed
+- A bug when you cannot return from "Downloads" if the tab was opened in new tab
+- Issue when page reload twice
+
+### "Under the hood" changes
+#### Added
+- New config keys:
+  - `PLAY_MARKET_LINK`
+  - `OFFLINE_ISSUANCE_WIN_LINK`
+  - `OFFLINE_ISSUANCE_MAC_LINK`
+  - `OFFLINE_ISSUANCE_SOURCE_LINK`
+
+#### Changed
+- If some of the config keys are empty, the related images and links will not
+  be rendered. Affects the following keys:
+  - `IOS_MANIFEST_LINK`
+  - `PLAY_MARKET_LINK`
+  - `OFFLINE_ISSUANCE_WIN_LINK`
+  - `OFFLINE_ISSUANCE_MAC_LINK`
+  - `OFFLINE_ISSUANCE_SOURCE_LINK`
+
+#### Removed
+- `RECOVERY_MODE` config key due to unused anymore
+
+## [1.10.0-rc.3] - 2019-07-22
 #### Added
 - New 'Explore atomic swaps' page
 
@@ -15,9 +40,8 @@ for further information about branching and tagging conventions.
 - Conto leftovers from vanilla
 
 #### Fixed
-- Issue when a user could not create an atomic swap if an amount is less than 
+- Issue when a user could not create an atomic swap if an amount is less than
   an available balance
-- Issue when page reload twice
 
 ## [1.10.0-rc.2] - 2019-07-18
 #### Added
@@ -912,7 +936,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.10.0-rc.2...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.10.0-rc.3...HEAD
+[1.10.0-rc.3]: https://github.com/tokend/web-client/compare/1.10.0-rc.2...1.10.0-rc.3
 [1.10.0-rc.2]: https://github.com/tokend/web-client/compare/1.10.0-rc.1...1.10.0-rc.2
 [1.10.0-rc.1]: https://github.com/tokend/web-client/compare/1.10.0-rc.0...1.10.0-rc.1
 [1.10.0-rc.0]: https://github.com/tokend/web-client/compare/1.10.0-x.2...1.10.0-rc.0
