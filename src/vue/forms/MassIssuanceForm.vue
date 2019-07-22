@@ -211,6 +211,7 @@ export default {
       const emails = CsvUtil.parseConcat(this.form.receivers, {
         trim: true,
         filterEmpty: true,
+        delimiters: CsvUtil.delimiters.common,
       })
 
       const balanceIds =

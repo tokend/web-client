@@ -1,6 +1,6 @@
 import { CsvUtil } from './csv.util'
 
-describe('CsvUtil', () => {
+describe.only('CsvUtil', () => {
   describe('static method', () => {
     describe('parse()', () => {
       describe('parses input with', () => {
@@ -15,6 +15,27 @@ describe('CsvUtil', () => {
             in: 'item1::item2::item3::item4',
             inParams: { delimiters: '::' },
             expected: [['item1', 'item2', 'item3', 'item4']],
+          },
+          {
+            name: 'custom delimiters, variant',
+            in: 'item1::item2::item3::item4',
+            inParams: { delimiters: ['::'] },
+            expected: [['item1', 'item2', 'item3', 'item4']],
+          },
+          {
+            name: 'custom multiple delimiters',
+            in: 'item1,item2,item3::item4',
+            inParams: { delimiters: [',', '::'] },
+            expected: [['item1', 'item2', 'item3', 'item4']],
+          },
+          {
+            name: 'custom multiple delimiters, variant',
+            // eslint-disable-next-line no-tabs
+            in: 'item1,item2??item3\nitem4^item5 item6	item7',
+            inParams: { delimiters: [',', '\n', '^', '??', ' ', '\t'] },
+            expected: [
+              ['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7'],
+            ],
           },
           {
             name: 'extra trailing delimiter',
@@ -45,7 +66,7 @@ describe('CsvUtil', () => {
             expected: [['item1', 'item2', 'item3', 'item4', '']],
           },
           {
-            name: 'whitespace trimmed to both, variant 2',
+            name: 'whitespace trimmed to both, variant',
             in: 'item1 , item2, item3 , item4, ',
             inParams: { trim: true },
             expected: [['item1', 'item2', 'item3', 'item4', '']],

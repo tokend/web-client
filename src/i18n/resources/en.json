@@ -2381,7 +2381,7 @@
       "asset-lbl": "Asset",
       "available-for-issuance-hint": "Available for issuance: {{amount, money}}",
       "amount-lbl": "Amount",
-      "how-to-receivers-paragraph": "List all receivers emails in the box below, separate them with commas. Each receiver will gain the amount you specified in the “Amount” field. If the available amount is insufficient the operation will fail and no asset will be issued to anyone. Not found users and the ones that do not have balance in the selected asset will not receive the issuance but all the others will. Receivers number is limited up to 100 for now.",
+      "how-to-receivers-paragraph": "List all receivers emails in the box below. Each receiver will gain the amount you specified in the “Amount” field. If the available amount is insufficient the operation will fail and no asset will be issued to anyone. Not found users and the ones that do not have balance in the selected asset will not receive the issuance but all the others will. Receivers number is limited up to 100 for now.",
       "receivers-lbl": "Receivers",
       "submit-btn": "Issue",
       "no-assets-msg-title": "No issuable assets yet",
@@ -2392,7 +2392,7 @@
       "too-much-op-error-notif": "Too many receivers, the current limit is 100 receivers, please decrease the receivers count and try again."
     },
     "mass-invitation-form": {
-      "how-to-invitees-paragraph": "List all invitees emails in the box below, separate them with commas.",
+      "how-to-invitees-paragraph": "List all invitees emails in the box below.",
       "invitees-lbl": "Invitees",
       "submit-btn": "Invite",
       "invited-successfully-notification": "Mass invitation performed successfully.",

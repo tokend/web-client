@@ -91,6 +91,7 @@ export default {
         const emails = CsvUtil.parseConcat(this.form.invitees, {
           trim: true,
           filterEmpty: true,
+          delimiters: CsvUtil.delimiters.common,
         })
 
         const endpoint = `/integrations/dns/businesses/${this.accountId}/clients`
