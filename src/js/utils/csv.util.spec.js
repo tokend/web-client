@@ -1,6 +1,6 @@
 import { CsvUtil } from './csv.util'
 
-describe.only('CsvUtil', () => {
+describe('CsvUtil', () => {
   describe('static method', () => {
     describe('parse()', () => {
       describe('parses input with', () => {
