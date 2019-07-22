@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+#### Fixed
+- A bug when you cannot return from "Downloads" if the tab was opened in new tab
+
+### "Under the hood" changes
+#### Added
+- New config keys:
+  - `PLAY_MARKET_LINK`
+  - `OFFLINE_ISSUANCE_WIN_LINK`
+  - `OFFLINE_ISSUANCE_MAC_LINK`
+  - `OFFLINE_ISSUANCE_SOURCE_LINK`
+
+#### Changed
+- If some of the config keys are empty, the related images and links will not
+  be rendered. Affects the following keys:
+  - `IOS_MANIFEST_LINK`
+  - `PLAY_MARKET_LINK`
+  - `OFFLINE_ISSUANCE_WIN_LINK`
+  - `OFFLINE_ISSUANCE_MAC_LINK`
+  - `OFFLINE_ISSUANCE_SOURCE_LINK`
+
+#### Removed
+- `RECOVERY_MODE` config key due to unused anymore
+
 ## [1.10.0-rconto.0] - 2019-07-19
 #### Added
 - New 'Explore atomic swaps' page

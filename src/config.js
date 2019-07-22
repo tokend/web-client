@@ -107,9 +107,34 @@ export default Object.assign(
     RELOAD_DATA_TICKER_INTERVAL_MS: 10000,
 
     /**
-     * Link to iOS application manifest file.
+     * Link to iOS application manifest file. If empty, links for iOS download
+     * section will not be shown.
      */
     IOS_MANIFEST_LINK: 'itms-services://?action=download-manifest&url=https://s3-eu-west-1.amazonaws.com/ios-tokend-app/manifest.plist',
+
+    /**
+     * Link to android version of mobile client of the application. If empty,
+     * links for Android download will not be shown.
+     */
+    PLAY_MARKET_LINK: 'https://play.google.com/store/apps/details?id=org.tokend.template',
+
+    /**
+     * Link for Windows version of offline issuance application. If empty, link
+     * for download of the application will not be shown.
+     */
+    OFFLINE_ISSUANCE_WIN_LINK: 'https://s3-eu-west-1.amazonaws.com/881e65d1943e42/pu/TokenD+pre-issuance+tool-win32-x64.zip',
+
+    /**
+     * Link for MacOS version of offline issuance application. If empty, link
+     * for download of the application will not be shown.
+     */
+    OFFLINE_ISSUANCE_MAC_LINK: 'https://s3-eu-west-1.amazonaws.com/881e65d1943e42/pu/TokenD+pre-issuance+tool-darwin-x64.zip',
+
+    /**
+     * Link for sources of offline issuance application. If empty, link
+     * for sources of the application will not be shown.
+     */
+    OFFLINE_ISSUANCE_SOURCE_LINK: 'https://github.com/tokend/offline-issuance',
 
     /**
      * URL of the Sentry DSN. It’s a representation of the configuration
@@ -121,14 +146,6 @@ export default Object.assign(
      * Keep session interval
      */
     KEEP_SESSION_INTERVAL: 1000 * 60 * 2,
-
-    /**
-     * Change over different recovery modes. To disable recovery, leave the
-     * field empty or give it any unacceptable value, i.e.: 'none'.
-     *
-     * Acceptable values: 'seed' - enables recovery by seed
-     */
-    RECOVERY_MODE: 'seed',
 
     /**
      * Sets timeout before reload on some screens. Depends on block close time
