@@ -8,6 +8,10 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Added
+- Simultaneous support for most common delimiters (spaces, tabs, colons, commas,
+  new lines) in "Mass issuance" and "Mass invitation" forms.
+
 #### Fixed
 - A bug when you cannot return from "Downloads" if the tab was opened in new tab
 
