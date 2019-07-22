@@ -187,6 +187,9 @@
     },
     "polls": {
       "all": "Опросы"
+    },
+    "create-asset-form": {
+      "next-btn": "Создать"
     }
   }
 }

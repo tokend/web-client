@@ -9,6 +9,14 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Added
+- New 'Explore atomic swaps' page
+
+#### Fixed
+- Issue when a user could not create an atomic swap if an amount is less than 
+  an available balance
+
+## [1.10.0-rc.2] - 2019-07-18
+#### Added
 - Real time updates on all pages
 - `LOG_IN` and `LOG_OUT` vuex actions
 - New `LOG_IN` action
@@ -17,12 +25,11 @@ for further information about branching and tagging conventions.
 - Rename `LOG_IN` action on `RESTORE_SESSION`
 
 #### Removed
-- Recovery seed screen on sign up 
+- Recovery seed screen on sign up
 - Remove recovery signer from KYC recovery request building
 - Remove recovery seed screens on auth
 
 #### Fixed
-- Bug about maximum call stack in buildKycRecoveryPageGuard
 - Bug about maximum call stack in buildKycRecoveryPageGuard
 
 ## [1.10.0-rc.1] - 2019-07-17
@@ -906,7 +913,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.10.0-rc.1...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.10.0-rc.2...HEAD
+[1.10.0-rc.2]: https://github.com/tokend/web-client/compare/1.10.0-rc.1...1.10.0-rc.2
 [1.10.0-rc.1]: https://github.com/tokend/web-client/compare/1.10.0-rc.0...1.10.0-rc.1
 [1.10.0-rc.0]: https://github.com/tokend/web-client/compare/1.10.0-x.2...1.10.0-rc.0
 [1.10.0-x.2]: https://github.com/tokend/web-client/compare/1.10.0-x.1...1.10.0-x.2

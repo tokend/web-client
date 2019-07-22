@@ -181,6 +181,9 @@
     },
     "atomic-swaps-explore": {
       "no-list-title": "Direct sell list is coming soon"
+    },
+    "create-asset-form": {
+      "next-btn": "Create"
     }
   }
 }

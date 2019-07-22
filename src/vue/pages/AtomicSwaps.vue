@@ -30,7 +30,7 @@
 
       <submodule-importer
         :submodule="getModule().getSubmodule(CreateAtomicSwapFormModule)"
-        @created-atomic-swap="isAtomicSwapsCreateDrawerShown = false"
+        @created-atomic-swap="closeDrawerAndUpdateList()"
       />
     </drawer>
 
@@ -44,6 +44,7 @@ import { vueRoutes } from '@/vue-router/routes'
 import Drawer from '@/vue/common/Drawer'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { CreateAtomicSwapFormModule } from '@/vue/modules/create-atomic-swap-form/module'
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
   name: 'atomic-swaps',
@@ -52,11 +53,25 @@ export default {
     Drawer,
     SubmoduleImporter,
   },
+
+  mixins: [UpdateList],
+
   data: () => ({
     isAtomicSwapsCreateDrawerShown: false,
     vueRoutes,
     CreateAtomicSwapFormModule,
   }),
+
+  beforeDestroy () {
+    this.resetUpdateListEvent('atomicSwaps:updateList')
+  },
+
+  methods: {
+    closeDrawerAndUpdateList () {
+      this.isAtomicSwapsCreateDrawerShown = false
+      this.emitUpdateList('atomicSwaps:updateList')
+    },
+  },
 }
 </script>
 
