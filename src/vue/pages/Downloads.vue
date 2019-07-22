@@ -11,7 +11,10 @@
     </h2>
 
     <div class="downloads__content">
-      <section class="downloads__section">
+      <section
+        class="downloads__section"
+        v-if="config.IOS_MANIFEST_LINK || config.PLAY_MARKET_LINK"
+      >
         <h3 class="downloads__section-header">
           {{ 'downloads-page.mobile-apps-header' | globalize }}
         </h3>
@@ -21,13 +24,16 @@
 
         <div class="downloads__phones-wrapper">
           <div class="downloads__phones">
-            <div class="downloads__android">
+            <div
+              class="downloads__android"
+              v-if="config.PLAY_MARKET_LINK"
+            >
               <img
                 class="downloads__phone-img"
                 src="@static/android_cropped.png"
               >
               <a
-                href="https://play.google.com/store/apps/details?id=org.tokend.template"
+                :href="config.PLAY_MARKET_LINK"
                 target="_blank"
                 rel="noopener"
               >
@@ -38,7 +44,10 @@
               </a>
             </div>
 
-            <div class="downloads__ios">
+            <div
+              class="downloads__ios"
+              v-if="config.IOS_MANIFEST_LINK"
+            >
               <img
                 class="downloads__phone-img"
                 src="@static/iphone.png"
@@ -59,27 +68,37 @@
 
         <hr>
       </section>
-      <section class="downloads__section">
+
+      <section
+        class="downloads__section"
+        v-if="config.OFFLINE_ISSUANCE_WIN_LINK ||
+          config.OFFLINE_ISSUANCE_MAC_LINK ||
+          config.OFFLINE_ISSUANCE_SOURCE_LINK
+        "
+      >
         <h3 class="downloads__section-header">
           {{ 'downloads-page.pre-issuance-apps-header' | globalize }}
         </h3>
+
         <p class="downloads__section-text">
           {{ 'downloads-page.pre-issuance-apps-desc' | globalize }}
-          <router-link
-            :to="vueRoutes.preIssuanceGuide"
-          >
+          <router-link :to="vueRoutes.preIssuanceGuide">
             {{ 'downloads-page.pre-issuance-learn-more-link' | globalize }}
           </router-link>
         </p>
+
         <div class="downloads__operation-systems-wrapper">
           <img
             class="downloads__pre-issuance-app-img"
             src="@static/pre-issuance-app.png"
           >
           <div class="downloads__operation-systems">
-            <div class="downloads__windows">
+            <div
+              class="downloads__windows"
+              v-if="config.OFFLINE_ISSUANCE_WIN_LINK"
+            >
               <a
-                href="https://s3-eu-west-1.amazonaws.com/881e65d1943e42/pu/TokenD+pre-issuance+tool-win32-x64.zip"
+                :href="config.OFFLINE_ISSUANCE_WIN_LINK"
                 target="_blank"
                 rel="noopener"
               >
@@ -89,9 +108,13 @@
                 >
               </a>
             </div>
-            <div class="downloads__macosx">
+
+            <div
+              class="downloads__macosx"
+              v-if="config.OFFLINE_ISSUANCE_MAC_LINK"
+            >
               <a
-                href="https://s3-eu-west-1.amazonaws.com/881e65d1943e42/pu/TokenD+pre-issuance+tool-darwin-x64.zip"
+                :href="config.OFFLINE_ISSUANCE_MAC_LINK"
                 target="_blank"
                 rel="noopener"
               >
@@ -102,18 +125,22 @@
               </a>
             </div>
           </div>
-          <a
-            href="https://github.com/tokend/offline-issuance"
-            class="downloads__source-code-link"
-            target="_blank"
-            rel="noopener"
-          >
-            {{ 'downloads-page.pre-issuance-app-sources-link' | globalize }}
-          </a>
+
+          <template v-if="config.OFFLINE_ISSUANCE_SOURCE_LINK">
+            <a
+              :href="config.OFFLINE_ISSUANCE_SOURCE_LINK"
+              class="downloads__source-code-link"
+              target="_blank"
+              rel="noopener"
+            >
+              {{ 'downloads-page.pre-issuance-app-sources-link' | globalize }}
+            </a>
+          </template>
         </div>
 
         <hr>
       </section>
+
       <section class="downloads__section">
         <h3 class="downloads__section-header">
           {{ 'downloads-page.config-header' | globalize }}
@@ -145,6 +172,7 @@ export default {
   },
   data: _ => ({
     vueRoutes,
+    config,
   }),
   computed: {
     qrConfigText () {
