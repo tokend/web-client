@@ -25,7 +25,13 @@ export const rootModule = {
     [vuexTypes.LOG_OUT] ({ commit }) {
       commit(vuexTypes.CLEAR_STATE)
     },
-    async [vuexTypes.LOG_IN] ({ getters, dispatch }) {
+    async [vuexTypes.LOG_IN] ({ getters, dispatch }, { email, password }) {
+      await dispatch(vuexTypes.LOAD_WALLET, { email, password })
+      await dispatch(vuexTypes.LOAD_ACCOUNT, getters[vuexTypes.walletAccountId])
+      await dispatch(vuexTypes.LOAD_KV_ENTRIES)
+      await dispatch(vuexTypes.LOAD_KYC)
+    },
+    async [vuexTypes.RESTORE_SESSION] ({ getters, dispatch }) {
       let walletSeed
       try {
         walletSeed = await dispatch(vuexTypes.DECRYPT_SECRET_SEED)

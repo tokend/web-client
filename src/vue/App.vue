@@ -129,7 +129,7 @@ export default {
       decryptSecretSeed: vuexTypes.DECRYPT_SECRET_SEED,
       startIdle: vuexTypes.START_IDLE,
       logoutSession: vuexTypes.LOGOUT_SESSION,
-      logIn: vuexTypes.LOG_IN,
+      restoreSession: vuexTypes.RESTORE_SESSION,
     }),
     ...mapMutations({
       popState: vuexTypes.POP_STATE,
@@ -144,7 +144,7 @@ export default {
       await this.loadKvEntries()
 
       if (this[vuexTypes.isLoggedIn]) {
-        await this.logIn()
+        await this.restoreSession()
 
         ErrorTracker.setLoggedInUser({
           'accountId': this[vuexTypes.walletAccountId],

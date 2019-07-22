@@ -53,6 +53,7 @@ const actions = {
   // root
   LOG_OUT: 'LOG_OUT',
   LOG_IN: 'LOG_IN',
+  RESTORE_SESSION: 'RESTORE_SESSION',
 
   // key-value
   LOAD_KV_ENTRIES: 'LOAD_KV_ENTRIES',
