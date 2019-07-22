@@ -715,9 +715,6 @@
       "register-of-shares": "Register of shares",
       "polls": "Polls",
       "atomic-swaps": "Atomic swaps",
-      "customers": "Customers",
-      "customers-list": "Customers list",
-      "businesses": "Businesses",
       "kyc-recovery": "KYC Recovery"
     },
     "limits": {
@@ -2364,70 +2361,6 @@
       "base-asset": "Base: {{ baseAsset }}",
       "quote-assets": "Quote:",
       "quote-asset-with-comma": "{{ quoteAsset }},"
-    },
-    "customers-page": {
-      "invite-btn": "Invite",
-      "issue-btn": "Issue",
-      "mass-invitation-drawer-heading": "Invite customers",
-      "mass-issuance-drawer-heading": "Mass issuance",
-      "customers-list-page": "Customers list"
-    },
-    "mass-issuance-form": {
-      "asset-lbl": "Asset",
-      "available-for-issuance-hint": "Available for issuance: {{amount, money}}",
-      "amount-lbl": "Amount",
-      "how-to-receivers-paragraph": "List all receivers emails in the box below, separate them with commas. Each receiver will gain the amount you specified in the “Amount” field. If the available amount is insufficient the operation will fail and no asset will be issued to anyone. Not found users and the ones that do not have balance in the selected asset will not receive the issuance but all the others will. Receivers number is limited up to 100 for now.",
-      "receivers-lbl": "Receivers",
-      "submit-btn": "Issue",
-      "no-assets-msg-title": "No issuable assets yet",
-      "no-assets-msg-description": "Unfortunately, you do not have any assets now, please create an asset and try again.",
-      "issued-successfully-notification": "Mass issuance performed successfully.",
-      "no-receivers-found": "Receivers you provided not found or cannot receive the issuance. Please ensure you specified the valid receivers list and try again.",
-      "overissue-error-notif": "The total amount is bigger than the available for issuance amount. Please decrease the amount to issue and try again.",
-      "too-much-op-error-notif": "Too many receivers, the current limit is 100 receivers, please decrease the receivers count and try again."
-    },
-    "mass-invitation-form": {
-      "how-to-invitees-paragraph": "List all invitees emails in the box below, separate them with commas.",
-      "invitees-lbl": "Invitees",
-      "submit-btn": "Invite",
-      "invited-successfully-notification": "Mass invitation performed successfully.",
-      "no-invitees-found": "Receivers you provided not found or cannot receive the invitation. Please ensure you specified the valid receivers list and try again."
-    },
-    "customer-attributes": {
-      "id-key": "ID",
-      "email-key": "Email",
-      "status-key": "Status",
-      "balance-key": "{{assetCode}} balance",
-      "not-registered-status-val": "Not registered",
-      "active-status-val": "Active",
-      "blocked-status-val": "Blocked"
-    },
-    "customers-table": {
-      "email-th": "Email",
-      "balances-th": "Balances",
-      "status-th": "Status",
-      "details-btn": "Show details",
-      "no-data-msg": "You have no associated customers yet. Invite some and they will appear in this list.",
-      "error-msg": "An error occurred while loading the list, please contact system owner to resolve the issue.",
-      "not-registered-status-td": "Not registered",
-      "active-status-td": "Active",
-      "blocked-status-td": "Blocked",
-      "enable-mass-issuance-btn": "Select for issuance",
-      "do-mass-issue-btn": "Perform issuance",
-      "cancel-mass-issue-btn": "Cancel issuance"
-    },
-    "customers-list": {
-      "customer-drawer-title": "View customer"
-    },
-    "businesses": {
-      "all-tab": "All businesses"
-    },
-    "businesses-all": {
-      "no-list-title": "No businesses here yet",
-      "no-list-msg": "Here will be the list of businesses associated with you"
-    },
-    "current-business-indicator": {
-      "browsing-lbl": "Browsing:"
     },
     "kyc-recovery": {
       "submit-again-lbl": "Submit again",

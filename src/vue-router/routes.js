@@ -52,8 +52,4 @@ export const vueRoutes = Object.freeze({
   allPolls: { name: 'app.all-polls' },
   atomicSwaps: { name: 'app.atomic-swaps' },
   atomicSwapsExplore: { name: 'app.atomic-swaps-explore' },
-  customers: { name: 'app.customers' },
-  customersList: { name: 'app.customers.list' },
-  businesses: { name: 'app.businesses' },
-  allBusinesses: { name: 'app.businesses.list' },
 })

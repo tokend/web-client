@@ -31,21 +31,6 @@
         </button>
       </template>
 
-      <!-- eslint-disable max-len -->
-      <template
-        v-else-if="getModule().canRenderSubmodule(CreateSaleFormModuleSimplified)"
-        slot="extra"
-      >
-        <button
-          v-ripple
-          class="app__button-raised"
-          @click="isCreateSaleDrawerShown = true"
-        >
-          <i class="mdi mdi-plus sales__btn-icon" />
-          {{ 'sales.create-sale' | globalize }}
-        </button>
-      </template>
-
       <template
         v-if="getModule().canRenderSubmodule(CreateOpportunityModule)"
         slot="extra"
@@ -96,22 +81,6 @@
       </drawer>
     </template>
 
-    <!-- eslint-disable-next-line max-len -->
-    <template v-else-if="getModule().canRenderSubmodule(CreateSaleFormModuleSimplified)">
-      <drawer
-        :is-shown.sync="isCreateSaleDrawerShown"
-        :close-by-click-outside="false"
-        class="sales__drawer"
-      >
-        <template slot="heading">
-          {{ 'sales.new-sale' | globalize }}
-        </template>
-        <submodule-importer
-          :submodule="getModule().getSubmodule(CreateSaleFormModuleSimplified)"
-          @close="closeCreateSaleDrawerAndUpdateList()"
-        />
-      </drawer>
-    </template>
     <router-view />
   </div>
 </template>
@@ -127,7 +96,6 @@ import { vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
 
 import { CreateSaleFormModule } from '@modules/create-sale-form/module'
-import { CreateSaleFormModuleSimplified } from '@modules/create-sale-form-simplified/module'
 
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { CreateOpportunityModule } from '@/vue/modules/create-opportunity/module'
@@ -153,7 +121,6 @@ export default {
     MAX_AMOUNT: config.MAX_AMOUNT,
     DECIMAL_POINTS: config.DECIMAL_POINTS,
     CreateSaleFormModule,
-    CreateSaleFormModuleSimplified,
     vueRoutes,
     CreateOpportunityModule,
     SalesListPageModule,
