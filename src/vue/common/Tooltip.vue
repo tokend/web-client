@@ -6,12 +6,14 @@
       <span
         class="tooltip__wrapper-box"
         :class="{
+          [`tooltip__wrapper-box--${TYPES[type]}`]: type,
           'tooltip__wrapper-box--show': show,
           'tooltip__wrapper-box--hide': !show
         }"
       >
         <span
           class="tooltip__wrapper-text"
+          :class="`tooltip__wrapper-text--${TYPES[type]}`"
         >
           {{ message }}
         </span>
@@ -21,6 +23,11 @@
 </template>
 
 <script>
+const TYPES = {
+  tfaClipboard: 'tfa-clipboard',
+  default: 'default',
+}
+
 export default {
   name: 'tooltip',
   props: {
@@ -33,7 +40,14 @@ export default {
       default: '',
       require: true,
     },
+    type: {
+      type: String,
+      default: 'default',
+    },
   },
+  data: _ => ({
+    TYPES,
+  }),
 }
 </script>
 
@@ -52,16 +66,19 @@ export default {
   display: inline;
 }
 
-.tooltip__wrapper-box {
+.tooltip__wrapper-boxgi {
   position: absolute;
   visibility: hidden;
+
+  &--tfa-clipboard {
+    right: -5%;
+  }
 }
 
 .tooltip__wrapper-text {
   display: block;
   position: relative;
   top: 1.5rem;
-  right: 50%;
   width: 10rem;
   padding: 0.5rem 0;
   color: $col-tooltip-wrapper-msg-text;
@@ -82,6 +99,14 @@ export default {
     border-bottom: 0.7rem solid $col-tooltip-wrapper-msg-bg;
     border-right: 0.7rem solid transparent;
     border-left: 0.7rem solid transparent;
+  }
+
+  &--default {
+    right: 50%;
+  }
+
+  &--tfa-clipboard {
+    right: 0;
   }
 }
 
