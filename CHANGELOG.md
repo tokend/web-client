@@ -14,19 +14,22 @@ for further information about branching and tagging conventions.
 ### "Under the hood" changes
 #### Added
 - New config keys:
-  - PLAY_MARKET_LINK
-  - OFFLINE_ISSUANCE_WIN_LINK
-  - OFFLINE_ISSUANCE_MAC_LINK
-  - OFFLINE_ISSUANCE_SOURCE_LINK
+  - `PLAY_MARKET_LINK`
+  - `OFFLINE_ISSUANCE_WIN_LINK`
+  - `OFFLINE_ISSUANCE_MAC_LINK`
+  - `OFFLINE_ISSUANCE_SOURCE_LINK`
 
 #### Changed
 - If some of the config keys are empty, the related images and links will not
   be rendered. Affects the following keys:
-  - IOS_MANIFEST_LINK
-  - PLAY_MARKET_LINK
-  - OFFLINE_ISSUANCE_WIN_LINK
-  - OFFLINE_ISSUANCE_MAC_LINK
-  - OFFLINE_ISSUANCE_SOURCE_LINK
+  - `IOS_MANIFEST_LINK`
+  - `PLAY_MARKET_LINK`
+  - `OFFLINE_ISSUANCE_WIN_LINK`
+  - `OFFLINE_ISSUANCE_MAC_LINK`
+  - `OFFLINE_ISSUANCE_SOURCE_LINK`
+
+#### Removed
+- `RECOVERY_MODE` config key due to unused anymore
 
 ## [1.10.0-rc.3] - 2019-07-22
 #### Added

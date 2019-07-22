@@ -38,7 +38,6 @@ import { walletsManager } from '@/api'
 import { vueRoutes } from '@/vue-router/routes'
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import config from '@/config'
 
 export default {
   name: 'signup',
@@ -52,7 +51,6 @@ export default {
     email: null,
     vueRoutes,
     isConfirmedSeedCopied: false,
-    isRecoverySeedModeEnabled: config.RECOVERY_MODE === 'seed',
   }),
   computed: {
     ...mapGetters({

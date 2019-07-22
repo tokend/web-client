@@ -148,14 +148,6 @@ export default Object.assign(
     KEEP_SESSION_INTERVAL: 1000 * 60 * 2,
 
     /**
-     * Change over different recovery modes. To disable recovery, leave the
-     * field empty or give it any unacceptable value, i.e.: 'none'.
-     *
-     * Acceptable values: 'seed' - enables recovery by seed
-     */
-    RECOVERY_MODE: 'seed',
-
-    /**
      * Sets timeout before reload on some screens. Depends on block close time
      * of your instance configuration, we recommend using value equal to
      * *block close time* + 500ms
