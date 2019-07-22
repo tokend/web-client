@@ -1,11 +1,12 @@
 <template>
   <div class="downloads">
-    <button
+    <router-link
+      tag="button"
       class="downloads__link app__button"
-      @click="$router.go(-1)"
+      :to="vueRoutes.app"
     >
       {{ 'downloads-page.go-back-btn' | globalize }}
-    </button>
+    </router-link>
     <h2 class="downloads__title">
       {{ 'downloads-page.title' | globalize }}
     </h2>

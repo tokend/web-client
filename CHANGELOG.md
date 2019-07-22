@@ -8,6 +8,8 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Fixed
+- A bug when you cannot return from "Downloads" if the tab was opened in new tab
 
 ### "Under the hood" changes
 #### Added
