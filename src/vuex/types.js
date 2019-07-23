@@ -2,6 +2,7 @@ const mutations = {
   // root
   CLEAR_STATE: 'CLEAR_STATE',
   POP_STATE: 'POP_STATE',
+  POP_LOGOUT_AT: 'POP_LOGOUT_AT',
 
   // key-value
   SET_KV_ENTRY_GENERAL_ROLE_ID: 'SET_KV_ENTRY_GENERAL_ROLE_ID',

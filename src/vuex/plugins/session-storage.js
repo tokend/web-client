@@ -13,7 +13,6 @@ export const sessionStoragePlugin = store => {
       }
       case vuexTypes.POP_STATE: {
         let savedStore = localStorage.getItem(config.STORAGE_KEY)
-
         if (!savedStore) {
           break
         }
@@ -27,6 +26,19 @@ export const sessionStoragePlugin = store => {
           kyc: savedStore.kyc,
           keyValue: savedStore.keyValue,
           session: savedStore.session,
+        })
+
+        break
+      }
+      case vuexTypes.POP_LOGOUT_AT: {
+        let savedStore = localStorage.getItem(config.STORAGE_KEY)
+        if (!savedStore) {
+          break
+        }
+
+        savedStore = JSON.parse(savedStore)
+        store.replaceState({
+          ...state,
           idleHandler: savedStore.idleHandler,
         })
 
