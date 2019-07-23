@@ -93,29 +93,22 @@ export default {
   },
   methods: {
     ...mapActions({
-      loadWallet: vuexTypes.LOAD_WALLET,
-      loadAccount: vuexTypes.LOAD_ACCOUNT,
+      logInAccount: vuexTypes.LOG_IN,
       loadAssets: vuexTypes.LOAD_ASSETS,
-      loadKyc: vuexTypes.LOAD_KYC,
-      loadKvEntries: vuexTypes.LOAD_KV_ENTRIES,
     }),
     async submit () {
       if (!this.isFormValid()) return
       this.disableForm()
       try {
         await this.verifyTfaFactor()
-        await this.loadWallet({
+        await this.logInAccount({
           email: this.form.email.toLowerCase(),
           password: this.form.password,
         })
-        const accountId = this[vuexTypes.walletAccountId]
         ErrorTracker.setLoggedInUser({
           'accountId': this[vuexTypes.walletAccountId],
           'email': this[vuexTypes.walletEmail],
         })
-        await this.loadAccount(accountId)
-        await this.loadKvEntries()
-        await this.loadKyc()
         await this.loadAssets()
         if (Object.keys(this.$route.query).includes('redirectPath')) {
           this.$router.push({ path: this.$route.query.redirectPath })
