@@ -47,6 +47,9 @@ const mutations = {
 
   // idle
   UPDATE_LOGOUT_AT: 'UPDATE_LOGOUT_AT',
+
+  SHOW_CUSTOMER_UI: 'SHOW_CUSTOMER_UI',
+  HIDE_CUSTOMER_UI: 'HIDE_CUSTOMER_UI',
 }
 
 const actions = {
@@ -129,6 +132,8 @@ const getters = {
   isAccountUsVerified: 'isAccountUsVerified',
   isAccountUnverified: 'isAccountUnverified',
   isAccountBlocked: 'isAccountBlocked',
+
+  isCustomerUiShown: 'isCustomerUiShown',
 
   // wallet
   walletId: 'walletId',

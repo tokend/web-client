@@ -1,7 +1,6 @@
 <template>
   <div class="passport">
-    <button
-      @click="toggleDropdown">
+    <button @click="toggleDropdown">
       <img
         v-if="avatarLogoUrl"
         class="passport__avatar passport__avatar-image"
@@ -53,13 +52,18 @@
         </div>
 
         <div class="passport__dropdown-balances-wrp">
-          <passport-balances
-            @more-link-followed="toggleDropdown"
+          <passport-balances @more-link-followed="toggleDropdown" />
+        </div>
+
+        <div class="passport__dropdown-customer-ui-switch-wrp">
+          <switch-field
+            :value="isCustomerUiShown"
+            @input="toggleCustomerUi($event)"
+            :label="'passport.customer-ui-switch' | globalize"
           />
         </div>
-        <div
-          class="passport__dropdown-actions-wrp"
-        >
+
+        <div class="passport__dropdown-actions-wrp">
           <button
             class="app__button-flat
                    passport__dropdown-btn"
@@ -89,12 +93,14 @@ import { handleClickOutside } from '@/js/helpers/handle-click-outside'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import config from '@/config'
 import PassportBalances from './Passport.Balances'
+import SwitchField from '@/vue/fields/SwitchField'
 
 export default {
   name: 'passport',
 
   components: {
     PassportBalances,
+    SwitchField,
   },
 
   data: () => ({
@@ -102,6 +108,7 @@ export default {
     isDropdownOpen: false,
     loadAccountDetailsTickerTimeout: 45000,
     destructClickOutsideHandler: () => { },
+    alo: false,
   }),
 
   computed: {
@@ -116,6 +123,8 @@ export default {
       isAccountGeneral: vuexTypes.isAccountGeneral,
       isAccountBlocked: vuexTypes.isAccountBlocked,
       accountId: vuexTypes.accountId,
+
+      isCustomerUiShown: vuexTypes.isCustomerUiShown,
     }),
     accountRoleTranslationId () {
       if (this.isAccountGeneral) {
@@ -153,6 +162,8 @@ export default {
 
     ...mapMutations({
       clearState: vuexTypes.CLEAR_STATE,
+      showCustomerUi: vuexTypes.SHOW_CUSTOMER_UI,
+      hideCustomerUi: vuexTypes.HIDE_CUSTOMER_UI,
     }),
 
     async createLoadAccountDetailsTicker () {
@@ -202,6 +213,16 @@ export default {
     goSettings () {
       this.closeDropdown()
       this.$router.push(vueRoutes.settings)
+    },
+
+    toggleCustomerUi (isShow) {
+      if (isShow) {
+        this.showCustomerUi()
+      } else {
+        this.hideCustomerUi()
+      }
+
+      this.$router.push(vueRoutes.app.name)
     },
   },
 }
@@ -336,7 +357,8 @@ $dropdown-item-side-padding: 2.4rem;
 }
 
 .passport__dropdown-signed-in-wrp,
-.passport__dropdown-balances-wrp {
+.passport__dropdown-balances-wrp,
+.passport__dropdown-customer-ui-switch-wrp {
   padding: 1.6rem $dropdown-item-side-padding 0;
   line-height: 1.5;
   text-align: left;

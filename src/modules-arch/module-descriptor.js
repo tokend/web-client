@@ -89,8 +89,12 @@ export class ModuleDescriptor {
   get isAccessible () {
     if (this._isCorporateOnly) {
       return store.getters[vuexTypes.isAccountCorporate]
+        ? !store.getters[vuexTypes.isCustomerUiShown]
+        : false
     } else if (this._isUnverifiedOnly) {
-      return store.getters[vuexTypes.isAccountUnverified]
+      return store.getters[vuexTypes.isAccountCorporate]
+        ? store.getters[vuexTypes.isCustomerUiShown]
+        : store.getters[vuexTypes.isAccountUnverified]
     } else {
       return true
     }

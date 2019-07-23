@@ -50,6 +50,7 @@ export default {
   position: relative;
   display: inline-block;
   width: 5.3rem;
+  min-width: 5.3rem;
   height: 2.8rem;
   background-color: $col-switch-field-background;
   border: solid 0.1rem $col-switch-field-border;
@@ -60,6 +61,7 @@ export default {
     content: '';
     height: 2.2rem;
     width: 2.2rem;
+    min-width: 2.2rem;
     left: 0.1rem;
     bottom: 0.1rem;
     background-color: $col-switch-field-disabled;

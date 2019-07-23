@@ -811,7 +811,8 @@
       "settings-btn": "Settings",
       "sign-out-btn": "Sign out",
       "balances-subheading": "Balances",
-      "show-more-link": "Show more"
+      "show-more-link": "Show more",
+      "customer-ui-switch": "Customer UI"
     },
     "sidebar": {
       "section-explore": "Explorations",

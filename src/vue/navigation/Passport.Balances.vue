@@ -11,7 +11,8 @@
       {{ { value: item.balance, currency: item.asset.code } | formatMoney }}
     </span>
 
-    <template v-if="isAvailableRouteName(vueRoutes.balances.name)">
+    <!-- Note: temp. hidden -->
+    <template v-if="false && isAvailableRouteName(vueRoutes.balances.name)">
       <router-link
         class="passport-balances__more-link"
         :to="vueRoutes.balances"

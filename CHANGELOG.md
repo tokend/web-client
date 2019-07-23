@@ -11,6 +11,10 @@ for further information about branching and tagging conventions.
 #### Added
 - Simultaneous support for most common delimiters (spaces, tabs, colons, commas,
   new lines) in "Mass issuance" and "Mass invitation" forms.
+- Customer UI switch
+
+#### Changed
+- Now Safari version 10 should be supported
 
 #### Removed
 - Hidden sales and polls

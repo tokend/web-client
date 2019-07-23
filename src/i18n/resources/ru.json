@@ -811,7 +811,8 @@
       "settings-btn": "Настройки",
       "sign-out-btn": "Выйти",
       "balances-subheading": "Баланс",
-      "show-more-link": "Показать больше"
+      "show-more-link": "Показать больше",
+      "customer-ui-switch": "Клиент"
     },
     "sidebar": {
       "section-explore": "Просмотреть",
