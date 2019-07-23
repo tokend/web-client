@@ -1,10 +1,10 @@
 import config from '@/config'
 import { vuexTypes } from './types'
 import moment from 'moment'
-import throttle from 'lodash/throttle'
+import debounce from 'lodash/debounce'
 
 const IDLE_TICKER_INTERVAL = 1000
-const THROTTLE_DELAY = 3000
+const DEBOUNCE_DELAY = 3000
 
 function getQueryParameters (queryParametr) {
   // location.search return the querystring part of a URL
@@ -35,13 +35,13 @@ const actions = {
       }
     }
 
-    document.onload = throttle(resetTimer, THROTTLE_DELAY)
-    document.onmousemove = throttle(resetTimer, THROTTLE_DELAY)
-    document.onmousedown = throttle(resetTimer, THROTTLE_DELAY)
-    document.ontouchstart = throttle(resetTimer, THROTTLE_DELAY)
-    document.onclick = throttle(resetTimer, THROTTLE_DELAY)
-    document.onscroll = throttle(resetTimer, THROTTLE_DELAY)
-    document.onkeypress = throttle(resetTimer, THROTTLE_DELAY)
+    document.onload = debounce(resetTimer, DEBOUNCE_DELAY)
+    document.onmousemove = debounce(resetTimer, DEBOUNCE_DELAY)
+    document.onmousedown = debounce(resetTimer, DEBOUNCE_DELAY)
+    document.ontouchstart = debounce(resetTimer, DEBOUNCE_DELAY)
+    document.onclick = debounce(resetTimer, DEBOUNCE_DELAY)
+    document.onscroll = debounce(resetTimer, DEBOUNCE_DELAY)
+    document.onkeypress = debounce(resetTimer, DEBOUNCE_DELAY)
   },
 
   [vuexTypes.KEEP_SESSION] ({ dispatch, rootGetters }) {
@@ -61,13 +61,13 @@ const actions = {
     }, IDLE_TICKER_INTERVAL)
   },
 
-  [vuexTypes.LOGOUT_IDLE] ({ commit }) {
-    commit(vuexTypes.CLEAR_STATE)
+  [vuexTypes.LOGOUT_IDLE] ({ dispatch }) {
+    dispatch(vuexTypes.LOG_OUT)
     location.href = location.href + getQueryParameters('isIdle=true')
   },
 
-  [vuexTypes.LOGOUT_SESSION] ({ commit }) {
-    commit(vuexTypes.CLEAR_STATE)
+  [vuexTypes.LOGOUT_SESSION] ({ dispatch }) {
+    dispatch(vuexTypes.LOG_OUT)
     location.href = location.href + getQueryParameters('isSessionExpired=true')
   },
 

@@ -153,6 +153,12 @@ export default Object.assign(
      * *block close time* + 500ms
      */
     RELOAD_TIMEOUT: 5500,
+
+    /**
+     * Session storage key
+     */
+    STORAGE_KEY: 'TokenDStore-v2',
+
   },
   // process.env,
   process.env
