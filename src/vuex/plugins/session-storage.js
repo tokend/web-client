@@ -1,8 +1,5 @@
 import { vuexTypes } from '@/vuex/types'
-
-const config = Object.freeze({
-  STORAGE_KEY: 'TokenDStore-v2',
-})
+import config from '@/config'
 
 export const sessionStoragePlugin = store => {
   store.subscribe((mutation, state) => {
