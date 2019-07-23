@@ -10,7 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Fixed
 - A bug when you cannot return from "Downloads" if the tab was opened in new tab
-- Issue when page reload twice
+- A bug when page reload twice
 
 ### "Under the hood" changes
 #### Added
