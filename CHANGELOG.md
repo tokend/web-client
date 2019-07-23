@@ -12,6 +12,9 @@ for further information about branching and tagging conventions.
 - Simultaneous support for most common delimiters (spaces, tabs, colons, commas,
   new lines) in "Mass issuance" and "Mass invitation" forms.
 
+#### Removed
+- Hidden sales and polls
+
 #### Fixed
 - A bug when you cannot return from "Downloads" if the tab was opened in new tab
 

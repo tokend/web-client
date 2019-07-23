@@ -5,8 +5,6 @@ import { MovementsHistoryPageModule } from '@/vue/pages/movements-page-module'
 import { CustomersPageModule } from '@/vue/pages/customers-page-module'
 import { AssetsPageModule } from '@/vue/pages/assets-page-module'
 import { CreateAssetFormSimplifiedModule } from '@modules/create-asset-form-simplified/module'
-import { SalesPageModule } from '@/vue/pages/sales-page-module'
-import { SaleDetailsPageModule } from '@/vue/pages/sale-details-page-module'
 import { SettingsPageModule } from '@/vue/pages/settings-page-module'
 import { VerificationCorporatePageModule } from '@/vue/pages/verification-corporate-page-module'
 import { VerificationPageModule } from '@/vue/pages/verification-page-module'
@@ -14,19 +12,11 @@ import { SecurityPageModule } from '@/vue/pages/security-page-module'
 import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-account-id-pseudo-module'
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
-import { CreateSaleFormModuleSimplified } from '@modules/create-sale-form-simplified/module'
-import { SalesListPageModule } from '@/vue/pages/sales/investable-sales-page-module'
-import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
-import { SimplifySaleCampaignViewerPageModule } from '@/vue/pages/sale-details-simplified/sale-campaign-viewer-page-module'
-import { SimplifySaleStateWidgetModule } from '@/vue/pages/sale-details-simplified/sale-sate-widget-module'
 import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
 import { AssetExplorerPageModule } from '@/vue/pages/asset-explorer-page'
 import { BalancesPageModule } from '@/vue/pages/balances-page'
 import { AssetExplorerModule } from '@/vue/modules/assets/asset-explorer/module'
 import { BalanceExplorerModule } from '@/vue/modules/assets/balance-explorer/module'
-import { PollsPageModule } from '@/vue/pages/polls-page-module'
-import { PollsAllPageModule } from '@/vue/pages/polls-all-page-module'
-import { CreatePollFormModule } from '@/vue/modules/create-poll-form/module'
 
 import { MyAssetsPageModule } from '@/vue/pages/my-assets-page-module'
 import { MyAssetsExplorerModule } from '@/vue/modules/assets/my-assets-explorer/module'
@@ -175,94 +165,95 @@ export default {
       },
     ),
 
-    new SalesPageModule(
-      {
-        routerEntry: {
-          path: '/sales',
-          name: vueRoutes.sales.name,
-          meta: { pageNameTranslationId: 'pages-names.sales' },
-        },
-        menuButtonTranslationId: 'pages-names.sales',
-        menuButtonMdiName: 'trending-up',
-        isAutoRedirectToFirstChild: true,
-        submodules: [
-          new SalesListPageModule({
-            routerEntry: {
-              path: '/sales/all',
-              name: vueRoutes.investableSales.name,
-              props: {
-                default: true,
-                isUserSales: false,
-              },
-            },
-            isUnverifiedOnly: true,
-          }),
-          new SalesListOwnedPageModule({
-            routerEntry: {
-              path: '/sales/my',
-              name: vueRoutes.userOwnedSales.name,
-              props: {
-                default: true,
-                isUserSales: true,
-              },
-            },
-            isCorporateOnly: true,
-          }),
-          new CreateSaleFormModuleSimplified({
-            isCorporateOnly: true,
-          }),
-        ],
-      },
-    ),
+    // HINT: temp. disabled
+    // new SalesPageModule(
+    //   {
+    //     routerEntry: {
+    //       path: '/sales',
+    //       name: vueRoutes.sales.name,
+    //       meta: { pageNameTranslationId: 'pages-names.sales' },
+    //     },
+    //     menuButtonTranslationId: 'pages-names.sales',
+    //     menuButtonMdiName: 'trending-up',
+    //     isAutoRedirectToFirstChild: true,
+    //     submodules: [
+    //       new SalesListPageModule({
+    //         routerEntry: {
+    //           path: '/sales/all',
+    //           name: vueRoutes.investableSales.name,
+    //           props: {
+    //             default: true,
+    //             isUserSales: false,
+    //           },
+    //         },
+    //         isUnverifiedOnly: true,
+    //       }),
+    //       new SalesListOwnedPageModule({
+    //         routerEntry: {
+    //           path: '/sales/my',
+    //           name: vueRoutes.userOwnedSales.name,
+    //           props: {
+    //             default: true,
+    //             isUserSales: true,
+    //           },
+    //         },
+    //         isCorporateOnly: true,
+    //       }),
+    //       new CreateSaleFormModuleSimplified({
+    //         isCorporateOnly: true,
+    //       }),
+    //     ],
+    //   },
+    // ),
 
-    new SaleDetailsPageModule(
-      {
-        routerEntry: {
-          path: '/sales/:id',
-          name: vueRoutes.saleDetails.name,
-          meta: { pageNameTranslationId: 'pages-names.sale-details' },
-          redirect: to => ({ ...vueRoutes.saleCampaign, params: to.params }),
-          props: true,
-        },
-        submodules: [
-          new SimplifySaleCampaignViewerPageModule({
-            routerEntry: {
-              path: '/sales/:id/campaign',
-              name: vueRoutes.saleCampaign.name,
-              props: true,
-            },
-            submodules: [
-              new SimplifySaleStateWidgetModule(),
-            ],
-          }),
-        ],
-      },
-    ),
+    // new SaleDetailsPageModule(
+    //   {
+    //     routerEntry: {
+    //       path: '/sales/:id',
+    //       name: vueRoutes.saleDetails.name,
+    //       meta: { pageNameTranslationId: 'pages-names.sale-details' },
+    //       redirect: to => ({ ...vueRoutes.saleCampaign, params: to.params }),
+    //       props: true,
+    //     },
+    //     submodules: [
+    //       new SimplifySaleCampaignViewerPageModule({
+    //         routerEntry: {
+    //           path: '/sales/:id/campaign',
+    //           name: vueRoutes.saleCampaign.name,
+    //           props: true,
+    //         },
+    //         submodules: [
+    //           new SimplifySaleStateWidgetModule(),
+    //         ],
+    //       }),
+    //     ],
+    //   },
+    // ),
 
-    new PollsPageModule(
-      {
-        routerEntry: {
-          path: '/polls',
-          name: vueRoutes.polls.name,
-          meta: { pageNameTranslationId: 'pages-names.polls' },
-        },
-        menuButtonTranslationId: 'pages-names.polls',
-        menuButtonMdiName: 'vote',
-        isAutoRedirectToFirstChild: true,
-        submodules: [
-          new PollsAllPageModule({
-            routerEntry: {
-              path: '/polls/all',
-              name: vueRoutes.allPolls.name,
-              props: true,
-            },
-          }),
-          new CreatePollFormModule({
-            isCorporateOnly: true,
-          }),
-        ],
-      },
-    ),
+    // new PollsPageModule(
+    //   {
+    //     routerEntry: {
+    //       path: '/polls',
+    //       name: vueRoutes.polls.name,
+    //       meta: { pageNameTranslationId: 'pages-names.polls' },
+    //     },
+    //     menuButtonTranslationId: 'pages-names.polls',
+    //     menuButtonMdiName: 'vote',
+    //     isAutoRedirectToFirstChild: true,
+    //     submodules: [
+    //       new PollsAllPageModule({
+    //         routerEntry: {
+    //           path: '/polls/all',
+    //           name: vueRoutes.allPolls.name,
+    //           props: true,
+    //         },
+    //       }),
+    //       new CreatePollFormModule({
+    //         isCorporateOnly: true,
+    //       }),
+    //     ],
+    //   },
+    // ),
 
     new AtomicSwapsPageModule(
       {
