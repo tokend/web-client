@@ -1,5 +1,5 @@
 services:
-  - docker:dind
+  - docker:18-dind
 
 variables:
   GITHUB_REF: $CI_COMMIT_SHA
