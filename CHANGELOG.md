@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
-## [Unreleased]
+## [1.10.0-rconto.3] - 2019-07-23
 #### Added
 - Simultaneous support for most common delimiters (spaces, tabs, colons, commas,
   new lines) in "Mass issuance" and "Mass invitation" forms.
@@ -42,6 +42,14 @@ for further information about branching and tagging conventions.
 
 #### Removed
 - `RECOVERY_MODE` config key due to unused anymore
+
+## [1.10.0-rconto.2] - 2019-07-20
+#### Fixed
+- Some minor bug fixes
+
+## [1.10.0-rconto.1] - 2019-07-20
+#### Fixed
+- Some minor bug fixes
 
 ## [1.10.0-rconto.0] - 2019-07-19
 #### Added
@@ -949,7 +957,10 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.10.0-rconto.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.10.0-rconto.3...HEAD
+[1.10.0-rconto.3]: https://github.com/tokend/web-client/compare/1.10.0-rconto.2...1.10.0-rconto.3
+[1.10.0-rconto.2]: https://github.com/tokend/web-client/compare/1.10.0-rconto.1...1.10.0-rconto.2
+[1.10.0-rconto.1]: https://github.com/tokend/web-client/compare/1.10.0-rconto.0...1.10.0-rconto.1
 [1.10.0-rconto.0]: https://github.com/tokend/web-client/compare/1.10.0-rc.2...1.10.0-rconto.0
 [1.10.0-rc.2]: https://github.com/tokend/web-client/compare/1.10.0-rc.1...1.10.0-rc.2
 [1.10.0-rc.1]: https://github.com/tokend/web-client/compare/1.10.0-rc.0...1.10.0-rc.1
