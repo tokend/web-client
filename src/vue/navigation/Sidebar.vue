@@ -19,34 +19,12 @@
       :class="{ 'sidebar__aside--closed': !isOpened }"
     >
       <section class="sidebar__logo-section">
-        <!-- eslint-disable-next-line max-len -->
-        <template v-if="getScheme().canRenderModule(CurrentBusinessIndicatorModule)">
-          <div class="navbar__current-business-indicator">
-            <!-- eslint-disable-next-line max-len -->
-            <submodule-importer :submodule="getScheme().findModule(CurrentBusinessIndicatorModule)">
-              <router-link
-                @click.native="closeSidebar"
-                :to="vueRoutes.app"
-              >
-                <logo class="sidebar__logo" />
-              </router-link>
-            </submodule-importer>
-          </div>
-        </template>
-
-        <template v-else>
-          <router-link
-            @click.native="closeSidebar"
-            :to="vueRoutes.app"
-          >
-            <logo class="sidebar__logo" />
-          </router-link>
-        </template>
-
-        <template v-if="getScheme().canRenderModule(BusinessOwnershipModule)">
-          <!-- eslint-disable-next-line max-len -->
-          <submodule-importer :submodule="getScheme().findModule(BusinessOwnershipModule)" />
-        </template>
+        <router-link
+          @click.native="closeSidebar"
+          :to="vueRoutes.app"
+        >
+          <logo class="sidebar__logo" />
+        </router-link>
       </section>
 
       <section class="sidebar__scheme-label-section">
@@ -107,10 +85,6 @@ import { mapGetters } from 'vuex'
 import config from '@/config'
 import { SchemeRegistry } from '@/modules-arch/scheme-registry'
 
-import { CurrentBusinessIndicatorModule } from '@/vue/navigation/navbar/current-business-indicator/module'
-import { BusinessOwnershipModule } from '@/vue/navigation/navbar/business-ownership/module'
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
-
 const DEFAULT_SECTION_NAME = 'default'
 
 export default {
@@ -119,7 +93,6 @@ export default {
   components: {
     Logo,
     AppFooter,
-    SubmoduleImporter,
   },
 
   data: () => ({
@@ -127,8 +100,6 @@ export default {
     config,
     vueRoutes,
     DEFAULT_SECTION_NAME,
-    CurrentBusinessIndicatorModule,
-    BusinessOwnershipModule,
   }),
 
   computed: {

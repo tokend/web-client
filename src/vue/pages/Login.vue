@@ -25,17 +25,15 @@
               {{ 'auth-pages.no-account-answer' | globalize }}
             </router-link>
           </div>
-          <template v-if="isRecoverySeedModeEnabled">
-            <div class="auth-page__tip">
-              {{ 'auth-pages.forgot-pwd-question' | globalize }}
-              <router-link
-                class="auth-page__tip-link"
-                :to="vueRoutes.kycRecoveryInit"
-              >
-                {{ 'auth-pages.forgot-pwd-answer' | globalize }}
-              </router-link>
-            </div>
-          </template>
+          <div class="auth-page__tip">
+            {{ 'auth-pages.forgot-pwd-question' | globalize }}
+            <router-link
+              class="auth-page__tip-link"
+              :to="vueRoutes.kycRecoveryInit"
+            >
+              {{ 'auth-pages.forgot-pwd-answer' | globalize }}
+            </router-link>
+          </div>
         </div>
       </template>
     </div>
@@ -51,7 +49,6 @@ import { Bus } from '@/js/helpers/event-bus'
 
 import { walletsManager } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import config from '@/config'
 
 export default {
   name: 'login',
@@ -62,7 +59,6 @@ export default {
   data: _ => ({
     vueRoutes,
     isVerifyingEmail: false,
-    isRecoverySeedModeEnabled: config.RECOVERY_MODE === 'seed',
   }),
   async created () {
     try {
