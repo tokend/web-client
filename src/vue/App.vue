@@ -77,6 +77,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import config from '@/config'
 import { i18n } from '@/i18n'
+import { Bus } from '@/js/helpers/event-bus'
 
 export default {
   name: 'app',
@@ -123,6 +124,8 @@ export default {
     this.watchChangesInLocalStorage()
 
     this.isAppInitialized = true
+    Bus.success('change-password-form.password-changed-msg')
+    setTimeout(() => Bus.warning('change-password-form.password-changed-msg'), 2000)
   },
 
   methods: {

@@ -8,27 +8,36 @@
         { 'status-message--jump': isShownAgain }
       ]"
     >
-      <div class="status-message__icon-wrp">
-        <i
-          class="mdi status-message__icon"
-          :class="[`status-message__icon--${messageType}`, messageIconClass]"
+      <div class="status-message__body">
+        <div class="status-message__icon-wrp">
+          <i
+            class="mdi status-message__icon"
+            :class="[`status-message__icon--${messageType}`, messageIconClass]"
+          />
+        </div>
+
+        <div class="status-message__payload">
+          <h4 class="status-message__title">
+            {{ 'status-message.title' | globalize({ context: messageType }) }}
+          </h4>
+
+          <p class="status-message__text">
+            <!-- eslint-disable-next-line max-len -->
+            {{ messageId | globalize({ context: messageType, ...messageArgs }) }}
+          </p>
+        </div>
+
+        <button
+          @click="isShown = false"
+          class="status-message__close-btn"
         />
       </div>
-
-      <div class="status-message__payload">
-        <h4 class="status-message__title">
-          {{ 'status-message.title' | globalize({ context: messageType }) }}
-        </h4>
-
-        <p class="status-message__text">
-          {{ messageId | globalize({ context: messageType, ...messageArgs }) }}
-        </p>
+      <div class="status-message__progress-bar">
+        <span
+          class="status-message__progress-bar-percentage"
+          :style="{'width': (100 - (progressBar.progress * 100)) + '%'}"
+        />
       </div>
-
-      <button
-        @click="isShown = false"
-        class="status-message__close-btn"
-      />
     </div>
   </transition>
 </template>
@@ -56,8 +65,12 @@ export default {
     messageArgs: {},
     isShown: false,
     isShownAgain: false,
-    isShownTimeoutId: -1,
     isShownAgainTimeoutId: -1,
+    animationFrame: -1,
+    progressBar: {
+      progress: 0,
+      paused: false,
+    },
   }),
 
   computed: {
@@ -88,6 +101,10 @@ export default {
       this.show(MESSAGE_TYPES.info, payload))
   },
 
+  destroyed () {
+    cancelAnimationFrame(this.animationFrame)
+  },
+
   methods: {
     show (messageType, payload) {
       this.messageType = messageType
@@ -101,28 +118,47 @@ export default {
         this.messageId = DEFAULT_MESSAGE_TRANSLATION_ID
       }
 
+      cancelAnimationFrame(this.animationFrame)
+
       if (this.isShown) {
         this.doJump()
       } else {
         this.isShown = true
       }
 
-      if (this.isShownTimeoutId >= 0) {
-        window.clearTimeout(this.isShownTimeoutId)
-      }
+      this.startAnimationTimeout()
+    },
 
-      this.isShownTimeoutId = window.setTimeout(_ => {
-        this.isShown = false
-      }, CLOSE_TIMEOUT_MS)
+    startAnimationTimeout (currentAnimationTime = 0) {
+      const animationStartTime = performance.now()
+      const calculateAnimationProgress = () => {
+        this.animationFrame = requestAnimationFrame((timestamp) => {
+          // eslint-disable-next-line max-len
+          const animationRuntime = timestamp + currentAnimationTime - animationStartTime
+          const animationProgress = Math.min(
+            animationRuntime / CLOSE_TIMEOUT_MS,
+            1
+          )
+          if (this.progressBar.paused) {
+            cancelAnimationFrame(this.animationFrame)
+          } else if (animationRuntime < CLOSE_TIMEOUT_MS) {
+            this.progressBar.progress = animationProgress
+            calculateAnimationProgress()
+          } else {
+            this.progressBar.progress = 1
+            cancelAnimationFrame(this.animationFrame)
+            this.isShown = false
+          }
+        })
+      }
+      calculateAnimationProgress()
     },
 
     doJump () {
       this.isShownAgain = true
-
       if (this.isShownAgainTimeoutId) {
         window.clearTimeout(this.isShownAgainTimeoutId)
       }
-
       this.isShownAgainTimeoutId = window.setTimeout(_ => {
         this.isShownAgain = false
       }, SHOWN_AGAIN_PRESENCE_TIMEOUT_MS)
@@ -151,6 +187,7 @@ $icon-padding: 2.4rem;
   max-width: 42rem;
   min-width: 32rem;
   display: flex;
+  flex-direction: column;
 
   &--warning {
     background-color: $col-status-msg-warning;
@@ -179,6 +216,27 @@ $icon-padding: 2.4rem;
     right: $content-side-paddings-sm;
     left: $content-side-paddings-sm;
   }
+}
+
+.status-message__body {
+  display: flex;
+}
+
+.status-message__progress-bar {
+  position: relative;
+  width: 100%;
+  height: 0.5rem;
+  background-color: $col-status-msg-warning;
+}
+
+.status-message__progress-bar-percentage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 0.5rem;
+  width: 100%;
+  background-color: $col-status-msg-success;
+  max-width: 100%;
 }
 
 .status-message__icon-wrp {
