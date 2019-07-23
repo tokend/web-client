@@ -194,8 +194,11 @@ export default {
     watchChangesInLocalStorage () {
       window.onstorage = (storage) => {
         const storageKey = 'TokenDStore-v2'
-        if (storage.key === storageKey &&
-            storage.oldValue !== storage.newValue) {
+        const isSameStorageKey = storage.key === storageKey
+
+        if ((this[vuexTypes.isLoggedIn] ||
+          storage.newValue !== storage.oldValue) &&
+          isSameStorageKey) {
           this.popState()
         }
       }
