@@ -21,19 +21,22 @@ export const sessionStoragePlugin = store => {
           wallet: savedStore.wallet,
           kyc: savedStore.kyc,
           keyValue: savedStore.keyValue,
-          session: savedStore.session,
           idleHandler: savedStore.idleHandler,
         })
 
         break
       }
       default:
+        if (mutation.type === vuexTypes.UPDATE_LOGOUT_AT) {
+          const savedStore = localStorage.getItem(config.STORAGE_KEY)
+          if (!savedStore) break
+        }
+
         localStorage.setItem(config.STORAGE_KEY, JSON.stringify({
           account: state.account,
           wallet: state.wallet,
           kyc: state.kyc,
           keyValue: state.keyValue,
-          session: state.session,
           idleHandler: state.idleHandler,
         }))
     }

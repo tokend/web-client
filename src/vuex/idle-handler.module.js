@@ -1,7 +1,7 @@
 import config from '@/config'
 import { vuexTypes } from './types'
 import moment from 'moment'
-import throttle from 'lodash/throttle'
+import debounce from 'lodash/debounce'
 
 const IDLE_TICKER_INTERVAL = 1000
 const DEBOUNCE_DELAY = 3000
@@ -35,13 +35,13 @@ const actions = {
       }
     }
 
-    document.onload = throttle(resetTimer, DEBOUNCE_DELAY)
-    document.onmousemove = throttle(resetTimer, DEBOUNCE_DELAY)
-    document.onmousedown = throttle(resetTimer, DEBOUNCE_DELAY)
-    document.ontouchstart = throttle(resetTimer, DEBOUNCE_DELAY)
-    document.onclick = throttle(resetTimer, DEBOUNCE_DELAY)
-    document.onscroll = throttle(resetTimer, DEBOUNCE_DELAY)
-    document.onkeypress = throttle(resetTimer, DEBOUNCE_DELAY)
+    document.onload = debounce(resetTimer, DEBOUNCE_DELAY)
+    document.onmousemove = debounce(resetTimer, DEBOUNCE_DELAY)
+    document.onmousedown = debounce(resetTimer, DEBOUNCE_DELAY)
+    document.ontouchstart = debounce(resetTimer, DEBOUNCE_DELAY)
+    document.onclick = debounce(resetTimer, DEBOUNCE_DELAY)
+    document.onscroll = debounce(resetTimer, DEBOUNCE_DELAY)
+    document.onkeypress = debounce(resetTimer, DEBOUNCE_DELAY)
   },
 
   [vuexTypes.KEEP_SESSION] ({ dispatch, rootGetters }) {
