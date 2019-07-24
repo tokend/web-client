@@ -55,13 +55,15 @@
           <passport-balances @more-link-followed="toggleDropdown" />
         </div>
 
-        <div class="passport__dropdown-customer-ui-switch-wrp">
-          <switch-field
-            :value="isCustomerUiShown"
-            @input="toggleCustomerUi($event)"
-            :label="'passport.customer-ui-switch' | globalize"
-          />
-        </div>
+        <template v-if="isAccountCorporate">
+          <div class="passport__dropdown-customer-ui-switch-wrp">
+            <switch-field
+              :value="isCustomerUiShown"
+              @input="toggleCustomerUi($event)"
+              :label="'passport.customer-ui-switch' | globalize"
+            />
+          </div>
+        </template>
 
         <div class="passport__dropdown-actions-wrp">
           <button
