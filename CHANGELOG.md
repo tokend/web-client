@@ -47,6 +47,11 @@ for further information about branching and tagging conventions.
 ## [1.10.0-rc.2] - 2019-07-18
 #### Added
 - Real time updates on all pages
+- `LOG_IN` and `LOG_OUT` vuex actions
+- New `LOG_IN` action
+
+#### Changed
+- Rename `LOG_IN` action on `RESTORE_SESSION`
 
 #### Removed
 - Recovery seed screen on sign up
