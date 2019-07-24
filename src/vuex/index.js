@@ -22,7 +22,6 @@ export const rootModule = {
     // These mutations are being subscribed by plugins
     [vuexTypes.POP_STATE] () { },
     [vuexTypes.CLEAR_STATE] () { },
-    [vuexTypes.POP_LOGOUT_AT] () { },
   },
   getters: {
     [vuexTypes.isLoggedIn]: (_, getters) => !_isEmpty(

@@ -144,7 +144,6 @@ export default {
     }),
     ...mapMutations({
       popState: vuexTypes.POP_STATE,
-      popLogoutTime: vuexTypes.POP_LOGOUT_AT,
     }),
     async initApp () {
       api.useBaseURL(config.HORIZON_SERVER)
@@ -202,7 +201,6 @@ export default {
           storage.newValue !== storage.oldValue) &&
           isSameStorageKey) {
           this.popState()
-          this.popLogoutTime()
         }
       }
     },
