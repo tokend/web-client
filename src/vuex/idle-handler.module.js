@@ -52,10 +52,12 @@ const actions = {
     }, config.KEEP_SESSION_INTERVAL)
   },
 
-  [vuexTypes.INIT_IDLE_TICKER] ({ dispatch, state, rootGetters }) {
+  [vuexTypes.INIT_IDLE_TICKER] ({ dispatch, getters, rootGetters }) {
     setInterval(() => {
+      const logoutAt = getters[vuexTypes.logoutAt]
+
       if (rootGetters[vuexTypes.isLoggedIn] &&
-        moment().isSameOrAfter(state.logoutAt)) {
+        moment().isSameOrAfter(logoutAt)) {
         dispatch(vuexTypes.LOGOUT_IDLE)
       }
     }, IDLE_TICKER_INTERVAL)
@@ -73,8 +75,14 @@ const actions = {
 
 }
 
+const getters = {
+  [vuexTypes.logoutAt]: state => state.logoutAt,
+
+}
+
 export default {
   state,
   actions,
   mutations,
+  getters,
 }
