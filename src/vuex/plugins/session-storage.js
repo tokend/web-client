@@ -29,10 +29,11 @@ export const sessionStoragePlugin = store => {
         break
       }
       default:
-        if (mutation.type === vuexTypes.UPDATE_LOGOUT_AT) {
-          const savedStore = localStorage.getItem(config.STORAGE_KEY)
-          if (!savedStore) break
-        }
+        const savedStore = localStorage.getItem(config.STORAGE_KEY)
+        // eslint-disable-next-line max-len
+        const isUpdateLogoutAtMutation = mutation.type === vuexTypes.UPDATE_LOGOUT_AT
+
+        if (isUpdateLogoutAtMutation && savedStore) break
 
         localStorage.setItem(config.STORAGE_KEY, JSON.stringify({
           account: state.account,
