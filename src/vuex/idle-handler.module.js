@@ -77,7 +77,6 @@ const actions = {
 
 const getters = {
   [vuexTypes.logoutAt]: state => state.logoutAt,
-
 }
 
 export default {
