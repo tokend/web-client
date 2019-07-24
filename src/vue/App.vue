@@ -109,8 +109,8 @@ export default {
   },
 
   watch: {
-    isLoggedIn () {
-      if (!document.hasFocus()) {
+    isLoggedIn (value) {
+      if (!document.hasFocus() || !value) {
         location.reload()
       }
     },
