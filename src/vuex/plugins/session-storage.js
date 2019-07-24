@@ -10,11 +10,13 @@ export const sessionStoragePlugin = store => {
       }
       case vuexTypes.POP_STATE: {
         let savedStore = localStorage.getItem(config.STORAGE_KEY)
+
         if (!savedStore) {
           break
         }
 
         savedStore = JSON.parse(savedStore)
+
         store.replaceState({
           ...state,
           account: savedStore.account,
