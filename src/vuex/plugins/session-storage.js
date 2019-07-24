@@ -33,7 +33,7 @@ export const sessionStoragePlugin = store => {
         // eslint-disable-next-line max-len
         const isUpdateLogoutAtMutation = mutation.type === vuexTypes.UPDATE_LOGOUT_AT
 
-        if (isUpdateLogoutAtMutation && savedStore) break
+        if (isUpdateLogoutAtMutation && !savedStore) break
 
         localStorage.setItem(config.STORAGE_KEY, JSON.stringify({
           account: state.account,
