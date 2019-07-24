@@ -3,7 +3,7 @@ services:
 
 variables:
   GITHUB_REF: $CI_COMMIT_SHA
-  DH_IMAGE: tokend/web-client
+  DH_IMAGE: tokendconto/web-client
 
 stages:
   - build
@@ -17,9 +17,7 @@ build:
   tags:
     - tokend
   script:
-    - ci-little-helper set-pending build
-    - .ci/build.sh && STATE=0 || STATE=1
-    - ci-little-helper set-state $STATE build && exit $STATE
+    - .ci/build.sh
 
 lint:
   image: registry.gitlab.com/tokend/deployment/js-build:latest
@@ -27,9 +25,7 @@ lint:
   tags:
     - tokend
   script:
-    - ci-little-helper set-pending lint
-    - .ci/lint.sh && STATE=0 || STATE=1
-    - ci-little-helper set-state $STATE lint && exit $STATE
+    - .ci/lint.sh
 
 unit_test:
   image: registry.gitlab.com/tokend/deployment/js-build:latest
@@ -37,9 +33,7 @@ unit_test:
   tags:
     - tokend
   script:
-    - ci-little-helper set-pending unit_test
-    - .ci/test.sh && STATE=0 || STATE=1
-    - ci-little-helper set-state $STATE unit_test && exit $STATE
+    - .ci/test.sh
 
 publish dockerhub:                                                                                                                                                                                                 
   image: registry.gitlab.com/tokend/deployment/docker-build:latest
@@ -52,6 +46,4 @@ publish dockerhub:
   only:
     - /^.+\..+\..+$/
   script:
-    - ci-little-helper set-pending publish
-    - .ci/publish.sh && STATE=0 || STATE=1
-    - ci-little-helper set-state $STATE publish && exit $STATE
+    - .ci/publish.sh
