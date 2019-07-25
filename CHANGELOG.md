@@ -12,6 +12,7 @@ for further information about branching and tagging conventions.
 - A bug when you cannot return from "Downloads" if the tab was opened in new tab
 - A bug when page reload twice
 - A bug when user cannot sign out
+- A bug when don't update logout time
 
 ### "Under the hood" changes
 #### Added
