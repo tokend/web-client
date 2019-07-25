@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 ## [1.0.0-rc.1] - 2019-07-25
 #### Added 
 - Display asset logo full cover on Assets page
+- Create Asset Pair and Atomic Swap on asset creation
 
 #### Changed
 - Display asset description completely

@@ -1188,7 +1188,10 @@
       "restrict-who-can-use": "Я хочу ограничить, кто может использовать этот актив",
       "terms-subheading": "Соглашение",
       "permissions-subheading": "Разрешения",
-      "description-lbl": "Описание актива (необязательно)"
+      "description-lbl": "Описание актива (необязательно)",
+      "price-lbl": "Цена в {{quoteAsset}}",
+      "can-be-bought-lbl": "Может быть куплен",
+      "amount-to-sell-lbl": "Количество на продажу"
     },
     "update-asset-form": {
       "loading-msg": "Загружаем…",
