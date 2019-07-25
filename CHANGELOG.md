@@ -9,6 +9,7 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Changed
+- Display asset description completely
 - Required only 'Business name' field in business kyc form
 
 ## [1.0.0-rc.0] - 2019-07-25
