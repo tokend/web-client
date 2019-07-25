@@ -180,7 +180,10 @@
       "created-atomic-swap-msg": "Direct sell offering successfully created"
     },
     "atomic-swaps-explore": {
-      "no-list-title": "Direct sell list is coming soon"
+      "atomic-swap-drawer-title": "Direct sell details",
+      "no-list-title": "No offerings yet",
+      "no-list-msg": "Here will be the list of direct sell offerings",
+      "owned-by-me-filter-lbl": "Owned by me"
     },
     "create-asset-form": {
       "next-btn": "Create"

@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { BusinessRecord } from '@/vue/pages/businesses-all/business.record'
+import { BusinessRecord } from '@/js/records/entities/business.record'
 import { documentsManager } from '@/api'
 
 export default {

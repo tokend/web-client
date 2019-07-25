@@ -16,7 +16,7 @@
 
 <script>
 
-import { CorporateRecord } from './business.record'
+import { CorporateRecord } from '@/js/records/entities/business.record'
 
 import BusinessLogo from './BusinessLogo'
 

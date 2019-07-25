@@ -2,7 +2,7 @@
   <div
     id="app"
     v-if="isAppInitialized"
-    :key="lang">
+    :key="appKey">
     <warning-banner
       v-if="isNotSupportedBrowser && !isSupportedBrowsersPage"
       :message="'common.browser-not-supported' | globalize"
@@ -99,12 +99,17 @@ export default {
       vuexTypes.isLoggedIn,
       vuexTypes.isAccountBlocked,
       vuexTypes.kycRequestBlockReason,
+      vuexTypes.account,
     ]),
     isNavigationRendered () {
       return this.$route.matched.some(m => m.meta.isNavigationRendered)
     },
     isSupportedBrowsersPage () {
       return this.$route.name === vueRoutes.supportedBrowsers.name
+    },
+    appKey () {
+      const accRoleId = ((this.account || {}).role || {}).id || ''
+      return `${accRoleId}${this.lang}`
     },
   },
 

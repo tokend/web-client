@@ -12,6 +12,10 @@ for further information about branching and tagging conventions.
 - Display asset description completely
 - Required only 'Business name' field in business kyc form
 
+#### Fixed
+- Resolved an issue with randomly shown/hidden sidebar menu links of corporate
+  account
+
 ## [1.0.0-rc.0] - 2019-07-25
 ### Added
 - New 'Explore atomic swaps' page

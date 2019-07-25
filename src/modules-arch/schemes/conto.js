@@ -55,6 +55,7 @@ export default {
         menuButtonTranslationId: 'pages-names.customers',
         menuButtonMdiName: 'account',
         isAutoRedirectToFirstChild: true,
+        isCorporateOnly: true,
         submodules: [
           new CustomersListPageModule({
             routerEntry: {
@@ -65,7 +66,6 @@ export default {
             isCorporateOnly: true,
           }),
         ],
-        isCorporateOnly: true,
       },
     ),
 
@@ -80,6 +80,7 @@ export default {
         menuButtonMdiName: 'domain',
         menuSectionTranslationId: 'sidebar.section-explore',
         isAutoRedirectToFirstChild: true,
+        isUnverifiedOnly: true,
         submodules: [
           new BusinessesAllPageModule({
             routerEntry: {
@@ -90,7 +91,6 @@ export default {
             isUnverifiedOnly: true,
           }),
         ],
-        isUnverifiedOnly: true,
       },
     ),
 
@@ -103,6 +103,8 @@ export default {
         },
         menuButtonTranslationId: 'pages-names.movements',
         menuButtonMdiName: 'menu',
+        isUnverifiedOnly: true,
+        isWithBusinessToBrowseOnly: true,
         submodules: [
           new MovementsHistoryModule(),
           new MovementsTopBarModule({
@@ -111,7 +113,6 @@ export default {
             ],
           }),
         ],
-        isUnverifiedOnly: true,
       },
     ),
 
@@ -124,6 +125,7 @@ export default {
         menuButtonTranslationId: 'pages-names.assets',
         menuButtonMdiName: 'coins',
         isAutoRedirectToFirstChild: true,
+        isWithBusinessToBrowseOnly: true,
         submodules: [
           new AssetExplorerPageModule({
             routerEntry: {
@@ -265,6 +267,7 @@ export default {
         menuButtonTranslationId: 'pages-names.atomic-swaps',
         menuButtonMdiName: 'swap-horizontal',
         isAutoRedirectToFirstChild: true,
+        isWithBusinessToBrowseOnly: true,
         submodules: [
           new AtomicSwapsExplorePageModule({
             routerEntry: {
@@ -272,13 +275,12 @@ export default {
               name: vueRoutes.atomicSwapsExplore.name,
               props: true,
             },
-            isCorporateOnly: true,
+            isWithBusinessToBrowseOnly: true,
           }),
           new CreateAtomicSwapFormModule({
             isCorporateOnly: true,
           }),
         ],
-        isCorporateOnly: true,
       },
     ),
 

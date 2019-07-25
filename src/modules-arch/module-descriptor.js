@@ -43,6 +43,9 @@ export class ModuleDescriptor {
    *
    * @param {Boolean} [opts.isUnverifiedOnly]
    * If `true` the component will be accessible only by unverified accounts
+   *
+   * @param {Boolean} [opts.isWithBusinessToBrowseOnly]
+   * If `true` the component will be accessible only by unverified accounts
    */
   constructor (opts = {}) {
     // will be assigned automatically while the component renders
@@ -58,6 +61,7 @@ export class ModuleDescriptor {
       importStoreFn = null,
       isCorporateOnly = false,
       isUnverifiedOnly = false,
+      isWithBusinessToBrowseOnly = false,
     } = opts
 
     if (typeof importComponentFn !== 'function') {
@@ -75,6 +79,7 @@ export class ModuleDescriptor {
     this._allowedSubmodules = allowedSubmodules
     this._isCorporateOnly = isCorporateOnly
     this._isUnverifiedOnly = isUnverifiedOnly
+    this._isWithBusinessToBrowseOnly = isWithBusinessToBrowseOnly
 
     this.validateSubmodules(submodules)
     this._submodules = submodules
@@ -87,17 +92,32 @@ export class ModuleDescriptor {
   get submodules () { return this._submodules }
   get incompatibles () { return this._incompatibles }
   get isAccessible () {
-    if (this._isCorporateOnly) {
-      return store.getters[vuexTypes.isAccountCorporate]
-        ? !store.getters[vuexTypes.isCustomerUiShown]
-        : false
-    } else if (this._isUnverifiedOnly) {
-      return store.getters[vuexTypes.isAccountCorporate]
-        ? store.getters[vuexTypes.isCustomerUiShown]
-        : store.getters[vuexTypes.isAccountUnverified]
-    } else {
-      return true
+    const isCorporate = store.getters[vuexTypes.isAccountCorporate]
+    const isUnverified = store.getters[vuexTypes.isAccountUnverified]
+    const isCustomerUiShown = store.getters[vuexTypes.isCustomerUiShown]
+    const isBusinessToBrowse = store.getters[vuexTypes.isBusinessToBrowse]
+
+    if (this._isWithBusinessToBrowseOnly && isCorporate && isCustomerUiShown) {
+      return isBusinessToBrowse
     }
+
+    if (this._isWithBusinessToBrowseOnly && isUnverified) {
+      return isBusinessToBrowse
+    }
+
+    if (this._isCorporateOnly) {
+      return isCorporate
+        ? !isCustomerUiShown
+        : false
+    }
+
+    if (this._isUnverifiedOnly) {
+      return isCorporate
+        ? isCustomerUiShown
+        : isUnverified
+    }
+
+    return true
   }
   get createdComponentUid () { return this._createdComponentUid }
   get createdComponent () { return this._createdComponent }
