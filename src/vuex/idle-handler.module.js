@@ -61,13 +61,13 @@ const actions = {
     }, IDLE_TICKER_INTERVAL)
   },
 
-  [vuexTypes.LOGOUT_IDLE] ({ commit }) {
-    commit(vuexTypes.CLEAR_STATE)
+  [vuexTypes.LOGOUT_IDLE] ({ dispatch }) {
+    dispatch(vuexTypes.LOG_OUT)
     location.href = location.href + getQueryParameters('isIdle=true')
   },
 
-  [vuexTypes.LOGOUT_SESSION] ({ commit }) {
-    commit(vuexTypes.CLEAR_STATE)
+  [vuexTypes.LOGOUT_SESSION] ({ dispatch }) {
+    dispatch(vuexTypes.LOG_OUT)
     location.href = location.href + getQueryParameters('isSessionExpired=true')
   },
 

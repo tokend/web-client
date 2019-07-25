@@ -23,19 +23,23 @@ export const sessionStoragePlugin = store => {
           wallet: savedStore.wallet,
           kyc: savedStore.kyc,
           keyValue: savedStore.keyValue,
-          session: savedStore.session,
           idleHandler: savedStore.idleHandler,
         })
 
         break
       }
       default:
+        const savedStore = localStorage.getItem(config.STORAGE_KEY)
+        // eslint-disable-next-line max-len
+        const isUpdateLogoutAtMutation = mutation.type === vuexTypes.UPDATE_LOGOUT_AT
+
+        if (isUpdateLogoutAtMutation && !savedStore) break
+
         localStorage.setItem(config.STORAGE_KEY, JSON.stringify({
           account: state.account,
           wallet: state.wallet,
           kyc: state.kyc,
           keyValue: state.keyValue,
-          session: state.session,
           idleHandler: state.idleHandler,
         }))
     }

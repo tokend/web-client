@@ -13,6 +13,7 @@ import { globalize } from '@/vue/filters/globalize'
 import walletModule from '@/vuex/wallet.module'
 import accountModule from '@/vuex/account.module'
 import kycModule from '@/vuex/kyc.module'
+import { rootModule } from '@/vuex/index'
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
@@ -82,10 +83,12 @@ describe('LoginForm component unit test', () => {
         ...walletModule.actions,
         ...accountModule.actions,
         ...kycModule.actions,
+        ...rootModule.actions,
       }
       const getters = walletModule.getters
 
-      spyLoadWallet = sinon.stub(actions, vuexTypes.LOAD_WALLET).resolves()
+      spyLoadWallet = sinon.stub(actions, vuexTypes.LOG_IN).resolves()
+      sinon.stub(actions, vuexTypes.LOAD_WALLET).resolves()
       sinon.stub(actions, vuexTypes.LOAD_ACCOUNT).resolves()
       sinon.stub(actions, vuexTypes.LOAD_KYC).resolves()
       sinon.stub(getters, vuexTypes.walletAccountId).returns('SOME_ACCOUNT_ID')

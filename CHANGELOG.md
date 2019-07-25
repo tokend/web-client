@@ -11,6 +11,7 @@ for further information about branching and tagging conventions.
 #### Fixed
 - A bug when you cannot return from "Downloads" if the tab was opened in new tab
 - A bug when page reload twice
+- A bug when user cannot sign out
 
 ### "Under the hood" changes
 #### Added
@@ -47,6 +48,11 @@ for further information about branching and tagging conventions.
 ## [1.10.0-rc.2] - 2019-07-18
 #### Added
 - Real time updates on all pages
+- `LOG_IN` and `LOG_OUT` vuex actions
+- New `LOG_IN` action
+
+#### Changed
+- Rename `LOG_IN` action on `RESTORE_SESSION`
 
 #### Removed
 - Recovery seed screen on sign up
