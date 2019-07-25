@@ -76,7 +76,6 @@ export default {
   },
 
   created () {
-    // this.checkCurrentRouteAccessible()
     this.listen()
     this.initRouterHooks()
   },
@@ -86,15 +85,6 @@ export default {
       vuexTypes.SELECT_BUSINESS_TO_BROWSE,
       vuexTypes.CLEAR_BUSINESS_TO_BROWSE,
     ]),
-
-    // checkCurrentRouteAccessible () {
-    //   if (
-    //     ROUTES_WITH_OWNER_FILTER.includes(this.$route.name) &&
-    //     !this.businessToBrowse.accountId
-    //   ) {
-    //     this.$router.push(vueRoutes.businesses)
-    //   }
-    // },
 
     listen () {
       Bus.$on('businesses:setCurrentBusiness', payload => {
