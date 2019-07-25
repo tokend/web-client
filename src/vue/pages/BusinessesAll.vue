@@ -62,7 +62,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import BusinessCard from './businesses-all/BusinessCard'
 import BusinessCardSkeleton from './businesses-all/BusinessCardSkeleton'
 
-import { BusinessRecord } from './businesses-all/business.record'
+import { BusinessRecord } from '@/js/records/entities/business.record'
 import { vueRoutes } from '@/vue-router/routes'
 
 export default {
