@@ -48,8 +48,11 @@ const mutations = {
   // idle
   UPDATE_LOGOUT_AT: 'UPDATE_LOGOUT_AT',
 
+  // conto hacks
   SHOW_CUSTOMER_UI: 'SHOW_CUSTOMER_UI',
   HIDE_CUSTOMER_UI: 'HIDE_CUSTOMER_UI',
+  SELECT_BUSINESS_TO_BROWSE: 'SELECT_BUSINESS_TO_BROWSE',
+  CLEAR_BUSINESS_TO_BROWSE: 'CLEAR_BUSINESS_TO_BROWSE',
 }
 
 const actions = {
@@ -138,8 +141,6 @@ const getters = {
   isAccountUnverified: 'isAccountUnverified',
   isAccountBlocked: 'isAccountBlocked',
 
-  isCustomerUiShown: 'isCustomerUiShown',
-
   // wallet
   walletId: 'walletId',
   walletAccountId: 'walletAccountId',
@@ -203,6 +204,11 @@ const getters = {
   ownedBalancesAssets: 'ownedBalancesAssets',
   baseAtomicSwapBalancesAssets: 'baseAtomicSwapBalancesAssets',
   quoteAtomicSwapAssets: 'quoteAtomicSwapAssets',
+
+  // conto hacks
+  isCustomerUiShown: 'isCustomerUiShown',
+  businessToBrowse: 'businessToBrowse',
+  isBusinessToBrowse: 'isBusinessToBrowse',
 }
 
 export const vuexTypes = {

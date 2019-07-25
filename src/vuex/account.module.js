@@ -2,11 +2,13 @@ import _get from 'lodash/get'
 import { vuexTypes } from './types'
 import { api } from '../api'
 import { BalanceRecord } from '@/js/records/entities/balance.record'
+import { BusinessRecord } from '@/js/records/entities/business.record'
 
 export const state = {
   account: {},
   balancesDetails: [],
   isCustomerUiShown: false,
+  businessToBrowse: {},
 }
 
 export const mutations = {
@@ -24,6 +26,14 @@ export const mutations = {
 
   [vuexTypes.HIDE_CUSTOMER_UI] (state) {
     state.isCustomerUiShown = false
+  },
+
+  [vuexTypes.SELECT_BUSINESS_TO_BROWSE] (state, payload) {
+    state.businessToBrowse = payload
+  },
+
+  [vuexTypes.CLEAR_BUSINESS_TO_BROWSE] (state) {
+    state.businessToBrowse = {}
   },
 }
 
@@ -98,6 +108,12 @@ export const getters = {
     rootGetters[vuexTypes.kvEntryBlockedRoleId],
 
   [vuexTypes.isCustomerUiShown]: state => state.isCustomerUiShown,
+
+  [vuexTypes.businessToBrowse]: state =>
+    new BusinessRecord(state.businessToBrowse),
+
+  [vuexTypes.isBusinessToBrowse]: state =>
+    Object.keys(state.businessToBrowse).length > 0,
 }
 
 export default {

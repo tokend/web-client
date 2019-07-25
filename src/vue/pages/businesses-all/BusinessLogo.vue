@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { BusinessRecord } from './business.record'
+import { BusinessRecord } from '@/js/records/entities/business.record'
 import { documentsManager } from '@/api'
 
 export default {
