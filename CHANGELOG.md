@@ -8,6 +8,10 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Changed
+- Display asset description completely
+- Required only 'Business name' field in business kyc form
+
 #### Fixed
 - Resolved an issue with randomly shown/hidden sidebar menu links of corporate
   account

@@ -18,15 +18,6 @@
     <div class="app__table asset-attributes-viewer__table-wrp">
       <table>
         <tbody>
-          <template v-if="asset.description">
-            <tr>
-              <td>{{ 'assets.description-title' | globalize }}</td>
-              <td>
-                {{ asset.description }}
-              </td>
-            </tr>
-          </template>
-
           <tr v-if="balance">
             <td>{{ 'assets.balance-title' | globalize }}</td>
             <td>
@@ -57,6 +48,10 @@
           </tr>
         </tbody>
       </table>
+    </div>
+    <div class="asset-attributes-viewer__description">
+      <h3>{{ 'assets.description-title' | globalize }}</h3>
+      <p>{{ asset.description }}</p>
     </div>
   </div>
 </template>
@@ -159,5 +154,9 @@ $media-small-height: 460px;
   font-size: 1.4rem;
   line-height: 1.29;
   color: $col-primary;
+}
+
+.asset-attributes-viewer__description {
+  margin-top: 1.5rem;
 }
 </style>

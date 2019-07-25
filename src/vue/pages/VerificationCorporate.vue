@@ -28,10 +28,8 @@
           <input-field
             white-autofill
             v-model="form.company"
-            @blur="touchField('form.company')"
             name="verification-corporate-company"
             :label="'verification-form.company-lbl' | globalize"
-            :error-message="getFieldErrorMessage('form.company')"
             :disabled="formMixin.isDisabled"
           />
         </div>
@@ -57,10 +55,8 @@
           <input-field
             white-autofill
             v-model="form.headquarters"
-            @blur="touchField('form.headquarters')"
             name="verification-corporate-headquarters"
             :label="'verification-form.headquarters-lbl' | globalize"
-            :error-message="getFieldErrorMessage('form.headquarters')"
             :disabled="formMixin.isDisabled"
           />
         </div>
@@ -71,10 +67,8 @@
           <input-field
             white-autofill
             v-model="form.industry"
-            @blur="touchField('form.industry')"
             name="verification-corporate-industry"
             :label="'verification-form.industry-lbl' | globalize"
-            :error-message="getFieldErrorMessage('form.industry')"
             :disabled="formMixin.isDisabled"
           />
         </div>
@@ -118,10 +112,8 @@
           <input-field
             white-autofill
             v-model="form.bankAccount"
-            @blur="touchField('form.bankAccount')"
             name="verification-corporate-bank-account"
             :label="'verification-form.bank-account-lbl' | globalize"
-            :error-message="getFieldErrorMessage('form.bankAccount')"
             :disabled="formMixin.isDisabled"
           />
         </div>
@@ -196,7 +188,7 @@ export default {
       avatar: null,
       headquarters: '',
       industry: '',
-      teamSize: '0',
+      teamSize: '1',
       website: '',
       bankAccount: '',
     },
@@ -205,25 +197,21 @@ export default {
     DOCUMENT_TYPES,
   }),
 
-  validations: {
-    form: {
-      name: { required },
-      company: { required },
-      headquarters: { required },
-      industry: { required },
-      teamSize: {
-        required,
-        integer,
-        minValue: minValue(MIN_TEAM_SIZE),
+  validations () {
+    const websiteRule = {
+      validateUrl,
+    }
+
+    return {
+      form: {
+        name: { required },
+        teamSize: {
+          integer,
+          minValue: minValue(MIN_TEAM_SIZE),
+        },
+        website: this.form.website ? websiteRule : {},
       },
-      website: {
-        required,
-        validateUrl,
-      },
-      bankAccount: {
-        required,
-      },
-    },
+    }
   },
 
   computed: {
