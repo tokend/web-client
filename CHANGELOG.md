@@ -8,6 +8,9 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Added 
+- Display asset logo full cover on Assets page
+
 #### Changed
 - Display asset description completely
 - Required only 'Business name' field in business kyc form

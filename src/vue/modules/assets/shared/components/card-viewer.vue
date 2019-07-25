@@ -4,6 +4,7 @@
       <logo-viewer
         class="card-viewer__logo"
         :asset="asset"
+        is-full-cover
       />
     </div>
     <div class="card-viewer__info">
@@ -111,7 +112,8 @@ $media-small-desktop: 960px;
   border-radius: 0.4rem 0.4rem 0 0;
   height: $asset-card-header-height;
   background-color: $col-asset-card-header-background;
-  padding-top: 1.5rem;
+  display: flex;
+  align-items: center;
 }
 
 .card-viewer__logo {
