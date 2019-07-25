@@ -3,7 +3,7 @@
     <div class="drawer" v-if="isShown">
       <div
         class="drawer__backdrop"
-        @click="closeByClickOutside ? closeSelf : ''"
+        @click="closeByClickOutside ? closeSelf() : ''"
       />
       <div class="drawer__pane">
         <div class="drawer__head">
