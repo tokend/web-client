@@ -13,7 +13,7 @@ for further information about branching and tagging conventions.
 - Change Customer UI => Customer in EN locale
 
 #### Changed
-- Display token description completely
+- Display asset description completely
 
 ## [1.10.0-rconto.3] - 2019-07-23
 #### Added
