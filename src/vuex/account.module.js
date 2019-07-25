@@ -113,7 +113,7 @@ export const getters = {
     new BusinessRecord(state.businessToBrowse),
 
   [vuexTypes.isBusinessToBrowse]: state =>
-    Object.keys(state.businessToBrowse).length > 0,
+    Object.keys(state.businessToBrowse || {}).length > 0,
 }
 
 export default {
