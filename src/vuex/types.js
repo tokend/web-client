@@ -197,6 +197,10 @@ const getters = {
   ownedBalancesAssets: 'ownedBalancesAssets',
   baseAtomicSwapBalancesAssets: 'baseAtomicSwapBalancesAssets',
   quoteAtomicSwapAssets: 'quoteAtomicSwapAssets',
+
+  // idle-handler
+  logoutAt: 'logoutAt',
+
 }
 
 export const vuexTypes = {
