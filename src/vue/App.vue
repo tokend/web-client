@@ -112,6 +112,14 @@ export default {
     },
   },
 
+  watch: {
+    isLoggedIn () {
+      if (!document.hasFocus()) {
+        location.reload()
+      }
+    },
+  },
+
   async created () {
     await this.initApp()
 
@@ -179,18 +187,20 @@ export default {
     detectIncompatibleBrowser () {
       this.isNotSupportedBrowser = !isCompatibleBrowser()
     },
+
     async getDecryptedSecretSeed () {
       const key = await this.decryptSecretSeed()
       return key
     },
+
     watchChangesInLocalStorage () {
       window.onstorage = (storage) => {
-        // if the user is logged in, when the local storage changes,
-        // the other tabs will be updated else page is reloaded
-        if (this[vuexTypes.isLoggedIn]) {
+        const isSameStorageKey = storage.key === config.STORAGE_KEY
+
+        if ((this[vuexTypes.isLoggedIn] ||
+          storage.newValue !== storage.oldValue) &&
+          isSameStorageKey) {
           this.popState()
-        } else {
-          location.reload()
         }
       }
     },
