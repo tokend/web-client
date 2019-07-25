@@ -53,6 +53,34 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
+        <input-field
+          white-autofill
+          v-model="form.price"
+          type="number"
+          :step="inputStep"
+          :max="MAX_AMOUNT"
+          @blur="touchField('form.price')"
+          name="create-asset-form-price"
+          :label="'create-asset-form.price-lbl' | globalize({
+            quoteAsset: statsQuoteAsset.code
+          })"
+          :error-message="getFieldErrorMessage('form.price', {
+            from: {
+              value: MIN_AMOUNT,
+              currency: form.code,
+            },
+            to: {
+              value: MAX_AMOUNT,
+              currency: form.code,
+            },
+          })"
+          :disabled="isDisabled"
+        />
+      </div>
+    </div>
+
+    <div class="app__form-row">
+      <div class="app__form-field">
         <tick-field
           v-model="form.policies"
           :cb-value="ASSET_POLICIES.transferable"
@@ -62,6 +90,47 @@
         </tick-field>
       </div>
     </div>
+
+    <div class="app__form-row">
+      <div class="app__form-field">
+        <tick-field
+          v-model="form.isSellable"
+          :disabled="isDisabled"
+        >
+          {{ 'create-asset-form.can-be-bought-lbl' | globalize }}
+        </tick-field>
+      </div>
+    </div>
+
+    <template v-if="form.isSellable">
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.amountToSell"
+            type="number"
+            :step="inputStep"
+            :max="MAX_AMOUNT"
+            @blur="touchField('form.amountToSell')"
+            name="create-asset-form-amount-to-sell"
+            :label="'create-asset-form.amount-to-sell-lbl' | globalize({
+              quoteAsset: statsQuoteAsset.code
+            })"
+            :error-message="getFieldErrorMessage('form.amountToSell', {
+              from: {
+                value: MIN_AMOUNT,
+                currency: form.code,
+              },
+              to: {
+                value: MAX_AMOUNT,
+                currency: form.code,
+              },
+            })"
+            :disabled="isDisabled"
+          />
+        </div>
+      </div>
+    </template>
 
     <div class="app__form-row">
       <div class="app__form-field">
@@ -102,9 +171,19 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
-import { required, maxLength, assetCode } from '@validators'
+import {
+  required,
+  maxLength,
+  assetCode,
+  amountRange,
+  requiredIf,
+} from '@validators'
 
 import config from '@/config'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
+
+import { inputStepByDigitsCount } from '@/js/helpers/input-trailing-digits-count'
 
 const EVENTS = {
   submit: 'submit',
@@ -129,8 +208,11 @@ export default {
       logo: null,
       policies: ASSET_POLICIES.canBeBaseInAtomicSwap,
       description: '',
+      isSellable: false,
+      amountToSell: '',
     },
     MIN_AMOUNT: config.MIN_AMOUNT,
+    MAX_AMOUNT: config.MAX_AMOUNT,
     ASSET_POLICIES,
     DOCUMENT_TYPES,
     NAME_MAX_LENGTH,
@@ -151,8 +233,25 @@ export default {
         description: {
           maxLength: maxLength(DESCRIPTION_MAX_LENGTH),
         },
+        price: {
+          required,
+          amountRange: amountRange(this.MIN_AMOUNT, this.MAX_AMOUNT),
+        },
+        amountToSell: {
+          required: requiredIf(function () {
+            return this.form.isSellable
+          }),
+          amountRange: amountRange(this.MIN_AMOUNT, this.MAX_AMOUNT),
+        },
       },
     }
+  },
+
+  computed: {
+    ...mapGetters([vuexTypes.statsQuoteAsset]),
+    inputStep () {
+      return inputStepByDigitsCount(config.DECIMAL_POINTS)
+    },
   },
 
   created () {
