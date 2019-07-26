@@ -182,7 +182,7 @@ export default {
       ErrorHandler.processWithoutFeedback()
     }
 
-    this.listenUpdateList('assets:updateList', this.loadAssets)
+    this.listenUpdateList('assets:updateList', this.loadAssetsAndSetSelectedAsset)
   },
 
   beforeDestroy () {
@@ -209,6 +209,15 @@ export default {
     closeDrawerAndUpdateList () {
       this.isDrawerShown = false
       this.emitUpdateList('assets:updateList')
+    },
+
+    async loadAssetsAndSetSelectedAsset () {
+      await this.loadAssets()
+      if (this.isDrawerShown) {
+        this.selectedAsset = this.assets.find(item => {
+          return item.code === this.selectedAsset.code
+        })
+      }
     },
   },
 }

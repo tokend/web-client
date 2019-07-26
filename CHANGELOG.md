@@ -10,6 +10,12 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 ### Added
 - Show transactions history of the each client for bussiness
+- Create Asset Pair and Atomic Swap on asset creation
+
+## [1.0.0-rc.1] - 2019-07-25
+#### Added 
+- Display asset logo full cover on Assets page
+- Refresh lists after submit transactions
 
 #### Changed
 - Display asset description completely
@@ -18,6 +24,10 @@ for further information about branching and tagging conventions.
 #### Fixed
 - Resolved an issue with randomly shown/hidden sidebar menu links of corporate
   account
+
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.9.0-rc.2
 
 ## [1.0.0-rc.0] - 2019-07-25
 ### Added
@@ -61,5 +71,6 @@ for further information about branching and tagging conventions.
 #### Removed
 - `RECOVERY_MODE` config key due to unused anymore
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.0.0-rc.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.0.0-rc.1...HEAD
+[1.0.0-rc.1]: https://github.com/tokend/web-client/compare/1.0.0-rc.0...1.0.0-rc.1
 [1.0.0-rc.0]: https://github.com/tokend/web-client/releases/tag/1.0.0-rc.0

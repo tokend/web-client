@@ -3,6 +3,7 @@
     v-if="url"
     :src="url"
     class="logo-viewer logo-viewer--image"
+    :class="{ 'logo-viewer--full-cover' : isFullCover }"
   >
   <p
     v-else
@@ -23,6 +24,7 @@ export default {
   props: {
     asset: { type: AssetRecord, required: true },
     darkMode: { type: Boolean, default: false },
+    isFullCover: { type: Boolean, default: false },
   },
   computed: {
     url () {
@@ -56,6 +58,13 @@ export default {
   &--dark {
     background: $col-asset-logo-dark-background;
     color: $col-asset-logo-dark-text;
+  }
+
+  &--full-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
   }
 }
 </style>

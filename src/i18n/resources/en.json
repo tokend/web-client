@@ -1188,7 +1188,10 @@
       "restrict-who-can-use": "I want to restrict who can use this asset",
       "terms-subheading": "Terms",
       "permissions-subheading": "Permissions",
-      "description-lbl": "Asset description (optional)"
+      "description-lbl": "Asset description (optional)",
+      "price-lbl": "Price in {{quoteAsset}}",
+      "can-be-bought-lbl": "Can be bought",
+      "amount-to-sell-lbl": "Amount to sell"
     },
     "update-asset-form": {
       "loading-msg": "Loading…",
