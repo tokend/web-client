@@ -17,6 +17,7 @@ import { useWallet } from '@/api'
 import { Wallet } from '@tokend/js-sdk'
 
 import _isEmpty from 'lodash/isEmpty'
+import { ErrorTracker } from '@/js/helpers/error-tracker'
 
 Vue.use(Vuex)
 
@@ -54,7 +55,9 @@ export const rootModule = {
   mutations: {
     // These mutations are being subscribed by plugins
     [vuexTypes.POP_STATE] () { },
-    [vuexTypes.CLEAR_STATE] () { },
+    [vuexTypes.CLEAR_STATE] () {
+      ErrorTracker.setLoggedInUser({})
+    },
   },
   getters: {
     [vuexTypes.isLoggedIn]: (_, getters) => !_isEmpty(

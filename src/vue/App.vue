@@ -68,7 +68,6 @@ import {
   factorsManager,
 } from '@/api'
 import { vuexTypes } from '@/vuex'
-import { ErrorTracker } from '@/js/helpers/error-tracker'
 import { vueRoutes } from '@/vue-router/routes'
 
 import config from '@/config'
@@ -153,11 +152,6 @@ export default {
 
       if (this[vuexTypes.isLoggedIn]) {
         await this.restoreSession()
-
-        ErrorTracker.setLoggedInUser({
-          'accountId': this[vuexTypes.walletAccountId],
-          'email': this[vuexTypes.walletEmail],
-        })
         await this.loadAccount(this.walletAccountId)
       }
       walletsManager.useApi(api)
