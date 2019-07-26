@@ -11,6 +11,11 @@ for further information about branching and tagging conventions.
 ### Added
 - Create Asset Pair and Atomic Swap on asset creation
 
+#### Changed
+- `MIN_AMOUNT`, `MAX_AMOUNT`, `DECIMAL_POINTS` and `MINIMAL_NUMBER_INPUT_STEP`
+  in config
+- Trailing digits for create new asset
+
 ## [1.0.0-rc.1] - 2019-07-25
 #### Added 
 - Display asset logo full cover on Assets page
