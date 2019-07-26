@@ -45,9 +45,9 @@
                 <p class="app__form-field-description">
                   {{
                     'transfer-form.balance' | globalize({
-                      amount: parseToDigits(balance.balance),
+                      amount: balance.balance,
                       asset: form.asset.code,
-                      available: parseToDigits(balance.balance)
+                      available: balance.balance
                     })
                   }}
                 </p>
@@ -61,7 +61,7 @@
                 v-model="form.amount"
                 name="transfer-amount"
                 validation-type="outgoing"
-                :max="parseToDigits(balance.balance)"
+                :max="balance.balance"
                 :label="'transfer-form.amount-lbl' | globalize"
                 :asset="form.asset"
                 is-max-button-shown
@@ -215,6 +215,7 @@ export default {
       vuexTypes.accountId,
       vuexTypes.transferableBalancesAssets,
       vuexTypes.accountBalanceByCode,
+      vuexTypes.accountBalances,
     ]),
     balance () {
       return this.accountBalanceByCode(this.form.asset.code)
@@ -235,11 +236,6 @@ export default {
     ...mapActions({
       loadCurrentBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
-    parseToDigits (value) {
-      return (+value)
-        ? Math.floor(parseFloat(value) * 100) / 100
-        : parseFloat(value).toFixed(config.DECIMAL_POINTS)
-    },
     async submit () {
       this.updateView(VIEW_MODES.submit, this.view.opts)
       this.disableForm()

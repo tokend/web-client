@@ -146,8 +146,8 @@ export default {
           break
       }
       return MathUtil.compare(this.max, result) >= 0
-        ? this.max
-        : result
+        ? result
+        : this.max
     },
 
     balance () {
