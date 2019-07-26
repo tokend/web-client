@@ -49,7 +49,10 @@
         </tbody>
       </table>
     </div>
-    <div class="asset-attributes-viewer__description">
+    <div
+      v-if="asset.description"
+      class="asset-attributes-viewer__description"
+    >
       <h3>{{ 'assets.description-title' | globalize }}</h3>
       <p>{{ asset.description }}</p>
     </div>

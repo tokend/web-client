@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added 
 - Display asset logo full cover on Assets page
+- Refresh lists after submit transactions
 
 #### Changed
 - Display asset description completely
