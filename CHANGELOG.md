@@ -9,6 +9,7 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 ### Added
+- Show transactions history of the each client for bussiness
 - Create Asset Pair and Atomic Swap on asset creation
 
 ## [1.0.0-rc.1] - 2019-07-25
