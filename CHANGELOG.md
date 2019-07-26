@@ -20,6 +20,10 @@ for further information about branching and tagging conventions.
 - Resolved an issue with randomly shown/hidden sidebar menu links of corporate
   account
 
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.9.0-rc.2
+
 ## [1.0.0-rc.0] - 2019-07-25
 ### Added
 - New 'Explore atomic swaps' page
