@@ -14,6 +14,9 @@ for further information about branching and tagging conventions.
 - A bug when user cannot sign out
 - A bug when don't update logout time
 
+#### Removed
+- Delay refresh list timeout
+
 ### "Under the hood" changes
 #### Added
 - New config keys:
