@@ -70,11 +70,11 @@ import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
-import config from '@/config'
 
 import TransferForm from '@/vue/forms/TransferForm'
 import MassIssuanceForm from '@/vue/forms/MassIssuanceForm'
 import Drawer from '@/vue/common/Drawer'
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 const EVENTS = {
   balanceAdded: 'balance-added',
@@ -89,6 +89,7 @@ export default {
     MassIssuanceForm,
     Drawer,
   },
+  mixins: [UpdateList],
   props: {
     asset: { type: AssetRecord, required: true },
   },
@@ -97,7 +98,6 @@ export default {
     isMassIssueDrawerShown: false,
     isPending: false,
     EVENTS,
-    config,
   }),
 
   computed: {
@@ -155,8 +155,7 @@ export default {
       }
     },
     updateAssetList () {
-      this.loadAssets()
-      setTimeout(() => this.loadAssets(), config.RELOAD_TIMEOUT)
+      this.emitUpdateList('assets:updateList')
     },
   },
 }

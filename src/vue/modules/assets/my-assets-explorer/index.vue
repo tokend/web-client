@@ -142,7 +142,7 @@ export default {
 
   async created () {
     await this.load()
-    this.listenUpdateList('assets:updateList', this.load)
+    this.listenUpdateList('assets:updateList', this.loadAssetsAndSetSelectedBalance)
   },
 
   beforeDestroy () {
@@ -173,6 +173,15 @@ export default {
     closeDrawerAndUpdateList () {
       this.isDrawerShown = false
       this.emitUpdateList('assets:updateList')
+    },
+
+    async loadAssetsAndSetSelectedBalance () {
+      await this.load()
+      if (this.isDrawerShown) {
+        this.selectedBalance = this.accountOwnedAssetsBalances.find(item => {
+          return item.asset.code === this.selectedBalance.asset.code
+        })
+      }
     },
   },
 }

@@ -14,6 +14,7 @@ for further information about branching and tagging conventions.
 ## [1.0.0-rc.1] - 2019-07-25
 #### Added 
 - Display asset logo full cover on Assets page
+- Refresh lists after submit transactions
 
 #### Changed
 - Display asset description completely
@@ -22,6 +23,10 @@ for further information about branching and tagging conventions.
 #### Fixed
 - Resolved an issue with randomly shown/hidden sidebar menu links of corporate
   account
+
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.9.0-rc.2
 
 ## [1.0.0-rc.0] - 2019-07-25
 ### Added

@@ -47,7 +47,6 @@ import CustomerAttributes from './customers-list/CustomerAttributes'
 import CustomersTable from './customers-list/CustomersTable'
 import { Bus } from '@/js/helpers/event-bus'
 import { errors } from '@tokend/js-sdk'
-import config from '@/config'
 
 export default {
   name: 'customers-list',
@@ -80,7 +79,7 @@ export default {
   methods: {
     listen () {
       Bus.on('customers:updateList', () => {
-        setTimeout(() => this.reloadList(), config.RELOAD_TIMEOUT)
+        this.reloadList()
       })
     },
 
