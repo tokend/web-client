@@ -1,7 +1,5 @@
 import { Bus } from '@/js/helpers/event-bus'
 
-const DELAY_REFRESH_LIST_MS = 5000
-
 export default {
   methods: {
     resetUpdateListEvent (event) {
@@ -9,9 +7,7 @@ export default {
     },
 
     emitUpdateList (event) {
-      setTimeout(() => {
-        Bus.emit(event)
-      }, DELAY_REFRESH_LIST_MS)
+      Bus.emit(event)
     },
 
     listenUpdateList (event, cb) {
