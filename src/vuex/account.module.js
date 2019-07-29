@@ -2,7 +2,6 @@ import _get from 'lodash/get'
 import { vuexTypes } from './types'
 import { api } from '../api'
 import { BalanceRecord } from '@/js/records/entities/balance.record'
-import { ErrorTracker } from '@/js/helpers/error-tracker'
 
 export const state = {
   account: {},
@@ -12,10 +11,6 @@ export const state = {
 export const mutations = {
   [vuexTypes.SET_ACCOUNT] (state, account) {
     state.account = account
-    ErrorTracker.setLoggedInUser({
-      'accountId': this[vuexTypes.walletAccountId],
-      'email': this[vuexTypes.walletEmail],
-    })
   },
 
   [vuexTypes.SET_ACCOUNT_BALANCES_DETAILS] (state, balancesDetails) {

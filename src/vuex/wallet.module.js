@@ -2,7 +2,6 @@ import { walletsManager, useWallet, api } from '@/api'
 
 import { vuexTypes } from './types'
 import { Wallet, encryptSecretSeed, decryptSecretSeed } from '@tokend/js-sdk'
-import { ErrorTracker } from '@/js/helpers/error-tracker'
 
 export const state = {
   wallet: {},
@@ -27,10 +26,6 @@ export const mutations = {
       sessionId: wallet.sessionId,
       publicKey: wallet.keypair.accountId(),
     }
-    ErrorTracker.setLoggedInUser({
-      'accountId': this[vuexTypes.walletAccountId],
-      'email': this[vuexTypes.walletEmail],
-    })
   },
 
   [vuexTypes.SET_ENCRYPTED_SECRET_SEED] (state, { secretSeed, sessionKey }) {
