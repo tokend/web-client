@@ -215,7 +215,6 @@ export default {
       vuexTypes.accountId,
       vuexTypes.transferableBalancesAssets,
       vuexTypes.accountBalanceByCode,
-      vuexTypes.accountBalances,
     ]),
     balance () {
       return this.accountBalanceByCode(this.form.asset.code)
