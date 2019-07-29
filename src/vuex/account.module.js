@@ -3,7 +3,6 @@ import { vuexTypes } from './types'
 import { api } from '../api'
 import { BalanceRecord } from '@/js/records/entities/balance.record'
 import { BusinessRecord } from '@/js/records/entities/business.record'
-import config from '@/config'
 
 export const state = {
   account: {},
@@ -81,13 +80,7 @@ export const getters = {
     .map(item => new BalanceRecord(item))
     .filter(i => i.asset.owner === state.account.id) || {},
   [vuexTypes.accountBalanceByCode]: state => code => state.balancesDetails
-    .map(item => {
-      let balanceRecord = new BalanceRecord(item)
-      balanceRecord.balance = (+balanceRecord.balance)
-        ? Math.floor(parseFloat(balanceRecord.balance) * 100) / 100
-        : parseFloat(balanceRecord.balance).toFixed(config.DECIMAL_POINTS)
-      return balanceRecord
-    })
+    .map(item => new BalanceRecord(item))
     .find(i => i.asset.code === code) || {},
   [vuexTypes.accountRoleId]: state => Number(
     _get(state.account, 'role.id')
