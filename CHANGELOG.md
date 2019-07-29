@@ -25,6 +25,8 @@ for further information about branching and tagging conventions.
   - `OFFLINE_ISSUANCE_MAC_LINK`
   - `OFFLINE_ISSUANCE_SOURCE_LINK`
 - Empty message placeholder for My assets page
+- `ErrorTracker.setLoggedInUser`to `SET_ACCOUNT`, `CLEAR_STATE` and `SET_WALLET`
+  mutations
 
 #### Changed
 - If some of the config keys are empty, the related images and links will not
@@ -38,6 +40,7 @@ for further information about branching and tagging conventions.
 
 #### Removed
 - `RECOVERY_MODE` config key due to unused anymore
+- `ErrorTracker.setLoggedInUser` from App.vue and LoginForm.vue
 
 ## [1.10.0-rc.3] - 2019-07-22
 #### Added
