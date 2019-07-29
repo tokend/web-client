@@ -13,11 +13,6 @@
             <span>{{ 'assets-page.balances-title' | globalize }}</span>
           </router-link>
         </template>
-        <template v-if="getModule().canRenderSubmodule(MyAssetsPageModule)">
-          <router-link :to="vueRoutes.myAssets">
-            <span>{{ 'assets-page.my-assets-title' | globalize }}</span>
-          </router-link>
-        </template>
       </template>
       <template
         slot="extra"

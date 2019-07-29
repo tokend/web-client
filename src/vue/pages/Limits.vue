@@ -1,11 +1,6 @@
 <template>
   <div class="limits" v-if="accountBalances.length">
     <top-bar>
-      <template slot="main">
-        <router-link :to="vueRoutes.limits">
-          <span>{{ 'limits.explore-limits' | globalize }}</span>
-        </router-link>
-      </template>
       <template slot="extra">
         <button
           v-ripple

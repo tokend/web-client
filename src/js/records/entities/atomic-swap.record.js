@@ -12,6 +12,7 @@ export class AtomicSwapRecord {
     this.isCanceled = _get(record, 'isCanceled')
     this.lockedAmount = _get(record, 'lockedAmount')
     this.baseAsset = _get(record, 'baseBalance.asset.id')
+    this.baseAssetName = _get(record, 'baseBalance.asset.details.name')
 
     this.quoteAssets = _get(record, 'quoteAssets', [])
       .map(item => ({

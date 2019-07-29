@@ -1,16 +1,7 @@
 <template>
   <div class="businesses-page">
     <template>
-      <top-bar>
-        <template slot="main">
-          <router-link
-            v-if="getModule().canRenderSubmodule(BusinessesAllPageModule)"
-            :to="vueRoutes.allBusinesses"
-          >
-            <span>{{ 'businesses.all-tab' | globalize }}</span>
-          </router-link>
-        </template>
-      </top-bar>
+      <top-bar />
     </template>
 
     <router-view />

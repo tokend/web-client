@@ -1731,7 +1731,7 @@
     "whitelist-invite-form": {
       "invite-hint": "Invite a user to the sale whitelist. After invitation he/she will be able to invest in the sale",
       "email-lbl": "User's email",
-      "invite-btn": "Invite",
+      "invite-btn": "Invite client",
       "user-invited-msg": "The user was successfully invited to the sale whitelist"
     },
     "invest-form": {
@@ -2353,7 +2353,8 @@
       "id-key": "ID",
       "owner-key": "Owner",
       "created-key": "Created",
-      "base-asset-key": "Base asset",
+      "base-asset-key": "Base asset code",
+      "base-asset-name": "Base asset name",
       "available-amount-key": "Available amount",
       "locked-amount-key": "Locked amount",
       "is-canceled-key": "Is canceled?",
@@ -2368,14 +2369,11 @@
       "quote-assets-subheading": "Quote asset #{{ number }}"
     },
     "atomic-swap-card": {
-      "id-prefix":"#{{id}}",
-      "author-prefix":"By",
-      "base-asset": "Base: {{ baseAsset }}",
-      "quote-assets": "Quote:",
-      "quote-asset-with-comma": "{{ quoteAsset }},"
+      "available": "Available: {{ amount }}",
+      "locked": "Locked: {{ amount }}"
     },
     "customers-page": {
-      "invite-btn": "Invite",
+      "invite-btn": "Invite client",
       "issue-btn": "Issue",
       "mass-invitation-drawer-heading": "Invite customers",
       "mass-issuance-drawer-heading": "Mass issuance",
@@ -2423,7 +2421,7 @@
       "blocked-status-td": "Blocked",
       "enable-mass-issuance-btn": "Select for issuance",
       "do-mass-issue-btn": "Perform issuance",
-      "cancel-mass-issue-btn": "Cancel issuance"
+      "cancel-mass-issue-btn": "Cancel"
     },
     "customers-list": {
       "customer-drawer-title": "View customer"
