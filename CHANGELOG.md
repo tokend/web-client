@@ -14,6 +14,9 @@ for further information about branching and tagging conventions.
 - A bug when user cannot sign out
 - A bug when don't update logout time
 
+#### Removed
+- Delay refresh list timeout
+
 ### "Under the hood" changes
 #### Added
 - New config keys:
@@ -33,6 +36,7 @@ for further information about branching and tagging conventions.
   - `OFFLINE_ISSUANCE_WIN_LINK`
   - `OFFLINE_ISSUANCE_MAC_LINK`
   - `OFFLINE_ISSUANCE_SOURCE_LINK`
+- Now using @tokend/js-sdk@1.9.0-rc.2
 
 #### Removed
 - `RECOVERY_MODE` config key due to unused anymore
