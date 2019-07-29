@@ -1,28 +1,28 @@
 <template>
-  <table class="movements-table">
+  <table class="user-movements-table">
     <thead>
-      <tr class="movements-table__head-row">
+      <tr class="user-movements-table__head-row">
         <th
-          class="movements-table__head-cell"
+          class="user-movements-table__head-cell"
           :title="'user-movements-history.type-th' | globalize"
         >
           {{ 'user-movements-history.type-th' | globalize }}
         </th>
         <th
-          class="movements-table__head-cell"
+          class="user-movements-table__head-cell"
           :title="'user-movements-history.date-th' | globalize"
         >
           {{ 'user-movements-history.date-th' | globalize }}
         </th>
         <th
-          class="movements-table__head-cell"
+          class="user-movements-table__head-cell"
           :title="'user-movements-history.amount-th' | globalize"
         >
           {{ 'user-movements-history.amount-th' | globalize }}
         </th>
         <th
-          class="movements-table__head-cell
-                 movements-table__head-cell--expand-btn-wrp"
+          class="user-movements-table__head-cell
+                 user-movements-table__head-cell--expand-btn-wrp"
         />
       </tr>
     </thead>
@@ -45,9 +45,9 @@
 </template>
 
 <script>
-import MovementsTableRow from './movements-table-row'
-import MovementsSkeletonLoader from './movements-skeleton-loader.vue'
-import EmptyTbodyPlaceholder from './movements-empty-list-placeholder.vue'
+import MovementsTableRow from './user-movements-table-row'
+import MovementsSkeletonLoader from './user-movements-skeleton-loader.vue'
+import EmptyTbodyPlaceholder from './user-movements-empty-list-placeholder.vue'
 
 export default {
   name: 'movement-list-renderer',
@@ -73,7 +73,7 @@ export default {
 @import '~@scss/variables';
 @import '../scss/variables';
 
-.movements-table {
+.user-movements-table {
   width: 100%;
   table-layout: fixed;
   border-spacing: 0 0.6rem;
@@ -82,8 +82,8 @@ export default {
   padding: 0.4rem;
 }
 
-.movements-table__head-cell {
-  padding: 0 $movements-table-cell-side-padding 1rem;
+.user-movements-table__head-cell {
+  padding: 0 $user-movements-table-cell-side-padding 1rem;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -91,17 +91,17 @@ export default {
   font-size: 1.4rem;
   color: $col-text-secondary;
   font-weight: 400;
-  width: $movements-table-cell-width;
+  width: $user-movements-table-cell-width;
 
   &--direction {
     padding-right: 0;
-    min-width: $movements-table-cell-width-direction;
-    width: $movements-table-cell-width-direction;
+    min-width: $user-movements-table-cell-width-direction;
+    width: $user-movements-table-cell-width-direction;
   }
 
   &--expand-btn-wrp {
     text-align: right;
-    width: $movements-table-cell-width-expand-btn-wrp;
+    width: $user-movements-table-cell-width-expand-btn-wrp;
   }
 }
 </style>

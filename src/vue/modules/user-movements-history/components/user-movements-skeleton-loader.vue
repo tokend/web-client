@@ -1,13 +1,13 @@
 <template>
-  <tbody class="movements-skeleton-loader">
+  <tbody class="user-movements-skeleton-loader">
     <tr
-      class="movements-skeleton-loader__brief
-             movements-skeleton-loader__no-data"
+      class="user-movements-skeleton-loader__brief
+             user-movements-skeleton-loader__no-data"
     >
       <td
         v-for="item in cells"
         :key="item"
-        class="movements-skeleton-loader__cell"
+        class="user-movements-skeleton-loader__cell"
       >
         <skeleton-loader
           :template="getTemplateNameSkeletonLoader(item)"
@@ -21,7 +21,7 @@
 import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
 
 export default {
-  name: 'movements-skeleton-loader',
+  name: 'user-movements-skeleton-loader',
   components: {
     SkeletonLoader,
   },
@@ -43,7 +43,7 @@ export default {
 @import '~@scss/variables';
 @import '../scss/variables';
 
-.movements-skeleton-loader__cell {
+.user-movements-skeleton-loader__cell {
   padding: 0.7rem 1.5rem;
 
   &:last-child {
@@ -52,13 +52,13 @@ export default {
   }
 }
 
-.movements-skeleton-loader__brief {
+.user-movements-skeleton-loader__brief {
   background-color: $col-block-bg;
 
   @include box-shadow;
 }
 
-.movements-skeleton-loader__no-data {
+.user-movements-skeleton-loader__no-data {
   height: 5.1rem;
 }
 </style>
