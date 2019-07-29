@@ -145,7 +145,6 @@ export default {
           result = config.MAX_AMOUNT
           break
       }
-
       return MathUtil.compare(this.max, result) >= 0
         ? result
         : this.max

@@ -46,13 +46,15 @@ export default Object.assign(
      * Default lower acceptable amount by most input fields. Tends to be
      * dropped one day
      */
-    MIN_AMOUNT: String(1 / (base.Operation.ONE || 1000000)),
+    MIN_AMOUNT: String(1 / 100),
 
     /**
      * Default higher acceptable amount by most input fields. Tends to be
      * dropped one day
      */
-    MAX_AMOUNT: String(base.Operation.MAX_INT64_AMOUNT),
+    MAX_AMOUNT: String(
+      Math.floor(parseFloat(base.Operation.MAX_INT64_AMOUNT) * 100) / 100
+    ),
 
     // deprecated constants
 
@@ -70,13 +72,13 @@ export default Object.assign(
      * Default amount precision, the number of digits
      * after a point
      */
-    DECIMAL_POINTS: 6,
+    DECIMAL_POINTS: 2,
 
     /**
      * Default acceptable step for amount change,
      * depends on amount precision
      */
-    MINIMAL_NUMBER_INPUT_STEP: 0.000001,
+    MINIMAL_NUMBER_INPUT_STEP: 0.01,
 
     /**
      * Default asset signer for pre-issuance upload

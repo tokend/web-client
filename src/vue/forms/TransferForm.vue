@@ -61,6 +61,7 @@
                 v-model="form.amount"
                 name="transfer-amount"
                 validation-type="outgoing"
+                :max="balance.balance"
                 :label="'transfer-form.amount-lbl' | globalize"
                 :asset="form.asset"
                 is-max-button-shown
