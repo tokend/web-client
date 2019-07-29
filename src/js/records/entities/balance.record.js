@@ -15,10 +15,10 @@ export class BalanceRecord {
     this.convertedBalance = record.convertedBalance
   }
 
-  balanceToPrecision (balance, precision = 0) {
-    const digits = Math.pow(10, precision || config.DECIMAL_POINTS)
+  balanceToPrecision (balance, precision = config.DECIMAL_POINTS) {
+    const digits = Math.pow(10, precision)
     return (+balance)
       ? String(Math.floor(parseFloat(balance) * digits) / digits)
-      : parseFloat(balance).toFixed(precision || config.DECIMAL_POINTS)
+      : parseFloat(balance).toFixed(precision)
   }
 }
