@@ -50,11 +50,11 @@
             <th :title="'customers-table.email-th' | globalize">
               {{ 'customers-table.email-th' | globalize }}
             </th>
-            <th :title="'customers-table.balances-th' | globalize">
-              {{ 'customers-table.balances-th' | globalize }}
-            </th>
             <th :title="'customers-table.status-th' | globalize">
               {{ 'customers-table.status-th' | globalize }}
+            </th>
+            <th :title="'customers-table.balances-th' | globalize">
+              {{ 'customers-table.balances-th' | globalize }}
             </th>
             <th class="customers-table__btn-td">
               <!-- actions -->
@@ -83,6 +83,10 @@
               {{ customer.email }}
             </td>
 
+            <td :title="getCustomerStatusTranslated(customer)">
+              {{ getCustomerStatusTranslated(customer) }}
+            </td>
+
             <td :title="formatBalancesOf(customer)">
               <template v-if="customer.balances && customer.balances.length">
                 <span>
@@ -93,10 +97,6 @@
               <template v-else>
                 &mdash;
               </template>
-            </td>
-
-            <td :title="getCustomerStatusTranslated(customer)">
-              {{ getCustomerStatusTranslated(customer) }}
             </td>
 
             <td class="customers-table__btn-td">

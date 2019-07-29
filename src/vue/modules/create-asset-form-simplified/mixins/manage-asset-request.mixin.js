@@ -118,7 +118,7 @@ export default {
       const operation = base.CreateIssuanceRequestBuilder
         .createIssuanceRequest({
           asset: this.collectedAttributes.code,
-          amount: config.MAX_AMOUNT,
+          amount: this.collectedAttributes.amountToSell,
           receiver: balance.id,
           reference: btoa(Math.random()),
           creatorDetails: {},

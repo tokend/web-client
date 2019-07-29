@@ -289,7 +289,7 @@ export default {
         menuButtonTranslationId: 'pages-names.atomic-swaps',
         menuButtonMdiName: 'swap-horizontal',
         isAutoRedirectToFirstChild: true,
-        isWithBusinessToBrowseOnly: true,
+        isCorporateOnly: true,
         submodules: [
           new AtomicSwapsExplorePageModule({
             routerEntry: {
@@ -297,7 +297,7 @@ export default {
               name: vueRoutes.atomicSwapsExplore.name,
               props: true,
             },
-            isWithBusinessToBrowseOnly: true,
+            isCorporateOnly: true,
           }),
           new CreateAtomicSwapFormModule({
             isCorporateOnly: true,

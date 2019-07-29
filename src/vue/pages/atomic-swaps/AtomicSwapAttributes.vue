@@ -35,6 +35,15 @@
 
           <tr>
             <td>
+              {{ 'atomic-swap-attributes.base-asset-name' | globalize }}
+            </td>
+            <td>
+              {{ atomicSwap.baseAssetName }}
+            </td>
+          </tr>
+
+          <tr>
+            <td>
               {{ 'atomic-swap-attributes.available-amount-key' | globalize }}
             </td>
             <td>

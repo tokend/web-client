@@ -1,12 +1,6 @@
 <template>
   <div class="issuance-page">
     <top-bar>
-      <template slot="main">
-        <router-link :to="vueRoutes.issuance">
-          <span>{{ 'issuance-page.history-title' | globalize }}</span>
-        </router-link>
-      </template>
-
       <template
         v-if="isAccountCorporate"
         slot="extra"

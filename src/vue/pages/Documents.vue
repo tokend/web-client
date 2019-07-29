@@ -1,16 +1,6 @@
 <template>
   <div class="documents-page">
     <top-bar>
-      <template slot="main">
-        <router-link
-          :to="vueRoutes.documentExplorer"
-        >
-          <span>
-            {{ 'documents-page.explore-documents-title' | globalize }}
-          </span>
-        </router-link>
-      </template>
-
       <template slot="extra">
         <button
           v-ripple
