@@ -10,6 +10,12 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Fixed
 - A bug when you cannot return from "Downloads" if the tab was opened in new tab
+- A bug when page reload twice
+- A bug when user cannot sign out
+- A bug when don't update logout time
+
+#### Removed
+- Delay refresh list timeout
 
 #### Added
 - Autoclose indicator to status-messages
@@ -21,6 +27,7 @@ for further information about branching and tagging conventions.
   - `OFFLINE_ISSUANCE_WIN_LINK`
   - `OFFLINE_ISSUANCE_MAC_LINK`
   - `OFFLINE_ISSUANCE_SOURCE_LINK`
+- Empty message placeholder for My assets page
 
 #### Changed
 - If some of the config keys are empty, the related images and links will not
@@ -30,6 +37,7 @@ for further information about branching and tagging conventions.
   - `OFFLINE_ISSUANCE_WIN_LINK`
   - `OFFLINE_ISSUANCE_MAC_LINK`
   - `OFFLINE_ISSUANCE_SOURCE_LINK`
+- Now using @tokend/js-sdk@1.9.0-rc.2
 
 #### Removed
 - `RECOVERY_MODE` config key due to unused anymore
@@ -48,6 +56,11 @@ for further information about branching and tagging conventions.
 ## [1.10.0-rc.2] - 2019-07-18
 #### Added
 - Real time updates on all pages
+- `LOG_IN` and `LOG_OUT` vuex actions
+- New `LOG_IN` action
+
+#### Changed
+- Rename `LOG_IN` action on `RESTORE_SESSION`
 
 #### Removed
 - Recovery seed screen on sign up

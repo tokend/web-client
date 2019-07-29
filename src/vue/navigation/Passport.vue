@@ -83,7 +83,7 @@
 
 <script>
 import { vuexTypes } from '@/vuex'
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
 import { handleClickOutside } from '@/js/helpers/handle-click-outside'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -149,10 +149,7 @@ export default {
     ...mapActions({
       loadKyc: vuexTypes.LOAD_KYC,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
-    }),
-
-    ...mapMutations({
-      clearState: vuexTypes.CLEAR_STATE,
+      logOutAccount: vuexTypes.LOG_OUT,
     }),
 
     async createLoadAccountDetailsTicker () {
@@ -195,7 +192,7 @@ export default {
 
     logOut () {
       this.closeDropdown()
-      this.clearState()
+      this.logOutAccount()
       location.reload()
     },
 
