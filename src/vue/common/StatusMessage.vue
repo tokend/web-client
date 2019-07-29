@@ -182,9 +182,11 @@ export default {
 
     doJump () {
       this.isShownAgain = true
+
       if (this.isShownAgainTimeoutId) {
         window.clearTimeout(this.isShownAgainTimeoutId)
       }
+
       this.isShownAgainTimeoutId = window.setTimeout(_ => {
         this.isShownAgain = false
       }, SHOWN_AGAIN_PRESENCE_TIMEOUT_MS)
