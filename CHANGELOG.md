@@ -63,7 +63,7 @@ for further information about branching and tagging conventions.
   - `OFFLINE_ISSUANCE_WIN_LINK`
   - `OFFLINE_ISSUANCE_MAC_LINK`
   - `OFFLINE_ISSUANCE_SOURCE_LINK`
-
+- Register of shares page
 #### Changed
 - If some of the config keys are empty, the related images and links will not
   be rendered. Affects the following keys:
