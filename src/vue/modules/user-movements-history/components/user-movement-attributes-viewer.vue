@@ -1,5 +1,5 @@
 <template>
-  <div class="movement-attributes-viewer">
+  <div class="user-movement-attributes-viewer">
     <div class="attributes-viewer">
       <table class="attributes-viewer__table">
         <movement-summary-viewer :movement="movement" />
@@ -82,7 +82,7 @@ import CreateIssuanceRequestOpViewer from './operation-viewers/create-issuance-r
 import CreateWithdrawalRequestOpViewer from './operation-viewers/create-withdrawal-request'
 
 export default {
-  name: 'movement-attributes-viewer',
+  name: 'user-movement-attributes-viewer',
   components: {
     MovementSummaryViewer,
     BalanceChangedEffectViewer,

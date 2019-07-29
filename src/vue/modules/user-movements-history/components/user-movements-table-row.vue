@@ -1,35 +1,35 @@
 <template>
-  <tbody class="movements-table-row">
-    <tr class="movements-table-row__brief">
+  <tbody class="user-movements-table-row">
+    <tr class="user-movements-table-row__brief">
       <td
-        class="movements-table-row__cell"
+        class="user-movements-table-row__cell"
         :title="movement.effect | effectTypeTranslationId | globalize"
       >
         {{ movement.effect | effectTypeTranslationId | globalize }}
       </td>
       <td
-        class="movements-table-row__cell"
+        class="user-movements-table-row__cell"
         :title="movement.appliedAt | formatCalendar"
       >
         {{ movement.appliedAt | formatCalendar }}
       </td>
       <td
-        class="movements-table-row__cell"
+        class="user-movements-table-row__cell"
         :title="movement | movementAmount | formatMoney"
       >
         {{ movement | movementAmount | formatMoney }}
       </td>
 
       <td
-        class="movements-table-row__cell
-               movements-table-row__cell--expand-btn-wrp"
+        class="user-movements-table-row__cell
+               user-movements-table-row__cell--expand-btn-wrp"
       >
         <button
-          class="movements-table-row__btn"
+          class="user-movements-table-row__btn"
           @click="isAttributesViewerShown = !isAttributesViewerShown"
         >
           <i
-            class="mdi mdi-chevron-down movements-table-row__toggle-icon"
+            class="mdi mdi-chevron-down user-movements-table-row__toggle-icon"
             :class="{ 'mdi-rotate-180': isAttributesViewerShown }"
           />
         </button>
@@ -38,10 +38,10 @@
 
     <tr
       v-if="isAttributesViewerShown"
-      class="movements-table-row__attributes"
+      class="user-movements-table-row__attributes"
     >
       <td colspan="4">
-        <div class="movements-table-row__attributes-viewer-wrp">
+        <div class="user-movements-table-row__attributes-viewer-wrp">
           <movement-attributes-viewer :movement="movement" />
         </div>
       </td>
@@ -54,7 +54,7 @@ import { Movement } from '../wrappers/movement'
 
 import TranslationFiltersMixin from '../mixins/translation-filters.mixin'
 
-import MovementAttributesViewer from './movement-attributes-viewer'
+import MovementAttributesViewer from './user-movement-attributes-viewer'
 import { MathUtil } from '@/js/utils'
 
 export default {
@@ -101,13 +101,13 @@ export default {
 @import '~@scss/variables';
 @import '../scss/variables';
 
-.movements-table-row__brief {
+.user-movements-table-row__brief {
   background-color: $col-block-bg;
 }
 
-.movements-table-row__cell {
-  padding: 1.4rem $movements-table-cell-side-padding
-    0.7rem $movements-table-cell-side-padding;
+.user-movements-table-row__cell {
+  padding: 1.4rem $user-movements-table-cell-side-padding
+    0.7rem $user-movements-table-cell-side-padding;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -115,17 +115,17 @@ export default {
 
   &--direction {
     padding-right: 0;
-    min-width: $movements-table-cell-width-direction;
-    width: $movements-table-cell-width-direction;
+    min-width: $user-movements-table-cell-width-direction;
+    width: $user-movements-table-cell-width-direction;
   }
 
   &--expand-btn-wrp {
     text-align: right;
-    width: $movements-table-cell-width-expand-btn-wrp;
+    width: $user-movements-table-cell-width-expand-btn-wrp;
   }
 }
 
-.movements-table-row__btn {
+.user-movements-table-row__btn {
   width: 2rem;
   height: 2.2rem;
   border-radius: 0.4rem;
@@ -135,15 +135,15 @@ export default {
   box-shadow: none;
 
   &:hover {
-    background-color: $movements-table-row-btn-hover-bg;
+    background-color: $user-movements-table-row-btn-hover-bg;
   }
 
   &:active {
-    background-color: $movements-table-row-btn-active-bg;
+    background-color: $user-movements-table-row-btn-active-bg;
   }
 }
 
-.movements-table-row__toggle-icon {
+.user-movements-table-row__toggle-icon {
   font-size: 1.6rem;
 
   &:before {
@@ -151,11 +151,11 @@ export default {
   }
 }
 
-.movements-table-row__attributes-viewer-wrp {
+.user-movements-table-row__attributes-viewer-wrp {
   background: $col-block-bg;
   padding:
-    0.75rem $movements-table-cell-side-padding
-    0.7rem $movements-table-cell-side-padding;
+    0.75rem $user-movements-table-cell-side-padding
+    0.7rem $user-movements-table-cell-side-padding;
   margin-top: -0.6rem;
   position: relative;
 

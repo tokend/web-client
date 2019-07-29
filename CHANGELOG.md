@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+### Added
+- Register of shares page
+
+### Fixed
+- Bug with naming css classes in user-movements
+
 ## [1.0.0-rc.2] - 2019-07-26
 ### Added
 - Show transactions history of the each client for bussiness
@@ -63,7 +70,6 @@ for further information about branching and tagging conventions.
   - `OFFLINE_ISSUANCE_WIN_LINK`
   - `OFFLINE_ISSUANCE_MAC_LINK`
   - `OFFLINE_ISSUANCE_SOURCE_LINK`
-- Register of shares page
 #### Changed
 - If some of the config keys are empty, the related images and links will not
   be rendered. Affects the following keys:
