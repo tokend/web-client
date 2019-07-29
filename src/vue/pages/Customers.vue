@@ -1,14 +1,6 @@
 <template>
   <div class="customers-page">
     <top-bar>
-      <template slot="main">
-        <router-link :to="vueRoutes.customersList">
-          <span>
-            {{ 'customers-page.customers-list-page' | globalize }}
-          </span>
-        </router-link>
-      </template>
-
       <template slot="extra">
         <button
           v-ripple

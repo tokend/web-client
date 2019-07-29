@@ -1,65 +1,32 @@
 <template>
   <div class="atomic-swap-card">
-    <p class="atomic-swap-card__title">
-      <span
-        class="atomic-swap-card__base-asset"
-      >
-        {{ 'atomic-swap-card.base-asset' | globalize({
-          baseAsset: atomicSwap.baseAsset
-        }) }}
-      </span>
-      <span class="atomic-swap-card__number">
-        {{ 'atomic-swap-card.id-prefix' | globalize({ id: atomicSwap.id }) }}
-      </span>
-    </p>
+    <h3 class="atomic-swap-card__title">
+      {{ atomicSwap.baseAssetName }}
+    </h3>
 
-    <p class="atomic-swap-card__quote-assets">
-      <span>{{ 'atomic-swap-card.quote-assets' | globalize }}</span>
-      <span
-        class="atomic-swap-card__assets"
-        v-for="(quoteAsset, index) in atomicSwap.quoteAssets"
-        :key="quoteAsset.id"
-      >
-        <span v-if="index + 1 !== atomicSwap.quoteAssets.length">
-          {{ 'atomic-swap-card.quote-asset-with-comma' | globalize({
-            quoteAsset: quoteAsset.id
-          }) }}
-        </span>
-        <span v-else>
-          {{ quoteAsset.id }}
-        </span>
+    <p class="atomic-swap-card__amount">
+      <span>
+        {{ 'atomic-swap-card.available' | globalize({
+          amount: atomicSwap.availableAmount
+        }) }}
       </span>
     </p>
 
     <p class="atomic-swap-card__amount">
       <span>
-        Amount {{ atomicSwap.availableAmount }}
+        {{ 'atomic-swap-card.locked' | globalize({
+          amount: atomicSwap.lockedAmount
+        }) }}
       </span>
-    </p>
-
-    <p class="atomic-swap-card__author">
-      <span class="atomic-swap-card__author-prefix">
-        {{ 'atomic-swap-card.author-prefix' | globalize }}
-      </span>
-      <email-getter
-        is-titled
-        :account-id="atomicSwap.ownerId"
-        :is-copy-button="false"
-      />
     </p>
   </div>
 </template>
 
 <script>
-import EmailGetter from '@/vue/common/EmailGetter'
 import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
 
 export default {
   name: 'atomic-swap-card',
-
-  components: {
-    EmailGetter,
-  },
 
   props: {
     atomicSwap: {
@@ -90,24 +57,15 @@ export default {
   font-size: 1.6rem;
   display: flex;
   justify-content: space-between;
+  margin-bottom: 1rem;
 }
 
-.atomic-swap-card__number {
-  color: $col-text-secondary;
-  font-size: inherit;
-  margin-right: 0.5ch;
-}
-
-.atomic-swap-card__author {
+.atomic-swap-card__amount {
   color: $col-text-secondary;
   font-size: 1.3rem;
   line-height: 1.5;
   white-space: nowrap;
   max-width: 100%;
   overflow: hidden;
-}
-
-.atomic-swap-card__quote-assets {
-  margin-bottom: 1.6rem;
 }
 </style>

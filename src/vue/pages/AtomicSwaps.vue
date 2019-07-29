@@ -1,11 +1,6 @@
 <template>
   <div class="atomic-swaps">
     <top-bar>
-      <template slot="main">
-        <router-link :to="vueRoutes.atomicSwapsExplore">
-          <span>{{ 'atomic-swaps.explore-atomic-swaps' | globalize }}</span>
-        </router-link>
-      </template>
       <template
         slot="extra"
         v-if="getModule().canRenderSubmodule(CreateAtomicSwapFormModule)"

@@ -639,7 +639,7 @@
       "name-lbl": "Имя",
       "company-lbl": "Компания",
       "headquarters-lbl": "Штаб-квартира",
-      "industry-lbl": "Индустрия",
+      "industry-lbl": "Сфера деятельности",
       "team-size-lbl": "Размер команды",
       "website-lbl": "Веб-сайт",
       "request-submitted-msg": "Запрос отправлен. Пожалуйста, дождитесь результатов рассмотрения.",
@@ -2409,7 +2409,8 @@
       "id-key": "Идентификатор",
       "owner-key": "Владелец",
       "created-key": "Создано",
-      "base-asset-key": "Базовый актив",
+      "base-asset-key": "Код базового актива",
+      "base-asset-name": "Имя базового актива",
       "available-amount-key": "Доступно",
       "locked-amount-key": "Заблокировано",
       "is-canceled-key": "Отменен?",
@@ -2424,11 +2425,8 @@
       "quote-assets-subheading": "Котируемый актив №{{ number }}"
     },
     "atomic-swap-card": {
-      "id-prefix": "#{{id}}",
-      "author-prefix": "От",
-      "base-asset": "База: {{ baseAsset }}",
-      "quote-assets": "Котируемые:",
-      "quote-asset-with-comma": "{{ quoteAsset }},"
+      "available": "Доступно: {{ amount }}",
+      "locked": "Заблокировано: {{ amount }}"
     },
     "atomic-swaps-explore": {
       "atomic-swap-drawer-title": "Детали прямого обмена",

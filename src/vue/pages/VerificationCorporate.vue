@@ -13,23 +13,11 @@
         <div class="app__form-field">
           <input-field
             white-autofill
-            v-model="form.name"
-            @blur="touchField('form.name')"
-            name="verification-corporate-name"
-            :label="'verification-form.name-lbl' | globalize"
-            :error-message="getFieldErrorMessage('form.name')"
-            :disabled="formMixin.isDisabled"
-          />
-        </div>
-      </div>
-
-      <div class="app__form-row">
-        <div class="app__form-field">
-          <input-field
-            white-autofill
             v-model="form.company"
+            @blur="touchField('form.company')"
             name="verification-corporate-company"
             :label="'verification-form.company-lbl' | globalize"
+            :error-message="getFieldErrorMessage('form.company')"
             :disabled="formMixin.isDisabled"
           />
         </div>
@@ -69,25 +57,6 @@
             v-model="form.industry"
             name="verification-corporate-industry"
             :label="'verification-form.industry-lbl' | globalize"
-            :disabled="formMixin.isDisabled"
-          />
-        </div>
-      </div>
-
-      <div class="app__form-row">
-        <div class="app__form-field">
-          <input-field
-            white-autofill
-            type="number"
-            :min="MIN_TEAM_SIZE"
-            :step="1"
-            v-model="form.teamSize"
-            @blur="touchField('form.teamSize')"
-            name="verification-corporate-team-size"
-            :label="'verification-form.team-size-lbl' | globalize"
-            :error-message="
-              getFieldErrorMessage('form.teamSize', { value: MIN_TEAM_SIZE})
-            "
             :disabled="formMixin.isDisabled"
           />
         </div>
@@ -163,9 +132,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
-import { required, validateUrl, integer, minValue } from '@validators'
-
-const MIN_TEAM_SIZE = 1
+import { required, validateUrl } from '@validators'
 
 const EMPTY_DOCUMENT = {
   mime_type: '',
@@ -183,17 +150,14 @@ export default {
 
   data: _ => ({
     form: {
-      name: '',
       company: '',
       avatar: null,
       headquarters: '',
       industry: '',
-      teamSize: '1',
       website: '',
       bankAccount: '',
     },
     isFormSubmitting: false,
-    MIN_TEAM_SIZE,
     DOCUMENT_TYPES,
   }),
 
@@ -204,11 +168,7 @@ export default {
 
     return {
       form: {
-        name: { required },
-        teamSize: {
-          integer,
-          minValue: minValue(MIN_TEAM_SIZE),
-        },
+        company: { required },
         website: this.form.website ? websiteRule : {},
       },
     }
@@ -304,11 +264,9 @@ export default {
 
     createKycData () {
       return {
-        name: this.form.name,
         company: this.form.company,
         headquarters: this.form.headquarters,
         industry: this.form.industry,
-        team_size: this.form.teamSize,
         homepage: this.form.website,
         documents: {
           [DOCUMENT_TYPES.kycAvatar]: this.form.avatar
@@ -321,14 +279,12 @@ export default {
 
     parseKycData (kycData) {
       return {
-        name: kycData.name,
         company: kycData.company,
         avatar: _get(kycData, `documents.${DOCUMENT_TYPES.kycAvatar}.key`)
           ? new DocumentContainer(kycData.documents[DOCUMENT_TYPES.kycAvatar])
           : null,
         headquarters: kycData.headquarters,
         industry: kycData.industry,
-        teamSize: kycData.team_size,
         website: kycData.homepage,
         bankAccount: kycData.bank_account,
       }
