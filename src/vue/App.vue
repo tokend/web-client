@@ -73,7 +73,6 @@ import { vueRoutes } from '@/vue-router/routes'
 
 import config from '@/config'
 import { i18n } from '@/i18n'
-import { Bus } from '@/js/helpers/event-bus'
 
 export default {
   name: 'app',
@@ -128,10 +127,6 @@ export default {
     this.watchChangesInLocalStorage()
 
     this.isAppInitialized = true
-    Bus.success('change-password-form.password-changed-msg')
-    setTimeout(() => Bus.warning('change-password-form.password-changed-msg'), 5000)
-    setTimeout(() => Bus.info('change-password-form.password-changed-msg'), 10000)
-    setTimeout(() => Bus.error('change-password-form.password-changed-msg'), 15000)
   },
 
   methods: {
