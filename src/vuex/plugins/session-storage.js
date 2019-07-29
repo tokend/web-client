@@ -30,12 +30,14 @@ export const sessionStoragePlugin = store => {
 
         break
       }
-      case vuexTypes.SET_WALLET:
-      case vuexTypes.SET_ACCOUNT: {
-        ErrorTracker.setLoggedInUser({
-          'accountId': vuexTypes.walletAccountId,
-          'email': vuexTypes.walletEmail,
-        })
+      case vuexTypes.SET_ACCOUNT:
+      case vuexTypes.SET_WALLET: {
+        if (vuexTypes.walletAccountId && vuexTypes.walletEmail) {
+          ErrorTracker.setLoggedInUser({
+            'accountId': vuexTypes.walletAccountId,
+            'email': vuexTypes.walletEmail,
+          })
+        }
         break
       }
       default:
