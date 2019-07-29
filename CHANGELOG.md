@@ -11,6 +11,9 @@ for further information about branching and tagging conventions.
 #### Fixed
 - A bug when you cannot return from "Downloads" if the tab was opened in new tab
 
+#### Added
+- Autoclose indicator to status-messages
+
 ### "Under the hood" changes
 #### Added
 - New config keys:

@@ -7,6 +7,8 @@
         `status-message--${messageType}`,
         { 'status-message--jump': isShownAgain }
       ]"
+      @mouseenter="stopProgressBar"
+      @mouseleave="startProgressBar"
     >
       <div class="status-message__body">
         <div class="status-message__icon-wrp">
@@ -35,7 +37,8 @@
       <div class="status-message__progress-bar">
         <span
           class="status-message__progress-bar-percentage"
-          :style="{'width': (100 - (progressBar.progress * 100)) + '%'}"
+          :style="{ 'width': getInvertedProgressPercents + '%' }"
+          :class="`status-message__progress-bar-percentage--${messageType}`"
         />
       </div>
     </div>
@@ -44,10 +47,13 @@
 
 <script>
 import { Bus } from '@/js/helpers/event-bus'
+import { MathUtil } from '@/js/utils'
 
 const DEFAULT_MESSAGE_TRANSLATION_ID = 'status-message.default-message'
 const CLOSE_TIMEOUT_MS = 10000
 const SHOWN_AGAIN_PRESENCE_TIMEOUT_MS = 1000
+const ONE_HUNDRED_PERCENTS = 100
+const MAX_ANIMATION_PROGRESS = 1
 const MESSAGE_TYPES = Object.freeze({
   warning: 'warning',
   success: 'success',
@@ -87,6 +93,19 @@ export default {
         default:
           return ''
       }
+    },
+
+    getInvertedProgressPercents () {
+      const animationProgressPercents = MathUtil.multiply(
+        this.progressBar.progress,
+        ONE_HUNDRED_PERCENTS
+      )
+
+      const animationProgressPercentsInverted = MathUtil.subtract(
+        ONE_HUNDRED_PERCENTS,
+        animationProgressPercents
+      )
+      return animationProgressPercentsInverted
     },
   },
 
@@ -133,19 +152,26 @@ export default {
       const animationStartTime = performance.now()
       const calculateAnimationProgress = () => {
         this.animationFrame = requestAnimationFrame((timestamp) => {
-          // eslint-disable-next-line max-len
-          const animationRuntime = timestamp + currentAnimationTime - animationStartTime
-          const animationProgress = Math.min(
-            animationRuntime / CLOSE_TIMEOUT_MS,
-            1
+          const animationTime = MathUtil.subtract(
+            currentAnimationTime,
+            animationStartTime
           )
+          const animationRuntime = MathUtil.add(
+            timestamp,
+            animationTime
+          )
+          const animationProgress = MathUtil.divide(
+            animationRuntime,
+            CLOSE_TIMEOUT_MS
+          )
+
           if (this.progressBar.paused) {
             cancelAnimationFrame(this.animationFrame)
           } else if (animationRuntime < CLOSE_TIMEOUT_MS) {
             this.progressBar.progress = animationProgress
             calculateAnimationProgress()
           } else {
-            this.progressBar.progress = 1
+            this.progressBar.progress = MAX_ANIMATION_PROGRESS
             cancelAnimationFrame(this.animationFrame)
             this.isShown = false
           }
@@ -166,6 +192,20 @@ export default {
 
     isObject (value) {
       return typeof value === 'object' && !Array.isArray(value) && !null
+    },
+
+    stopProgressBar () {
+      this.progressBar.paused = true
+    },
+
+    startProgressBar () {
+      this.progressBar.paused = false
+      const currentAnimationTime = MathUtil.multiply(
+        CLOSE_TIMEOUT_MS,
+        this.progressBar.progress
+      )
+
+      this.startAnimationTimeout(currentAnimationTime)
     },
   },
 }
@@ -223,10 +263,10 @@ $icon-padding: 2.4rem;
 }
 
 .status-message__progress-bar {
-  position: relative;
+  position: absolute;
   width: 100%;
   height: 0.5rem;
-  background-color: $col-status-msg-warning;
+  bottom: 0;
 }
 
 .status-message__progress-bar-percentage {
@@ -237,6 +277,22 @@ $icon-padding: 2.4rem;
   width: 100%;
   background-color: $col-status-msg-success;
   max-width: 100%;
+
+  &--success {
+    background-color: $col-status-msg-success;
+  }
+
+  &--error {
+    background-color: $col-status-msg-text;
+  }
+
+  &--info {
+    background-color: $col-status-msg-info;
+  }
+
+  &--warning {
+    background-color: $col-status-msg-text;
+  }
 }
 
 .status-message__icon-wrp {
