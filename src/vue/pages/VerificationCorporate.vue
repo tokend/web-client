@@ -88,6 +88,18 @@
         </div>
       </div>
 
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.invite"
+            name="verification-corporate-invitation-code"
+            :label="'verification-form.invitation-code-lbl' | globalize"
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
+      </div>
+
       <div class="app__form-actions">
         <form-confirmation
           v-if="formMixin.isConfirmationShown"
@@ -156,6 +168,7 @@ export default {
       industry: '',
       website: '',
       bankAccount: '',
+      invite: '',
     },
     isFormSubmitting: false,
     DOCUMENT_TYPES,
@@ -274,6 +287,7 @@ export default {
             : EMPTY_DOCUMENT,
         },
         bank_account: this.form.bankAccount,
+        invite: this.form.invite,
       }
     },
 
@@ -287,6 +301,7 @@ export default {
         industry: kycData.industry,
         website: kycData.homepage,
         bankAccount: kycData.bank_account,
+        invite: kycData.invite,
       }
     },
   },
