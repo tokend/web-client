@@ -1732,7 +1732,7 @@
     "whitelist-invite-form": {
       "invite-hint": "Пригласите пользователя в белый список. После приглашения они смогут инвестировать в сейл",
       "email-lbl": "Имейл пользователя",
-      "invite-btn": "Пригласить",
+      "invite-btn": "Пригласить клиента",
       "user-invited-msg": "Пользователь был успешно приглашен"
     },
     "invest-form": {
@@ -2337,7 +2337,7 @@
       "available-for-issuance": "Доступно для выдачи: {{amount, number}} {{asset}}"
     },
     "customers-page": {
-      "invite-btn": "Пригласить",
+      "invite-btn": "Пригласить клиента",
       "issue-btn": "Выпустить",
       "mass-invitation-drawer-heading": "Пригласите клиентов",
       "mass-issuance-drawer-heading": "Выпустить активы",
@@ -2385,7 +2385,7 @@
       "blocked-status-td": "Заблокирован",
       "enable-mass-issuance-btn": "Выбрать для эмиссии",
       "do-mass-issue-btn": "Выполнить эмиссию",
-      "cancel-mass-issue-btn": "Отменить эмиссию"
+      "cancel-mass-issue-btn": "Отменить"
     },
     "customers-list": {
       "customer-drawer-title": "Клиент"
