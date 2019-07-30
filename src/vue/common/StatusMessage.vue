@@ -54,6 +54,7 @@ const CLOSE_TIMEOUT_MS = 10000
 const SHOWN_AGAIN_PRESENCE_TIMEOUT_MS = 1000
 const ONE_HUNDRED_PERCENTS = 100
 const MAX_ANIMATION_PROGRESS = 1
+const MIN_ANIMATION_PROGRESS = 0
 const MESSAGE_TYPES = Object.freeze({
   warning: 'warning',
   success: 'success',
@@ -141,6 +142,7 @@ export default {
 
       if (this.isShown) {
         this.doJump()
+        this.progressBar.progress = MIN_ANIMATION_PROGRESS
       } else {
         this.isShown = true
       }
@@ -152,6 +154,11 @@ export default {
       const animationStartTime = performance.now()
       const calculateAnimationProgress = () => {
         this.animationFrame = requestAnimationFrame((timestamp) => {
+          if (this.progressBar.paused) {
+            cancelAnimationFrame(this.animationFrame)
+            return
+          }
+
           const animationTime = MathUtil.subtract(
             currentAnimationTime,
             animationStartTime
@@ -165,9 +172,7 @@ export default {
             CLOSE_TIMEOUT_MS
           )
 
-          if (this.progressBar.paused) {
-            cancelAnimationFrame(this.animationFrame)
-          } else if (animationRuntime < CLOSE_TIMEOUT_MS) {
+          if (animationRuntime < CLOSE_TIMEOUT_MS) {
             this.progressBar.progress = animationProgress
             calculateAnimationProgress()
           } else {
