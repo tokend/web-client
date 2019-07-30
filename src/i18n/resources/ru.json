@@ -643,7 +643,8 @@
       "team-size-lbl": "Размер команды",
       "website-lbl": "Веб-сайт",
       "request-submitted-msg": "Запрос отправлен. Пожалуйста, дождитесь результатов рассмотрения.",
-      "bank-account-lbl": "Банковский счет"
+      "bank-account-lbl": "Банковский счет",
+      "invite-lbl": "Пригласить"
     },
     "input-field": {
       "caps-lock-warning": "Внимание: Caps-Lock включен"
