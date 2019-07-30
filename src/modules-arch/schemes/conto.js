@@ -29,6 +29,7 @@ import { BusinessOwnershipModule } from '@/vue/navigation/navbar/business-owners
 import { AtomicSwapsPageModule } from '@/vue/pages/atomic-swaps-page-module'
 import { AtomicSwapsExplorePageModule } from '@/vue/pages/atomic-swaps/atomic-swaps-explore-page-module'
 import { CreateAtomicSwapFormModule } from '@/vue/modules/create-atomic-swap-form/module'
+import { SharesPageModule } from '@/vue/pages/shares-page-module'
 
 export default {
   importLanguageResource (lng) {
@@ -117,6 +118,23 @@ export default {
             ],
           }),
         ],
+      },
+    ),
+
+    new SharesPageModule(
+      {
+        routerEntry: {
+          path: '/register-of-shares',
+          name: vueRoutes.registerOfShares.name,
+          meta: { pageNameTranslationId: 'pages-names.register-of-shares' },
+        },
+        menuButtonTranslationId: 'pages-names.register-of-shares',
+        menuButtonMdiName: 'book-open',
+        submodules: [
+          new MovementsTopBarModule(),
+          new MovementsHistoryModule(),
+        ],
+        isCorporateOnly: true,
       },
     ),
 

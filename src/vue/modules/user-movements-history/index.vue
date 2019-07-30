@@ -37,7 +37,7 @@
 
 <script>
 import CollectionLoader from '@/vue/common/CollectionLoader'
-import MovementsTable from './components/movements-table'
+import MovementsTable from './components/user-movements-table'
 import SelectField from '@/vue/fields/SelectField'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
