@@ -82,7 +82,7 @@ export default {
       isDrawerShown: false,
       atomicSwapToBrowse: {},
       filters: {
-        isOwnedByCurrentUser: false,
+        isOwnedByCurrentUser: true,
       },
     }
   },
