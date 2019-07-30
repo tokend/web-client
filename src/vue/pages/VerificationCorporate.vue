@@ -93,8 +93,8 @@
           <input-field
             white-autofill
             v-model="form.invite"
-            name="verification-corporate-invite"
-            :label="'verification-form.invite-lbl' | globalize"
+            name="verification-corporate-invitation-code"
+            :label="'verification-form.invitation-code-lbl' | globalize"
             :disabled="formMixin.isDisabled"
           />
         </div>

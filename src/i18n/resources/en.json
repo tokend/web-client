@@ -644,7 +644,7 @@
       "website-lbl": "Website",
       "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
       "bank-account-lbl": "Bank account",
-      "invite-lbl": "Invite"
+      "invitation-code-lbl": "Invitation code"
     },
     "input-field": {
       "caps-lock-warning": "Warning: Caps-Lock is ON"
