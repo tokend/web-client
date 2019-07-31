@@ -638,13 +638,13 @@
       "photo-lbl": "Селфи с проверочным кодом",
       "name-lbl": "Имя",
       "company-lbl": "Компания",
-      "headquarters-lbl": "Штаб-квартира",
-      "industry-lbl": "Сфера деятельности",
+      "headquarters-lbl": "Штаб-квартира (Необязательное)",
+      "industry-lbl": "Сфера деятельности (Необязательное)",
       "team-size-lbl": "Размер команды",
-      "website-lbl": "Веб-сайт",
+      "website-lbl": "Веб-сайт (Необязательное)",
       "request-submitted-msg": "Запрос отправлен. Пожалуйста, дождитесь результатов рассмотрения.",
-      "bank-account-lbl": "Банковский счет",
-      "invitation-code-lbl": "Код приглашения"
+      "bank-account-lbl": "Банковский счет (Необязательное)",
+      "invitation-code-lbl": "Код приглашения (Необязательное)"
     },
     "input-field": {
       "caps-lock-warning": "Внимание: Caps-Lock включен"
