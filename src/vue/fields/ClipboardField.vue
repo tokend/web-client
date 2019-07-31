@@ -15,6 +15,7 @@
       <tooltip
         :show="isCopiedTooltipShown"
         :message="'clipboard-field.copied' | globalize"
+        :type="tooltipType"
       >
         <button
           type="button"
@@ -42,6 +43,7 @@ export default {
   props: {
     value: { type: String, default: '' },
     label: { type: String, default: '' },
+    tooltipType: { type: String, default: '' },
   },
   data: _ => ({
     isCopiedTooltipShown: false,
