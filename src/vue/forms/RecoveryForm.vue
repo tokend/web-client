@@ -112,10 +112,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      loadWallet: vuexTypes.LOAD_WALLET,
-      loadAccount: vuexTypes.LOAD_ACCOUNT,
-      loadKyc: vuexTypes.LOAD_KYC,
-      loadKvEntries: vuexTypes.LOAD_KV_ENTRIES,
+      logInAccount: vuexTypes.LOG_IN,
     }),
     async submit () {
       if (!this.isFormValid()) {
@@ -147,13 +144,10 @@ export default {
     },
 
     async login () {
-      await this.loadWallet({
+      await this.logInAccount({
         email: this.form.email,
         password: this.form.password,
       })
-      await this.loadAccount(this.walletAccountId)
-      await this.loadKvEntries()
-      await this.loadKyc()
     },
   },
 }

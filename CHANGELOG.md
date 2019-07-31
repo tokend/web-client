@@ -8,6 +8,41 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Fixed
+- A bug when you cannot return from "Downloads" if the tab was opened in new tab
+- A bug when page reload twice
+- A bug when user cannot sign out
+- A bug when don't update logout time
+
+#### Removed
+- Delay refresh list timeout
+
+### "Under the hood" changes
+#### Added
+- New config keys:
+  - `PLAY_MARKET_LINK`
+  - `OFFLINE_ISSUANCE_WIN_LINK`
+  - `OFFLINE_ISSUANCE_MAC_LINK`
+  - `OFFLINE_ISSUANCE_SOURCE_LINK`
+- Empty message placeholder for My assets page
+- `ErrorTracker.setLoggedInUser`to `SET_ACCOUNT`, `CLEAR_STATE` and `SET_WALLET`
+  mutations
+
+#### Changed
+- If some of the config keys are empty, the related images and links will not
+  be rendered. Affects the following keys:
+  - `IOS_MANIFEST_LINK`
+  - `PLAY_MARKET_LINK`
+  - `OFFLINE_ISSUANCE_WIN_LINK`
+  - `OFFLINE_ISSUANCE_MAC_LINK`
+  - `OFFLINE_ISSUANCE_SOURCE_LINK`
+- Now using @tokend/js-sdk@1.9.0-rc.2
+
+#### Removed
+- `RECOVERY_MODE` config key due to unused anymore
+- `ErrorTracker.setLoggedInUser` from App.vue and LoginForm.vue
+
+## [1.10.0-rc.3] - 2019-07-22
 #### Added
 - New 'Explore atomic swaps' page
 
@@ -15,13 +50,18 @@ for further information about branching and tagging conventions.
 - Conto leftovers from vanilla
 
 #### Fixed
-- Issue when a user could not create an atomic swap if an amount is less than 
+- Issue when a user could not create an atomic swap if an amount is less than
   an available balance
 - Overflow clipboard-field on tfa form
 
 ## [1.10.0-rc.2] - 2019-07-18
 #### Added
 - Real time updates on all pages
+- `LOG_IN` and `LOG_OUT` vuex actions
+- New `LOG_IN` action
+
+#### Changed
+- Rename `LOG_IN` action on `RESTORE_SESSION`
 
 #### Removed
 - Recovery seed screen on sign up
@@ -912,7 +952,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.10.0-rc.2...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.10.0-rc.3...HEAD
+[1.10.0-rc.3]: https://github.com/tokend/web-client/compare/1.10.0-rc.2...1.10.0-rc.3
 [1.10.0-rc.2]: https://github.com/tokend/web-client/compare/1.10.0-rc.1...1.10.0-rc.2
 [1.10.0-rc.1]: https://github.com/tokend/web-client/compare/1.10.0-rc.0...1.10.0-rc.1
 [1.10.0-rc.0]: https://github.com/tokend/web-client/compare/1.10.0-x.2...1.10.0-rc.0
