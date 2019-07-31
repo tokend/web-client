@@ -27,10 +27,11 @@ $z-tooltip-wrapper: 1;
 $z-skeleton-loader: 1;
 
 $_athensGray: #e9eaed;
-$_pink: #c2185b;
+$_pink: #c2185c;
 $_white: #ffffff;
 $_concrete: #f2f2f2;
 $_black: #000000;
+$_lightBlack: #212121;
 $_gray: #e2e3e3;
 $_silverChalice: #aeaeae;
 $_cyan: #0ea7ba;
@@ -55,11 +56,11 @@ $_silverChalice: #aaaaaa;
 $_aliceBlue: #f5f6ff;
 
 // base colors:
-$col-primary: $_pink;
+$col-primary: $_lightBlack;
 $col-secondary: $_lightPurple;
 $col-primary-lighten: $_strongPink;
 $col-primary-txt: $_white;
-$col-link: $col-primary-lighten;
+$col-link: $_lightBlack;
 $col-text-on-dark-bg: $_white;
 
 $col-primary-inactive: rgba($col-primary, 0.7);
@@ -76,21 +77,21 @@ $col-info: $_strongPink;
 $col-danger: $_darkRed;
 
 // global colors
-$col-text: $_pink;
+$col-text: $_lightBlack;
 $col-text-secondary: $_lightPurple;
-$col-link: $_strongPink;
+$col-link: $_lightBlack;
 $col-border: $_ghostWhite;
 $col-block-bg: $_white;
 $col-app-background: $_gray;
 $col-app-content-background: $_thinBlue;
 
 // text colors:
-$col-heading: $col-text;
+$col-heading: $_pink;
 $col-text-page-heading: $col-heading;
 $col-text-auth-title-big: $_white;
-$col-text-auth-title-small: $_strongPink;
-$col-text-auth-tip-link: $_strongPink;
-$col-text-auth-version: rgba($_strongPink, 0.65);
+$col-text-auth-title-small: $_white;
+$col-text-auth-tip-link: $_lightBlack;
+$col-text-auth-version: rgba($_white, 0.65);
 $col-text-highlighted: $col-primary-lighten;
 
 // button colors:
@@ -98,7 +99,7 @@ $col-button-raised: $col-primary-lighten;
 $col-button-raised-txt: $col-primary-txt;
 
 $col-button-flat-hover: $col-primary-flat-hover;
-$col-button-flat-txt: $col-primary;
+$col-button-flat-txt: $col-primary-lighten;
 $col-button-flat-txt-inactive: $col-primary-inactive;
 $col-button-flat-disabled-txt: $_lightGray;
 
@@ -155,9 +156,9 @@ $col-file-field-border: $_ghostWhite;
 $col-file-field-drop-bg: $_aliceBlue;
 $col-field-text-secondary: $_lightPurple;
 $col-field-shadow: rgba(0, 0, 0, 0.1);
-$col-tick-field-shadow: rgba($_pink, 0.6);
-$col-select-field-selected-background: rgba($_pink, 0.1);
-$col-select-field-hover-background: rgba($_pink, 0.05);
+$col-tick-field-shadow: rgba($_lightBlack, 0.6);
+$col-select-field-selected-background: rgba($_lightBlack, 0.1);
+$col-select-field-hover-background: rgba($_lightBlack, 0.05);
 $col-switch-field-background: $_whiteSmoke;
 $col-switch-field-border: $_thinPurple;
 $col-switch-field-disabled: $_mediumGray;
@@ -258,7 +259,7 @@ $col-sale-card-background: $_white;
 $col-sale-card-shadow: $col-block-shadow;
 $col-sale-card-header-background: $_athensGray;
 $col-sale-card-text-primary: $col-text;
-$col-sale-card-text-bold: $_strongPink;
+$col-sale-card-text-bold: $_lightBlack;
 $col-sale-card-progress-bar-background: $_thinPurple;
 $col-sale-card-progress-bar-value: $_strongPink;
 
@@ -281,7 +282,7 @@ $col-terms-block-bg: $col-block-bg;
 $col-terms-header: $col-primary;
 $col-terms-list-item: $_thinPurple;
 $col-terms-text: $col-secondary;
-$col-terms-link: $col-primary-lighten;
+$col-terms-link: $_lightBlack;
 
 // downloads colors
 $col-downloads-title: $col-primary;
@@ -289,13 +290,13 @@ $col-downloads-block-bg: $col-block-bg;
 $col-downloads-header: $col-primary;
 $col-downloads-text: $col-secondary;
 $col-downloads-line: $_athensGray;
-$col-downloads-link: $col-primary-lighten;
+$col-downloads-link: $_lightBlack;
 
 // iOS guide colors
 $col-ios-guide-title: $col-primary;
 $col-ios-guide-block-bg: $col-block-bg;
 $col-ios-guide-header: $col-primary;
-$col-ios-guide-link: $col-primary-lighten;
+$col-ios-guide-link: $_lightBlack;
 $col-ios-guide-text: $col-secondary;
 $col-ios-guide-step-number-bg: $col-primary;
 $col-ios-guide-step-number-text: $_white;
@@ -306,7 +307,7 @@ $col-ios-guide-substep-text: $col-secondary;
 $col-pre-issuance-guide-title: $col-primary;
 $col-pre-issuance-guide-block-bg: $col-block-bg;
 $col-pre-issuance-guide-header: $col-primary;
-$col-pre-issuance-guide-link: $col-primary-lighten;
+$col-pre-issuance-guide-link: $_lightBlack;
 $col-pre-issuance-guide-text: $col-secondary;
 $col-pre-issuance-guide-list-item: $_thinPurple;
 
@@ -366,7 +367,7 @@ $col-comment-content-gradient-from: $_pink;
 $col-comment-content-gradient-to: $_gray;
 
 // skeleton-loader
-$col-background-skeleton-loader: rgba($_pink, 0.10);
+$col-background-skeleton-loader: rgba($_lightBlack, 0.10);
 
 // hint-wrapper
 $col-hint-wrapper-box-bg: rgba($_black, 0.9);
