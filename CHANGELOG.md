@@ -52,6 +52,7 @@ for further information about branching and tagging conventions.
 #### Fixed
 - Issue when a user could not create an atomic swap if an amount is less than
   an available balance
+- Overflow clipboard-field on tfa form
 
 ## [1.10.0-rc.2] - 2019-07-18
 #### Added
