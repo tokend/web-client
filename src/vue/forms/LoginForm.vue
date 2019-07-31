@@ -63,7 +63,6 @@ import { vueRoutes } from '@/vue-router/routes'
 import { factorsManager } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@tokend/js-sdk'
-import { ErrorTracker } from '@/js/helpers/error-tracker'
 
 export default {
   name: 'login-form',
@@ -104,10 +103,6 @@ export default {
         await this.logInAccount({
           email: this.form.email.toLowerCase(),
           password: this.form.password,
-        })
-        ErrorTracker.setLoggedInUser({
-          'accountId': this[vuexTypes.walletAccountId],
-          'email': this[vuexTypes.walletEmail],
         })
         await this.loadAssets()
         if (Object.keys(this.$route.query).includes('redirectPath')) {

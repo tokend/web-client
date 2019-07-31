@@ -209,6 +209,9 @@ const getters = {
   isCustomerUiShown: 'isCustomerUiShown',
   businessToBrowse: 'businessToBrowse',
   isBusinessToBrowse: 'isBusinessToBrowse',
+
+  // idle-handler
+  logoutAt: 'logoutAt',
 }
 
 export const vuexTypes = {
