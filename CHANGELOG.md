@@ -11,6 +11,9 @@ for further information about branching and tagging conventions.
 #### Added
 - Autoclose indicator to status-messages
 
+#### Fixed
+- Account ID in URL after login
+
 ## [1.0.0-rc.4] - 2019-07-30
 #### Added
 - Invite field to KYC data
