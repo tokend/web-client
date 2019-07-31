@@ -17,6 +17,9 @@ for further information about branching and tagging conventions.
 #### Removed
 - Delay refresh list timeout
 
+#### Added
+- Autoclose indicator to status-messages
+
 ### "Under the hood" changes
 #### Added
 - New config keys:
