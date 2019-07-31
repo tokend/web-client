@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Autoclose indicator to status-messages
+- Optional label to optional KYC fields
 
 #### Fixed
 - Account ID in URL after login
