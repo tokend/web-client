@@ -2428,9 +2428,24 @@
       "customer-drawer-title": "View customer"
     },
     "businesses": {
-      "all-tab": "All businesses"
+      "all-tab": "All businesses",
+      "my-tab": "My businesses"
     },
     "businesses-all": {
+      "no-list-title": "No businesses here yet",
+      "no-list-msg": "Here will be the list of businesses",
+      "business-details-title": "Business details"
+    },
+    "business-viewer": {
+      "add-btn": "Add business",
+      "business-added-successfully-notification": "Business has been added successfully"
+    },
+    "business-attributes": {
+      "id-key": "ID",
+      "owner-key": "Owner",
+      "industry-key": "Industry"
+    },
+    "businesses-my": {
       "no-list-title": "No businesses here yet",
       "no-list-msg": "Here will be the list of businesses associated with you"
     },

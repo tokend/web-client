@@ -10,6 +10,8 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Autoclose indicator to status-messages
+- Explorer for businesses
+- Show business industry
 
 #### Fixed
 - Account ID in URL after login

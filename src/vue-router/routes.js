@@ -55,5 +55,6 @@ export const vueRoutes = Object.freeze({
   customers: { name: 'app.customers' },
   customersList: { name: 'app.customers.list' },
   businesses: { name: 'app.businesses' },
-  allBusinesses: { name: 'app.businesses.list' },
+  allBusinesses: { name: 'app.all-businesses.list' },
+  myBusinesses: { name: 'app.my-businesses.list' },
 })
