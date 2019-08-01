@@ -16,6 +16,7 @@ for further information about branching and tagging conventions.
 
 #### Removed
 - Delay refresh list timeout
+- Use stellar when create new asset
 
 #### Added
 - Autoclose indicator to status-messages
