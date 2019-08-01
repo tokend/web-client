@@ -26,15 +26,6 @@
 
           <tr>
             <td>
-              {{ 'atomic-swap-attributes.base-asset-key' | globalize }}
-            </td>
-            <td>
-              {{ atomicSwap.baseAsset }}
-            </td>
-          </tr>
-
-          <tr>
-            <td>
               {{ 'atomic-swap-attributes.base-asset-name' | globalize }}
             </td>
             <td>

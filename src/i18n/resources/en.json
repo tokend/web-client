@@ -1073,7 +1073,7 @@
       "discover-assets-btn": "Discover assets",
       "form-heading": "Send",
       "asset-lbl": "Asset",
-      "balance": "Balance is {{amount}} {{asset}}.",
+      "balance": "Balance is {{amount}} {{asset}}",
       "amount-lbl": "Amount",
       "insufficient-sales": "Insufficient balance",
       "recipient-lbl": "Recipient email or account ID",

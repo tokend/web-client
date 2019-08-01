@@ -19,7 +19,7 @@
               :key="asset.code"
               :value="asset.code"
             >
-              {{ asset.nameAndCode }}
+              {{ asset.name }}
             </option>
           </select-field>
         </div>

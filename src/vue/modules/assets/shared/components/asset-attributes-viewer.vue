@@ -8,10 +8,7 @@
 
       <div class="asset-attributes-viewer__info">
         <p class="asset-attributes-viewer__code">
-          {{ asset.code }}
-        </p>
-        <p class="asset-attributes-viewer__name">
-          {{ asset.name || asset.code }}
+          {{ asset.name }}
         </p>
       </div>
     </div>
