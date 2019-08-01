@@ -516,7 +516,10 @@
       "network-passphrase-title": "Кодовая фраза сети",
       "view-network-passphrase-btn": "Посмотреть",
       "network-passphrase-desc": "Кодовая фраза сети — это последовательность слов, с помощью которой выполняется авторизация программного обеспечения в криптографической сети.",
-      "account-id-label": "Идентификатор аккаунта"
+      "account-id-label": "Идентификатор аккаунта",
+      "phone-number-title": "Номер телефона",
+      "change-phone-number-btn": "Сменить номер телефона",
+      "change-phone-number-title": "Смена номера телефона"
     },
     "tfa-form": {
       "password-lbl": "Текущий пароль",

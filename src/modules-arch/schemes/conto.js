@@ -13,6 +13,7 @@ import { VerificationPageModule } from '@/vue/pages/verification-page-module'
 import { SecurityPageModule } from '@/vue/pages/security-page-module'
 import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-account-id-pseudo-module'
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
+import { PhoneNumberFormPseudoModule } from '@/modules-arch/pseudo-modules/phone-number-form-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
 import { AssetExplorerPageModule } from '@/vue/pages/asset-explorer-page'
@@ -352,6 +353,7 @@ export default {
               new ShowAccountIdPseudoModule({
                 isCorporateOnly: true,
               }),
+              new PhoneNumberFormPseudoModule(),
             ],
           }),
         ],

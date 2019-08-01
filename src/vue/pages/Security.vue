@@ -59,6 +59,13 @@
           />
         </div>
       </template>
+
+      <template v-else-if="viewMode === VIEW_MODES.changePhoneNumber">
+        <template slot="heading">
+          {{ 'security-page.change-phone-number-title' | globalize }}
+        </template>
+        <phone-number-form />
+      </template>
     </drawer>
 
     <div class="security-page__row">
@@ -126,6 +133,21 @@
         </a>
       </div>
     </template>
+
+    <!-- eslint-disable-next-line max-len -->
+    <template v-if="getModule().canRenderSubmodule(PhoneNumberFormPseudoModule)">
+      <div class="security-page__row">
+        <p class="security-page__row-title">
+          {{ 'security-page.phone-number-title' | globalize }}
+        </p>
+        <a
+          class="security-page__row-action"
+          @click="showDrawer(VIEW_MODES.changePhoneNumber)"
+        >
+          {{ 'security-page.change-phone-number-btn' | globalize }}
+        </a>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -137,6 +159,7 @@ import Drawer from '@/vue/common/Drawer'
 import KeyViewer from '@/vue/common/KeyViewer'
 
 import ChangePasswordForm from '@/vue/forms/ChangePasswordForm'
+import PhoneNumberForm from '@/vue/forms/PhoneNumberForm'
 import TfaForm from '@/vue/forms/TfaForm'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -149,6 +172,7 @@ import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-ac
 import { ShowSeedPseudoModule } from '@/modules-arch/pseudo-modules/show-seed-pseudo-module'
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
 import { ShowNetworkPassphrasePseudoModule } from '@/modules-arch/pseudo-modules/show-network-passphrase-pseudo-module'
+import { PhoneNumberFormPseudoModule } from '@/modules-arch/pseudo-modules/phone-number-form-pseudo-module'
 
 const VIEW_MODES = {
   enableTfa: 'enableTfa',
@@ -156,6 +180,7 @@ const VIEW_MODES = {
   viewAccountId: 'viewAccountId',
   viewSecretSeed: 'viewSecretSeed',
   viewNetworkPassphrase: 'viewNetworkPassphrase',
+  changePhoneNumber: 'changePhoneNumber',
   default: '',
 }
 
@@ -168,6 +193,7 @@ export default {
     ClipboardField,
     ChangePasswordForm,
     TfaForm,
+    PhoneNumberForm,
   },
   data: _ => ({
     isDrawerShown: false,
@@ -177,6 +203,7 @@ export default {
     ShowSeedPseudoModule,
     ChangePasswordPseudoModule,
     ShowNetworkPassphrasePseudoModule,
+    PhoneNumberFormPseudoModule,
     api,
     walletSeed: '',
   }),

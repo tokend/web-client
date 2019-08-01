@@ -516,7 +516,10 @@
       "network-passphrase-title": "Network passphrase",
       "view-network-passphrase-btn": "View network passphrase",
       "network-passphrase-desc": "Network passphrase is a sequence of words or other text used to control access to a system",
-      "account-id-label": "Account ID"
+      "account-id-label": "Account ID",
+      "phone-number-title": "Phone number",
+      "change-phone-number-btn": "Change phone number",
+      "change-phone-number-title": "Change phone number"
     },
     "tfa-form": {
       "password-lbl": "Current password",
