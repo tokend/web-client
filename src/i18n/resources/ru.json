@@ -496,7 +496,8 @@
       "lost-seed-answer": "Восстановить аккаунт по KYC",
       "have-an-account-question": "Уже есть аккаунт?",
       "have-an-account-answer": "Войдите сейчас",
-      "verifying-email-msg": "Пожалуйста, подождите, пока мы проверяем ваш адрес электронной почты."
+      "verifying-email-msg": "Пожалуйста, подождите, пока мы проверяем ваш адрес электронной почты.",
+      "submit-processing": "Выполняем…"
     },
     "settings-page": {
       "verification-tab": "Подтверждение аккаунта",
