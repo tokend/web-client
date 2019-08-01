@@ -221,8 +221,10 @@ export default {
       })
       const slicedBalances = balances.slice(0, NUMBER_DISPLAYING_BALANCES)
       let resolveString = slicedBalances
-        .map(item => this.$options.filters
-          .formatMoney({ value: item.amount, currency: item.assetCode })
+        .map(item => {
+          return `${this.$options.filters
+            .formatMoney({ value: item.amount })} ${item.assetCode}`
+        }
         )
         .join(', ')
       if (balances.length > NUMBER_DISPLAYING_BALANCES) {

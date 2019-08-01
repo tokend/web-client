@@ -39,6 +39,7 @@
     "i18next-browser-languagedetector": "3.0.1",
     "iban": "0.0.12",
     "iso-country-codes": "0.0.5",
+    "js-md5": "^0.7.3",
     "lodash": "4.17.13",
     "loglevel": "1.6.2",
     "moment": "2.24.0",

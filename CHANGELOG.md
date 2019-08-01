@@ -9,7 +9,12 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Added
-- Autoclose indicator to status-messages
+- Auto close indicator to status-messages
+- Asset code generation with hash
+
+#### Removed
+- Displaying asset codes
+- Asset code in asset creation form
 
 #### Fixed
 - Account ID in URL after login
