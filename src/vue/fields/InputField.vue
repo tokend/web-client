@@ -72,6 +72,13 @@ const EVENTS = {
   input: 'input',
 }
 
+const INPUT_TYPES = {
+  phoneNumber: 'phone-number',
+  password: 'password',
+  number: 'number',
+
+}
+
 export default {
   props: {
     label: { type: String, default: 'Label' },
@@ -99,11 +106,11 @@ export default {
     },
 
     isPasswordType () {
-      return this.type === 'password'
+      return this.type === INPUT_TYPES.password
     },
 
     isPhoneNumberType () {
-      return this.type === 'phone-number'
+      return this.type === INPUT_TYPES.phoneNumber
     },
   },
 
@@ -143,7 +150,7 @@ export default {
     },
 
     normalizeTargetValue (target) {
-      if (this.type === 'number' && target.value !== '') {
+      if (this.type === INPUT_TYPES.number && target.value !== '') {
         target.value = this.normalizeDecimalPrecision(
           this.normalizeRange(target.value)
         )
