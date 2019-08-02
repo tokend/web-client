@@ -530,7 +530,7 @@
       "change-btn": "Изменить",
       "add-btn": "Добавить",
       "code-from-sms-lbl": "СМС код",
-      "wrong-code-err": "Неверный смс код",
+      "wrong-sms-code-err": "Неверный смс код",
       "phone-number-changed-msg": "Номер телефона успешно изменен",
       "phone-number-added-msg": "Номер телефона успешно добавлен",
       "exist-phone-number-err": "Такой номер уже существует"

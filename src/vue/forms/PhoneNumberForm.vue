@@ -8,6 +8,7 @@
         <input-field
           v-model="form.phoneNumber"
           @blur="touchField('form.phoneNumber')"
+          @input="isShowSmsCode = false"
           name="phone-number"
           type="phone-number"
           :error-message="getFieldErrorMessage('form.phoneNumber')"
