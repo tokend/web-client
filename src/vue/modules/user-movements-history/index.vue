@@ -1,36 +1,38 @@
 <template>
   <div class="user-movements-history">
-    <div class="user-movements-history__select">
-      <select-field
-        :value="assetCode"
-        @input="setAsset"
-        class="app__select"
-      >
-        <option
-          v-for="asset in assets"
-          :key="asset"
-          :value="asset"
+    <template v-if="assets.length">
+      <div class="user-movements-history__select">
+        <select-field
+          :value="assetCode"
+          @input="setAsset"
+          class="app__select"
         >
-          {{ assetByCode(asset).nameAndCode }}
-        </option>
-      </select-field>
-    </div>
-    <template>
-      <movements-table
-        :is-movements-loaded="isMovementsLoaded"
-        :movements="movements"
-      />
-
-      <div class="user-movements-history__collection-loader-wrp">
-        <collection-loader
-          v-if="!isMovementsLoadFailed && assetCode"
-          v-show="isMovementsLoaded"
-          :first-page-loader="firstPageLoader"
-          @first-page-load="setMovements"
-          @next-page-load="concatMovements"
-          :ref="REFS.collectionLoader"
-        />
+          <option
+            v-for="asset in assets"
+            :key="asset"
+            :value="asset"
+          >
+            {{ assetByCode(asset).nameAndCode }}
+          </option>
+        </select-field>
       </div>
+      <template>
+        <movements-table
+          :is-movements-loaded="isMovementsLoaded"
+          :movements="movements"
+        />
+
+        <div class="user-movements-history__collection-loader-wrp">
+          <collection-loader
+            v-if="!isMovementsLoadFailed && assetCode"
+            v-show="isMovementsLoaded"
+            :first-page-loader="firstPageLoader"
+            @first-page-load="setMovements"
+            @next-page-load="concatMovements"
+            :ref="REFS.collectionLoader"
+          />
+        </div>
+      </template>
     </template>
   </div>
 </template>

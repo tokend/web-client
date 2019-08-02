@@ -94,20 +94,20 @@ describe('TransferForm component', () => {
   describe('getCounterparty()', () => {
     beforeEach(() => {
       sinon
-        .stub(wrapper.vm, 'getAccountIdByEmail')
+        .stub(wrapper.vm, 'getAccountIdByIdentifier')
         .resolves(mockHelper.getDefaultAccountId)
     })
 
     it('check that handles email as argument', async () => {
       await wrapper.vm.getCounterparty('some@email.com')
 
-      expect(wrapper.vm.getAccountIdByEmail.calledOnce).to.be.true
+      expect(wrapper.vm.getAccountIdByIdentifier.calledOnce).to.be.true
     })
 
     it('check that handles accountId as argument', async () => {
       await wrapper.vm.getCounterparty(mockHelper.getDefaultAccountId)
 
-      expect(wrapper.vm.getAccountIdByEmail.called).to.be.false
+      expect(wrapper.vm.getAccountIdByIdentifier.called).to.be.false
     })
   })
 
@@ -174,95 +174,6 @@ describe('TransferForm component', () => {
     const operation = wrapper.vm.buildPaymentOperation()
 
     expect(operation).to.equal('some operation')
-  })
-
-  describe('processTransfer()', () => {
-    const expectedFees = {
-      destinationFee: {
-        fixed: '0.000001',
-        calculatedPercent: '0.01',
-        feeAsset: 'BTC',
-      },
-      sourceFee: {
-        fixed: '0.000001',
-        calculatedPercent: '0.01',
-        feeAsset: 'BTC',
-      },
-      type: 0,
-    }
-
-    beforeEach(() => {
-      const mockedBalance = {
-        accountId: mockHelper.getDefaultAccountId,
-        asset: 'BTC',
-        balance: '1.000000',
-        balanceId: mockHelper.getDefaultBalanceId,
-        convertedBalance: '0.000000',
-        convertedLocked: '0.000000',
-        convertedToAsset: 'USD',
-        locked: '0.000000',
-        requireReview: false,
-      }
-      wrapper = shallowMount(TransferForm, {
-        store,
-        localVue,
-        computed: {
-          balance () {
-            return mockedBalance
-          },
-        },
-      })
-
-      sinon.stub(wrapper.vm, 'getCounterparty')
-        .resolves(mockHelper.getDefaultAccountId)
-
-      sinon.stub(wrapper.vm, 'updateView')
-      sinon.stub(wrapper.vm, 'disableForm')
-      sinon.stub(wrapper.vm, 'enableForm')
-      sinon.stub(ErrorHandler, 'process')
-    })
-
-    it('try to process transfer if the form is valid', async () => {
-      sinon.stub(wrapper.vm, 'calculateFees')
-        .resolves(expectedFees)
-      sinon.stub(wrapper.vm.isFeesLoaded)
-
-      wrapper.vm.form = {
-        asset: { code: 'BTC' },
-        amount: '1',
-        recipient: mockHelper.getDefaultAccountId,
-        subject: 'some subject',
-        isPaidForRecipient: false,
-      }
-
-      await wrapper.vm.processTransfer()
-
-      // TODO: fix test
-      expect(wrapper.vm.getCounterparty.calledOnce).to.be.true
-      expect(wrapper.vm.isFeesLoaded).equal(false)
-      expect(wrapper.vm.calculateFees.calledOnce).to.be.false
-      expect(ErrorHandler.process.calledOnce).to.be.true
-    })
-
-    it('calculateFees handle error', async () => {
-      sinon.stub(wrapper.vm, 'calculateFees')
-        .rejects()
-
-      // make form valid to pass isFormValid()
-      wrapper.vm.form = {
-        asset: { code: 'BTC' },
-        amount: '1',
-        recipient: mockHelper.getDefaultAccountId,
-        subject: 'some subject',
-        isPaidForRecipient: false,
-      }
-
-      await wrapper.vm.processTransfer()
-
-      // TODO: fix test
-      expect(wrapper.vm.calculateFees.calledOnce).to.be.false
-      expect(ErrorHandler.process.calledOnce).to.be.true
-    })
   })
 
   describe('submit()', () => {

@@ -9,17 +9,17 @@ export default {
     /**
      * Fetches an account id by email
      *
-     * @param {string} email
+     * @param {string} identifier(email or phone number)
      * @param {*} [defaultValue] Value returned if no email found. If not set an
      * instance of `UserDoesntExistError` thrown
      */
-    async getAccountIdByEmail (email, defaultValue) {
-      if (typeof email !== 'string') {
-        throw new TypeError(`getAccountIdByEmail(): 'email' arg should be a string, got ${email}`)
+    async getAccountIdByIdentifier (identifier, defaultValue) {
+      if (typeof identifier !== 'string') {
+        throw new TypeError(`getAccountIdByIdentifier(): 'email' arg should be a string, got ${identifier}`)
       }
 
       const { data } = await api.get('/identities', {
-        filter: { email: email.toLowerCase() },
+        filter: { identifier: identifier.toLowerCase() },
         page: { limit: 1 },
       })
 
@@ -44,7 +44,7 @@ export default {
       // so the user can know which emails were not found
 
       const accountIds = await Promise.all(
-        emails.map(email => this.getAccountIdByEmail(email, null))
+        emails.map(email => this.getAccountIdByIdentifier(email, null))
       )
 
       return accountIds.filter(item => item)
@@ -60,7 +60,7 @@ export default {
      * `UserDoesntExistError` thrown
      */
     async getBalanceIdByEmail (email, assetCode, defaultValue) {
-      const accId = await this.getAccountIdByEmail(email, defaultValue)
+      const accId = await this.getAccountIdByIdentifier(email, defaultValue)
       const balId = await this.getBalanceId(accId, assetCode, defaultValue)
       return balId
     },

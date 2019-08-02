@@ -156,7 +156,7 @@ export default {
 
       this.disableForm()
       try {
-        const publicKey = await this.getAccountIdByEmail(this.form.email)
+        const publicKey = await this.getAccountIdByIdentifier(this.form.email)
         const operation = base.ManageSignerBuilder.createSigner({
           ...DEFAULT_SIGNER_ATTRS,
           publicKey,

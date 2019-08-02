@@ -54,6 +54,9 @@ export const address = (asset) => value => {
 export const emailOrAccountId = value => {
   return validateEmail(value) || base.Keypair.isValidPublicKey(value)
 }
+export const emailOrPhoneNumber = value => {
+  return validateEmail(value) || validatePhoneNumber(value)
+}
 export const accountId = value => {
   return base.Keypair.isValidPublicKey(value)
 }

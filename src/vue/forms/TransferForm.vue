@@ -156,7 +156,7 @@ import { Bus } from '@/js/helpers/event-bus'
 import { globalize } from '@/vue/filters/globalize'
 import {
   required,
-  emailOrAccountId,
+  emailOrPhoneNumber,
 } from '@validators'
 
 const VIEW_MODES = {
@@ -205,7 +205,7 @@ export default {
   validations () {
     return {
       form: {
-        recipient: { required, emailOrAccountId },
+        recipient: { required, emailOrPhoneNumber },
       },
     }
   },
@@ -278,7 +278,7 @@ export default {
     },
     async getCounterparty (recipient) {
       if (!base.Keypair.isValidPublicKey(recipient)) {
-        return this.getAccountIdByEmail(recipient)
+        return this.getAccountIdByIdentifier(recipient)
       } else {
         return recipient
       }

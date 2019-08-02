@@ -11,6 +11,7 @@ for further information about branching and tagging conventions.
 #### Added
 - Auto close indicator to status-messages
 - Asset code generation with hash
+- Sending asset by phone number
 
 #### Removed
 - Displaying asset codes

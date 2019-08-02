@@ -1093,7 +1093,7 @@
       "balance": "Доступно {{amount}} {{asset}}",
       "amount-lbl": "Количество",
       "insufficient-sales": "Недостаточно средств",
-      "recipient-lbl": "Имейл получателя",
+      "recipient-lbl": "Имейл или телефон получателя",
       "subject-lbl": "Добавить примечание (опц.)",
       "continue-btn": "Далее",
       "recheck-form": "Пожалуйста, перепроверьте форму.",
