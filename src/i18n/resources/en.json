@@ -120,7 +120,8 @@
       "field-error_assetCode": "Asset code must contain maximum 16 symbols and consist of alphanumeric values (A-Z, a-z, 0-9)",
       "field-error_alphaNum": "Value should consists of alphanumeric values (A-Z, a-z, 0-9)",
       "field-error_minLength": "This field must contain minimum {{minLength}} symbols",
-      "field-error_selectedSameAssetCode": "Not allowed duplicated quote asset codes"
+      "field-error_selectedSameAssetCode": "Not allowed duplicated quote asset codes",
+      "field-error_validatePhoneNumber": "Make sure the phone number is correct"
     },
     "errors": {
       "default": "Something bad happened. Please try again later or contact the system owner.",
@@ -526,7 +527,12 @@
     "phone-number-form": {
       "phone-number-lbl": "Phone number",
       "change-btn": "Change",
-      "code-from-sms-lbl": "SMS code"
+      "add-btn": "Add",
+      "code-from-sms-lbl": "SMS code",
+      "wrong-sms-code-err": "Wrong sms code",
+      "phone-number-changed-msg": "Phone number was successfully changed",
+      "phone-number-added-msg": "Phone number was successfully added",
+      "exist-phone-number-err": "Such phone number already exists"
     },
     "tfa-form": {
       "password-lbl": "Current password",

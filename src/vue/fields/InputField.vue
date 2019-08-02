@@ -7,6 +7,7 @@
       'input-field--readonly': $attrs.readonly || $attrs.readonly === '',
       'input-field--disabled': $attrs.disabled,
       'input-field--pwd-toggle-present': isPasswordType,
+      'input-field--phone-number': isPhoneNumberType,
     }"
   >
     <input
@@ -14,7 +15,8 @@
       v-on="listeners"
       class="input-field__input"
       :class="{
-        'input-field__input--autofill-white': whiteAutofill
+        'input-field__input--autofill-white': whiteAutofill,
+        'input-field__phone-number-input': isPhoneNumberType
       }"
       :type="isPasswordType && isPasswordShown ? 'text' : type"
       :value="value"
@@ -42,7 +44,12 @@
       />
     </button>
 
-    <span class="input-field__label">
+    <span
+      class="input-field__label"
+      :class="{
+        'input-field__label--phone-number': isPhoneNumberType,
+      }"
+    >
       {{ label }}
 
       <template v-if="isCapsLockOn">
@@ -93,6 +100,10 @@ export default {
 
     isPasswordType () {
       return this.type === 'password'
+    },
+
+    isPhoneNumberType () {
+      return this.type === 'phone-number'
     },
   },
 
@@ -404,5 +415,26 @@ $pwd-toggle-btn-width: 3.2rem;
     margin-top: $field-error-margin-top;
     overflow: hidden;
   }
+}
+
+.input-field--phone-number:before {
+  position: absolute;
+  top: 1.4rem;
+  content: '\002B';
+  left: 0;
+  font-size: 1.8rem;
+  line-height: 1.25;
+}
+
+.input-field__label--phone-number {
+  .input-field__input:not(:focus):placeholder-shown ~ & {
+    top: 0;
+
+    @include label-font-sizes;
+  }
+}
+
+.input-field__phone-number-input {
+  padding: 1.5rem 0 0.6rem 1rem;
 }
 </style>

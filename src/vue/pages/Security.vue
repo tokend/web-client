@@ -10,7 +10,7 @@
             {{ 'security-page.enable-tfa-title' | globalize }}
           </template>
         </template>
-        <tfa-form @update="updateTfa" />
+        <tfa-form @update="updateFactors" />
       </template>
 
       <template v-else-if="viewMode === VIEW_MODES.changePassword">
@@ -69,7 +69,9 @@
             {{ 'security-page.add-phone-number-title' | globalize }}
           </template>
         </template>
-        <phone-number-form />
+        <phone-number-form
+          @submitted="updateFactors"
+        />
       </template>
     </drawer>
 
@@ -244,7 +246,7 @@ export default {
       this.viewMode = viewMode
       this.isDrawerShown = true
     },
-    async updateTfa () {
+    async updateFactors () {
       this.isDrawerShown = false
       try {
         await this.loadFactors()

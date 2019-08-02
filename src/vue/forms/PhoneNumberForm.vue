@@ -1,43 +1,50 @@
 <template>
-  <form class="app-form phone-number-form">
+  <form
+    @submit.prevent="submit()"
+    class="app-form phone-number-form"
+  >
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
           v-model="form.phoneNumber"
           @blur="touchField('form.phoneNumber')"
           name="phone-number"
+          type="phone-number"
           :error-message="getFieldErrorMessage('form.phoneNumber')"
           :label="'phone-number-form.phone-number-lbl' | globalize"
           :disabled="formMixin.isDisabled"
         />
       </div>
     </div>
-
-    <template v-if="isShowSmsCode">
-      <div class="app__form-row">
-        <div class="app__form-field">
-          <input-field
-            v-model="form.code"
-            @blur="touchField('form.code')"
-            name="code"
-            :error-message="getFieldErrorMessage('form.code')"
-            :label="'phone-number-form.code-from-sms-lbl' | globalize"
-            :disabled="formMixin.isDisabled"
-          />
+    <transition name="phone-number-form__transition">
+      <template v-if="isShowSmsCode">
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <input-field
+              v-model="form.code"
+              @blur="touchField('form.code')"
+              name="code"
+              :error-message="getFieldErrorMessage('form.code')"
+              :label="'phone-number-form.code-from-sms-lbl' | globalize"
+              :disabled="formMixin.isDisabled"
+            />
+          </div>
         </div>
-      </div>
-    </template>
+      </template>
+    </transition>
 
     <div class="app__form-actions">
       <button
         v-ripple
-        type="button"
+        type="submit"
         class="phone-number-form__btn app__button-raised"
-        @click="changePhoneNumber"
-        :disabled="formMixin.isDisabled"
+        :disabled="formMixin.isDisabled || isUserPhoneNumber"
       >
-        <template>
+        <template v-if="isPhoneEnabled">
           {{ 'phone-number-form.change-btn' | globalize }}
+        </template>
+        <template v-else>
+          {{ 'phone-number-form.add-btn' | globalize }}
         </template>
       </button>
     </div>
@@ -47,7 +54,10 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { required } from '@validators'
+import {
+  required,
+  validatePhoneNumber,
+} from '@validators'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -55,88 +65,101 @@ import { api, factorsManager } from '@/api'
 import { errors } from '@tokend/js-sdk'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
+import IdentityGetter from '@/vue/mixins/identity-getter'
+import { Bus } from '@/js/helpers/event-bus'
+
+const EVENTS = {
+  submitted: 'submitted',
+}
 
 export default {
   name: 'phone-number-form',
-  mixins: [FormMixin],
+  mixins: [FormMixin, IdentityGetter],
   data: _ => ({
-    factor: {},
     form: {
       phoneNumber: '',
       code: '',
     },
     isShowSmsCode: false,
+    userPhoneNumer: '',
   }),
+
   validations: {
     form: {
-      phoneNumber: { required },
+      phoneNumber: { required, validatePhoneNumber },
       code: { required },
     },
   },
+
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
+      isPhoneEnabled: vuexTypes.isPhoneEnabled,
     }),
-  },
-  async created () {
-    try {
-      await this.loadPhoneNumber()
-    } catch (e) {
-      ErrorHandler.processWithoutFeedback(e)
-    }
-  },
-  methods: {
-    async loadPhoneNumber () {
-      try {
-        const { data } = await api.get('/identities', {
-          filter: {
-            address: this.accountId,
-          },
-        })
-        this.form.phoneNumber = data.phoneNumber
-      } catch (e) {
-        ErrorHandler.processWithoutFeedback(e)
-      }
+    isUserPhoneNumber () {
+      return this.userPhoneNumer === this.form.phoneNumber
     },
-    async changePhoneNumber () {
+  },
+
+  async created () {
+    const phoneNumber = await this.getPhoneByAccountId(this.accountId)
+    this.form.phoneNumber = phoneNumber
+    this.userPhoneNumer = phoneNumber
+  },
+
+  methods: {
+    async submit () {
       const validationRule = this.isShowSmsCode
         ? this.isFormValid()
         : this.isFormValid('form.phoneNumber')
       if (!validationRule) return
       this.disableForm()
 
-      const endpoint = `/identities/${this.accountId}/settings/phone`
       try {
-        await api.putWithSignature(endpoint, {
-          data: {
-            type: 'phone',
-            attributes: {
-              phone: this.form.phoneNumber,
-            },
-          },
-        })
+        await this.changePhoneNumber()
       } catch (error) {
-        if (error instanceof errors.TFARequiredError) {
+        if (error instanceof errors.ConflictError) {
+          ErrorHandler.process(error, 'phone-number-form.exist-phone-number-err')
+        } else if (error instanceof errors.TFARequiredError) {
           this.isShowSmsCode = true
-          try {
-            await factorsManager.verifyTotpFactor(error, this.form.code)
-            await api.putWithSignature(endpoint, {
-              data: {
-                type: 'phone',
-                attributes: {
-                  phone: this.form.phoneNumber,
-                },
-              },
-            })
-          } catch (e) {
-            ErrorHandler.process(e, 'tfa-form.wrong-code-err')
-          }
+          this.verifySmsCode(error)
         } else {
           ErrorHandler.process(error)
         }
       }
 
       this.enableForm()
+    },
+
+    async changePhoneNumber () {
+      const endpoint = `/identities/${this.accountId}/settings/phone`
+      await api.putWithSignature(endpoint, {
+        data: {
+          type: 'phone',
+          attributes: {
+            phone: this.form.phoneNumber,
+          },
+        },
+      })
+    },
+
+    async verifySmsCode (error) {
+      if (!this.form.code) {
+        this.enableForm()
+        return
+      }
+      try {
+        await factorsManager.verifyTotpFactor(error, this.form.code)
+        await this.changePhoneNumber()
+        this.$emit(EVENTS.submitted)
+        if (this.isPhoneEnabled) {
+          Bus.success('phone-number-form.phone-number-changed-msg')
+        } else {
+          Bus.success('phone-number-form.phone-number-added-msg')
+        }
+      } catch (e) {
+        ErrorHandler.process(e, 'phone-number-form.wrong-sms-code-err')
+      }
     },
   },
 }
@@ -145,16 +168,29 @@ export default {
 <style lang="scss" scoped>
 @import './app-form';
 
-.tfa-form__btn {
+.phone-number-form__btn {
   max-width: 18rem;
   width: 100%;
 }
 
-.tfa-form__hint {
-  margin-bottom: 1.2rem;
+.phone-number-form__transition-enter-active {
+  animation: phone-number-form__transition-keyframes 0.2s ease-in-out;
 }
 
-.tfa-form__code-hint {
-  margin-top: 3rem;
+.phone-number-form__transition-leave-active {
+  display: none;
+  animation: phone-number-form__transition-keyframes 0s ease-in-out reverse;
+}
+
+@keyframes phone-number-form__transition-keyframes {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+
+  to {
+    opacity: 1;
+    max-height: 4.4rem;
+  }
 }
 </style>

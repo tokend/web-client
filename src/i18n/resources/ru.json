@@ -120,7 +120,8 @@
       "field-error_assetCode": "Код должен быть длиной менее 16 знаков, включительно, и может состоять только из букв и цифр латинского алфавита (A-Z, a-z, 0-9)",
       "field-error_alphaNum": "Значение должно состоять из букв и цифр латинского алфавита (A-Z, a-z, 0-9)",
       "field-error_minLength": "Количество знаков должно превышать {{minLength}}",
-      "field-error_selectedSameAssetCode": "Не могут быть выбраны два одинаковых актива"
+      "field-error_selectedSameAssetCode": "Не могут быть выбраны два одинаковых актива",
+      "field-error_validatePhoneNumber": "Неверный номер телефона"
     },
     "errors": {
       "default": "Что-то пошло не так. Пожалуйста, повторите попытку позже или свяжитесь с владельцем системы.",
@@ -526,7 +527,12 @@
     "phone-number-form": {
       "phone-number-lbl": "Номер телефона",
       "change-btn": "Изменить",
-      "code-from-sms-lbl": "СМС код"
+      "add-btn": "Добавить",
+      "code-from-sms-lbl": "СМС код",
+      "wrong-code-err": "Неверный смс код",
+      "phone-number-changed-msg": "Номер телефона успешно изменен",
+      "phone-number-added-msg": "Номер телефона успешно добавлен",
+      "exist-phone-number-err": "Такой номер уже существует"
     },
     "tfa-form": {
       "password-lbl": "Текущий пароль",
