@@ -84,8 +84,8 @@ describe('SignupForm component test', () => {
             email: 'alice@mail.com',
             password: 'qwe123',
             confirmPassword: 'qwe123',
-            isSubmitting: false,
           },
+          isSubmitting: false,
         }),
       })
     })
@@ -118,7 +118,6 @@ describe('SignupForm component test', () => {
         email: 'foo@bar.com',
         password: 'Nwr2mW21m',
         confirmPassword: 'Nwr2mW21m',
-        isSubmitting: false,
       }
 
       wrapper.setData({ form })
