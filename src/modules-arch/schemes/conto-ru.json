@@ -6,7 +6,7 @@
       "account-corporate": "Аккаунта бизнеса I уровня"
     },
     "verification-form": {
-      "avatar-lbl": "Лого"
+      "avatar-lbl": "Лого (Необязательно)"
     },
     "verification-page": {
       "account-type-corporate-title": "Бизнес I уровня",
@@ -235,6 +235,7 @@
       "no-investable-assets-err": "Этот актив не имеет приемлемых пар активов. Пожалуйста, выберите другой."
     },
     "assets": {
+      "vendor-code": "Артикул",
       "can-be-base-in-atomic-swap-title": "Может быть базовым активом в прямой продаже",
       "can-be-quote-in-atomic-swap-title": "Может быть котируемым активом в прямой продаже"
     },

@@ -1,4 +1,5 @@
 import { vueRoutes } from '@/vue-router/routes'
+import { store } from '@/vuex/index'
 
 import { MovementsHistoryModule } from '@modules/movements-history/module'
 import { UserMovementsHistoryModule } from '@modules/user-movements-history/module'
@@ -296,6 +297,14 @@ export default {
               path: '/atomic-swaps/explore',
               name: vueRoutes.atomicSwapsExplore.name,
               props: true,
+              beforeEnter: async (to, from, next) => {
+                if (to.query.owner !== store.getters.accountId) {
+                  to.query.owner = store.getters.accountId
+                  next(to)
+                } else {
+                  next()
+                }
+              },
             },
             isCorporateOnly: true,
           }),

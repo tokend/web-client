@@ -7,7 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
-## Unreleased
+## [Unreleased]
+#### Added
+- Auto close indicator to status-messages
+- Asset code generation with hash
+
+#### Removed
+- Displaying asset codes
+- Asset code in asset creation form
+- Autoclose indicator to status-messages
+- Optional label to optional KYC fields
+- Processing feedback on sign up
+
+#### Fixed
+- Account ID in URL after login
+- Issue when an asset are not available on issuance
+
 #### Changed
 - Color scheme
 

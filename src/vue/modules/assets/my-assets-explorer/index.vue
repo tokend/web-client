@@ -36,7 +36,7 @@
 
       <div class="my-assets-explorer__asset-list-wrp">
         <div
-          v-if="assets.length"
+          v-if="accountOwnedAssetsBalances.length"
           class="my-assets-explorer__asset-list"
         >
           <template v-for="item in accountOwnedAssetsBalances">
@@ -127,7 +127,6 @@ export default {
 
   computed: {
     ...mapGetters({
-      assets: vuexTypes.balancesAssets,
       ownedAssets: vuexTypes.ownedBalancesAssets,
       accountBalances: vuexTypes.accountBalances,
       accountOwnedAssetsBalances: vuexTypes.accountOwnedAssetsBalances,

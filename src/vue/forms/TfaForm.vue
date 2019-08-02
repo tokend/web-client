@@ -50,6 +50,7 @@
       <clipboard-field
         :value="factor.secret"
         :label="'tfa-form.secret-lbl' | globalize"
+        tooltip-type="tfaClipboard"
       />
       <p class="tfa-form__hint tfa-form__code-hint">
         {{ 'tfa-form.tfa-code-desc' | globalize }}

@@ -52,7 +52,10 @@
         class="auth-form__submit-btn app__button-raised"
         :disabled="isDisabled || formMixin.isDisabled"
       >
-        {{ 'auth-pages.sign-up' | globalize }}
+        {{ isSubmitting
+          ? 'auth-pages.submit-processing'
+          : 'auth-pages.sign-up'
+          | globalize }}
       </button>
     </div>
   </form>
@@ -91,6 +94,7 @@ export default {
       password: '',
       confirmPassword: '',
     },
+    isSubmitting: false,
   }),
   validations: {
     form: {
@@ -109,6 +113,7 @@ export default {
         return
       }
       this.disableForm()
+      this.isSubmitting = true
       try {
         await walletsManager.getKdfParams(this.form.email.toLowerCase())
         // If no error came - the user exists - we obviously won't succeed in
@@ -123,6 +128,7 @@ export default {
         }
         ErrorHandler.process(e)
       }
+      this.isSubmitting = false
       this.enableForm()
     },
   },

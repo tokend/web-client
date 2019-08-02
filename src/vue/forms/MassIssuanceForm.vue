@@ -1,6 +1,6 @@
 <template>
   <div class="mass-issuance-form">
-    <template v-if="ownedAssets.length">
+    <template v-if="isLoading && ownedAssets.length">
       <form @submit.prevent="submit()">
         <div class="app__form-row">
           <div class="app__form-field">
@@ -35,7 +35,7 @@
                 :key="asset.code"
                 :value="asset.code"
               >
-                {{ asset.nameAndCode }}
+                {{ asset.name }}
               </option>
             </select-field>
 
@@ -133,6 +133,7 @@ export default {
         receivers: this.receivers || '',
         amount: String(this.amount) || '',
       },
+      isLoading: false,
     }
   },
 
@@ -158,6 +159,7 @@ export default {
 
   async created () {
     await this.loadAssets()
+    this.isLoading = true
   },
 
   methods: {

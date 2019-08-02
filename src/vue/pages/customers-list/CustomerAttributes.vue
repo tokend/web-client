@@ -27,7 +27,7 @@
           >
             <td>
               <!-- eslint-disable-next-line max-len -->
-              {{ 'customer-attributes.balance-key' | globalize({ assetCode: balance.assetCode }) }}
+              {{ assetByCode(balance.assetCode).name }}
             </td>
             <td>
               <!-- eslint-disable-next-line max-len -->
@@ -42,6 +42,8 @@
 
 <script>
 import { CustomerRecord } from './customer.record'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 export default {
   name: 'customer-attributes',
@@ -54,6 +56,9 @@ export default {
   },
 
   computed: {
+    ...mapGetters([
+      vuexTypes.assetByCode,
+    ]),
     customerStatusTranslated () {
       let translationId
 
