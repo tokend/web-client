@@ -18,6 +18,8 @@ for further information about branching and tagging conventions.
 - Autoclose indicator to status-messages
 - Optional label to optional KYC fields
 - Processing feedback on sign up
+- Explorer for businesses
+- Show business industry
 - Set/change phone number in settings
 
 #### Fixed

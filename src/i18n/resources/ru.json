@@ -2408,9 +2408,24 @@
       "customer-drawer-title": "Клиент"
     },
     "businesses": {
-      "all-tab": "Все бизнесы"
+      "all-tab": "Все бизнесы",
+      "my-tab": "Мои бизнесы"
     },
     "businesses-all": {
+      "no-list-title": "Нет бизнесов",
+      "no-list-msg": "Здесь будет список бизнесов",
+      "business-details-title": "Детали бизнеса"
+    },
+    "business-viewer": {
+      "add-btn": "Добавить бизнес",
+      "business-added-successfully-notification": "Бизнес успешно добавлен"
+    },
+    "business-attributes": {
+      "id-key": "Идентификатор",
+      "owner-key": "Владелец",
+      "industry-key": "Индустрия"
+    },
+    "businesses-my": {
       "no-list-title": "Нет бизнесов",
       "no-list-msg": "Здесь будет список бизнесов, с которыми вы ассоциированы"
     },
