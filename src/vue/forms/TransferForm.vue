@@ -38,7 +38,7 @@
                   :key="asset.code"
                   :value="asset.code"
                 >
-                  {{ asset.nameAndCode }}
+                  {{ asset.name }}
                 </option>
               </select-field>
               <template v-if="form.asset.code">
@@ -46,7 +46,6 @@
                   {{
                     'transfer-form.balance' | globalize({
                       amount: balance.balance,
-                      asset: form.asset.code,
                       available: balance.balance
                     })
                   }}

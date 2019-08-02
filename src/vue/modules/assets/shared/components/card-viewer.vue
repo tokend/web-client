@@ -8,11 +8,8 @@
       />
     </div>
     <div class="card-viewer__info">
-      <p :title="asset.code" class="card-viewer__code">
-        {{ asset.code }}
-      </p>
-      <p :title="asset.name || asset.code" class="card-viewer__name">
-        {{ asset.name || asset.code }}
+      <p :title="asset.name" class="card-viewer__code">
+        {{ asset.name }}
       </p>
       <p
         v-if="balance"

@@ -9,6 +9,12 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Added
+- Auto close indicator to status-messages
+- Asset code generation with hash
+
+#### Removed
+- Displaying asset codes
+- Asset code in asset creation form
 - Autoclose indicator to status-messages
 - Optional label to optional KYC fields
 - Processing feedback on sign up

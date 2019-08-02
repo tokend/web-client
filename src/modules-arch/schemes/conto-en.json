@@ -236,6 +236,7 @@
       "no-investable-assets-err": "This asset has no acceptable contribution asset pairs. Please, select another one"
     },
     "assets": {
+      "vendor-code": "Vendor code",
       "can-be-base-in-atomic-swap-title": "Can be base in direct sell",
       "can-be-quote-in-atomic-swap-title": "Can be quote in direct sell"
     },

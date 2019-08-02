@@ -1074,7 +1074,7 @@
       "discover-assets-btn": "Найти активы",
       "form-heading": "Отправить",
       "asset-lbl": "Актив",
-      "balance": "Доступно {{amount}} {{asset}}.",
+      "balance": "Доступно {{amount}} {{asset}}",
       "amount-lbl": "Количество",
       "insufficient-sales": "Недостаточно средств",
       "recipient-lbl": "Имейл получателя",
@@ -1226,7 +1226,7 @@
     "assets-list": {
       "update-asset-title": "Обновить актив",
       "details-title": "Детали актива",
-      "list-item-balance-line": "Баланс: {{value, money}}",
+      "list-item-balance-line": "Баланс: {{value}}",
       "no-balance-msg": "Нет баланса"
     },
     "asset-form": {
@@ -2011,7 +2011,7 @@
       "no-created-assets-msg": "Вы еще не создали активов",
       "no-balances-title": "Нет активов в балансах",
       "no-balances-msg": "У вас еще нет активов в балансах",
-      "list-item-balance-line": "Баланс: {{value, money}}",
+      "list-item-balance-line": "Баланс: {{value}}",
       "no-balance-msg": "Нет баланса",
       "details-drawer-title": "Детали актива",
       "update-drawer-title": "Обновить актив",

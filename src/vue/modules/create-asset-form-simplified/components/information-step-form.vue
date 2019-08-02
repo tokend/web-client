@@ -26,20 +26,6 @@
       <div class="app__form-field">
         <input-field
           white-autofill
-          v-model="form.code"
-          @blur="touchField('form.code')"
-          name="create-asset-code"
-          :label="'create-asset-form.code-lbl' | globalize"
-          :error-message="getFieldErrorMessage('form.code')"
-          :disabled="isDisabled"
-        />
-      </div>
-    </div>
-
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <input-field
-          white-autofill
           v-model="form.description"
           @blur="touchField('form.description')"
           name="create-asset-form-description"
@@ -164,6 +150,8 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
+import md5 from 'js-md5'
+
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { ASSET_POLICIES } from '@tokend/js-sdk'
 
@@ -174,7 +162,6 @@ import { CreateAssetRequest } from '../wrappers/create-asset-request'
 import {
   required,
   maxLength,
-  assetCode,
   amountRange,
   requiredIf,
 } from '@validators'
@@ -226,10 +213,6 @@ export default {
           required,
           maxLength: maxLength(NAME_MAX_LENGTH),
         },
-        code: {
-          required,
-          assetCode,
-        },
         description: {
           maxLength: maxLength(DESCRIPTION_MAX_LENGTH),
         },
@@ -248,7 +231,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters([vuexTypes.statsQuoteAsset]),
+    ...mapGetters([
+      vuexTypes.statsQuoteAsset,
+      vuexTypes.accountId,
+    ]),
     inputStep () {
       return inputStepByDigitsCount(config.DECIMAL_POINTS)
     },
@@ -261,6 +247,13 @@ export default {
   },
 
   methods: {
+    getAssetCode () {
+      let hash = md5.create()
+      const assetInformation = this.form.name + this.accountId + +new Date()
+      hash.update(assetInformation)
+      return hash.toString().substring(0, 16).toUpperCase()
+    },
+
     populateForm () {
       this.form = {
         name: this.request.assetName,
@@ -274,6 +267,7 @@ export default {
 
     submit () {
       if (this.isFormValid()) {
+        this.form.code = this.getAssetCode()
         this.$emit(EVENTS.submit, this.form)
       }
     },
