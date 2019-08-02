@@ -23,6 +23,9 @@ for further information about branching and tagging conventions.
 - Account ID in URL after login
 - Issue when an asset are not available on issuance
 
+#### Changed
+- Color scheme
+
 ## [1.0.0-rc.4] - 2019-07-30
 #### Added
 - Invite field to KYC data

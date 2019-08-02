@@ -264,6 +264,7 @@ export default {
 .movements-top-bar__filters {
   display: inline-flex;
   align-items: center;
+  color: $_lightBlack;
 }
 
 .movements-top-bar__filters-prefix {
