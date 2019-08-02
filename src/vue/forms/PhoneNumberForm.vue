@@ -8,7 +8,7 @@
         <input-field
           v-model="form.phoneNumber"
           @blur="touchField('form.phoneNumber')"
-          @input="isShowSmsCode = false"
+          @input="hideSmsCodeAndClearField()"
           name="phone-number"
           type="phone-number"
           :error-message="getFieldErrorMessage('form.phoneNumber')"
@@ -161,6 +161,13 @@ export default {
       } catch (e) {
         ErrorHandler.process(e, 'phone-number-form.wrong-sms-code-err')
       }
+    },
+
+    hideSmsCodeAndClearField () {
+      this.isShowSmsCode = false
+      this.form.code = ''
+      // reset validation empty field error
+      this.$v.form.code.$reset()
     },
   },
 }
