@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
-## [Unreleased]
+## [1.0.0-rc.5] - 2019-08-02
 #### Added
 - Auto close indicator to status-messages
 - Asset code generation with hash
@@ -16,7 +16,6 @@ for further information about branching and tagging conventions.
 #### Removed
 - Displaying asset codes
 - Asset code in asset creation form
-- Autoclose indicator to status-messages
 - Optional label to optional KYC fields
 - Processing feedback on sign up
 - Explorer for businesses
@@ -109,7 +108,8 @@ for further information about branching and tagging conventions.
 #### Removed
 - `RECOVERY_MODE` config key due to unused anymore
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.0.0-rc.4...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.0.0-rc.5...HEAD
+[1.0.0-rc.5]: https://github.com/tokend/web-client/compare/1.0.0-rc.4...1.0.0-rc.5
 [1.0.0-rc.4]: https://github.com/tokend/web-client/compare/1.0.0-rc.3...1.0.0-rc.4
 [1.0.0-rc.3]: https://github.com/tokend/web-client/compare/1.0.0-rc.2...1.0.0-rc.3
 [1.0.0-rc.2]: https://github.com/tokend/web-client/compare/1.0.0-rc.1...1.0.0-rc.2
