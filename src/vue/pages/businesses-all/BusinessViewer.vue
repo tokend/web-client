@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import { BusinessRecord } from '@/js/records/entities/business.record'
 import BusinessAttributes from './BusinessAttributes'
+import { BusinessRecord } from '@/js/records/entities/business.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 

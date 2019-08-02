@@ -1,17 +1,17 @@
 <template>
-  <div class="business-details-attributes">
-    <div class="business-details__header">
+  <div class="business-attributes">
+    <div class="business-attributes__header">
       <business-logo
-        class="business-details__logo"
+        class="business-attributes__logo"
         :business="business"
         dark-mode
       />
-      <p class="business-details__name">
+      <p class="business-attributes__name">
         {{ business.name }}
       </p>
     </div>
     <!-- eslint-disable-next-line max-len -->
-    <div class="app__table app__table--last-td-to-right business-details__table">
+    <div class="app__table app__table--last-td-to-right business-attributes__table">
       <table>
         <tbody>
           <tr>
@@ -50,9 +50,9 @@
 </template>
 
 <script>
-import { BusinessRecord } from '@/js/records/entities/business.record'
 import EmailGetter from '@/vue/common/EmailGetter'
 import BusinessLogo from './BusinessLogo'
+import { BusinessRecord } from '@/js/records/entities/business.record'
 
 export default {
   name: 'business-attributes',
@@ -74,25 +74,25 @@ export default {
 <style lang="scss" scoped>
 @import '~@scss/variables';
 
-.business-details__logo {
+.business-attributes__logo {
   width: 5rem;
   height: 5rem;
   border-radius: 50%;
 }
 
-.business-details__header {
+.business-attributes__header {
   display: flex;
   align-items: center;
 }
 
-.business-details__name {
+.business-attributes__name {
   margin-left: 1.8rem;
   font-size: 1.8rem;
   font-weight: 700;
   color: $col-primary;
 }
 
-.business-details__table {
+.business-attributes__table {
   margin-top: 4rem;
 }
 </style>
