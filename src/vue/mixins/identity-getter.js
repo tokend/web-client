@@ -91,5 +91,18 @@ export default {
         throw new errors.UserDoesntExistError()
       }
     },
+
+    async getPhoneByAccountId (accountId) {
+      const { data } = await api.get('/identities', {
+        filter: { address: accountId },
+        page: { limit: 1 },
+      })
+
+      if (data && data[0]) {
+        return data[0].phoneNumber
+      } else {
+        throw new errors.UserDoesntExistError()
+      }
+    },
   },
 }

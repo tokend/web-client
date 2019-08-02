@@ -7,17 +7,21 @@
       />
 
       <div class="asset-attributes-viewer__info">
-        <p class="asset-attributes-viewer__code">
-          {{ asset.code }}
-        </p>
         <p class="asset-attributes-viewer__name">
-          {{ asset.name || asset.code }}
+          {{ asset.name }}
         </p>
       </div>
     </div>
     <div class="app__table asset-attributes-viewer__table-wrp">
       <table>
         <tbody>
+          <tr v-if="balance">
+            <td>{{ 'assets.vendor-code' | globalize }}</td>
+            <td>
+              {{ asset.code }}
+            </td>
+          </tr>
+
           <tr v-if="balance">
             <td>{{ 'assets.balance-title' | globalize }}</td>
             <td>
@@ -147,15 +151,15 @@ $media-small-height: 460px;
 }
 
 .asset-attributes-viewer__code {
-  font-size: 1.8rem;
-  font-weight: 700;
+  margin-top: 0.1rem;
+  font-size: 1.4rem;
+  line-height: 1.29;
   color: $col-primary;
 }
 
 .asset-attributes-viewer__name {
-  margin-top: 0.1rem;
-  font-size: 1.4rem;
-  line-height: 1.29;
+  font-size: 1.8rem;
+  font-weight: 700;
   color: $col-primary;
 }
 

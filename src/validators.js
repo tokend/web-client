@@ -161,3 +161,7 @@ export const selectedSameAssetCode = (selectedAssetsByCode) => {
     return true
   }
 }
+
+export const validatePhoneNumber = value => {
+  return /^[1-9]{1}[0-9]{3,14}$/i.test(value)
+}

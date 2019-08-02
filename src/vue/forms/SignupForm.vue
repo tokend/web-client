@@ -124,6 +124,7 @@ export default {
           // If user not found - it's our case, so we will continue sign-up
           this.$emit(this.submitEvent, this.form)
           this.enableForm()
+          this.isSubmitting = false
           return
         }
         ErrorHandler.process(e)

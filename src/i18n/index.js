@@ -190,9 +190,7 @@ class I18n {
                 _get(lngConfig, 'number.formats.amounts.default')
 
               const result = MathUtil.format(value, defaultFormat)
-              return param.currency
-                ? result.concat(' ', param.currency)
-                : result
+              return result
             case 'number':
               return MathUtil
                 .format(param, _get(lngConfig, 'number.formats.default'))

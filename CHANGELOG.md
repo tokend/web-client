@@ -9,15 +9,25 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Added
+- Auto close indicator to status-messages
+- Asset code generation with hash
+
+#### Removed
+- Displaying asset codes
+- Asset code in asset creation form
 - Autoclose indicator to status-messages
 - Optional label to optional KYC fields
 - Processing feedback on sign up
 - Explorer for businesses
 - Show business industry
+- Set/change phone number in settings
 
 #### Fixed
 - Account ID in URL after login
 - Issue when an asset are not available on issuance
+
+#### Changed
+- Color scheme
 
 ## [1.0.0-rc.4] - 2019-07-30
 #### Added

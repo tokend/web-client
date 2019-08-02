@@ -120,7 +120,8 @@
       "field-error_assetCode": "Код должен быть длиной менее 16 знаков, включительно, и может состоять только из букв и цифр латинского алфавита (A-Z, a-z, 0-9)",
       "field-error_alphaNum": "Значение должно состоять из букв и цифр латинского алфавита (A-Z, a-z, 0-9)",
       "field-error_minLength": "Количество знаков должно превышать {{minLength}}",
-      "field-error_selectedSameAssetCode": "Не могут быть выбраны два одинаковых актива"
+      "field-error_selectedSameAssetCode": "Не могут быть выбраны два одинаковых актива",
+      "field-error_validatePhoneNumber": "Неверный номер телефона"
     },
     "errors": {
       "default": "Что-то пошло не так. Пожалуйста, повторите попытку позже или свяжитесь с владельцем системы.",
@@ -520,7 +521,19 @@
       "account-id-label": "Идентификатор аккаунта",
       "phone-number-title": "Номер телефона",
       "change-phone-number-btn": "Сменить номер телефона",
-      "change-phone-number-title": "Смена номера телефона"
+      "change-phone-number-title": "Смена номера телефона",
+      "add-phone-number-title": "Добавление номера телефона",
+      "add-phone-number-btn": "Добавить номер телефона"
+    },
+    "phone-number-form": {
+      "phone-number-lbl": "Номер телефона",
+      "change-btn": "Изменить",
+      "add-btn": "Добавить",
+      "code-from-sms-lbl": "СМС код",
+      "wrong-sms-code-err": "Неверный смс код",
+      "phone-number-changed-msg": "Номер телефона успешно изменен",
+      "phone-number-added-msg": "Номер телефона успешно добавлен",
+      "exist-phone-number-err": "Такой номер уже существует"
     },
     "tfa-form": {
       "password-lbl": "Текущий пароль",
@@ -1077,7 +1090,7 @@
       "discover-assets-btn": "Найти активы",
       "form-heading": "Отправить",
       "asset-lbl": "Актив",
-      "balance": "Доступно {{amount}} {{asset}}.",
+      "balance": "Доступно {{amount}} {{asset}}",
       "amount-lbl": "Количество",
       "insufficient-sales": "Недостаточно средств",
       "recipient-lbl": "Имейл получателя",
@@ -1229,7 +1242,7 @@
     "assets-list": {
       "update-asset-title": "Обновить актив",
       "details-title": "Детали актива",
-      "list-item-balance-line": "Баланс: {{value, money}}",
+      "list-item-balance-line": "Баланс: {{value}}",
       "no-balance-msg": "Нет баланса"
     },
     "asset-form": {
@@ -2014,7 +2027,7 @@
       "no-created-assets-msg": "Вы еще не создали активов",
       "no-balances-title": "Нет активов в балансах",
       "no-balances-msg": "У вас еще нет активов в балансах",
-      "list-item-balance-line": "Баланс: {{value, money}}",
+      "list-item-balance-line": "Баланс: {{value}}",
       "no-balance-msg": "Нет баланса",
       "details-drawer-title": "Детали актива",
       "update-drawer-title": "Обновить актив",

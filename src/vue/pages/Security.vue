@@ -10,7 +10,7 @@
             {{ 'security-page.enable-tfa-title' | globalize }}
           </template>
         </template>
-        <tfa-form @update="updateTfa" />
+        <tfa-form @update="updateFactors" />
       </template>
 
       <template v-else-if="viewMode === VIEW_MODES.changePassword">
@@ -62,9 +62,16 @@
 
       <template v-else-if="viewMode === VIEW_MODES.changePhoneNumber">
         <template slot="heading">
-          {{ 'security-page.change-phone-number-title' | globalize }}
+          <template v-if="isPhoneEnabled">
+            {{ 'security-page.change-phone-number-title' | globalize }}
+          </template>
+          <template v-else>
+            {{ 'security-page.add-phone-number-title' | globalize }}
+          </template>
         </template>
-        <phone-number-form />
+        <phone-number-form
+          @submitted="updateFactors"
+        />
       </template>
     </drawer>
 
@@ -144,7 +151,12 @@
           class="security-page__row-action"
           @click="showDrawer(VIEW_MODES.changePhoneNumber)"
         >
-          {{ 'security-page.change-phone-number-btn' | globalize }}
+          <template v-if="isPhoneEnabled">
+            {{ 'security-page.change-phone-number-btn' | globalize }}
+          </template>
+          <template v-else>
+            {{ 'security-page.add-phone-number-btn' | globalize }}
+          </template>
         </a>
       </div>
     </template>
@@ -212,6 +224,7 @@ export default {
     ...mapGetters({
       accountId: vuexTypes.accountId,
       isTotpEnabled: vuexTypes.isTotpEnabled,
+      isPhoneEnabled: vuexTypes.isPhoneEnabled,
     }),
   },
 
@@ -233,7 +246,7 @@ export default {
       this.viewMode = viewMode
       this.isDrawerShown = true
     },
-    async updateTfa () {
+    async updateFactors () {
       this.isDrawerShown = false
       try {
         await this.loadFactors()
