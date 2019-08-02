@@ -11,9 +11,11 @@ for further information about branching and tagging conventions.
 #### Added
 - Autoclose indicator to status-messages
 - Optional label to optional KYC fields
+- Processing feedback on sign up
 
 #### Fixed
 - Account ID in URL after login
+- Issue when an asset are not available on issuance
 
 ## [1.0.0-rc.4] - 2019-07-30
 #### Added
