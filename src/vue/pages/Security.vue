@@ -10,7 +10,7 @@
             {{ 'security-page.enable-tfa-title' | globalize }}
           </template>
         </template>
-        <tfa-form @update="updateTfa" />
+        <tfa-form @update="updateFactors" />
       </template>
 
       <template v-else-if="viewMode === VIEW_MODES.changePassword">
@@ -58,6 +58,20 @@
             :label="'security-page.network-passphrase-title' | globalize"
           />
         </div>
+      </template>
+
+      <template v-else-if="viewMode === VIEW_MODES.changePhoneNumber">
+        <template slot="heading">
+          <template v-if="isPhoneEnabled">
+            {{ 'security-page.change-phone-number-title' | globalize }}
+          </template>
+          <template v-else>
+            {{ 'security-page.add-phone-number-title' | globalize }}
+          </template>
+        </template>
+        <phone-number-form
+          @submitted="updateFactors"
+        />
       </template>
     </drawer>
 
@@ -126,6 +140,26 @@
         </a>
       </div>
     </template>
+
+    <!-- eslint-disable-next-line max-len -->
+    <template v-if="getModule().canRenderSubmodule(PhoneNumberFormPseudoModule)">
+      <div class="security-page__row">
+        <p class="security-page__row-title">
+          {{ 'security-page.phone-number-title' | globalize }}
+        </p>
+        <a
+          class="security-page__row-action"
+          @click="showDrawer(VIEW_MODES.changePhoneNumber)"
+        >
+          <template v-if="isPhoneEnabled">
+            {{ 'security-page.change-phone-number-btn' | globalize }}
+          </template>
+          <template v-else>
+            {{ 'security-page.add-phone-number-btn' | globalize }}
+          </template>
+        </a>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -137,6 +171,7 @@ import Drawer from '@/vue/common/Drawer'
 import KeyViewer from '@/vue/common/KeyViewer'
 
 import ChangePasswordForm from '@/vue/forms/ChangePasswordForm'
+import PhoneNumberForm from '@/vue/forms/PhoneNumberForm'
 import TfaForm from '@/vue/forms/TfaForm'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -149,6 +184,7 @@ import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-ac
 import { ShowSeedPseudoModule } from '@/modules-arch/pseudo-modules/show-seed-pseudo-module'
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
 import { ShowNetworkPassphrasePseudoModule } from '@/modules-arch/pseudo-modules/show-network-passphrase-pseudo-module'
+import { PhoneNumberFormPseudoModule } from '@/modules-arch/pseudo-modules/phone-number-form-pseudo-module'
 
 const VIEW_MODES = {
   enableTfa: 'enableTfa',
@@ -156,6 +192,7 @@ const VIEW_MODES = {
   viewAccountId: 'viewAccountId',
   viewSecretSeed: 'viewSecretSeed',
   viewNetworkPassphrase: 'viewNetworkPassphrase',
+  changePhoneNumber: 'changePhoneNumber',
   default: '',
 }
 
@@ -168,6 +205,7 @@ export default {
     ClipboardField,
     ChangePasswordForm,
     TfaForm,
+    PhoneNumberForm,
   },
   data: _ => ({
     isDrawerShown: false,
@@ -177,6 +215,7 @@ export default {
     ShowSeedPseudoModule,
     ChangePasswordPseudoModule,
     ShowNetworkPassphrasePseudoModule,
+    PhoneNumberFormPseudoModule,
     api,
     walletSeed: '',
   }),
@@ -185,6 +224,7 @@ export default {
     ...mapGetters({
       accountId: vuexTypes.accountId,
       isTotpEnabled: vuexTypes.isTotpEnabled,
+      isPhoneEnabled: vuexTypes.isPhoneEnabled,
     }),
   },
 
@@ -206,7 +246,7 @@ export default {
       this.viewMode = viewMode
       this.isDrawerShown = true
     },
-    async updateTfa () {
+    async updateFactors () {
       this.isDrawerShown = false
       try {
         await this.loadFactors()

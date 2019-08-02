@@ -4,13 +4,24 @@
       <business-logo
         class="business-card__logo"
         :business="business"
-        :name="business.name"
+        is-full-cover
       />
     </div>
 
-    <p class="business-card__name">
-      {{ business.name }}
-    </p>
+    <div class="business-card__info">
+      <p
+        :title="business.name"
+        class="business-card__name"
+      >
+        {{ business.name }}
+      </p>
+      <p
+        :title="business.industry"
+        class="business-card__industry"
+      >
+        {{ business.industry ? business.industry : '&nbsp;' }}
+      </p>
+    </div>
   </div>
 </template>
 
@@ -33,30 +44,14 @@ export default {
       required: true,
     },
   },
-
-  methods: {
-    translatePollStateInline (business) {
-      let translationId
-
-      if (business.isOpen) {
-        translationId = 'business-card.state-inline-open'
-      } else if (business.isPassed) {
-        translationId = 'business-card.state-inline-passed'
-      } else if (business.isFailed) {
-        translationId = 'business-card.state-inline-failed'
-      } else if (business.isCanceled) {
-        translationId = 'business-card.state-inline-canceled'
-      }
-
-      return this.$options.filters.globalize(translationId)
-    },
-  },
 }
 </script>
 
 <style lang="scss" scoped>
 @import '~@scss/variables';
 @import '~@scss/mixins';
+
+$business-card-header-height: 12.5rem;
 
 .business-card {
   border-radius: 0.4rem;
@@ -69,9 +64,42 @@ export default {
   overflow-x: hidden;
 }
 
+.business-card__logo-wrp {
+  border-radius: 0.4rem 0.4rem 0 0;
+  height: $business-card-header-height;
+  background-color: $col-asset-card-header-background;
+  display: flex;
+  align-items: center;
+}
+
+.business-card__logo {
+  margin: 0 auto;
+}
+
+.business-card__info {
+  padding: 1.6rem 2rem;
+  height: calc(100% - #{$business-card-header-height});
+  display: flex;
+  flex-direction: column;
+}
+
 .business-card__name {
-  font-size: 1.6em;
-  text-align: center;
-  padding: 1.6rem 2.4rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: $col-asset-card-text-primary;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.business-card__industry {
+  margin-top: 0.2rem;
+  font-size: 1.05rem;
+  line-height: 1.29;
+  opacity: 0.54;
+  color: $col-asset-card-text-primary;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>

@@ -1,19 +1,18 @@
 <template>
-  <div class="business-logo">
-    <img
-      v-if="url"
-      class=" business-logo__image"
-      :src="url"
-    >
-    <p
-      v-else
-      class="business-logo business-logo__code-abbr-wrp"
-    >
-      <span class="business-logo__code-abbr">
-        {{ name | abbreviate }}
-      </span>
-    </p>
-  </div>
+  <img
+    v-if="url"
+    class="business-logo business-logo--image"
+    :src="url"
+    :class="{ 'business-logo--full-cover' : isFullCover }"
+  >
+  <p
+    v-else
+    class="business-logo business-logo--abbr"
+    :class="{ 'business-logo--dark' : darkMode }"
+
+  >
+    {{ getFirstLetterOfName }}
+  </p>
 </template>
 
 <script>
@@ -24,11 +23,16 @@ export default {
   name: 'business-logo',
   props: {
     business: { type: BusinessRecord, required: true },
-    name: { type: String, required: true },
+    isFullCover: { type: Boolean, default: false },
+    darkMode: { type: Boolean, default: false },
   },
   computed: {
     url () {
       return documentsManager.getDocumentUrlByKey(this.business.logoKey)
+    },
+    getFirstLetterOfName () {
+      const name = this.business.name
+      return name.substr(0, 1).toUpperCase()
     },
   },
 }
@@ -38,26 +42,33 @@ export default {
 @import '~@scss/variables';
 
 .business-logo {
-  position: relative;
-  padding-bottom: 56.2%;
-}
+  width: 5.3rem;
+  height: 5.3rem;
+  border-radius: 50%;
 
-.business-logo__image,
-.business-logo__code-abbr-wrp {
-  position: absolute;
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-  background: $col-asset-logo-dark-background;
-}
+  &--image {
+    display: block;
+  }
 
-.business-logo__code-abbr {
-  position: absolute;
-  font-size: 2.4rem;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: $col-asset-logo-dark-text;
-  line-height: 1;
+  &--abbr {
+    font-size: 2.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $col-asset-logo-background;
+    color: $col-asset-logo-text;
+  }
+
+  &--dark {
+    background: $col-asset-logo-dark-background;
+    color: $col-asset-logo-dark-text;
+  }
+
+  &--full-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+  }
 }
 </style>

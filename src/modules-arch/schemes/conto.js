@@ -13,6 +13,7 @@ import { VerificationPageModule } from '@/vue/pages/verification-page-module'
 import { SecurityPageModule } from '@/vue/pages/security-page-module'
 import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-account-id-pseudo-module'
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
+import { PhoneNumberFormPseudoModule } from '@/modules-arch/pseudo-modules/phone-number-form-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
 import { AssetExplorerPageModule } from '@/vue/pages/asset-explorer-page'
@@ -25,6 +26,7 @@ import { MyAssetsExplorerModule } from '@/vue/modules/assets/my-assets-explorer/
 import { CustomersListPageModule } from '@/vue/pages/customers-list-page-module'
 import { BusinessesPageModule } from '@/vue/pages/businesses-page'
 import { BusinessesAllPageModule } from '@/vue/pages/businesses-all-page-module'
+import { BusinessesMyPageModule } from '@/vue/pages/businesses-my-page-module'
 import { CurrentBusinessIndicatorModule } from '@/vue/navigation/navbar/current-business-indicator/module'
 import { BusinessOwnershipModule } from '@/vue/navigation/navbar/business-ownership/module'
 import { AtomicSwapsPageModule } from '@/vue/pages/atomic-swaps-page-module'
@@ -92,6 +94,14 @@ export default {
             routerEntry: {
               path: '/businesses/all',
               name: vueRoutes.allBusinesses.name,
+              props: true,
+            },
+            isUnverifiedOnly: true,
+          }),
+          new BusinessesMyPageModule({
+            routerEntry: {
+              path: '/businesses/my',
+              name: vueRoutes.myBusinesses.name,
               props: true,
             },
             isUnverifiedOnly: true,
@@ -352,6 +362,7 @@ export default {
               new ShowAccountIdPseudoModule({
                 isCorporateOnly: true,
               }),
+              new PhoneNumberFormPseudoModule(),
             ],
           }),
         ],
