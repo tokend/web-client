@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Autoclose indicator to status-messages
+- Processing feedback on sign up
 
 #### Fixed
 - Account ID in URL after login

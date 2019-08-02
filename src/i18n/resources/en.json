@@ -496,7 +496,8 @@
       "lost-seed-answer": "Recover account by KYC",
       "have-an-account-question": "Already have an account?",
       "have-an-account-answer": "Sign in now",
-      "verifying-email-msg": "Please wait while we verifying your email address."
+      "verifying-email-msg": "Please wait while we verifying your email address.",
+      "submit-processing": "Processing…"
     },
     "settings-page": {
       "verification-tab": "Verification",
