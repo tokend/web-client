@@ -120,7 +120,8 @@
       "field-error_assetCode": "Код должен быть длиной менее 16 знаков, включительно, и может состоять только из букв и цифр латинского алфавита (A-Z, a-z, 0-9)",
       "field-error_alphaNum": "Значение должно состоять из букв и цифр латинского алфавита (A-Z, a-z, 0-9)",
       "field-error_minLength": "Количество знаков должно превышать {{minLength}}",
-      "field-error_selectedSameAssetCode": "Не могут быть выбраны два одинаковых актива"
+      "field-error_selectedSameAssetCode": "Не могут быть выбраны два одинаковых актива",
+      "field-error_validatePhoneNumber": "Неверный номер телефона"
     },
     "errors": {
       "default": "Что-то пошло не так. Пожалуйста, повторите попытку позже или свяжитесь с владельцем системы.",
@@ -517,7 +518,22 @@
       "network-passphrase-title": "Кодовая фраза сети",
       "view-network-passphrase-btn": "Посмотреть",
       "network-passphrase-desc": "Кодовая фраза сети — это последовательность слов, с помощью которой выполняется авторизация программного обеспечения в криптографической сети.",
-      "account-id-label": "Идентификатор аккаунта"
+      "account-id-label": "Идентификатор аккаунта",
+      "phone-number-title": "Номер телефона",
+      "change-phone-number-btn": "Сменить номер телефона",
+      "change-phone-number-title": "Смена номера телефона",
+      "add-phone-number-title": "Добавление номера телефона",
+      "add-phone-number-btn": "Добавить номер телефона"
+    },
+    "phone-number-form": {
+      "phone-number-lbl": "Номер телефона",
+      "change-btn": "Изменить",
+      "add-btn": "Добавить",
+      "code-from-sms-lbl": "СМС код",
+      "wrong-sms-code-err": "Неверный смс код",
+      "phone-number-changed-msg": "Номер телефона успешно изменен",
+      "phone-number-added-msg": "Номер телефона успешно добавлен",
+      "exist-phone-number-err": "Такой номер уже существует"
     },
     "tfa-form": {
       "password-lbl": "Текущий пароль",

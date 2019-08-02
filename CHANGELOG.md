@@ -18,6 +18,7 @@ for further information about branching and tagging conventions.
 - Autoclose indicator to status-messages
 - Optional label to optional KYC fields
 - Processing feedback on sign up
+- Set/change phone number in settings
 
 #### Fixed
 - Account ID in URL after login
