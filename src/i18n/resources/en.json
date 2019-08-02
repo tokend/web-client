@@ -496,7 +496,8 @@
       "lost-seed-answer": "Recover account by KYC",
       "have-an-account-question": "Already have an account?",
       "have-an-account-answer": "Sign in now",
-      "verifying-email-msg": "Please wait while we verifying your email address."
+      "verifying-email-msg": "Please wait while we verifying your email address.",
+      "submit-processing": "Processing…"
     },
     "settings-page": {
       "verification-tab": "Verification",
@@ -516,7 +517,10 @@
       "network-passphrase-title": "Network passphrase",
       "view-network-passphrase-btn": "View network passphrase",
       "network-passphrase-desc": "Network passphrase is a sequence of words or other text used to control access to a system",
-      "account-id-label": "Account ID"
+      "account-id-label": "Account ID",
+      "phone-number-title": "Phone number",
+      "change-phone-number-btn": "Change phone number",
+      "change-phone-number-title": "Change phone number"
     },
     "tfa-form": {
       "password-lbl": "Current password",
@@ -638,13 +642,13 @@
       "photo-lbl": "Selfie with verification code",
       "name-lbl": "Name",
       "company-lbl": "Company",
-      "headquarters-lbl": "Headquarters",
-      "industry-lbl": "Industry",
+      "headquarters-lbl": "Headquarters (Optional)",
+      "industry-lbl": "Industry (Optional)",
       "team-size-lbl": "Team size",
-      "website-lbl": "Website",
+      "website-lbl": "Website (Optional)",
       "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
-      "bank-account-lbl": "Bank account",
-      "invitation-code-lbl": "Invitation code"
+      "bank-account-lbl": "Bank account (Optional)",
+      "invitation-code-lbl": "Invitation code (Optional)"
     },
     "input-field": {
       "caps-lock-warning": "Warning: Caps-Lock is ON"

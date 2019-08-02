@@ -496,7 +496,8 @@
       "lost-seed-answer": "Восстановить аккаунт по KYC",
       "have-an-account-question": "Уже есть аккаунт?",
       "have-an-account-answer": "Войдите сейчас",
-      "verifying-email-msg": "Пожалуйста, подождите, пока мы проверяем ваш адрес электронной почты."
+      "verifying-email-msg": "Пожалуйста, подождите, пока мы проверяем ваш адрес электронной почты.",
+      "submit-processing": "Выполняем…"
     },
     "settings-page": {
       "verification-tab": "Подтверждение аккаунта",
@@ -516,7 +517,10 @@
       "network-passphrase-title": "Кодовая фраза сети",
       "view-network-passphrase-btn": "Посмотреть",
       "network-passphrase-desc": "Кодовая фраза сети — это последовательность слов, с помощью которой выполняется авторизация программного обеспечения в криптографической сети.",
-      "account-id-label": "Идентификатор аккаунта"
+      "account-id-label": "Идентификатор аккаунта",
+      "phone-number-title": "Номер телефона",
+      "change-phone-number-btn": "Сменить номер телефона",
+      "change-phone-number-title": "Смена номера телефона"
     },
     "tfa-form": {
       "password-lbl": "Текущий пароль",
@@ -638,13 +642,13 @@
       "photo-lbl": "Селфи с проверочным кодом",
       "name-lbl": "Имя",
       "company-lbl": "Компания",
-      "headquarters-lbl": "Штаб-квартира",
-      "industry-lbl": "Сфера деятельности",
+      "headquarters-lbl": "Штаб-квартира (Необязательно)",
+      "industry-lbl": "Сфера деятельности (Необязательно)",
       "team-size-lbl": "Размер команды",
-      "website-lbl": "Веб-сайт",
+      "website-lbl": "Веб-сайт (Необязательно)",
       "request-submitted-msg": "Запрос отправлен. Пожалуйста, дождитесь результатов рассмотрения.",
-      "bank-account-lbl": "Банковский счет",
-      "invitation-code-lbl": "Код приглашения"
+      "bank-account-lbl": "Банковский счет (Необязательно)",
+      "invitation-code-lbl": "Код приглашения (Необязательно)"
     },
     "input-field": {
       "caps-lock-warning": "Внимание: Caps-Lock включен"

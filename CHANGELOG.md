@@ -10,11 +10,14 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Autoclose indicator to status-messages
+- Optional label to optional KYC fields
+- Processing feedback on sign up
 - Explorer for businesses
 - Show business industry
 
 #### Fixed
 - Account ID in URL after login
+- Issue when an asset are not available on issuance
 
 ## [1.0.0-rc.4] - 2019-07-30
 #### Added

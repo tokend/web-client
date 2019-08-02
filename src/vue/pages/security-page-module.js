@@ -3,6 +3,7 @@ import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-ac
 import { ShowSeedPseudoModule } from '@/modules-arch/pseudo-modules/show-seed-pseudo-module'
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
 import { ShowNetworkPassphrasePseudoModule } from '@/modules-arch/pseudo-modules/show-network-passphrase-pseudo-module'
+import { PhoneNumberFormPseudoModule } from '@/modules-arch/pseudo-modules/phone-number-form-pseudo-module'
 
 export class SecurityPageModule extends PageModuleDescriptor {
   constructor (opts = {}) {
@@ -14,6 +15,7 @@ export class SecurityPageModule extends PageModuleDescriptor {
         ShowSeedPseudoModule,
         ChangePasswordPseudoModule,
         ShowNetworkPassphrasePseudoModule,
+        PhoneNumberFormPseudoModule,
       ],
     })
   }

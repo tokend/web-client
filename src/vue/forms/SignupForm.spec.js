@@ -85,6 +85,7 @@ describe('SignupForm component test', () => {
             password: 'qwe123',
             confirmPassword: 'qwe123',
           },
+          isSubmitting: false,
         }),
       })
     })
