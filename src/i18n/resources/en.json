@@ -639,13 +639,13 @@
       "photo-lbl": "Selfie with verification code",
       "name-lbl": "Name",
       "company-lbl": "Company",
-      "headquarters-lbl": "Headquarters",
-      "industry-lbl": "Industry",
+      "headquarters-lbl": "Headquarters (Optional)",
+      "industry-lbl": "Industry (Optional)",
       "team-size-lbl": "Team size",
-      "website-lbl": "Website",
+      "website-lbl": "Website (Optional)",
       "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
-      "bank-account-lbl": "Bank account",
-      "invitation-code-lbl": "Invitation code"
+      "bank-account-lbl": "Bank account (Optional)",
+      "invitation-code-lbl": "Invitation code (Optional)"
     },
     "input-field": {
       "caps-lock-warning": "Warning: Caps-Lock is ON"
