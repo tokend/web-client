@@ -113,6 +113,7 @@ export default {
         return
       }
       this.disableForm()
+      this.isSubmitting = true
       try {
         await walletsManager.getKdfParams(this.form.email.toLowerCase())
         // If no error came - the user exists - we obviously won't succeed in
@@ -127,6 +128,7 @@ export default {
         }
         ErrorHandler.process(e)
       }
+      this.isSubmitting = false
       this.enableForm()
     },
   },
