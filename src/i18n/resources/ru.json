@@ -519,7 +519,14 @@
       "account-id-label": "Идентификатор аккаунта",
       "phone-number-title": "Номер телефона",
       "change-phone-number-btn": "Сменить номер телефона",
-      "change-phone-number-title": "Смена номера телефона"
+      "change-phone-number-title": "Смена номера телефона",
+      "add-phone-number-title": "Добавление номера телефона",
+      "add-phone-number-btn": "Добавить номер телефона"
+    },
+    "phone-number-form": {
+      "phone-number-lbl": "Номер телефона",
+      "change-btn": "Изменить",
+      "code-from-sms-lbl": "СМС код"
     },
     "tfa-form": {
       "password-lbl": "Текущий пароль",

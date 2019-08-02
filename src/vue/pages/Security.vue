@@ -62,7 +62,12 @@
 
       <template v-else-if="viewMode === VIEW_MODES.changePhoneNumber">
         <template slot="heading">
-          {{ 'security-page.change-phone-number-title' | globalize }}
+          <template v-if="isPhoneEnabled">
+            {{ 'security-page.change-phone-number-title' | globalize }}
+          </template>
+          <template v-else>
+            {{ 'security-page.add-phone-number-title' | globalize }}
+          </template>
         </template>
         <phone-number-form />
       </template>
@@ -144,7 +149,12 @@
           class="security-page__row-action"
           @click="showDrawer(VIEW_MODES.changePhoneNumber)"
         >
-          {{ 'security-page.change-phone-number-btn' | globalize }}
+          <template v-if="isPhoneEnabled">
+            {{ 'security-page.change-phone-number-btn' | globalize }}
+          </template>
+          <template v-else>
+            {{ 'security-page.add-phone-number-btn' | globalize }}
+          </template>
         </a>
       </div>
     </template>
@@ -212,6 +222,7 @@ export default {
     ...mapGetters({
       accountId: vuexTypes.accountId,
       isTotpEnabled: vuexTypes.isTotpEnabled,
+      isPhoneEnabled: vuexTypes.isPhoneEnabled,
     }),
   },
 

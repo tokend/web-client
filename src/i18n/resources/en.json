@@ -519,7 +519,14 @@
       "account-id-label": "Account ID",
       "phone-number-title": "Phone number",
       "change-phone-number-btn": "Change phone number",
-      "change-phone-number-title": "Change phone number"
+      "change-phone-number-title": "Change phone number",
+      "add-phone-number-title": "Add phone number",
+      "add-phone-number-btn": "Add phone number"
+    },
+    "phone-number-form": {
+      "phone-number-lbl": "Phone number",
+      "change-btn": "Change",
+      "code-from-sms-lbl": "SMS code"
     },
     "tfa-form": {
       "password-lbl": "Current password",

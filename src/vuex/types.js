@@ -156,6 +156,9 @@ const getters = {
   factorsEmail: 'factorsEmail',
   factorsTotpEnabled: 'factorsTotpEnabled',
   isTotpEnabled: 'isTotpEnabled',
+  factorsPhoneEnabled: 'factorsPhoneEnabled',
+  isPhoneEnabled: 'isPhoneEnabled',
+  factorsPhone: 'factorsPhone',
 
   // kyc
   kycState: 'kycState',
