@@ -1242,7 +1242,7 @@
     "assets-list": {
       "update-asset-title": "Обновить актив",
       "details-title": "Детали актива",
-      "list-item-balance-line": "Баланс: {{value}}",
+      "list-item-balance-line": "Баланс: {{value, money}}",
       "no-balance-msg": "Нет баланса"
     },
     "asset-form": {
@@ -2027,7 +2027,7 @@
       "no-created-assets-msg": "Вы еще не создали активов",
       "no-balances-title": "Нет активов в балансах",
       "no-balances-msg": "У вас еще нет активов в балансах",
-      "list-item-balance-line": "Баланс: {{value}}",
+      "list-item-balance-line": "Баланс: {{value, money}}",
       "no-balance-msg": "Нет баланса",
       "details-drawer-title": "Детали актива",
       "update-drawer-title": "Обновить актив",

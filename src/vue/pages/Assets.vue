@@ -2,17 +2,6 @@
   <div>
     <top-bar>
       <template slot="main">
-        <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(AssetExplorerPageModule)">
-          <router-link :to="vueRoutes.assetsExplore">
-            <span>{{ 'assets-page.explore-title' | globalize }}</span>
-          </router-link>
-        </template>
-        <template v-if="getModule().canRenderSubmodule(BalancesPageModule)">
-          <router-link :to="vueRoutes.balances">
-            <span>{{ 'assets-page.balances-title' | globalize }}</span>
-          </router-link>
-        </template>
       </template>
       <template
         slot="extra"
