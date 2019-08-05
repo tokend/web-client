@@ -170,6 +170,8 @@ export default {
 @import '@/scss/variables';
 
 .address-loader__key-viewer-wrp {
+  display: flex;
+  flex-direction: column;
   margin: 0.5rem 0 1rem;
   padding: 1.5rem 1rem 1rem;
 }
