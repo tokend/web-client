@@ -69,6 +69,7 @@ import { base } from '@tokend/js-sdk'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import moment from 'moment'
+import _isEmpty from 'lodash/isEmpty'
 
 const EVENTS = {
   ready: 'ready',
@@ -111,9 +112,13 @@ export default {
         ) || {}
     },
     address () {
-      return (typeof this.externalSystemAccount.data === 'string')
-        ? this.externalSystemAccount.data
-        : this.externalSystemAccount.data.address
+      if (!_isEmpty(this.externalSystemAccount)) {
+        return (typeof this.externalSystemAccount.data === 'string')
+          ? this.externalSystemAccount.data
+          : this.externalSystemAccount.data.address
+      } else {
+        return ''
+      }
     },
     payload () {
       return (this.externalSystemAccount === DEPOSIT_TYPES.addressWithPayload)
