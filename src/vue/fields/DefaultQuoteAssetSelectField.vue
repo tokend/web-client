@@ -78,6 +78,7 @@ export default {
     },
 
     async setDefaultQuoteAsset () {
+      if (this.isSetSameDefaultQuoteAsset()) return
       const endpoint = `/integrations/dns/businesses/${this.accountId}/settings/quote-asset`
       try {
         await api.postWithSignature(endpoint, {
@@ -89,9 +90,14 @@ export default {
           },
         })
         Bus.success('default-quote-asset-select-field.set-asset-msg')
+        await this.getStatsQuoteAsset()
       } catch (error) {
         ErrorHandler.process(error)
       }
+    },
+
+    isSetSameDefaultQuoteAsset () {
+      return this.bussinessStatsQuoteAsset === this.defaultQuoteAsset
     },
   },
 }

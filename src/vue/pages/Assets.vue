@@ -1,8 +1,7 @@
 <template>
   <div>
     <top-bar>
-      <template slot="main">
-      </template>
+      <template slot="main" />
       <template
         slot="extra"
         v-if="
