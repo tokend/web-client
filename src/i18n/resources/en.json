@@ -523,7 +523,8 @@
       "change-phone-number-btn": "Change phone number",
       "change-phone-number-title": "Change phone number",
       "add-phone-number-title": "Add phone number",
-      "add-phone-number-btn": "Add phone number"
+      "add-phone-number-btn": "Add phone number",
+      "default-quote-asset-title": "Default quote asset"
     },
     "phone-number-form": {
       "phone-number-lbl": "Phone number",
@@ -2221,6 +2222,10 @@
     "asset-select-field": {
       "failed-loading-msg": "Assets loading failed!",
       "no-assets-for-select": "No assets for select"
+    },
+    "default-quote-asset-select-field": {
+      "not-set-msg": "Not set",
+      "set-asset-msg": "Default quote asset successfully set"
     },
     "polls": {
       "create-poll": "Create",

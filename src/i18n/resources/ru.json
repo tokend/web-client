@@ -523,7 +523,12 @@
       "change-phone-number-btn": "Сменить номер телефона",
       "change-phone-number-title": "Смена номера телефона",
       "add-phone-number-title": "Добавление номера телефона",
-      "add-phone-number-btn": "Добавить номер телефона"
+      "add-phone-number-btn": "Добавить номер телефона",
+      "default-quote-asset-title": "Котируемый актив по умолчанию"
+    },
+    "default-quote-asset-select-field": {
+      "not-set-msg": "Не установлен",
+      "set-asset-msg": "Котируемый актив по умолчанию успешно установлен"
     },
     "phone-number-form": {
       "phone-number-lbl": "Номер телефона",

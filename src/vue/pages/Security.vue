@@ -160,6 +160,16 @@
         </a>
       </div>
     </template>
+
+    <!-- eslint-disable-next-line max-len -->
+    <template v-if="getModule().canRenderSubmodule(DefaultQuoteAssetPseudoModule)">
+      <div class="security-page__row">
+        <p class="security-page__row-title">
+          {{ 'security-page.default-quote-asset-title' | globalize }}
+        </p>
+        <default-quote-asset-select-field />
+      </div>
+    </template>
   </div>
 </template>
 
@@ -173,6 +183,7 @@ import KeyViewer from '@/vue/common/KeyViewer'
 import ChangePasswordForm from '@/vue/forms/ChangePasswordForm'
 import PhoneNumberForm from '@/vue/forms/PhoneNumberForm'
 import TfaForm from '@/vue/forms/TfaForm'
+import DefaultQuoteAssetSelectField from '@/vue/fields/DefaultQuoteAssetSelectField'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -185,6 +196,7 @@ import { ShowSeedPseudoModule } from '@/modules-arch/pseudo-modules/show-seed-ps
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
 import { ShowNetworkPassphrasePseudoModule } from '@/modules-arch/pseudo-modules/show-network-passphrase-pseudo-module'
 import { PhoneNumberFormPseudoModule } from '@/modules-arch/pseudo-modules/phone-number-form-pseudo-module'
+import { DefaultQuoteAssetPseudoModule } from '@/modules-arch/pseudo-modules/default-quote-asset-pseudo-module'
 
 const VIEW_MODES = {
   enableTfa: 'enableTfa',
@@ -206,6 +218,7 @@ export default {
     ChangePasswordForm,
     TfaForm,
     PhoneNumberForm,
+    DefaultQuoteAssetSelectField,
   },
   data: _ => ({
     isDrawerShown: false,
@@ -216,6 +229,7 @@ export default {
     ChangePasswordPseudoModule,
     ShowNetworkPassphrasePseudoModule,
     PhoneNumberFormPseudoModule,
+    DefaultQuoteAssetPseudoModule,
     api,
     walletSeed: '',
   }),
