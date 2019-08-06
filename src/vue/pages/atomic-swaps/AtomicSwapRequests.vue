@@ -4,7 +4,8 @@
       <h4 class="atomic-swap-requests__header">
         {{ 'atomic-swaps.purchases' | globalize }}
       </h4>
-      <table v-if="isAtomicSwapRequestsLoaded">
+      <!-- eslint-disable-next-line max-len -->
+      <table v-if="isAtomicSwapRequestsLoaded && !isAtomicSwapRequestsLoadFailed">
         <tbody>
           <tr v-for="item in atomicSwapRequests" :key="item.id">
             <td>
@@ -18,9 +19,12 @@
         </tbody>
       </table>
       <loader
-        v-else
+        v-else-if="!isAtomicSwapRequestsLoadFailed"
         message-id="atomic-swaps.loading"
       />
+      <div v-else>
+        {{ 'atomic-swaps.loading-error-msg' | globalize }}
+      </div>
     </div>
     <div>
       <collection-loader
