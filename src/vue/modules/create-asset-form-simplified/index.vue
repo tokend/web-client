@@ -4,7 +4,6 @@
       <information-step-form
         :request="request"
         :is-disabled.sync="isDisabled"
-        :bussiness-stats-quote-asset="bussinessStatsQuoteAsset"
         @submit="submit"
       />
     </template>

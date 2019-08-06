@@ -26,6 +26,13 @@ export const mutations = {
   },
 
   [vuexTypes.SET_STATS_QUOTE_ASSET] (state, asset) {
+    if (!asset) {
+      asset = state.assets
+        .map(a => new AssetRecord(a))
+        .filter(item => {
+          return item.isStatsQuoteAsset
+        })[0].code || ''
+    }
     state.statsQuoteAsset = asset
   },
 }
@@ -49,9 +56,19 @@ export const actions = {
   },
 
   async [vuexTypes.LOAD_STATS_QUOTE_ASSET] ({ commit, rootGetters }) {
-    const accountId = rootGetters[vuexTypes.businessToBrowse.id]
-    const endpoint = `/integrations/dns/businesses/${accountId}`
+    let id = ''
+    if (rootGetters[vuexTypes.businessToBrowse].accountId) {
+      id = rootGetters[vuexTypes.businessToBrowse].accountId
+    } else if (rootGetters[vuexTypes.isAccountCorporate]) {
+      id = rootGetters[vuexTypes.accountId]
+    } else {
+      commit(vuexTypes.SET_STATS_QUOTE_ASSET)
+      return
+    }
+
+    const endpoint = `/integrations/dns/businesses/${id}`
     const { data } = await api.getWithSignature(endpoint)
+
     commit(vuexTypes.SET_STATS_QUOTE_ASSET, data.statsQuoteAsset)
   },
 }

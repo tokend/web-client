@@ -142,6 +142,7 @@ export default {
       startIdle: vuexTypes.START_IDLE,
       logoutSession: vuexTypes.LOGOUT_SESSION,
       restoreSession: vuexTypes.RESTORE_SESSION,
+      loadStatsQuoteAsset: vuexTypes.LOAD_STATS_QUOTE_ASSET,
     }),
     ...mapMutations({
       popState: vuexTypes.POP_STATE,
@@ -163,6 +164,7 @@ export default {
       factorsManager.useApi(api)
       documentsManager.useApi(api)
       await this.loadAssets()
+      await this.loadStatsQuoteAsset()
     },
     detectIncompatibleBrowser () {
       this.isNotSupportedBrowser = !isCompatibleBrowser()

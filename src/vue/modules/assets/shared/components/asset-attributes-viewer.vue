@@ -25,7 +25,19 @@
           <tr v-if="balance">
             <td>{{ 'assets.balance-title' | globalize }}</td>
             <td>
-              {{ { value: balance, currency: asset.code } | formatMoney }}
+              {{ { value: balance.balance,
+                   currency: asset.code } | formatMoney }}
+            </td>
+          </tr>
+
+          <tr v-if="balance.isConverted">
+            <td>{{ 'assets.converted-balance-title' | globalize }}</td>
+            <td>
+              {{
+                // eslint-disable-next-line max-len
+                { value: balance.convertedBalance.available,currency: statsQuoteAsset } | formatMoney
+              }}
+              {{ statsQuoteAsset }}
             </td>
           </tr>
 
@@ -67,6 +79,8 @@
 import LogoViewer from './logo-viewer'
 
 import { AssetRecord } from '@/js/records/entities/asset.record'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 const STELLAR_TYPES = {
   creditAlphanum4: 'credit_alphanum4',
@@ -81,11 +95,15 @@ export default {
   },
   props: {
     asset: { type: AssetRecord, required: true },
-    balance: { type: String, default: '' },
+    balance: { type: Object, required: true },
     kycRequiredAssetType: { type: Number, required: true },
     securityAssetType: { type: Number, required: true },
   },
   computed: {
+    ...mapGetters({
+      statsQuoteAsset: vuexTypes.statsQuoteAsset,
+    }),
+
     stellarAssetTypeTranslated () {
       let translationId
 

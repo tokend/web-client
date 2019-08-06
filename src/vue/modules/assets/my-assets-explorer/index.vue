@@ -19,7 +19,7 @@
           </template>
           <asset-attributes-viewer
             :asset="selectedBalance.asset"
-            :balance="selectedBalance.balance"
+            :balance="selectedBalance"
             :kyc-required-asset-type="kvAssetTypeKycRequired"
             :security-asset-type="kvAssetTypeSecurity"
           />
@@ -42,7 +42,7 @@
           <template v-for="item in accountOwnedAssetsBalances">
             <card-viewer
               :asset="item.asset"
-              :balance="item.balance"
+              :balance="item"
               :key="item.id"
               @click="selectBalance(item)"
             />

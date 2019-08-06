@@ -48,7 +48,7 @@
           @blur="touchField('form.price')"
           name="create-asset-form-price"
           :label="'create-asset-form.price-lbl' | globalize({
-            quoteAsset: statsQuoteAsset.code
+            quoteAsset: statsQuoteAsset
           })"
           :error-message="getFieldErrorMessage('form.price', {
             from: {

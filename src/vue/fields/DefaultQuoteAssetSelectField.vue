@@ -42,7 +42,6 @@ export default {
 
   data: _ => ({
     defaultQuoteAsset: '',
-    bussinessStatsQuoteAsset: '',
     isLoading: false,
   }),
 
@@ -56,26 +55,15 @@ export default {
 
   async created () {
     await this.loadAccountBalances()
-    await this.getStatsQuoteAsset()
-    this.defaultQuoteAsset = this.bussinessStatsQuoteAsset ||
-        this.statsQuoteAsset.code
+    this.defaultQuoteAsset = this.statsQuoteAsset
     this.isLoading = true
   },
 
   methods: {
     ...mapActions({
       loadAccountBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+      loadStatsQuoteAsset: vuexTypes.LOAD_STATS_QUOTE_ASSET,
     }),
-
-    async getStatsQuoteAsset () {
-      try {
-        const endpoint = `/integrations/dns/businesses/${this.accountId}`
-        const { data } = await api.getWithSignature(endpoint)
-        this.bussinessStatsQuoteAsset = data.statsQuoteAsset
-      } catch (error) {
-        ErrorHandler.processWithoutFeedback(error)
-      }
-    },
 
     async setDefaultQuoteAsset () {
       if (this.isSetSameDefaultQuoteAsset()) return
@@ -90,14 +78,14 @@ export default {
           },
         })
         Bus.success('default-quote-asset-select-field.set-asset-msg')
-        await this.getStatsQuoteAsset()
+        await this.loadStatsQuoteAsset()
       } catch (error) {
         ErrorHandler.process(error)
       }
     },
 
     isSetSameDefaultQuoteAsset () {
-      return this.bussinessStatsQuoteAsset === this.defaultQuoteAsset
+      return this.statsQuoteAsset === this.defaultQuoteAsset
     },
   },
 }

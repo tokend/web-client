@@ -1248,6 +1248,7 @@
       "update-asset-title": "Обновить актив",
       "details-title": "Детали актива",
       "list-item-balance-line": "Баланс: {{value, money}}",
+      "list-item-converted-balance-line": "Конвертированный баланс: {{value, money}} {{currency}}",
       "no-balance-msg": "Нет баланса"
     },
     "asset-form": {
@@ -2076,7 +2077,8 @@
       "yes-msg": "Да",
       "no-msg": "Нет",
       "send-btn": "Отправить",
-      "issue-btn": "Выпустить"
+      "issue-btn": "Выпустить",
+      "converted-balance-title": "Конвертированный баланс"
     },
     "create-opportunity": {
       "maturity-date": "Maturity Date",

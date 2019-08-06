@@ -1244,6 +1244,7 @@
       "update-asset-title": "Update asset",
       "details-title": "Asset details",
       "list-item-balance-line": "Balance: {{value, money}}",
+      "list-item-converted-balance-line": "Converted balance: {{value, money}} {{currency}}",
       "no-balance-msg": "No balance"
     },
     "asset-form": {
@@ -2072,8 +2073,9 @@
       "yes-msg": "Yes",
       "no-msg": "No",
       "send-btn": "Transfer",
-      "issue-btn": "Issue"
-
+      "issue-btn": "Issue",
+      "converted-balance-title": "Converted balance",
+      "converted-balance-amount": "{{ }}"
     },
     "create-opportunity": {
       "maturity-date": "Maturity Date",

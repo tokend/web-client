@@ -875,10 +875,10 @@ export default {
       if (!this.isBond) {
         if (quoteAssets.length > 1) {
           // eslint-disable-next-line max-len
-          this.form.saleInformation.defaultQuoteAsset = this.statsQuoteAsset.code
+          this.form.saleInformation.defaultQuoteAsset = this.statsQuoteAsset
         } else {
           // eslint-disable-next-line max-len
-          this.form.saleInformation.defaultQuoteAsset = quoteAssets[0] || this.statsQuoteAsset.code
+          this.form.saleInformation.defaultQuoteAsset = quoteAssets[0] || this.statsQuoteAsset
         }
       } else {
         // eslint-disable-next-line max-len
@@ -886,12 +886,12 @@ export default {
       }
     },
     calculatePriceForBaseAsset (asset) {
-      if (asset === this.statsQuoteAsset.code) {
+      if (asset === this.statsQuoteAsset) {
         return this.salePriceRatioStatsQuoteAsset
       } else {
         return MathUtil.divide(
           this.salePriceRatioStatsQuoteAsset,
-          this.getAssetPairPrice(asset, this.statsQuoteAsset.code) || '1'
+          this.getAssetPairPrice(asset, this.statsQuoteAsset) || '1'
         )
       }
     },

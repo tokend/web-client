@@ -28,6 +28,22 @@
       <p v-else class="card-viewer__balance card-viewer__no-balance">
         {{ 'assets.no-balance-msg' | globalize }}
       </p>
+
+      <p
+        v-if="balance.isConverted"
+        class="card-viewer__converted-balance"
+        :title="
+          'assets-list.list-item-converted-balance-line' |
+            globalize({ value: convertedBalance,
+                        currency: statsQuoteAsset })
+        "
+      >
+        {{
+          'assets-list.list-item-converted-balance-line' |
+            globalize({ value: convertedBalance,
+                        currency: statsQuoteAsset })
+        }}
+      </p>
     </div>
   </a>
 </template>
@@ -36,6 +52,8 @@
 import LogoViewer from './logo-viewer'
 
 import { AssetRecord } from '@/js/records/entities/asset.record'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 export default {
   name: 'card-viewer',
@@ -46,15 +64,24 @@ export default {
       required: true,
     },
     balance: {
-      type: String,
-      default: '',
+      type: Object,
+      required: true,
     },
   },
   computed: {
+    ...mapGetters({
+      statsQuoteAsset: vuexTypes.statsQuoteAsset,
+    }),
     assetBalance () {
       return {
-        value: this.balance,
+        value: this.balance.balance,
         currency: this.asset.code,
+      }
+    },
+    convertedBalance () {
+      return {
+        value: this.balance.convertedBalance.available,
+        currency: this.statsQuoteAsset,
       }
     },
   },
@@ -144,7 +171,8 @@ $media-small-desktop: 960px;
   text-overflow: ellipsis;
 }
 
-.card-viewer__balance {
+.card-viewer__balance,
+.card-viewer__converted-balance {
   font-size: 1.2rem;
   line-height: 1.5;
   color: $col-asset-card-text-primary;
@@ -152,6 +180,10 @@ $media-small-desktop: 960px;
   text-overflow: ellipsis;
   white-space: nowrap;
   margin-top: auto;
+}
+
+.card-viewer__converted-balance {
+  margin-top: 0;
 }
 
 .card-viewer__no-balance {

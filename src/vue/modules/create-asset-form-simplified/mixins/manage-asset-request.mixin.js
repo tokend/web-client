@@ -101,7 +101,7 @@ export default {
     $buildPairCreationRequestOperation () {
       const opts = {
         base: this.collectedAttributes.code,
-        quote: this.statsQuoteAsset.code,
+        quote: this.statsQuoteAsset,
         action: base.xdr.ManageAssetPairAction.create(),
         policies: +ASSET_PAIR_POLICIES.currentPriceRestriction,
         physicalPrice: '' + this.collectedAttributes.price,
@@ -136,7 +136,7 @@ export default {
         quoteAssets: [
           {
             price: this.collectedAttributes.price,
-            asset: this.statsQuoteAsset.code,
+            asset: this.statsQuoteAsset,
           },
         ],
         creatorDetails: {},

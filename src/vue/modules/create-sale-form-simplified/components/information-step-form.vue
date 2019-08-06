@@ -329,7 +329,7 @@ export default {
     } else {
       this.form.baseAsset = this.ownedAssets[0] || {}
       this.form.capAsset = this.baseAssets.find(el => {
-        return el.code === this.statsQuoteAsset.code
+        return el.code === this.statsQuoteAsset
       }) || {}
     }
   },

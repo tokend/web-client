@@ -7,12 +7,12 @@ export class BalanceRecord {
     this._record = record
 
     this.id = record.id
-    this.asset = new AssetRecord(record.asset)
+    this.asset = new AssetRecord(record.balance.asset)
 
     this.balance =
-      this.balanceToPrecision(safeGet(record, 'state.available'), precision)
-
-    this.convertedBalance = record.convertedBalance
+      this.balanceToPrecision(safeGet(record, 'balance.state.available'), precision)
+    this.isConverted = record.isConverted
+    this.convertedBalance = record.convertedAmounts
   }
 
   balanceToPrecision (balance, precision = config.DECIMAL_POINTS) {
