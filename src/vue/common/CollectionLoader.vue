@@ -36,7 +36,7 @@ const EVENTS = {
   nextPageLoad: 'next-page-load',
   error: 'error',
 }
-const DEFAULT_PAGE_LIMIT = 10
+const DEFAULT_PAGE_LIMIT = 15
 
 export default {
   name: 'collection-loader',
