@@ -21,6 +21,7 @@ export default {
 
   computed: {
     ...mapGetters([
+      vuexTypes.statsQuoteAsset,
       vuexTypes.accountId,
       vuexTypes.accountBalanceByCode,
     ]),
@@ -100,7 +101,7 @@ export default {
     $buildPairCreationRequestOperation () {
       const opts = {
         base: this.collectedAttributes.code,
-        quote: this.bussinessStatsQuoteAsset,
+        quote: this.statsQuoteAsset.code,
         action: base.xdr.ManageAssetPairAction.create(),
         policies: +ASSET_PAIR_POLICIES.currentPriceRestriction,
         physicalPrice: '' + this.collectedAttributes.price,
@@ -135,7 +136,7 @@ export default {
         quoteAssets: [
           {
             price: this.collectedAttributes.price,
-            asset: this.bussinessStatsQuoteAsset,
+            asset: this.statsQuoteAsset.code,
           },
         ],
         creatorDetails: {},

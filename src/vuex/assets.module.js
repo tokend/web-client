@@ -6,6 +6,7 @@ const ASSETS_PAGE_LIMIT = 100
 
 export const state = {
   assets: [],
+  statsQuoteAsset: '',
 }
 
 export const mutations = {
@@ -22,6 +23,10 @@ export const mutations = {
         state.assets[foundIndex] = asset
       }
     }
+  },
+
+  [vuexTypes.SET_STATS_QUOTE_ASSET] (state, asset) {
+    state.statsQuoteAsset = asset
   },
 }
 
@@ -41,6 +46,13 @@ export const actions = {
     }
 
     commit(vuexTypes.SET_ASSETS, assets)
+  },
+
+  async [vuexTypes.LOAD_STATS_QUOTE_ASSET] ({ commit, rootGetters }) {
+    const accountId = rootGetters[vuexTypes.businessToBrowse.id]
+    const endpoint = `/integrations/dns/businesses/${accountId}`
+    const { data } = await api.getWithSignature(endpoint)
+    commit(vuexTypes.SET_STATS_QUOTE_ASSET, data.statsQuoteAsset)
   },
 }
 
@@ -87,11 +99,7 @@ export const getters = {
     rootGetters[vuexTypes.accountBalances]
       .map(item => item.asset)
       .filter(item => item.isWithdrawable),
-  [vuexTypes.statsQuoteAsset]: (a, getters, b, rootGetters) =>
-    rootGetters[vuexTypes.assets]
-      .filter(item => {
-        return item.isStatsQuoteAsset
-      })[0] || {},
+  [vuexTypes.statsQuoteAsset]: state => state.statsQuoteAsset,
   [vuexTypes.ownedBalancesAssets]: (a, getters, b, rootGetters) =>
     rootGetters[vuexTypes.accountBalances]
       .map(item => item.asset)

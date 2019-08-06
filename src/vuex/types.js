@@ -44,6 +44,7 @@ const mutations = {
   // assets
   SET_ASSETS: 'SET_ASSETS',
   UPDATE_ASSETS: 'UPDATE_ASSETS',
+  SET_STATS_QUOTE_ASSET: 'SET_STATS_QUOTE_ASSET',
 
   // idle
   UPDATE_LOGOUT_AT: 'UPDATE_LOGOUT_AT',
@@ -95,6 +96,7 @@ const actions = {
 
   // assets
   LOAD_ASSETS: 'LOAD_ASSETS',
+  LOAD_STATS_QUOTE_ASSET: 'LOAD_STATS_QUOTE_ASSET',
 
   // idle
   START_IDLE: 'START_IDLE',

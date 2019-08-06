@@ -32,7 +32,6 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { api } from '@/api'
 
 const EVENTS = {
   requestUpdated: 'request-updated',
@@ -58,7 +57,6 @@ export default {
     isLoaded: false,
     isLoadFailed: false,
     isDisabled: false,
-    bussinessStatsQuoteAsset: '',
   }),
 
   computed: {
@@ -70,9 +68,6 @@ export default {
 
   async created () {
     await this.init()
-    await this.getStatsQuoteAsset()
-    this.defaultQuoteAsset = this.bussinessStatsQuoteAsset ||
-        this.statsQuoteAsset.code
   },
 
   methods: {
@@ -105,16 +100,6 @@ export default {
       } catch (e) {
         this.isDisabled = false
         ErrorHandler.process(e)
-      }
-    },
-
-    async getStatsQuoteAsset () {
-      try {
-        const endpoint = `/integrations/dns/businesses/${this.accountId}`
-        const { data } = await api.getWithSignature(endpoint)
-        this.bussinessStatsQuoteAsset = data.statsQuoteAsset
-      } catch (error) {
-        ErrorHandler.processWithoutFeedback(error)
       }
     },
 
