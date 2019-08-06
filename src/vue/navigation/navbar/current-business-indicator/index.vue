@@ -101,7 +101,7 @@ export default {
       })
     },
 
-    async selectBusinessToBrowse (value) {
+    selectBusinessToBrowse (value) {
       if (!(value instanceof BusinessRecord)) {
         throw TypeError(`businesses:selectBusinessToBrowse: expects instance of BusinessRecord, got ${value}`)
       }
