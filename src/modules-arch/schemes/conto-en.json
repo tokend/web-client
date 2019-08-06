@@ -255,7 +255,9 @@
     "atomic-swaps": {
       "explore-atomic-swaps": "Explore direct sell offerings",
       "create-atomic-swap-bth": "Create",
-      "new-atomic-swap": "New direct sell offering"
+      "new-atomic-swap": "New direct sell offering",
+      "loading": "Loading",
+      "purchases": "Purchases"
     },
     "create-atomic-swap-form": {
       "no-base-atomic-swap-assets-title": "No base direct sell assets yet",

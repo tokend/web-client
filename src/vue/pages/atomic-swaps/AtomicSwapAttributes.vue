@@ -5,27 +5,6 @@
         <tbody>
           <tr>
             <td>
-              {{ 'atomic-swap-attributes.id-key' | globalize }}
-            </td>
-            <td>
-              {{ atomicSwap.id }}
-            </td>
-          </tr>
-
-          <tr>
-            <td>
-              {{ 'atomic-swap-attributes.owner-key' | globalize }}
-            </td>
-            <td>
-              <email-getter
-                right-side
-                :account-id="atomicSwap.ownerId"
-              />
-            </td>
-          </tr>
-
-          <tr>
-            <td>
               {{ 'atomic-swap-attributes.base-asset-name' | globalize }}
             </td>
             <td>
@@ -97,37 +76,6 @@
                 {{ quoteAsset.id }}
               </td>
             </tr>
-
-            <tr>
-              <td>
-                {{ 'atomic-swap-attributes.current-cap-key' | globalize }}
-              </td>
-              <td>
-                <!-- eslint-disable-next-line max-len -->
-                {{ { value: quoteAsset.currentCap, currency: quoteAsset.id } | formatMoney }}
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                {{ 'atomic-swap-attributes.hard-cap-key' | globalize }}
-              </td>
-              <td>
-                <!-- eslint-disable-next-line max-len -->
-                {{ { value: quoteAsset.hardCap, currency: quoteAsset.id } | formatMoney }}
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                {{ 'atomic-swap-attributes.total-current-cap-key'| globalize }}
-              </td>
-              <td>
-                <!-- eslint-disable-next-line max-len -->
-                {{ { value: quoteAsset.totalCurrentCap, currency: quoteAsset.id } | formatMoney }}
-              </td>
-            </tr>
-
             <tr>
               <td>
                 {{ 'atomic-swap-attributes.price-key' | globalize }}
@@ -146,15 +94,9 @@
 
 <script>
 import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
-import EmailGetter from '@/vue/common/EmailGetter'
 
 export default {
   name: 'atomic-swap-attributes',
-
-  components: {
-    EmailGetter,
-  },
-
   props: {
     atomicSwap: {
       type: AtomicSwapRecord,

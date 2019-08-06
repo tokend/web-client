@@ -6,11 +6,13 @@
       :atomic-swap="currentAtomicSwap"
       @cancel="$emit(EVENTS.closeDrawerAndUpdateList)"
     />
+    <atomic-swap-requests :atomic-swap="currentAtomicSwap" />
   </div>
 </template>
 
 <script>
 import AtomicSwapAttributes from './AtomicSwapAttributes'
+import AtomicSwapRequests from './AtomicSwapRequests'
 import AtomicSwapActions from './AtomicSwapActions'
 import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
 import { vuexTypes } from '@/vuex'
@@ -26,6 +28,7 @@ export default {
   components: {
     AtomicSwapAttributes,
     AtomicSwapActions,
+    AtomicSwapRequests,
   },
 
   props: {
