@@ -51,10 +51,6 @@
           </span>
         </div>
 
-        <div class="passport__dropdown-balances-wrp">
-          <passport-balances @more-link-followed="toggleDropdown" />
-        </div>
-
         <template v-if="isAccountCorporate">
           <div class="passport__dropdown-customer-ui-switch-wrp">
             <switch-field
@@ -94,14 +90,12 @@ import { vueRoutes } from '@/vue-router/routes'
 import { handleClickOutside } from '@/js/helpers/handle-click-outside'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import config from '@/config'
-import PassportBalances from './Passport.Balances'
 import SwitchField from '@/vue/fields/SwitchField'
 
 export default {
   name: 'passport',
 
   components: {
-    PassportBalances,
     SwitchField,
   },
 
@@ -361,7 +355,6 @@ $dropdown-item-side-padding: 2.4rem;
 }
 
 .passport__dropdown-signed-in-wrp,
-.passport__dropdown-balances-wrp,
 .passport__dropdown-customer-ui-switch-wrp {
   padding: 1.6rem $dropdown-item-side-padding 0;
   line-height: 1.5;
