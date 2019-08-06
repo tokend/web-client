@@ -9,7 +9,9 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Added
+- Atomic swap requests history in atomic swap details
 - Set default quote asset for business in settings
+- Convert asset for each business
 
 ## [1.0.0-rc.6] - 2019-08-02
 #### Fixed
