@@ -1248,7 +1248,7 @@
       "update-asset-title": "Обновить актив",
       "details-title": "Детали актива",
       "list-item-balance-line": "Баланс: {{value, money}}",
-      "list-item-converted-balance-line": "Конвертированный баланс: {{value, money}} {{currency}}",
+      "list-item-converted-balance-line": "Конвертированный: {{value, money}} {{currency}}",
       "no-balance-msg": "Нет баланса"
     },
     "asset-form": {
