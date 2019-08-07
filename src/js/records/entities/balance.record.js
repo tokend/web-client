@@ -10,7 +10,6 @@ export class BalanceRecord {
     this.id = record.id
     this.asset = new AssetRecord(record.balance.asset)
 
-    this.asset = new AssetRecord(record.asset)
     this.balance =
       amountToPrecision(safeGet(record, 'balance.state.available'), precision)
 

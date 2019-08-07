@@ -87,11 +87,11 @@
               {{ getCustomerStatusTranslated(customer) }}
             </td>
 
-            <td :title="formatBalancesOf(customer)">
+            <td>
               <template v-if="customer.balances && customer.balances.length">
-                <span>
-                  {{ formatBalancesOf(customer) }}
-                </span>
+                <customers-converted-balances
+                  :customer-account-id="customer.accountId"
+                />
               </template>
 
               <template v-else>
@@ -133,17 +133,19 @@
 </template>
 
 <script>
+import CustomersConvertedBalances from './CustomersConvertedBalances'
 import { CustomerRecord } from './customer.record'
 import TickField from '@/vue/fields/TickField'
 import { Bus } from '@/js/helpers/event-bus'
 import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
+
 const EVENTS = {
   detailsButtonClicked: 'details-button-clicked',
 }
-
-const NUMBER_DISPLAYING_BALANCES = 3
 
 export default {
   name: 'customers-table',
@@ -152,6 +154,7 @@ export default {
     TickField,
     EmptyTbodyPlaceholder,
     SkeletonLoaderTableBody,
+    CustomersConvertedBalances,
   },
 
   props: {
@@ -180,6 +183,12 @@ export default {
       issuanceReceivers: [],
       EVENTS,
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      accountId: vuexTypes.accountId,
+    }),
   },
 
   methods: {
@@ -211,27 +220,6 @@ export default {
     doMassIssuance () {
       Bus.emit('customers:massIssue', { receivers: this.issuanceReceivers })
       this.toggleIssuanceMode()
-    },
-
-    formatBalancesOf (customer) {
-      let balances = customer.balances
-        .filter(item => +item.amount || +item.amount === 0)
-      balances.sort(function (a, b) {
-        return b.amount - +a.amount
-      })
-      const slicedBalances = balances.slice(0, NUMBER_DISPLAYING_BALANCES)
-      let resolveString = slicedBalances
-        .map(item => {
-          return `${this.$options.filters
-            .formatMoney({ value: item.amount })} ${item.assetCode}`
-        }
-        )
-        .join(', ')
-      if (balances.length > NUMBER_DISPLAYING_BALANCES) {
-        return resolveString + '…'
-      } else {
-        return resolveString
-      }
     },
   },
 }

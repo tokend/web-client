@@ -1,6 +1,9 @@
 {
   "config": {},
   "translations": {
+    "auth-pages": {
+      "big-title": "Бизнес в <br> вашем <br> смартфоне"
+    },
     "passport": {
       "account-unverified": "Стандартный аккаунт",
       "account-corporate": "Аккаунта бизнеса I уровня"
