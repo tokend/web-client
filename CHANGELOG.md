@@ -11,6 +11,9 @@ for further information about branching and tagging conventions.
 #### Added
 - Atomic swap requests history in atomic swap details
 
+#### Deleted
+- Dropdown account balances
+
 ## [1.0.0-rc.6] - 2019-08-02
 #### Fixed
 - Bug with displaying balances
