@@ -115,14 +115,15 @@ export default {
       if (!_isEmpty(this.externalSystemAccount)) {
         return (typeof this.externalSystemAccount.data === 'string')
           ? this.externalSystemAccount.data
-          : this.externalSystemAccount.data.address
+          : this.externalSystemAccount.data.data.address
       } else {
         return ''
       }
     },
     payload () {
-      return (this.externalSystemAccount === DEPOSIT_TYPES.addressWithPayload)
-        ? this.externalSystemAccount.data.payload
+      // eslint-disable-next-line max-len
+      return (this.externalSystemAccount.data.type === DEPOSIT_TYPES.addressWithPayload)
+        ? this.externalSystemAccount.data.data.payload
         : ''
     },
     endTime () {

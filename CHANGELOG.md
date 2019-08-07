@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Fixed
 - A bug when cannot deposit
+- A bug when cannot display deposit address
  
 ## [1.10.0-rc.4] - 2019-08-02
 #### Fixed
