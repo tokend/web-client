@@ -263,7 +263,8 @@
       "create-atomic-swap-bth": "Создать предложение",
       "new-atomic-swap": "Новое предложение",
       "loading": "Загрузка",
-      "purchases": "Покупки"
+      "purchases": "Покупки",
+      "loading-error-msg": "Произошла ошибка при загрузке."
     },
     "create-atomic-swap-form": {
       "no-base-atomic-swap-assets-title": "Нет базовых активов",

@@ -13,6 +13,9 @@ for further information about branching and tagging conventions.
 - Set default quote asset for business in settings
 - Convert asset for each business
 
+#### Deleted
+- Dropdown account balances
+
 ## [1.0.0-rc.6] - 2019-08-02
 #### Fixed
 - Bug with displaying balances

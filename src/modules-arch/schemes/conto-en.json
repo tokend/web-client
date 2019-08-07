@@ -260,7 +260,8 @@
       "create-atomic-swap-bth": "Create",
       "new-atomic-swap": "New direct sell offering",
       "loading": "Loading",
-      "purchases": "Purchases"
+      "purchases": "Purchases",
+      "loading-error-msg": "There was an error while loading."
     },
     "create-atomic-swap-form": {
       "no-base-atomic-swap-assets-title": "No base direct sell assets yet",
