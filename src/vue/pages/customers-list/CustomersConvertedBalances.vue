@@ -38,22 +38,22 @@ export default {
   },
 
   async created () {
-    await this.formatBalancesOf()
+    await this.calculateConvertedBalances()
     Bus.on('customers:updateList', () => {
-      this.formatBalancesOf()
+      this.calculateConvertedBalances()
     })
   },
 
   methods: {
-    async formatBalancesOf () {
+    async calculateConvertedBalances () {
       const balanceStates = await this.getCustomerBalances()
       // eslint-disable-next-line max-len
       const convertedBalance = balanceStates.reduce((latestBalance, balance) => {
         return MathUtil.add(
-          latestBalance.convertedAmounts.available,
+          latestBalance,
           balance.convertedAmounts.available
         )
-      })
+      }, 0)
       this.balance = convertedBalance
     },
 
