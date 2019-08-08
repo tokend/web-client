@@ -27,7 +27,6 @@
           <div class="my-assets-explorer__actions-wrapper">
             <asset-actions
               :asset="selectedBalance.asset"
-              @update-click="isUpdateMode = true"
               @balance-added="loadAssets() || (isDrawerShown = false)"
             />
             <button
