@@ -35,7 +35,7 @@
             <td>
               {{
                 // eslint-disable-next-line max-len
-                { value: balance.convertedBalance.available,currency: statsQuoteAsset } | formatMoney
+                { value: balance.convertedBalance.available, currency: statsQuoteAsset } | formatMoney
               }}
               {{ statsQuoteAsset }}
             </td>

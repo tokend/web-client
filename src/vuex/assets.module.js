@@ -26,13 +26,6 @@ export const mutations = {
   },
 
   [vuexTypes.SET_STATS_QUOTE_ASSET] (state, asset) {
-    if (!asset) {
-      asset = state.assets
-        .map(a => new AssetRecord(a))
-        .filter(item => {
-          return item.isStatsQuoteAsset
-        })[0].code || ''
-    }
     state.statsQuoteAsset = asset
   },
 }
@@ -55,21 +48,26 @@ export const actions = {
     commit(vuexTypes.SET_ASSETS, assets)
   },
 
-  async [vuexTypes.LOAD_STATS_QUOTE_ASSET] ({ commit, rootGetters }) {
+  async [vuexTypes.LOAD_STATS_QUOTE_ASSET] ({ commit, rootGetters, getters }) {
     let id = ''
     if (rootGetters[vuexTypes.businessToBrowse].accountId) {
       id = rootGetters[vuexTypes.businessToBrowse].accountId
     } else if (rootGetters[vuexTypes.isAccountCorporate]) {
       id = rootGetters[vuexTypes.accountId]
     } else {
-      commit(vuexTypes.SET_STATS_QUOTE_ASSET)
+      const defaultQuoteStatsAsset = getters[vuexTypes.defaultStatsQuoteAsset]
+      commit(vuexTypes.SET_STATS_QUOTE_ASSET, defaultQuoteStatsAsset.code)
       return
     }
 
     const endpoint = `/integrations/dns/businesses/${id}`
     const { data } = await api.getWithSignature(endpoint)
+    let quoteAssetCode = data.statsQuoteAsset
+    if (!data.statsQuoteAsset) {
+      quoteAssetCode = getters[vuexTypes.defaultStatsQuoteAsset].code
+    }
 
-    commit(vuexTypes.SET_STATS_QUOTE_ASSET, data.statsQuoteAsset)
+    commit(vuexTypes.SET_STATS_QUOTE_ASSET, quoteAssetCode)
   },
 }
 
@@ -116,6 +114,11 @@ export const getters = {
     rootGetters[vuexTypes.accountBalances]
       .map(item => item.asset)
       .filter(item => item.isWithdrawable),
+  [vuexTypes.defaultStatsQuoteAsset]: (a, getters, b, rootGetters) =>
+    rootGetters[vuexTypes.assets]
+      .filter(item => {
+        return item.isStatsQuoteAsset
+      })[0] || {},
   [vuexTypes.statsQuoteAsset]: state => state.statsQuoteAsset,
   [vuexTypes.ownedBalancesAssets]: (a, getters, b, rootGetters) =>
     rootGetters[vuexTypes.accountBalances]

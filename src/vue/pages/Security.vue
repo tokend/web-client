@@ -167,7 +167,10 @@
         <p class="security-page__row-title">
           {{ 'security-page.default-quote-asset-title' | globalize }}
         </p>
-        <default-quote-asset-select-field />
+        <submodule-importer
+          v-if="getModule().canRenderSubmodule(DefaultQuoteAssetPseudoModule)"
+          :submodule="getModule().getSubmodule(DefaultQuoteAssetPseudoModule)"
+        />
       </div>
     </template>
   </div>
@@ -183,7 +186,7 @@ import KeyViewer from '@/vue/common/KeyViewer'
 import ChangePasswordForm from '@/vue/forms/ChangePasswordForm'
 import PhoneNumberForm from '@/vue/forms/PhoneNumberForm'
 import TfaForm from '@/vue/forms/TfaForm'
-import DefaultQuoteAssetSelectField from '@/vue/fields/DefaultQuoteAssetSelectField'
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -218,7 +221,7 @@ export default {
     ChangePasswordForm,
     TfaForm,
     PhoneNumberForm,
-    DefaultQuoteAssetSelectField,
+    SubmoduleImporter,
   },
   data: _ => ({
     isDrawerShown: false,

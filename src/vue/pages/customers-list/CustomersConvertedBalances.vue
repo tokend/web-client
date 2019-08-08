@@ -1,9 +1,14 @@
 <template>
   <div class="customers-converted-balances">
-    <span>
-      {{ balance | formatMoney }}
-      {{ defaultQuoteAsset }}
-    </span>
+    <template v-if="isConvertedBalances">
+      <span>
+        {{ balance | formatMoney }}
+        {{ defaultQuoteAsset }}
+      </span>
+    </template>
+    <template v-else>
+      &mdash;
+    </template>
   </div>
 </template>
 
@@ -27,6 +32,7 @@ export default {
   data () {
     return {
       balance: '',
+      isConvertedBalances: false,
     }
   },
 
@@ -46,14 +52,19 @@ export default {
 
   methods: {
     async calculateConvertedBalances () {
+      let notConvertedBalances = 0
       const balanceStates = await this.getCustomerBalances()
-      // eslint-disable-next-line max-len
-      const convertedBalance = balanceStates.reduce((latestBalance, balance) => {
-        return MathUtil.add(
-          latestBalance,
-          balance.convertedAmounts.available
-        )
-      }, 0)
+      const convertedBalance = balanceStates
+        .reduce((latestBalance, balance) => {
+          if (!balance.isConverted) {
+            notConvertedBalances++
+          }
+          return MathUtil.add(
+            latestBalance,
+            balance.convertedAmounts.available
+          )
+        }, 0)
+      this.isConvertedBalances = notConvertedBalances !== balanceStates.length
       this.balance = convertedBalance
     },
 

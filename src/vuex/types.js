@@ -209,6 +209,7 @@ const getters = {
   ownedBalancesAssets: 'ownedBalancesAssets',
   baseAtomicSwapBalancesAssets: 'baseAtomicSwapBalancesAssets',
   quoteAtomicSwapAssets: 'quoteAtomicSwapAssets',
+  defaultStatsQuoteAsset: 'defaultStatsQuoteAsset',
 
   // conto hacks
   isCustomerUiShown: 'isCustomerUiShown',

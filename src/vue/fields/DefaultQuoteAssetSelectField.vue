@@ -2,15 +2,16 @@
   <div
     class="default-quote-asset-select-field"
   >
-    <template v-if="isLoading && baseAssets.length">
+    <template v-if="isLoaded && baseAssets.length">
       <select-field
         name="default-quote-asset"
         v-model="defaultQuoteAsset"
         @input="setDefaultQuoteAsset"
         class="
-      default-quote-asset-select-field__asset-select
-      app__select-with-label--no-border
-      app__select-panel--right"
+          default-quote-asset-select-field__asset-select
+          app__select-with-label--no-border
+          app__select-panel--right
+        "
       >
         <option
           v-for="asset in baseAssets"
@@ -42,7 +43,7 @@ export default {
 
   data: _ => ({
     defaultQuoteAsset: '',
-    isLoading: false,
+    isLoaded: false,
   }),
 
   computed: {
@@ -56,7 +57,7 @@ export default {
   async created () {
     await this.loadAccountBalances()
     this.defaultQuoteAsset = this.statsQuoteAsset
-    this.isLoading = true
+    this.isLoaded = true
   },
 
   methods: {
@@ -66,14 +67,14 @@ export default {
     }),
 
     async setDefaultQuoteAsset () {
-      if (this.isSetSameDefaultQuoteAsset()) return
+      if (this.isDefaultQuoteAssetChanged()) return
       const endpoint = `/integrations/dns/businesses/${this.accountId}/settings/quote-asset`
       try {
         await api.postWithSignature(endpoint, {
           data: {
             type: 'stats-quote-asset',
             attributes: {
-              quote_asset: this.defaultQuoteAsset,
+              qoute_asset: this.defaultQuoteAsset,
             },
           },
         })
@@ -84,7 +85,7 @@ export default {
       }
     },
 
-    isSetSameDefaultQuoteAsset () {
+    isDefaultQuoteAssetChanged () {
       return this.statsQuoteAsset === this.defaultQuoteAsset
     },
   },
