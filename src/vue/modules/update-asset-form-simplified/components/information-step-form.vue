@@ -131,7 +131,6 @@ import { UpdateAssetRequest } from '../wrappers/update-asset-request'
 
 const EVENTS = {
   submit: 'submit',
-  updateIsDisabled: 'update:isDisabled',
 }
 
 const NAME_MAX_LENGTH = 255
