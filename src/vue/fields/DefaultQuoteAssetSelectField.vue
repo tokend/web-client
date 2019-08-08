@@ -73,7 +73,7 @@ export default {
           data: {
             type: 'stats-quote-asset',
             attributes: {
-              qoute_asset: this.defaultQuoteAsset,
+              quote_asset: this.defaultQuoteAsset,
             },
           },
         })
