@@ -2387,8 +2387,8 @@
       "quote-assets-subheading": "Quote asset #{{ number }}"
     },
     "atomic-swap-card": {
-      "available": "Available: {{ amount }}",
-      "locked": "Locked: {{ amount }}"
+      "available": "Available: {{ amount, money }}",
+      "locked": "Locked: {{ amount, money }}"
     },
     "customers-page": {
       "invite-btn": "Invite client",
@@ -2474,6 +2474,12 @@
       "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
       "email-code": "Enter the code sent to you by email",
       "tfa-code": "Enter tfa code"
+    },
+    "abbreviation-numbers": {
+      "thousand": "k",
+      "million": "M",
+      "billion": "B",
+      "trillion": "T"
     }
   }
 }
