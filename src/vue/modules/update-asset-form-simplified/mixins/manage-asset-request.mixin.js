@@ -1,4 +1,4 @@
-import { base } from '@tokend/js-sdk'
+import { base, ASSET_PAIR_POLICIES } from '@tokend/js-sdk'
 import { REQUEST_STATES } from '@/js/const/request-states.const'
 
 import { api } from '@/api'
@@ -8,6 +8,7 @@ import { UpdateAssetRequest } from '../wrappers/update-asset-request'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex/index'
+import { amountToPrecision } from '@/js/helpers/amount'
 
 const NEW_UPDATE_ASSET_REQUEST_ID = '0'
 
@@ -77,8 +78,10 @@ export default {
       ]
       await uploadDocuments(assetDocuments)
 
-      const operation = this.$buildAssetUpdateRequestOperation(requestId)
-      await api.postOperations(operation)
+      await api.postOperations(
+        this.$buildAssetUpdateRequestOperation(requestId),
+        this.$buildPairUpdateRequestOperation()
+      )
     },
 
     $buildAssetUpdateRequestOperation (requestId) {
@@ -113,10 +116,30 @@ export default {
       return DocumentContainer.getEmptyDetailsForSave()
     },
 
-    async getAssetPrice (assetCode) {
+    async getAssetPairPrice (assetCode) {
       const endpoint = `/v3/asset_pairs/${assetCode}:${this.statsQuoteAsset.code}`
       const { data } = await api.getWithSignature(endpoint)
-      return data
+      return amountToPrecision(data.price, this.statsQuoteAsset.trailingDigits)
+    },
+
+    $buildPairUpdateRequestOperation () {
+      let action
+      if (this.isNeedCreateAssetPair) {
+        action = base.xdr.ManageAssetPairAction.create()
+      } else {
+        action = base.xdr.ManageAssetPairAction.updatePrice()
+      }
+      const opts = {
+        base: this.collectedAttributes.code,
+        quote: this.statsQuoteAsset.code,
+        action: action,
+        policies: +ASSET_PAIR_POLICIES.currentPriceRestriction,
+        physicalPrice: '' + this.collectedAttributes.price,
+        physicalPriceCorrection: '1',
+        maxPriceStep: '1',
+      }
+
+      return base.Operation.manageAssetPair(opts)
     },
   },
 }

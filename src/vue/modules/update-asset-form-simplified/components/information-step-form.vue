@@ -143,6 +143,7 @@ export default {
   props: {
     record: { type: [Asset, UpdateAssetRequest], default: null },
     isDisabled: { type: Boolean, default: false },
+    assetPrice: { type: String, default: '' },
   },
 
   data: _ => ({
@@ -207,6 +208,7 @@ export default {
           ? new DocumentContainer(this.record.logo)
           : null,
         policies: this.record.policy,
+        price: this.assetPrice,
       }
     },
 
