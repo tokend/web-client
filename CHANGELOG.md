@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Atomic swap requests history in atomic swap details
+- Update asset form
 - Mass payment operation
 
 #### Deleted
