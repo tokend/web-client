@@ -1,5 +1,6 @@
 import i18next from 'i18next'
 import i18nextBrowserLanguageDetector from 'i18next-browser-languagedetector'
+
 // i18next api:
 // https://www.i18next.com/overview/api
 
