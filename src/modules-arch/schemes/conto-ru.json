@@ -1,6 +1,9 @@
 {
   "config": {},
   "translations": {
+    "auth-pages": {
+      "big-title": "Бизнес в <br> вашем <br> смартфоне"
+    },
     "passport": {
       "account-unverified": "Стандартный аккаунт",
       "account-corporate": "Аккаунта бизнеса I уровня"
@@ -47,7 +50,7 @@
     "pages-names": {
       "sales": "Краудфанды",
       "sale-details": "Детали краудфанда",
-      "atomic-swaps": "Прямые продажи"
+      "atomic-swaps": "Магазин"
     },
     "op-details": {
       "sale-name-lbl": "Имя краудфанда",

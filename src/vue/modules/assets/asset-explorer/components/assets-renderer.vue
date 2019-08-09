@@ -156,7 +156,7 @@ export default {
     selectedBalance (asset) {
       const record = this.accountBalances
         .find(item => item.asset.code === this.selectedAsset.code)
-      return record ? record.balance : ''
+      return record || {}
     },
 
     assets () {
@@ -203,7 +203,7 @@ export default {
     getAssetBalance (asset) {
       const balanceRecord = this.accountBalances
         .find(b => b.asset.code === asset.code)
-      return balanceRecord ? balanceRecord.balance : ''
+      return balanceRecord || {}
     },
 
     closeDrawerAndUpdateList () {

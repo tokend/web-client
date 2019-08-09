@@ -1,6 +1,9 @@
 {
   "config": {},
   "translations": {
+    "auth-pages": {
+      "big-title": "Business in <br> your <br> smartphone"
+    },
     "passport": {
       "account-unverified": "General account",
       "account-corporate": "Business level 1 account"

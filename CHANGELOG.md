@@ -12,6 +12,8 @@ for further information about branching and tagging conventions.
 - Atomic swap requests history in atomic swap details
 - Update asset form
 - Mass payment operation
+- Set default quote asset for business in settings
+- Convert asset for each business
 
 #### Deleted
 - Dropdown account balances

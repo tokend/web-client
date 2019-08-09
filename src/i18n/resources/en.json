@@ -523,7 +523,8 @@
       "change-phone-number-btn": "Change phone number",
       "change-phone-number-title": "Change phone number",
       "add-phone-number-title": "Add phone number",
-      "add-phone-number-btn": "Add phone number"
+      "add-phone-number-btn": "Add phone number",
+      "default-quote-asset-title": "Default quote asset"
     },
     "phone-number-form": {
       "phone-number-lbl": "Phone number",
@@ -1253,6 +1254,7 @@
       "update-asset-title": "Update asset",
       "details-title": "Asset details",
       "list-item-balance-line": "Balance: {{value, money}}",
+      "list-item-converted-balance-line": "Converted: {{value, money}} {{currency}}",
       "no-balance-msg": "No balance"
     },
     "asset-form": {
@@ -2081,8 +2083,8 @@
       "yes-msg": "Yes",
       "no-msg": "No",
       "send-btn": "Transfer",
-      "issue-btn": "Issue"
-
+      "issue-btn": "Issue",
+      "converted-balance-title": "Converted balance"
     },
     "create-opportunity": {
       "maturity-date": "Maturity Date",
@@ -2231,6 +2233,10 @@
     "asset-select-field": {
       "failed-loading-msg": "Assets loading failed!",
       "no-assets-for-select": "No assets for select"
+    },
+    "default-quote-asset-select-field": {
+      "not-set-msg": "Not set",
+      "set-asset-msg": "Default quote asset successfully set"
     },
     "polls": {
       "create-poll": "Create",

@@ -49,9 +49,10 @@ export const actions = {
     { commit, rootGetters, getters }
   ) {
     const accountId = getters[vuexTypes.accountId]
-    const defaultQuoteAsset = rootGetters[vuexTypes.defaultQuoteAsset]
+    // eslint-disable-next-line max-len
+    const businessStatsQuoteAsset = rootGetters[vuexTypes.businessStatsQuoteAsset]
 
-    const endpoint = `/v3/accounts/${accountId}/converted_balances/${defaultQuoteAsset}`
+    const endpoint = `/v3/accounts/${accountId}/converted_balances/${businessStatsQuoteAsset}`
     const { data } = await api.getWithSignature(endpoint, {
       include: ['states', 'balance', 'balance.state', 'balance.asset'],
     })
@@ -63,7 +64,7 @@ export const actions = {
       balances.map(b => b.asset),
       { root: true }
     )
-    commit(vuexTypes.SET_ACCOUNT_BALANCES_DETAILS, balances)
+    commit(vuexTypes.SET_ACCOUNT_BALANCES_DETAILS, data.states)
   },
 }
 
@@ -71,16 +72,16 @@ export const getters = {
   [vuexTypes.account]: state => state.account,
   [vuexTypes.accountId]: state => state.account.id,
   [vuexTypes.accountBalances]: state => state.balancesDetails
-    .map(item => new BalanceRecord(item, item.asset.trailingDigits)),
+    .map(item => new BalanceRecord(item, item.balance.asset.trailingDigits)),
   [vuexTypes.accountBalancesByOwner]: (state, getters) => owner => {
     return getters[vuexTypes.accountBalances]
       .filter(item => item.asset.owner === owner)
   },
   [vuexTypes.accountOwnedAssetsBalances]: state => state.balancesDetails
-    .map(item => new BalanceRecord(item, item.asset.trailingDigits))
+    .map(item => new BalanceRecord(item, item.balance.asset.trailingDigits))
     .filter(i => i.asset.owner === state.account.id) || {},
   [vuexTypes.accountBalanceByCode]: state => code => state.balancesDetails
-    .map(item => new BalanceRecord(item, item.asset.trailingDigits))
+    .map(item => new BalanceRecord(item, item.balance.asset.trailingDigits))
     .find(i => i.asset.code === code) || {},
   [vuexTypes.accountRoleId]: state => Number(
     _get(state.account, 'role.id')

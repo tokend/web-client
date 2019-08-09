@@ -19,7 +19,7 @@
           </template>
           <asset-attributes-viewer
             :asset="selectedBalance.asset"
-            :balance="selectedBalance.balance"
+            :balance="selectedBalance"
             :kyc-required-asset-type="kvAssetTypeKycRequired"
             :security-asset-type="kvAssetTypeSecurity"
           />
@@ -48,7 +48,7 @@
           <template v-for="item in accountOwnedAssetsBalances">
             <card-viewer
               :asset="item.asset"
-              :balance="item.balance"
+              :balance="item"
               :key="item.id"
               @click="selectBalance(item)"
             />
@@ -113,12 +113,7 @@ export default {
     AssetActions,
   },
   mixins: [UpdateList],
-  props: {
-    defaultQuoteAsset: {
-      type: String,
-      required: true,
-    },
-  },
+
   data: _ => ({
     isLoaded: false,
     isLoadFailed: false,
@@ -136,6 +131,7 @@ export default {
       ownedAssets: vuexTypes.ownedBalancesAssets,
       accountBalances: vuexTypes.accountBalances,
       accountOwnedAssetsBalances: vuexTypes.accountOwnedAssetsBalances,
+      businessStatsQuoteAsset: vuexTypes.businessStatsQuoteAsset,
     }),
 
     ...mapGetters([
@@ -162,7 +158,7 @@ export default {
 
     async load () {
       try {
-        await this.loadAccountBalances(this.defaultQuoteAsset)
+        await this.loadAccountBalances(this.businessStatsQuoteAsset)
         this.isLoaded = true
       } catch (e) {
         this.isLoadFailed = true
