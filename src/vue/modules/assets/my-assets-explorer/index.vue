@@ -7,7 +7,7 @@
             {{ 'assets.update-drawer-title' | globalize }}
           </template>
 
-          <update-asset-form-module
+          <update-asset-form-simplified-module
             :asset-code="selectedBalance.asset.code"
             @submitted="closeDrawerAndUpdateList()"
           />
@@ -27,9 +27,15 @@
           <div class="my-assets-explorer__actions-wrapper">
             <asset-actions
               :asset="selectedBalance.asset"
-              @update-click="isUpdateMode = true"
               @balance-added="loadAssets() || (isDrawerShown = false)"
             />
+            <button
+              v-ripple
+              class="app__button-raised my-assets-explorer__update-btn"
+              @click="isUpdateMode = true"
+            >
+              {{ 'assets.update-btn' | globalize }}
+            </button>
           </div>
         </template>
       </drawer>
@@ -86,7 +92,7 @@ import AssetAttributesViewer from '../shared/components/asset-attributes-viewer'
 import AssetSkeletonLoader from './components/asset-skeleton-loader'
 import AssetActions from '../asset-explorer/components/asset-actions'
 
-import UpdateAssetFormModule from '@modules/update-asset-form'
+import UpdateAssetFormSimplifiedModule from '@modules/update-asset-form-simplified'
 
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -102,7 +108,7 @@ export default {
     NoDataMessage,
     CardViewer,
     AssetAttributesViewer,
-    UpdateAssetFormModule,
+    UpdateAssetFormSimplifiedModule,
     AssetSkeletonLoader,
     AssetActions,
   },
@@ -151,6 +157,7 @@ export default {
   methods: {
     ...mapActions({
       loadAccountBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+      loadAssets: vuexTypes.LOAD_ASSETS,
     }),
 
     async load () {
@@ -169,9 +176,10 @@ export default {
       this.isDrawerShown = true
     },
 
-    closeDrawerAndUpdateList () {
+    async closeDrawerAndUpdateList () {
       this.isDrawerShown = false
       this.emitUpdateList('assets:updateList')
+      await this.loadAssets()
     },
 
     async loadAssetsAndSetSelectedBalance () {
@@ -201,7 +209,7 @@ $media-small-height: 460px;
 }
 
 .my-assets-explorer__update-btn {
-  max-width: 18rem;
+  max-width: 12rem;
   width: 100%;
 }
 

@@ -1239,6 +1239,16 @@
       "stellar-asset-code-lbl": "Код актива",
       "integration-with-stellar-check": "Я хочу интегрироваться с Stellar"
     },
+    "update-asset-form-simplified": {
+      "load-failed-msg": "Произошла ошибка при загрузке.",
+      "request-submitted-msg": "Актив успешно обновлен",
+      "name-lbl": "Название актива",
+      "logo-lbl": "Значок актива",
+      "logo-note": "JPG или PNG, не менее 120x120 пикселей",
+      "transferable-lbl": "Можно передавать",
+      "description-lbl": "Описание",
+      "update-btn": "Обновить"
+    },
     "assets-list": {
       "update-asset-title": "Обновить актив",
       "details-title": "Детали актива",
