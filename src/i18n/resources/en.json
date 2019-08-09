@@ -1240,6 +1240,16 @@
       "stellar-asset-code-lbl": "Asset code",
       "integration-with-stellar-check": "I want to integrate with Stellar network"
     },
+    "update-asset-form-simplified": {
+      "load-failed-msg": "There was an error while loading.",
+      "request-submitted-msg": "Your asset was successfully updated.",
+      "name-lbl": "Asset name",
+      "logo-lbl": "Asset icon",
+      "logo-note": "JPG or PNG, no less than 120x120 px",
+      "description-lbl": "Description",
+      "transferable-lbl": "Transferable",
+      "update-btn": "Update"
+    },
     "assets-list": {
       "update-asset-title": "Update asset",
       "details-title": "Asset details",
