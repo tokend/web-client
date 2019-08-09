@@ -1,10 +1,10 @@
 <template>
   <div class="mass-payment-form">
-    <template v-if="isLoading && transferableBalancesAssets.length">
+    <template v-if="isLoaded && transferableBalancesAssets.length">
       <form @submit.prevent="submit()">
         <div class="app__form-row">
           <div class="app__form-field">
-            <p class="mass-payment-form__how-to-receivers">
+            <p class="mass-payment-form__description">
               {{ 'mass-payment-form.how-to-receivers-paragraph' | globalize }}
             </p>
 
@@ -101,7 +101,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 
 import { mapGetters, mapActions } from 'vuex'
-import { store, vuexTypes } from '@/vuex'
+import { vuexTypes } from '@/vuex'
 
 import { api } from '@/api'
 import { base } from '@tokend/js-sdk'
@@ -127,13 +127,11 @@ export default {
   data () {
     return {
       form: {
-        assetCode: this.assetCode ||
-          store.getters[vuexTypes.transferableBalancesAssets][0].code ||
-          '',
+        assetCode: '',
         receivers: this.receivers || '',
         amount: String(this.amount) || '',
       },
-      isLoading: false,
+      isLoaded: false,
     }
   },
 
@@ -164,7 +162,8 @@ export default {
 
   async created () {
     await this.loadCurrentBalances()
-    this.isLoading = true
+    this.form.assetCode = this.assetCode || this.transferableBalancesAssets[0].code || ''
+    this.isLoaded = true
   },
 
   methods: {
@@ -258,7 +257,7 @@ export default {
 @import './app-form';
 @import '@/scss/variables';
 
-p.mass-payment-form__how-to-receivers {
+p.mass-payment-form__description {
   line-height: 1.5;
   font-size: 1.6rem;
   margin-bottom: 2.4rem;
