@@ -4,7 +4,7 @@ import { globalize } from '@/vue/filters/globalize'
 const DECIMAL_PLACES = 2
 
 export function abbreviationNumber (value, format) {
-  if (value <= 1000) {
+  if (value >= -1000 && value <= 1000) {
     return MathUtil.format(value, format)
   }
   // 2 decimal places

@@ -2423,7 +2423,7 @@
       "no-assets-msg-description": "Unfortunately, you do not have any assets now, please create an asset and try again.",
       "payment-successfully-notification": "Mass send performed successfully.",
       "no-receivers-found": "Receivers you provided not found or cannot receive the send. Please ensure you specified the valid receivers list and try again.",
-      "overissue-error-notif": "The total amount is bigger than the available for send amount. Please decrease the amount to send and try again.",
+      "overpayment-error-notif": "The total amount is bigger than the available for send amount. Please decrease the amount to send and try again.",
       "too-much-op-error-notif": "Too many receivers, the current limit is 100 receivers, please decrease the receivers count and try again."
     },
     "mass-invitation-form": {

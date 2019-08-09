@@ -1,6 +1,6 @@
 <template>
   <div class="mass-payment-form">
-    <template v-if="isLoading && ownedAssets.length">
+    <template v-if="isLoading && transferableBalancesAssets.length">
       <form @submit.prevent="submit()">
         <div class="app__form-row">
           <div class="app__form-field">
@@ -31,7 +31,7 @@
               :disabled="formMixin.isDisabled"
             >
               <option
-                v-for="asset in ownedAssets"
+                v-for="asset in transferableBalancesAssets"
                 :key="asset.code"
                 :value="asset.code"
               >
@@ -44,7 +44,7 @@
                 {{
                   'mass-payment-form.available-for-payment-hint' | globalize({
                     amount: {
-                      value: assetByCode(form.assetCode).availableForIssuance,
+                      value: accountBalanceByCode(form.assetCode).balance,
                       currency: form.assetCode
                     }
                   })
@@ -59,7 +59,7 @@
             <amount-input-field
               v-model="form.amount"
               name="mass-payment-amount"
-              validation-type="issuance"
+              validation-type="outgoing"
               :label="'mass-payment-form.amount-lbl' | globalize"
               :asset="assetByCode(form.assetCode)"
               :disabled="formMixin.isDisabled"
@@ -128,7 +128,7 @@ export default {
     return {
       form: {
         assetCode: this.assetCode ||
-          store.getters[vuexTypes.ownedAssets][0].code ||
+          store.getters[vuexTypes.transferableBalancesAssets][0].code ||
           '',
         receivers: this.receivers || '',
         amount: String(this.amount) || '',
@@ -152,8 +152,9 @@ export default {
 
   computed: {
     ...mapGetters({
-      ownedAssets: vuexTypes.ownedAssets,
+      transferableBalancesAssets: vuexTypes.transferableBalancesAssets,
       assetByCode: vuexTypes.assetByCode,
+      accountBalanceByCode: vuexTypes.accountBalanceByCode,
     }),
   },
 
@@ -168,6 +169,7 @@ export default {
     }),
 
     async submit () {
+      if (!this.isFormValid) return
       this.disableForm()
 
       try {
@@ -184,12 +186,12 @@ export default {
           return
         }
 
-        const isOverissue = MathUtil.compare(
+        const isOverpayment = MathUtil.compare(
           MathUtil.multiply(operations.length, this.form.amount),
-          this.assetByCode(this.form.assetCode).availableForIssuance,
+          this.accountBalanceByCode(this.form.assetCode).balance,
         ) > 0
-        if (isOverissue) {
-          Bus.error('mass-payment-form.overissue-error-notif')
+        if (isOverpayment) {
+          Bus.error('mass-payment-form.overpayment-error-notif')
           return
         }
 
