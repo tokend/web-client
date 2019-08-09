@@ -54,6 +54,7 @@ import LogoViewer from './logo-viewer'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { BalanceRecord } from '@/js/records/entities/balance.record'
 
 export default {
   name: 'card-viewer',
@@ -64,7 +65,7 @@ export default {
       required: true,
     },
     balance: {
-      type: Object,
+      type: BalanceRecord,
       required: true,
     },
   },

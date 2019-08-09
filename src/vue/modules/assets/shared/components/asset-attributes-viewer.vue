@@ -25,8 +25,8 @@
           <tr v-if="balance">
             <td>{{ 'assets.balance-title' | globalize }}</td>
             <td>
-              {{ { value: balance.balance,
-                   currency: asset.code } | formatMoney }}
+              <!-- eslint-disable-next-line max-len -->
+              {{ { value: balance.balance, currency: asset.code } | formatMoney }}
             </td>
           </tr>
 
@@ -81,6 +81,7 @@ import LogoViewer from './logo-viewer'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { BalanceRecord } from '@/js/records/entities/balance.record'
 
 const STELLAR_TYPES = {
   creditAlphanum4: 'credit_alphanum4',
@@ -95,7 +96,7 @@ export default {
   },
   props: {
     asset: { type: AssetRecord, required: true },
-    balance: { type: Object, required: true },
+    balance: { type: BalanceRecord, required: true },
     kycRequiredAssetType: { type: Number, required: true },
     securityAssetType: { type: Number, required: true },
   },

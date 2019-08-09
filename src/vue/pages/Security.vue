@@ -168,7 +168,6 @@
           {{ 'security-page.default-quote-asset-title' | globalize }}
         </p>
         <submodule-importer
-          v-if="getModule().canRenderSubmodule(DefaultQuoteAssetPseudoModule)"
           :submodule="getModule().getSubmodule(DefaultQuoteAssetPseudoModule)"
         />
       </div>
