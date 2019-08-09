@@ -23,7 +23,7 @@
       </submodule-importer>
 
       <no-data-message
-        v-else-if="isLoadFailed"
+        v-else-if="!asset.code"
         icon-name="trending-up"
         :title="'op-pages.no-data-title' | globalize"
         :message="'op-pages.no-data-msg' | globalize"
@@ -58,7 +58,6 @@ export default {
     MovementsHistoryModule,
     asset: {},
     historyState: 0,
-    isLoadFailed: false,
   }),
 
   methods: {

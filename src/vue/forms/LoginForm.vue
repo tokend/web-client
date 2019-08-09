@@ -94,6 +94,7 @@ export default {
     ...mapActions({
       logInAccount: vuexTypes.LOG_IN,
       loadAssets: vuexTypes.LOAD_ASSETS,
+      loadBusinessStatsQuoteAsset: vuexTypes.LOAD_BUSINESS_STATS_QUOTE_ASSET,
     }),
     async submit () {
       if (!this.isFormValid()) return
@@ -105,6 +106,7 @@ export default {
           password: this.form.password,
         })
         await this.loadAssets()
+        await this.loadBusinessStatsQuoteAsset()
         if (Object.keys(this.$route.query).includes('redirectPath')) {
           this.$router.push({ path: this.$route.query.redirectPath })
         } else {

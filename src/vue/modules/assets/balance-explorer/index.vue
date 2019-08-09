@@ -42,7 +42,7 @@
           <template v-for="item in accountBalances">
             <card-viewer
               :asset="item.asset"
-              :balance="item.balance"
+              :balance="item"
               :key="item.id"
               @click="selectBalance(item)"
             />

@@ -431,6 +431,16 @@ h6.app__page-heading {
   }
 }
 
+.app__select-panel {
+
+  &--right {
+    div div {
+      right: 0;
+      left: inherit;
+    }
+  }
+}
+
 #nprogress {
   z-index: 5;
 

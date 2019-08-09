@@ -3,7 +3,6 @@
     <template v-if="getModule().canRenderSubmodule(MyAssetsExplorerModule)">
       <submodule-importer
         :submodule="getModule().getSubmodule(MyAssetsExplorerModule)"
-        :default-quote-asset="defaultQuoteAsset"
       />
     </template>
   </div>
@@ -12,9 +11,6 @@
 <script>
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { MyAssetsExplorerModule } from '@modules/assets/my-assets-explorer/module'
-
-import { vuexTypes } from '@/vuex'
-import { mapGetters } from 'vuex'
 
 export default {
   name: 'my-assets-explorer-page',
@@ -25,11 +21,5 @@ export default {
   data: _ => ({
     MyAssetsExplorerModule,
   }),
-
-  computed: {
-    ...mapGetters({
-      defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
-    }),
-  },
 }
 </script>

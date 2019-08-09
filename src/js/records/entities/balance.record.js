@@ -8,10 +8,12 @@ export class BalanceRecord {
     this._record = record
 
     this.id = record.id
-    this.asset = new AssetRecord(record.asset)
-    this.balance =
-      amountToPrecision(safeGet(record, 'state.available'), precision)
+    this.asset = new AssetRecord(record.balance.asset)
 
-    this.convertedBalance = record.convertedBalance
+    this.balance =
+      amountToPrecision(safeGet(record, 'balance.state.available'), precision)
+
+    this.isConverted = record.isConverted
+    this.convertedBalance = record.convertedAmounts
   }
 }

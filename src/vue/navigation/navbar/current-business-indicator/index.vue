@@ -30,7 +30,7 @@ import { BusinessRecord } from '@/js/records/entities/business.record'
 import { Bus } from '@/js/helpers/event-bus'
 import { vueRoutes } from '@/vue-router/routes'
 import CurrentBusinessLogo from './current-business-logo'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 const ROUTES_WITH_OWNER_FILTER = [
@@ -84,6 +84,11 @@ export default {
     ...mapMutations([
       vuexTypes.SELECT_BUSINESS_TO_BROWSE,
       vuexTypes.CLEAR_BUSINESS_TO_BROWSE,
+      vuexTypes.SET_BUSINESS_STATS_QUOTE_ASSET,
+    ]),
+
+    ...mapActions([
+      vuexTypes.LOAD_BUSINESS_STATS_QUOTE_ASSET,
     ]),
 
     listen () {
@@ -104,9 +109,8 @@ export default {
       if (this.businessToBrowse.name === value.name) {
         return
       }
-
+      this.SET_BUSINESS_STATS_QUOTE_ASSET(value._record.statsQuoteAsset)
       this.SELECT_BUSINESS_TO_BROWSE(value._record)
-
       // erase movements list
       this.$store.commit('movements-history/SET_MOVEMENTS', [])
     },
@@ -123,6 +127,7 @@ export default {
           to.name === vueRoutes.allBusinesses.name
         ) {
           this.CLEAR_BUSINESS_TO_BROWSE()
+          this.LOAD_BUSINESS_STATS_QUOTE_ASSET()
           next()
         } else if (!ROUTES_WITH_OWNER_FILTER.includes(to.name)) {
           next()

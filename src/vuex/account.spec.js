@@ -86,7 +86,7 @@ describe('account.module', () => {
           vuexTypes.UPDATE_ASSETS, assetsPayload, { root: true }
         )
         expect(store.commit).to.have.been.calledWithExactly(
-          vuexTypes.SET_ACCOUNT_BALANCES_DETAILS, balances
+          vuexTypes.SET_ACCOUNT_BALANCES_DETAILS, balancesMock.states
         )
       })
   })

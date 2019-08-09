@@ -155,6 +155,7 @@ export default {
       loadKyc: vuexTypes.LOAD_KYC,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
       logOutAccount: vuexTypes.LOG_OUT,
+      loadBusinessStatsQuote: vuexTypes.LOAD_BUSINESS_STATS_QUOTE_ASSET,
     }),
 
     ...mapMutations({
@@ -218,6 +219,7 @@ export default {
       } else {
         this.hideCustomerUi()
         this.clearBusinessToBrowse()
+        this.loadBusinessStatsQuote()
       }
 
       this.$router.push(vueRoutes.app.name)

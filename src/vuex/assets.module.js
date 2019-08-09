@@ -6,6 +6,7 @@ const ASSETS_PAGE_LIMIT = 100
 
 export const state = {
   assets: [],
+  businessStatsQuoteAsset: '',
 }
 
 export const mutations = {
@@ -22,6 +23,10 @@ export const mutations = {
         state.assets[foundIndex] = asset
       }
     }
+  },
+
+  [vuexTypes.SET_BUSINESS_STATS_QUOTE_ASSET] (state, asset) {
+    state.businessStatsQuoteAsset = asset
   },
 }
 
@@ -41,6 +46,29 @@ export const actions = {
     }
 
     commit(vuexTypes.SET_ASSETS, assets)
+  },
+
+  // eslint-disable-next-line max-len
+  async [vuexTypes.LOAD_BUSINESS_STATS_QUOTE_ASSET] ({ commit, rootGetters, getters }) {
+    let id = ''
+    if (rootGetters[vuexTypes.businessToBrowse].accountId) {
+      id = rootGetters[vuexTypes.businessToBrowse].accountId
+    } else if (rootGetters[vuexTypes.isAccountCorporate]) {
+      id = rootGetters[vuexTypes.accountId]
+    } else {
+      const statsQuoteAsset = getters[vuexTypes.statsQuoteAsset]
+      commit(vuexTypes.SET_BUSINESS_STATS_QUOTE_ASSET, statsQuoteAsset.code)
+      return
+    }
+
+    const endpoint = `/integrations/dns/businesses/${id}`
+    const { data } = await api.getWithSignature(endpoint)
+    let quoteAssetCode = data.statsQuoteAsset
+    if (!data.statsQuoteAsset) {
+      quoteAssetCode = getters[vuexTypes.statsQuoteAsset].code
+    }
+
+    commit(vuexTypes.SET_BUSINESS_STATS_QUOTE_ASSET, quoteAssetCode)
   },
 }
 
@@ -92,6 +120,7 @@ export const getters = {
       .filter(item => {
         return item.isStatsQuoteAsset
       })[0] || {},
+  [vuexTypes.businessStatsQuoteAsset]: state => state.businessStatsQuoteAsset,
   [vuexTypes.ownedBalancesAssets]: (a, getters, b, rootGetters) =>
     rootGetters[vuexTypes.accountBalances]
       .map(item => item.asset)
