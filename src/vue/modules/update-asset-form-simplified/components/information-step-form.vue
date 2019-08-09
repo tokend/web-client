@@ -39,34 +39,6 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <input-field
-          white-autofill
-          v-model="form.price"
-          type="number"
-          :step="inputStep"
-          :max="MAX_AMOUNT"
-          @blur="touchField('form.price')"
-          name="update-asset-form-price"
-          :label="'update-asset-form-simplified.price-lbl' | globalize({
-            quoteAsset: statsQuoteAsset.code
-          })"
-          :error-message="getFieldErrorMessage('form.price', {
-            from: {
-              value: MIN_AMOUNT,
-              currency: form.code,
-            },
-            to: {
-              value: MAX_AMOUNT,
-              currency: form.code,
-            },
-          })"
-          :disabled="isDisabled"
-        />
-      </div>
-    </div>
-
-    <div class="app__form-row">
-      <div class="app__form-field">
         <tick-field
           v-model="form.policies"
           :cb-value="ASSET_POLICIES.transferable"
@@ -114,20 +86,16 @@ import { ASSET_POLICIES } from '@tokend/js-sdk'
 
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
-import { Asset } from '../wrappers/asset'
-
 import {
   required,
   maxLength,
-  amountRange,
 } from '@validators'
 
-import config from '@/config'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
-import { inputStepByDigitsCount } from '@/js/helpers/input-trailing-digits-count'
 import { UpdateAssetRequest } from '../wrappers/update-asset-request'
+import { AssetRecord } from '@/js/records/entities/asset.record'
 
 const EVENTS = {
   submit: 'submit',
@@ -140,9 +108,8 @@ export default {
   name: 'information-step-form',
   mixins: [FormMixin],
   props: {
-    record: { type: [Asset, UpdateAssetRequest], default: null },
+    record: { type: [AssetRecord, UpdateAssetRequest], default: null },
     isDisabled: { type: Boolean, default: false },
-    assetPrice: { type: String, default: '' },
   },
 
   data: _ => ({
@@ -152,10 +119,7 @@ export default {
       logo: null,
       policies: ASSET_POLICIES.canBeBaseInAtomicSwap,
       description: '',
-      price: '',
     },
-    MIN_AMOUNT: config.MIN_AMOUNT,
-    MAX_AMOUNT: config.MAX_AMOUNT,
     ASSET_POLICIES,
     DOCUMENT_TYPES,
     NAME_MAX_LENGTH,
@@ -172,10 +136,6 @@ export default {
         description: {
           maxLength: maxLength(DESCRIPTION_MAX_LENGTH),
         },
-        price: {
-          required,
-          amountRange: amountRange(this.MIN_AMOUNT, this.MAX_AMOUNT),
-        },
       },
     }
   },
@@ -185,9 +145,6 @@ export default {
       vuexTypes.statsQuoteAsset,
       vuexTypes.accountId,
     ]),
-    inputStep () {
-      return inputStepByDigitsCount(config.DECIMAL_POINTS)
-    },
   },
 
   created () {
@@ -207,7 +164,6 @@ export default {
           ? new DocumentContainer(this.record.logo)
           : null,
         policies: this.record.policy,
-        price: this.assetPrice,
       }
     },
 

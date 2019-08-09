@@ -1247,8 +1247,7 @@
       "logo-note": "JPG или PNG, не менее 120x120 пикселей",
       "transferable-lbl": "Можно передавать",
       "description-lbl": "Описание",
-      "update-btn": "Обновить",
-      "price-lbl": "Цена в {{quoteAsset}}"
+      "update-btn": "Обновить"
     },
     "assets-list": {
       "update-asset-title": "Обновить актив",

@@ -3,7 +3,6 @@
     <template v-if="isLoaded">
       <information-step-form
         :record="request || asset"
-        :asset-price="price"
         :is-disabled.sync="isDisabled"
         @submit="submit"
       />
@@ -23,7 +22,6 @@
 
 <script>
 import ManageAssetRequestMixin from './mixins/manage-asset-request.mixin'
-import LoadAssetsMixin from './mixins/load-assets.mixin'
 import SkeletonLoaderStepForm from './components/skeleton-loader-step-form'
 
 import InformationStepForm from './components/information-step-form'
@@ -33,7 +31,6 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { errors } from '@tokend/js-sdk'
 
 const EVENTS = {
   submitted: 'submitted',
@@ -45,7 +42,7 @@ export default {
     InformationStepForm,
     SkeletonLoaderStepForm,
   },
-  mixins: [ManageAssetRequestMixin, LoadAssetsMixin],
+  mixins: [ManageAssetRequestMixin],
   props: {
     requestId: {
       type: String,
@@ -60,18 +57,17 @@ export default {
   data: _ => ({
     request: null,
     asset: null,
-    price: '',
     informationStepForm: {},
     isLoaded: false,
     isLoadFailed: false,
     isDisabled: false,
-    isNeedCreateAssetPair: false,
   }),
 
   computed: {
-    ...mapGetters([
-      vuexTypes.accountId,
-    ]),
+    ...mapGetters({
+      accountId: vuexTypes.accountId,
+      getAssetByCode: vuexTypes.assetByCode,
+    }),
   },
 
   async created () {
@@ -94,25 +90,8 @@ export default {
 
       if (request) {
         this.request = request
-        this.price = await this.loadAssetPairPrice(this.request.code)
       } else {
-        this.asset = await this.getAssetByCode(this.assetCode)
-        this.price = await this.loadAssetPairPrice(this.assetCode)
-      }
-    },
-
-    async loadAssetPairPrice (assetCode) {
-      try {
-        const assetPairPrice = await this.getAssetPairPrice(assetCode)
-        return assetPairPrice
-      } catch (error) {
-        if (error instanceof errors.NotFoundError) {
-          this.isNeedCreateAssetPair = true
-          return ''
-        } else {
-          this.isLoadFailed = true
-          ErrorHandler.processWithoutFeedback(error)
-        }
+        this.asset = this.getAssetByCode(this.assetCode)
       }
     },
 

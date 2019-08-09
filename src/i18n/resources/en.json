@@ -1247,8 +1247,7 @@
       "logo-note": "JPG or PNG, no less than 120x120 px",
       "description-lbl": "Description",
       "transferable-lbl": "Transferable",
-      "update-btn": "Update",
-      "price-lbl": "Price in {{quoteAsset}}"
+      "update-btn": "Update"
     },
     "assets-list": {
       "update-asset-title": "Update asset",

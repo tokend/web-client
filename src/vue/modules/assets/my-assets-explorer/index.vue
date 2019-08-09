@@ -157,6 +157,7 @@ export default {
   methods: {
     ...mapActions({
       loadAccountBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+      loadAssets: vuexTypes.LOAD_ASSETS,
     }),
 
     async load () {
@@ -175,9 +176,10 @@ export default {
       this.isDrawerShown = true
     },
 
-    closeDrawerAndUpdateList () {
+    async closeDrawerAndUpdateList () {
       this.isDrawerShown = false
       this.emitUpdateList('assets:updateList')
+      await this.loadAssets()
     },
 
     async loadAssetsAndSetSelectedBalance () {
