@@ -6,7 +6,7 @@ const ASSETS_PAGE_LIMIT = 100
 
 export const state = {
   assets: [],
-  statsQuoteAsset: '',
+  businessStatsQuoteAsset: '',
 }
 
 export const mutations = {
@@ -25,8 +25,8 @@ export const mutations = {
     }
   },
 
-  [vuexTypes.SET_STATS_QUOTE_ASSET] (state, asset) {
-    state.statsQuoteAsset = asset
+  [vuexTypes.SET_BUSINESS_STATS_QUOTE_ASSET] (state, asset) {
+    state.businessStatsQuoteAsset = asset
   },
 }
 
@@ -48,15 +48,16 @@ export const actions = {
     commit(vuexTypes.SET_ASSETS, assets)
   },
 
-  async [vuexTypes.LOAD_STATS_QUOTE_ASSET] ({ commit, rootGetters, getters }) {
+  // eslint-disable-next-line max-len
+  async [vuexTypes.LOAD_BUSINESS_STATS_QUOTE_ASSET] ({ commit, rootGetters, getters }) {
     let id = ''
     if (rootGetters[vuexTypes.businessToBrowse].accountId) {
       id = rootGetters[vuexTypes.businessToBrowse].accountId
     } else if (rootGetters[vuexTypes.isAccountCorporate]) {
       id = rootGetters[vuexTypes.accountId]
     } else {
-      const defaultQuoteStatsAsset = getters[vuexTypes.defaultStatsQuoteAsset]
-      commit(vuexTypes.SET_STATS_QUOTE_ASSET, defaultQuoteStatsAsset.code)
+      const statsQuoteAsset = getters[vuexTypes.statsQuoteAsset]
+      commit(vuexTypes.SET_BUSINESS_STATS_QUOTE_ASSET, statsQuoteAsset.code)
       return
     }
 
@@ -64,10 +65,10 @@ export const actions = {
     const { data } = await api.getWithSignature(endpoint)
     let quoteAssetCode = data.statsQuoteAsset
     if (!data.statsQuoteAsset) {
-      quoteAssetCode = getters[vuexTypes.defaultStatsQuoteAsset].code
+      quoteAssetCode = getters[vuexTypes.statsQuoteAsset].code
     }
 
-    commit(vuexTypes.SET_STATS_QUOTE_ASSET, quoteAssetCode)
+    commit(vuexTypes.SET_BUSINESS_STATS_QUOTE_ASSET, quoteAssetCode)
   },
 }
 
@@ -114,12 +115,12 @@ export const getters = {
     rootGetters[vuexTypes.accountBalances]
       .map(item => item.asset)
       .filter(item => item.isWithdrawable),
-  [vuexTypes.defaultStatsQuoteAsset]: (a, getters, b, rootGetters) =>
+  [vuexTypes.statsQuoteAsset]: (a, getters, b, rootGetters) =>
     rootGetters[vuexTypes.assets]
       .filter(item => {
         return item.isStatsQuoteAsset
       })[0] || {},
-  [vuexTypes.statsQuoteAsset]: state => state.statsQuoteAsset,
+  [vuexTypes.businessStatsQuoteAsset]: state => state.businessStatsQuoteAsset,
   [vuexTypes.ownedBalancesAssets]: (a, getters, b, rootGetters) =>
     rootGetters[vuexTypes.accountBalances]
       .map(item => item.asset)

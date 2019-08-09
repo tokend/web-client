@@ -84,11 +84,11 @@ export default {
     ...mapMutations([
       vuexTypes.SELECT_BUSINESS_TO_BROWSE,
       vuexTypes.CLEAR_BUSINESS_TO_BROWSE,
-      vuexTypes.SET_STATS_QUOTE_ASSET,
+      vuexTypes.SET_BUSINESS_STATS_QUOTE_ASSET,
     ]),
 
     ...mapActions([
-      vuexTypes.LOAD_STATS_QUOTE_ASSET,
+      vuexTypes.LOAD_BUSINESS_STATS_QUOTE_ASSET,
     ]),
 
     listen () {
@@ -109,7 +109,7 @@ export default {
       if (this.businessToBrowse.name === value.name) {
         return
       }
-      this.SET_STATS_QUOTE_ASSET(value._record.statsQuoteAsset)
+      this.SET_BUSINESS_STATS_QUOTE_ASSET(value._record.statsQuoteAsset)
       this.SELECT_BUSINESS_TO_BROWSE(value._record)
       // erase movements list
       this.$store.commit('movements-history/SET_MOVEMENTS', [])
@@ -127,7 +127,7 @@ export default {
           to.name === vueRoutes.allBusinesses.name
         ) {
           this.CLEAR_BUSINESS_TO_BROWSE()
-          this.LOAD_STATS_QUOTE_ASSET()
+          this.LOAD_BUSINESS_STATS_QUOTE_ASSET()
           next()
         } else if (!ROUTES_WITH_OWNER_FILTER.includes(to.name)) {
           next()

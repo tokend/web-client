@@ -35,13 +35,13 @@
         :title="
           'assets-list.list-item-converted-balance-line' |
             globalize({ value: convertedBalance,
-                        currency: statsQuoteAsset })
+                        currency: businessStatsQuoteAsset })
         "
       >
         {{
           'assets-list.list-item-converted-balance-line' |
             globalize({ value: convertedBalance,
-                        currency: statsQuoteAsset })
+                        currency: businessStatsQuoteAsset })
         }}
       </p>
     </div>
@@ -71,7 +71,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      statsQuoteAsset: vuexTypes.statsQuoteAsset,
+      businessStatsQuoteAsset: vuexTypes.businessStatsQuoteAsset,
     }),
     assetBalance () {
       return {
@@ -82,7 +82,7 @@ export default {
     convertedBalance () {
       return {
         value: this.balance.convertedBalance.available,
-        currency: this.statsQuoteAsset,
+        currency: this.businessStatsQuoteAsset,
       }
     },
   },

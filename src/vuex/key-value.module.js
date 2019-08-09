@@ -131,7 +131,7 @@ export const getters = {
   [vuexTypes.kvAssetTypeKycRequired]: state => state.kvAssetTypeKycRequired,
   [vuexTypes.kvAssetTypeSecurity]: state => state.kvAssetTypeSecurity,
   [vuexTypes.defaultQuoteAsset]: (a, getters, b, rootGetters) =>
-    rootGetters[vuexTypes.statsQuoteAsset],
+    rootGetters[vuexTypes.statsQuoteAsset.code],
   [vuexTypes.kvPollTypeRestricted]: state => state.kvPollTypeRestricted,
   [vuexTypes.kvPollTypeUnrestricted]: state => state.kvPollTypeUnrestricted,
   [vuexTypes.kvDefaultSignerRoleId]: state => state.kvDefaultSignerRoleId,

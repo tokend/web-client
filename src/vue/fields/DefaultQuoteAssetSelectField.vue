@@ -49,21 +49,21 @@ export default {
   computed: {
     ...mapGetters({
       baseAssets: vuexTypes.fiatAssets,
-      statsQuoteAsset: vuexTypes.statsQuoteAsset,
+      businessStatsQuoteAsset: vuexTypes.businessStatsQuoteAsset,
       accountId: vuexTypes.accountId,
     }),
   },
 
   async created () {
     await this.loadAccountBalances()
-    this.defaultQuoteAsset = this.statsQuoteAsset
+    this.defaultQuoteAsset = this.businessStatsQuoteAsset
     this.isLoaded = true
   },
 
   methods: {
     ...mapActions({
       loadAccountBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
-      loadStatsQuoteAsset: vuexTypes.LOAD_STATS_QUOTE_ASSET,
+      loadBusinessStatsQuoteAsset: vuexTypes.LOAD_BUSINESS_STATS_QUOTE_ASSET,
     }),
 
     async setDefaultQuoteAsset () {
@@ -79,14 +79,14 @@ export default {
           },
         })
         Bus.success('default-quote-asset-select-field.set-asset-msg')
-        await this.loadStatsQuoteAsset()
+        await this.loadBusinessStatsQuoteAsset()
       } catch (error) {
         ErrorHandler.process(error)
       }
     },
 
     isDefaultQuoteAssetChanged () {
-      return this.statsQuoteAsset === this.defaultQuoteAsset
+      return this.businessStatsQuoteAsset === this.defaultQuoteAsset
     },
   },
 }

@@ -35,9 +35,9 @@
             <td>
               {{
                 // eslint-disable-next-line max-len
-                { value: balance.convertedBalance.available, currency: statsQuoteAsset } | formatMoney
+                { value: balance.convertedBalance.available, currency: businessStatsQuoteAsset } | formatMoney
               }}
-              {{ statsQuoteAsset }}
+              {{ businessStatsQuoteAsset }}
             </td>
           </tr>
 
@@ -102,7 +102,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      statsQuoteAsset: vuexTypes.statsQuoteAsset,
+      businessStatsQuoteAsset: vuexTypes.businessStatsQuoteAsset,
     }),
 
     stellarAssetTypeTranslated () {

@@ -3,7 +3,7 @@
     <template v-if="isConvertedBalances">
       <span>
         {{ balance | formatMoney }}
-        {{ defaultQuoteAsset }}
+        {{ businessStatsQuoteAsset }}
       </span>
     </template>
     <template v-else>
@@ -39,7 +39,7 @@ export default {
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
-      defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
+      businessStatsQuoteAsset: vuexTypes.businessStatsQuoteAsset,
     }),
   },
 
@@ -70,7 +70,7 @@ export default {
 
     async getCustomerBalances () {
       try {
-        const endpoint = `/v3/accounts/${this.customerAccountId}/converted_balances/${this.defaultQuoteAsset}`
+        const endpoint = `/v3/accounts/${this.customerAccountId}/converted_balances/${this.businessStatsQuoteAsset}`
         const { data } = await api.getWithSignature(endpoint, {
           filter: {
             asset_owner: this.accountId,

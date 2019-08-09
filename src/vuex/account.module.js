@@ -49,9 +49,10 @@ export const actions = {
     { commit, rootGetters, getters }
   ) {
     const accountId = getters[vuexTypes.accountId]
-    const defaultQuoteAsset = rootGetters[vuexTypes.defaultQuoteAsset]
+    // eslint-disable-next-line max-len
+    const businessStatsQuoteAsset = rootGetters[vuexTypes.businessStatsQuoteAsset]
 
-    const endpoint = `/v3/accounts/${accountId}/converted_balances/${defaultQuoteAsset}`
+    const endpoint = `/v3/accounts/${accountId}/converted_balances/${businessStatsQuoteAsset}`
     const { data } = await api.getWithSignature(endpoint, {
       include: ['states', 'balance', 'balance.state', 'balance.asset'],
     })

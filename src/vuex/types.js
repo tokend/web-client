@@ -44,7 +44,7 @@ const mutations = {
   // assets
   SET_ASSETS: 'SET_ASSETS',
   UPDATE_ASSETS: 'UPDATE_ASSETS',
-  SET_STATS_QUOTE_ASSET: 'SET_STATS_QUOTE_ASSET',
+  SET_BUSINESS_STATS_QUOTE_ASSET: 'SET_BUSINESS_STATS_QUOTE_ASSET',
 
   // idle
   UPDATE_LOGOUT_AT: 'UPDATE_LOGOUT_AT',
@@ -96,7 +96,7 @@ const actions = {
 
   // assets
   LOAD_ASSETS: 'LOAD_ASSETS',
-  LOAD_STATS_QUOTE_ASSET: 'LOAD_STATS_QUOTE_ASSET',
+  LOAD_BUSINESS_STATS_QUOTE_ASSET: 'LOAD_BUSINESS_STATS_QUOTE_ASSET',
 
   // idle
   START_IDLE: 'START_IDLE',
@@ -209,7 +209,7 @@ const getters = {
   ownedBalancesAssets: 'ownedBalancesAssets',
   baseAtomicSwapBalancesAssets: 'baseAtomicSwapBalancesAssets',
   quoteAtomicSwapAssets: 'quoteAtomicSwapAssets',
-  defaultStatsQuoteAsset: 'defaultStatsQuoteAsset',
+  businessStatsQuoteAsset: 'businessStatsQuoteAsset',
 
   // conto hacks
   isCustomerUiShown: 'isCustomerUiShown',

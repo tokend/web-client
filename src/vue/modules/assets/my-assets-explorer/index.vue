@@ -107,12 +107,7 @@ export default {
     AssetActions,
   },
   mixins: [UpdateList],
-  props: {
-    defaultQuoteAsset: {
-      type: String,
-      required: true,
-    },
-  },
+
   data: _ => ({
     isLoaded: false,
     isLoadFailed: false,
@@ -130,6 +125,7 @@ export default {
       ownedAssets: vuexTypes.ownedBalancesAssets,
       accountBalances: vuexTypes.accountBalances,
       accountOwnedAssetsBalances: vuexTypes.accountOwnedAssetsBalances,
+      businessStatsQuoteAsset: vuexTypes.businessStatsQuoteAsset,
     }),
 
     ...mapGetters([
@@ -155,7 +151,7 @@ export default {
 
     async load () {
       try {
-        await this.loadAccountBalances(this.defaultQuoteAsset)
+        await this.loadAccountBalances(this.businessStatsQuoteAsset)
         this.isLoaded = true
       } catch (e) {
         this.isLoadFailed = true

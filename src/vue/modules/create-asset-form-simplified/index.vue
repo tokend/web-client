@@ -61,7 +61,7 @@ export default {
   computed: {
     ...mapGetters([
       vuexTypes.accountId,
-      vuexTypes.statsQuoteAsset,
+      vuexTypes.businessStatsQuoteAsset,
     ]),
   },
 

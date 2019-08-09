@@ -48,7 +48,7 @@
           @blur="touchField('form.price')"
           name="create-asset-form-price"
           :label="'create-asset-form.price-lbl' | globalize({
-            quoteAsset: statsQuoteAsset
+            quoteAsset: businessStatsQuoteAsset
           })"
           :error-message="getFieldErrorMessage('form.price', {
             from: {
@@ -100,7 +100,7 @@
             @blur="touchField('form.amountToSell')"
             name="create-asset-form-amount-to-sell"
             :label="'create-asset-form.amount-to-sell-lbl' | globalize({
-              quoteAsset: statsQuoteAsset.code
+              quoteAsset: businessStatsQuoteAsset
             })"
             :error-message="getFieldErrorMessage('form.amountToSell', {
               from: {
@@ -232,7 +232,7 @@ export default {
 
   computed: {
     ...mapGetters([
-      vuexTypes.statsQuoteAsset,
+      vuexTypes.businessStatsQuoteAsset,
       vuexTypes.accountId,
     ]),
     inputStep () {

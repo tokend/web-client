@@ -328,8 +328,8 @@ export default {
       this.populateForm()
     } else {
       this.form.baseAsset = this.ownedAssets[0] || {}
-      this.form.capAsset = this.baseAssets.find(el => {
-        return el.code === this.statsQuoteAsset
+      this.form.capAsset = this.baseAssets.find(item => {
+        return item.code === this.statsQuoteAsset.code
       }) || {}
     }
   },
