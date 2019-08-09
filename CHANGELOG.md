@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
-## [Unreleased]
+## [1.10.0-rc.7] - 2019-08-09
 #### Fixed
 - Displaying fee loader in `withdrawalForm`
 
@@ -968,7 +968,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.10.0-rc.6...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.10.0-rc.7...HEAD
+[1.10.0-rc.7]: https://github.com/tokend/web-client/compare/1.10.0-rc.6...1.10.0-rc.7
 [1.10.0-rc.6]: https://github.com/tokend/web-client/compare/1.10.0-rc.5...1.10.0-rc.6
 [1.10.0-rc.5]: https://github.com/tokend/web-client/compare/1.10.0-rc.4...1.10.0-rc.5
 [1.10.0-rc.4]: https://github.com/tokend/web-client/compare/1.10.0-rc.3...1.10.0-rc.4
