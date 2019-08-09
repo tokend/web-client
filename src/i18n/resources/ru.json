@@ -1095,7 +1095,7 @@
       "discover-assets-btn": "Найти активы",
       "form-heading": "Отправить",
       "asset-lbl": "Актив",
-      "balance": "Доступно {{amount}} {{asset}}",
+      "balance": "Доступно {{amount, money}} {{asset}}",
       "amount-lbl": "Количество",
       "insufficient-sales": "Недостаточно средств",
       "recipient-lbl": "Имейл или телефон получателя",
@@ -2375,6 +2375,7 @@
       "issue-btn": "Выпустить",
       "mass-invitation-drawer-heading": "Пригласите клиентов",
       "mass-issuance-drawer-heading": "Выпустить активы",
+      "mass-payment-drawer-heading": "Отправить активы",
       "customers-list-page": "Список клиентов"
     },
     "mass-issuance-form": {
@@ -2389,6 +2390,20 @@
       "issued-successfully-notification": "Активы выпущены.",
       "no-receivers-found": "Никто из перечисленных не может получить выпущенные активы. Пожалуйста, перепроверьте список получателей и попробуйте еще раз.",
       "overissue-error-notif": "Сумма выпуска превышает количество доступное к выпуску. Пожалуйста, уменьшите объем выпуска и попробуйте снова.",
+      "too-much-op-error-notif": "Слишком много получателей, текущий лимит — 100 получателей."
+    },
+    "mass-payment-form": {
+      "asset-lbl": "Актив",
+      "available-for-payment-hint": "Доступно для отправки: {{amount, money}}",
+      "amount-lbl": "Количество",
+      "how-to-receivers-paragraph": "Перечислите имейлы получателей в поле ниже. Каждый из перечисленных получит значение равное указанному в поле “Количество”. Если доступного к выпуску количества актива недостаточно, операция не будет выполнена и никто из перечисленных не получит активы. Клиенты, которые не были найдены, не получат выпуск активов, но все остальные — получат. Количество получателей не может превышать 100 на данный момент.",
+      "receivers-lbl": "Получатели",
+      "submit-btn": "Отправить",
+      "no-assets-msg-title": "Нет активов",
+      "no-assets-msg-description": "К сожалению, у вас нет активов, которые можно было бы отправить. Пожалуйста, создайте актив и попробуйте снова.",
+      "payment-successfully-notification": "Активы отправлены.",
+      "no-receivers-found": "Никто из перечисленных не может получить отправленные активы. Пожалуйста, перепроверьте список получателей и попробуйте еще раз.",
+      "overpayment-error-notif": "Сумма отправки превышает количество доступное к отправке. Пожалуйста, уменьшите объем отправки и попробуйте снова.",
       "too-much-op-error-notif": "Слишком много получателей, текущий лимит — 100 получателей."
     },
     "mass-invitation-form": {
@@ -2419,6 +2434,8 @@
       "blocked-status-td": "Заблокирован",
       "enable-mass-issuance-btn": "Выбрать для эмиссии",
       "do-mass-issue-btn": "Выполнить эмиссию",
+      "enable-mass-payment-btn": "Выбрать для отправки",
+      "do-mass-payment-btn": "Выполнить отправку",
       "cancel-mass-issue-btn": "Отменить"
     },
     "customers-list": {
@@ -2475,8 +2492,8 @@
       "quote-assets-subheading": "Котируемый актив №{{ number }}"
     },
     "atomic-swap-card": {
-      "available": "Доступно: {{ amount }}",
-      "locked": "Заблокировано: {{ amount }}"
+      "available": "Доступно: {{ amount, money }}",
+      "locked": "Заблокировано: {{ amount, money }}"
     },
     "atomic-swaps-explore": {
       "atomic-swap-drawer-title": "Детали прямого обмена",
@@ -2490,6 +2507,12 @@
       "no-msg": "Нет",
       "cancellation-msg": "Уверены, что хотите отменить предложение?",
       "atomic-swap-canceled-msg": "Предложение отменено"
+    },
+    "abbreviation-numbers": {
+      "thousand": "тыс",
+      "million": "млн",
+      "billion": "млрд",
+      "trillion": "трлн"
     }
   }
 }

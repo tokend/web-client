@@ -16,6 +16,7 @@ import _get from 'lodash/get'
 import _merge from 'lodash/merge'
 
 import { MathUtil } from '@/js/utils'
+// import { abbreviationNumber } from '@/js/helpers/abbreviationNumber'
 
 class I18n {
   constructor () {
@@ -188,7 +189,6 @@ class I18n {
               const value = (_isObject(param) ? param.value : param) || '0'
               const defaultFormat =
                 _get(lngConfig, 'number.formats.amounts.default')
-
               const result = MathUtil.format(value, defaultFormat)
               return result
             case 'number':

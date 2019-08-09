@@ -17,7 +17,7 @@
               {{ 'atomic-swap-attributes.available-amount-key' | globalize }}
             </td>
             <td>
-              {{ atomicSwap.availableAmount }}
+              {{ atomicSwap.availableAmount | formatMoney }}
             </td>
           </tr>
 
@@ -26,7 +26,7 @@
               {{ 'atomic-swap-attributes.locked-amount-key' | globalize }}
             </td>
             <td>
-              {{ atomicSwap.lockedAmount }}
+              {{ atomicSwap.lockedAmount | formatMoney }}
             </td>
           </tr>
 

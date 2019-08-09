@@ -120,7 +120,7 @@ describe('Information step form', () => {
             },
           })
 
-          expect(wrapper.vm.priceForAsset.value).to.equal('5.000000')
+          expect(wrapper.vm.priceForAsset.value).to.equal('5.00')
         })
       })
     })

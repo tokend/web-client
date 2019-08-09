@@ -1,4 +1,6 @@
 import _get from 'lodash/get'
+import { store } from '@/vuex/index'
+import { vuexTypes } from '@/vuex/types'
 
 const STATUSES = Object.freeze({
   notRegistered: 'not_registered',
@@ -28,6 +30,11 @@ export class CustomerRecord {
 
   get isActive () {
     return this.status === STATUSES.active
+  }
+
+  get isCustomer () {
+    const currentAccountId = store.getters[vuexTypes.accountId]
+    return this.accountId === currentAccountId
   }
 
   get isBlocked () {

@@ -49,8 +49,8 @@ describe('FeesCollection', () => {
         })
 
         expect(feesCollection.totalFee).to.deep.equal({
-          fixed: '20.000000',
-          calculatedPercent: '16.000000',
+          fixed: '20.00',
+          calculatedPercent: '16.00',
         })
       })
     })

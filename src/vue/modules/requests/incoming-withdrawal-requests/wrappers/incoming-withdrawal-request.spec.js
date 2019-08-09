@@ -38,7 +38,7 @@ describe('Incoming withdrawal request', () => {
           },
         })
 
-        expect(request.totalFee).to.equal('3.000000')
+        expect(request.totalFee).to.equal('3.00')
       })
     })
   })

@@ -13,7 +13,7 @@ const ROUNDING_MODES = Object.freeze({
 })
 
 const ONE = 1000000
-const DECIMAL_PLACES = 6
+const DECIMAL_PLACES = 2
 const MAX_ALLOWED_PERCENT = 100
 
 export class MathUtil {

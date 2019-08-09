@@ -7,7 +7,7 @@
             class="app__button-raised"
             @click="toggleIssuanceMode"
           >
-            {{ 'customers-table.enable-mass-issuance-btn' | globalize }}
+            {{ 'customers-table.enable-mass-payment-btn' | globalize }}
           </button>
         </template>
 
@@ -18,7 +18,7 @@
               @click="doMassIssuance"
               :disabled="!issuanceReceivers.length"
             >
-              {{ 'customers-table.do-mass-issue-btn' | globalize }}
+              {{ 'customers-table.do-mass-payment-btn' | globalize }}
             </button>
 
             <button
@@ -44,7 +44,9 @@
               <tick-field
                 class="customers-table__cb"
                 v-model="issuanceReceivers"
-                :cb-value="customersList.filter(i => i.isActive)"
+                :cb-value="customersList
+                  .filter(i => i.isActive && !i.isCustomer)
+                "
               />
             </th>
             <th :title="'customers-table.email-th' | globalize">
@@ -75,7 +77,7 @@
                 class="customers-table__cb"
                 v-model="issuanceReceivers"
                 :cb-value="customer"
-                :disabled="!customer.isActive"
+                :disabled="!customer.isActive || customer.isCustomer"
               />
             </td>
 

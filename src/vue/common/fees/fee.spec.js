@@ -33,7 +33,7 @@ describe('Fee', () => {
         })
         fee.setAdditional('3.000000')
 
-        expect(fee.calculated).to.equal('15.000000')
+        expect(fee.calculated).to.equal('15.00')
       })
     })
 
@@ -45,7 +45,7 @@ describe('Fee', () => {
         })
         fee.setAdditional('3.000000')
 
-        expect(fee.total).to.equal('18.000000')
+        expect(fee.total).to.equal('18.00')
       })
     })
 
