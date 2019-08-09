@@ -44,7 +44,9 @@
               <tick-field
                 class="customers-table__cb"
                 v-model="issuanceReceivers"
-                :cb-value="customersList.filter(i => i.isActive)"
+                :cb-value="customersList
+                  .filter(i => i.isActive && !i.isCustomer)
+                "
               />
             </th>
             <th :title="'customers-table.email-th' | globalize">
@@ -75,7 +77,7 @@
                 class="customers-table__cb"
                 v-model="issuanceReceivers"
                 :cb-value="customer"
-                :disabled="!customer.isActive"
+                :disabled="!customer.isActive || customer.isCustomer"
               />
             </td>
 

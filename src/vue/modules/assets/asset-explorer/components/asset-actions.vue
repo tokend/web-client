@@ -28,15 +28,6 @@
       {{ 'assets.send-btn' | globalize }}
     </button>
 
-    <button
-      v-if="asset.owner === accountId"
-      v-ripple
-      class="app__button-raised asset-actions__btn"
-      @click="isMassIssueDrawerShown = true"
-    >
-      {{ 'assets.issue-btn' | globalize }}
-    </button>
-
     <drawer :is-shown.sync="isTransferDrawerShown">
       <template slot="heading">
         {{ 'transfer-form.form-heading' | globalize }}
@@ -46,16 +37,6 @@
           (isTransferDrawerShown = false) || updateAssetList()
         "
         :asset-to-transfer="asset.code"
-      />
-    </drawer>
-
-    <drawer :is-shown.sync="isMassIssueDrawerShown">
-      <template slot="heading">
-        {{ 'customers-page.mass-issuance-drawer-heading' | globalize }}
-      </template>
-
-      <mass-issuance-form
-        @submitted="(isMassIssueDrawerShown = false) || updateAssetList()"
       />
     </drawer>
   </div>
@@ -72,7 +53,6 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 
 import TransferForm from '@/vue/forms/TransferForm'
-import MassIssuanceForm from '@/vue/forms/MassIssuanceForm'
 import Drawer from '@/vue/common/Drawer'
 import UpdateList from '@/vue/mixins/update-list.mixin'
 
@@ -86,7 +66,6 @@ export default {
 
   components: {
     TransferForm,
-    MassIssuanceForm,
     Drawer,
   },
   mixins: [UpdateList],

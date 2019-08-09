@@ -44,7 +44,7 @@
                 {{
                   'mass-payment-form.available-for-payment-hint' | globalize({
                     amount: {
-                      value: accountBalanceByCode(form.assetCode).balance,
+                      value: accountBalance.balance,
                       currency: form.assetCode
                     }
                   })
@@ -156,16 +156,20 @@ export default {
       assetByCode: vuexTypes.assetByCode,
       accountBalanceByCode: vuexTypes.accountBalanceByCode,
     }),
+
+    accountBalance () {
+      return this.accountBalanceByCode(this.form.assetCode)
+    },
   },
 
   async created () {
-    await this.loadAssets()
+    await this.loadCurrentBalances()
     this.isLoading = true
   },
 
   methods: {
     ...mapActions({
-      loadAssets: vuexTypes.LOAD_ASSETS,
+      loadCurrentBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
 
     async submit () {
@@ -177,33 +181,36 @@ export default {
 
         if (!operations.length) {
           Bus.error('mass-payment-form.no-receivers-found')
+          this.enableForm()
           return
         }
 
         // Core cannot handle more than 100 operations per transaction
         if (operations.length >= 100) {
           Bus.error('mass-payment-form.too-much-op-error-notif')
+          this.enableForm()
           return
         }
 
         const isOverpayment = MathUtil.compare(
           MathUtil.multiply(operations.length, this.form.amount),
-          this.accountBalanceByCode(this.form.assetCode).balance,
+          this.accountBalance.balance,
         ) > 0
         if (isOverpayment) {
           Bus.error('mass-payment-form.overpayment-error-notif')
+          this.enableForm()
           return
         }
 
         await api.postOperations(...operations)
 
-        await this.loadAssets()
+        await this.loadCurrentBalances()
         this.clearFieldsWithOverriding({
           receivers: this.form.receivers,
           assetCode: this.form.assetCode,
         })
         this.$emit(EVENTS.submitted)
-        Bus.success('mass-payment-form.issued-successfully-notification')
+        Bus.success('mass-payment-form.payment-successfully-notification')
       } catch (error) {
         ErrorHandler.process(error)
       }
@@ -218,29 +225,30 @@ export default {
         delimiters: CsvUtil.delimiters.common,
       })
 
-      const balanceIds =
-        await this.getBalanceIdByEmailMass(emails, this.form.assetCode)
+      const accountIds =
+        await this.getAccountIdByEmailMass(emails, this.form.assetCode)
 
-      const operations = balanceIds.map((balId, id) => base
-        .CreateIssuanceRequestBuilder.createIssuanceRequest({
-          receiver: balId,
-          asset: this.form.assetCode,
+      const operations = accountIds.map((accId, id) => base
+        .PaymentBuilder.payment({
+          sourceBalanceId: this.accountBalance.id,
+          destination: accId,
           amount: String(this.form.amount),
-          reference: new Date().toISOString() + id,
-          creatorDetails: {},
+          feeData: {
+            sourceFee: {
+              percent: '0',
+              fixed: '0',
+            },
+            destinationFee: {
+              percent: '0',
+              fixed: '0',
+            },
+            sourcePaysForDest: false,
+          },
+          subject: '',
+          asset: this.form.assetCode,
         }))
 
       return operations
-    },
-
-    buildCreateIssuanceRequestOp (balanceId) {
-      return base.CreateIssuanceRequestBuilder.createIssuanceRequest({
-        receiver: balanceId,
-        asset: this.form.assetCode,
-        amount: String(this.form.amount),
-        reference: new Date().toISOString(),
-        creatorDetails: {},
-      })
     },
   },
 }

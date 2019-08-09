@@ -4,8 +4,9 @@ import { globalize } from '@/vue/filters/globalize'
 const DECIMAL_PLACES = 2
 
 export function abbreviationNumber (value, format) {
-  if (value >= -1000 && value <= 1000) {
-    return MathUtil.format(value, format)
+  let number = Math.abs(value)
+  if (number > -1000 && number < 1000) {
+    return MathUtil.format(number, format)
   }
   // 2 decimal places
   const decimalPlaces = Math.pow(10, DECIMAL_PLACES)
@@ -18,16 +19,20 @@ export function abbreviationNumber (value, format) {
 
   for (let i = abbreviation.length - 1; i >= 0; i--) {
     let size = Math.pow(10, (i + 1) * 3)
-    if (size <= value) {
-      const multiplyValue = MathUtil.multiply(value, decimalPlaces)
+    if (size <= number) {
+      const multiplyValue = MathUtil.multiply(number, decimalPlaces)
       const divideValue = MathUtil.divide(multiplyValue, size)
       const roundValue = MathUtil.round(divideValue)
-      value = MathUtil.divide(roundValue, decimalPlaces)
-      value += abbreviation[i]
+      number = MathUtil.divide(roundValue, decimalPlaces)
+      if (value < -1000) {
+        number = -Math.abs(number)
+      }
+      number = MathUtil.format(number, format)
+      number += abbreviation[i]
 
       break
     }
   }
 
-  return value
+  return number
 }

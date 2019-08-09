@@ -10,9 +10,11 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Atomic swap requests history in atomic swap details
+- Mass payment operation
 
 #### Deleted
 - Dropdown account balances
+- Issue form
 
 ## [1.0.0-rc.6] - 2019-08-02
 #### Fixed
