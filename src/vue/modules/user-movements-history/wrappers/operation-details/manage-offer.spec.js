@@ -35,6 +35,6 @@ describe('ManageOfferOp', () => {
     expect(result.isBuy).to.equal(false)
     expect(result.baseAssetCode).to.equal('BASE65489')
     expect(result.quoteAssetCode).to.equal('QUOTE34117')
-    expect(result.quoteAmount).to.equal('386.944475') // base * price
+    expect(result.quoteAmount).to.equal('386.95') // base * price
   })
 })
