@@ -2358,6 +2358,7 @@
       "issue-btn": "Выпустить",
       "mass-invitation-drawer-heading": "Пригласите клиентов",
       "mass-issuance-drawer-heading": "Выпустить активы",
+      "mass-payment-drawer-heading": "Отправить активы",
       "customers-list-page": "Список клиентов"
     },
     "mass-issuance-form": {
@@ -2402,6 +2403,8 @@
       "blocked-status-td": "Заблокирован",
       "enable-mass-issuance-btn": "Выбрать для эмиссии",
       "do-mass-issue-btn": "Выполнить эмиссию",
+      "enable-mass-payment-btn": "Выбрать для отправки",
+      "do-mass-payment-btn": "Выполнить отправку",
       "cancel-mass-issue-btn": "Отменить"
     },
     "customers-list": {

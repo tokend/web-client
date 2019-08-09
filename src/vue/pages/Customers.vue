@@ -15,7 +15,7 @@
           v-if="false"
           v-ripple
           class="app__button-raised"
-          @click="isIssueDrawerShown = true"
+          @click="isPaymentDrawerShown = true"
         >
           {{ 'customers-page.issue-btn' | globalize }}
         </button>
@@ -31,14 +31,14 @@
       <mass-invitation-form @submitted="(isInviteDrawerShown = false) || emitUpdateList()" />
     </drawer>
 
-    <drawer :is-shown.sync="isIssueDrawerShown">
+    <drawer :is-shown.sync="isPaymentDrawerShown">
       <template slot="heading">
-        {{ 'customers-page.mass-issuance-drawer-heading' | globalize }}
+        {{ 'customers-page.mass-payment-drawer-heading' | globalize }}
       </template>
 
-      <mass-issuance-form
-        :receivers="massIssuanceReceivers"
-        @submitted="(isIssueDrawerShown = false) || emitUpdateList()"
+      <mass-payment-form
+        :receivers="massPaymentReceivers"
+        @submitted="(isPaymentDrawerShown = false) || emitUpdateList()"
       />
     </drawer>
 
@@ -51,7 +51,7 @@ import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
 import { vueRoutes } from '@/vue-router/routes'
 
-import MassIssuanceForm from '@/vue/forms/MassIssuanceForm'
+import MassPaymentForm from '@/vue/forms/MassPaymentForm'
 import MassInvitationForm from '@/vue/forms/MassInvitationForm'
 import { Bus } from '@/js/helpers/event-bus'
 
@@ -61,21 +61,21 @@ export default {
   components: {
     TopBar,
     Drawer,
-    MassIssuanceForm,
+    MassPaymentForm,
     MassInvitationForm,
   },
 
   data: _ => ({
     isInviteDrawerShown: false,
-    isIssueDrawerShown: false,
-    massIssuanceReceivers: '',
+    isPaymentDrawerShown: false,
+    massPaymentReceivers: '',
     vueRoutes,
   }),
 
   watch: {
-    isIssueDrawerShown (value) {
+    isPaymentDrawerShown (value) {
       if (value === false) {
-        this.massIssuanceReceivers = ''
+        this.massPaymentReceivers = ''
       }
     },
   },
@@ -92,8 +92,8 @@ export default {
     listen () {
       Bus.on('customers:massIssue', payload => {
         const receivers = ((payload || {}).receivers || [])
-        this.massIssuanceReceivers = receivers.map(i => i.email).join(', ')
-        this.isIssueDrawerShown = true
+        this.massPaymentReceivers = receivers.map(i => i.email).join(', ')
+        this.isPaymentDrawerShown = true
       })
     },
   },

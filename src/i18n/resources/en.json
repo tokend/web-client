@@ -2395,6 +2395,7 @@
       "issue-btn": "Issue",
       "mass-invitation-drawer-heading": "Invite customers",
       "mass-issuance-drawer-heading": "Mass issuance",
+      "mass-payment-drawer-heading": "Mass send",
       "customers-list-page": "Customers list"
     },
     "mass-issuance-form": {
@@ -2409,6 +2410,20 @@
       "issued-successfully-notification": "Mass issuance performed successfully.",
       "no-receivers-found": "Receivers you provided not found or cannot receive the issuance. Please ensure you specified the valid receivers list and try again.",
       "overissue-error-notif": "The total amount is bigger than the available for issuance amount. Please decrease the amount to issue and try again.",
+      "too-much-op-error-notif": "Too many receivers, the current limit is 100 receivers, please decrease the receivers count and try again."
+    },
+    "mass-payment-form": {
+      "asset-lbl": "Asset",
+      "available-for-payment-hint": "Available: {{amount, money}}",
+      "amount-lbl": "Amount",
+      "how-to-receivers-paragraph": "List all receivers emails in the box below. Each receiver will gain the amount you specified in the “Amount” field. If the available amount is insufficient the operation will fail and no asset will be issued to anyone. Not found users and the ones that do not have balance in the selected asset will not receive the issuance but all the others will. Receivers number is limited up to 100 for now.",
+      "receivers-lbl": "Receivers",
+      "submit-btn": "Send",
+      "no-assets-msg-title": "No issuable assets yet",
+      "no-assets-msg-description": "Unfortunately, you do not have any assets now, please create an asset and try again.",
+      "payment-successfully-notification": "Mass send performed successfully.",
+      "no-receivers-found": "Receivers you provided not found or cannot receive the send. Please ensure you specified the valid receivers list and try again.",
+      "overissue-error-notif": "The total amount is bigger than the available for send amount. Please decrease the amount to send and try again.",
       "too-much-op-error-notif": "Too many receivers, the current limit is 100 receivers, please decrease the receivers count and try again."
     },
     "mass-invitation-form": {
@@ -2439,6 +2454,8 @@
       "blocked-status-td": "Blocked",
       "enable-mass-issuance-btn": "Select for issuance",
       "do-mass-issue-btn": "Perform issuance",
+      "enable-mass-payment-btn": "Select for send",
+      "do-mass-payment-btn": "Perform send",
       "cancel-mass-issue-btn": "Cancel"
     },
     "customers-list": {

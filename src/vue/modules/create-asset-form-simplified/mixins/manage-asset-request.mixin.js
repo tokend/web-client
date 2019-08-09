@@ -66,14 +66,11 @@ export default {
 
       await this.LOAD_ACCOUNT_BALANCES_DETAILS()
       await api.postOperations(
-        this.$buildIssuanceCreationOperation(config.MAX_AMOUNT)
+        this.$buildIssuanceCreationOperation()
       )
 
       if (this.collectedAttributes.isSellable) {
         await api.postOperations(
-          this.$buildIssuanceCreationOperation(
-            this.collectedAttributes.amountToSell
-          ),
           this.$buildAtomicSwapCreationOperation(),
         )
       }
@@ -118,13 +115,13 @@ export default {
       return base.Operation.manageAssetPair(opts)
     },
 
-    $buildIssuanceCreationOperation (amount) {
+    $buildIssuanceCreationOperation () {
       const balance = this.accountBalanceByCode(this.collectedAttributes.code)
 
       const operation = base.CreateIssuanceRequestBuilder
         .createIssuanceRequest({
           asset: this.collectedAttributes.code,
-          amount: amount,
+          amount: config.MAX_AMOUNT,
           receiver: balance.id,
           reference: btoa(Math.random()),
           creatorDetails: {},
