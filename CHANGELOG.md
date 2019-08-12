@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
+## [Unreleased]
+#### Changed
+- `General` default tab on Settings page
+- Renamed `Security -> General` and `My account -> Business`
 
 ## [1.0.0-rc.7] - 2019-08-09
 #### Added

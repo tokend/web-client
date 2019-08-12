@@ -285,6 +285,10 @@
     },
     "create-asset-form": {
       "next-btn": "Создать"
+    },
+    "settings-page": {
+      "security-tab": "Общее",
+      "my-account-tab": "Бизнес"
     }
   }
 }
