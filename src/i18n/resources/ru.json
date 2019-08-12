@@ -121,7 +121,8 @@
       "field-error_alphaNum": "Значение должно состоять из букв и цифр латинского алфавита (A-Z, a-z, 0-9)",
       "field-error_minLength": "Количество знаков должно превышать {{minLength}}",
       "field-error_selectedSameAssetCode": "Не могут быть выбраны два одинаковых актива",
-      "field-error_validatePhoneNumber": "Неверный номер телефона"
+      "field-error_validatePhoneNumber": "Неверный номер телефона",
+      "field-error_emailOrPhoneNumber": "Неверный имейл или телефон получателя"
     },
     "errors": {
       "default": "Что-то пошло не так. Пожалуйста, повторите попытку позже или свяжитесь с владельцем системы.",
