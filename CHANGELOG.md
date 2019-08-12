@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+### "Under the hood" changes
+#### Added
+- Method for check converted balances
+
 ## [1.0.0-rc.7] - 2019-08-09
 #### Added
 - Atomic swap requests history in atomic swap details
