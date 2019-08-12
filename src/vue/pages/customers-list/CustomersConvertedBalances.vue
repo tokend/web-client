@@ -52,20 +52,30 @@ export default {
 
   methods: {
     async calculateConvertedBalances () {
-      let notConvertedBalances = 0
       const balanceStates = await this.getCustomerBalances()
-      const convertedBalance = balanceStates
-        .reduce((latestBalance, balance) => {
-          if (!balance.isConverted) {
-            notConvertedBalances++
-          }
-          return MathUtil.add(
-            latestBalance,
-            balance.convertedAmounts.available
-          )
-        }, 0)
-      this.isConvertedBalances = notConvertedBalances !== balanceStates.length
+      this.checkConvertedBalances(balanceStates)
+
+      let convertedBalance = 0
+      if (this.isConvertedBalances) {
+        convertedBalance = balanceStates
+          .reduce((latestBalance, balance) => {
+            return MathUtil.add(
+              latestBalance,
+              balance.convertedAmounts.available
+            )
+          }, 0)
+      }
       this.balance = convertedBalance
+    },
+
+    checkConvertedBalances (balances) {
+      let convertedBalances = 0
+      balances.forEach(balance => {
+        if (balance.isConverted) {
+          convertedBalances++
+        }
+      })
+      this.isConvertedBalances = convertedBalances > 0
     },
 
     async getCustomerBalances () {
