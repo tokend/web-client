@@ -29,9 +29,14 @@
               <!-- eslint-disable-next-line max-len -->
               {{ assetByCode(balance.assetCode).name }}
             </td>
-            <td>
+            <td
+              :title="'format.full-amount'| globalize({
+                value: balance.amount,
+                asset: assetByCode(balance.assetCode).name
+              })"
+            >
               <!-- eslint-disable-next-line max-len -->
-              {{ { value: balance.amount, currency: balance.assetCode } | formatMoney }}
+              {{ { value: balance.amount, currency: balance.assetCode } | formatBalance }}
             </td>
           </tr>
         </tbody>

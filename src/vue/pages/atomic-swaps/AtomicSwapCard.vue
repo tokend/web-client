@@ -5,7 +5,12 @@
     </h3>
 
     <p class="atomic-swap-card__amount">
-      <span>
+      <span
+        :title="'format.full-amount'| globalize({
+          value: atomicSwap.availableAmount,
+          asset: atomicSwap.baseAssetName
+        })"
+      >
         {{ 'atomic-swap-card.available' | globalize({
           amount: atomicSwap.availableAmount
         }) }}
@@ -13,7 +18,12 @@
     </p>
 
     <p class="atomic-swap-card__amount">
-      <span>
+      <span
+        :title="'format.full-amount'| globalize({
+          value: atomicSwap.lockedAmount,
+          asset: atomicSwap.baseAssetName
+        })"
+      >
         {{ 'atomic-swap-card.locked' | globalize({
           amount: atomicSwap.lockedAmount
         }) }}

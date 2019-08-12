@@ -1,8 +1,14 @@
 <template>
   <div class="customers-converted-balances">
     <template v-if="isConvertedBalances">
-      <span>
-        {{ balance | formatMoney }}
+      <!-- eslint-disable-next-line max-len -->
+      <span
+        :title="'format.full-amount' | globalize({
+          value: balance,
+          asset: businessStatsQuoteAsset
+        })"
+      >
+        {{ balance | formatBalance }}
         {{ businessStatsQuoteAsset }}
       </span>
     </template>

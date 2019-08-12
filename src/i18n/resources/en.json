@@ -10,6 +10,14 @@
             "decimalPlaces": 6
           }
         },
+        "balances": {
+          "default": {
+            "decimalSeparator": ".",
+            "groupSeparator": ",",
+            "groupSize": 3,
+            "decimalPlaces": 6
+          }
+        },
         "default": {
           "decimalSeparator": ".",
           "groupSeparator": ",",
@@ -63,6 +71,7 @@
       "dmyt": "{{value, dmyt}}",
       "money": "{{value, money}}",
       "number": "{{value, number}}",
+      "balance": "{{value, balance}}",
       "integer": "{{value, integer}}",
       "calendar": "{{value, calendar}}",
       "calendar-inline": "{{value, calendar-inline}}",
@@ -1253,8 +1262,8 @@
     "assets-list": {
       "update-asset-title": "Update asset",
       "details-title": "Asset details",
-      "list-item-balance-line": "Balance: {{value, money}}",
-      "list-item-converted-balance-line": "Converted: {{value, money}} {{currency}}",
+      "list-item-balance-line": "Balance: {{value, balance}}",
+      "list-item-converted-balance-line": "Converted: {{value, balance}} {{currency}}",
       "no-balance-msg": "No balance"
     },
     "asset-form": {
@@ -2403,8 +2412,8 @@
       "quote-assets-subheading": "Quote asset #{{ number }}"
     },
     "atomic-swap-card": {
-      "available": "Available: {{ amount, money }}",
-      "locked": "Locked: {{ amount, money }}"
+      "available": "Available: {{ amount, balance }}",
+      "locked": "Locked: {{ amount, balance }}"
     },
     "customers-page": {
       "invite-btn": "Invite client",
@@ -2513,6 +2522,9 @@
       "million": "M",
       "billion": "B",
       "trillion": "T"
+    },
+    "format": {
+      "full-amount": "{{ value, money }} {{ asset }}"
     }
   }
 }

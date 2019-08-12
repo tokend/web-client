@@ -24,18 +24,28 @@
 
           <tr v-if="balance">
             <td>{{ 'assets.balance-title' | globalize }}</td>
-            <td>
+            <td
+              :title="'format.full-amount' | globalize({
+                value: balance.balance,
+                asset: asset.name
+              })"
+            >
               <!-- eslint-disable-next-line max-len -->
-              {{ { value: balance.balance, currency: asset.code } | formatMoney }}
+              {{ { value: balance.balance, currency: asset.code } | formatBalance }}
             </td>
           </tr>
 
           <tr v-if="balance.isConverted">
             <td>{{ 'assets.converted-balance-title' | globalize }}</td>
-            <td>
+            <td
+              :title="'format.full-amount' | globalize({
+                value: balance.convertedBalance.available,
+                asset: businessStatsQuoteAsset
+              })"
+            >
               {{
                 // eslint-disable-next-line max-len
-                { value: balance.convertedBalance.available, currency: businessStatsQuoteAsset } | formatMoney
+                { value: balance.convertedBalance.available, currency: businessStatsQuoteAsset } | formatBalance
               }}
               {{ businessStatsQuoteAsset }}
             </td>
@@ -43,8 +53,14 @@
 
           <tr>
             <td>{{ 'assets.issued-title' | globalize }}</td>
-            <td>
-              {{ { value: asset.issued, currency: asset.code } | formatMoney }}
+            <td
+              :title="'format.full-amount' | globalize({
+                value: asset.issued,
+                asset: asset.name
+              })"
+            >
+              <!-- eslint-disable-next-line max-len -->
+              {{ { value: asset.issued, currency: asset.code } | formatBalance }}
             </td>
           </tr>
 
