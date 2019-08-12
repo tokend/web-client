@@ -32,6 +32,7 @@ export default {
   data () {
     return {
       balance: '',
+      balanceStates: [],
       isConvertedBalances: false,
     }
   },
@@ -44,20 +45,20 @@ export default {
   },
 
   async created () {
-    await this.calculateConvertedBalances()
-    Bus.on('customers:updateList', () => {
-      this.calculateConvertedBalances()
+    await this.loadAndCalculateBalances()
+
+    Bus.on('customers:updateList', async () => {
+      await this.loadAndCalculateBalances()
     })
   },
 
   methods: {
     async calculateConvertedBalances () {
-      const balanceStates = await this.getCustomerBalances()
-      this.checkConvertedBalances(balanceStates)
+      this.checkConvertedBalances()
 
       let convertedBalance = 0
       if (this.isConvertedBalances) {
-        convertedBalance = balanceStates
+        convertedBalance = this.balanceStates
           .reduce((latestBalance, balance) => {
             return MathUtil.add(
               latestBalance,
@@ -68,9 +69,9 @@ export default {
       this.balance = convertedBalance
     },
 
-    checkConvertedBalances (balances) {
+    checkConvertedBalances () {
       let convertedBalances = 0
-      balances.forEach(balance => {
+      this.balanceStates.forEach(balance => {
         if (balance.isConverted) {
           convertedBalances++
         }
@@ -88,10 +89,15 @@ export default {
           include: ['states', 'balance', 'balance.state', 'balance.asset'],
         })
 
-        return data.states
+        this.balanceStates = data.states
       } catch (e) {
         console.error(e)
       }
+    },
+
+    async loadAndCalculateBalances () {
+      await this.getCustomerBalances()
+      await this.calculateConvertedBalances()
     },
   },
 }
