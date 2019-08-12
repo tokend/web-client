@@ -19,7 +19,7 @@
             :key="asset.code"
             :value="asset.code"
           >
-            {{ asset.nameAndCode }}
+            {{ asset.name }}
           </option>
         </select-field>
         <template v-if="form.asset.code">
@@ -27,19 +27,7 @@
             {{
               'create-atomic-swap-form.available-balance' | globalize({
                 amount: accountBalance.balance,
-                asset: form.asset.code,
                 available: accountBalance.balance
-              })
-            }}
-          </p>
-        </template>
-        <template v-if="form.asset.code && isAssetOwner">
-          <p class="app__form-field-description">
-            {{
-              'create-atomic-swap-form.available-for-issuance' | globalize({
-                amount: accountBalance.asset.availableForIssuance,
-                asset: form.asset.code,
-                available: accountBalance.asset.availableForIssuance
               })
             }}
           </p>
@@ -104,7 +92,7 @@
                 :key="asset.code"
                 :value="asset.code"
               >
-                {{ asset.nameAndCode }}
+                {{ asset.name }}
               </option>
             </select-field>
             <!-- eslint-enable max-len -->
@@ -265,6 +253,7 @@ export default {
     },
 
     async submit () {
+      if (!this.isFormValid()) return
       this.isFormSubmitting = true
       let operations = []
       this.disableForm()

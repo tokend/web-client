@@ -18,7 +18,7 @@
           :key="asset.code"
           :value="asset.code"
         >
-          {{ asset.code }}
+          {{ asset.name }}
         </option>
       </select-field>
     </template>
@@ -93,4 +93,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.default-quote-asset-select-field__asset-select {
+  min-width: 18rem;
+}
 </style>

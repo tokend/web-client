@@ -2367,8 +2367,7 @@
       "add-quote-asset-btn": "Добавить котируемый актив",
       "quote-assets-subheading": "Котируемый актив {{number}}",
       "created-atomic-swap-msg": "Запрос отправлен",
-      "available-balance": "Баланс: {{amount, number}} {{asset}}.",
-      "available-for-issuance": "Доступно для выдачи: {{amount, number}} {{asset}}"
+      "available-balance": "Баланс: {{amount, number}}"
     },
     "customers-page": {
       "invite-btn": "Пригласить клиента",
