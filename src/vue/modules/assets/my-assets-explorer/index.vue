@@ -175,10 +175,10 @@ export default {
     async closeDrawerAndUpdateList () {
       this.isDrawerShown = false
       this.emitUpdateList('assets:updateList')
-      await this.loadAssets()
     },
 
     async loadAssetsAndSetSelectedBalance () {
+      await this.loadAssets()
       await this.load()
       if (this.isDrawerShown) {
         this.selectedBalance = this.accountOwnedAssetsBalances.find(item => {
