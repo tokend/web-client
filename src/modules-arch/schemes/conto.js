@@ -91,18 +91,18 @@ export default {
         isAutoRedirectToFirstChild: true,
         isUnverifiedOnly: true,
         submodules: [
-          new BusinessesAllPageModule({
-            routerEntry: {
-              path: '/businesses/all',
-              name: vueRoutes.allBusinesses.name,
-              props: true,
-            },
-            isUnverifiedOnly: true,
-          }),
           new BusinessesMyPageModule({
             routerEntry: {
               path: '/businesses/my',
               name: vueRoutes.myBusinesses.name,
+              props: true,
+            },
+            isUnverifiedOnly: true,
+          }),
+          new BusinessesAllPageModule({
+            routerEntry: {
+              path: '/businesses/all',
+              name: vueRoutes.allBusinesses.name,
               props: true,
             },
             isUnverifiedOnly: true,
