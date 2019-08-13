@@ -11,7 +11,8 @@ for further information about branching and tagging conventions.
 - Abbreviation for balances
 
 #### Removed
-- Asset codes from drawers
+- Asset codes from drawer
+- Pre-issuance-apps section on downloads page
 
 #### Fixed
 - Bug with validation on `Recipient email or phone` field
@@ -20,6 +21,7 @@ for further information about branching and tagging conventions.
 - `My businesses` default tab
 - `General` default tab on Settings page
 - Renamed `Security -> General` and `My account -> Business`
+- Transfer images of download page in to separate directory
 
 ### "Under the hood" changes
 #### Fixed

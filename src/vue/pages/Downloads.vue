@@ -31,7 +31,7 @@
             >
               <img
                 class="downloads__phone-img"
-                src="@static/android_cropped.png"
+                src="@static/downloads-page/android_cropped.png"
               >
               <a
                 :href="config.PLAY_MARKET_LINK"
@@ -40,7 +40,7 @@
               >
                 <img
                   class="downloads__store-img"
-                  src="@static/google_play_cropped.png"
+                  src="@static/downloads-page/google_play_cropped.png"
                 >
               </a>
             </div>
@@ -51,92 +51,20 @@
             >
               <img
                 class="downloads__phone-img"
-                src="@static/iphone.png"
+                src="@static/downloads-page/iphone.png"
               >
               <router-link :to="vueRoutes.iosInstallationGuide">
                 <img
                   class="downloads__store-img"
-                  src="@static/app_store_cropped.png"
+                  src="@static/downloads-page/app_store_cropped.png"
                 >
               </router-link>
             </div>
           </div>
           <img
             class="downloads__phones-overlay"
-            src="@static/phones_overlay.png"
+            src="@static/downloads-page/phones_overlay.png"
           >
-        </div>
-
-        <hr>
-      </section>
-
-      <section
-        class="downloads__section"
-        v-if="config.OFFLINE_ISSUANCE_WIN_LINK ||
-          config.OFFLINE_ISSUANCE_MAC_LINK ||
-          config.OFFLINE_ISSUANCE_SOURCE_LINK
-        "
-      >
-        <h3 class="downloads__section-header">
-          {{ 'downloads-page.pre-issuance-apps-header' | globalize }}
-        </h3>
-
-        <p class="downloads__section-text">
-          {{ 'downloads-page.pre-issuance-apps-desc' | globalize }}
-          <router-link :to="vueRoutes.preIssuanceGuide">
-            {{ 'downloads-page.pre-issuance-learn-more-link' | globalize }}
-          </router-link>
-        </p>
-
-        <div class="downloads__operation-systems-wrapper">
-          <img
-            class="downloads__pre-issuance-app-img"
-            src="@static/pre-issuance-app.png"
-          >
-          <div class="downloads__operation-systems">
-            <div
-              class="downloads__windows"
-              v-if="config.OFFLINE_ISSUANCE_WIN_LINK"
-            >
-              <a
-                :href="config.OFFLINE_ISSUANCE_WIN_LINK"
-                target="_blank"
-                rel="noopener"
-              >
-                <img
-                  class="downloads__os-store-img"
-                  src="@static/windows_cropped.png"
-                >
-              </a>
-            </div>
-
-            <div
-              class="downloads__macosx"
-              v-if="config.OFFLINE_ISSUANCE_MAC_LINK"
-            >
-              <a
-                :href="config.OFFLINE_ISSUANCE_MAC_LINK"
-                target="_blank"
-                rel="noopener"
-              >
-                <img
-                  class="downloads__os-store-img"
-                  src="@static/macosx_cropped.png"
-                >
-              </a>
-            </div>
-          </div>
-
-          <template v-if="config.OFFLINE_ISSUANCE_SOURCE_LINK">
-            <a
-              :href="config.OFFLINE_ISSUANCE_SOURCE_LINK"
-              class="downloads__source-code-link"
-              target="_blank"
-              rel="noopener"
-            >
-              {{ 'downloads-page.pre-issuance-app-sources-link' | globalize }}
-            </a>
-          </template>
         </div>
 
         <hr>
