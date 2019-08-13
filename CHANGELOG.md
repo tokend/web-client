@@ -21,6 +21,10 @@ for further information about branching and tagging conventions.
 - `General` default tab on Settings page
 - Renamed `Security -> General` and `My account -> Business`
 
+### "Under the hood" changes
+#### Fixed
+- Method `calculateConvertedBalances`
+
 ## [1.0.0-rc.7] - 2019-08-09
 #### Added
 - Atomic swap requests history in atomic swap details
