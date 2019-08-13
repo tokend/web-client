@@ -1,6 +1,6 @@
 <template>
   <div class="customers-converted-balances">
-    <template v-if="isConvertedBalances">
+    <template v-if="isLoaded && isCanConvertBalances">
       <span>
         {{ balance | formatMoney }}
         {{ businessStatsQuoteAsset }}
@@ -31,9 +31,9 @@ export default {
 
   data () {
     return {
-      balance: '',
+      balance: 0,
       balanceStates: [],
-      isConvertedBalances: false,
+      isLoaded: false,
     }
   },
 
@@ -42,10 +42,21 @@ export default {
       accountId: vuexTypes.accountId,
       businessStatsQuoteAsset: vuexTypes.businessStatsQuoteAsset,
     }),
+
+    isCanConvertBalances () {
+      const convertedBalances = this.balanceStates
+        .reduce((latestBalance, balance) => {
+          return balance.isConverted
+            ? MathUtil.add(latestBalance, 1)
+            : latestBalance
+        }, 0)
+      return convertedBalances > 0
+    },
   },
 
   async created () {
     await this.loadAndCalculateBalances()
+    this.isLoaded = true
 
     Bus.on('customers:updateList', async () => {
       await this.loadAndCalculateBalances()
@@ -54,11 +65,8 @@ export default {
 
   methods: {
     async calculateConvertedBalances () {
-      this.checkConvertedBalances()
-
-      let convertedBalance = 0
-      if (this.isConvertedBalances) {
-        convertedBalance = this.balanceStates
+      if (this.isCanConvertBalances) {
+        this.balance = this.balanceStates
           .reduce((latestBalance, balance) => {
             return MathUtil.add(
               latestBalance,
@@ -66,17 +74,6 @@ export default {
             )
           }, 0)
       }
-      this.balance = convertedBalance
-    },
-
-    checkConvertedBalances () {
-      let convertedBalances = 0
-      this.balanceStates.forEach(balance => {
-        if (balance.isConverted) {
-          convertedBalances++
-        }
-      })
-      this.isConvertedBalances = convertedBalances > 0
     },
 
     async getCustomerBalances () {

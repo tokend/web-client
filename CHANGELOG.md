@@ -9,8 +9,8 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 ### "Under the hood" changes
-#### Added
-- Method for check converted balances
+#### Fixed
+- Method `calculateConvertedBalances`
 
 ## [1.0.0-rc.7] - 2019-08-09
 #### Added
