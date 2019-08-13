@@ -172,7 +172,7 @@ export default {
     }),
 
     async submit () {
-      if (!this.isFormValid) return
+      if (!this.isFormValid()) return
       this.disableForm()
 
       try {

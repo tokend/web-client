@@ -26,12 +26,10 @@
             :key="balance.id"
           >
             <td>
-              <!-- eslint-disable-next-line max-len -->
               {{ assetByCode(balance.assetCode).name }}
             </td>
-            <td>
-              <!-- eslint-disable-next-line max-len -->
-              {{ { value: balance.amount, currency: balance.assetCode } | formatMoney }}
+            <td :title="balance.amount | formatMoney">
+              {{ balance.amount | formatBalance }}
             </td>
           </tr>
         </tbody>

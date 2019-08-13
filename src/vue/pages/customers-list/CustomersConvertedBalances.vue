@@ -1,8 +1,8 @@
 <template>
   <div class="customers-converted-balances">
     <template v-if="isConvertedBalances">
-      <span>
-        {{ balance | formatMoney }}
+      <span :title="balance | formatMoney">
+        {{ balance | formatBalance }}
         {{ businessStatsQuoteAsset }}
       </span>
     </template>
