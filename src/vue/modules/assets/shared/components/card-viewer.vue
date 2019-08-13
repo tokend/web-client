@@ -14,10 +14,7 @@
       <p
         v-if="balance"
         class="card-viewer__balance"
-        :title="'format.full-amount'| globalize({
-          value: assetBalance,
-          asset: asset.name
-        })"
+        :title="assetBalance | formatMoney"
       >
         {{
           'assets-list.list-item-balance-line' |
@@ -32,10 +29,7 @@
       <p
         v-if="balance.isConverted"
         class="card-viewer__converted-balance"
-        :title="'format.full-amount'| globalize({
-          value: convertedBalance,
-          asset: businessStatsQuoteAsset
-        })"
+        :title="convertedBalance | formatMoney"
       >
         {{
           'assets-list.list-item-converted-balance-line' |

@@ -2522,9 +2522,6 @@
       "million": "M",
       "billion": "B",
       "trillion": "T"
-    },
-    "format": {
-      "full-amount": "{{ value, money }} {{ asset }}"
     }
   }
 }

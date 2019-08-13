@@ -16,12 +16,7 @@
             <td>
               {{ 'atomic-swap-attributes.available-amount-key' | globalize }}
             </td>
-            <td
-              :title="'format.full-amount' | globalize({
-                value: atomicSwap.availableAmount,
-                asset: atomicSwap.baseAssetName
-              })"
-            >
+            <td :title="atomicSwap.availableAmount | formatMoney">
               {{ atomicSwap.availableAmount | formatBalance }}
             </td>
           </tr>
@@ -30,12 +25,7 @@
             <td>
               {{ 'atomic-swap-attributes.locked-amount-key' | globalize }}
             </td>
-            <td
-              :title="'format.full-amount' | globalize({
-                value: atomicSwap.lockedAmount,
-                asset: atomicSwap.baseAssetName
-              })"
-            >
+            <td :title="atomicSwap.lockedAmount | formatMoney">
               {{ atomicSwap.lockedAmount | formatBalance }}
             </td>
           </tr>
@@ -90,12 +80,7 @@
               <td>
                 {{ 'atomic-swap-attributes.price-key' | globalize }}
               </td>
-              <td
-                :title="'format.full-amount' | globalize({
-                  value: quoteAsset.price,
-                  asset: quoteAsset.id
-                })"
-              >
+              <td :title="quoteAsset.price | formatMoney">
                 <!-- eslint-disable-next-line max-len -->
                 {{ { value: quoteAsset.price, currency: quoteAsset.id } | formatMoney }}
               </td>

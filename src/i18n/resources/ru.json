@@ -1266,8 +1266,8 @@
     "assets-list": {
       "update-asset-title": "Обновить актив",
       "details-title": "Детали актива",
-      "list-item-balance-line": "Баланс: {{value, format}}",
-      "list-item-converted-balance-line": "Конвертированный: {{value, format}} {{currency}}",
+      "list-item-balance-line": "Баланс: {{value, balance}}",
+      "list-item-converted-balance-line": "Конвертированный: {{value, balance}} {{currency}}",
       "no-balance-msg": "Нет баланса"
     },
     "asset-form": {
@@ -2522,9 +2522,6 @@
       "million": "млн",
       "billion": "млрд",
       "trillion": "трлн"
-    },
-    "format": {
-      "full-amount": "{{ value, money }} {{ asset }}"
     }
   }
 }
