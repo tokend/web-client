@@ -2367,8 +2367,7 @@
       "add-quote-asset-btn": "Add quote asset",
       "quote-assets-subheading": "Quote asset {{ number }}",
       "created-atomic-swap-msg": "Atomic swap request successfully created",
-      "available-balance":"Balance: {{amount, number}} {{asset}}.",
-      "available-for-issuance": "Available for issuance: {{amount, number}} {{asset}}"
+      "available-balance":"Balance: {{amount, number}}"
     },
     "atomic-swaps-explore": {
       "atomic-swap-drawer-title": "Atomic swap details",
