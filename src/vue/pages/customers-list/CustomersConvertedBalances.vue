@@ -45,10 +45,10 @@ export default {
 
     isCanConvertBalances () {
       const convertedBalances = this.balanceStates
-        .reduce((latestBalance, balance) => {
+        .reduce((numberOfConvertedBalances, balance) => {
           return balance.isConverted
-            ? MathUtil.add(latestBalance, 1)
-            : latestBalance
+            ? ++numberOfConvertedBalances
+            : numberOfConvertedBalances
         }, 0)
       return convertedBalances > 0
     },
