@@ -101,6 +101,12 @@ export function buildRouter (store) {
             component: resolve => require(['@/vue/pages/KycRecovery'], resolve),
             beforeEnter: buildAuthPageGuard(store),
           },
+          {
+            path: '/sign-up-kyc',
+            name: vueRoutes.signupKyc.name,
+            component: resolve => require(['@/vue/pages/SignupCustomerKyc'], resolve),
+            beforeEnter: buildAuthPageGuard(store),
+          },
         ],
       },
       {

@@ -2,27 +2,15 @@
   <div class="auth-page">
     <template>
       <h2 class="auth-page__title">
-        {{ 'auth-pages.signup-title' | globalize }}
+        {{ 'auth-pages.signup-customer-kyc-title' | globalize }}
       </h2>
 
       <div class="auth-page__content">
-        <signup-form
+        <customer-kyc-form
           :is-disabled="formMixin.isDisabled"
           :submit-event="'submit'"
           @submit="handleChildFormSubmit"
         />
-
-        <div class="auth-page__tips">
-          <div class="auth-page__tip">
-            {{ 'auth-pages.have-an-account-question' | globalize }}
-            <router-link
-              class="auth-page__tip-link"
-              :to="vueRoutes.login"
-            >
-              {{ 'auth-pages.have-an-account-answer' | globalize }}
-            </router-link>
-          </div>
-        </div>
       </div>
     </template>
   </div>
@@ -30,7 +18,7 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-import SignupForm from '@/vue/forms/SignupForm'
+import CustomerKycForm from '@/vue/forms/CustomerKycForm'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base } from '@tokend/js-sdk'
@@ -40,9 +28,9 @@ import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 export default {
-  name: 'signup',
+  name: 'signup-customer-kyc',
   components: {
-    SignupForm,
+    CustomerKycForm,
   },
   mixins: [FormMixin],
   data: _ => ({
@@ -84,7 +72,8 @@ export default {
         if (response.data.verified) {
           await this.storeWallet(wallet)
           await this.loadAccount(this.walletAccountId)
-          this.$router.push(vueRoutes.signupKyc)
+          await this.loadKyc()
+          this.$router.push(vueRoutes.app)
         } else {
           this.$router.push({
             ...vueRoutes.verify,
@@ -96,6 +85,7 @@ export default {
             },
           })
         }
+        this.loadKvEntries()
       } catch (e) {
         ErrorHandler.process(e)
       }
@@ -108,23 +98,4 @@ export default {
 <style lang="scss">
 @import './auth-page';
 
-.signup__seed-title.auth-page__title {
-  margin-top: -4rem;
-}
-
-// Disabled because vue-markdown
-/* stylelint-disable selector-nested-pattern */
-.signup__seed-disclaimer {
-  margin-bottom: 3rem;
-
-  p {
-    margin-bottom: 1.6rem;
-    font-size: 1.6rem;
-  }
-}
-/* stylelint-enable selector-nested-pattern */
-
-.signup__key-viewer /deep/ .clipboard-field {
-  background: $col-clipboard-background-darken;
-}
 </style>
