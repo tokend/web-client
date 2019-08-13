@@ -9,6 +9,8 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Fixed
 - Bug with validation on `Recipient email or phone` field
+#### Deleted
+- Asset codes from drawers
 
 ## [1.0.0-rc.7] - 2019-08-09
 #### Added
