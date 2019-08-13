@@ -44,6 +44,9 @@ export class ModuleDescriptor {
    * @param {Boolean} [opts.isUnverifiedOnly]
    * If `true` the component will be accessible only by unverified accounts
    *
+   * @param {Boolean} [opts.isGeneralOnly]
+   * If `true` the component will be accessible only by general accounts
+   *
    * @param {Boolean} [opts.isWithBusinessToBrowseOnly]
    * If `true` the component will be accessible only by unverified accounts
    */
@@ -61,6 +64,7 @@ export class ModuleDescriptor {
       importStoreFn = null,
       isCorporateOnly = false,
       isUnverifiedOnly = false,
+      isGeneralOnly = false,
       isWithBusinessToBrowseOnly = false,
     } = opts
 
@@ -79,6 +83,7 @@ export class ModuleDescriptor {
     this._allowedSubmodules = allowedSubmodules
     this._isCorporateOnly = isCorporateOnly
     this._isUnverifiedOnly = isUnverifiedOnly
+    this._isGeneralOnly = isGeneralOnly
     this._isWithBusinessToBrowseOnly = isWithBusinessToBrowseOnly
 
     this.validateSubmodules(submodules)
@@ -94,6 +99,7 @@ export class ModuleDescriptor {
   get isAccessible () {
     const isCorporate = store.getters[vuexTypes.isAccountCorporate]
     const isUnverified = store.getters[vuexTypes.isAccountUnverified]
+    const isGeneral = store.getters[vuexTypes.isAccountGeneral]
     const isCustomerUiShown = store.getters[vuexTypes.isCustomerUiShown]
     const isBusinessToBrowse = store.getters[vuexTypes.isBusinessToBrowse]
 
@@ -101,7 +107,7 @@ export class ModuleDescriptor {
       return isBusinessToBrowse
     }
 
-    if (this._isWithBusinessToBrowseOnly && isUnverified) {
+    if (this._isWithBusinessToBrowseOnly && isGeneral) {
       return isBusinessToBrowse
     }
 
@@ -115,6 +121,12 @@ export class ModuleDescriptor {
       return isCorporate
         ? isCustomerUiShown
         : isUnverified
+    }
+
+    if (this._isGeneralOnly) {
+      return isCorporate
+        ? isCustomerUiShown
+        : isGeneral
     }
 
     return true

@@ -10,9 +10,8 @@
         <div class="account-type-selector">
           <router-link
             v-if="
-              getModule().canRenderSubmodule(VerificationGeneralPageModule) ||
-                getModule()
-                  .canRenderSubmodule(VerificationGeneralAdvancedPageModule)
+              getModule().canRenderSubmodule(VerificationGeneralPageModule) &&
+                isKycTypeGeneral
             "
             tag="button"
             :to="vueRoutes.verificationGeneral"
@@ -41,9 +40,6 @@
             tag="button"
             :to="vueRoutes.verificationCorporate"
             class="account-type-selector__item"
-            :disabled="kycState && kycAccountRole &&
-              kycAccountRole !== kvEntryCorporateRoleId &&
-              kycState !== REQUEST_STATES_STR.permanentlyRejected"
           >
             <p class="account-type-selector__item-title">
               {{ 'verification-page.account-type-corporate-title' | globalize }}
@@ -105,10 +101,6 @@ function verificationGuard (to, from, next) {
   const kycState = store.getters[vuexTypes.kycState]
   const kycAccountRole = store.getters[vuexTypes.kycAccountRoleToSet]
   const kvEntryCorporateRoleId = store.getters[vuexTypes.kvEntryCorporateRoleId]
-  const kvEntryUsVerifiedRoleId =
-    store.getters[vuexTypes.kvEntryUsVerifiedRoleId]
-  const kvEntryUsAccreditedRoleId =
-    store.getters[vuexTypes.kvEntryUsAccreditedRoleId]
   const kvEntryGeneralRoleId = store.getters[vuexTypes.kvEntryGeneralRoleId]
 
   if (!kycState || kycState === REQUEST_STATES_STR.permanentlyRejected) {
@@ -121,8 +113,6 @@ function verificationGuard (to, from, next) {
           : next(vueRoutes.verificationCorporate)
         break
       case kvEntryGeneralRoleId:
-      case kvEntryUsVerifiedRoleId:
-      case kvEntryUsAccreditedRoleId:
         to.name === vueRoutes.verificationGeneral.name
           ? next()
           : next(vueRoutes.verificationGeneral)
@@ -178,10 +168,6 @@ export default {
   },
 
   async beforeRouteEnter (to, from, next) {
-    verificationGuard(to, from, next)
-  },
-
-  async beforeRouteUpdate (to, from, next) {
     verificationGuard(to, from, next)
   },
 

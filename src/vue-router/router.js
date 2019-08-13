@@ -102,10 +102,9 @@ export function buildRouter (store) {
             beforeEnter: buildAuthPageGuard(store),
           },
           {
-            path: '/sign-up-kyc',
+            path: '/sign-up-general-verification',
             name: vueRoutes.signupKyc.name,
-            component: resolve => require(['@/vue/pages/SignupCustomerKyc'], resolve),
-            beforeEnter: buildAuthPageGuard(store),
+            component: resolve => require(['@/vue/pages/SignupGeneralKyc'], resolve),
           },
         ],
       },
@@ -133,9 +132,15 @@ function buildAuthPageGuard (store) {
     const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
     const isKycRecoveryInProgress = store
       .getters[vuexTypes.isKycRecoveryInProgress]
+    const isAccountUnverified = store.getters[vuexTypes.isAccountUnverified]
 
     if (isLoggedIn && isKycRecoveryInProgress) {
       next({ name: vueRoutes.kycRecoveryManagement.name })
+      return
+    }
+
+    if (isLoggedIn && isAccountUnverified) {
+      next()
       return
     }
 
@@ -154,6 +159,7 @@ function buildInAppRouteGuard ({ store, scheme, userRoutes }) {
     const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
     const isKycRecoveryInProgress = store
       .getters[vuexTypes.isKycRecoveryInProgress]
+    const isAccountUnverified = store.getters[vuexTypes.isAccountUnverified]
     // TODO: remove when all components modularized
     const isAccessible = checkPathAccessible(to.path, scheme)
 
@@ -162,6 +168,11 @@ function buildInAppRouteGuard ({ store, scheme, userRoutes }) {
         name: vueRoutes.login.name,
         query: { redirectPath: to.fullPath },
       })
+      return
+    }
+
+    if (isAccountUnverified) {
+      next({ name: vueRoutes.signupKyc.name })
       return
     }
 
