@@ -4,15 +4,15 @@
       <top-bar>
         <template slot="main">
           <!-- eslint-disable-next-line max-len -->
-          <template v-if="getModule().canRenderSubmodule(BusinessesAllPageModule)">
-            <router-link :to="vueRoutes.allBusinesses">
-              <span>{{ 'businesses.all-tab' | globalize }}</span>
-            </router-link>
-          </template>
-          <!-- eslint-disable-next-line max-len -->
           <template v-if="getModule().canRenderSubmodule(BusinessesMyPageModule)">
             <router-link :to="vueRoutes.myBusinesses">
               <span>{{ 'businesses.my-tab' | globalize }}</span>
+            </router-link>
+          </template>
+          <!-- eslint-disable-next-line max-len -->
+          <template v-if="getModule().canRenderSubmodule(BusinessesAllPageModule)">
+            <router-link :to="vueRoutes.allBusinesses">
+              <span>{{ 'businesses.all-tab' | globalize }}</span>
             </router-link>
           </template>
         </template>

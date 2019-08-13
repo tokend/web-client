@@ -10,6 +10,14 @@
             "decimalPlaces": 6
           }
         },
+        "balances": {
+          "default": {
+            "decimalSeparator": ".",
+            "groupSeparator": ",",
+            "groupSize": 3,
+            "decimalPlaces": 6
+          }
+        },
         "default": {
           "decimalSeparator": ".",
           "groupSeparator": ",",
@@ -63,6 +71,7 @@
       "dmyt": "{{value, dmyt}}",
       "money": "{{value, money}}",
       "number": "{{value, number}}",
+      "balance": "{{value, balance}}",
       "integer": "{{value, integer}}",
       "calendar": "{{value, calendar}}",
       "calendar-inline": "{{value, calendar-inline}}",
@@ -121,7 +130,8 @@
       "field-error_alphaNum": "Value should consists of alphanumeric values (A-Z, a-z, 0-9)",
       "field-error_minLength": "This field must contain minimum {{minLength}} symbols",
       "field-error_selectedSameAssetCode": "Not allowed duplicated quote asset codes",
-      "field-error_validatePhoneNumber": "Make sure the phone number is correct"
+      "field-error_validatePhoneNumber": "Make sure the phone number is correct",
+      "field-error_emailOrPhoneNumber": "This field should be a valid email or phone number"
     },
     "errors": {
       "default": "Something bad happened. Please try again later or contact the system owner.",
@@ -1253,8 +1263,8 @@
     "assets-list": {
       "update-asset-title": "Update asset",
       "details-title": "Asset details",
-      "list-item-balance-line": "Balance: {{value, money}}",
-      "list-item-converted-balance-line": "Converted: {{value, money}} {{currency}}",
+      "list-item-balance-line": "Balance: {{value, balance}}",
+      "list-item-converted-balance-line": "Converted: {{value, balance}} {{currency}}",
       "no-balance-msg": "No balance"
     },
     "asset-form": {
@@ -2367,8 +2377,7 @@
       "add-quote-asset-btn": "Add quote asset",
       "quote-assets-subheading": "Quote asset {{ number }}",
       "created-atomic-swap-msg": "Atomic swap request successfully created",
-      "available-balance":"Balance: {{amount, number}} {{asset}}.",
-      "available-for-issuance": "Available for issuance: {{amount, number}} {{asset}}"
+      "available-balance":"Balance: {{amount, number}}"
     },
     "atomic-swaps-explore": {
       "atomic-swap-drawer-title": "Atomic swap details",
@@ -2403,8 +2412,8 @@
       "quote-assets-subheading": "Quote asset #{{ number }}"
     },
     "atomic-swap-card": {
-      "available": "Available: {{ amount, money }}",
-      "locked": "Locked: {{ amount, money }}"
+      "available": "Available: {{ amount, balance }}",
+      "locked": "Locked: {{ amount, balance }}"
     },
     "customers-page": {
       "invite-btn": "Invite client",

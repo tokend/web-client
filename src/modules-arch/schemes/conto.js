@@ -91,18 +91,18 @@ export default {
         isAutoRedirectToFirstChild: true,
         isUnverifiedOnly: true,
         submodules: [
-          new BusinessesAllPageModule({
-            routerEntry: {
-              path: '/businesses/all',
-              name: vueRoutes.allBusinesses.name,
-              props: true,
-            },
-            isUnverifiedOnly: true,
-          }),
           new BusinessesMyPageModule({
             routerEntry: {
               path: '/businesses/my',
               name: vueRoutes.myBusinesses.name,
+              props: true,
+            },
+            isUnverifiedOnly: true,
+          }),
+          new BusinessesAllPageModule({
+            routerEntry: {
+              path: '/businesses/all',
+              name: vueRoutes.allBusinesses.name,
               props: true,
             },
             isUnverifiedOnly: true,
@@ -338,21 +338,6 @@ export default {
         menuSectionTranslationId: 'sidebar.section-account',
         isAutoRedirectToFirstChild: true,
         submodules: [
-          new VerificationPageModule({
-            routerEntry: {
-              path: '/settings/verification',
-              name: vueRoutes.verification.name,
-            },
-            submodules: [
-              new VerificationCorporatePageModule({
-                routerEntry: {
-                  path: '/settings/verification/corporate',
-                  name: vueRoutes.verificationCorporate.name,
-                },
-              }),
-            ],
-          }),
-
           new SecurityPageModule({
             routerEntry: {
               path: '/settings/security',
@@ -366,6 +351,20 @@ export default {
               new PhoneNumberFormPseudoModule(),
               new DefaultQuoteAssetPseudoModule({
                 isCorporateOnly: true,
+              }),
+            ],
+          }),
+          new VerificationPageModule({
+            routerEntry: {
+              path: '/settings/verification',
+              name: vueRoutes.verification.name,
+            },
+            submodules: [
+              new VerificationCorporatePageModule({
+                routerEntry: {
+                  path: '/settings/verification/corporate',
+                  name: vueRoutes.verificationCorporate.name,
+                },
               }),
             ],
           }),

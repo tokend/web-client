@@ -16,7 +16,7 @@ import _get from 'lodash/get'
 import _merge from 'lodash/merge'
 
 import { MathUtil } from '@/js/utils'
-// import { abbreviationNumber } from '@/js/helpers/abbreviationNumber'
+import { abbreviationNumber } from '@/js/helpers/abbreviationNumber'
 
 class I18n {
   constructor () {
@@ -191,6 +191,13 @@ class I18n {
                 _get(lngConfig, 'number.formats.amounts.default')
               const result = MathUtil.format(value, defaultFormat)
               return result
+            case 'balance':
+              const balance = (_isObject(param) ? param.value : param) || '0'
+              const defaultBalanceFormat =
+                  _get(lngConfig, 'number.formats.balances.default')
+              // eslint-disable-next-line max-len
+              const formatedBalance = abbreviationNumber(balance, defaultBalanceFormat)
+              return formatedBalance
             case 'number':
               return MathUtil
                 .format(param, _get(lngConfig, 'number.formats.default'))
