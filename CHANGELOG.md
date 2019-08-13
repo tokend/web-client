@@ -7,10 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 ## [Unreleased]
+#### Removed
+- Asset codes from drawers
+
 #### Fixed
 - Bug with validation on `Recipient email or phone` field
-#### Deleted
-- Asset codes from drawers
+
+#### Changed
+- `My businesses` default tab
 
 ## [1.0.0-rc.7] - 2019-08-09
 #### Added
@@ -20,7 +24,7 @@ for further information about branching and tagging conventions.
 - Set default quote asset for business in settings
 - Convert asset for each business
 
-#### Deleted
+#### Removed
 - Dropdown account balances
 - Issue form
 
