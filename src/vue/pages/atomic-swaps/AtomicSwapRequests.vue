@@ -1,23 +1,29 @@
 <template>
   <div class="atomic-swap-requests">
     <div class="app__table app__table--last-td-to-right">
-      <h4 class="atomic-swap-requests__header">
-        {{ 'atomic-swaps.purchases' | globalize }}
-      </h4>
-      <!-- eslint-disable-next-line max-len -->
-      <table v-if="isAtomicSwapRequestsLoaded && !isAtomicSwapRequestsLoadFailed">
-        <tbody>
-          <tr v-for="item in atomicSwapRequests" :key="item.id">
-            <td>
-              <email-getter :account-id="item.buyerId" />
-            </td>
-            <td>
-              <!-- eslint-disable-next-line max-len -->
-              {{ item.amount | formatMoney }} ({{ item.convertedAmount | formatMoney }} {{ item.quoteAsset.id }})
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <template
+        v-if="isAtomicSwapRequestsLoaded && !isAtomicSwapRequestsLoadFailed"
+      >
+        <h4
+          v-if="atomicSwapRequests.length"
+          class="atomic-swap-requests__header"
+        >
+          {{ 'atomic-swaps.purchases' | globalize }}
+        </h4>
+        <table>
+          <tbody>
+            <tr v-for="item in atomicSwapRequests" :key="item.id">
+              <td>
+                <email-getter :account-id="item.buyerId" />
+              </td>
+              <td>
+                <!-- eslint-disable-next-line max-len -->
+                {{ item.amount | formatMoney }} ({{ item.convertedAmount | formatMoney }} {{ item.quoteAsset.id }})
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </template>
       <loader
         v-else-if="!isAtomicSwapRequestsLoadFailed"
         message-id="atomic-swaps.loading"

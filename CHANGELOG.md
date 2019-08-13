@@ -10,6 +10,15 @@ for further information about branching and tagging conventions.
 #### Added
 - Abbreviation for balances
 
+#### Removed
+- Asset codes from drawers
+
+#### Fixed
+- Bug with validation on `Recipient email or phone` field
+
+#### Changed
+- `My businesses` default tab
+
 ## [1.0.0-rc.7] - 2019-08-09
 #### Added
 - Atomic swap requests history in atomic swap details
@@ -18,7 +27,7 @@ for further information about branching and tagging conventions.
 - Set default quote asset for business in settings
 - Convert asset for each business
 
-#### Deleted
+#### Removed
 - Dropdown account balances
 - Issue form
 
