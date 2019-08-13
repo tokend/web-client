@@ -1,7 +1,6 @@
 <template>
   <div class="customers-converted-balances">
     <template v-if="isConvertedBalances">
-      <!-- eslint-disable-next-line max-len -->
       <span :title="balance | formatMoney">
         {{ balance | formatBalance }}
         {{ businessStatsQuoteAsset }}

@@ -25,7 +25,6 @@
           <tr v-if="balance">
             <td>{{ 'assets.balance-title' | globalize }}</td>
             <td :title="balance.balance | formatMoney">
-              <!-- eslint-disable-next-line max-len -->
               {{ balance.balance | formatBalance }}
             </td>
           </tr>
@@ -43,7 +42,6 @@
           <tr>
             <td>{{ 'assets.issued-title' | globalize }}</td>
             <td :title="asset.issued | formatMoney">
-              <!-- eslint-disable-next-line max-len -->
               {{ asset.issued | formatBalance }}
             </td>
           </tr>
