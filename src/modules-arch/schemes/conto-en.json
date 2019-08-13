@@ -278,6 +278,10 @@
     },
     "create-asset-form": {
       "next-btn": "Create"
+    },
+    "settings-page": {
+      "security-tab": "General",
+      "my-account-tab": "Business"
     }
   }
 }

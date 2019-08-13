@@ -338,21 +338,6 @@ export default {
         menuSectionTranslationId: 'sidebar.section-account',
         isAutoRedirectToFirstChild: true,
         submodules: [
-          new VerificationPageModule({
-            routerEntry: {
-              path: '/settings/verification',
-              name: vueRoutes.verification.name,
-            },
-            submodules: [
-              new VerificationCorporatePageModule({
-                routerEntry: {
-                  path: '/settings/verification/corporate',
-                  name: vueRoutes.verificationCorporate.name,
-                },
-              }),
-            ],
-          }),
-
           new SecurityPageModule({
             routerEntry: {
               path: '/settings/security',
@@ -366,6 +351,20 @@ export default {
               new PhoneNumberFormPseudoModule(),
               new DefaultQuoteAssetPseudoModule({
                 isCorporateOnly: true,
+              }),
+            ],
+          }),
+          new VerificationPageModule({
+            routerEntry: {
+              path: '/settings/verification',
+              name: vueRoutes.verification.name,
+            },
+            submodules: [
+              new VerificationCorporatePageModule({
+                routerEntry: {
+                  path: '/settings/verification/corporate',
+                  name: vueRoutes.verificationCorporate.name,
+                },
               }),
             ],
           }),

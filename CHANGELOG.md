@@ -15,6 +15,8 @@ for further information about branching and tagging conventions.
 
 #### Changed
 - `My businesses` default tab
+- `General` default tab on Settings page
+- Renamed `Security -> General` and `My account -> Business`
 
 ## [1.0.0-rc.7] - 2019-08-09
 #### Added
