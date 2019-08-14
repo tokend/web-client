@@ -114,19 +114,19 @@
 
         <empty-tbody-placeholder
           v-else-if="isLoaded"
-          :colspan="5"
+          :colspan="4"
           :message="'customers-table.no-data-msg' | globalize"
         />
 
         <empty-tbody-placeholder
           v-else-if="isLoadFailed"
-          :colspan="5"
+          :colspan="4"
           :message="'customers-table.error-msg' | globalize"
         />
 
         <skeleton-loader-table-body
           v-else
-          :cells="5"
+          :cells="4"
           template="smallString"
         />
       </table>
