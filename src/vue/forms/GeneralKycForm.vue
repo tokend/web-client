@@ -11,7 +11,7 @@
           v-model="form.firstName"
           @blur="touchField('form.firstName')"
           name="general-kyc-first-name"
-          :label="'verification-form.first-name-lbl' | globalize"
+          :label="'general-kyc-form.first-name-lbl' | globalize"
           :error-message="getFieldErrorMessage('form.firstName')"
           :disabled="formMixin.isDisabled"
         />
@@ -25,7 +25,7 @@
           v-model="form.lastName"
           @blur="touchField('form.lastName')"
           name="general-kyc-last-name"
-          :label="'verification-form.last-name-lbl' | globalize"
+          :label="'general-kyc-form.last-name-lbl' | globalize"
           :error-message="getFieldErrorMessage('form.lastName')"
           :disabled="formMixin.isDisabled"
         />
@@ -36,7 +36,7 @@
       <form-confirmation
         v-if="formMixin.isConfirmationShown"
         :is-pending="isFormSubmitting"
-        @ok="hideConfirmation() || submit()"
+        @ok="submit"
         @cancel="hideConfirmation"
       />
       <button
@@ -46,7 +46,12 @@
         class="general-kyc-form__submit-btn app__button-raised"
         :disabled="formMixin.isDisabled"
       >
-        {{ 'verification-form.create-btn' | globalize }}
+        {{
+          (isSignUp
+            ? 'general-kyc-form.login-btn'
+            : 'general-kyc-form.update-btn'
+          ) | globalize
+        }}
       </button>
       <button
         v-if="isSignUp"
@@ -56,7 +61,7 @@
         class="general-kyc-form__submit-btn app__button-flat"
         :disabled="formMixin.isDisabled"
       >
-        Logout
+        {{ 'general-kyc-form.logout-btn' | globalize }}
       </button>
     </div>
   </form>
@@ -149,10 +154,12 @@ export default {
         this.$emit(EVENTS.submitted)
       } catch (e) {
         this.isFormSubmitting = false
+        this.hideConfirmation()
         this.enableForm()
         ErrorHandler.process(e)
       }
       this.isFormSubmitting = false
+      this.hideConfirmation()
       this.enableForm()
     },
 

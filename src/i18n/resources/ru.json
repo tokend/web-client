@@ -2514,6 +2514,13 @@
       "million": "млн",
       "billion": "млрд",
       "trillion": "трлн"
+    },
+    "general-kyc-form": {
+      "login-btn": "Войти",
+      "update-btn": "Обновить",
+      "logout-btn": "Выйти",
+      "first-name-lbl": "Имя",
+      "last-name-lbl": "Фамилия"
     }
   }
 }

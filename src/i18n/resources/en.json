@@ -661,7 +661,7 @@
       "industry-lbl": "Industry (Optional)",
       "team-size-lbl": "Team size",
       "website-lbl": "Website (Optional)",
-      "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
+      "request-submitted-msg": "Your request has been submitted successfully",
       "bank-account-lbl": "Bank account (Optional)",
       "invitation-code-lbl": "Invitation code (Optional)"
     },
