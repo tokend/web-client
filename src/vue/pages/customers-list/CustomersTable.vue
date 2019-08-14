@@ -49,11 +49,8 @@
                 "
               />
             </th>
-            <th :title="'customers-table.first-name-th' | globalize">
-              {{ 'customers-table.first-name-th' | globalize }}
-            </th>
-            <th :title="'customers-table.last-name-th' | globalize">
-              {{ 'customers-table.last-name-th' | globalize }}
+            <th :title="'customers-table.customer-th' | globalize">
+              {{ 'customers-table.customer-th' | globalize }}
             </th>
             <th :title="'customers-table.status-th' | globalize">
               {{ 'customers-table.status-th' | globalize }}
@@ -84,12 +81,8 @@
               />
             </td>
 
-            <td :title="customer.firstName">
-              {{ customer.firstName }}
-            </td>
-
-            <td :title="customer.lastName">
-              {{ customer.lastName }}
+            <td :title="getCustomerNameOrEmail(customer)">
+              {{ getCustomerNameOrEmail(customer) }}
             </td>
 
             <td :title="getCustomerStatusTranslated(customer)">
@@ -121,19 +114,19 @@
 
         <empty-tbody-placeholder
           v-else-if="isLoaded"
-          :colspan="4"
+          :colspan="5"
           :message="'customers-table.no-data-msg' | globalize"
         />
 
         <empty-tbody-placeholder
           v-else-if="isLoadFailed"
-          :colspan="4"
+          :colspan="5"
           :message="'customers-table.error-msg' | globalize"
         />
 
         <skeleton-loader-table-body
           v-else
-          :cells="4"
+          :cells="5"
           template="smallString"
         />
       </table>
@@ -229,6 +222,14 @@ export default {
     doMassIssuance () {
       Bus.emit('customers:massIssue', { receivers: this.issuanceReceivers })
       this.toggleIssuanceMode()
+    },
+
+    getCustomerNameOrEmail (customer) {
+      if (customer.firstName && customer.lastName) {
+        return `${customer.firstName} ${customer.lastName}`
+      } else {
+        return customer.email
+      }
     },
   },
 }

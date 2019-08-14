@@ -2426,6 +2426,8 @@
     "customer-attributes": {
       "id-key": "Идентификатор",
       "email-key": "Имейл",
+      "first-name-key": "Имя",
+      "last-name-key": "Фамилия",
       "status-key": "Статус",
       "balance-key": "Баланс {{assetCode}}",
       "not-registered-status-val": "Не зарегистрирован",
@@ -2433,7 +2435,7 @@
       "blocked-status-val": "Заблокирован"
     },
     "customers-table": {
-      "email-th": "Имейл",
+      "customer-th": "Клиент",
       "balances-th": "Баланс",
       "status-th": "Статус",
       "details-btn": "Детальнее",
