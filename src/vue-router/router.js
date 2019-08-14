@@ -105,6 +105,7 @@ export function buildRouter (store) {
             path: '/sign-up-general-verification',
             name: vueRoutes.signupKyc.name,
             component: resolve => require(['@/vue/pages/SignupGeneralKyc'], resolve),
+            beforeEnter: buildSignupKycPageGuard(store),
           },
         ],
       },
@@ -132,15 +133,9 @@ function buildAuthPageGuard (store) {
     const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
     const isKycRecoveryInProgress = store
       .getters[vuexTypes.isKycRecoveryInProgress]
-    const isAccountUnverified = store.getters[vuexTypes.isAccountUnverified]
 
     if (isLoggedIn && isKycRecoveryInProgress) {
       next({ name: vueRoutes.kycRecoveryManagement.name })
-      return
-    }
-
-    if (isLoggedIn && isAccountUnverified) {
-      next()
       return
     }
 
@@ -224,6 +219,18 @@ function buildKycRecoveryPageGuard (store) {
     isLoggedIn && isKycRecoveryInProgress
       ? next()
       : next(vueRoutes.app)
+  }
+}
+
+// doesn't allow to visit signup kyc page if user's is logged out
+function buildSignupKycPageGuard (store) {
+  return function signupKycRouteGuard (to, from, next) {
+    const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
+    const isAccountUnverified = store.getters[vuexTypes.isAccountUnverified]
+
+    isLoggedIn && isAccountUnverified
+      ? next()
+      : next(vueRoutes.login)
   }
 }
 

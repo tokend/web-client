@@ -2,7 +2,7 @@
   <form
     novalidate
     class="app-form general-kyc-form"
-    @submit.prevent="isFormValid() && tryToSubmit()"
+    @submit.prevent="tryToSubmit()"
   >
     <div class="app__form-row">
       <div class="app__form-field">
@@ -35,6 +35,7 @@
     <div class="app__form-actions">
       <form-confirmation
         v-if="formMixin.isConfirmationShown"
+        :is-pending="isFormSubmitting"
         @ok="hideConfirmation() || submit()"
         @cancel="hideConfirmation"
       />
@@ -46,6 +47,16 @@
         :disabled="formMixin.isDisabled"
       >
         {{ 'verification-form.create-btn' | globalize }}
+      </button>
+      <button
+        v-if="isSignUp"
+        type="button"
+        @click="$emit(EVENTS.logout)"
+        v-ripple
+        class="general-kyc-form__submit-btn app__button-flat"
+        :disabled="formMixin.isDisabled"
+      >
+        Logout
       </button>
     </div>
   </form>
@@ -66,6 +77,7 @@ import { vuexTypes } from '@/vuex'
 
 const EVENTS = {
   submitted: 'submitted',
+  logout: 'logout',
 }
 
 export default {
@@ -81,8 +93,8 @@ export default {
       firstName: '',
       lastName: '',
     },
-    isLoaded: false,
-    isLoadingFailed: false,
+    isFormSubmitting: false,
+    EVENTS,
   }),
 
   validations: {
@@ -124,6 +136,7 @@ export default {
     },
     async submit () {
       this.disableForm()
+      this.isFormSubmitting = true
       try {
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycGeneral)
         const operation = this.createKycOperation(
@@ -135,9 +148,11 @@ export default {
 
         this.$emit(EVENTS.submitted)
       } catch (e) {
+        this.isFormSubmitting = false
         this.enableForm()
         ErrorHandler.process(e)
       }
+      this.isFormSubmitting = false
       this.enableForm()
     },
 
@@ -162,4 +177,8 @@ export default {
 @import './app-form';
 @import './auth-form';
 
+.app__form-actions {
+  display: flex;
+  justify-content: space-between;
+}
 </style>

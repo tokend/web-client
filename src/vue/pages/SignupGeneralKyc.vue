@@ -9,6 +9,7 @@
         <general-kyc-form
           is-sign-up
           @submitted="submit"
+          @logout="logOut"
         />
       </div>
     </template>
@@ -36,11 +37,18 @@ export default {
   methods: {
     ...mapActions({
       loadAccount: vuexTypes.LOAD_ACCOUNT,
+      logOutAccount: vuexTypes.LOG_OUT,
+
     }),
 
     async submit () {
       await this.loadAccount(this.walletAccountId)
       this.$router.push(vueRoutes.app)
+    },
+
+    logOut () {
+      this.logOutAccount()
+      location.reload()
     },
   },
 }
