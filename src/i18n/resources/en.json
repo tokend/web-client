@@ -2469,7 +2469,8 @@
       "blocked-status-val": "Blocked"
     },
     "customers-table": {
-      "email-th": "Email",
+      "first-name-th": "First name",
+      "last-name-th": "Last name",
       "balances-th": "Balances",
       "status-th": "Status",
       "details-btn": "Show details",

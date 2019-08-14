@@ -49,8 +49,11 @@
                 "
               />
             </th>
-            <th :title="'customers-table.email-th' | globalize">
-              {{ 'customers-table.email-th' | globalize }}
+            <th :title="'customers-table.first-name-th' | globalize">
+              {{ 'customers-table.first-name-th' | globalize }}
+            </th>
+            <th :title="'customers-table.last-name-th' | globalize">
+              {{ 'customers-table.last-name-th' | globalize }}
             </th>
             <th :title="'customers-table.status-th' | globalize">
               {{ 'customers-table.status-th' | globalize }}
@@ -81,8 +84,12 @@
               />
             </td>
 
-            <td :title="customer.email">
-              {{ customer.email }}
+            <td :title="customer.firstName">
+              {{ customer.firstName }}
+            </td>
+
+            <td :title="customer.lastName">
+              {{ customer.lastName }}
             </td>
 
             <td :title="getCustomerStatusTranslated(customer)">
