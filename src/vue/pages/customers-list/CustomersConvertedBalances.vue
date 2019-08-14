@@ -1,8 +1,8 @@
 <template>
   <div class="customers-converted-balances">
-    <template v-if="isConvertedBalances">
-      <span>
-        {{ balance | formatMoney }}
+    <template v-if="isLoaded && isCanConvertBalances">
+      <span :title="balance | formatMoney">
+        {{ balance | formatBalance }}
         {{ businessStatsQuoteAsset }}
       </span>
     </template>
@@ -31,8 +31,9 @@ export default {
 
   data () {
     return {
-      balance: '',
-      isConvertedBalances: false,
+      balance: 0,
+      balanceStates: [],
+      isLoaded: false,
     }
   },
 
@@ -41,31 +42,38 @@ export default {
       accountId: vuexTypes.accountId,
       businessStatsQuoteAsset: vuexTypes.businessStatsQuoteAsset,
     }),
+
+    isCanConvertBalances () {
+      const convertedBalances = this.balanceStates
+        .reduce((numberOfConvertedBalances, balance) => {
+          return balance.isConverted
+            ? ++numberOfConvertedBalances
+            : numberOfConvertedBalances
+        }, 0)
+      return convertedBalances > 0
+    },
   },
 
   async created () {
-    await this.calculateConvertedBalances()
-    Bus.on('customers:updateList', () => {
-      this.calculateConvertedBalances()
+    await this.loadAndCalculateBalances()
+    this.isLoaded = true
+
+    Bus.on('customers:updateList', async () => {
+      await this.loadAndCalculateBalances()
     })
   },
 
   methods: {
     async calculateConvertedBalances () {
-      let notConvertedBalances = 0
-      const balanceStates = await this.getCustomerBalances()
-      const convertedBalance = balanceStates
-        .reduce((latestBalance, balance) => {
-          if (!balance.isConverted) {
-            notConvertedBalances++
-          }
-          return MathUtil.add(
-            latestBalance,
-            balance.convertedAmounts.available
-          )
-        }, 0)
-      this.isConvertedBalances = notConvertedBalances !== balanceStates.length
-      this.balance = convertedBalance
+      if (this.isCanConvertBalances) {
+        this.balance = this.balanceStates
+          .reduce((latestBalance, balance) => {
+            return MathUtil.add(
+              latestBalance,
+              balance.convertedAmounts.available
+            )
+          }, 0)
+      }
     },
 
     async getCustomerBalances () {
@@ -78,10 +86,15 @@ export default {
           include: ['states', 'balance', 'balance.state', 'balance.asset'],
         })
 
-        return data.states
+        this.balanceStates = data.states
       } catch (e) {
         console.error(e)
       }
+    },
+
+    async loadAndCalculateBalances () {
+      await this.getCustomerBalances()
+      await this.calculateConvertedBalances()
     },
   },
 }

@@ -10,6 +10,14 @@
             "decimalPlaces": 6
           }
         },
+        "balances": {
+          "default": {
+            "decimalSeparator": ",",
+            "groupSeparator": " ",
+            "groupSize": 3,
+            "decimalPlaces": 6
+          }
+        },
         "default": {
           "decimalSeparator": ",",
           "groupSeparator": " ",
@@ -63,6 +71,7 @@
       "dmyt": "{{value, dmyt}}",
       "money": "{{value, money}}",
       "number": "{{value, number}}",
+      "balance": "{{value, balance}}",
       "integer": "{{value, integer}}",
       "calendar": "{{value, calendar}}",
       "calendar-inline": "{{value, calendar-inline}}",
@@ -121,7 +130,8 @@
       "field-error_alphaNum": "Значение должно состоять из букв и цифр латинского алфавита (A-Z, a-z, 0-9)",
       "field-error_minLength": "Количество знаков должно превышать {{minLength}}",
       "field-error_selectedSameAssetCode": "Не могут быть выбраны два одинаковых актива",
-      "field-error_validatePhoneNumber": "Неверный номер телефона"
+      "field-error_validatePhoneNumber": "Неверный номер телефона",
+      "field-error_emailOrPhoneNumber": "Неверный имейл или телефон получателя"
     },
     "errors": {
       "default": "Что-то пошло не так. Пожалуйста, повторите попытку позже или свяжитесь с владельцем системы.",
@@ -1258,8 +1268,8 @@
     "assets-list": {
       "update-asset-title": "Обновить актив",
       "details-title": "Детали актива",
-      "list-item-balance-line": "Баланс: {{value, money}}",
-      "list-item-converted-balance-line": "Конвертированный: {{value, money}} {{currency}}",
+      "list-item-balance-line": "Баланс: {{value, balance}}",
+      "list-item-converted-balance-line": "Конвертированный: {{value, balance}} {{currency}}",
       "no-balance-msg": "Нет баланса"
     },
     "asset-form": {
@@ -2368,8 +2378,7 @@
       "add-quote-asset-btn": "Добавить котируемый актив",
       "quote-assets-subheading": "Котируемый актив {{number}}",
       "created-atomic-swap-msg": "Запрос отправлен",
-      "available-balance": "Баланс: {{amount, number}} {{asset}}.",
-      "available-for-issuance": "Доступно для выдачи: {{amount, number}} {{asset}}"
+      "available-balance": "Баланс: {{amount, number}}"
     },
     "customers-page": {
       "invite-btn": "Пригласить клиента",
@@ -2493,8 +2502,8 @@
       "quote-assets-subheading": "Котируемый актив №{{ number }}"
     },
     "atomic-swap-card": {
-      "available": "Доступно: {{ amount, money }}",
-      "locked": "Заблокировано: {{ amount, money }}"
+      "available": "Доступно: {{ amount, balance }}",
+      "locked": "Заблокировано: {{ amount, balance }}"
     },
     "atomic-swaps-explore": {
       "atomic-swap-drawer-title": "Детали прямого обмена",

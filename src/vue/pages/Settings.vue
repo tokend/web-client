@@ -3,16 +3,16 @@
     <top-bar>
       <template slot="main">
         <router-link
-          v-if="getModule().canRenderSubmodule(VerificationPageModule)"
-          :to="vueRoutes.verification"
-        >
-          <span>{{ verificationTabId | globalize }}</span>
-        </router-link>
-        <router-link
           v-if="getModule().canRenderSubmodule(SecurityPageModule)"
           :to="vueRoutes.security"
         >
           <span>{{ 'settings-page.security-tab' | globalize }}</span>
+        </router-link>
+        <router-link
+          v-if="getModule().canRenderSubmodule(VerificationPageModule)"
+          :to="vueRoutes.verification"
+        >
+          <span>{{ verificationTabId | globalize }}</span>
         </router-link>
       </template>
     </top-bar>

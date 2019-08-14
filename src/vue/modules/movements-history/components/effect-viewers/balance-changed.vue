@@ -4,8 +4,11 @@
       <td class="attributes-viewer__table-cell">
         {{ 'movements-history.amount-lbl' | globalize }}
       </td>
-      <td class="attributes-viewer__table-cell">
-        {{ amount | formatMoney }}
+      <td
+        class="attributes-viewer__table-cell"
+        :title="amount | formatMoney"
+      >
+        {{ amount | formatBalance }}
       </td>
     </tr>
 

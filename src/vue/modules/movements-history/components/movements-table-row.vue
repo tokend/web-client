@@ -29,7 +29,7 @@
         class="movements-table-row__cell"
         :title="movement | movementAmount | formatMoney"
       >
-        {{ movement | movementAmount | formatMoney }}
+        {{ movement | movementAmount | formatBalance }}
       </td>
 
       <td

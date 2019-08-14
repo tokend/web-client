@@ -92,18 +92,18 @@ export default {
         isAutoRedirectToFirstChild: true,
         isGeneralOnly: true,
         submodules: [
-          new BusinessesAllPageModule({
-            routerEntry: {
-              path: '/businesses/all',
-              name: vueRoutes.allBusinesses.name,
-              props: true,
-            },
-            isGeneralOnly: true,
-          }),
           new BusinessesMyPageModule({
             routerEntry: {
               path: '/businesses/my',
               name: vueRoutes.myBusinesses.name,
+              props: true,
+            },
+            isGeneralOnly: true,
+          }),
+          new BusinessesAllPageModule({
+            routerEntry: {
+              path: '/businesses/all',
+              name: vueRoutes.allBusinesses.name,
               props: true,
             },
             isGeneralOnly: true,
@@ -339,6 +339,22 @@ export default {
         menuSectionTranslationId: 'sidebar.section-account',
         isAutoRedirectToFirstChild: true,
         submodules: [
+          new SecurityPageModule({
+            routerEntry: {
+              path: '/settings/security',
+              name: vueRoutes.security.name,
+            },
+            submodules: [
+              new ChangePasswordPseudoModule(),
+              new ShowAccountIdPseudoModule({
+                isCorporateOnly: true,
+              }),
+              new PhoneNumberFormPseudoModule(),
+              new DefaultQuoteAssetPseudoModule({
+                isCorporateOnly: true,
+              }),
+            ],
+          }),
           new VerificationPageModule({
             routerEntry: {
               path: '/settings/verification',
@@ -356,23 +372,6 @@ export default {
                   path: '/settings/verification/general',
                   name: vueRoutes.verificationGeneral.name,
                 },
-              }),
-            ],
-          }),
-
-          new SecurityPageModule({
-            routerEntry: {
-              path: '/settings/security',
-              name: vueRoutes.security.name,
-            },
-            submodules: [
-              new ChangePasswordPseudoModule(),
-              new ShowAccountIdPseudoModule({
-                isCorporateOnly: true,
-              }),
-              new PhoneNumberFormPseudoModule(),
-              new DefaultQuoteAssetPseudoModule({
-                isCorporateOnly: true,
               }),
             ],
           }),

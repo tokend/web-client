@@ -13,7 +13,8 @@
     },
     "verification-page": {
       "account-type-corporate-title": "Business level 1",
-      "account-type-corporate-description": "Invite customers, create assets, polls, crowdfunds"
+      "account-type-corporate-description": "Invite customers, create assets, polls, crowdfunds",
+      "account-type-general-description": "Transfer assets"
     },
     "sidebar": {
       "section-corporate": "Business level 1"
@@ -278,6 +279,10 @@
     },
     "create-asset-form": {
       "next-btn": "Create"
+    },
+    "settings-page": {
+      "security-tab": "General",
+      "my-account-tab": "Business"
     }
   }
 }

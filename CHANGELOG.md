@@ -6,6 +6,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
+## [Unreleased]
+#### Added
+- Abbreviation for balances
+- General KYC form
+
+#### Removed
+- Asset codes from drawer
+- Pre-issuance-apps section on downloads page
+
+#### Fixed
+- Bug with validation on `Recipient email or phone` field
+
+#### Changed
+- `My businesses` default tab
+- `General` default tab on Settings page
+- Renamed `Security -> General` and `My account -> Business`
+- Transfer images of download page in to separate directory
+
+### "Under the hood" changes
+#### Fixed
+- Method `calculateConvertedBalances`
 
 ## [1.0.0-rc.7] - 2019-08-09
 #### Added
@@ -15,7 +36,7 @@ for further information about branching and tagging conventions.
 - Set default quote asset for business in settings
 - Convert asset for each business
 
-#### Deleted
+#### Removed
 - Dropdown account balances
 - Issue form
 
