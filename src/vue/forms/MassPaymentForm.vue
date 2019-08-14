@@ -161,6 +161,7 @@ export default {
   },
 
   async created () {
+    await this.loadAssets()
     await this.loadCurrentBalances()
     this.form.assetCode = this.assetCode || this.transferableBalancesAssets[0].code || ''
     this.isLoaded = true
@@ -168,6 +169,7 @@ export default {
 
   methods: {
     ...mapActions({
+      loadAssets: vuexTypes.LOAD_ASSETS,
       loadCurrentBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
 
