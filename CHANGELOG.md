@@ -24,6 +24,7 @@ for further information about branching and tagging conventions.
 - `General` default tab on Settings page
 - Renamed `Security -> General` and `My account -> Business`
 - Transfer images of download page in to separate directory
+- Renamed bank account to card number field
 
 ### "Under the hood" changes
 #### Fixed
