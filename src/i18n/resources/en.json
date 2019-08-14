@@ -2328,7 +2328,20 @@
       "atomic-swap-drawer-title": "Atomic swap details",
       "no-list-title": "No atomic swaps yet",
       "no-list-msg": "Here will be the list of atomic swaps",
-      "owned-by-me-filter-lbl": "Owned by me"
+      "owned-by-me-filter-lbl": "Owned by me",
+      "buying": "Buying of {{asset}}"
+    },
+    "atomic-swap-form":{
+      "available": "Available for buy {{amount, money}} {{asset}}",
+      "asset-in-which-buying": "Asset in which buying",
+      "amount": "Amount of {{asset}}",
+      "buy": "Buy",
+      "price": "Price",
+      "total-price": "Total price",
+      "balance": "Balance is {{amount}} {{asset}}.",
+      "error-msg": "Payment request was successful. Cannot load address for payment.",
+      "load-failed-msg": "There was an error while loading.",
+      "loading-msg": "Please wait while we loading your data."
     },
     "atomic-swap-actions": {
       "cancel-btn": "Cancel",
