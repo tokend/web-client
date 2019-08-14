@@ -97,6 +97,7 @@ export default {
             },
           })
         }
+        this.loadKvEntries()
       } catch (e) {
         ErrorHandler.process(e)
       }

@@ -2526,7 +2526,7 @@
     },
     "general-kyc-form": {
       "login-btn": "Login",
-      "update-btn": "Update",
+      "update-btn": "Create request",
       "logout-btn": "Logout",
       "first-name-lbl": "First name",
       "last-name-lbl": "Last name"

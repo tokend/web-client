@@ -7,7 +7,7 @@
 
       <div class="auth-page__content">
         <general-kyc-form
-          is-sign-up
+          is-sign-up-page
           @submitted="submit"
           @logout="logOut"
         />

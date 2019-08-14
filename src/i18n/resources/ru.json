@@ -675,7 +675,7 @@
       "industry-lbl": "Сфера деятельности (Необязательно)",
       "team-size-lbl": "Размер команды",
       "website-lbl": "Веб-сайт (Необязательно)",
-      "request-submitted-msg": "Запрос отправлен. Пожалуйста, дождитесь результатов рассмотрения.",
+      "request-submitted-msg": "Запрос успешно отправлен",
       "bank-account-lbl": "Банковский счет (Необязательно)",
       "invitation-code-lbl": "Код приглашения (Необязательно)"
     },
@@ -2526,7 +2526,7 @@
     },
     "general-kyc-form": {
       "login-btn": "Войти",
-      "update-btn": "Обновить",
+      "update-btn": "Создать запрос",
       "logout-btn": "Выйти",
       "first-name-lbl": "Имя",
       "last-name-lbl": "Фамилия"

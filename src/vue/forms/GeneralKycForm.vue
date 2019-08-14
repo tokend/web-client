@@ -7,7 +7,7 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          :white-autofill="!isSignUp"
+          :white-autofill="!isSignUpPage"
           v-model="form.firstName"
           @blur="touchField('form.firstName')"
           name="general-kyc-first-name"
@@ -21,7 +21,7 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          :white-autofill="!isSignUp"
+          :white-autofill="!isSignUpPage"
           v-model="form.lastName"
           @blur="touchField('form.lastName')"
           name="general-kyc-last-name"
@@ -47,14 +47,14 @@
         :disabled="formMixin.isDisabled"
       >
         {{
-          (isSignUp
+          (isSignUpPage
             ? 'general-kyc-form.login-btn'
             : 'general-kyc-form.update-btn'
           ) | globalize
         }}
       </button>
       <button
-        v-if="isSignUp"
+        v-if="isSignUpPage"
         type="button"
         @click="$emit(EVENTS.logout)"
         v-ripple
@@ -90,7 +90,7 @@ export default {
   mixins: [VerificationFormMixin],
 
   props: {
-    isSignUp: { type: Boolean, default: false },
+    isSignUpPage: { type: Boolean, default: false },
   },
 
   data: _ => ({
@@ -133,7 +133,7 @@ export default {
   methods: {
     tryToSubmit () {
       if (!this.isFormValid()) return
-      if (this.isSignUp) {
+      if (this.isSignUpPage) {
         this.submit()
       } else {
         this.showConfirmation()
