@@ -671,7 +671,7 @@
       "team-size-lbl": "Team size",
       "website-lbl": "Website (Optional)",
       "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
-      "bank-account-lbl": "Bank account (Optional)",
+      "card-number-lbl": "Card number (Optional)",
       "invitation-code-lbl": "Invitation code (Optional)"
     },
     "input-field": {

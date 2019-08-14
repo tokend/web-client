@@ -80,9 +80,11 @@
         <div class="app__form-field">
           <input-field
             white-autofill
-            v-model="form.bankAccount"
-            name="verification-corporate-bank-account"
-            :label="'verification-form.bank-account-lbl' | globalize"
+            v-model="form.cardNumber"
+            @blur="touchField('form.cardNumber')"
+            name="verification-corporate-card-number"
+            :label="'verification-form.card-number-lbl' | globalize"
+            :error-message="getFieldErrorMessage('form.cardNumber')"
             :disabled="formMixin.isDisabled"
           />
         </div>
@@ -144,7 +146,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
-import { required, validateUrl } from '@validators'
+import { required, validateUrl, cardNumber } from '@validators'
 
 const EMPTY_DOCUMENT = {
   mime_type: '',
@@ -167,7 +169,7 @@ export default {
       headquarters: '',
       industry: '',
       website: '',
-      bankAccount: '',
+      cardNumber: '',
       invite: '',
     },
     isFormSubmitting: false,
@@ -179,10 +181,15 @@ export default {
       validateUrl,
     }
 
+    const cardNumberRule = {
+      cardNumber,
+    }
+
     return {
       form: {
         company: { required },
         website: this.form.website ? websiteRule : {},
+        cardNumber: this.form.cardNumber ? cardNumberRule : {},
       },
     }
   },
@@ -286,7 +293,7 @@ export default {
             ? this.form.avatar.getDetailsForSave()
             : EMPTY_DOCUMENT,
         },
-        bank_account: this.form.bankAccount,
+        bank_account: this.form.cardNumber ? this.form.cardNumber : null,
         invite: this.form.invite,
       }
     },
@@ -300,7 +307,7 @@ export default {
         headquarters: kycData.headquarters,
         industry: kycData.industry,
         website: kycData.homepage,
-        bankAccount: kycData.bank_account,
+        cardNumber: kycData.bank_account,
         invite: kycData.invite,
       }
     },
