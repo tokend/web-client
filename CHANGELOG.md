@@ -17,6 +17,7 @@ for further information about branching and tagging conventions.
 #### Fixed
 - Bug with validation on `Recipient email or phone` field
 - Bug when user can to create atomic swap for not own asset
+- Bug when user cannot send money
 
 #### Changed
 - `My businesses` default tab
