@@ -485,6 +485,7 @@
       "continue": "Continue",
       "email-verified": "Email successfully verified",
       "signup-title": "Get started",
+      "signup-general-kyc-title": "Personal details",
       "recover-account": "Recover your account",
       "recover-btn": "Recover",
       "recovery-document": "Recovery document",
@@ -670,7 +671,7 @@
       "industry-lbl": "Industry (Optional)",
       "team-size-lbl": "Team size",
       "website-lbl": "Website (Optional)",
-      "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
+      "request-submitted-msg": "Your request has been submitted successfully",
       "card-number-lbl": "Card number (Optional)",
       "invitation-code-lbl": "Invitation code (Optional)"
     },
@@ -2522,6 +2523,13 @@
       "million": "M",
       "billion": "B",
       "trillion": "T"
+    },
+    "general-kyc-form": {
+      "login-btn": "Login",
+      "update-btn": "Create request",
+      "logout-btn": "Logout",
+      "first-name-lbl": "First name",
+      "last-name-lbl": "Surname"
     }
   }
 }

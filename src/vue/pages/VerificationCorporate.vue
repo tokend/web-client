@@ -251,10 +251,7 @@ export default {
 
           await api.postOperations(operation)
 
-          do {
-            await this.loadKyc()
-            await this.delay(3000)
-          } while (this.kycState !== REQUEST_STATES_STR.pending)
+          await this.loadKyc()
           Bus.success('verification-form.request-submitted-msg')
         }
         this.scrollTop()
@@ -265,13 +262,6 @@ export default {
       this.isFormSubmitting = false
       this.hideConfirmation()
       this.enableForm()
-    },
-
-    delay (ms) {
-      /* eslint-disable-next-line promise/avoid-new */
-      return new Promise((resolve, reject) => {
-        resolve(setTimeout(resolve, ms))
-      })
     },
 
     scrollTop () {

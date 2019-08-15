@@ -9,6 +9,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Abbreviation for balances
+- General KYC form
 
 #### Removed
 - Asset codes from drawer

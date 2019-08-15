@@ -9,6 +9,7 @@ import { AssetsPageModule } from '@/vue/pages/assets-page-module'
 import { CreateAssetFormSimplifiedModule } from '@modules/create-asset-form-simplified/module'
 import { SettingsPageModule } from '@/vue/pages/settings-page-module'
 import { VerificationCorporatePageModule } from '@/vue/pages/verification-corporate-page-module'
+import { VerificationGeneralPageModule } from '@/vue/pages/verification-general-page-module'
 import { VerificationPageModule } from '@/vue/pages/verification-page-module'
 import { SecurityPageModule } from '@/vue/pages/security-page-module'
 import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-account-id-pseudo-module'
@@ -44,7 +45,7 @@ export default {
   },
   modules: [
     new CurrentBusinessIndicatorModule({
-      isUnverifiedOnly: true,
+      isGeneralOnly: true,
     }),
     new BusinessOwnershipModule({
       isCorporateOnly: true,
@@ -89,7 +90,7 @@ export default {
         menuButtonMdiName: 'domain',
         menuSectionTranslationId: 'sidebar.section-explore',
         isAutoRedirectToFirstChild: true,
-        isUnverifiedOnly: true,
+        isGeneralOnly: true,
         submodules: [
           new BusinessesMyPageModule({
             routerEntry: {
@@ -97,7 +98,7 @@ export default {
               name: vueRoutes.myBusinesses.name,
               props: true,
             },
-            isUnverifiedOnly: true,
+            isGeneralOnly: true,
           }),
           new BusinessesAllPageModule({
             routerEntry: {
@@ -105,7 +106,7 @@ export default {
               name: vueRoutes.allBusinesses.name,
               props: true,
             },
-            isUnverifiedOnly: true,
+            isGeneralOnly: true,
           }),
         ],
       },
@@ -120,7 +121,7 @@ export default {
         },
         menuButtonTranslationId: 'pages-names.movements',
         menuButtonMdiName: 'menu',
-        isUnverifiedOnly: true,
+        isGeneralOnly: true,
         isWithBusinessToBrowseOnly: true,
         submodules: [
           new MovementsHistoryModule(),
@@ -170,7 +171,7 @@ export default {
             submodules: [
               new AssetExplorerModule(),
             ],
-            isUnverifiedOnly: true,
+            isGeneralOnly: true,
           }),
           new BalancesPageModule({
             routerEntry: {
@@ -181,7 +182,7 @@ export default {
             submodules: [
               new BalanceExplorerModule(),
             ],
-            isUnverifiedOnly: true,
+            isGeneralOnly: true,
           }),
           new MyAssetsPageModule({
             routerEntry: {
@@ -222,7 +223,7 @@ export default {
     //             isUserSales: false,
     //           },
     //         },
-    //         isUnverifiedOnly: true,
+    //         isGeneralOnly: true,
     //       }),
     //       new SalesListOwnedPageModule({
     //         routerEntry: {
@@ -364,6 +365,12 @@ export default {
                 routerEntry: {
                   path: '/settings/verification/corporate',
                   name: vueRoutes.verificationCorporate.name,
+                },
+              }),
+              new VerificationGeneralPageModule({
+                routerEntry: {
+                  path: '/settings/verification/general',
+                  name: vueRoutes.verificationGeneral.name,
                 },
               }),
             ],

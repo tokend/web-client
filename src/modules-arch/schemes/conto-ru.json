@@ -13,7 +13,8 @@
     },
     "verification-page": {
       "account-type-corporate-title": "Бизнес I уровня",
-      "account-type-corporate-description": "Приглашайте клиентов, создавайте активы, опросы, краудфанды"
+      "account-type-corporate-description": "Приглашайте клиентов, создавайте активы, опросы, краудфанды",
+      "account-type-general-description": "Трансфер активов"
     },
     "sidebar": {
       "section-corporate": "Бизнес I уровня"

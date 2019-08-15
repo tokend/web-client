@@ -485,6 +485,7 @@
       "continue": "Продолжить",
       "email-verified": "Электронная почта успешно подтверждена",
       "signup-title": "Начать",
+      "signup-general-kyc-title": "Персональные данные",
       "recover-account": "Восстановить аккаунт",
       "recover-btn": "Восстановить",
       "recovery-document": "Документ для восстановления",
@@ -674,7 +675,7 @@
       "industry-lbl": "Сфера деятельности (Необязательно)",
       "team-size-lbl": "Размер команды",
       "website-lbl": "Веб-сайт (Необязательно)",
-      "request-submitted-msg": "Запрос отправлен. Пожалуйста, дождитесь результатов рассмотрения.",
+      "request-submitted-msg": "Запрос успешно отправлен",
       "card-number-lbl": "Номер карты (Необязательно)",
       "invitation-code-lbl": "Код приглашения (Необязательно)"
     },
@@ -2522,6 +2523,13 @@
       "million": "млн",
       "billion": "млрд",
       "trillion": "трлн"
+    },
+    "general-kyc-form": {
+      "login-btn": "Войти",
+      "update-btn": "Создать запрос",
+      "logout-btn": "Выйти",
+      "first-name-lbl": "Имя",
+      "last-name-lbl": "Фамилия"
     }
   }
 }
