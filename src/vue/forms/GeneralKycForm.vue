@@ -7,7 +7,7 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          :white-autofill="!isSignUpPage"
+          :white-autofill="!isSignUpKycPage"
           v-model="form.firstName"
           @blur="touchField('form.firstName')"
           name="general-kyc-first-name"
@@ -21,7 +21,7 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          :white-autofill="!isSignUpPage"
+          :white-autofill="!isSignUpKycPage"
           v-model="form.lastName"
           @blur="touchField('form.lastName')"
           name="general-kyc-last-name"
@@ -47,14 +47,14 @@
         :disabled="formMixin.isDisabled"
       >
         {{
-          (isSignUpPage
+          (isSignUpKycPage
             ? 'general-kyc-form.login-btn'
             : 'general-kyc-form.update-btn'
           ) | globalize
         }}
       </button>
       <button
-        v-if="isSignUpPage"
+        v-if="isSignUpKycPage"
         type="button"
         @click="$emit(EVENTS.logout)"
         v-ripple
@@ -79,6 +79,7 @@ import { BLOB_TYPES } from '@tokend/js-sdk'
 import { required } from '@validators'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { vueRoutes } from '@/vue-router/routes'
 
 const EVENTS = {
   submitted: 'submitted',
@@ -88,10 +89,6 @@ const EVENTS = {
 export default {
   name: 'general-kyc-form',
   mixins: [VerificationFormMixin],
-
-  props: {
-    isSignUpPage: { type: Boolean, default: false },
-  },
 
   data: _ => ({
     form: {
@@ -122,6 +119,10 @@ export default {
         ? this.previousAccountRole === this.kvEntryGeneralRoleId
         : this.accountRoleToSet === this.kvEntryGeneralRoleId
     },
+
+    isSignUpKycPage () {
+      return this.$route.name === vueRoutes.signupKyc.name
+    },
   },
 
   created () {
@@ -133,7 +134,7 @@ export default {
   methods: {
     tryToSubmit () {
       if (!this.isFormValid()) return
-      if (this.isSignUpPage) {
+      if (this.isSignUpKycPage) {
         this.submit()
       } else {
         this.showConfirmation()
