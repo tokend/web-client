@@ -2325,7 +2325,9 @@
       "available-for-issuance": "Доступно для выдачи: {{amount, number}} {{asset}}"
     },
     "atomic-swaps-explore": {
-      "no-list-title": "Список предложений атомарных обменов в разработке"
+      "no-list-title": "Список предложений атомарных обменов в разработке",
+      "owned-by-me-filter-lbl": "Принадлежит мне",
+      "buying": "Покупка {{asset}}"
     },
     "atomic-swap-form":{
       "available": "Доступно для покупки {{amount, money}} {{asset}}",
