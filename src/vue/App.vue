@@ -1,8 +1,7 @@
 <template>
   <div
     id="app"
-    v-if="isAppInitialized"
-    :key="appKey">
+    v-if="isAppInitialized">
     <warning-banner
       v-if="isNotSupportedBrowser && !isSupportedBrowsersPage"
       :message="'common.browser-not-supported' | globalize"

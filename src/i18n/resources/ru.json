@@ -2509,7 +2509,19 @@
       "atomic-swap-drawer-title": "Детали прямого обмена",
       "no-list-title": "Нет предложений",
       "no-list-msg": "Здесь будут предложения прямого обмена",
-      "owned-by-me-filter-lbl": "Созданы мной"
+      "owned-by-me-filter-lbl": "Созданы мной",
+      "buying": "Покупка {{asset}}"
+    },
+    "atomic-swap-form":{
+      "available": "Доступно для покупки {{amount, money}} {{asset}}",
+      "asset-in-which-buying": "Актив, для оплаты",
+      "amount": "Количество {{asset}}",
+      "buy": "Купить",
+      "price": "Цена",
+      "total-price": "Итоговая цена",
+      "error-msg": "Запрос на оплату прошел успешно. Не удается загрузить адрес для оплаты.",
+      "load-failed-msg": "Произошла ошибка при загрузке.",
+      "loading-msg": "Пожалуйста подождите пока мы загрузим ваши данные."
     },
     "atomic-swap-actions": {
       "cancel-btn": "Отменить",
