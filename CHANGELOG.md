@@ -19,7 +19,7 @@ for further information about branching and tagging conventions.
 - Bug with validation on `Recipient email or phone` field
 - Bug when user can to create atomic swap for not own asset
 - Bug when user cannot send money
-- Big when the login form is cleared and enabled before routing to the app
+- Bug when the login form is cleared and enabled before routing to the app
 
 #### Changed
 - `My businesses` default tab
