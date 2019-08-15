@@ -2338,7 +2338,6 @@
       "buy": "Buy",
       "price": "Price",
       "total-price": "Total price",
-      "balance": "Balance is {{amount}} {{asset}}.",
       "error-msg": "Payment request was successful. Cannot load address for payment.",
       "load-failed-msg": "There was an error while loading.",
       "loading-msg": "Please wait while we loading your data."

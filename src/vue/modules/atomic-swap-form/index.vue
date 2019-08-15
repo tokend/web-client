@@ -49,7 +49,6 @@ export default {
     CollectionLoader,
     Loader,
   },
-  mixins: [],
   props: {
     atomicSwap: {
       type: AtomicSwapRecord,
@@ -70,11 +69,6 @@ export default {
     firstPageLoader () {
       return _ => this.loadFirstPage()
     },
-  },
-  watch: {},
-  created () {
-  },
-  destroyed () {
   },
   methods: {
     setPendingAtomicSwapBids (records) {

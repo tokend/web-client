@@ -193,7 +193,6 @@ export default {
       return MathUtil.multiply(this.quoteAssetPrice, this.form.amount || 0)
     },
   },
-  watch: {},
   async created () {
     this.form.quoteAsset = this.atomicSwap.quoteAssets[0].id
   },

@@ -2327,6 +2327,17 @@
     "atomic-swaps-explore": {
       "no-list-title": "Список предложений атомарных обменов в разработке"
     },
+    "atomic-swap-form":{
+      "available": "Доступно для покупки {{amount, money}} {{asset}}",
+      "asset-in-which-buying": "Актив, для оплаты",
+      "amount": "Количество {{asset}}",
+      "buy": "Купить",
+      "price": "Цена",
+      "total-price": "Итоговая цена",
+      "error-msg": "Запрос на оплату прошел успешно. Не удается загрузить адрес для оплаты.",
+      "load-failed-msg": "Произошла ошибка при загрузке.",
+      "loading-msg": "Пожалуйста подождите пока мы загрузим ваши данные."
+    },
     "kyc-recovery": {
       "submit-again-lbl": "Submit again",
       "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
