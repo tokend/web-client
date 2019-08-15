@@ -56,7 +56,6 @@ export default {
     return {
       isLoading: true,
       isFailed: false,
-      isSubmitted: false,
       pendingIssuances: [],
     }
   },
