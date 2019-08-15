@@ -155,12 +155,10 @@ export default {
       } catch (e) {
         this.isFormSubmitting = false
         this.hideConfirmation()
-        this.enableForm()
         ErrorHandler.process(e)
       }
       this.isFormSubmitting = false
       this.hideConfirmation()
-      this.enableForm()
     },
 
     createKycData () {
