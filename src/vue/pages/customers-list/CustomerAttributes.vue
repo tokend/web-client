@@ -12,6 +12,24 @@
             </td>
           </tr>
 
+          <tr v-if="customer.firstName">
+            <td>
+              {{ 'customer-attributes.first-name-key' | globalize }}
+            </td>
+            <td>
+              {{ customer.firstName }}
+            </td>
+          </tr>
+
+          <tr v-if="customer.lastName">
+            <td>
+              {{ 'customer-attributes.last-name-key' | globalize }}
+            </td>
+            <td>
+              {{ customer.lastName }}
+            </td>
+          </tr>
+
           <tr>
             <td>
               {{ 'customer-attributes.status-key' | globalize }}

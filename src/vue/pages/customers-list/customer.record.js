@@ -16,6 +16,9 @@ export class CustomerRecord {
     this.email = _get(record, 'email')
     this.accountId = _get(record, 'accountId')
     this.status = _get(record, 'status')
+    this.firstName = _get(record, 'firstName')
+    this.lastName = _get(record, 'lastName')
+    this.status = _get(record, 'status')
     this.balances = _get(record, 'balances', [])
       .map(item => ({
         id: item.id,

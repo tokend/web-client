@@ -49,8 +49,8 @@
                 "
               />
             </th>
-            <th :title="'customers-table.email-th' | globalize">
-              {{ 'customers-table.email-th' | globalize }}
+            <th :title="'customers-table.customer-th' | globalize">
+              {{ 'customers-table.customer-th' | globalize }}
             </th>
             <th :title="'customers-table.status-th' | globalize">
               {{ 'customers-table.status-th' | globalize }}
@@ -81,8 +81,8 @@
               />
             </td>
 
-            <td :title="customer.email">
-              {{ customer.email }}
+            <td :title="getCustomerNameOrEmail(customer)">
+              {{ getCustomerNameOrEmail(customer) }}
             </td>
 
             <td :title="getCustomerStatusTranslated(customer)">
@@ -222,6 +222,14 @@ export default {
     doMassIssuance () {
       Bus.emit('customers:massIssue', { receivers: this.issuanceReceivers })
       this.toggleIssuanceMode()
+    },
+
+    getCustomerNameOrEmail (customer) {
+      if (customer.firstName && customer.lastName) {
+        return `${customer.firstName} ${customer.lastName}`
+      } else {
+        return customer.email
+      }
     },
   },
 }
