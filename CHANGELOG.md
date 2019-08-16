@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Buying atomic swaps
+- Missed russian translation
 
 #### Fixed
 - A bug when withdrawal form not closed after successfull operation
