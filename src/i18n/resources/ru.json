@@ -666,28 +666,28 @@
       "days-left": "days left"
     },
     "document-types": {
-      "sale-logo": "Sale Logo",
-      "sale-document": "Sale Document",
-      "asset-terms": "Asset Terms",
-      "asset-logo": "Asset Logo",
-      "kyc-id-document": "KYC ID Document",
-      "kyc-proof-of-address": "KYC Proof Of Address",
-      "kyc-selfie": "KYC Selfie",
-      "kyc-avatar": "KYC Avatar",
-      "kyc-tax-returns": "KYC Tax Returns",
-      "kyc-origination-certificate": "KYC Origination Certificate",
-      "kyc-investment-presentation": "KYC Investment Presentation",
-      "kyc-proof-of-investor": "KYC Proof Of Investor",
-      "kyc-shareholders-certificate": "KYC Shareholders Certificate",
-      "kyc-annual-report": "KYC Annual report",
-      "kyc-memorandum": "KYC Memorandum",
-      "kyc-signatories-authorization": "KYC Signatories Authorization",
-      "kyc-organization-chart": "KYC Organization Chart",
-      "kyc-business-model": "KYC Business Model",
-      "passport": "Passport",
-      "driving-license": "Driving License",
-      "identity-card": "Identity Card",
-      "residence-permit": "Residence Permit"
+      "sale-logo": "Логотип продажи",
+      "sale-document": "Документ продажи",
+      "asset-terms": "Соглашения актива",
+      "asset-logo": "Логотип актива",
+      "kyc-id-document": "KYC Документ удостоверяющий личность",
+      "kyc-proof-of-address": "KYC Подтверждение адреса",
+      "kyc-selfie": "KYC Селфи",
+      "kyc-avatar": "KYC Аватар",
+      "kyc-tax-returns": "KYC Налоговая декларация",
+      "kyc-origination-certificate": "KYC Сертификат происхождения",
+      "kyc-investment-presentation": "KYC Инвестиционная презентация",
+      "kyc-proof-of-investor": "KYC Доказательство инвестора",
+      "kyc-shareholders-certificate": "KYC Сертификат акционеров",
+      "kyc-annual-report": "KYC Годовой отчет",
+      "kyc-memorandum": "KYC Меморандум",
+      "kyc-signatories-authorization": "KYC Авторизация подписантов",
+      "kyc-organization-chart": "KYC Организационная структура",
+      "kyc-business-model": "KYC Бизнес модель",
+      "passport": "Паспорт",
+      "driving-license": "Водительские права",
+      "identity-card": "Удостоверение личности",
+      "residence-permit": "Вид на жительство"
     },
     "form-confirmation": {
       "message-text-default": "Пожалуйста, перепроверьте форму.",
@@ -1988,12 +1988,12 @@
       "use-app-step": "Use the app"
     },
     "terms-page": {
-      "go-back-btn": "Go back",
-      "title": "Terms & conditions"
+      "go-back-btn": "Назад",
+      "title": "Условия использования"
     },
     "pre-issuance-guide": {
-      "go-back-btn": "Go back",
-      "title": "Pre-issuance guide"
+      "go-back-btn": "Назад",
+      "title": "Руководство предварительной выдачи"
     },
     "assets": {
       "balances-loading-msg": "Загрузка…",
@@ -2186,15 +2186,15 @@
       "signer-email-lbl": "Email address"
     },
     "warning-banner": {
-      "blocked-desc": "Your account was blocked by administrator. Blocking reason: {{reason}}",
-      "supported-browsers-list": "Supported browsers list"
+      "blocked-desc": "Ваш аккаунт был заблокирован администратором. Причина блокировки: {{reason}}",
+      "supported-browsers-list": "Список поддерживаемых браузеров"
     },
     "clipboard-field": {
       "copied": "Скопировано"
     },
     "asset-select-field": {
-      "failed-loading-msg": "Assets loading failed!",
-      "no-assets-for-select": "No assets for select"
+      "failed-loading-msg": "Ошибка загрузки активов!",
+      "no-assets-for-select": "Нет активов для выбора"
     },
     "polls": {
       "create-poll": "Новый опрос",
@@ -2346,10 +2346,10 @@
       "loading-msg": "Пожалуйста подождите пока мы загрузим ваши данные."
     },
     "kyc-recovery": {
-      "submit-again-lbl": "Submit again",
-      "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
-      "email-code": "Enter the code sent to you by email",
-      "tfa-code": "Enter tfa code"
+      "submit-again-lbl": "Отпарвить заново",
+      "request-submitted-msg": "Ваш запрос находится в очереди на рассмотрение. Пожалуйста, дождитесь результата рассмотрения запроса администратором.",
+      "email-code": "Введите код, отправленный вам по электронной почте",
+      "tfa-code": "Введите 2FA код"
     },
     "atomic-swap-card": {
       "id-prefix":"#{{id}}",
