@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Buying atomic swaps
+- Missed russian translation
 
 ## [1.10.0] - 2019-08-12
 
