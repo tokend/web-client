@@ -9,6 +9,7 @@
           :label="'auth-pages.email' | globalize"
           :error-message="getFieldErrorMessage('form.email')"
           :white-autofill="false"
+          :disabled="formMixin.isDisabled"
         />
       </div>
     </div>
@@ -22,6 +23,7 @@
           :error-message="getFieldErrorMessage('form.password')"
           :white-autofill="false"
           :label="'auth-pages.password' | globalize"
+          :disabled="formMixin.isDisabled"
         />
       </div>
     </div>
@@ -46,7 +48,11 @@
         class="auth-form__submit-btn app__button-raised"
         :disabled="formMixin.isDisabled"
       >
-        {{ 'auth-pages.sign-in' | globalize }}
+        {{ (isSubmitting
+          ?'auth-pages.submit-processing'
+          : 'auth-pages.sign-in'
+        ) | globalize
+        }}
       </button>
     </div>
   </form>
@@ -74,6 +80,7 @@ export default {
       tfaCode: '',
     },
     tfaError: null,
+    isSubmitting: false,
   }),
   validations: {
     form: {
@@ -99,6 +106,7 @@ export default {
     async submit () {
       if (!this.isFormValid()) return
       this.disableForm()
+      this.isSubmitting = true
       try {
         await this.verifyTfaFactor()
         await this.logInAccount({
@@ -114,8 +122,11 @@ export default {
         }
       } catch (e) {
         this.processAuthError(e)
+        this.enableForm()
+        this.isSubmitting = false
       }
       this.enableForm()
+      this.isSubmitting = false
     },
     async verifyTfaFactor () {
       if (this.tfaError) {

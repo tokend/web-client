@@ -1,8 +1,7 @@
 <template>
   <div
     id="app"
-    v-if="isAppInitialized"
-    :key="appKey">
+    v-if="isAppInitialized">
     <warning-banner
       v-if="isNotSupportedBrowser && !isSupportedBrowsersPage"
       :message="'common.browser-not-supported' | globalize"
@@ -72,6 +71,7 @@ import { vueRoutes } from '@/vue-router/routes'
 
 import config from '@/config'
 import { i18n } from '@/i18n'
+import { Bus } from '@/js/helpers/event-bus'
 
 export default {
   name: 'app',
@@ -88,6 +88,7 @@ export default {
     isAppInitialized: false,
     vueRoutes,
     lang: i18n.language,
+    accountRole: '',
   }),
 
   computed: {
@@ -107,8 +108,7 @@ export default {
       return this.$route.name === vueRoutes.supportedBrowsers.name
     },
     appKey () {
-      const accRoleId = ((this.account || {}).role || {}).id || ''
-      return `${accRoleId}${this.lang}`
+      return `${this.accountRole}${this.lang}`
     },
   },
 
@@ -129,7 +129,7 @@ export default {
     i18n.onLanguageChanged(lng => (this.lang = lng))
 
     this.watchChangesInLocalStorage()
-
+    Bus.on('updateAccountRole', () => this.updateAccountRole())
     this.isAppInitialized = true
   },
 
@@ -185,6 +185,10 @@ export default {
           this.popState()
         }
       }
+    },
+
+    async updateAccountRole () {
+      this.accountRole = ((this.account || {}).role || {}).id || ''
     },
   },
 }

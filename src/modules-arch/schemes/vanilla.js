@@ -36,6 +36,7 @@ import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
 import { PreIssuanceFormModule } from '@/vue/modules/pre-issuance-form/module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { CreateSaleFormModule } from '@modules/create-sale-form/module'
+import { AtomicSwapFormModule } from '@modules/atomic-swap-form/module'
 import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
 import { SalesListPageModule } from '@/vue/pages/sales/investable-sales-page-module'
 import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
@@ -427,6 +428,9 @@ export default {
               name: vueRoutes.atomicSwapsExplore.name,
               props: true,
             },
+            submodules: [
+              new AtomicSwapFormModule(),
+            ],
           }),
           new CreateAtomicSwapFormModule({
             isCorporateOnly: true,

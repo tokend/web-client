@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import AddressViewer from './address-viewer'
+import AddressViewer from '@/vue/common/address-viewer'
 
 import config from '@/config'
 

@@ -37,30 +37,42 @@
     </div>
 
     <drawer :is-shown.sync="isDrawerShown">
-      <template slot="heading">
+      <template v-if="atomicSwapToBrowse.ownerId === accountId" slot="heading">
         {{ 'atomic-swaps-explore.atomic-swap-drawer-title' | globalize }}
+      </template>
+      <template v-else slot="heading">
+        {{ 'atomic-swaps-explore.buying' |
+          globalize({asset: atomicSwapToBrowse.baseAsset}) }}
       </template>
 
       <atomic-swap-viewer
+        v-if="atomicSwapToBrowse.ownerId === accountId"
         :current-atomic-swap="atomicSwapToBrowse"
         @close-drawer-and-update-list="closeDrawerAndUpdateList()"
+      />
+      <submodule-importer
+        v-else
+        :submodule="getModule().getSubmodule(AtomicSwapFormModule)"
+        :atomic-swap="atomicSwapToBrowse"
       />
     </drawer>
   </div>
 </template>
 
 <script>
-import { ErrorHandler } from '@/js/helpers/error-handler'
-import { api } from '@/api'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import Drawer from '@/vue/common/Drawer'
-import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
 import AtomicSwapCard from './AtomicSwapCard'
 import AtomicSwapViewer from './AtomicSwapViewer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
+import UpdateList from '@/vue/mixins/update-list.mixin'
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
+import { AtomicSwapFormModule } from '@modules/atomic-swap-form/module'
+import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
+import { ErrorHandler } from '@/js/helpers/error-handler'
+import { api } from '@/api'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
-import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
   name: 'atomic-swaps-explore',
@@ -71,12 +83,14 @@ export default {
     AtomicSwapCard,
     AtomicSwapViewer,
     NoDataMessage,
+    SubmoduleImporter,
   },
 
   mixins: [UpdateList],
 
   data () {
     return {
+      AtomicSwapFormModule,
       isLoading: false,
       list: [],
       isDrawerShown: false,
