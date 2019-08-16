@@ -87,7 +87,7 @@
       </template>
       <withdrawal-form
         :asset-code="asset.code"
-        @operation-submitted="$emit(EVENTS.movementsUpdateRequired)"
+        @operation-submitted="closeWithdrawalDrawerAndEmitEvent()"
       />
     </drawer>
 
@@ -230,6 +230,11 @@ export default {
         }
       }
       return messageId
+    },
+
+    closeWithdrawalDrawerAndEmitEvent () {
+      this.isWithdrawalDrawerShown = false
+      this.$emit(EVENTS.movementsUpdateRequired)
     },
   },
 }
