@@ -250,7 +250,7 @@ export default {
           )
 
           await api.postOperations(operation)
-
+          Bus.emit('updateAccountRole')
           await this.loadKyc()
           Bus.success('verification-form.request-submitted-msg')
         }
