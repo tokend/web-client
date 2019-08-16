@@ -10,7 +10,7 @@ for further information about branching and tagging conventions.
 #### Added
 - Abbreviation for balances
 - General KYC form
-- Buying atomic swaps
+- Buying atomic swaps (fiat and crypto)
 
 #### Removed
 - Asset codes from drawer

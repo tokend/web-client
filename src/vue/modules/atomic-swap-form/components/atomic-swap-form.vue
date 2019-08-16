@@ -21,7 +21,7 @@
               :key="asset.code"
               :value="asset.code"
             >
-              {{ asset.nameAndCode }}
+              {{ asset.name }}
             </option>
           </select-field>
         </div>
@@ -42,14 +42,14 @@
               })"
             white-autofill
             :label="'atomic-swap-form.amount' | globalize({
-              asset: atomicSwap.baseAsset
+              asset: atomicSwap.baseAssetName
             })"
             :disabled="formMixin.isDisabled"
           />
           <p class="app__form-field-description">
             {{ 'atomic-swap-form.available' | globalize({
               amount: atomicSwap.availableAmount,
-              asset: atomicSwap.baseAsset,
+              asset: '',
             }) }}
           </p>
         </div>
@@ -60,17 +60,11 @@
           <readonly-field
             class="atomic-swap-form__price"
             :label="'atomic-swap-form.price' | globalize"
-            :value="{
-              value: quoteAssetPrice,
-              currency: form.quoteAsset,
-            } | formatMoney"
+            :value="`${formatMoney(quoteAssetPrice)} ${form.quoteAsset}`"
           />
           <readonly-field
             :label="'atomic-swap-form.total-price' | globalize"
-            :value="{
-              value: totalPrice,
-              currency: form.quoteAsset,
-            } | formatMoney"
+            :value="`${formatMoney(totalPrice)} ${form.quoteAsset}`"
           />
         </div>
       </div>
@@ -118,6 +112,7 @@ import config from '@/config'
 import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
 import { AtomicSwapBidRecord } from '../wrappers/atomic-swap-bid.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { formatMoney } from '@/vue/filters/formatMoney'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 import { MathUtil } from '@/js/utils'
@@ -133,6 +128,7 @@ import {
 } from '@validators'
 
 const EVENTS = {
+  selectAsset: 'select-asset',
   submitted: 'submitted',
 }
 export default {
@@ -180,6 +176,7 @@ export default {
     ...mapGetters([
       vuexTypes.accountId,
       vuexTypes.assetByCode,
+      vuexTypes.walletAccountId,
     ]),
     quoteAssets () {
       return this.atomicSwap.quoteAssets.map(item => this.assetByCode(item.id))
@@ -193,6 +190,11 @@ export default {
       return MathUtil.multiply(this.quoteAssetPrice, this.form.amount || 0)
     },
   },
+  watch: {
+    'form.quoteAsset' (value) {
+      this.$emit(EVENTS.selectAsset, value)
+    },
+  },
   async created () {
     this.form.quoteAsset = this.atomicSwap.quoteAssets[0].id
   },
@@ -200,6 +202,7 @@ export default {
     clearInterval(this.intervalId)
   },
   methods: {
+    formatMoney,
     setQuoteAsset (code) {
       this.form.quoteAsset = code
     },
@@ -208,16 +211,25 @@ export default {
         this.isSubmitting = true
         const createAtomicSwapBidOperation =
           this.buildCreateAtomicSwapBidOperation()
-        await api.postOperations(createAtomicSwapBidOperation)
+        if (this.assetByCode(this.form.quoteAsset).isCoinpayments) {
+          await api.postOperations(createAtomicSwapBidOperation)
+          this.intervalId = setInterval(() => {
+            this.loadPendingAtomicSwapBidRequests()
+          }, this.loadTickerTimeout)
+        } else {
+          const response =
+          await api.postOperationsToSpecificEndpoint(
+            '/integrations/fiat/pay',
+            createAtomicSwapBidOperation
+          )
+          window.location.href = response.data.data.attributes.payUrl
+        }
         this.$emit(EVENTS.submitted)
       } catch (e) {
         ErrorHandler.process(e)
         this.isSubmitting = false
         this.hideConfirmation()
       }
-      this.intervalId = setInterval(() => {
-        this.loadPendingAtomicSwapBidRequests()
-      }, this.loadTickerTimeout)
     },
 
     buildCreateAtomicSwapBidOperation () {
@@ -231,7 +243,8 @@ export default {
         },
       }
       // eslint-disable-next-line max-len
-      return base.CreateAtomicSwapBidRequestBuilder.createAtomicSwapBidRequest(operation)
+      return base.CreateAtomicSwapBidRequestBuilder
+        .createAtomicSwapBidRequest(operation)
     },
 
     async loadPendingAtomicSwapBidRequests () {

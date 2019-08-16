@@ -3,8 +3,12 @@
     <atomic-swap-form
       :atomic-swap="atomicSwap"
       @submitted="handleAtomicSwapFormSubmitted"
+      @select-asset="selectQuoteAsset"
     />
-    <div class="atomic-swap__pending-atomic-swap-table-table-wrp">
+    <div
+      class="atomic-swap__pending-atomic-swap-table-table-wrp"
+      v-if="selectedQuoteAsset.isCoinpayments"
+    >
       <pending-atomic-swap-table
         v-if="!isLoading"
         :pending-atomic-swap-bids="pendingAtomicSwapBids"
@@ -59,12 +63,14 @@ export default {
     return {
       isLoading: true,
       isFailed: false,
+      selectedQuoteAsset: {},
       pendingAtomicSwapBids: [],
     }
   },
   computed: {
     ...mapGetters([
       vuexTypes.accountId,
+      vuexTypes.assetByCode,
     ]),
     firstPageLoader () {
       return _ => this.loadFirstPage()
@@ -106,6 +112,9 @@ export default {
     },
     handleAtomicSwapFormSubmitted () {
       this.$refs.table.resetAtomicSwapBidsSelection()
+    },
+    selectQuoteAsset (code) {
+      this.selectedQuoteAsset = this.assetByCode(code)
     },
   },
 }
