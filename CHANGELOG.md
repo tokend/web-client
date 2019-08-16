@@ -12,6 +12,9 @@ for further information about branching and tagging conventions.
 - Buying atomic swaps
 - Missed russian translation
 
+#### Fixed
+- A bug when withdrawal form not closed after successfull operation
+
 ## [1.10.0] - 2019-08-12
 
 ## [1.10.0-rc.7] - 2019-08-09
