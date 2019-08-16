@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 #### Added
 - Abbreviation for balances
 - General KYC form
+- Display first name and last name customer
 - Buying atomic swaps
 
 #### Removed

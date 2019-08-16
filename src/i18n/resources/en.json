@@ -2474,6 +2474,8 @@
     "customer-attributes": {
       "id-key": "ID",
       "email-key": "Email",
+      "first-name-key": "First name",
+      "last-name-key": "Last name",
       "status-key": "Status",
       "balance-key": "{{assetCode}} balance",
       "not-registered-status-val": "Not registered",
@@ -2481,7 +2483,7 @@
       "blocked-status-val": "Blocked"
     },
     "customers-table": {
-      "email-th": "Email",
+      "customer-th": "Customer",
       "balances-th": "Balances",
       "status-th": "Status",
       "details-btn": "Show details",
@@ -2541,7 +2543,7 @@
       "update-btn": "Create request",
       "logout-btn": "Logout",
       "first-name-lbl": "First name",
-      "last-name-lbl": "Surname"
+      "last-name-lbl": "Last name"
     }
   }
 }
