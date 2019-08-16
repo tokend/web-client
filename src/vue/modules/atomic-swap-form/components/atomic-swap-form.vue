@@ -209,7 +209,6 @@ export default {
         const createAtomicSwapBidOperation =
           this.buildCreateAtomicSwapBidOperation()
         await api.postOperations(createAtomicSwapBidOperation)
-        this.$emit(EVENTS.submitted)
         this.intervalId = setInterval(() => {
           this.loadPendingAtomicSwapBidRequests()
         }, this.loadTickerTimeout)
@@ -257,6 +256,7 @@ export default {
           clearInterval(this.intervalId)
           this.isSubmitting = false
           this.hideConfirmation()
+          this.$emit(EVENTS.submitted)
         }
       } catch (e) {
         this.isFailedLoadAtomicSwapBidRecord = true
