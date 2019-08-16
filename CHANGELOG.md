@@ -6,10 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
-## [Unreleased]
+## [1.0.0-rc.8] - 2019-08-16
 #### Added
 - Abbreviation for balances
 - General KYC form
+- Buying atomic swaps (fiat and crypto)
 - Display first name and last name customer
 - Buying atomic swaps
 
@@ -154,7 +155,8 @@ for further information about branching and tagging conventions.
 #### Removed
 - `RECOVERY_MODE` config key due to unused anymore
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.0.0-rc.7...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.0.0-rc.8...HEAD
+[1.0.0-rc.8]: https://github.com/tokend/web-client/compare/1.0.0-rc.7...1.0.0-rc.8
 [1.0.0-rc.7]: https://github.com/tokend/web-client/compare/1.0.0-rc.6...1.0.0-rc.7
 [1.0.0-rc.6]: https://github.com/tokend/web-client/compare/1.0.0-rc.5...1.0.0-rc.6
 [1.0.0-rc.5]: https://github.com/tokend/web-client/compare/1.0.0-rc.4...1.0.0-rc.5
