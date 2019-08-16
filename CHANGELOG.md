@@ -11,6 +11,9 @@ for further information about branching and tagging conventions.
 #### Added
 - Buying atomic swaps
 
+#### Changed
+- Call `loadPendingAtomicSwapBidRequests` method after success submit
+
 ## [1.10.0] - 2019-08-12
 
 ## [1.10.0-rc.7] - 2019-08-09
