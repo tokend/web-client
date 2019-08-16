@@ -1,5 +1,4 @@
 import { vueRoutes } from '@/vue-router/routes'
-import { store } from '@/vuex/index'
 
 import { MovementsHistoryModule } from '@modules/movements-history/module'
 import { UserMovementsHistoryModule } from '@modules/user-movements-history/module'
@@ -32,6 +31,7 @@ import { BusinessesMyPageModule } from '@/vue/pages/businesses-my-page-module'
 import { CurrentBusinessIndicatorModule } from '@/vue/navigation/navbar/current-business-indicator/module'
 import { BusinessOwnershipModule } from '@/vue/navigation/navbar/business-ownership/module'
 import { AtomicSwapsPageModule } from '@/vue/pages/atomic-swaps-page-module'
+import { AtomicSwapFormModule } from '@modules/atomic-swap-form/module'
 import { AtomicSwapsExplorePageModule } from '@/vue/pages/atomic-swaps/atomic-swaps-explore-page-module'
 import { CreateAtomicSwapFormModule } from '@/vue/modules/create-atomic-swap-form/module'
 import { SharesPageModule } from '@/vue/pages/shares-page-module'
@@ -302,23 +302,17 @@ export default {
         menuButtonTranslationId: 'pages-names.atomic-swaps',
         menuButtonMdiName: 'swap-horizontal',
         isAutoRedirectToFirstChild: true,
-        isCorporateOnly: true,
+        isWithBusinessToBrowseOnly: true,
         submodules: [
           new AtomicSwapsExplorePageModule({
             routerEntry: {
               path: '/atomic-swaps/explore',
               name: vueRoutes.atomicSwapsExplore.name,
               props: true,
-              beforeEnter: async (to, from, next) => {
-                if (to.query.owner !== store.getters.accountId) {
-                  to.query.owner = store.getters.accountId
-                  next(to)
-                } else {
-                  next()
-                }
-              },
             },
-            isCorporateOnly: true,
+            submodules: [
+              new AtomicSwapFormModule(),
+            ],
           }),
           new CreateAtomicSwapFormModule({
             isCorporateOnly: true,

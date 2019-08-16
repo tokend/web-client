@@ -42,7 +42,7 @@
       </template>
       <template v-else slot="heading">
         {{ 'atomic-swaps-explore.buying' |
-          globalize({asset: atomicSwapToBrowse.baseAsset}) }}
+          globalize({asset: atomicSwapToBrowse.baseAssetName}) }}
       </template>
 
       <atomic-swap-viewer
@@ -105,6 +105,7 @@ export default {
     ...mapGetters({
       accountId: vuexTypes.accountId,
       isCorporate: vuexTypes.isAccountCorporate,
+      businessToBrowse: vuexTypes.businessToBrowse,
     }),
   },
 
@@ -128,14 +129,9 @@ export default {
           include: ['owner', 'base_asset', 'quote_assets'],
           filter: {
             ...(
-              this.filters.isOwnedByCurrentUser
-                ? { owner: this.accountId }
-                : {}
-            ),
-            ...(
-              this.$route.query.owner
-                ? { owner: this.$route.query.owner }
-                : {}
+              this.businessToBrowse.accountId
+                ? { owner: this.businessToBrowse.accountId }
+                : { owner: this.accountId }
             ),
           },
         })

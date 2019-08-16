@@ -16,11 +16,8 @@ export class AtomicSwapRecord {
 
     this.quoteAssets = _get(record, 'quoteAssets', [])
       .map(item => ({
-        currentCap: item.currentCap,
-        hardCap: item.hardCap,
-        id: item.id,
+        id: item.quoteAsset,
         price: item.price,
-        totalCurrentCap: item.totalCurrentCap,
         // we use camelCase because js-sdk parse response data keys in camelCase
         address: _get(record, `details.addresses[${camelCase(item.id)}]`),
       }))
