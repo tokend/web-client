@@ -37,6 +37,11 @@ export const getters = {
     rootGetters[vuexTypes.usersIdentities][accountId]
       ? rootGetters[vuexTypes.usersIdentities][accountId].email
       : undefined,
+  [vuexTypes.phoneNumberByAccountId]: (a, getters, b, rootGetters) =>
+    accountId =>
+      rootGetters[vuexTypes.usersIdentities][accountId]
+        ? rootGetters[vuexTypes.usersIdentities][accountId].phoneNumber
+        : undefined,
 }
 
 export default {

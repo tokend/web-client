@@ -228,6 +228,7 @@ const getters = {
   // identitys
   usersIdentities: 'usersIdentities',
   emailByAccountId: 'emailByAccountId',
+  phoneNumberByAccountId: 'phoneNumberByAccountId',
 }
 
 export const vuexTypes = {

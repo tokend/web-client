@@ -11,6 +11,7 @@ export default {
   computed: {
     ...mapGetters([
       vuexTypes.emailByAccountId,
+      vuexTypes.phoneNumberByAccountId,
     ]),
   },
   methods: {
@@ -100,15 +101,11 @@ export default {
     },
 
     async getPhoneByAccountId (accountId) {
-      const { data } = await api.get('/identities', {
-        filter: { address: accountId },
-        page: { limit: 1 },
-      })
-
-      if (data && data[0]) {
-        return data[0].phoneNumber
+      if (this.phoneNumberByAccountId(accountId)) {
+        return this.phoneNumberByAccountId(accountId)
       } else {
-        throw new errors.UserDoesntExistError()
+        await this.LOAD_IDENTITIES_BY_ACCOUNT_ID(accountId)
+        return this.phoneNumberByAccountId(accountId)
       }
     },
   },
