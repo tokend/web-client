@@ -54,6 +54,9 @@ const mutations = {
   HIDE_CUSTOMER_UI: 'HIDE_CUSTOMER_UI',
   SELECT_BUSINESS_TO_BROWSE: 'SELECT_BUSINESS_TO_BROWSE',
   CLEAR_BUSINESS_TO_BROWSE: 'CLEAR_BUSINESS_TO_BROWSE',
+
+  // identities
+  SET_IDENTITIES: 'SET_IDENTITIES',
 }
 
 const actions = {
@@ -104,6 +107,9 @@ const actions = {
   INIT_IDLE_TICKER: 'INIT_IDLE_TICKER',
   KEEP_SESSION: 'KEEP_SESSION',
   LOGOUT_SESSION: 'LOGOUT_SESSION',
+
+  // identities
+  LOAD_IDENTITIES_BY_ACCOUNT_ID: 'LOAD_IDENTITIES_BY_ACCOUNT_ID',
 }
 
 const getters = {
@@ -218,6 +224,10 @@ const getters = {
 
   // idle-handler
   logoutAt: 'logoutAt',
+
+  // identitys
+  usersIdentities: 'usersIdentities',
+  emailByAccountId: 'emailByAccountId',
 }
 
 export const vuexTypes = {

@@ -242,7 +242,6 @@ export default {
           request_identifier: this.requestIdentifier,
         },
       }
-      // eslint-disable-next-line max-len
       return base.CreateAtomicSwapBidRequestBuilder
         .createAtomicSwapBidRequest(operation)
     },

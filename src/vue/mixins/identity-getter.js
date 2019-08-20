@@ -1,11 +1,22 @@
 import { api } from '@/api'
 import { errors } from '@/js/errors'
+import { mapActions, mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
+
 import AccountGetterMixin from './account-getter'
 
 export default {
   mixins: [AccountGetterMixin],
 
+  computed: {
+    ...mapGetters([
+      vuexTypes.emailByAccountId,
+    ]),
+  },
   methods: {
+    ...mapActions([
+      vuexTypes.LOAD_IDENTITIES_BY_ACCOUNT_ID,
+    ]),
     /**
      * Fetches an account id by email
      *
@@ -80,15 +91,11 @@ export default {
     },
 
     async getEmailByAccountId (accountId) {
-      const { data } = await api.get('/identities', {
-        filter: { address: accountId },
-        page: { limit: 1 },
-      })
-
-      if (data && data[0]) {
-        return data[0].email
+      if (this.emailByAccountId(accountId)) {
+        return this.emailByAccountId(accountId)
       } else {
-        throw new errors.UserDoesntExistError()
+        await this.LOAD_IDENTITIES_BY_ACCOUNT_ID(accountId)
+        return this.emailByAccountId(accountId)
       }
     },
 

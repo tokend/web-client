@@ -6,6 +6,7 @@ import assets from './assets.module'
 import factors from './factors.module'
 import wallet from './wallet.module'
 import kyc from './kyc.module'
+import identities from './identities.module'
 import keyValue from './key-value.module'
 import kycRecovery from './kyc-recovery.module'
 import { vuexTypes } from '@/vuex/types'
@@ -74,6 +75,7 @@ function buildStore (storeModules = []) {
       factors,
       wallet,
       kyc,
+      identities,
       keyValue,
       idleHandler,
       kycRecovery,
