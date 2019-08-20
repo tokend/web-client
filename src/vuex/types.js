@@ -47,6 +47,9 @@ const mutations = {
 
   // idle
   UPDATE_LOGOUT_AT: 'UPDATE_LOGOUT_AT',
+
+  // identities
+  SET_IDENTITIES: 'SET_IDENTITIES',
 }
 
 const actions = {
@@ -96,6 +99,9 @@ const actions = {
   INIT_IDLE_TICKER: 'INIT_IDLE_TICKER',
   KEEP_SESSION: 'KEEP_SESSION',
   LOGOUT_SESSION: 'LOGOUT_SESSION',
+
+  // identities
+  LOAD_IDENTITIES_BY_ACCOUNT_ID: 'LOAD_IDENTITIES_BY_ACCOUNT_ID',
 }
 
 const getters = {
@@ -201,6 +207,9 @@ const getters = {
   // idle-handler
   logoutAt: 'logoutAt',
 
+  // identitys
+  usersIdentities: 'usersIdentities',
+  emailByAccountId: 'emailByAccountId',
 }
 
 export const vuexTypes = {

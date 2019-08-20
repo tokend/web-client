@@ -94,20 +94,20 @@ describe('TransferForm component', () => {
   describe('getCounterparty()', () => {
     beforeEach(() => {
       sinon
-        .stub(wrapper.vm, 'getAccountIdByEmail')
+        .stub(wrapper.vm, 'getAccountIdByIdentifier')
         .resolves(mockHelper.getDefaultAccountId)
     })
 
     it('check that handles email as argument', async () => {
       await wrapper.vm.getCounterparty('some@email.com')
 
-      expect(wrapper.vm.getAccountIdByEmail.calledOnce).to.be.true
+      expect(wrapper.vm.getAccountIdByIdentifier.calledOnce).to.be.true
     })
 
     it('check that handles accountId as argument', async () => {
       await wrapper.vm.getCounterparty(mockHelper.getDefaultAccountId)
 
-      expect(wrapper.vm.getAccountIdByEmail.called).to.be.false
+      expect(wrapper.vm.getAccountIdByIdentifier.called).to.be.false
     })
   })
 

@@ -294,7 +294,7 @@ export default {
     },
     async getCounterparty (recipient) {
       if (!base.Keypair.isValidPublicKey(recipient)) {
-        return this.getAccountIdByEmail(recipient)
+        return this.getAccountIdByIdentifier(recipient)
       } else {
         return recipient
       }

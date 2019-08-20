@@ -11,12 +11,14 @@ for further information about branching and tagging conventions.
 #### Added
 - Buying atomic swaps
 - Missed russian translation
+- `identities.module` to avoid reloading users identities
 
 #### Fixed
 - A bug when withdrawal form not closed after successfull operation
 
 #### Changed
 - Call `loadPendingAtomicSwapBidRequests` method after success submit
+- In `identity-getter.js` replace method `getAccountIdByEmail` to `getAccountIdByIdentifier`
 
 ## [1.10.0] - 2019-08-12
 
