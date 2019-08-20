@@ -70,16 +70,16 @@
 <script>
 import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 
+import { BLOB_TYPES } from '@tokend/js-sdk'
 import { api } from '@/api'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { BLOB_TYPES } from '@tokend/js-sdk'
-
 import { required } from '@validators'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
+import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 
 const EVENTS = {
   submitted: 'submitted',
@@ -112,6 +112,8 @@ export default {
       isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
       accountRoleToSet: vuexTypes.kycAccountRoleToSet,
       previousAccountRole: vuexTypes.kycPreviousRequestAccountRoleToSet,
+      kycRecoveryBlobId: vuexTypes.kycRecoveryBlobId,
+      kycRecoveryState: vuexTypes.kycRecoveryState,
     }),
 
     isFormPopulatable () {
@@ -125,13 +127,23 @@ export default {
     },
   },
 
-  created () {
-    if (this.isFormPopulatable) {
+  async created () {
+    if (
+      this.isKycRecoveryPage &&
+      this.kycRecoveryBlobId &&
+      (this.kycRecoveryState !== REQUEST_STATES_STR.permanentlyRejected)
+    ) {
+      const { data } = await api.getWithSignature(`/blobs/${this.kycRecoveryBlobId}`)
+      this.form = this.parseKycData(JSON.parse(data.value))
+    } else if (!this.isKycRecoveryPage && this.isFormPopulatable) {
       this.form = this.parseKycData(this.kycLatestRequestData)
     }
   },
 
   methods: {
+    ...mapActions({
+      sendKycRecoveryRequest: vuexTypes.SEND_KYC_RECOVERY_REQUEST,
+    }),
     tryToSubmit () {
       if (!this.isFormValid()) return
       if (this.isSignUpKycPage) {
@@ -145,17 +157,18 @@ export default {
       this.isFormSubmitting = true
       try {
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycGeneral)
-        const operation = this.createKycOperation(
-          kycBlobId,
-          this.kvEntryGeneralRoleId,
-        )
-        await api.postOperations(operation)
-        await this.loadKyc()
-
+        if (this.isKycRecoveryPage) {
+          await this.sendKycRecoveryRequest(kycBlobId)
+        } else {
+          const operation = this.createKycOperation(
+            kycBlobId,
+            this.kvEntryGeneralRoleId,
+          )
+          await api.postOperations(operation)
+          await this.loadKyc()
+        }
         this.$emit(EVENTS.submitted)
       } catch (e) {
-        this.isFormSubmitting = false
-        this.hideConfirmation()
         ErrorHandler.process(e)
       }
       this.isFormSubmitting = false

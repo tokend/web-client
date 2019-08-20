@@ -22,7 +22,7 @@
         <kyc-recovery-unverified
           v-if="isAccountUnverified"
           @kyc-recovery-submit="onSubmit" />
-        <verification-general-form
+        <verification-general
           v-else-if="isAccountGeneral"
           @kyc-recovery-submit="onSubmit" />
         <verification-corporate-form
@@ -39,7 +39,7 @@ import { mapGetters, mapActions } from 'vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 import KycRecoveryUnverified from '@/vue/pages/KycRecovery/KycRecoveryUnverified'
-import VerificationGeneralForm from '@/vue/modules/verification/general-form/index'
+import VerificationGeneral from '@/vue/pages/VerificationGeneral'
 import VerificationCorporateForm from '@/vue/pages/VerificationCorporate'
 import KycRecoveryStateMessage from '@/vue/pages/KycRecovery/KycRecoveryStateMessage'
 import config from '@/config'
@@ -49,7 +49,7 @@ export default {
   components: {
     KycRecoveryUnverified,
     KycRecoveryStateMessage,
-    VerificationGeneralForm,
+    VerificationGeneral,
     VerificationCorporateForm,
   },
   data: _ => ({
