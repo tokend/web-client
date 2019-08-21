@@ -301,7 +301,7 @@ export default {
         },
         menuButtonTranslationId: 'pages-names.atomic-swaps',
         menuButtonMdiName: 'swap-horizontal',
-        isAutoRedirectToFirstChild: false,
+        isAutoRedirectToFirstChild: true,
         isWithBusinessToBrowseOnly: true,
         submodules: [
           new AtomicSwapsExplorePageModule({

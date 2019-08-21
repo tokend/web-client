@@ -15,6 +15,8 @@ for further information about branching and tagging conventions.
 #### Fixed
 - A bug when withdrawal form not closed after successfull operation
 - A bug with kyc recovery form(general)
+- A bug with redirect after login
+- `AtomicSwapCard` design 
 
 #### Changed
 - Call `loadPendingAtomicSwapBidRequests` method after success submit

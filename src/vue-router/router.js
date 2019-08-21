@@ -116,7 +116,10 @@ export function buildRouter (store) {
         component: resolve => require(['@/vue/AppContent'], resolve),
         beforeEnter: inAppRouteGuard,
         redirect: _ => {
-          return getFirstAccessibleUserRoute(userRoutes, SchemeRegistry.current)
+          return getFirstAccessibleUserRoute(
+            userRoutes,
+            SchemeRegistry.current, store
+          )
         },
         // TODO: beforeEnter should be applied to every entry of userRoutes
         children: userRoutes,
@@ -193,7 +196,7 @@ function buildInAppRouteGuard ({ store, scheme, userRoutes }) {
       // if parent unaccessible or no accessible sibling found - find first
       // accessible user route
       if (!accessibleRoute) {
-        accessibleRoute = getFirstAccessibleUserRoute(userRoutes, scheme)
+        accessibleRoute = getFirstAccessibleUserRoute(userRoutes, scheme, store)
       }
 
       // if no accessible user route found - we are helpless - throw an error
@@ -234,7 +237,11 @@ function buildSignupKycPageGuard (store) {
   }
 }
 
-function getFirstAccessibleUserRoute (userRoutes, scheme) {
+function getFirstAccessibleUserRoute (userRoutes, scheme, store) {
+  if (!store.getters[vuexTypes.isLoggedIn]) {
+    return { path: '/sign-in' }
+  }
+
   return userRoutes.find(item => {
     const isAccessible = checkPathAccessible(item.path, scheme)
     const hasChildren = item.children && item.children.length

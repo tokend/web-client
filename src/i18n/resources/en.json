@@ -2427,7 +2427,7 @@
     },
     "atomic-swap-card": {
       "available": "Available: {{ amount, balance }}",
-      "locked": "Locked: {{ amount, balance }}"
+      "price": "Price: {{ amount, balance }} {{code}}"
     },
     "customers-page": {
       "invite-btn": "Invite client",

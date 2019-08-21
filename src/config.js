@@ -121,24 +121,6 @@ export default Object.assign(
     PLAY_MARKET_LINK: 'https://play.google.com/store/apps/details?id=org.tokend.template',
 
     /**
-     * Link for Windows version of offline issuance application. If empty, link
-     * for download of the application will not be shown.
-     */
-    OFFLINE_ISSUANCE_WIN_LINK: 'https://s3-eu-west-1.amazonaws.com/881e65d1943e42/pu/TokenD+pre-issuance+tool-win32-x64.zip',
-
-    /**
-     * Link for MacOS version of offline issuance application. If empty, link
-     * for download of the application will not be shown.
-     */
-    OFFLINE_ISSUANCE_MAC_LINK: 'https://s3-eu-west-1.amazonaws.com/881e65d1943e42/pu/TokenD+pre-issuance+tool-darwin-x64.zip',
-
-    /**
-     * Link for sources of offline issuance application. If empty, link
-     * for sources of the application will not be shown.
-     */
-    OFFLINE_ISSUANCE_SOURCE_LINK: 'https://github.com/tokend/offline-issuance',
-
-    /**
      * URL of the Sentry DSN. It’s a representation of the configuration
      * required by the Sentry SDKs.
      */
