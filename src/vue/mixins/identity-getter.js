@@ -1,5 +1,4 @@
 import { api } from '@/api'
-import { errors } from '@/js/errors'
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
@@ -41,7 +40,7 @@ export default {
       } else if (defaultValue !== undefined) {
         return defaultValue
       } else {
-        throw new errors.UserDoesntExistError()
+        return ''
       }
     },
 

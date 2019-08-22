@@ -1132,7 +1132,8 @@
       "recheck-form": "Пожалуйста, перепроверьте форму.",
       "submit-btn": "Отправить",
       "payment-successful": "Активы отправлены",
-      "recipient-not-found": "Получатель не найден"
+      "recipient-not-found": "Получатель не найден",
+      "approving-msg": "Этот пользователь не существует в системе. Вы уверены, что хотите отправить?"
     },
     "issuance-page": {
       "history-title": "История",
