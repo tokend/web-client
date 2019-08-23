@@ -12,6 +12,7 @@ export default {
     ...mapGetters([
       vuexTypes.emailByAccountId,
       vuexTypes.phoneNumberByAccountId,
+      vuexTypes.telegramUsernameByAccountId,
     ]),
   },
   methods: {
@@ -106,6 +107,14 @@ export default {
       } else {
         await this.LOAD_IDENTITIES_BY_ACCOUNT_ID(accountId)
         return this.phoneNumberByAccountId(accountId)
+      }
+    },
+    async getTelegramUsernameByAccountId (accountId) {
+      if (this.telegramUsernameByAccountId(accountId)) {
+        return this.telegramUsernameByAccountId(accountId)
+      } else {
+        await this.LOAD_IDENTITIES_BY_ACCOUNT_ID(accountId)
+        return this.telegramUsernameByAccountId(accountId)
       }
     },
   },

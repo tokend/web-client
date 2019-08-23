@@ -73,6 +73,21 @@
           @submitted="updateFactors"
         />
       </template>
+
+      <template v-else-if="viewMode === VIEW_MODES.changeTelegramUsername">
+        <template slot="heading">
+          <template v-if="isTelegramEnabled">
+            {{ 'security-page.change-telegram-title' | globalize }}
+          </template>
+          <template v-else>
+            {{ 'security-page.add-telegram-title' | globalize }}
+          </template>
+        </template>
+        <submodule-importer
+          :submodule="getModule().getSubmodule(TelegramFormPseudoModule)"
+          @submitted="updateFactors"
+        />
+      </template>
     </drawer>
 
     <div class="security-page__row">
@@ -162,6 +177,26 @@
     </template>
 
     <!-- eslint-disable-next-line max-len -->
+    <template v-if="getModule().canRenderSubmodule(TelegramFormPseudoModule)">
+      <div class="security-page__row">
+        <p class="security-page__row-title">
+          {{ 'security-page.telegram-title' | globalize }}
+        </p>
+        <a
+          class="security-page__row-action"
+          @click="showDrawer(VIEW_MODES.changeTelegramUsername)"
+        >
+          <template v-if="isTelegramEnabled">
+            {{ 'security-page.change-telegram-btn' | globalize }}
+          </template>
+          <template v-else>
+            {{ 'security-page.add-telegram-btn' | globalize }}
+          </template>
+        </a>
+      </div>
+    </template>
+
+    <!-- eslint-disable-next-line max-len -->
     <template v-if="getModule().canRenderSubmodule(DefaultQuoteAssetPseudoModule)">
       <div class="security-page__row">
         <p class="security-page__row-title">
@@ -198,6 +233,7 @@ import { ShowSeedPseudoModule } from '@/modules-arch/pseudo-modules/show-seed-ps
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
 import { ShowNetworkPassphrasePseudoModule } from '@/modules-arch/pseudo-modules/show-network-passphrase-pseudo-module'
 import { PhoneNumberFormPseudoModule } from '@/modules-arch/pseudo-modules/phone-number-form-pseudo-module'
+import { TelegramFormPseudoModule } from '@/modules-arch/pseudo-modules/telegram-form-pseudo-module'
 import { DefaultQuoteAssetPseudoModule } from '@/modules-arch/pseudo-modules/default-quote-asset-pseudo-module'
 
 const VIEW_MODES = {
@@ -207,6 +243,7 @@ const VIEW_MODES = {
   viewSecretSeed: 'viewSecretSeed',
   viewNetworkPassphrase: 'viewNetworkPassphrase',
   changePhoneNumber: 'changePhoneNumber',
+  changeTelegramUsername: 'changeTelegramUsername',
   default: '',
 }
 
@@ -231,6 +268,7 @@ export default {
     ChangePasswordPseudoModule,
     ShowNetworkPassphrasePseudoModule,
     PhoneNumberFormPseudoModule,
+    TelegramFormPseudoModule,
     DefaultQuoteAssetPseudoModule,
     api,
     walletSeed: '',
@@ -241,6 +279,7 @@ export default {
       accountId: vuexTypes.accountId,
       isTotpEnabled: vuexTypes.isTotpEnabled,
       isPhoneEnabled: vuexTypes.isPhoneEnabled,
+      isTelegramEnabled: vuexTypes.isTelegramEnabled,
     }),
   },
 

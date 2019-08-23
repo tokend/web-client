@@ -8,6 +8,7 @@
       'input-field--disabled': $attrs.disabled,
       'input-field--pwd-toggle-present': isPasswordType,
       'input-field--phone-number': isPhoneNumberType,
+      'input-field--telegram': isTelegramType,
     }"
   >
     <input
@@ -16,7 +17,7 @@
       class="input-field__input"
       :class="{
         'input-field__input--autofill-white': whiteAutofill,
-        'input-field__phone-number-input': isPhoneNumberType
+        'input-field__padding-input': (isPhoneNumberType || isTelegramType),
       }"
       :type="isPasswordType && isPasswordShown ? 'text' : type"
       :value="value"
@@ -47,7 +48,7 @@
     <span
       class="input-field__label"
       :class="{
-        'input-field__label--phone-number': isPhoneNumberType,
+        'input-field__label--icon': (isPhoneNumberType || isTelegramType),
       }"
     >
       {{ label }}
@@ -73,10 +74,10 @@ const EVENTS = {
 }
 
 const INPUT_TYPES = {
+  telegram: 'telegram',
   phoneNumber: 'phone-number',
   password: 'password',
   number: 'number',
-
 }
 
 export default {
@@ -111,6 +112,10 @@ export default {
 
     isPhoneNumberType () {
       return this.type === INPUT_TYPES.phoneNumber
+    },
+
+    isTelegramType () {
+      return this.type === INPUT_TYPES.telegram
     },
   },
 
@@ -433,7 +438,16 @@ $pwd-toggle-btn-width: 3.2rem;
   line-height: 1.25;
 }
 
-.input-field__label--phone-number {
+.input-field--telegram:before {
+  position: absolute;
+  top: 1.55rem;
+  content: '\0040';
+  left: 0;
+  font-size: 1.8rem;
+  line-height: 1.25;
+}
+
+.input-field__label--icon {
   .input-field__input:not(:focus):placeholder-shown ~ & {
     top: 0;
 
@@ -441,7 +455,7 @@ $pwd-toggle-btn-width: 3.2rem;
   }
 }
 
-.input-field__phone-number-input {
-  padding: 1.5rem 0 0.6rem 1rem;
+.input-field__padding-input {
+  padding: 1.5rem 0 0.6rem 1.5rem;
 }
 </style>

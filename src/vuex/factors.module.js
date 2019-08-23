@@ -6,6 +6,7 @@ const FACTOR_TYPES = Object.freeze({
   password: 'password',
   email: 'email',
   phone: 'phone',
+  telegram: 'telegram'
 })
 
 // Factors with lower priority will not trigger 2fa flow, so we can ignore
@@ -38,17 +39,15 @@ export const actions = {
 
 export const getters = {
   [vuexTypes.factors]: state => state.factors,
-  [vuexTypes.factorsTotp]: state => state.factors.filter(
-    factor => factor.type === FACTOR_TYPES.totp
-  ),
   [vuexTypes.factorsPassword]: state => state.factors.filter(
     factor => factor.type === FACTOR_TYPES.password
   ),
   [vuexTypes.factorsEmail]: state => state.factors.filter(
     factor => factor.type === FACTOR_TYPES.email
   ),
-  [vuexTypes.factorsPhone]: state => state.factors.filter(
-    factor => factor.type === FACTOR_TYPES.phone
+
+  [vuexTypes.factorsTotp]: state => state.factors.filter(
+    factor => factor.type === FACTOR_TYPES.totp
   ),
   [vuexTypes.factorsTotpEnabled]: (_, getters) =>
     getters[vuexTypes.factorsTotp].filter(
@@ -56,12 +55,26 @@ export const getters = {
     ),
   [vuexTypes.isTotpEnabled]: (_, getters) =>
     !!getters[vuexTypes.factorsTotpEnabled].length,
+
+  [vuexTypes.factorsPhone]: state => state.factors.filter(
+    factor => factor.type === FACTOR_TYPES.phone
+  ),
   [vuexTypes.factorsPhoneEnabled]: (_, getters) =>
     getters[vuexTypes.factorsPhone].filter(
       factor => factor.priority === ENABLED_FACTOR_PRIORITY
     ),
   [vuexTypes.isPhoneEnabled]: (_, getters) =>
     !!getters[vuexTypes.factorsPhoneEnabled].length,
+
+  [vuexTypes.factorsTelegram]: state => state.factors.filter(
+    factor => factor.type === FACTOR_TYPES.telegram,
+  ),
+  [vuexTypes.factorsTelegramEnabled]: (_, getters) =>
+    getters[vuexTypes.factorsTelegram].filter(
+      factor => factor.priority === ENABLED_FACTOR_PRIORITY
+    ),
+  [vuexTypes.isTelegramEnabled]: (_, getters) =>
+    !!getters[vuexTypes.factorsTelegramEnabled].length,
 }
 
 export default {

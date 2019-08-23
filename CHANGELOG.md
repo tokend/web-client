@@ -11,6 +11,7 @@ for further information about branching and tagging conventions.
 - Buying atomic swaps
 - Missed russian translation
 - `identities.module` to avoid reloading users identities
+- Set/change telegram username in settings
 
 #### Fixed
 - A bug when withdrawal form not closed after successfull operation
