@@ -12,6 +12,7 @@ export const mutations = {
       accountId: accountIdIdentities.accountId,
       phoneNumber: accountIdIdentities.phoneNumber,
       email: accountIdIdentities.email,
+      telegramUsername: accountIdIdentities.telegramUsername,
     }
   },
 }
@@ -36,12 +37,17 @@ export const getters = {
   [vuexTypes.emailByAccountId]: (a, getters, b, rootGetters) => accountId =>
     rootGetters[vuexTypes.usersIdentities][accountId]
       ? rootGetters[vuexTypes.usersIdentities][accountId].email
-      : undefined,
+      : '',
   [vuexTypes.phoneNumberByAccountId]: (a, getters, b, rootGetters) =>
     accountId =>
       rootGetters[vuexTypes.usersIdentities][accountId]
         ? rootGetters[vuexTypes.usersIdentities][accountId].phoneNumber
-        : undefined,
+        : '',
+  [vuexTypes.telegramUsernameByAccountId]: (a, getters, b, rootGetters) =>
+    accountId =>
+      rootGetters[vuexTypes.usersIdentities][accountId]
+        ? rootGetters[vuexTypes.usersIdentities][accountId].telegramUsername
+        : '',
 }
 
 export default {

@@ -54,6 +54,10 @@ export const address = (asset) => value => {
 export const emailOrAccountId = value => {
   return validateEmail(value) || base.Keypair.isValidPublicKey(value)
 }
+
+export const telegramUsername = value => {
+  return /^[a-zA-Z0-9_-]{3,16}$/.test(value)
+}
 export const emailOrPhoneNumber = value => {
   return validateEmail(value) || validatePhoneNumber(value)
 }

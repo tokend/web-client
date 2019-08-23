@@ -65,7 +65,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { api, factorsManager } from '@/api'
 import { errors } from '@tokend/js-sdk'
 import { vuexTypes } from '@/vuex'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import IdentityGetter from '@/vue/mixins/identity-getter'
 import { Bus } from '@/js/helpers/event-bus'
 
@@ -109,6 +109,10 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      loadFactors: vuexTypes.LOAD_FACTORS,
+      loadNewIdentities: vuexTypes.LOAD_IDENTITIES_BY_ACCOUNT_ID,
+    }),
     async submit () {
       const validationRule = this.isShowSmsCode
         ? this.isFormValid()
@@ -152,6 +156,7 @@ export default {
       try {
         await factorsManager.verifyTotpFactor(error, this.form.code)
         await this.changePhoneNumber()
+        await this.loadNewIdentities()
         this.$emit(EVENTS.submitted)
         if (this.isPhoneEnabled) {
           Bus.success('phone-number-form.phone-number-changed-msg')

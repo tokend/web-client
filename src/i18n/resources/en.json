@@ -131,7 +131,8 @@
       "field-error_minLength": "This field must contain minimum {{minLength}} symbols",
       "field-error_selectedSameAssetCode": "Not allowed duplicated quote asset codes",
       "field-error_validatePhoneNumber": "Make sure the phone number is correct",
-      "field-error_emailOrPhoneNumber": "This field should be a valid email or phone number"
+      "field-error_emailOrPhoneNumber": "This field should be a valid email or phone number",
+      "field-error_telegramUsername": "Make sure the telegram username is correct"
     },
     "errors": {
       "default": "Something bad happened. Please try again later or contact the system owner.",
@@ -533,8 +534,13 @@
       "phone-number-title": "Phone number",
       "change-phone-number-btn": "Change phone number",
       "change-phone-number-title": "Change phone number",
+      "telegram-title": "Telegram",
+      "change-telegram-btn": "Change telegram username",
+      "change-telegram-title": "Change telegram username",
       "add-phone-number-title": "Add phone number",
       "add-phone-number-btn": "Add phone number",
+      "add-telegram-title": "Add telegram username",
+      "add-telegram-btn": "Add telegram username",
       "default-quote-asset-title": "Default quote asset"
     },
     "phone-number-form": {
@@ -546,6 +552,17 @@
       "phone-number-changed-msg": "Phone number was successfully changed",
       "phone-number-added-msg": "Phone number was successfully added",
       "exist-phone-number-err": "Such phone number already exists"
+    },
+    "telegram-form": {
+      "telegram-lbl": "Telegram username",
+      "change-btn": "Change",
+      "add-btn": "Add",
+      "code-from-sms-lbl": "Code from telegram chat",
+      "wrong-sms-code-err": "Wrong code",
+      "telegram-changed-msg": "Telegram username was successfully changed",
+      "telegram-added-msg": "Telegram username was successfully added",
+      "exist-telegram-err": "Such telegram username already exists",
+      "info-msg": "Go to this chat to get an authorization code"
     },
     "tfa-form": {
       "password-lbl": "Current password",

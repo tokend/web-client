@@ -131,7 +131,8 @@
       "field-error_minLength": "Количество знаков должно превышать {{minLength}}",
       "field-error_selectedSameAssetCode": "Не могут быть выбраны два одинаковых актива",
       "field-error_validatePhoneNumber": "Неверный номер телефона",
-      "field-error_emailOrPhoneNumber": "Неверный имейл или телефон получателя"
+      "field-error_emailOrPhoneNumber": "Неверный имейл или телефон получателя",
+      "field-error_telegramUsername" : "Убедитесь что имя пользователя верное"
     },
     "errors": {
       "default": "Что-то пошло не так. Пожалуйста, повторите попытку позже или свяжитесь с владельцем системы.",
@@ -533,8 +534,13 @@
       "phone-number-title": "Номер телефона",
       "change-phone-number-btn": "Сменить номер телефона",
       "change-phone-number-title": "Смена номера телефона",
+      "telegram-title": "Телеграм",
+      "change-telegram-btn": "Сменить имя пользователя телеграм",
+      "change-telegram-title": "Сменить имя пользователя телеграм",
       "add-phone-number-title": "Добавление номера телефона",
       "add-phone-number-btn": "Добавить номер телефона",
+      "add-telegram-title": "Добавление имя пользователя телеграм",
+      "add-telegram-btn": "Добавить имя пользователя телеграм",
       "default-quote-asset-title": "Котируемый актив по умолчанию"
     },
     "default-quote-asset-select-field": {
@@ -550,6 +556,17 @@
       "phone-number-changed-msg": "Номер телефона успешно изменен",
       "phone-number-added-msg": "Номер телефона успешно добавлен",
       "exist-phone-number-err": "Такой номер уже существует"
+    },
+    "telegram-form": {
+      "telegram-lbl": "Имя пользователя телеграм",
+      "change-btn": "Изменить",
+      "add-btn": "Добавить",
+      "code-from-sms-lbl": "Код из телеграм чата",
+      "wrong-sms-code-err": "Неверный код",
+      "telegram-changed-msg": "Имя пользователя телеграм успешно изменен",
+      "telegram-added-msg": "Имя пользователя телеграм успешно добавлен",
+      "exist-telegram-err": "Такое имя пользователя уже существует",
+      "info-msg": "Зайдите в данный чат для получения кода авторизации"
     },
     "tfa-form": {
       "password-lbl": "Текущий пароль",

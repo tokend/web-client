@@ -14,6 +14,7 @@ import { SecurityPageModule } from '@/vue/pages/security-page-module'
 import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-account-id-pseudo-module'
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
 import { PhoneNumberFormPseudoModule } from '@/modules-arch/pseudo-modules/phone-number-form-pseudo-module'
+import { TelegramFormPseudoModule } from '@/modules-arch/pseudo-modules/telegram-form-pseudo-module'
 import { DefaultQuoteAssetPseudoModule } from '@/modules-arch/pseudo-modules/default-quote-asset-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
@@ -344,6 +345,7 @@ export default {
                 isCorporateOnly: true,
               }),
               new PhoneNumberFormPseudoModule(),
+              new TelegramFormPseudoModule(),
               new DefaultQuoteAssetPseudoModule({
                 isCorporateOnly: true,
               }),

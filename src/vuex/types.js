@@ -164,9 +164,13 @@ const getters = {
   factorsEmail: 'factorsEmail',
   factorsTotpEnabled: 'factorsTotpEnabled',
   isTotpEnabled: 'isTotpEnabled',
+
   factorsPhoneEnabled: 'factorsPhoneEnabled',
   isPhoneEnabled: 'isPhoneEnabled',
   factorsPhone: 'factorsPhone',
+  factorsTelegramEnabled: 'factorsTelegramEnabled',
+  isTelegramEnabled: 'isTelegramEnabled',
+  factorsTelegram: 'factorsTelegram',
 
   // kyc
   kycState: 'kycState',
@@ -229,6 +233,7 @@ const getters = {
   usersIdentities: 'usersIdentities',
   emailByAccountId: 'emailByAccountId',
   phoneNumberByAccountId: 'phoneNumberByAccountId',
+  telegramUsernameByAccountId: 'telegramUsernameByAccountId',
 }
 
 export const vuexTypes = {
