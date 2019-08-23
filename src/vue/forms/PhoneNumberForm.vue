@@ -39,7 +39,7 @@
         v-ripple
         type="submit"
         class="phone-number-form__btn app__button-raised"
-        :disabled="formMixin.isDisabled || isUserPhoneNumber"
+        :disabled="formMixin.isDisabled || isPhoneNumberChanged"
       >
         <template v-if="isPhoneEnabled">
           {{ 'phone-number-form.change-btn' | globalize }}
@@ -97,7 +97,7 @@ export default {
       accountId: vuexTypes.accountId,
       isPhoneEnabled: vuexTypes.isPhoneEnabled,
     }),
-    isUserPhoneNumber () {
+    isPhoneNumberChanged () {
       return this.userPhoneNumer === this.form.phoneNumber
     },
   },

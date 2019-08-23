@@ -47,7 +47,7 @@
         v-ripple
         type="submit"
         class="telegram-form__btn app__button-raised"
-        :disabled="formMixin.isDisabled || isUserPhoneNumber"
+        :disabled="formMixin.isDisabled || isTelegramChanged"
       >
         <template v-if="isTelegramEnabled">
           {{ 'telegram-form.change-btn' | globalize }}
@@ -105,7 +105,7 @@ export default {
       accountId: vuexTypes.accountId,
       isTelegramEnabled: vuexTypes.isTelegramEnabled,
     }),
-    isUserPhoneNumber () {
+    isTelegramChanged () {
       return this.userTelegram === this.form.telegram
     },
   },

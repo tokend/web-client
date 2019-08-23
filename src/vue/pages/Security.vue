@@ -76,7 +76,7 @@
 
       <template v-else-if="viewMode === VIEW_MODES.changeTelegramUsername">
         <template slot="heading">
-          <template v-if="isPhoneEnabled">
+          <template v-if="isTelegramEnabled">
             {{ 'security-page.change-telegram-title' | globalize }}
           </template>
           <template v-else>
@@ -186,7 +186,7 @@
           class="security-page__row-action"
           @click="showDrawer(VIEW_MODES.changeTelegramUsername)"
         >
-          <template v-if="isPhoneEnabled">
+          <template v-if="isTelegramEnabled">
             {{ 'security-page.change-telegram-btn' | globalize }}
           </template>
           <template v-else>
@@ -279,6 +279,7 @@ export default {
       accountId: vuexTypes.accountId,
       isTotpEnabled: vuexTypes.isTotpEnabled,
       isPhoneEnabled: vuexTypes.isPhoneEnabled,
+      isTelegramEnabled: vuexTypes.isTelegramEnabled,
     }),
   },
 
