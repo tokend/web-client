@@ -31,7 +31,7 @@
             >
               <img
                 class="downloads__phone-img"
-                src="@static/downloads-page/android_cropped.png"
+                :src="androidCroppedImgUrl"
               >
               <a
                 :href="config.PLAY_MARKET_LINK"
@@ -40,7 +40,7 @@
               >
                 <img
                   class="downloads__store-img"
-                  src="@static/downloads-page/google_play_cropped.png"
+                  :src="googlePlayCroppedImgUrl"
                 >
               </a>
             </div>
@@ -51,45 +51,29 @@
             >
               <img
                 class="downloads__phone-img"
-                src="@static/downloads-page/iphone.png"
+                :src="iphoneImgUrl"
               >
               <router-link :to="vueRoutes.iosInstallationGuide">
                 <img
                   class="downloads__store-img"
-                  src="@static/downloads-page/app_store_cropped.png"
+                  :src="appStoreCroppedImgUrl"
                 >
               </router-link>
             </div>
           </div>
           <img
             class="downloads__phones-overlay"
-            src="@static/downloads-page/phones_overlay.png"
+            :src="phonesOverlayImgUrl"
           >
         </div>
 
         <hr>
-      </section>
-
-      <section class="downloads__section">
-        <h3 class="downloads__section-header">
-          {{ 'downloads-page.config-header' | globalize }}
-        </h3>
-        <p class="downloads__section-text">
-          {{ 'downloads-page.config-desc' | globalize }}
-        </p>
-        <qr-code-wrapper
-          class="downloads__config-qr"
-          :value="qrConfigText"
-          :size="250"
-        />
       </section>
     </div>
   </div>
 </template>
 
 <script>
-import QrCodeWrapper from '@/vue/common/QrCodeWrapper'
-
 import config from '@/config'
 
 import { vueRoutes } from '@/vue-router/routes'
@@ -97,9 +81,13 @@ import { vueRoutes } from '@/vue-router/routes'
 export default {
   name: 'downloads',
   components: {
-    QrCodeWrapper,
   },
   data: _ => ({
+    androidCroppedImgUrl: `${config.IMG_BUCKET_URL}/downloads-page/android_cropped.png`,
+    googlePlayCroppedImgUrl: `${config.IMG_BUCKET_URL}/downloads-page/google_play_cropped.png`,
+    iphoneImgUrl: `${config.IMG_BUCKET_URL}/downloads-page/iphone.png`,
+    appStoreCroppedImgUrl: `${config.IMG_BUCKET_URL}/downloads-page/app_store_cropped.png`,
+    phonesOverlayImgUrl: `${config.IMG_BUCKET_URL}/downloads-page/phones_overlay.png`,
     vueRoutes,
     config,
   }),
@@ -119,190 +107,190 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@scss/variables';
-@import '~@scss/mixins';
+  @import '~@scss/variables';
+  @import '~@scss/mixins';
 
-.downloads {
-  padding: 3.3rem 19.5rem;
+  .downloads {
+    padding: 3.3rem 19.5rem;
 
-  @include respond-to($x-medium) {
-    padding: 3.3rem 10rem;
+    @include respond-to($x-medium) {
+      padding: 3.3rem 10rem;
+    }
+    @include respond-to($medium) {
+      padding: 3.3rem 6rem;
+    }
+    @include respond-to($tablet) {
+      padding: 3.3rem 2rem;
+    }
   }
-  @include respond-to($medium) {
-    padding: 3.3rem 6rem;
+
+  .downloads__link {
+    padding: 0;
+    font-weight: 400;
+    font-size: 1.3rem;
   }
-  @include respond-to($tablet) {
-    padding: 3.3rem 2rem;
+
+  .downloads__title {
+    font-size: 4rem;
+    font-weight: 400;
+    color: $col-downloads-title;
   }
-}
 
-.downloads__link {
-  padding: 0;
-  font-weight: 400;
-  font-size: 1.3rem;
-}
+  .downloads__content {
+    margin-top: 3.5rem;
+    border-radius: 0.2rem;
+    background-color: $col-downloads-block-bg;
+    padding: 4.1rem 10rem;
 
-.downloads__title {
-  font-size: 4rem;
-  font-weight: 400;
-  color: $col-downloads-title;
-}
-
-.downloads__content {
-  margin-top: 3.5rem;
-  border-radius: 0.2rem;
-  background-color: $col-downloads-block-bg;
-  padding: 4.1rem 10rem;
-
-  @include box-shadow();
-  @include respond-to($medium) {
-    padding: 4.1rem 6rem;
+    @include box-shadow();
+    @include respond-to($medium) {
+      padding: 4.1rem 6rem;
+    }
+    @include respond-to($tablet) {
+      padding: 2rem;
+    }
   }
-  @include respond-to($tablet) {
-    padding: 2rem;
+
+  .downloads__section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 1.2rem;
+
+    &:not(:first-child) {
+      margin-top: 4.7rem;
+    }
   }
-}
 
-.downloads__section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  margin-top: 1.2rem;
-
-  &:not(:first-child) {
-    margin-top: 4.7rem;
-  }
-}
-
-.downloads__section hr {
-  width: 100%;
-  margin-top: 4.8rem;
-  border: $col-downloads-line solid 0.05rem;
-}
-
-.downloads__section-header {
-  font-size: 2.9rem;
-  font-weight: 400;
-  color: $col-downloads-header;
-}
-
-.downloads__section-text {
-  font-size: 1.4rem;
-  padding-top: 0.8rem;
-  color: $col-downloads-text;
-}
-
-.downloads__phones-wrapper {
-  position: relative;
-  width: 100%;
-  height: 41.5rem;
-  margin-top: 3.9rem;
-
-  @include respond-to(small) {
-    height: 100%;
-  }
-}
-
-.downloads__operation-systems-wrapper {
-  height: 47rem;
-
-  @include respond-to(small) {
-    height: 100%;
-  }
-}
-
-.downloads__phones-overlay {
-  margin: 8.3rem auto 0;
-  display: block;
-  max-width: 52.7rem;
-
-  @include respond-to(small) {
-    display: none;
-  }
-}
-
-.downloads__pre-issuance-app-img {
-  display: block;
-  max-width: 52.7rem;
-
-  @include respond-to(small) {
-    max-width: 46.7rem;
-  }
-  @include respond-to(xsmall) {
+  .downloads__section hr {
     width: 100%;
+    margin-top: 4.8rem;
+    border: $col-downloads-line solid 0.05rem;
   }
-}
 
-.downloads__phones {
-  display: flex;
-  position: absolute;
-  left: 50%;
-  max-width: 35rem;
-  transform: translateX(-50%);
+  .downloads__section-header {
+    font-size: 2.9rem;
+    font-weight: 400;
+    color: $col-downloads-header;
+  }
 
-  @include respond-to(small) {
-    display: block;
+  .downloads__section-text {
+    font-size: 1.4rem;
+    padding-top: 0.8rem;
+    color: $col-downloads-text;
+  }
+
+  .downloads__phones-wrapper {
     position: relative;
-    left: 0;
-    max-width: 100%;
-    transform: none;
+    width: 100%;
+    height: 41.5rem;
+    margin-top: 3.9rem;
+
+    @include respond-to(small) {
+      height: 100%;
+    }
   }
-}
 
-.downloads__operation-systems {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 0.9rem;
-}
+  .downloads__operation-systems-wrapper {
+    height: 47rem;
 
-.downloads__source-code-link {
-  color: $col-downloads-link;
-}
-
-.downloads__phone-img,
-.downloads__android,
-.downloads__ios,
-.downloads__windows,
-.downloads__macosx {
-  max-width: 16rem;
-
-  @include respond-to(small) {
-    max-width: 100%;
+    @include respond-to(small) {
+      height: 100%;
+    }
   }
-}
 
-.downloads__ios,
-.downloads__macosx {
-  margin-left: 2.9rem;
+  .downloads__phones-overlay {
+    margin: 8.3rem auto 0;
+    display: block;
+    max-width: 52.7rem;
 
-  @include respond-to(small) {
-    margin-left: 0;
+    @include respond-to(small) {
+      display: none;
+    }
+  }
+
+  .downloads__pre-issuance-app-img {
+    display: block;
+    max-width: 52.7rem;
+
+    @include respond-to(small) {
+      max-width: 46.7rem;
+    }
+    @include respond-to(xsmall) {
+      width: 100%;
+    }
+  }
+
+  .downloads__phones {
+    display: flex;
+    position: absolute;
+    left: 50%;
+    max-width: 35rem;
+    transform: translateX(-50%);
+
+    @include respond-to(small) {
+      display: block;
+      position: relative;
+      left: 0;
+      max-width: 100%;
+      transform: none;
+    }
+  }
+
+  .downloads__operation-systems {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 0.9rem;
+  }
+
+  .downloads__source-code-link {
+    color: $col-downloads-link;
+  }
+
+  .downloads__phone-img,
+  .downloads__android,
+  .downloads__ios,
+  .downloads__windows,
+  .downloads__macosx {
+    max-width: 16rem;
+
+    @include respond-to(small) {
+      max-width: 100%;
+    }
+  }
+
+  .downloads__ios,
+  .downloads__macosx {
+    margin-left: 2.9rem;
+
+    @include respond-to(small) {
+      margin-left: 0;
+      margin-top: 4rem;
+    }
+  }
+
+  .downloads__store-img {
+    margin-top: 3.9rem;
+    max-width: 16rem;
+
+    @include respond-to(small) {
+      max-width: 24rem;
+      width: 100%;
+    }
+  }
+
+  .downloads__os-store-img {
+    max-width: 16rem;
+
+    @include respond-to(small) {
+      max-width: 24rem;
+      width: 100%;
+    }
+  }
+
+  .downloads__config-qr {
     margin-top: 4rem;
   }
-}
-
-.downloads__store-img {
-  margin-top: 3.9rem;
-  max-width: 16rem;
-
-  @include respond-to(small) {
-    max-width: 24rem;
-    width: 100%;
-  }
-}
-
-.downloads__os-store-img {
-  max-width: 16rem;
-
-  @include respond-to(small) {
-    max-width: 24rem;
-    width: 100%;
-  }
-}
-
-.downloads__config-qr {
-  margin-top: 4rem;
-}
 </style>

@@ -143,6 +143,11 @@ export default Object.assign(
      */
     STORAGE_KEY: 'TokenDStore-v2',
 
+    /**
+     * Bucket url where located imgs
+     */
+    IMG_BUCKET_URL: 'https://conto-images.s3.eu-north-1.amazonaws.com',
+
   },
   // process.env,
   process.env
