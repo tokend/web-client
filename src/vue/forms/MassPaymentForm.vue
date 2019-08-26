@@ -120,7 +120,10 @@ export default {
 
   props: {
     assetCode: { type: String, default: '' },
-    receivers: { type: String, default: '' },
+    receivers: {
+      type: Array, /** {@link CustomerRecord} **/
+      default: _ => [],
+    },
     amount: { type: [String, Number], default: '' },
   },
 
@@ -128,7 +131,7 @@ export default {
     return {
       form: {
         assetCode: '',
-        receivers: this.receivers || '',
+        receivers: '',
         amount: String(this.amount) || '',
       },
       isLoaded: false,
@@ -153,6 +156,7 @@ export default {
       transferableBalancesAssets: vuexTypes.transferableBalancesAssets,
       assetByCode: vuexTypes.assetByCode,
       accountBalanceByCode: vuexTypes.accountBalanceByCode,
+      accountId: vuexTypes.accountId,
     }),
 
     accountBalance () {
@@ -161,6 +165,7 @@ export default {
   },
 
   async created () {
+    this.form.receivers = this.receivers.map(i => i.email).join(', ')
     await this.loadAssets()
     await this.loadCurrentBalances()
     this.form.assetCode = this.assetCode || this.transferableBalancesAssets[0].code || ''
@@ -212,11 +217,38 @@ export default {
         })
         this.$emit(EVENTS.submitted)
         Bus.success('mass-payment-form.payment-successfully-notification')
+        Bus.emit('customers:hideSelect')
       } catch (error) {
         ErrorHandler.process(error)
       }
 
       this.enableForm()
+    },
+
+    async getReceiverIdByEmail (email) {
+      const receiver = this.receivers.find(i => i.email === email)
+      if (receiver) {
+        return receiver.accountId
+      } else {
+        const id = await this.getAccountIdByIdentifier(email)
+        return id
+      }
+    },
+
+    async getOperationByEmail (email, data) {
+      const receiverId = await this.getReceiverIdByEmail(email)
+      if (receiverId) {
+        return this.getOperation(receiverId, { subject: '' })
+      } else {
+        return this.getOperation(
+          data.id,
+          {
+            subject: '',
+            sender: this.accountId,
+            email: email,
+          }
+        )
+      }
     },
 
     async buildOperationsToSubmit () {
@@ -226,13 +258,18 @@ export default {
         delimiters: CsvUtil.delimiters.common,
       })
 
-      const accountIds =
-        await this.getAccountIdByEmailMass(emails, this.form.assetCode)
+      const { data } = await api.get('/integrations/payment-proxy/info')
 
-      const operations = accountIds.map((accId, id) => base
+      return Promise.all(
+        emails.map(email => this.getOperationByEmail(email, data))
+      )
+    },
+
+    getOperation (destinationAccountId, subject) {
+      return base
         .PaymentBuilder.payment({
           sourceBalanceId: this.accountBalance.id,
-          destination: accId,
+          destination: destinationAccountId,
           amount: String(this.form.amount),
           feeData: {
             sourceFee: {
@@ -245,11 +282,9 @@ export default {
             },
             sourcePaysForDest: false,
           },
-          subject: '',
+          subject: JSON.stringify(subject),
           asset: this.form.assetCode,
-        }))
-
-      return operations
+        })
     },
   },
 }

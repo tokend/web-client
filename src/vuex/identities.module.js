@@ -9,7 +9,7 @@ export const state = {
 export const mutations = {
   [vuexTypes.SET_IDENTITIES] (state, accountIdIdentities) {
     state.usersIdentities[accountIdIdentities.address] = {
-      accountId: accountIdIdentities.accountId,
+      accountId: accountIdIdentities.address,
       phoneNumber: accountIdIdentities.phoneNumber,
       email: accountIdIdentities.email,
       telegramUsername: accountIdIdentities.telegramUsername,

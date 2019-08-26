@@ -1,5 +1,5 @@
 import { api } from '@/api'
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import AccountGetterMixin from './account-getter'
@@ -17,6 +17,9 @@ export default {
   methods: {
     ...mapActions([
       vuexTypes.LOAD_IDENTITIES_BY_ACCOUNT_ID,
+    ]),
+    ...mapMutations([
+      vuexTypes.SET_IDENTITIES,
     ]),
     /**
      * Fetches an account id by email
@@ -36,6 +39,7 @@ export default {
       })
 
       if (data && data[0]) {
+        this.SET_IDENTITIES(data[0])
         return data[0].address
       } else if (defaultValue !== undefined) {
         return defaultValue

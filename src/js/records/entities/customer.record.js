@@ -1,6 +1,5 @@
 import _get from 'lodash/get'
-import { store } from '@/vuex/index'
-import { vuexTypes } from '@/vuex/types'
+import { store, vuexTypes } from '@/vuex/index'
 
 const STATUSES = Object.freeze({
   notRegistered: 'not_registered',

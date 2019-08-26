@@ -5,7 +5,7 @@
         <template v-if="!isIssuanceMode">
           <button
             class="app__button-raised"
-            @click="toggleIssuanceMode"
+            @click="isIssuanceMode = true"
           >
             {{ 'customers-table.enable-mass-payment-btn' | globalize }}
           </button>
@@ -45,7 +45,7 @@
                 class="customers-table__cb"
                 v-model="issuanceReceivers"
                 :cb-value="customersList
-                  .filter(i => i.isActive && !i.isCustomer)
+                  .filter(i => !i.isCustomer)
                 "
               />
             </th>
@@ -77,7 +77,7 @@
                 class="customers-table__cb"
                 v-model="issuanceReceivers"
                 :cb-value="customer"
-                :disabled="!customer.isActive || customer.isCustomer"
+                :disabled="customer.isCustomer"
               />
             </td>
 
@@ -136,7 +136,7 @@
 
 <script>
 import CustomersConvertedBalances from './CustomersConvertedBalances'
-import { CustomerRecord } from './customer.record'
+import { CustomerRecord } from '@/js/records/entities/customer.record'
 import TickField from '@/vue/fields/TickField'
 import { Bus } from '@/js/helpers/event-bus'
 import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
@@ -193,7 +193,17 @@ export default {
     }),
   },
 
+  created () {
+    this.listen()
+  },
   methods: {
+    listen () {
+      Bus.on('customers:hideSelect', () => {
+        this.isIssuanceMode = false
+        this.issuanceReceivers = []
+      })
+    },
+
     getCustomerStatusTranslated (customer) {
       let translationId
 
@@ -221,7 +231,6 @@ export default {
 
     doMassIssuance () {
       Bus.emit('customers:massIssue', { receivers: this.issuanceReceivers })
-      this.toggleIssuanceMode()
     },
 
     getCustomerNameOrEmail (customer) {

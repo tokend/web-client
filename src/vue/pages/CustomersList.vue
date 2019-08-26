@@ -57,7 +57,7 @@ import Loader from '@/vue/common/Loader'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import Drawer from '@/vue/common/Drawer'
 
-import { CustomerRecord } from './customers-list/customer.record'
+import { CustomerRecord } from '@/js/records/entities/customer.record'
 import CustomerAttributes from './customers-list/CustomerAttributes'
 import CustomersTable from './customers-list/CustomersTable'
 import { Bus } from '@/js/helpers/event-bus'

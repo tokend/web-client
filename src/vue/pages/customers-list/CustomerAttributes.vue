@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { CustomerRecord } from './customer.record'
+import { CustomerRecord } from '@/js/records/entities/customer.record'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 

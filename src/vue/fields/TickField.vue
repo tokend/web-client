@@ -69,7 +69,6 @@ export default {
       if (typeof value === 'undefined') {
         return this.$emit(EVENTS.input, isChecked)
       }
-
       switch (this.typeof(model)) {
         case 'number':
           this.$emit(
@@ -84,7 +83,9 @@ export default {
               : model.filter((item) => item !== value))
           } else {
             this.$emit(EVENTS.input, isChecked
-              ? model.concat(value)
+              ? model.concat(
+                value.filter(item => !this.arrayIncludes(model, item))
+              )
               : model.filter((item) => !this.arrayIncludes(value, item)))
           }
           break

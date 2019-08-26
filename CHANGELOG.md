@@ -13,7 +13,7 @@ for further information about branching and tagging conventions.
 - Missed russian translation
 - `identities.module` to avoid reloading users identities
 - Set/change telegram username in settings
-- Pay(send) to not existing account
+- Pay(send) to not existing account(`Transfer` and `MassPayment` forms)
 
 #### Fixed
 - A bug when withdrawal form not closed after successfull operation

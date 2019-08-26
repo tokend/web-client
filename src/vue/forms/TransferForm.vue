@@ -187,8 +187,8 @@ export default {
     isSendingOnNotExistAccount: false,
     form: {
       asset: {},
-      amount: '1',
-      recipient: 'alice23@mail.com',
+      amount: '',
+      recipient: '',
       subject: '',
       isPaidForRecipient: false,
     },
@@ -239,6 +239,7 @@ export default {
     }),
     async submit () {
       if (!this.isFormValid()) return
+      this.formMixin.isConfirmationShown = false
       try {
         await api.postOperations(this.buildPaymentOperation())
 
@@ -272,7 +273,7 @@ export default {
     async sendOnNotExistAccount () {
       if (this.isFormValid()) {
         try {
-          const { data } = await api.get('/integrations/proxy-payments/info')
+          const { data } = await api.get('/integrations/payment-proxy/info')
           this.recipientAccountId = data.id
           this.submit()
         } catch (e) {
@@ -296,13 +297,14 @@ export default {
       this.isSendingOnNotExistAccount = false
     },
     buildPaymentOperation () {
-      const subject = {
+      let subject = {
         subject: this.form.subject,
       }
       if (this.isSendingOnNotExistAccount) {
         subject.sender = this.accountId
         subject.email = this.form.recipient
       }
+      subject = JSON.stringify(subject)
       return base.PaymentBuilder.payment({
         sourceBalanceId: this.balance.id,
         destination: this.recipientAccountId,
