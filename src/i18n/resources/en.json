@@ -1128,7 +1128,8 @@
       "recheck-form": "Please recheck the form before proceeding",
       "submit-btn": "Send",
       "payment-successful": "Transfer successful",
-      "recipient-not-found": "Recipient not found"
+      "recipient-not-found": "Recipient not found",
+      "approving-msg": "This user does not exist in system. Are you sure want to send?"
     },
     "issuance-page": {
       "history-title": "History",

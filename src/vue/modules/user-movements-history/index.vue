@@ -46,7 +46,7 @@ import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { types } from './store/types'
 import { vuexTypes } from '@/vuex'
-import { CustomerRecord } from '@/vue/pages/customers-list/customer.record'
+import { CustomerRecord } from '@/js/records/entities/customer.record'
 
 const REFS = {
   collectionLoader: 'collection-loader',

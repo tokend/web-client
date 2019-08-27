@@ -37,7 +37,7 @@
       </template>
 
       <mass-payment-form
-        :receivers="massPaymentReceivers"
+        :receivers="receivers"
         @submitted="(isPaymentDrawerShown = false) || emitUpdateList()"
       />
     </drawer>
@@ -68,14 +68,14 @@ export default {
   data: _ => ({
     isInviteDrawerShown: false,
     isPaymentDrawerShown: false,
-    massPaymentReceivers: '',
+    receivers: [],
     vueRoutes,
   }),
 
   watch: {
     isPaymentDrawerShown (value) {
       if (value === false) {
-        this.massPaymentReceivers = ''
+        this.receivers = []
       }
     },
   },
@@ -91,8 +91,7 @@ export default {
 
     listen () {
       Bus.on('customers:massIssue', payload => {
-        const receivers = ((payload || {}).receivers || [])
-        this.massPaymentReceivers = receivers.map(i => i.email).join(', ')
+        this.receivers = ((payload || {}).receivers || [])
         this.isPaymentDrawerShown = true
       })
     },

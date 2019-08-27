@@ -17,12 +17,10 @@
         </router-link>
       </template>
 
-      <template
-        v-else-if="view.mode === VIEW_MODES.submit ||
-          view.mode === VIEW_MODES.confirm">
+      <template v-else>
         <form
           id="transfer-form"
-          @submit.prevent="processTransfer"
+          @submit.prevent="trySend"
         >
           <div class="app__form-row">
             <div class="app__form-field">
@@ -31,7 +29,7 @@
                 :value="form.asset.code"
                 @input="setAsset"
                 :label="'transfer-form.asset-lbl' | globalize"
-                :readonly="view.mode === VIEW_MODES.confirm"
+                :readonly="formMixin.isDisabled"
               >
                 <option
                   v-for="asset in transferableBalancesAssets"
@@ -64,7 +62,7 @@
                 :label="'transfer-form.amount-lbl' | globalize"
                 :asset="form.asset"
                 is-max-button-shown
-                :readonly="view.mode === VIEW_MODES.confirm"
+                :readonly="formMixin.isDisabled"
               />
             </div>
           </div>
@@ -77,7 +75,7 @@
                 :label="'transfer-form.recipient-lbl' | globalize"
                 :error-message="getFieldErrorMessage('form.recipient')"
                 @blur="touchField('form.recipient')"
-                :disabled="view.mode === VIEW_MODES.confirm"
+                :disabled="formMixin.isDisabled"
               />
             </div>
           </div>
@@ -91,14 +89,14 @@
                   length: 250
                 })"
                 :maxlength="250"
-                :readonly="view.mode === VIEW_MODES.confirm"
+                :readonly="formMixin.isDisabled"
               />
             </div>
           </div>
 
           <div
             class="transfer__fee-box"
-            v-if="isFeesLoaded && view.mode === VIEW_MODES.confirm &&
+            v-if="isFeesLoaded && formMixin.isDisabled &&
               fees.isAny
             "
           >
@@ -109,9 +107,16 @@
           </div>
 
           <div class="app__form-actions">
+            <template v-if="formMixin.isConfirmationShown">
+              <form-confirmation
+                message-id="transfer-form.approving-msg"
+                @ok="trySend"
+                @cancel="hideConfirmationForm"
+              />
+            </template>
             <button
               v-ripple
-              v-if="view.mode === VIEW_MODES.submit"
+              v-if="!formMixin.isConfirmationShown"
               type="submit"
               class="app__form-submit-btn app__button-raised"
               :disabled="formMixin.isDisabled"
@@ -156,13 +161,9 @@ import { Bus } from '@/js/helpers/event-bus'
 import { globalize } from '@/vue/filters/globalize'
 import {
   required,
-  emailOrPhoneNumber,
+  // emailOrPhoneNumber,
+  email,
 } from '@validators'
-
-const VIEW_MODES = {
-  submit: 'submit',
-  confirm: 'confirm',
-}
 
 const EVENTS = {
   operationSubmitted: 'operation-submitted',
@@ -182,6 +183,8 @@ export default {
     assetToTransfer: { type: String, default: '' },
   },
   data: () => ({
+    recipientAccountId: '',
+    isSendingOnNotExistAccount: false,
     form: {
       asset: {},
       amount: '',
@@ -191,13 +194,11 @@ export default {
     },
     fees: {},
     view: {
-      mode: VIEW_MODES.submit,
       opts: {},
     },
     isLoaded: false,
     isLoadingFailed: false,
     isFeesLoaded: false,
-    VIEW_MODES,
     vueRoutes,
     config,
     FEE_TYPES,
@@ -205,7 +206,9 @@ export default {
   validations () {
     return {
       form: {
-        recipient: { required, emailOrPhoneNumber },
+        recipient: this.isSendingOnNotExistAccount
+          ? { required, email }
+          : { required },
       },
     }
   },
@@ -235,8 +238,8 @@ export default {
       loadCurrentBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async submit () {
-      this.updateView(VIEW_MODES.submit, this.view.opts)
-      this.disableForm()
+      if (!this.isFormValid()) return
+      this.formMixin.isConfirmationShown = false
       try {
         await api.postOperations(this.buildPaymentOperation())
 
@@ -250,31 +253,36 @@ export default {
       }
       this.enableForm()
     },
-    async processTransfer () {
-      if (!this.isFormValid()) return
+    async trySend () {
       this.disableForm()
-      try {
-        const recipientAccountId =
-          await this.getCounterparty(this.form.recipient)
-
-        const opts = {
-          amount: this.form.amount,
-          destinationAccountId: recipientAccountId,
-          destinationFixedFee: '0',
-          destinationPercentFee: '0',
-          destinationFeeAsset: this.form.asset,
-          sourceBalanceId: this.balance.id,
-          sourceFixedFee: '0',
-          sourcePercentFee: '0',
-          sourceFeeAsset: this.form.asset,
-          subject: this.form.subject,
+      const recipientAccountId =
+        await this.getCounterparty(this.form.recipient)
+      if (recipientAccountId) {
+        this.isSendingOnNotExistAccount = false
+        this.recipientAccountId = recipientAccountId
+        this.submit()
+      } else {
+        if (this.formMixin.isConfirmationShown) {
+          this.sendOnNotExistAccount()
+        } else {
+          this.isSendingOnNotExistAccount = true
+          this.formMixin.isConfirmationShown = true
         }
-        this.updateView(VIEW_MODES.confirm, opts)
-        await this.submit()
-      } catch (error) {
-        ErrorHandler.process(error)
       }
-      this.enableForm()
+    },
+    async sendOnNotExistAccount () {
+      if (this.isFormValid()) {
+        try {
+          const { data } = await api.get('/integrations/payment-proxy/info')
+          this.recipientAccountId = data.id
+          this.submit()
+        } catch (e) {
+          ErrorHandler.process(e)
+          this.enableForm()
+        }
+      } else {
+        this.enableForm()
+      }
     },
     async getCounterparty (recipient) {
       if (!base.Keypair.isValidPublicKey(recipient)) {
@@ -283,38 +291,45 @@ export default {
         return recipient
       }
     },
+    hideConfirmationForm () {
+      this.enableForm()
+      this.formMixin.isConfirmationShown = false
+      this.isSendingOnNotExistAccount = false
+    },
     buildPaymentOperation () {
+      let subject = {
+        subject: this.form.subject,
+      }
+      if (this.isSendingOnNotExistAccount) {
+        subject.sender = this.accountId
+        subject.email = this.form.recipient
+      }
+      subject = JSON.stringify(subject)
       return base.PaymentBuilder.payment({
-        sourceBalanceId: this.view.opts.sourceBalanceId,
-        destination: this.view.opts.destinationAccountId,
-        amount: this.view.opts.amount,
+        sourceBalanceId: this.balance.id,
+        destination: this.recipientAccountId,
+        amount: this.form.amount,
         feeData: {
           sourceFee: {
-            percent: this.view.opts.sourcePercentFee,
-            fixed: this.view.opts.sourceFixedFee,
+            percent: '0',
+            fixed: '0',
           },
           destinationFee: {
-            percent: this.view.opts.destinationPercentFee,
-            fixed: this.view.opts.destinationFixedFee,
+            percent: '0',
+            fixed: '0',
           },
           sourcePaysForDest: this.form.isPaidForRecipient,
         },
-        subject: this.view.opts.subject,
+        subject: subject,
         asset: this.form.asset.code,
       })
     },
-    updateView (mode, opts = {}, clear = false) {
-      this.view.mode = mode
-      this.view.opts = opts
-      if (clear) {
+    rerenderForm () {
+      this.isFeesLoaded = false
+      setTimeout(() => {
         this.clearFields()
         this.setAsset()
-      }
-    },
-    rerenderForm () {
-      this.updateView(null)
-      this.isFeesLoaded = false
-      setTimeout(() => this.updateView(VIEW_MODES.submit, {}, true), 1)
+      }, 1)
     },
     setAsset (payload) {
       const assetCode = payload || this.assetToTransfer
