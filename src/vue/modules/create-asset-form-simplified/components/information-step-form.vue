@@ -251,7 +251,7 @@ export default {
       let hash = md5.create()
       const assetInformation = this.form.name + this.accountId + +new Date()
       hash.update(assetInformation)
-      return hash.toString().substring(0, 16).toUpperCase()
+      return hash.toString().substring(0, 6).toUpperCase()
     },
 
     populateForm () {
