@@ -24,18 +24,6 @@
       <p v-else class="card-viewer__balance card-viewer__no-balance">
         {{ 'assets.no-balance-msg' | globalize }}
       </p>
-
-      <p
-        v-if="balance.isConverted"
-        class="card-viewer__converted-balance"
-        :title="convertedBalance | formatMoney"
-      >
-        {{
-          'assets-list.list-item-converted-balance-line' |
-            globalize({ value: convertedBalance,
-                        currency: businessStatsQuoteAsset })
-        }}
-      </p>
     </div>
   </a>
 </template>
@@ -44,8 +32,6 @@
 import LogoViewer from './logo-viewer'
 
 import { AssetRecord } from '@/js/records/entities/asset.record'
-import { mapGetters } from 'vuex'
-import { vuexTypes } from '@/vuex'
 import { BalanceRecord } from '@/js/records/entities/balance.record'
 
 export default {
@@ -62,19 +48,10 @@ export default {
     },
   },
   computed: {
-    ...mapGetters({
-      businessStatsQuoteAsset: vuexTypes.businessStatsQuoteAsset,
-    }),
     assetBalance () {
       return {
         value: this.balance.balance,
         currency: this.asset.code,
-      }
-    },
-    convertedBalance () {
-      return {
-        value: this.balance.convertedBalance.available,
-        currency: this.businessStatsQuoteAsset,
       }
     },
   },

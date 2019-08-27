@@ -17,6 +17,7 @@ for further information about branching and tagging conventions.
 
 #### Removed
 - Issued info from asset details
+- Converted balance from asset card viewer
 
 #### Fixed
 - A bug when withdrawal form not closed after successfull operation

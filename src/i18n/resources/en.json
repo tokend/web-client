@@ -1284,7 +1284,6 @@
       "update-asset-title": "Update asset",
       "details-title": "Asset details",
       "list-item-balance-line": "Balance: {{value, balance}}",
-      "list-item-converted-balance-line": "Converted: {{value, balance}} {{currency}}",
       "no-balance-msg": "No balance"
     },
     "asset-form": {
