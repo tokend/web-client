@@ -6,10 +6,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
-## [1.0.2] - 2019-08-27
-#### Fixed
--Hid assets with 0 balance on transfer and MassPayment form
-
 
 ## [Unreleased]
 #### Added
@@ -28,6 +24,10 @@ for further information about branching and tagging conventions.
 #### Changed
 - Call `loadPendingAtomicSwapBidRequests` method after success submit
 - In `identity-getter.js` replace method `getAccountIdByEmail` to `getAccountIdByIdentifier`
+
+## [1.0.2] - 2019-08-27
+#### Fixed
+-Hid assets with 0 balance on transfer and MassPayment form
 
 ## [1.0.1] - 2019-08-27
 #### Added
