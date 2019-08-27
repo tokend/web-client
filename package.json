@@ -1,6 +1,6 @@
 {
   "name": "tokend-web-client-conto",
-  "version": "1.0.2",
+  "version": "1.0.2-rc.0",
   "description": "TokenD web-client-conto",
   "author": "Distributed Lab <contact@distributedlab.com>",
   "private": true,
