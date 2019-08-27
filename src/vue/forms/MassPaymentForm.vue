@@ -150,7 +150,7 @@ export default {
 
   computed: {
     ...mapGetters([
-      vuexTypes.transferableBalancesAssetsByOwner,
+      vuexTypes.transferableAssetsBalancesByOwner,
       vuexTypes.assetByCode,
       vuexTypes.accountBalanceByCode,
       vuexTypes.accountId,
@@ -160,7 +160,9 @@ export default {
       return this.accountBalanceByCode(this.form.assetCode)
     },
     transferableBalancesAssets () {
-      return this.transferableBalancesAssetsByOwner(this.accountId)
+      return this.transferableAssetsBalancesByOwner(this.accountId)
+        .filter(i => +i.balance > 0)
+        .map(i => i.asset)
     },
   },
 
