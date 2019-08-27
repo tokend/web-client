@@ -15,11 +15,14 @@ for further information about branching and tagging conventions.
 - Set/change telegram username in settings
 - Pay(send) to not existing account(`Transfer` and `MassPayment` forms)
 
+#### Removed
+- Issued info from asset details
+
 #### Fixed
 - A bug when withdrawal form not closed after successfull operation
 - A bug with kyc recovery form(general)
 - A bug with redirect after login
-- `AtomicSwapCard` design 
+- `AtomicSwapCard` design
 
 #### Changed
 - Call `loadPendingAtomicSwapBidRequests` method after success submit

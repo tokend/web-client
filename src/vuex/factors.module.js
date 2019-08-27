@@ -6,7 +6,7 @@ const FACTOR_TYPES = Object.freeze({
   password: 'password',
   email: 'email',
   phone: 'phone',
-  telegram: 'telegram'
+  telegram: 'telegram',
 })
 
 // Factors with lower priority will not trigger 2fa flow, so we can ignore

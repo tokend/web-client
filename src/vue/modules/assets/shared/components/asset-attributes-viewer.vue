@@ -38,14 +38,6 @@
               {{ businessStatsQuoteAsset }}
             </td>
           </tr>
-
-          <tr>
-            <td>{{ 'assets.issued-title' | globalize }}</td>
-            <td :title="asset.issued | formatMoney">
-              {{ asset.issued | formatBalance }}
-            </td>
-          </tr>
-
           <tr>
             <td>
               {{ 'assets.transferable-title' | globalize }}
