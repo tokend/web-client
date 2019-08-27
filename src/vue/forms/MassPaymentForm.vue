@@ -230,18 +230,17 @@ export default {
       if (receiver) {
         return receiver.accountId
       } else {
-        const id = await this.getAccountIdByIdentifier(email)
-        return id
+        return this.getAccountIdByIdentifier(email)
       }
     },
 
-    async getOperationByEmail (email, data) {
+    async getOperationByEmail (email, proxyPaymentAccountId) {
       const receiverId = await this.getReceiverIdByEmail(email)
       if (receiverId) {
         return this.getOperation(receiverId, { subject: '' })
       } else {
         return this.getOperation(
-          data.id,
+          proxyPaymentAccountId,
           {
             subject: '',
             sender: this.accountId,
@@ -259,9 +258,8 @@ export default {
       })
 
       const { data } = await api.get('/integrations/payment-proxy/info')
-
       return Promise.all(
-        emails.map(email => this.getOperationByEmail(email, data))
+        emails.map(email => this.getOperationByEmail(email, data.id))
       )
     },
 
