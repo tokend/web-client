@@ -751,7 +751,7 @@
       "trade": "Trade",
       "settings": "Settings",
       "fees": "Fees",
-      "movements": "Movements",
+      "movements": "History",
       "issuance": "Issuance requests",
       "downloads": "TokenD downloads",
       "terms": "Terms",
@@ -2400,15 +2400,15 @@
       "no-list-title": "No atomic swaps yet",
       "no-list-msg": "Here will be the list of atomic swaps",
       "owned-by-me-filter-lbl": "Owned by me",
-      "buying": "Buying of {{asset}}"
+      "buying": "Buying {{asset}}"
     },
     "atomic-swap-form":{
-      "available": "Available for buy {{amount, money}} {{asset}}",
-      "asset-in-which-buying": "Asset in which buying",
-      "amount": "Amount of {{asset}}",
+      "available": "Available {{amount, money}} {{asset}}",
+      "asset-in-which-buying": "Payment method",
+      "amount": "Amount to buy {{asset}}",
       "buy": "Buy",
-      "price": "Price",
-      "total-price": "Total price",
+      "price": "Amount to pay",
+      "total-price": "Total amount to pay",
       "error-msg": "Payment request was successful. Cannot load address for payment.",
       "load-failed-msg": "There was an error while loading.",
       "loading-msg": "Please wait while we loading your data."

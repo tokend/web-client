@@ -69,7 +69,7 @@
             v-ripple
             class="app__button-raised movements-top-bar__actions-btn"
             @click="isTransferDrawerShown = true"
-            :disabled="!asset.isTransferable"
+            :disabled="!(asset.isTransferable && isHaveBalance)"
             :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isTransferable) |
               globalize({ asset: asset.code })
             "
@@ -163,11 +163,14 @@ export default {
     asset: {},
     EVENTS,
     ASSET_POLICIES_STR,
+    isHaveBalance: true,
   }),
   computed: {
     ...mapGetters({
       balancesAssets: vuexTypes.balancesAssets,
       balancesAssetsByOwner: vuexTypes.balancesAssetsByOwner,
+      accountBalanceByCode: vuexTypes.accountBalanceByCode,
+      accountBalances: vuexTypes.accountBalances,
       ownedAssets: vuexTypes.ownedBalancesAssets,
       isAccountUnverified: vuexTypes.isAccountUnverified,
     }),
@@ -190,6 +193,7 @@ export default {
     asset: {
       deep: true,
       handler (value) {
+        this.getBalance()
         this.$router.push({
           query: { asset: value.code },
         })
@@ -231,10 +235,13 @@ export default {
       }
       return messageId
     },
-
     closeWithdrawalDrawerAndEmitEvent () {
       this.isWithdrawalDrawerShown = false
       this.$emit(EVENTS.movementsUpdateRequired)
+    },
+    getBalance () {
+      const balance = +this.accountBalanceByCode(this.asset.code).balance
+      this.isHaveBalance = balance > 0
     },
   },
 }

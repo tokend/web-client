@@ -87,7 +87,7 @@ export const getters = {
         .filter(item => item.asset.owner === accountId),
   [vuexTypes.accountBalanceByCode]: state => code => state.balancesDetails
     .map(item => new BalanceRecord(item, item.balance.asset.trailingDigits))
-    .find(i => i.asset.code === code) || [],
+    .find(i => i.asset.code === code) || {},
   [vuexTypes.accountRoleId]: state => Number(
     _get(state.account, 'role.id')
   ),

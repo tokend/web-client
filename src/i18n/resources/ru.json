@@ -755,7 +755,7 @@
       "trade": "Торговля",
       "settings": "Настройки",
       "fees": "Комиссии",
-      "movements": "Движение активов",
+      "movements": "История",
       "issuance": "Запросы эмиссий",
       "downloads": "TokenD загрузки",
       "terms": "Соглашение",
@@ -2506,7 +2506,7 @@
     },
     "atomic-swap-form":{
       "available": "Доступно для покупки {{amount, money}} {{asset}}",
-      "asset-in-which-buying": "Актив, для оплаты",
+      "asset-in-which-buying": "Cпособ оплаты",
       "amount": "Количество {{asset}}",
       "buy": "Купить",
       "price": "Цена",

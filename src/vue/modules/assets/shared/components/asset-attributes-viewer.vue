@@ -15,7 +15,7 @@
     <div class="app__table asset-attributes-viewer__table-wrp">
       <table>
         <tbody>
-          <tr v-if="balance">
+          <tr v-if="isAccountCorporate">
             <td>{{ 'assets.vendor-code' | globalize }}</td>
             <td>
               {{ asset.code }}
@@ -93,6 +93,7 @@ export default {
   computed: {
     ...mapGetters({
       businessStatsQuoteAsset: vuexTypes.businessStatsQuoteAsset,
+      isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
 
     stellarAssetTypeTranslated () {

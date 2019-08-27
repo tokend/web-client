@@ -25,7 +25,9 @@ for further information about branching and tagging conventions.
 - A bug with redirect after login
 - `AtomicSwapCard` design
 - 6 symbols in asset code
-- Circle asset logo on wallets screen 
+- Circle asset logo on wallets screen
+- Small localization improvements
+- Disable send button when user has not tokens
 
 #### Changed
 - Call `loadPendingAtomicSwapBidRequests` method after success submit
