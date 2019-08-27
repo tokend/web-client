@@ -202,7 +202,7 @@ const getters = {
   fiatAssets: 'fiatAssets',
   depositableAssets: 'depositableAssets',
   coinpaymentsAssets: 'coinpaymentsAssets',
-  transferableBalancesAssets: 'transferableBalancesAssets',
+  transferableBalancesAssetsByOwner: 'transferableBalancesAssetsByOwner',
   withdrawableBalancesAssets: 'withdrawableBalancesAssets',
   statsQuoteAsset: 'statsQuoteAsset',
   ownedAssets: 'ownedAssets',
