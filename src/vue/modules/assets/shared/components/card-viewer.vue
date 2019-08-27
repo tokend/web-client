@@ -4,7 +4,6 @@
       <logo-viewer
         class="card-viewer__logo"
         :asset="asset"
-        is-full-cover
       />
     </div>
     <div class="card-viewer__info">
