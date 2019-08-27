@@ -152,15 +152,18 @@ export default {
   },
 
   computed: {
-    ...mapGetters({
-      transferableBalancesAssets: vuexTypes.transferableBalancesAssets,
-      assetByCode: vuexTypes.assetByCode,
-      accountBalanceByCode: vuexTypes.accountBalanceByCode,
-      accountId: vuexTypes.accountId,
-    }),
+    ...mapGetters([
+      vuexTypes.transferableBalancesAssetsByOwner,
+      vuexTypes.assetByCode,
+      vuexTypes.accountBalanceByCode,
+      vuexTypes.accountId,
+    ]),
 
     accountBalance () {
       return this.accountBalanceByCode(this.form.assetCode)
+    },
+    transferableBalancesAssets () {
+      return this.transferableBalancesAssetsByOwner(this.accountId)
     },
   },
 

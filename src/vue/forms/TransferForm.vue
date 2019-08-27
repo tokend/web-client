@@ -1,7 +1,7 @@
 <template>
   <div class="transfer app__page-content-wrp">
     <template v-if="isLoaded">
-      <template v-if="!transferableBalancesAssets.length">
+      <template v-if="!assets.length">
         <h2 class="app__page-heading">
           {{ 'transfer-form.no-assets-heading' | globalize }}
         </h2>
@@ -32,7 +32,7 @@
                 :readonly="formMixin.isDisabled"
               >
                 <option
-                  v-for="asset in transferableBalancesAssets"
+                  v-for="asset in assets"
                   :key="asset.code"
                   :value="asset.code"
                 >
@@ -215,11 +215,18 @@ export default {
   computed: {
     ...mapGetters([
       vuexTypes.accountId,
-      vuexTypes.transferableBalancesAssets,
+      vuexTypes.transferableBalancesAssetsByOwner,
       vuexTypes.accountBalanceByCode,
     ]),
     balance () {
       return this.accountBalanceByCode(this.form.asset.code)
+    },
+    assets () {
+      if (this.$route && this.$route.query && this.$route.query.owner) {
+        return this.transferableBalancesAssetsByOwner(this.$route.query.owner)
+      } else {
+        return this.transferableBalancesAssetsByOwner(this.accountId)
+      }
     },
   },
   async created () {
@@ -333,9 +340,9 @@ export default {
     },
     setAsset (payload) {
       const assetCode = payload || this.assetToTransfer
-      this.form.asset = this.transferableBalancesAssets
+      this.form.asset = this.assets
         .find(asset => asset.code === assetCode) ||
-        this.transferableBalancesAssets[0] ||
+        this.assets[0] ||
         {}
     },
   },

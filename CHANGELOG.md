@@ -25,6 +25,14 @@ for further information about branching and tagging conventions.
 - Call `loadPendingAtomicSwapBidRequests` method after success submit
 - In `identity-getter.js` replace method `getAccountIdByEmail` to `getAccountIdByIdentifier`
 
+## [1.0.1] - 2019-08-27
+#### Added
+- Filter assets on send by asset owner
+
+#### Fixed
+-Rename assets to wallet, 
+-Hid assets with 0 balance
+
 ## [1.0.0] - 2019-08-23
 #### Added
 - Img url
@@ -178,7 +186,8 @@ for further information about branching and tagging conventions.
 #### Removed
 - `RECOVERY_MODE` config key due to unused anymore
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.0.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.0.1...HEAD
+[1.0.1]: https://github.com/tokend/web-client/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/tokend/web-client/compare/1.0.0-rc.8...1.0.0
 [1.0.0-rc.8]: https://github.com/tokend/web-client/compare/1.0.0-rc.7...1.0.0-rc.8
 [1.0.0-rc.7]: https://github.com/tokend/web-client/compare/1.0.0-rc.6...1.0.0-rc.7
