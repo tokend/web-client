@@ -163,6 +163,7 @@ export default {
       try {
         if (this.$route && this.$route.query && this.$route.query.owner) {
           return this.assetsByOwner(this.$route.query.owner)
+            .filter(i => +this.getAssetBalance(i).balance > 0)
         } else {
           return this.assetsAll
         }

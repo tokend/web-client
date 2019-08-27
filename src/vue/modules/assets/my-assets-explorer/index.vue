@@ -42,10 +42,10 @@
 
       <div class="my-assets-explorer__asset-list-wrp">
         <div
-          v-if="accountOwnedAssetsBalances.length"
+          v-if="assets.length"
           class="my-assets-explorer__asset-list"
         >
-          <template v-for="item in accountOwnedAssetsBalances">
+          <template v-for="item in assets">
             <card-viewer
               :asset="item.asset"
               :balance="item"
@@ -55,7 +55,7 @@
           </template>
           <template v-for="index in itemsPerSkeletonLoader">
             <asset-skeleton-loader
-              v-if="!isLoaded && !accountOwnedAssetsBalances.length"
+              v-if="!isLoaded && !assets.length"
               :key="index"
             />
           </template>
@@ -128,7 +128,6 @@ export default {
 
   computed: {
     ...mapGetters({
-      ownedAssets: vuexTypes.ownedBalancesAssets,
       accountBalances: vuexTypes.accountBalances,
       accountOwnedAssetsBalances: vuexTypes.accountOwnedAssetsBalances,
       businessStatsQuoteAsset: vuexTypes.businessStatsQuoteAsset,
@@ -139,6 +138,9 @@ export default {
       vuexTypes.kvAssetTypeKycRequired,
       vuexTypes.kvAssetTypeSecurity,
     ]),
+    assets () {
+      return this.accountOwnedAssetsBalances.filter(item => +item.balance > 0)
+    },
   },
 
   async created () {
@@ -181,7 +183,7 @@ export default {
       await this.loadAssets()
       await this.load()
       if (this.isDrawerShown) {
-        this.selectedBalance = this.accountOwnedAssetsBalances.find(item => {
+        this.selectedBalance = this.assets.find(item => {
           return item.asset.code === this.selectedBalance.asset.code
         })
       }
