@@ -215,7 +215,7 @@ export default {
   computed: {
     ...mapGetters([
       vuexTypes.accountId,
-      vuexTypes.transferableBalancesAssetsByOwner,
+      vuexTypes.transferableAssetsBalancesByOwner,
       vuexTypes.accountBalanceByCode,
     ]),
     balance () {
@@ -223,9 +223,13 @@ export default {
     },
     assets () {
       if (this.$route && this.$route.query && this.$route.query.owner) {
-        return this.transferableBalancesAssetsByOwner(this.$route.query.owner)
+        return this.transferableAssetsBalancesByOwner(this.$route.query.owner)
+          .filter(i => +i.balance > 0)
+          .map(i => i.asset)
       } else {
-        return this.transferableBalancesAssetsByOwner(this.accountId)
+        return this.transferableAssetsBalancesByOwner(this.accountId)
+          .filter(i => +i.balance > 0)
+          .map(i => i.asset)
       }
     },
   },

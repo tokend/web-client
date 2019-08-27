@@ -107,12 +107,6 @@ export const getters = {
     rootGetters[vuexTypes.accountBalances]
       .map(item => item.asset)
       .filter(item => item.isCoinpayments),
-  [vuexTypes.transferableBalancesAssetsByOwner]: (a, getters, b, rootGetters) =>
-    accountId =>
-      rootGetters[vuexTypes.accountBalances]
-        .map(item => item.asset)
-        .filter(item => item.isTransferable)
-        .filter(item => item.owner === accountId),
   [vuexTypes.withdrawableBalancesAssets]: (a, getters, b, rootGetters) =>
     rootGetters[vuexTypes.accountBalances]
       .map(item => item.asset)

@@ -79,10 +79,15 @@ export const getters = {
   },
   [vuexTypes.accountOwnedAssetsBalances]: state => state.balancesDetails
     .map(item => new BalanceRecord(item, item.balance.asset.trailingDigits))
-    .filter(i => i.asset.owner === state.account.id) || {},
+    .filter(i => i.asset.owner === state.account.id) || [],
+  [vuexTypes.transferableAssetsBalancesByOwner]: (a, getters, b, rootGetters) =>
+    accountId =>
+      getters[vuexTypes.accountBalances]
+        .filter(item => item.asset.isTransferable)
+        .filter(item => item.asset.owner === accountId),
   [vuexTypes.accountBalanceByCode]: state => code => state.balancesDetails
     .map(item => new BalanceRecord(item, item.balance.asset.trailingDigits))
-    .find(i => i.asset.code === code) || {},
+    .find(i => i.asset.code === code) || [],
   [vuexTypes.accountRoleId]: state => Number(
     _get(state.account, 'role.id')
   ),
