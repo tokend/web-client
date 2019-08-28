@@ -10,22 +10,23 @@
         {{ atomicSwap.baseAssetName }}
       </h3>
 
-      <p class="atomic-swap-card__amount">
-        <span :title="atomicSwap.availableAmount | formatMoney">
-          {{ 'atomic-swap-card.available' | globalize({
-            amount: atomicSwap.availableAmount
-          }) }}
-        </span>
-      </p>
-
-      <p class="atomic-swap-card__amount">
-        <span :title="atomicSwap.quoteAssets[0].price | formatMoney">
-          {{ 'atomic-swap-card.price' | globalize({
-            amount: atomicSwap.quoteAssets[0].price,
-            code: atomicSwap.quoteAssets[0].id
-          }) }}
-        </span>
-      </p>
+      <div>
+        <p class="atomic-swap-card__amount">
+          <span :title="atomicSwap.availableAmount | formatMoney">
+            {{ 'atomic-swap-card.available' | globalize({
+              amount: atomicSwap.availableAmount
+            }) }}
+          </span>
+        </p>
+        <p class="atomic-swap-card__amount">
+          <span :title="atomicSwap.quoteAssets[0].price | formatMoney">
+            {{ 'atomic-swap-card.price' | globalize({
+              amount: atomicSwap.quoteAssets[0].price,
+              code: atomicSwap.quoteAssets[0].id
+            }) }}
+          </span>
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -60,8 +61,10 @@ export default {
 @import '~@scss/variables';
 @import '~@scss/mixins';
 
+$atomic-swap-card-header-height: 6.5rem;
+
 .atomic-swap-card {
-  display: flex;
+  height: 100%;
   border-radius: 0.4rem;
   box-shadow: 0 0.5rem 1rem 0 $col-sale-card-shadow;
   background-color: $col-sale-card-background;
@@ -69,7 +72,6 @@ export default {
   width: 100%;
   max-width: 100%;
   overflow: hidden;
-  overflow-x: hidden;
 }
 
 .atomic-swap-card__title {
@@ -85,11 +87,16 @@ export default {
   align-items: center;
   padding-right: 1rem;
   padding-left: 1rem;
+  height: $atomic-swap-card-header-height;
   background-color: $col-asset-card-header-background;
 }
 
 .atomic-swap-card__info {
   padding: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100% - #{$atomic-swap-card-header-height});
 }
 
 .atomic-swap-card__amount {

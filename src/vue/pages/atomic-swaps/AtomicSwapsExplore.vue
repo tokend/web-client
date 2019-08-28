@@ -192,6 +192,7 @@ $filter-field-to-filter-field-margin: 2rem;
   width: 100%;
   max-width: 100%;
   text-align: left;
+  height: 100%;
 }
 
 .atomic-swaps-explore__list {
