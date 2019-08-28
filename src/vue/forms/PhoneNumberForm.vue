@@ -104,8 +104,8 @@ export default {
 
   async created () {
     const phoneNumber = await this.getPhoneByAccountId(this.accountId)
-    this.form.phoneNumber = phoneNumber
-    this.userPhoneNumer = phoneNumber
+    this.form.phoneNumber = phoneNumber.substr(1)
+    this.userPhoneNumer = phoneNumber.substr(1)
   },
 
   methods: {
@@ -142,7 +142,7 @@ export default {
         data: {
           type: 'phone',
           attributes: {
-            phone: this.form.phoneNumber,
+            phone: '+' + this.form.phoneNumber,
           },
         },
       })
