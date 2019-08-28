@@ -10,6 +10,9 @@ for further information about branching and tagging conventions.
 #### Changed
 - Menu item order
 
+#### Fixed
+- A bug with amount in `atomic-swap-form`
+
 ## [1.0.2-rc.0] - 2019-08-27
 #### Added
 - Buying atomic swaps

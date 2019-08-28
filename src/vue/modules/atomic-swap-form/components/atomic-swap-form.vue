@@ -153,7 +153,7 @@ export default {
       isFailedLoadAtomicSwapBidRecord: false,
       requestIdentifier: '', // TODO: remove, crutch because back
       form: {
-        amount: 0,
+        amount: '',
         quoteAsset: '',
       },
       atomicSwapBidRecord: {},
