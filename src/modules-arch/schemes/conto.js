@@ -113,45 +113,6 @@ export default {
       },
     ),
 
-    new MovementsHistoryPageModule(
-      {
-        routerEntry: {
-          path: '/movements',
-          name: vueRoutes.movements.name,
-          meta: { pageNameTranslationId: 'pages-names.movements' },
-        },
-        menuButtonTranslationId: 'pages-names.movements',
-        menuButtonMdiName: 'menu',
-        isGeneralOnly: true,
-        isWithBusinessToBrowseOnly: true,
-        submodules: [
-          new MovementsHistoryModule(),
-          new MovementsTopBarModule({
-            submodules: [
-              new TransferDrawerPseudoModule(),
-            ],
-          }),
-        ],
-      },
-    ),
-
-    new SharesPageModule(
-      {
-        routerEntry: {
-          path: '/register-of-shares',
-          name: vueRoutes.registerOfShares.name,
-          meta: { pageNameTranslationId: 'pages-names.register-of-shares' },
-        },
-        menuButtonTranslationId: 'pages-names.register-of-shares',
-        menuButtonMdiName: 'book-open',
-        submodules: [
-          new MovementsTopBarModule(),
-          new MovementsHistoryModule(),
-        ],
-        isCorporateOnly: true,
-      },
-    ),
-
     new AssetsPageModule(
       {
         routerEntry: {
@@ -319,6 +280,45 @@ export default {
             isCorporateOnly: true,
           }),
         ],
+      },
+    ),
+
+    new MovementsHistoryPageModule(
+      {
+        routerEntry: {
+          path: '/movements',
+          name: vueRoutes.movements.name,
+          meta: { pageNameTranslationId: 'pages-names.movements' },
+        },
+        menuButtonTranslationId: 'pages-names.movements',
+        menuButtonMdiName: 'menu',
+        isGeneralOnly: true,
+        isWithBusinessToBrowseOnly: true,
+        submodules: [
+          new MovementsHistoryModule(),
+          new MovementsTopBarModule({
+            submodules: [
+              new TransferDrawerPseudoModule(),
+            ],
+          }),
+        ],
+      },
+    ),
+
+    new SharesPageModule(
+      {
+        routerEntry: {
+          path: '/register-of-shares',
+          name: vueRoutes.registerOfShares.name,
+          meta: { pageNameTranslationId: 'pages-names.register-of-shares' },
+        },
+        menuButtonTranslationId: 'pages-names.register-of-shares',
+        menuButtonMdiName: 'book-open',
+        submodules: [
+          new MovementsTopBarModule(),
+          new MovementsHistoryModule(),
+        ],
+        isCorporateOnly: true,
       },
     ),
 

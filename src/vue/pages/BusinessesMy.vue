@@ -117,7 +117,7 @@ export default {
     selectItem (item) {
       Bus.emit('businesses:setCurrentBusiness', {
         business: item,
-        redirectTo: vueRoutes.movements,
+        redirectTo: vueRoutes.assets,
       })
     },
   },

@@ -157,7 +157,7 @@ export default {
       if (isMyBusiness) {
         Bus.emit('businesses:setCurrentBusiness', {
           business: item,
-          redirectTo: vueRoutes.movements,
+          redirectTo: vueRoutes.assets,
         })
       } else {
         this.currentBusiness = item
