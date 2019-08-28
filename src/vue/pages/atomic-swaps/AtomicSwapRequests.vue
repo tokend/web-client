@@ -18,7 +18,7 @@
               </td>
               <td>
                 <!-- eslint-disable-next-line max-len -->
-                {{ item.amount | formatMoney }} ({{ item.convertedAmount | formatMoney }} {{ item.quoteAsset.id }})
+                {{ item.amount | formatMoney }} ({{ item.convertedAmount | formatMoney }} {{ item.quoteAsset.quoteAsset }})
               </td>
             </tr>
           </tbody>
@@ -109,7 +109,7 @@ export default {
         .map(item => new AtomicSwapRequestsRecord(
           item,
           this.assetByCode(this.atomicSwap.baseAsset).trailingDigitsCount,
-          this.assetByCode(item.requestDetails.quoteAsset.id)
+          this.assetByCode(item.requestDetails.quoteAsset.quoteAsset)
             .trailingDigitsCount,
         )
         )
@@ -120,7 +120,7 @@ export default {
           .map(item => new AtomicSwapRequestsRecord(
             item,
             this.assetByCode(this.atomicSwap.baseAsset).trailingDigitsCount,
-            this.assetByCode(item.requestDetails.quoteAsset.id)
+            this.assetByCode(item.requestDetails.quoteAsset.quoteAsset)
               .trailingDigitsCount,
           )
           )

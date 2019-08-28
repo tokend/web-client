@@ -1,5 +1,16 @@
 <template>
   <div>
+    <div
+      class="atomic-swap__asset-description"
+      v-if="assetByCode(atomicSwap.baseAsset).description"
+    >
+      <p
+        class="atomic-swap__asset-description-lbl"
+      >
+        {{ 'atomic-swap-form.asset-description-lbl' | globalize }}:
+      </p>
+      <p>{{ assetByCode(atomicSwap.baseAsset).description }}</p>
+    </div>
     <atomic-swap-form
       :atomic-swap="atomicSwap"
       @submitted="handleAtomicSwapFormSubmitted"
@@ -121,9 +132,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  @import '~@/scss/variables';
+
   .atomic-swap__pending-atomic-swap-table-table-wrp {
     width: 100%;
     max-width: 100%;
     margin-top: 5rem;
+  }
+
+  .atomic-swap__asset-description {
+    margin-bottom: 2.4rem;
+  }
+
+  .atomic-swap__asset-description-lbl {
+    font-size: 1.2rem;
+    color: $col-primary-inactive;
   }
 </style>

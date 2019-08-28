@@ -2411,7 +2411,8 @@
       "total-price": "Total amount to pay",
       "error-msg": "Payment request was successful. Cannot load address for payment.",
       "load-failed-msg": "There was an error while loading.",
-      "loading-msg": "Please wait while we loading your data."
+      "loading-msg": "Please wait while we loading your data.",
+      "asset-description-lbl": "Asset description"
     },
     "atomic-swap-actions": {
       "cancel-btn": "Cancel",
