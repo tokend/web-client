@@ -74,7 +74,14 @@
         {{ 'movements-history.payment-recipient-lbl' | globalize }}
       </td>
       <td class="attributes-viewer__table-cell">
-        <email-getter :account-id="operationDetails.toAccountId" />
+        <template
+          v-if="base.Keypair.isValidPublicKey(operationDetails.toAccountId)"
+        >
+          <email-getter :account-id="operationDetails.toAccountId" />
+        </template>
+        <template v-else>
+          {{ operationDetails.toAccountId }}
+        </template>
       </td>
     </tr>
   </tbody>
@@ -86,6 +93,7 @@ import EmailGetter from '@/vue/common/EmailGetter'
 import { PaymentOp } from '../../wrappers/operation-details/payment'
 
 import { MathUtil } from '@/js/utils'
+import { base } from '@tokend/js-sdk'
 
 export default {
   components: {
@@ -97,6 +105,9 @@ export default {
       required: true,
     },
   },
+  data: _ => ({
+    base,
+  }),
   computed: {
     sourceFixedFee () {
       return {

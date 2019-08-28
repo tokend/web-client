@@ -15,6 +15,7 @@ for further information about branching and tagging conventions.
 #### Fixed
 - A bug with amount in `atomic-swap-form`
 - A bug with displaying asset name on `atomicSwapCard`
+- A bug with displaying subject in payment operations
 
 ## [1.0.2-rc.0] - 2019-08-27
 #### Added
