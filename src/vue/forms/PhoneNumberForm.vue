@@ -65,7 +65,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { api, factorsManager } from '@/api'
 import { errors } from '@tokend/js-sdk'
 import { vuexTypes } from '@/vuex'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import IdentityGetter from '@/vue/mixins/identity-getter'
 import { Bus } from '@/js/helpers/event-bus'
 
@@ -82,7 +82,8 @@ export default {
       code: '',
     },
     isShowSmsCode: false,
-    userPhoneNumer: '',
+    userPhoneNumber: '',
+    totpFactorError: {},
   }),
 
   validations: {
@@ -98,21 +99,17 @@ export default {
       isPhoneEnabled: vuexTypes.isPhoneEnabled,
     }),
     isPhoneNumberChanged () {
-      return this.userPhoneNumer === this.form.phoneNumber
+      return this.userPhoneNumber === this.form.phoneNumber
     },
   },
 
   async created () {
-    const phoneNumber = await this.getPhoneByAccountId(this.accountId)
+    const phoneNumber = await this.getPhoneByAccountId(this.accountId, true)
     this.form.phoneNumber = phoneNumber.substr(1)
-    this.userPhoneNumer = phoneNumber.substr(1)
+    this.userPhoneNumber = phoneNumber.substr(1)
   },
 
   methods: {
-    ...mapActions({
-      loadFactors: vuexTypes.LOAD_FACTORS,
-      loadNewIdentities: vuexTypes.LOAD_IDENTITIES_BY_ACCOUNT_ID,
-    }),
     async submit () {
       const validationRule = this.isShowSmsCode
         ? this.isFormValid()
@@ -121,50 +118,55 @@ export default {
       this.disableForm()
 
       try {
-        await this.changePhoneNumber()
-      } catch (error) {
-        if (error instanceof errors.ConflictError) {
-          ErrorHandler.process(error, 'phone-number-form.exist-phone-number-err')
-        } else if (error instanceof errors.TFARequiredError) {
-          this.isShowSmsCode = true
-          this.verifySmsCode(error)
+        if (!this.isShowSmsCode) {
+          await this.changePhoneNumber()
         } else {
-          ErrorHandler.process(error)
+          await this.verifySmsCode(this.totpFactorError)
+          await this.changePhoneNumber()
         }
-      }
-
-      this.enableForm()
-    },
-
-    async changePhoneNumber () {
-      const endpoint = `/identities/${this.accountId}/settings/phone`
-      await api.putWithSignature(endpoint, {
-        data: {
-          type: 'phone',
-          attributes: {
-            phone: '+' + this.form.phoneNumber,
-          },
-        },
-      })
-    },
-
-    async verifySmsCode (error) {
-      if (!this.form.code) {
-        this.enableForm()
-        return
-      }
-      try {
-        await factorsManager.verifyTotpFactor(error, this.form.code)
-        await this.changePhoneNumber()
-        await this.loadNewIdentities()
         this.$emit(EVENTS.submitted)
         if (this.isPhoneEnabled) {
           Bus.success('phone-number-form.phone-number-changed-msg')
         } else {
           Bus.success('phone-number-form.phone-number-added-msg')
         }
+        this.enableForm()
+      } catch (e) {
+        // All errors are processed above in the methods
+      }
+    },
+
+    async changePhoneNumber () {
+      try {
+        const endpoint = `/identities/${this.accountId}/settings/phone`
+        await api.putWithSignature(endpoint, {
+          data: {
+            type: 'phone',
+            attributes: {
+              phone: '+' + this.form.phoneNumber,
+            },
+          },
+        })
+      } catch (e) {
+        if (e instanceof errors.ConflictError) {
+          ErrorHandler.process(e, 'phone-number-form.exist-phone-number-err')
+        } else if (e instanceof errors.TFARequiredError) {
+          this.isShowSmsCode = true
+          this.totpFactorError = e
+          this.enableForm()
+        } else {
+          ErrorHandler.process(e)
+        }
+        throw new Error(e)
+      }
+    },
+
+    async verifySmsCode (error) {
+      try {
+        await factorsManager.verifyTotpFactor(error, this.form.code)
       } catch (e) {
         ErrorHandler.process(e, 'phone-number-form.wrong-sms-code-err')
+        throw new Error(e)
       }
     },
 

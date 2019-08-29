@@ -73,7 +73,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { api, factorsManager } from '@/api'
 import { errors } from '@tokend/js-sdk'
 import { vuexTypes } from '@/vuex'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import { Bus } from '@/js/helpers/event-bus'
 
 const EVENTS = {
@@ -91,6 +91,7 @@ export default {
     botUrl: '',
     isShowCode: false,
     userTelegram: '',
+    totpFactorError: {},
   }),
 
   validations: {
@@ -111,16 +112,13 @@ export default {
   },
 
   async created () {
-    const telegram = await this.getTelegramUsernameByAccountId(this.accountId)
+    const telegram =
+      await this.getTelegramUsernameByAccountId(this.accountId, true)
     this.form.telegram = telegram
     this.userTelegram = telegram
   },
 
   methods: {
-    ...mapActions({
-      loadFactors: vuexTypes.LOAD_FACTORS,
-      loadNewIdentities: vuexTypes.LOAD_IDENTITIES_BY_ACCOUNT_ID,
-    }),
     async submit () {
       const validationRule = this.isShowCode
         ? this.isFormValid()
@@ -129,51 +127,56 @@ export default {
       this.disableForm()
 
       try {
-        await this.changeTelegramUsername()
-      } catch (error) {
-        if (error instanceof errors.ConflictError) {
-          ErrorHandler.process(error, 'telegram-form.exist-telegram-err')
-        } else if (error instanceof errors.TFARequiredError) {
-          this.botUrl = error.meta.botUrl
-          this.isShowCode = true
-          this.verifyCode(error)
+        if (!this.isShowCode) {
+          await this.changeTelegramUsername()
         } else {
-          ErrorHandler.process(error)
+          await this.verifyCode(this.totpFactorError)
+          await this.changeTelegramUsername()
         }
-      }
-
-      this.enableForm()
-    },
-
-    async changeTelegramUsername () {
-      const endpoint = `/identities/${this.accountId}/settings/telegram`
-      await api.putWithSignature(endpoint, {
-        data: {
-          type: 'telegram-username',
-          attributes: {
-            username: this.form.telegram,
-          },
-        },
-      })
-    },
-
-    async verifyCode (error) {
-      if (!this.form.code) {
-        this.enableForm()
-        return
-      }
-      try {
-        await factorsManager.verifyTotpFactor(error, this.form.code)
-        await this.changeTelegramUsername()
-        await this.loadNewIdentities(this.accountId)
         this.$emit(EVENTS.submitted)
         if (this.isTelegramEnabled) {
           Bus.success('telegram-form.telegram-changed-msg')
         } else {
           Bus.success('telegram-form.telegram-added-msg')
         }
+        this.enableForm()
+      } catch (e) {
+        // All errors are processed above in the methods
+      }
+    },
+
+    async changeTelegramUsername () {
+      try {
+        const endpoint = `/identities/${this.accountId}/settings/telegram`
+        await api.putWithSignature(endpoint, {
+          data: {
+            type: 'telegram-username',
+            attributes: {
+              username: this.form.telegram,
+            },
+          },
+        })
+      } catch (e) {
+        if (e instanceof errors.ConflictError) {
+          ErrorHandler.process(e, 'telegram-form.exist-telegram-err')
+        } else if (e instanceof errors.TFARequiredError) {
+          this.botUrl = e.meta.botUrl
+          this.isShowCode = true
+          this.totpFactorError = e
+          this.enableForm()
+        } else {
+          ErrorHandler.process(e)
+        }
+        throw new Error(e)
+      }
+    },
+
+    async verifyCode (error) {
+      try {
+        await factorsManager.verifyTotpFactor(error, this.form.code)
       } catch (e) {
         ErrorHandler.process(e, 'telegram-form.wrong-sms-code-err')
+        throw new Error(e)
       }
     },
 

@@ -95,8 +95,8 @@ export default {
       return balIds
     },
 
-    async getEmailByAccountId (accountId) {
-      if (this.emailByAccountId(accountId)) {
+    async getEmailByAccountId (accountId, isUpdate = false) {
+      if (this.emailByAccountId(accountId) && !isUpdate) {
         return this.emailByAccountId(accountId)
       } else {
         await this.LOAD_IDENTITIES_BY_ACCOUNT_ID(accountId)
@@ -104,16 +104,16 @@ export default {
       }
     },
 
-    async getPhoneByAccountId (accountId) {
-      if (this.phoneNumberByAccountId(accountId)) {
+    async getPhoneByAccountId (accountId, isUpdate = false) {
+      if (this.phoneNumberByAccountId(accountId) && !isUpdate) {
         return this.phoneNumberByAccountId(accountId)
       } else {
         await this.LOAD_IDENTITIES_BY_ACCOUNT_ID(accountId)
         return this.phoneNumberByAccountId(accountId)
       }
     },
-    async getTelegramUsernameByAccountId (accountId) {
-      if (this.telegramUsernameByAccountId(accountId)) {
+    async getTelegramUsernameByAccountId (accountId, isUpdate = false) {
+      if (this.telegramUsernameByAccountId(accountId) && !isUpdate) {
         return this.telegramUsernameByAccountId(accountId)
       } else {
         await this.LOAD_IDENTITIES_BY_ACCOUNT_ID(accountId)
