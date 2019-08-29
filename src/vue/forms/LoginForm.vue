@@ -115,11 +115,7 @@ export default {
         })
         await this.loadAssets()
         await this.loadBusinessStatsQuoteAsset()
-        if (Object.keys(this.$route.query).includes('redirectPath')) {
-          this.$router.push({ path: this.$route.query.redirectPath })
-        } else {
-          this.$router.push({ name: 'app' })
-        }
+        this.$router.push({ name: 'app' })
       } catch (e) {
         this.processAuthError(e)
         this.enableForm()
