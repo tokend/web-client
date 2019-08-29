@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
-## [1.0.2-rc.1] - 2019-08-28
+## [1.0.3-rc.1] - 2019-08-29
 #### Added
 - Asset description to atomic swap form
 - Plus before phone number
@@ -19,7 +19,7 @@ for further information about branching and tagging conventions.
 - A bug with displaying asset name on `atomicSwapCard`
 - A bug with displaying subject in payment operations
 
-## [1.0.2-rc.0] - 2019-08-27
+## [1.0.3-rc.0] - 2019-08-27
 #### Added
 - Buying atomic swaps
 - Missed russian translation
@@ -210,9 +210,9 @@ for further information about branching and tagging conventions.
 #### Removed
 - `RECOVERY_MODE` config key due to unused anymore
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.0.2-rc.1...HEAD
-[1.0.2-rc.1]: https://github.com/tokend/web-client/compare/1.0.2-rc.0...1.0.2-rc.1
-[1.0.2-rc.0]: https://github.com/tokend/web-client/compare/1.0.2...1.0.2-rc.0
+[Unreleased]: https://github.com/tokend/web-client/compare/1.0.3-rc.1...HEAD
+[1.0.3-rc.1]: https://github.com/tokend/web-client/compare/1.0.3-rc.0...1.0.3-rc.1
+[1.0.3-rc.0]: https://github.com/tokend/web-client/compare/1.0.2...1.0.3-rc.0
 [1.0.2]: https://github.com/tokend/web-client/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/tokend/web-client/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/tokend/web-client/compare/1.0.0-rc.8...1.0.0
