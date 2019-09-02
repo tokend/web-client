@@ -629,7 +629,8 @@
       "rejected-reason": "Rejection reason:",
       "permanently-rejected-reason": "Rejection reason:",
       "limited-functionality-msg": "Currently application functionality is limited",
-      "sign-out-btn": "Sign out"
+      "sign-out-btn": "Sign out",
+      "loading-msg": "Loading"
     },
     "general-form": {
       "documents-lbl": "Documents",
@@ -2556,7 +2557,8 @@
     },
     "general-kyc-form": {
       "login-btn": "Login",
-      "update-btn": "Create request",
+      "update-btn": "Update",
+      "create-btn": "Create request",
       "logout-btn": "Logout",
       "first-name-lbl": "First name",
       "last-name-lbl": "Last name"

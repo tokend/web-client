@@ -23,11 +23,13 @@
         </div>
       </div>
 
-      <div class="app__form-row">
+      <div
+        v-if="!isKycRecoveryPage"
+        class="app__form-row"
+      >
         <div class="app__form-field">
           <file-field
             v-model="form.avatar"
-            v-if="!isKycRecoveryPage"
             name="verification-corporate-avatar"
             :note="'verification-form.image-type-note' | globalize"
             :file-extensions="['jpg', 'png']"

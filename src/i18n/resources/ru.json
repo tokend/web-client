@@ -633,7 +633,8 @@
       "rejected-reason": "Причина отказа:",
       "permanently-rejected-reason": "Причина отказа:",
       "limited-functionality-msg": "Доступ к функционалу приложения ограничен",
-      "sign-out-btn": "Выйти"
+      "sign-out-btn": "Выйти",
+      "loading-msg": "Загрузка"
     },
     "general-form": {
       "documents-lbl": "Документы",
@@ -2560,7 +2561,8 @@
     },
     "general-kyc-form": {
       "login-btn": "Войти",
-      "update-btn": "Создать запрос",
+      "update-btn": "Обновить",
+      "create-btn": "Создать запрос",
       "logout-btn": "Выйти",
       "first-name-lbl": "Имя",
       "last-name-lbl": "Фамилия"
