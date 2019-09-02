@@ -6,7 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
-## [Unreleased] - 2019-08-29
+## [Unreleased]
+#### Fixed
+- Localization mistakes
+
+## [1.0.3-rc.2] - 2019-08-29
+#### Removed
+- Login redirect
+
 #### Changed
 - Refactored `PhoneNumber` and `Telegram` forms
 - Get data from store for general kyc form
@@ -218,7 +225,8 @@ for further information about branching and tagging conventions.
 #### Removed
 - `RECOVERY_MODE` config key due to unused anymore
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.0.3-rc.1...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.0.3-rc.2...HEAD
+[1.0.3-rc.2]: https://github.com/tokend/web-client/compare/1.0.3-rc.1...1.0.3-rc.2
 [1.0.3-rc.1]: https://github.com/tokend/web-client/compare/1.0.3-rc.0...1.0.3-rc.1
 [1.0.3-rc.0]: https://github.com/tokend/web-client/compare/1.0.2...1.0.3-rc.0
 [1.0.2]: https://github.com/tokend/web-client/compare/1.0.1...1.0.2
