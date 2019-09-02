@@ -9,6 +9,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Fixed
 - Localization mistakes
+- A bug with not show more button on tx history
 
 ## [1.0.3-rc.2] - 2019-08-29
 #### Removed
