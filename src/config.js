@@ -75,6 +75,12 @@ export default Object.assign(
     DECIMAL_POINTS: 2,
 
     /**
+     * Maximum amount precision in system, the number of digits
+     * after a point
+     */
+    MAX_SYSTEM_DECIMAL_POINTS: 6,
+
+    /**
      * Default acceptable step for amount change,
      * depends on amount precision
      */
