@@ -2388,7 +2388,7 @@
       "amount-lbl": "Amount",
       "available-amount-hint": "Available: {{amount, money}}",
       "create-btn": "Create",
-      "price-lbl": "Price",
+      "price-lbl": "Price ({{asset}})",
       "address-lbl": "Address",
       "add-quote-asset-btn": "Add quote asset",
       "quote-assets-subheading": "Quote asset {{ number }}",

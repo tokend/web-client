@@ -2392,7 +2392,7 @@
       "amount-lbl": "Количество",
       "available-amount-hint": "Доступно: {{amount, money}}",
       "create-btn": "Создать",
-      "price-lbl": "Цена",
+      "price-lbl": "Цена ({{asset}})",
       "address-lbl": "Адрес",
       "add-quote-asset-btn": "Добавить котируемый актив",
       "quote-assets-subheading": "Котируемый актив {{number}}",
