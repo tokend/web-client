@@ -10,6 +10,10 @@ for further information about branching and tagging conventions.
 #### Fixed
 - Localization mistakes
 
+#### Added
+- Get data from store for general kyc form
+- A loader on kyc recovery management page
+
 ## [1.0.3-rc.2] - 2019-08-29
 #### Removed
 - Login redirect

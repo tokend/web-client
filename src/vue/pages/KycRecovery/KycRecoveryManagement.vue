@@ -29,20 +29,27 @@
           v-else-if="isAccountCorporate"
           @kyc-recovery-submit="onSubmit" />
       </template>
+      <template v-else>
+        <loader
+          class="kyc-recovery-management__loader"
+          :message-id="'kyc-recovery-state-message.loading-msg'"
+        />
+      </template>
     </div>
   </div>
 </template>
 
 <script>
-import { vuexTypes } from '@/vuex'
-import { mapGetters, mapActions } from 'vuex'
-import { ErrorHandler } from '@/js/helpers/error-handler'
-import { Bus } from '@/js/helpers/event-bus'
+import Loader from '@/vue/common/Loader'
 import KycRecoveryUnverified from '@/vue/pages/KycRecovery/KycRecoveryUnverified'
 import VerificationGeneral from '@/vue/pages/VerificationGeneral'
 import VerificationCorporateForm from '@/vue/pages/VerificationCorporate'
 import KycRecoveryStateMessage from '@/vue/pages/KycRecovery/KycRecoveryStateMessage'
 import config from '@/config'
+import { vuexTypes } from '@/vuex'
+import { mapGetters, mapActions } from 'vuex'
+import { ErrorHandler } from '@/js/helpers/error-handler'
+import { Bus } from '@/js/helpers/event-bus'
 
 export default {
   name: 'kyc-recovery-management',
@@ -51,6 +58,7 @@ export default {
     KycRecoveryStateMessage,
     VerificationGeneral,
     VerificationCorporateForm,
+    Loader,
   },
   data: _ => ({
     isLoaded: false,
@@ -132,5 +140,9 @@ export default {
   @include respond-to-custom($sidebar-hide-bp) {
     font-size: 3.2rem;
   }
+}
+
+.kyc-recovery-management__loader {
+  margin-top: 2rem;
 }
 </style>
