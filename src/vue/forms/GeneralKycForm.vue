@@ -49,7 +49,9 @@
         {{
           (isSignUpKycPage
             ? 'general-kyc-form.login-btn'
-            : 'general-kyc-form.update-btn'
+            : isExistingRequest
+              ? 'general-kyc-form.update-btn'
+              : 'general-kyc-form.create-btn'
           ) | globalize
         }}
       </button>
@@ -84,6 +86,7 @@ import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 const EVENTS = {
   submitted: 'submitted',
   logout: 'logout',
+  kycRecoverySubmit: 'kyc-recovery-submit',
 }
 
 export default {
@@ -114,6 +117,7 @@ export default {
       previousAccountRole: vuexTypes.kycPreviousRequestAccountRoleToSet,
       kycRecoveryBlobId: vuexTypes.kycRecoveryBlobId,
       kycRecoveryState: vuexTypes.kycRecoveryState,
+      kycRecoveryRequestBlob: vuexTypes.kycRecoveryRequestBlob,
     }),
 
     isFormPopulatable () {
@@ -133,8 +137,7 @@ export default {
       this.kycRecoveryBlobId &&
       (this.kycRecoveryState !== REQUEST_STATES_STR.permanentlyRejected)
     ) {
-      const { data } = await api.getWithSignature(`/blobs/${this.kycRecoveryBlobId}`)
-      this.form = this.parseKycData(JSON.parse(data.value))
+      this.form = this.parseKycData(this.kycRecoveryRequestBlob)
     } else if (!this.isKycRecoveryPage && this.isFormPopulatable) {
       this.form = this.parseKycData(this.kycLatestRequestData)
     }
@@ -159,6 +162,7 @@ export default {
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycGeneral)
         if (this.isKycRecoveryPage) {
           await this.sendKycRecoveryRequest(kycBlobId)
+          this.$emit(EVENTS.kycRecoverySubmit)
         } else {
           const operation = this.createKycOperation(
             kycBlobId,
