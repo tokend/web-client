@@ -48,6 +48,19 @@
         />
       </div>
     </div>
+    <div class="app__form-row">
+      <div class="app__form-field">
+        <amount-input-field
+          v-model="form.price"
+          name="create-atomic-swap-quote-asset-price"
+          :label="'create-atomic-swap-form.price-lbl' | globalize({
+          asset: businessStatsQuoteAsset
+          })"
+          :asset="businessStatsQuoteAsset"
+          :disabled="formMixin.isDisabled"
+        />
+      </div>
+    </div>
 
     <div
       class="create-atomic-swap-form__quote-asset-wrp"
@@ -98,16 +111,21 @@
             <!-- eslint-enable max-len -->
           </div>
         </div>
-
         <div class="app__form-row">
           <div class="app__form-field">
-            <amount-input-field
-              v-model="form.quoteAssets[index].price"
-              name="create-atomic-swap-quote-asset-price"
-              :label="'create-atomic-swap-form.price-lbl' | globalize"
-              :asset="form.quoteAssets[index].asset"
-              :disabled="formMixin.isDisabled"
-            />
+            <div class="app__form-row">
+              <div class="app__form-field">
+                <!-- eslint-disable max-len -->
+                <input-field
+                  white-autofill
+                  v-model="form.quoteAssets[index].address"
+                  :name="'create-atomic-swap-quote-asset-address'"
+                  :label="'create-atomic-swap-form.address-lbl' | globalize"
+                  :disabled="formMixin.isDisabled"
+                />
+                <!-- eslint-enable max-len -->
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -170,7 +188,8 @@ export default {
     form: {
       asset: {},
       amount: '',
-      quoteAssets: [{ price: '', asset: {} }],
+      price: '',
+      quoteAssets: [{ price: '', asset: {}, address: '' }],
     },
     isLoaded: false,
     isLoadFailed: false,
@@ -184,11 +203,11 @@ export default {
         amount: {
           required,
         },
+        price: {
+          required,
+        },
         quoteAssets: {
           $each: {
-            price: {
-              required,
-            },
             asset: {
               required,
               selectedSameAssetCode: asset => {
@@ -210,6 +229,7 @@ export default {
       quoteAtomicSwapAssets: vuexTypes.quoteAtomicSwapAssets,
       accountBalanceByCode: vuexTypes.accountBalanceByCode,
       accountId: vuexTypes.accountId,
+      businessStatsQuoteAsset: vuexTypes.businessStatsQuoteAsset,
     }),
 
     accountBalance () {
@@ -281,7 +301,7 @@ export default {
 
     addQuoteAsset () {
       this.form.quoteAssets.push({
-        price: '',
+        address: '',
         asset: this.quoteAtomicSwapAssets[0],
       })
     },
@@ -303,10 +323,12 @@ export default {
     buildCreateAtomicSwapOperation () {
       const balanceID = this.accountBalanceByCode(this.form.asset.code).id
       const quoteAssets = []
+      const addresses = {}
 
       this.form.quoteAssets.forEach(quoteAsset => {
+        addresses[quoteAsset.asset.code] = quoteAsset.address
         quoteAssets.push({
-          price: quoteAsset.price,
+          price: this.form.price,
           asset: quoteAsset.asset.code,
         })
       })
@@ -315,7 +337,9 @@ export default {
         balanceID: balanceID,
         amount: this.form.amount,
         quoteAssets: quoteAssets,
-        creatorDetails: {},
+        creatorDetails: {
+          'addresses': addresses,
+        },
       }
       // eslint-disable-next-line max-len
       return base.CreateAtomicSwapAskRequestBuilder.createAtomicSwapAskRequest(operation)
