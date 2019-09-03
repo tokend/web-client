@@ -2394,7 +2394,8 @@
       "add-quote-asset-btn": "Add quote asset",
       "quote-assets-subheading": "Quote asset {{ number }}",
       "created-atomic-swap-msg": "Atomic swap request successfully created",
-      "available-balance":"Balance: {{amount, number}}"
+      "available-balance": "Balance: {{amount, number}}",
+      "card-number-lbl": "Card number"
     },
     "atomic-swaps-explore": {
       "atomic-swap-drawer-title": "Atomic swap details",

@@ -54,7 +54,7 @@
           v-model="form.price"
           name="create-atomic-swap-quote-asset-price"
           :label="'create-atomic-swap-form.price-lbl' | globalize({
-          asset: businessStatsQuoteAsset
+            asset: businessStatsQuoteAsset
           })"
           :asset="businessStatsQuoteAsset"
           :disabled="formMixin.isDisabled"
@@ -113,19 +113,30 @@
         </div>
         <div class="app__form-row">
           <div class="app__form-field">
-            <div class="app__form-row">
-              <div class="app__form-field">
-                <!-- eslint-disable max-len -->
-                <input-field
-                  white-autofill
-                  v-model="form.quoteAssets[index].address"
-                  :name="'create-atomic-swap-quote-asset-address'"
-                  :label="'create-atomic-swap-form.address-lbl' | globalize"
-                  :disabled="formMixin.isDisabled"
-                />
-                <!-- eslint-enable max-len -->
-              </div>
-            </div>
+            <!-- eslint-disable max-len -->
+            <template v-if="form.quoteAssets[index].asset.isCoinpayments">
+              <input-field
+                white-autofill
+                v-model="form.quoteAssets[index].address"
+                @blur="touchField(`form.quoteAssets[${index}].address`)"
+                :error-message="getFieldErrorMessage(`form.quoteAssets[${index}].address`)"
+                :name="'create-atomic-swap-quote-asset-address'"
+                :label="'create-atomic-swap-form.address-lbl' | globalize"
+                :disabled="formMixin.isDisabled"
+              />
+            </template>
+            <template v-else>
+              <input-field
+                white-autofill
+                v-model="form.quoteAssets[index].cardNumber"
+                @blur="touchField(`form.quoteAssets[${index}].cardNumber`)"
+                :error-message="getFieldErrorMessage(`form.quoteAssets[${index}].cardNumber`)"
+                :name="'create-atomic-swap-quote-asset-card-number'"
+                :label="'create-atomic-swap-form.card-number-lbl' | globalize"
+                :disabled="formMixin.isDisabled"
+              />
+            </template>
+            <!-- eslint-enable max-len -->
           </div>
         </div>
       </div>
@@ -163,6 +174,9 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import {
   required,
   selectedSameAssetCode,
+  requiredIf,
+  cardNumber,
+  address,
 } from '@validators'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -189,7 +203,7 @@ export default {
       asset: {},
       amount: '',
       price: '',
-      quoteAssets: [{ price: '', asset: {}, address: '' }],
+      quoteAssets: [{ price: '', asset: {}, address: '', cardNumber: '' }],
     },
     isLoaded: false,
     isLoadFailed: false,
@@ -215,6 +229,26 @@ export default {
                 const selectedAssets = this.getSelectedAssetsByAssetCode(asset.code)
                 return selectedSameAssetCode(selectedAssets)
                 /* eslint-enable max-len */
+              },
+            },
+            address: {
+              required: requiredIf(quoteAsset => {
+                return quoteAsset.asset.isCoinpayments
+              }),
+              address: (value, quoteAsset) => {
+                return quoteAsset.asset.isCoinpayments
+                  ? address(quoteAsset.asset.code)(value)
+                  : true
+              },
+            },
+            cardNumber: {
+              required: requiredIf(quoteAsset => {
+                return !quoteAsset.asset.isCoinpayments
+              }),
+              cardNumber: (value, quoteAsset) => {
+                return quoteAsset.asset.isCoinpayments
+                  ? true
+                  : cardNumber(value)
               },
             },
           },
@@ -323,10 +357,13 @@ export default {
     buildCreateAtomicSwapOperation () {
       const balanceID = this.accountBalanceByCode(this.form.asset.code).id
       const quoteAssets = []
-      const addresses = {}
+      const destinations = {}
 
       this.form.quoteAssets.forEach(quoteAsset => {
-        addresses[quoteAsset.asset.code] = quoteAsset.address
+        destinations[quoteAsset.asset.code] = quoteAsset.asset.isCoinpayments
+          ? quoteAsset.address
+          : quoteAsset.cardNumber
+
         quoteAssets.push({
           price: this.form.price,
           asset: quoteAsset.asset.code,
@@ -338,7 +375,7 @@ export default {
         amount: this.form.amount,
         quoteAssets: quoteAssets,
         creatorDetails: {
-          'addresses': addresses,
+          'destination': destinations,
         },
       }
       // eslint-disable-next-line max-len

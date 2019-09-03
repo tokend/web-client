@@ -2398,7 +2398,8 @@
       "add-quote-asset-btn": "Добавить котируемый актив",
       "quote-assets-subheading": "Котируемый актив {{number}}",
       "created-atomic-swap-msg": "Запрос отправлен",
-      "available-balance": "Баланс: {{amount, number}}"
+      "available-balance": "Баланс: {{amount, number}}",
+      "card-number-lbl": "Номер карты"
     },
     "customers-page": {
       "invite-btn": "Пригласить клиента",
