@@ -9,6 +9,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Fixed
 - Localization mistakes
+- A bug with not show more button on tx history
 
 #### Added
 - Get data from store for general kyc form
