@@ -13,8 +13,13 @@ for further information about branching and tagging conventions.
 
 #### Fixed
 - Localization mistakes
+- A bug with trailing digits count on amount fields
 - Missing Russian localization
 - A bug with not show more button on tx history
+
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.10.1-rc.0
 
 ## [1.0.3-rc.2] - 2019-08-29
 #### Removed
