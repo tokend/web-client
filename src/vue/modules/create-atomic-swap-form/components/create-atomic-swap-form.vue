@@ -54,7 +54,7 @@
           v-model="form.price"
           name="create-atomic-swap-quote-asset-price"
           :label="'create-atomic-swap-form.price-lbl' | globalize({
-          asset: businessStatsQuoteAsset
+            asset: businessStatsQuoteAsset
           })"
           :asset="businessStatsQuoteAsset"
           :disabled="formMixin.isDisabled"
@@ -286,7 +286,10 @@ export default {
 
         const createAtomicSwapOperation = this.buildCreateAtomicSwapOperation()
         operations.push(createAtomicSwapOperation)
-        await api.postOperations(...operations)
+        await api.postOperationsToSpecificEndpoint(
+          '/integrations/marketplace/buy',
+          ...operations
+        )
 
         Bus.success('create-atomic-swap-form.created-atomic-swap-msg')
         this.$emit(EVENTS.createdAtomicSwap)
