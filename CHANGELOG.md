@@ -7,9 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 ## [Unreleased]
+#### Added
+- Get data from store for general kyc form
+- A loader on kyc recovery management page
+
 #### Fixed
 - Localization mistakes
 - Missing Russian localization
+- A bug with not show more button on tx history
 
 ## [1.0.3-rc.2] - 2019-08-29
 #### Removed
