@@ -90,16 +90,16 @@
           </button>
         </p>
       </div>
+    </div>
 
-      <div class="app__form-actions">
-        <button
-          v-ripple
-          class="atomic-swap-quote-assets-form__submit-btn app__button-raised"
-          :disabled="isDisabled"
-        >
-          {{ 'atomic-swap-quote-assets-form.create-btn' | globalize }}
-        </button>
-      </div>
+    <div class="app__form-actions">
+      <button
+        v-ripple
+        class="atomic-swap-quote-assets-form__submit-btn app__button-raised"
+        :disabled="isDisabled"
+      >
+        {{ 'atomic-swap-quote-assets-form.create-btn' | globalize }}
+      </button>
     </div>
   </form>
 </template>
