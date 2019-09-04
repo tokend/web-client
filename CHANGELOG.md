@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 #### Added
 - Get data from store for general kyc form
 - A loader on kyc recovery management page
+- Ability to set crypto addresses and card
 
 #### Fixed
 - Localization mistakes

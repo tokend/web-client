@@ -132,7 +132,8 @@
       "field-error_selectedSameAssetCode": "Не могут быть выбраны два одинаковых актива",
       "field-error_validatePhoneNumber": "Неверный номер телефона",
       "field-error_emailOrPhoneNumber": "Неверный имейл или телефон получателя",
-      "field-error_telegramUsername" : "Убедитесь что имя пользователя верное"
+      "field-error_telegramUsername" : "Убедитесь что имя пользователя верное",
+      "field-error_addressOrNumberCard": "Убедитесь что {{ destinationLabel }} верный"
     },
     "errors": {
       "default": "Что-то пошло не так. Пожалуйста, повторите попытку позже или свяжитесь с владельцем системы.",
@@ -1202,6 +1203,7 @@
       "loading-msg": "Загружаем…",
       "load-failed-msg": "Произошла ошибка при загрузке.",
       "next-btn": "Далее",
+      "create-btn": "Создать",
       "create-request-btn": "Создать запрос",
       "update-request-btn": "Обновить запрос",
       "information-step": "Основной",
@@ -2396,7 +2398,9 @@
       "next-btn": "Далее",
       "price-lbl": "Цена ({{asset}})",
       "created-atomic-swap-msg": "Запрос отправлен",
-      "available-balance": "Баланс: {{amount, number}}"
+      "available-balance": "Баланс: {{amount, number}}",
+      "information-step": "Информация о прямом обмене",
+      "quote-assets-step": "Добавление котируемых активов"
     },
     "atomic-swap-quote-assets-form": {
       "quote-assets-subheading": "Котируемый актив {{number}}",

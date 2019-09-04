@@ -15,7 +15,7 @@
           @submit="collectAssetAttributes($event) || moveToNextStep()"
         />
         <atomic-swap-quote-assets-form
-          v-show="currentStep === STEPS.advanced.number"
+          v-show="currentStep === STEPS.quoteAssets.number"
           :is-disabled.sync="isDisabled"
           @submit="collectAssetAttributes($event) || submit()"
         />
@@ -69,11 +69,11 @@ const EVENTS = {
 const STEPS = {
   information: {
     number: 1,
-    titleId: 'create-asset-form.information-step',
+    titleId: 'create-atomic-swap-form.information-step',
   },
-  advanced: {
+  quoteAssets: {
     number: 2,
-    titleId: 'create-asset-form.advanced-step',
+    titleId: 'create-atomic-swap-form.quote-assets-step',
   },
 }
 

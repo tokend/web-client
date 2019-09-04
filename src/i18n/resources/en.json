@@ -1199,6 +1199,7 @@
       "loading-msg": "Loading…",
       "load-failed-msg": "There was an error while loading.",
       "next-btn": "Next",
+      "create-btn": "Create",
       "create-request-btn": "Create request",
       "update-request-btn": "Update request",
       "information-step": "Asset information",
@@ -2393,7 +2394,9 @@
       "next-btn": "Next",
       "price-lbl": "Price ({{asset}})",
       "created-atomic-swap-msg": "Atomic swap request successfully created",
-      "available-balance": "Balance: {{amount, number}}"
+      "available-balance": "Balance: {{amount, number}}",
+      "information-step": "Atomic swap information",
+      "quote-assets-step": "Add quote assets"
     },
     "atomic-swap-quote-assets-form": {
       "quote-assets-subheading": "Quote asset {{ number }}",

@@ -141,7 +141,7 @@ export default {
   width: 1.4rem;
   height: 1.4rem;
   border-radius: 50%;
-  padding: 0.2rem;
+  padding: 0.19rem;
   margin-right: 0.4rem;
 }
 

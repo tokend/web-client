@@ -132,16 +132,25 @@ export default {
 
     $buildAtomicSwapCreationOperation () {
       const balance = this.accountBalanceByCode(this.collectedAttributes.code)
+      const quoteAssets = []
+      const destinations = {}
+
+      this.collectedAttributes.quoteAssets.forEach(quoteAsset => {
+        destinations[quoteAsset.asset.code] = quoteAsset.destination
+
+        quoteAssets.push({
+          price: this.collectedAttributes.price,
+          asset: quoteAsset.asset.code,
+        })
+      })
+
       const operation = {
         balanceID: balance.id,
         amount: this.collectedAttributes.amountToSell,
-        quoteAssets: [
-          {
-            price: this.collectedAttributes.price,
-            asset: this.businessStatsQuoteAsset,
-          },
-        ],
-        creatorDetails: {},
+        quoteAssets: quoteAssets,
+        creatorDetails: {
+          'destination': destinations,
+        },
       }
       // eslint-disable-next-line max-len
       return base.CreateAtomicSwapAskRequestBuilder.createAtomicSwapAskRequest(operation)

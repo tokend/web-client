@@ -269,7 +269,8 @@
       "no-base-atomic-swap-assets-msg": "Please create an asset to create direct sell",
       "no-quote-atomic-swap-assets-title": "No quote direct sell assets yet",
       "no-quote-atomic-swap-assets-msg": "Please create an asset to create direct sell",
-      "created-atomic-swap-msg": "Direct sell offering successfully created"
+      "created-atomic-swap-msg": "Direct sell offering successfully created",
+      "information-step": "Direct sell information"
     },
     "atomic-swaps-explore": {
       "atomic-swap-drawer-title": "Direct sell details",
@@ -277,12 +278,12 @@
       "no-list-msg": "Here will be the list of direct sell offerings",
       "owned-by-me-filter-lbl": "Owned by me"
     },
-    "create-asset-form": {
-      "next-btn": "Create"
-    },
     "settings-page": {
       "security-tab": "General",
       "my-account-tab": "Business"
+    },
+    "create-asset-form": {
+      "advanced-step": "Direct sell"
     }
   }
 }
