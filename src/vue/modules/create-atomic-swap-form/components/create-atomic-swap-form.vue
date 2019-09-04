@@ -62,108 +62,13 @@
       </div>
     </div>
 
-    <div
-      class="create-atomic-swap-form__quote-asset-wrp"
-      v-for="(quoteAsset, index) in form.quoteAssets"
-      :key="index"
-    >
-      <div class="create-atomic-swap-form__quote-asset">
-        <div class="create-atomic-swap-form__quote-assets-subheading-wrp">
-          <!-- eslint-disable-next-line max-len -->
-          <h3 class="app__form-subheading create-atomic-swap-form__quote-assets-subheading">
-            {{ 'create-atomic-swap-form.quote-assets-subheading' |
-              globalize({number: index + 1})
-            }}
-          </h3>
-
-          <button
-            v-if="canDeleteQuoteAsset(index + 1)"
-            type="button"
-            class="create-atomic-swap-form__delete-quote-asset-btn"
-            @click="deleteQuoteAsset(index)"
-            :disabled="formMixin.isDisabled"
-          >
-            <!-- eslint-disable-next-line max-len -->
-            <i class="mdi mdi-minus-circle-outline create-atomic-swap-form__delete-quote-asset-icon" />
-          </button>
-        </div>
-
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <!-- eslint-disable max-len -->
-            <select-field
-              :value="form.quoteAssets[index].asset.code"
-              @input="setQuoteAssetByCode($event, index)"
-              name="create-atomic-swap-asset"
-              :label="'create-atomic-swap-form.asset-lbl' | globalize"
-              @blur="touchField(`form.quoteAssets[${index}].asset`)"
-              :error-message="getFieldErrorMessage(`form.quoteAssets[${index}].asset`)"
-              :disabled="formMixin.isDisabled"
-            >
-              <option
-                v-for="asset in quoteAtomicSwapAssets"
-                :key="asset.code"
-                :value="asset.code"
-              >
-                {{ asset.name }}
-              </option>
-            </select-field>
-            <!-- eslint-enable max-len -->
-          </div>
-        </div>
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <!-- eslint-disable max-len -->
-            <template v-if="form.quoteAssets[index].asset.isCoinpayments">
-              <input-field
-                white-autofill
-                v-model="form.quoteAssets[index].address"
-                @blur="touchField(`form.quoteAssets[${index}].address`)"
-                :error-message="getFieldErrorMessage(`form.quoteAssets[${index}].address`)"
-                :name="'create-atomic-swap-quote-asset-address'"
-                :label="'create-atomic-swap-form.address-lbl' | globalize"
-                :disabled="formMixin.isDisabled"
-              />
-            </template>
-            <template v-else>
-              <input-field
-                white-autofill
-                v-model="form.quoteAssets[index].cardNumber"
-                @blur="touchField(`form.quoteAssets[${index}].cardNumber`)"
-                :error-message="getFieldErrorMessage(`form.quoteAssets[${index}].cardNumber`)"
-                :name="'create-atomic-swap-quote-asset-card-number'"
-                :label="'create-atomic-swap-form.card-number-lbl' | globalize"
-                :disabled="formMixin.isDisabled"
-              />
-            </template>
-            <!-- eslint-enable max-len -->
-          </div>
-        </div>
-      </div>
-      <div
-        class="create-atomic-swap-form__add-quote-asset-wrp"
-        v-if="canAddQuoteAsset(index + 1)"
-      >
-        <p class="create-atomic-swap-form__add-quote-asset">
-          <button
-            class="create-atomic-swap-form__add-quote-asset-btn"
-            type="button"
-            @click="addQuoteAsset(index)"
-            :disabled="formMixin.isDisabled"
-          >
-            {{ 'create-atomic-swap-form.add-quote-asset-btn' | globalize }}
-          </button>
-        </p>
-      </div>
-    </div>
-
     <div class="app__form-actions">
       <button
         v-ripple
         class="create-atomic-swap-form__submit-btn app__button-raised"
         :disabled="formMixin.isDisabled"
       >
-        {{ 'create-atomic-swap-form.create-btn' | globalize }}
+        {{ 'create-atomic-swap-form.next-btn' | globalize }}
       </button>
     </div>
   </form>
@@ -171,23 +76,15 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
+import ManageAtomicSwapMixin from '../mixins/manage-atomic-swap.mixin'
 import {
   required,
-  selectedSameAssetCode,
-  requiredIf,
-  cardNumber,
-  address,
 } from '@validators'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { Bus } from '@/js/helpers/event-bus'
-import { ErrorHandler } from '@/js/helpers/error-handler'
-import { api } from '@/api'
-import { base } from '@tokend/js-sdk'
-import { MathUtil } from '@/js/utils/math.util'
 
 const EVENTS = {
-  createdAtomicSwap: 'created-atomic-swap',
+  submit: 'submit',
 }
 
 const VALIDATION_TYPES = {
@@ -197,17 +94,15 @@ const VALIDATION_TYPES = {
 
 export default {
   name: 'create-atomic-swap-form',
-  mixins: [FormMixin],
+  mixins: [FormMixin, ManageAtomicSwapMixin],
   data: _ => ({
     form: {
       asset: {},
       amount: '',
       price: '',
-      quoteAssets: [{ price: '', asset: {}, address: '', cardNumber: '' }],
     },
     isLoaded: false,
     isLoadFailed: false,
-    isFormSubmitting: false,
   }),
 
   validations () {
@@ -220,39 +115,6 @@ export default {
         price: {
           required,
         },
-        quoteAssets: {
-          $each: {
-            asset: {
-              required,
-              selectedSameAssetCode: asset => {
-                /* eslint-disable max-len */
-                const selectedAssets = this.getSelectedAssetsByAssetCode(asset.code)
-                return selectedSameAssetCode(selectedAssets)
-                /* eslint-enable max-len */
-              },
-            },
-            address: {
-              required: requiredIf(quoteAsset => {
-                return quoteAsset.asset.isCoinpayments
-              }),
-              address: (value, quoteAsset) => {
-                return quoteAsset.asset.isCoinpayments
-                  ? address(quoteAsset.asset.code)(value)
-                  : true
-              },
-            },
-            cardNumber: {
-              required: requiredIf(quoteAsset => {
-                return !quoteAsset.asset.isCoinpayments
-              }),
-              cardNumber: (value, quoteAsset) => {
-                return quoteAsset.asset.isCoinpayments
-                  ? true
-                  : cardNumber(value)
-              },
-            },
-          },
-        },
       },
     }
   },
@@ -260,8 +122,6 @@ export default {
   computed: {
     ...mapGetters({
       baseAtomicSwapBalancesAssets: vuexTypes.baseAtomicSwapBalancesAssets,
-      quoteAtomicSwapAssets: vuexTypes.quoteAtomicSwapAssets,
-      accountBalanceByCode: vuexTypes.accountBalanceByCode,
       accountId: vuexTypes.accountId,
       businessStatsQuoteAsset: vuexTypes.businessStatsQuoteAsset,
     }),
@@ -283,130 +143,16 @@ export default {
 
   async created () {
     this.form.asset = this.baseAtomicSwapBalancesAssets[0] || {}
-    this.form.quoteAssets[0].asset = this.quoteAtomicSwapAssets[0] || {}
   },
   methods: {
-    getSelectedAssetsByAssetCode (assetCode) {
-      const selectedAssetsCode = []
-      this.form.quoteAssets.forEach(quoteAsset => {
-        if (quoteAsset.asset.code === assetCode) {
-          selectedAssetsCode.push(quoteAsset.asset.code)
-        }
-      })
-      return selectedAssetsCode
-    },
-
     setAssetByCode (code) {
       this.form.asset = this.baseAtomicSwapBalancesAssets
         .find(item => item.code === code)
     },
 
-    setQuoteAssetByCode (code, index) {
-      this.form.quoteAssets[index].asset = this.quoteAtomicSwapAssets
-        .find(item => item.code === code)
-    },
-
-    async submit () {
+    submit () {
       if (!this.isFormValid()) return
-      this.isFormSubmitting = true
-      let operations = []
-      this.disableForm()
-
-      try {
-        if (this.isAssetOwner && this.isAmountMoreThanBalance()) {
-          const createIssuanceOperation = this.buildCreateIssuanceOperation()
-          operations.push(createIssuanceOperation)
-        }
-
-        const createAtomicSwapOperation = this.buildCreateAtomicSwapOperation()
-        operations.push(createAtomicSwapOperation)
-        await api.postOperations(...operations)
-
-        Bus.success('create-atomic-swap-form.created-atomic-swap-msg')
-        this.$emit(EVENTS.createdAtomicSwap)
-      } catch (e) {
-        ErrorHandler.process(e)
-      }
-
-      this.enableForm()
-      this.isFormSubmitting = false
-      this.hideConfirmation()
-    },
-
-    addQuoteAsset () {
-      this.form.quoteAssets.push({
-        address: '',
-        asset: this.quoteAtomicSwapAssets[0],
-      })
-    },
-
-    deleteQuoteAsset (index) {
-      this.form.quoteAssets.splice(index, 1)
-    },
-
-    canAddQuoteAsset (index) {
-      return index === this.form.quoteAssets.length
-    },
-
-    canDeleteQuoteAsset (index) {
-      return index !== this.form.quoteAssets.length ||
-        (index === this.form.quoteAssets.length &&
-          this.form.quoteAssets.length !== 1)
-    },
-
-    buildCreateAtomicSwapOperation () {
-      const balanceID = this.accountBalanceByCode(this.form.asset.code).id
-      const quoteAssets = []
-      const destinations = {}
-
-      this.form.quoteAssets.forEach(quoteAsset => {
-        destinations[quoteAsset.asset.code] = quoteAsset.asset.isCoinpayments
-          ? quoteAsset.address
-          : quoteAsset.cardNumber
-
-        quoteAssets.push({
-          price: this.form.price,
-          asset: quoteAsset.asset.code,
-        })
-      })
-
-      const operation = {
-        balanceID: balanceID,
-        amount: this.form.amount,
-        quoteAssets: quoteAssets,
-        creatorDetails: {
-          'destination': destinations,
-        },
-      }
-      // eslint-disable-next-line max-len
-      return base.CreateAtomicSwapAskRequestBuilder.createAtomicSwapAskRequest(operation)
-    },
-
-    buildCreateIssuanceOperation () {
-      const operation = base.CreateIssuanceRequestBuilder
-        .createIssuanceRequest({
-          asset: this.form.asset.code,
-          amount: this.getIssuanceAmount(),
-          receiver: this.accountBalance.id,
-          reference: this.getReference(),
-          creatorDetails: {},
-        })
-
-      return operation
-    },
-
-    getReference () {
-      return btoa(Math.random())
-    },
-
-    getIssuanceAmount () {
-      const availbaleBalance = this.accountBalance.balance
-      const amount = this.form.amount
-      return MathUtil.subtract(amount, availbaleBalance)
-    },
-
-    isAmountMoreThanBalance () {
-      return MathUtil.compare(this.form.amount, this.accountBalance.balance) > 0
+      this.$emit(EVENTS.submit, this.form)
     },
   },
 }
@@ -423,78 +169,5 @@ export default {
   margin-left: 1rem;
   padding-top: 1.8rem;
   font-size: 1.8rem;
-}
-
-.create-atomic-swap-quote-asset-wrp {
-  display: flex;
-  flex-direction: column;
-}
-
-.create-atomic-swap-quote-asset {
-  display: flex;
-  width: 100%;
-}
-
-.create-atomic-swap-form__add-quote-asset {
-  margin-top: 1rem;
-}
-
-.create-atomic-swap-form__add-quote-asset-btn {
-  cursor: pointer;
-  white-space: nowrap;
-  position: relative;
-
-  &:after {
-    content: '';
-    position: absolute;
-    border-bottom: dotted 0.1rem;
-    bottom: 0.1rem;
-    left: 0;
-    width: 100%;
-    height: 0.1rem;
-  }
-
-  &:disabled {
-    filter: grayscale(1);
-    opacity: 0.7;
-    cursor: default;
-  }
-}
-
-.create-atomic-swap-form__quote-asset-wrp {
-  margin-top: 3rem;
-}
-
-.create-atomic-swap-form__delete-quote-asset-btn {
-  margin-top: 1.4rem;
-  margin-left: 0.6rem;
-  max-width: 2.4rem;
-  max-height: 2.4rem;
-  color: $col-primary-inactive;
-  transition: 0.2s color;
-
-  &:disabled {
-    filter: grayscale(100%);
-    cursor: default;
-  }
-
-  &:enabled:hover,
-  &:enabled:focus {
-    color: inherit;
-  }
-}
-
-.create-atomic-swap-form__delete-quote-asset-icon {
-  font-size: 2.4rem;
-}
-
-.create-atomic-swap-form__quote-assets-subheading-wrp {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.create-atomic-swap-form__quote-assets-subheading {
-  margin-top: 0;
 }
 </style>

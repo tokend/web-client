@@ -2393,13 +2393,18 @@
       "amount-lbl": "Количество",
       "available-amount-hint": "Доступно: {{amount, money}}",
       "create-btn": "Создать",
+      "next-btn": "Далее",
       "price-lbl": "Цена ({{asset}})",
-      "address-lbl": "Адрес",
-      "add-quote-asset-btn": "Добавить котируемый актив",
-      "quote-assets-subheading": "Котируемый актив {{number}}",
       "created-atomic-swap-msg": "Запрос отправлен",
-      "available-balance": "Баланс: {{amount, number}}",
-      "card-number-lbl": "Номер карты"
+      "available-balance": "Баланс: {{amount, number}}"
+    },
+    "atomic-swap-quote-assets-form": {
+      "quote-assets-subheading": "Котируемый актив {{number}}",
+      "add-quote-asset-btn": "Добавить котируемый актив",
+      "address-lbl": "Адрес",
+      "card-number-lbl": "Номер карты",
+      "asset-lbl": "Актив",
+      "create-btn": "Создать"
     },
     "customers-page": {
       "invite-btn": "Пригласить клиента",

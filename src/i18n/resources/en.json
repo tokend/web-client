@@ -132,7 +132,8 @@
       "field-error_selectedSameAssetCode": "Not allowed duplicated quote asset codes",
       "field-error_validatePhoneNumber": "Make sure the phone number is correct",
       "field-error_emailOrPhoneNumber": "This field should be a valid email or phone number",
-      "field-error_telegramUsername": "Make sure the telegram username is correct"
+      "field-error_telegramUsername": "Make sure the telegram username is correct",
+      "field-error_addressOrNumberCard": "Make sure the {{ destinationLabel }} is correct"
     },
     "errors": {
       "default": "Something bad happened. Please try again later or contact the system owner.",
@@ -2389,13 +2390,18 @@
       "amount-lbl": "Amount",
       "available-amount-hint": "Available: {{amount, money}}",
       "create-btn": "Create",
+      "next-btn": "Next",
       "price-lbl": "Price ({{asset}})",
-      "address-lbl": "Address",
-      "add-quote-asset-btn": "Add quote asset",
-      "quote-assets-subheading": "Quote asset {{ number }}",
       "created-atomic-swap-msg": "Atomic swap request successfully created",
-      "available-balance": "Balance: {{amount, number}}",
-      "card-number-lbl": "Card number"
+      "available-balance": "Balance: {{amount, number}}"
+    },
+    "atomic-swap-quote-assets-form": {
+      "quote-assets-subheading": "Quote asset {{ number }}",
+      "add-quote-asset-btn": "Add quote asset",
+      "address-lbl": "Address",
+      "card-number-lbl": "Card number",
+      "asset-lbl": "Asset",
+      "create-btn": "Create"
     },
     "atomic-swaps-explore": {
       "atomic-swap-drawer-title": "Atomic swap details",
