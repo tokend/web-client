@@ -113,6 +113,8 @@ export default {
         filter: {
           requestor: this.accountId,
           state: REQUEST_STATES.pending,
+          'request_details.quote_asset': this.selectedQuoteAsset.code,
+          'request_details.ask_id': this.atomicSwap.id,
         },
         page: {
           order: 'desc',

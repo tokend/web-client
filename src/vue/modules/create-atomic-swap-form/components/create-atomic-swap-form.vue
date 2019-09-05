@@ -286,10 +286,7 @@ export default {
 
         const createAtomicSwapOperation = this.buildCreateAtomicSwapOperation()
         operations.push(createAtomicSwapOperation)
-        await api.postOperationsToSpecificEndpoint(
-          '/integrations/marketplace/buy',
-          ...operations
-        )
+        await api.postOperations(...operations)
 
         Bus.success('create-atomic-swap-form.created-atomic-swap-msg')
         this.$emit(EVENTS.createdAtomicSwap)
@@ -341,7 +338,7 @@ export default {
         amount: this.form.amount,
         quoteAssets: quoteAssets,
         creatorDetails: {
-          'addresses': addresses,
+          'destination': addresses,
         },
       }
       // eslint-disable-next-line max-len
