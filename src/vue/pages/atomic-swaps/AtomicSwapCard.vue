@@ -22,7 +22,7 @@
           <span :title="atomicSwap.quoteAssets[0].price | formatMoney">
             {{ 'atomic-swap-card.price' | globalize({
               amount: atomicSwap.quoteAssets[0].price,
-              code: businessStatsQuoteAsset
+              code: statsQuoteAsset.code
             }) }}
           </span>
         </p>
@@ -52,7 +52,7 @@ export default {
   computed: {
     ...mapGetters([
       vuexTypes.assetByCode,
-      vuexTypes.businessStatsQuoteAsset,
+      vuexTypes.statsQuoteAsset,
     ]),
   },
 }

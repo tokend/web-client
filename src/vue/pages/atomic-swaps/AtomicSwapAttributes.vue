@@ -37,7 +37,7 @@
             <td :title="atomicSwap.quoteAssets[0].price | formatMoney">
               {{ {
                 value: atomicSwap.quoteAssets[0].price,
-                currency: businessStatsQuoteAsset
+                currency: statsQuoteAsset.code
               } | formatMoney
               }}
             </td>
@@ -111,7 +111,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      vuexTypes.businessStatsQuoteAsset,
+      vuexTypes.statsQuoteAsset,
     ]),
   },
 }

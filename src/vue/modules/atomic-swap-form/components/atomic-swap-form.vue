@@ -61,12 +61,12 @@
           <readonly-field
             class="atomic-swap-form__price"
             :label="'atomic-swap-form.price' | globalize"
-            :value="`${formatMoney(quoteAssetPrice)} ${businessStatsQuoteAsset}`"
+            :value="`${formatMoney(quoteAssetPrice)} ${statsQuoteAsset.code}`"
           />
           <!-- eslint-enable max-len -->
           <readonly-field
             :label="'atomic-swap-form.total-price' | globalize"
-            :value="`${formatMoney(totalPrice)} ${businessStatsQuoteAsset}`"
+            :value="`${formatMoney(totalPrice)} ${statsQuoteAsset.code}`"
           />
         </div>
       </div>
@@ -180,7 +180,7 @@ export default {
   computed: {
     ...mapGetters([
       vuexTypes.assetByCode,
-      vuexTypes.businessStatsQuoteAsset,
+      vuexTypes.statsQuoteAsset,
     ]),
     quoteAssets () {
       return this.atomicSwap.quoteAssets.map(item => this.assetByCode(item.id))
@@ -219,8 +219,7 @@ export default {
           createAtomicSwapBidOperation
         )
 
-        // eslint-disable-next-line no-cond-assign
-        if (atomicSwapBid.type = ATOMIC_SWAP_BID_TYPES.redirect) {
+        if (atomicSwapBid.type === ATOMIC_SWAP_BID_TYPES.redirect) {
           window.location.href = atomicSwapBid.data.payUrl
         } else {
           this.atomicSwapBidDetails.amount = atomicSwapBid.data.amount
