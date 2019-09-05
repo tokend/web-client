@@ -2395,12 +2395,9 @@
       "amount-lbl": "Количество",
       "available-amount-hint": "Доступно: {{amount, money}}",
       "create-btn": "Создать",
-      "next-btn": "Далее",
       "price-lbl": "Цена ({{asset}})",
       "created-atomic-swap-msg": "Запрос отправлен",
-      "available-balance": "Баланс: {{amount, number}}",
-      "information-step": "Информация о прямом обмене",
-      "quote-assets-step": "Добавление котируемых активов"
+      "available-balance": "Баланс: {{amount, number}}"
     },
     "atomic-swap-quote-assets-form": {
       "quote-assets-subheading": "Котируемый актив {{number}}",
@@ -2554,7 +2551,8 @@
       "current-cap-key": "Продано",
       "hard-cap-key": "Максимум",
       "total-current-cap-key": "Суммарно продано",
-      "quote-assets-subheading": "Котируемый актив №{{ number }}"
+      "quote-assets-subheading": "Котируемый актив №{{ number }}",
+      "destination-key": "Назначение"
     },
     "atomic-swap-actions": {
       "cancel-btn": "Отменить",

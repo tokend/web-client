@@ -174,7 +174,6 @@ export default {
   },
   methods: {
     submit () {
-      if (!this.isFormValid()) return
       this.$emit(EVENTS.submit, this.form)
     },
 

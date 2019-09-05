@@ -269,8 +269,7 @@
       "no-base-atomic-swap-assets-msg": "Please create an asset to create direct sell",
       "no-quote-atomic-swap-assets-title": "No quote direct sell assets yet",
       "no-quote-atomic-swap-assets-msg": "Please create an asset to create direct sell",
-      "created-atomic-swap-msg": "Direct sell offering successfully created",
-      "information-step": "Direct sell information"
+      "created-atomic-swap-msg": "Direct sell offering successfully created"
     },
     "atomic-swaps-explore": {
       "atomic-swap-drawer-title": "Direct sell details",

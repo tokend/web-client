@@ -2391,12 +2391,9 @@
       "amount-lbl": "Amount",
       "available-amount-hint": "Available: {{amount, money}}",
       "create-btn": "Create",
-      "next-btn": "Next",
       "price-lbl": "Price ({{asset}})",
       "created-atomic-swap-msg": "Atomic swap request successfully created",
-      "available-balance": "Balance: {{amount, number}}",
-      "information-step": "Atomic swap information",
-      "quote-assets-step": "Add quote assets"
+      "available-balance": "Balance: {{amount, number}}"
     },
     "atomic-swap-quote-assets-form": {
       "quote-assets-subheading": "Quote asset {{ number }}",
@@ -2449,7 +2446,8 @@
       "price-key": "Price",
       "total-current-cap-key": "Total current cap",
       "address-key": "Address",
-      "quote-assets-subheading": "Quote asset #{{ number }}"
+      "quote-assets-subheading": "Quote asset #{{ number }}",
+      "destination-key": "Destination"
     },
     "atomic-swap-card": {
       "available": "Available: {{ amount, balance }}",

@@ -85,6 +85,14 @@
                 {{ { value: quoteAsset.price, currency: quoteAsset.id } | formatMoney }}
               </td>
             </tr>
+            <tr>
+              <td>
+                {{ 'atomic-swap-attributes.destination-key' | globalize }}
+              </td>
+              <td>
+                {{ quoteAsset.destination }}
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>

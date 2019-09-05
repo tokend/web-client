@@ -5,21 +5,9 @@
         baseAtomicSwapBalancesAssets.length &&
         quoteAtomicSwapAssets.length"
     >
-      <form-stepper
-        :steps="STEPS"
-        :current-step.sync="currentStep"
-        :disabled="isDisabled"
-      >
-        <create-atomic-swap-form
-          v-show="currentStep === STEPS.information.number"
-          @submit="collectAssetAttributes($event) || moveToNextStep()"
-        />
-        <atomic-swap-quote-assets-form
-          v-show="currentStep === STEPS.quoteAssets.number"
-          :is-disabled.sync="isDisabled"
-          @submit="collectAssetAttributes($event) || submit()"
-        />
-      </form-stepper>
+      <create-atomic-swap-form
+        @created-atomic-swap="$emit(EVENTS.createdAtomicSwap)"
+      />
     </template>
     <!-- eslint-disable max-len -->
     <no-data-message
@@ -50,31 +38,15 @@
 </template>
 
 <script>
-
-import CreateAtomicSwapFormSkeletonLoader from './components/create-atomic-swap-form-skeleton-loader'
-import CreateAtomicSwapForm from './components/create-atomic-swap-form'
-import AtomicSwapQuoteAssetsForm from '@/vue/forms/AtomicSwapQuoteAssetsForm'
-import FormStepper from '@/vue/common/FormStepper'
-import NoDataMessage from '@/vue/common/NoDataMessage'
-import ManageAtomicSwapMixin from './mixins/manage-atomic-swap.mixin'
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { Bus } from '@/js/helpers/event-bus'
+import NoDataMessage from '@/vue/common/NoDataMessage'
+import CreateAtomicSwapFormSkeletonLoader from './components/create-atomic-swap-form-skeleton-loader'
+import CreateAtomicSwapForm from './components/create-atomic-swap-form'
 
 const EVENTS = {
   createdAtomicSwap: 'created-atomic-swap',
-}
-
-const STEPS = {
-  information: {
-    number: 1,
-    titleId: 'create-atomic-swap-form.information-step',
-  },
-  quoteAssets: {
-    number: 2,
-    titleId: 'create-atomic-swap-form.quote-assets-step',
-  },
 }
 
 export default {
@@ -83,17 +55,11 @@ export default {
     NoDataMessage,
     CreateAtomicSwapFormSkeletonLoader,
     CreateAtomicSwapForm,
-    AtomicSwapQuoteAssetsForm,
-    FormStepper,
   },
-  mixins: [ManageAtomicSwapMixin],
   data: _ => ({
     isLoaded: false,
     isLoadFailed: false,
-    currentStep: 1,
-    isDisabled: false,
     EVENTS,
-    STEPS,
   }),
 
   computed: {
@@ -116,25 +82,6 @@ export default {
     ...mapActions({
       loadAssets: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
-
-    moveToNextStep () {
-      this.currentStep++
-      if (this.$el.parentElement) {
-        this.$el.parentElement.scrollTop = 0
-      }
-    },
-
-    async submit () {
-      this.isDisabled = true
-      try {
-        await this.submitCreateAtomicSwapRequest()
-        Bus.success('create-atomic-swap-form.created-atomic-swap-msg')
-        this.$emit(EVENTS.createdAtomicSwap)
-      } catch (e) {
-        this.isDisabled = false
-        ErrorHandler.process(e)
-      }
-    },
   },
 }
 </script>

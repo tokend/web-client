@@ -61,30 +61,29 @@
         />
       </div>
     </div>
-
-    <div class="app__form-actions">
-      <button
-        v-ripple
-        class="create-atomic-swap-form__submit-btn app__button-raised"
-        :disabled="formMixin.isDisabled"
-      >
-        {{ 'create-atomic-swap-form.next-btn' | globalize }}
-      </button>
-    </div>
+    <atomic-swap-quote-assets-form
+      :is-disabled.sync="formMixin.isDisabled"
+      @submit="setQuoteAssets($event) || submit()"
+    />
   </form>
 </template>
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-import ManageAtomicSwapMixin from '../mixins/manage-atomic-swap.mixin'
+import AtomicSwapQuoteAssetsForm from '@/vue/forms/AtomicSwapQuoteAssetsForm'
 import {
   required,
 } from '@validators'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { Bus } from '@/js/helpers/event-bus'
+import { ErrorHandler } from '@/js/helpers/error-handler'
+import { api } from '@/api'
+import { base } from '@tokend/js-sdk'
+import { MathUtil } from '@/js/utils/math.util'
 
 const EVENTS = {
-  submit: 'submit',
+  createdAtomicSwap: 'created-atomic-swap',
 }
 
 const VALIDATION_TYPES = {
@@ -94,12 +93,16 @@ const VALIDATION_TYPES = {
 
 export default {
   name: 'create-atomic-swap-form',
-  mixins: [FormMixin, ManageAtomicSwapMixin],
+  components: {
+    AtomicSwapQuoteAssetsForm,
+  },
+  mixins: [FormMixin],
   data: _ => ({
     form: {
       asset: {},
       amount: '',
       price: '',
+      quoteAssets: [],
     },
     isLoaded: false,
     isLoadFailed: false,
@@ -122,6 +125,7 @@ export default {
   computed: {
     ...mapGetters({
       baseAtomicSwapBalancesAssets: vuexTypes.baseAtomicSwapBalancesAssets,
+      accountBalanceByCode: vuexTypes.accountBalanceByCode,
       accountId: vuexTypes.accountId,
       businessStatsQuoteAsset: vuexTypes.businessStatsQuoteAsset,
     }),
@@ -150,9 +154,84 @@ export default {
         .find(item => item.code === code)
     },
 
-    submit () {
+    async submit () {
       if (!this.isFormValid()) return
-      this.$emit(EVENTS.submit, this.form)
+      let operations = []
+      this.disableForm()
+
+      try {
+        if (this.isAssetOwner && this.isAmountMoreThanBalance()) {
+          const createIssuanceOperation = this.buildCreateIssuanceOperation()
+          operations.push(createIssuanceOperation)
+        }
+
+        const createAtomicSwapOperation = this.buildCreateAtomicSwapOperation()
+        operations.push(createAtomicSwapOperation)
+        await api.postOperations(...operations)
+
+        Bus.success('create-atomic-swap-form.created-atomic-swap-msg')
+        this.$emit(EVENTS.createdAtomicSwap)
+      } catch (e) {
+        ErrorHandler.process(e)
+      }
+
+      this.enableForm()
+    },
+
+    buildCreateAtomicSwapOperation () {
+      const balanceID = this.accountBalanceByCode(this.form.asset.code).id
+      const quoteAssets = []
+      const destinations = {}
+
+      this.form.quoteAssets.forEach(quoteAsset => {
+        destinations[quoteAsset.asset.code] = quoteAsset.destination
+        quoteAssets.push({
+          price: this.form.price,
+          asset: quoteAsset.asset.code,
+        })
+      })
+
+      const operation = {
+        balanceID: balanceID,
+        amount: this.form.amount,
+        quoteAssets: quoteAssets,
+        creatorDetails: {
+          'destination': destinations,
+        },
+      }
+      // eslint-disable-next-line max-len
+      return base.CreateAtomicSwapAskRequestBuilder.createAtomicSwapAskRequest(operation)
+    },
+
+    buildCreateIssuanceOperation () {
+      const operation = base.CreateIssuanceRequestBuilder
+        .createIssuanceRequest({
+          asset: this.form.asset.code,
+          amount: this.getIssuanceAmount(),
+          receiver: this.accountBalance.id,
+          reference: this.getReference(),
+          creatorDetails: {},
+        })
+
+      return operation
+    },
+
+    getReference () {
+      return btoa(Math.random())
+    },
+
+    getIssuanceAmount () {
+      const availbaleBalance = this.accountBalance.balance
+      const amount = this.form.amount
+      return MathUtil.subtract(amount, availbaleBalance)
+    },
+
+    isAmountMoreThanBalance () {
+      return MathUtil.compare(this.form.amount, this.accountBalance.balance) > 0
+    },
+
+    setQuoteAssets (form) {
+      this.form.quoteAssets = form.quoteAssets
     },
   },
 }
