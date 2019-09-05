@@ -53,11 +53,10 @@ import { inputStepByDigitsCount } from '@/js/helpers/input-trailing-digits-count
 
 const EVENTS = {
   submit: 'submit',
-  updateIsDisabled: 'update:isDisabled',
 }
 
 export default {
-  name: 'information-step-form',
+  name: 'add-quote-assets-step-form',
   components: {
     AtomicSwapQuoteAssetsForm,
   },
