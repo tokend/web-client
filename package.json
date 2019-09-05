@@ -1,6 +1,6 @@
 {
   "name": "tokend-web-client",
-  "version": "1.10.0",
+  "version": "1.10.1-rc.0",
   "description": "TokenD web-client",
   "author": "Distributed Lab <contact@distributedlab.com>",
   "private": true,
