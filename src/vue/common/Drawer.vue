@@ -81,6 +81,7 @@ $media-small: 460px;
   padding: 0;
   width: 4.5rem;
   height: 4.5rem;
+  min-width: 4.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
