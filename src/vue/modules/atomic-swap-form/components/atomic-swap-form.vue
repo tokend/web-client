@@ -57,14 +57,16 @@
 
       <div class="app__form-row">
         <div class="app__form-field">
+          <!-- eslint-disable max-len -->
           <readonly-field
             class="atomic-swap-form__price"
             :label="'atomic-swap-form.price' | globalize"
-            :value="`${formatMoney(quoteAssetPrice)} ${form.quoteAsset}`"
+            :value="`${formatMoney(quoteAssetPrice)} ${businessStatsQuoteAsset}`"
           />
+          <!-- eslint-enable max-len -->
           <readonly-field
             :label="'atomic-swap-form.total-price' | globalize"
-            :value="`${formatMoney(totalPrice)} ${form.quoteAsset}`"
+            :value="`${formatMoney(totalPrice)} ${businessStatsQuoteAsset}`"
           />
         </div>
       </div>
@@ -105,6 +107,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import ReadonlyField from '@/vue/fields/ReadonlyField'
 import AddressViewer from '@/vue/common/address-viewer'
 import config from '@/config'
+import moment from 'moment'
 
 import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -125,6 +128,13 @@ const EVENTS = {
   selectAsset: 'select-asset',
   submitted: 'submitted',
 }
+
+const ATOMIC_SWAP_BID_TYPES = {
+  redirect: 'redirect',
+  cryptoInvoice: 'crypto_invoice',
+}
+
+const TRANSACTION_TIME_MARGIN = 600 // seconds
 
 export default {
   name: 'atomic-swap-form',
@@ -149,10 +159,8 @@ export default {
       },
       atomicSwapBidDetails: {
         address: '',
-        timeout: -1,
         endTime: -1,
         amount: '',
-        payload: '',
       },
     }
   },
@@ -172,6 +180,7 @@ export default {
   computed: {
     ...mapGetters([
       vuexTypes.assetByCode,
+      vuexTypes.businessStatsQuoteAsset,
     ]),
     quoteAssets () {
       return this.atomicSwap.quoteAssets.map(item => this.assetByCode(item.id))
@@ -204,12 +213,21 @@ export default {
         const createAtomicSwapBidOperation =
           this.buildCreateAtomicSwapBidOperation()
 
-        const { data } = await api.postOperationsToSpecificEndpoint(
+        // eslint-disable-next-line max-len
+        const { data: atomicSwapBid } = await api.postOperationsToSpecificEndpoint(
           '/integrations/marketplace/buy',
           createAtomicSwapBidOperation
         )
 
-        console.log(data)
+        // eslint-disable-next-line no-cond-assign
+        if (atomicSwapBid.type = ATOMIC_SWAP_BID_TYPES.redirect) {
+          window.location.href = atomicSwapBid.data.payUrl
+        } else {
+          this.atomicSwapBidDetails.amount = atomicSwapBid.data.amount
+          this.atomicSwapBidDetails.address = atomicSwapBid.data.address
+          this.atomicSwapBidDetails.endTime = moment().unix() +
+            atomicSwapBid.data.timeout - TRANSACTION_TIME_MARGIN
+        }
         this.$emit(EVENTS.submitted)
       } catch (e) {
         ErrorHandler.process(e)
