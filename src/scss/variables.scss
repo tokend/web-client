@@ -27,7 +27,7 @@ $z-tooltip-wrapper: 1;
 $z-skeleton-loader: 1;
 
 $_athensGray: #e9eaed;
-$_pink: #c2185c;
+$_primary: #c2185c;
 $_white: #ffffff;
 $_concrete: #f2f2f2;
 $_black: #000000;
@@ -41,7 +41,7 @@ $_lightGray: #c6c6c6;
 $_mediumGray: #cccccc;
 $_lightRed: #ef5350;
 $_darkRed: #d6244a;
-$_strongPink: #d04078;
+$_strongPrimary: #d04078;
 $_deepBlue: #291e93;
 $_green: #33a494;
 $_lightGreen: #51ca90;
@@ -58,7 +58,7 @@ $_aliceBlue: #f5f6ff;
 // base colors:
 $col-primary: $_lightBlack;
 $col-secondary: $_lightPurple;
-$col-primary-lighten: $_strongPink;
+$col-primary-lighten: $_strongPrimary;
 $col-primary-txt: $_white;
 $col-link: $_lightBlack;
 $col-text-on-dark-bg: $_white;
@@ -73,7 +73,7 @@ $col-pending: $_orange;
 $col-warning: $_orangePeel;
 $col-success: $_green;
 $col-error: $_lightRed;
-$col-info: $_strongPink;
+$col-info: $_strongPrimary;
 $col-danger: $_darkRed;
 
 // global colors
@@ -86,7 +86,7 @@ $col-app-background: $_gray;
 $col-app-content-background: $_thinBlue;
 
 // text colors:
-$col-heading: $_pink;
+$col-heading: $_primary;
 $col-text-page-heading: $col-heading;
 $col-text-auth-title-big: $_white;
 $col-text-auth-title-small: $_white;
@@ -132,7 +132,7 @@ $col-status-close-btn-hover: rgba(0, 0, 0, 0.1);
 $col-drawer-bg: $col-block-bg;
 $col-drawer-backdrop-bg: rgba(0, 0, 0, 0.1);
 $col-drawer-head-bg: $_athensGray;
-$col-drawer-head-text: $_pink;
+$col-drawer-head-text: $_primary;
 
 // sidebar
 $col-sidebar-background: $_athensGray;
@@ -145,7 +145,7 @@ $col-sidebar-active-elem-background: $_thinGray;
 
 // passport (signed in user details in bg)
 $col-passport-email-abbr-text: $col-text-on-dark-bg;
-$col-passport-email-abbr-bg: rgba($_pink, 0.15);
+$col-passport-email-abbr-bg: rgba($_primary, 0.15);
 
 // fields colors
 $col-text-field-hint: $col-primary;
@@ -167,8 +167,8 @@ $col-switch-field-enabled-border: darken($col-switch-field-enabled, 10%);
 $col-switch-field-disabled-border: darken($col-switch-field-disabled, 10%);
 
 // other colors
-$col-auth-titles-background-light: #b01653;
-$col-auth-titles-background-dark: #480922;
+$col-auth-titles-background-light: darken($_primary, 5%);
+$col-auth-titles-background-dark: darken($_primary, 33%);
 $col-auth-titles-background-fallback: #332f5c;
 $col-clipboard-background: $_whiteSmoke;
 $col-clipboard-background-darken: darken($col-clipboard-background, 5%);
@@ -209,9 +209,9 @@ $col-list-btn-details-background: rgba($col-primary, 0.1);
 
 // top bar colors
 $col-top-bar-background: $_white;
-$col-top-bar-text: $_pink;
+$col-top-bar-text: $_primary;
 $col-top-bar-tab: $_lightPurple;
-$col-top-bar-tab-active: $_strongPink;
+$col-top-bar-tab-active: $_strongPrimary;
 
 // chart colors:
 $col-chart-line: $col-primary-lighten;
@@ -261,7 +261,7 @@ $col-sale-card-header-background: $_athensGray;
 $col-sale-card-text-primary: $col-text;
 $col-sale-card-text-bold: $_lightBlack;
 $col-sale-card-progress-bar-background: $_thinPurple;
-$col-sale-card-progress-bar-value: $_strongPink;
+$col-sale-card-progress-bar-value: $_strongPrimary;
 
 // request colors
 $col-request-approved: $_cyan;
@@ -349,12 +349,12 @@ $col-document-icon-text: $col-primary;
 
 // document-upload-form-colors:
 $col-document-upload-progress-bar-bg: $_gray;
-$col-document-upload-progress-bar-value: $_strongPink;
+$col-document-upload-progress-bar-value: $_strongPrimary;
 
 // document signer list colors:
 $col-signer-list-item-bg: $_white;
 $col-signer-list-item-shadow: $col-block-shadow;
-$col-signer-list-item-avatar-bg: $_pink;
+$col-signer-list-item-avatar-bg: $_primary;
 $col-signer-list-item-avatar-text: $_white;
 $col-signer-list-item-rule-text: $_lightPurple;
 
@@ -362,8 +362,8 @@ $col-signer-list-item-rule-text: $_lightPurple;
 $col-document-uploader-text-unlighten: $_lightPurple;
 
 // comment-viewer
-$col-border-comment-viewer-header: $_pink;
-$col-comment-content-gradient-from: $_pink;
+$col-border-comment-viewer-header: $_primary;
+$col-comment-content-gradient-from: $_primary;
 $col-comment-content-gradient-to: $_gray;
 
 // skeleton-loader
