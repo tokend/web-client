@@ -56,6 +56,11 @@ import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 
 import { REQUEST_STATES } from '@/js/const/request-states.const'
+
+const EVENTS = {
+  updateList: 'update-list',
+}
+
 export default {
   name: 'atomic-swap',
   components: {
@@ -125,6 +130,7 @@ export default {
     },
     handleAtomicSwapFormSubmitted () {
       this.$refs.table.resetAtomicSwapBidsSelection()
+      this.$emit(EVENTS.updateList)
     },
     selectQuoteAsset (code) {
       this.selectedQuoteAsset = this.assetByCode(code)

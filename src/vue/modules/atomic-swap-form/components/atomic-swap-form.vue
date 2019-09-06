@@ -214,8 +214,8 @@ export default {
           window.location.href = atomicSwapBid.payUrl
         } else {
           this.atomicSwapBidDetails = atomicSwapBid
+          this.$emit(EVENTS.submitted)
         }
-        this.$emit(EVENTS.submitted)
       } catch (e) {
         ErrorHandler.process(e)
       }
