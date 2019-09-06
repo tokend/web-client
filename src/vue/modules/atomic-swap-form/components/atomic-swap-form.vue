@@ -102,6 +102,7 @@ import AddressViewer from '@/vue/common/address-viewer'
 import config from '@/config'
 
 import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
+import { AtomicSwapBidRecord } from '../wrappers/atomic-swap-bid.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { formatMoney } from '@/vue/filters/formatMoney'
 import { vuexTypes } from '@/vuex'
@@ -110,7 +111,6 @@ import { MathUtil } from '@/js/utils'
 
 import { api } from '@/api'
 import { base } from '@tokend/js-sdk'
-import { AtomicSwapBidRecord } from '../wrappers/atomic-swap-bid.record'
 
 import {
   amountRange,
