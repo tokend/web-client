@@ -212,15 +212,15 @@ export default {
           this.buildCreateAtomicSwapBidOperation()
 
         // eslint-disable-next-line max-len
-        const { data: atomicSwapBid } = await api.postOperationsToSpecificEndpoint(
+        const { data } = await api.postOperationsToSpecificEndpoint(
           '/integrations/marketplace/buy',
           createAtomicSwapBidOperation
         )
-
+        const atomicSwapBid = new AtomicSwapBidRecord(data.data.attributes)
         if (atomicSwapBid.type === ATOMIC_SWAP_BID_TYPES.redirect) {
-          window.location.href = atomicSwapBid.data.payUrl
+          window.location.href = atomicSwapBid.payUrl
         } else {
-          this.atomicSwapBidDetails = new AtomicSwapBidRecord(atomicSwapBid)
+          this.atomicSwapBidDetails = atomicSwapBid
         }
         this.$emit(EVENTS.submitted)
       } catch (e) {
