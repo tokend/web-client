@@ -29,7 +29,7 @@ import LogoViewer from './logo-viewer'
 
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { BalanceRecord } from '@/js/records/entities/balance.record'
-import { ONE_MILLION } from '@/js/const/amounts.const'
+import { TEN_MILLION } from '@/js/const/amounts.const'
 
 export default {
   name: 'card-viewer',
@@ -52,7 +52,7 @@ export default {
       }
     },
     isSmallBalance () {
-      return this.balance.balance < ONE_MILLION
+      return this.balance.balance < TEN_MILLION
     },
   },
 }

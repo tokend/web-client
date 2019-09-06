@@ -1,1 +1,1 @@
-export const ONE_MILLION = 1000000
+export const TEN_MILLION = 10000000

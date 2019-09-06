@@ -18,7 +18,7 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { MathUtil } from '@/js/utils'
 import { Bus } from '@/js/helpers/event-bus'
-import { ONE_MILLION } from '@/js/const/amounts.const'
+import { TEN_MILLION } from '@/js/const/amounts.const'
 
 export default {
   name: 'customers-converted-balances',
@@ -55,7 +55,7 @@ export default {
     },
 
     isSmallBalance () {
-      return this.balance < ONE_MILLION
+      return this.balance < TEN_MILLION
     },
   },
 
