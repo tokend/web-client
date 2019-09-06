@@ -131,7 +131,7 @@
       "field-error_minLength": "Количество знаков должно превышать {{minLength}}",
       "field-error_selectedSameAssetCode": "Не могут быть выбраны два одинаковых актива",
       "field-error_validatePhoneNumber": "Неверный номер телефона",
-      "field-error_emailOrPhoneNumber": "Неверный имейл или телефон получателя",
+      "field-error_emailOrPhoneNumber": "Неверный имейл или телефон или имя пользователя в телеграмм",
       "field-error_telegramUsername" : "Убедитесь что имя пользователя верное"
     },
     "errors": {
@@ -1127,7 +1127,7 @@
       "balance": "Доступно {{amount, money}} {{asset}}",
       "amount-lbl": "Количество",
       "insufficient-sales": "Недостаточно средств",
-      "recipient-lbl": "Имейл или телефон получателя",
+      "recipient-lbl": "Имейл или телефон или имя пользователя телеграм получателя",
       "subject-lbl": "Добавить примечание (опц.)",
       "continue-btn": "Далее",
       "recheck-form": "Пожалуйста, перепроверьте форму.",
