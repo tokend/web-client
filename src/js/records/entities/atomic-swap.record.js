@@ -18,10 +18,14 @@ export class AtomicSwapRecord {
         currentCap: item.currentCap,
         hardCap: item.hardCap,
         id: item.id,
+        code: item.quoteAsset,
         price: item.price,
         totalCurrentCap: item.totalCurrentCap,
         // we use camelCase because js-sdk parse response data keys in camelCase
-        address: _get(record, `details.addresses[${camelCase(item.id)}]`),
+        address: _get(
+          record,
+          `details.addresses[${camelCase(item.quoteAsset)}]`
+        ),
       }))
   }
 }

@@ -2361,10 +2361,7 @@
       "yes-val": "Yes",
       "no-val": "No",
       "quote-asset-key": "Code",
-      "current-cap-key": "Current cap",
-      "hard-cap-key": "Hard cap",
       "price-key": "Price",
-      "total-current-cap-key": "Total current cap",
       "address-key": "Address",
       "quote-assets-subheading": "Quote asset #{{ number }}"
     },

@@ -2376,10 +2376,7 @@
       "yes-val": "Да",
       "no-val": "Нет",
       "quote-asset-key": "Код",
-      "current-cap-key": "Текущее ограничение",
-      "hard-cap-key": "Верхнее ограничение",
       "price-key": "Цена",
-      "total-current-cap-key": "Общее текущее ограничение",
       "address-key": "Адрес",
       "quote-assets-subheading": "Котируемый актив #{{ number }}"
     }

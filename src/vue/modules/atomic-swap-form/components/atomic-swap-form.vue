@@ -182,11 +182,12 @@ export default {
       vuexTypes.assetByCode,
     ]),
     quoteAssets () {
-      return this.atomicSwap.quoteAssets.map(item => this.assetByCode(item.id))
+      return this.atomicSwap.quoteAssets
+        .map(item => this.assetByCode(item.code))
     },
     quoteAssetPrice () {
       return this.atomicSwap.quoteAssets
-        .find(item => item.id === this.form.quoteAsset)
+        .find(item => item.code === this.form.quoteAsset)
         .price
     },
     totalPrice () {
@@ -194,7 +195,7 @@ export default {
     },
   },
   async created () {
-    this.form.quoteAsset = this.atomicSwap.quoteAssets[0].id
+    this.form.quoteAsset = this.atomicSwap.quoteAssets[0].code
   },
   destroyed () {
     clearInterval(this.intervalId)
