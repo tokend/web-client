@@ -11,7 +11,7 @@
         {{ asset.name }}
       </p>
       <p
-        v-if="balance"
+        v-if="isSmallBalance"
         class="card-viewer__balance"
         :title="assetBalance | formatMoney"
       >
@@ -19,10 +19,6 @@
           'assets-list.list-item-balance-line' |
             globalize({ value: assetBalance })
         }}
-      </p>
-
-      <p v-else class="card-viewer__balance card-viewer__no-balance">
-        {{ 'assets.no-balance-msg' | globalize }}
       </p>
     </div>
   </a>
@@ -33,6 +29,7 @@ import LogoViewer from './logo-viewer'
 
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { BalanceRecord } from '@/js/records/entities/balance.record'
+import { ONE_MILLION } from '@/js/const/amounts.const'
 
 export default {
   name: 'card-viewer',
@@ -53,6 +50,9 @@ export default {
         value: this.balance.balance,
         currency: this.asset.code,
       }
+    },
+    isSmallBalance () {
+      return this.balance.balance < ONE_MILLION
     },
   },
 }
@@ -77,7 +77,7 @@ $media-small-desktop: 960px;
 /* stylelint-enable function-calc-no-invalid */
 
 .card-viewer {
-  min-height: 19rem;
+  min-height: 16rem;
   cursor: pointer;
   border-radius: 0.4rem;
   box-shadow: 0 0.5rem 1rem 0 $col-field-shadow;
