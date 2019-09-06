@@ -107,7 +107,6 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import ReadonlyField from '@/vue/fields/ReadonlyField'
 import AddressViewer from '@/vue/common/address-viewer'
 import config from '@/config'
-import moment from 'moment'
 
 import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -118,6 +117,7 @@ import { MathUtil } from '@/js/utils'
 
 import { api } from '@/api'
 import { base } from '@tokend/js-sdk'
+import { AtomicSwapBidRecord } from '../wrappers/atomic-swap-bid.record'
 
 import {
   amountRange,
@@ -133,8 +133,6 @@ const ATOMIC_SWAP_BID_TYPES = {
   redirect: 'redirect',
   cryptoInvoice: 'crypto_invoice',
 }
-
-const TRANSACTION_TIME_MARGIN = 600 // seconds
 
 export default {
   name: 'atomic-swap-form',
@@ -222,10 +220,7 @@ export default {
         if (atomicSwapBid.type === ATOMIC_SWAP_BID_TYPES.redirect) {
           window.location.href = atomicSwapBid.data.payUrl
         } else {
-          this.atomicSwapBidDetails.amount = atomicSwapBid.data.amount
-          this.atomicSwapBidDetails.address = atomicSwapBid.data.address
-          this.atomicSwapBidDetails.endTime = moment().unix() +
-            atomicSwapBid.data.timeout - TRANSACTION_TIME_MARGIN
+          this.atomicSwapBidDetails = new AtomicSwapBidRecord(atomicSwapBid)
         }
         this.$emit(EVENTS.submitted)
       } catch (e) {

@@ -338,7 +338,7 @@ export default {
         amount: this.form.amount,
         quoteAssets: quoteAssets,
         creatorDetails: {
-          'destination': addresses,
+          'addresses': addresses,
         },
       }
       // eslint-disable-next-line max-len
