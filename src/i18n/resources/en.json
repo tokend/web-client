@@ -2562,6 +2562,13 @@
       "logout-btn": "Logout",
       "first-name-lbl": "First name",
       "last-name-lbl": "Last name"
+    },
+    "pay-page": {
+      "pay-title": "Pay",
+      "buy-sum-assets": "Buy sum assets"
+    },
+    "pay-form": {
+      "email": "Email"
     }
   }
 }

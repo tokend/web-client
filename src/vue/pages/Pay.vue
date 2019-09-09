@@ -3,48 +3,57 @@
     <div class="pay__top-bar">
       <div class="pay__headers">
         <h1 class="pay__top-bar-title">
-          Pay
+          {{ 'pay-page.pay-title' | globalize }}
         </h1>
         <h3>
-          Buy sum tokens
+          {{ 'pay-page.buy-sum-assets' | globalize }}
         </h3>
       </div>
       <div class="pay__right-side">
         <img class="pay__logo" src="/static/conto-logo.png">
       </div>
     </div>
-    <div class="pay-form">
-      <pay-form />
+    <div class="pay__description">
+      <div class="pay__asset-information">
+        Asset info
+      </div>
+      <pay-form class="pay__form" />
     </div>
   </div>
 </template>
 
 <script>
-import PayForm from './pay/pay-form'
+import PayForm from '@/vue/forms/PayForm'
 import { api } from '@/api'
 import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
+import { ErrorHandler } from '@/js/helpers/error-handler'
+
 export default {
   name: 'pay',
   components: { PayForm },
-  mixins: [],
-  props: {
-  },
+
   data () {
-    return {}
+    return {
+      atomicSwapAsk: {},
+      isLoaded: false,
+    }
   },
-  computed: {},
-  watch: {},
+
   async created () {
-    await this.getAtomicSwapAsk(this.$route.query.id)
+    try {
+      await this.getAtomicSwapAsk(this.$route.query.id)
+      this.isLoaded = true
+    } catch (e) {
+      ErrorHandler.processWithoutFeedback()
+    }
   },
-  destroyed () {
-  },
+
   methods: {
     async getAtomicSwapAsk (id) {
       const { data } = await api.get(`/v3/atomic_swap_asks/${id}`, {
         include: ['owner', 'base_asset', 'quote_assets'],
       })
-      return new AtomicSwapRecord(data)
+      this.atomicSwapAsk = new AtomicSwapRecord(data)
     },
   },
 }
@@ -78,10 +87,11 @@ export default {
     }
   }
 
-  .pay-form {
+  .pay__description {
     margin-top: 4rem;
     background-color: $col-block-bg;
     padding: $pading;
+    display: flex;
 
     @include box-shadow();
   }
@@ -91,5 +101,10 @@ export default {
     max-height: 4.5rem;
     height: inherit;
     width: inherit;
+  }
+
+  .pay__form,
+  .pay__asset-information {
+    width: 50%;
   }
 </style>

@@ -2566,6 +2566,13 @@
       "logout-btn": "Выйти",
       "first-name-lbl": "Имя",
       "last-name-lbl": "Фамилия"
+    },
+    "pay-page": {
+      "pay-title": "Оплата",
+      "buy-sum-assets": "Купить сумму активов"
+    },
+    "pay-form": {
+      "email":"Имейл"
     }
   }
 }
