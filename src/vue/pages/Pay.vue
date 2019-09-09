@@ -21,6 +21,8 @@
 
 <script>
 import PayForm from './pay/pay-form'
+import { api } from '@/api'
+import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
 export default {
   name: 'pay',
   components: { PayForm },
@@ -32,11 +34,19 @@ export default {
   },
   computed: {},
   watch: {},
-  created () {
+  async created () {
+    await this.getAtomicSwapAsk(this.$route.query.id)
   },
   destroyed () {
   },
-  methods: {},
+  methods: {
+    async getAtomicSwapAsk (id) {
+      const { data } = await api.get(`/v3/atomic_swap_asks/${id}`, {
+        include: ['owner', 'base_asset', 'quote_assets'],
+      })
+      return new AtomicSwapRecord(data)
+    },
+  },
 }
 </script>
 
