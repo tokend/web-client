@@ -1,6 +1,6 @@
 <template>
   <div class="customers-converted-balances">
-    <template v-if="isLoaded && isCanConvertBalances && isSmallBalance">
+    <template v-if="isLoaded && isCanConvertBalances && isDisplayingBalance">
       <span :title="balance | formatMoney">
         {{ balance | formatBalance }}
         {{ businessStatsQuoteAsset }}
@@ -18,7 +18,7 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { MathUtil } from '@/js/utils'
 import { Bus } from '@/js/helpers/event-bus'
-import { TEN_MILLION } from '@/js/const/amounts.const'
+import { MAX_DISPLAYING_AMOUNT } from '@/js/const/amounts.const'
 
 export default {
   name: 'customers-converted-balances',
@@ -54,8 +54,8 @@ export default {
       return convertedBalances > 0
     },
 
-    isSmallBalance () {
-      return this.balance < TEN_MILLION
+    isDisplayingBalance () {
+      return this.balance < MAX_DISPLAYING_AMOUNT
     },
   },
 

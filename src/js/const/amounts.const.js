@@ -1,1 +1,1 @@
-export const TEN_MILLION = 10000000
+export const MAX_DISPLAYING_AMOUNT = 10000000

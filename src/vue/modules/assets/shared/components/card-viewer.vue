@@ -11,7 +11,7 @@
         {{ asset.name }}
       </p>
       <p
-        v-if="isSmallBalance"
+        v-if="isDisplayingBalance"
         class="card-viewer__balance"
         :title="assetBalance | formatMoney"
       >
@@ -29,7 +29,7 @@ import LogoViewer from './logo-viewer'
 
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { BalanceRecord } from '@/js/records/entities/balance.record'
-import { TEN_MILLION } from '@/js/const/amounts.const'
+import { MAX_DISPLAYING_AMOUNT } from '@/js/const/amounts.const'
 
 export default {
   name: 'card-viewer',
@@ -51,8 +51,8 @@ export default {
         currency: this.asset.code,
       }
     },
-    isSmallBalance () {
-      return this.balance.balance < TEN_MILLION
+    isDisplayingBalance () {
+      return this.balance.balance < MAX_DISPLAYING_AMOUNT
     },
   },
 }
