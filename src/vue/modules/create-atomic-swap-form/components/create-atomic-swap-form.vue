@@ -54,9 +54,9 @@
           v-model="form.price"
           name="create-atomic-swap-quote-asset-price"
           :label="'create-atomic-swap-form.price-lbl' | globalize({
-            asset: businessStatsQuoteAsset
+            asset: statsQuoteAsset.code
           })"
-          :asset="businessStatsQuoteAsset"
+          :asset="statsQuoteAsset.code"
           :disabled="formMixin.isDisabled"
         />
       </div>
@@ -127,7 +127,7 @@ export default {
       baseAtomicSwapBalancesAssets: vuexTypes.baseAtomicSwapBalancesAssets,
       accountBalanceByCode: vuexTypes.accountBalanceByCode,
       accountId: vuexTypes.accountId,
-      businessStatsQuoteAsset: vuexTypes.businessStatsQuoteAsset,
+      statsQuoteAsset: vuexTypes.statsQuoteAsset,
     }),
 
     accountBalance () {

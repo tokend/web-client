@@ -8,7 +8,14 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
+- Handle new types of atomic swap bid requests
 - Ability to set crypto addresses and card
+
+#### Fixed
+- Russian localization
+
+#### Changed
+- Shown only small balances
 
 ## [1.0.3-rc.7] - 2019-09-06
 #### Added

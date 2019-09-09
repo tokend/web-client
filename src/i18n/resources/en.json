@@ -2423,7 +2423,7 @@
       "asset-description-lbl": "Asset description"
     },
     "atomic-swap-actions": {
-      "cancel-btn": "Cancel",
+      "cancel-btn": "Cancel direct sell",
       "yes-msg": "Yes",
       "no-msg": "No",
       "cancellation-msg": "Are you sure to cancel the atomic swap?",

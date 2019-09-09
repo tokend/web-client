@@ -122,6 +122,7 @@ export default {
   &--expand-btn-wrp {
     text-align: right;
     width: $user-movements-table-cell-width-expand-btn-wrp;
+    overflow: visible;
   }
 }
 
