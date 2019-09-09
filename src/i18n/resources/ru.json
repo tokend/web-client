@@ -132,8 +132,8 @@
       "field-error_selectedSameAssetCode": "Не могут быть выбраны два одинаковых актива",
       "field-error_validatePhoneNumber": "Неверный номер телефона",
       "field-error_emailOrPhoneNumber": "Неверный имейл или телефон получателя",
-      "field-error_telegramUsername" : "Убедитесь что имя пользователя верное",
-      "field-error_addressOrNumberCard": "Убедитесь что {{ destinationLabel }} верный"
+      "field-error_telegramUsername": "Имя пользователя неверное",
+      "field-error_cryptoAddressOrCreditCardNumber": "Неверный криптоадрес или номер карты"
     },
     "errors": {
       "default": "Что-то пошло не так. Пожалуйста, повторите попытку позже или свяжитесь с владельцем системы.",

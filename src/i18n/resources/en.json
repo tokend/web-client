@@ -132,8 +132,8 @@
       "field-error_selectedSameAssetCode": "Not allowed duplicated quote asset codes",
       "field-error_validatePhoneNumber": "Make sure the phone number is correct",
       "field-error_emailOrPhoneNumber": "This field should be a valid email or phone number",
-      "field-error_telegramUsername": "Make sure the telegram username is correct",
-      "field-error_addressOrNumberCard": "Make sure the {{ destinationLabel }} is correct"
+      "field-error_telegramUsername": "The telegram username is incorrect",
+      "field-error_cryptoAddressOrCreditCardNumber": "This field should be valid crypto address or card number"
     },
     "errors": {
       "default": "Something bad happened. Please try again later or contact the system owner.",

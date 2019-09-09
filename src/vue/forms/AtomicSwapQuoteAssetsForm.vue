@@ -60,12 +60,7 @@
               white-autofill
               v-model="form.quoteAssets[index].destination"
               @blur="touchField(`form.quoteAssets[${index}].destination`)"
-              :error-message="getFieldErrorMessage(
-                `form.quoteAssets[${index}].destination`,
-                {
-                  destinationLabel: getDestinationLabel(form.quoteAssets[index].asset)
-                }
-              )"
+              :error-message="getFieldErrorMessage(`form.quoteAssets[${index}].destination`)"
               :name="'create-atomic-swap-quote-asset-destination'"
               :label="getDestinationLabel(form.quoteAssets[index].asset)"
               :disabled="isDisabled"
@@ -74,21 +69,21 @@
           </div>
         </div>
       </div>
-      <div
-        class="atomic-swap-quote-assets-form__add-asset-wrp"
-        v-if="canAddQuoteAsset(index + 1)"
-      >
-        <div class="atomic-swap-quote-assets-form__add-asset">
-          <button
-            class="atomic-swap-quote-assets-form__add-asset-btn"
-            type="button"
-            @click="addQuoteAsset(index)"
-            :disabled="isDisabled"
-          >
-            <!-- eslint-disable-next-line max-len -->
-            {{ 'atomic-swap-quote-assets-form.add-asset-btn' | globalize }}
-          </button>
-        </div>
+    </div>
+
+    <div
+      class="atomic-swap-quote-assets-form__add-asset-wrp"
+    >
+      <div class="atomic-swap-quote-assets-form__add-asset">
+        <button
+          class="atomic-swap-quote-assets-form__add-asset-btn"
+          type="button"
+          @click="addQuoteAsset(index)"
+          :disabled="isDisabled"
+        >
+          <!-- eslint-disable-next-line max-len -->
+          {{ 'atomic-swap-quote-assets-form.add-asset-btn' | globalize }}
+        </button>
       </div>
     </div>
 
@@ -141,13 +136,11 @@ export default {
           $each: {
             asset: {
               required,
-              selectedSameAssetCode: asset => {
-                return !this.isRepeatAssets(asset.code)
-              },
+              selectedSameAssetCode: asset => !this.isAssetRepeated(asset.code),
             },
             destination: {
               required,
-              addressOrNumberCard: (value, quoteAsset) => {
+              cryptoAddressOrCreditCardNumber: (value, quoteAsset) => {
                 return quoteAsset.asset.isCoinpayments
                   ? address(quoteAsset.asset.code)(value)
                   : cardNumber(value)
@@ -174,15 +167,15 @@ export default {
       this.$emit(EVENTS.submit, this.form)
     },
 
-    isRepeatAssets (assetCode) {
-      const repeatAssets = this.form.quoteAssets
+    isAssetRepeated (assetCode) {
+      const repeatedAssets = this.form.quoteAssets
         .reduce((count, quoteAsset) => {
           return quoteAsset.asset.code === assetCode
             ? ++count
             : count
         }, 0)
 
-      return repeatAssets > 1
+      return repeatedAssets > 1
     },
 
     setQuoteAssetByCode (code, index) {
@@ -200,14 +193,8 @@ export default {
       this.form.quoteAssets.splice(index, 1)
     },
 
-    canAddQuoteAsset (index) {
-      return index === this.form.quoteAssets.length
-    },
-
     canDeleteQuoteAsset (index) {
-      return index !== this.form.quoteAssets.length ||
-        (index === this.form.quoteAssets.length &&
-          this.form.quoteAssets.length !== 1)
+      return this.form.quoteAssets.length > 1
     },
 
     getDestinationLabel (asset) {

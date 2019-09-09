@@ -149,7 +149,7 @@ export default {
         amount: this.collectedAttributes.amountToSell,
         quoteAssets: quoteAssets,
         creatorDetails: {
-          'destination': destinations,
+          destination: destinations,
         },
       }
       // eslint-disable-next-line max-len
