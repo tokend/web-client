@@ -10,6 +10,12 @@ for further information about branching and tagging conventions.
 #### Added
 - Handle new types of atomic swap bid requests
 
+#### Fixed
+- Russian localization
+
+#### Changed
+- Shown only small balances
+
 ## [1.0.3-rc.7] - 2019-09-06
 #### Added
 - Sending to telegram username
