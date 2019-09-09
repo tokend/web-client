@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
+## [Unreleased]
+#### Fixed
+- Russian localization
+
+#### Changed
+- Shown only small balances
+
 ## [1.0.3-rc.7] - 2019-09-06
 #### Added
 - Sending to telegram username
