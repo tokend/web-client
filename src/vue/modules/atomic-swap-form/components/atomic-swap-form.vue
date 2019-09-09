@@ -87,7 +87,7 @@
     </form>
     <address-viewer
       v-else
-      :asset-code="assetByCode(form.quoteAsset).name"
+      :asset-code="assetByCode(form.quoteAsset).code"
       :amount="atomicSwapBidDetails.amount"
       :address="atomicSwapBidDetails.address"
       :end-time="atomicSwapBidDetails.endTime"
@@ -108,6 +108,7 @@ import { formatMoney } from '@/vue/filters/formatMoney'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 import { MathUtil } from '@/js/utils'
+import { ATOMIC_SWAP_BID_TYPES } from '@/js/const/atomic-swap-bid-types.const'
 
 import { api } from '@/api'
 import { base } from '@tokend/js-sdk'
@@ -120,11 +121,6 @@ import {
 const EVENTS = {
   selectAsset: 'select-asset',
   submitted: 'submitted',
-}
-
-const ATOMIC_SWAP_BID_TYPES = {
-  redirect: 'redirect',
-  cryptoInvoice: 'crypto_invoice',
 }
 
 export default {
