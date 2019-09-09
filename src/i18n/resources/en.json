@@ -1124,7 +1124,7 @@
       "balance": "Balance is {{amount, money}} {{asset}}",
       "amount-lbl": "Amount",
       "insufficient-sales": "Insufficient balance",
-      "recipient-lbl": "Recipient email or phone",
+      "recipient-lbl": "Recipient email or phone or telegram username",
       "subject-lbl": "Add note",
       "continue-btn": "Continue",
       "recheck-form": "Please recheck the form before proceeding",

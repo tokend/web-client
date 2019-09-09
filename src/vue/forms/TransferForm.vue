@@ -161,7 +161,7 @@ import { Bus } from '@/js/helpers/event-bus'
 import { globalize } from '@/vue/filters/globalize'
 import {
   required,
-  // emailOrPhoneNumber,
+  emailOrPhoneNumberOrTelegram,
   email,
 } from '@validators'
 
@@ -208,7 +208,7 @@ export default {
       form: {
         recipient: this.isSendingOnNotExistAccount
           ? { required, email }
-          : { required },
+          : { required, emailOrPhoneNumberOrTelegram },
       },
     }
   },
@@ -265,6 +265,7 @@ export default {
       this.enableForm()
     },
     async trySend () {
+      if (!this.isFormValid()) return
       this.disableForm()
       const recipientAccountId =
         await this.getCounterparty(this.form.recipient)

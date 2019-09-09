@@ -10,6 +10,12 @@ for further information about branching and tagging conventions.
 #### Added
 - Ability to set crypto addresses and card
 
+## [1.0.3-rc.7] - 2019-09-06
+#### Added
+- Sending to telegram username
+#### Fixed
+- Color scheme
+
 ## [1.0.3-rc.6] - 2019-09-04
 #### Added
 - Get data from store for general kyc form
@@ -238,7 +244,8 @@ for further information about branching and tagging conventions.
 #### Removed
 - `RECOVERY_MODE` config key due to unused anymore
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.0.3-rc.6...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.0.3-rc.7...HEAD
+[1.0.3-rc.7]: https://github.com/tokend/web-client/compare/1.0.3-rc.6...1.0.3-rc.7
 [1.0.3-rc.6]: https://github.com/tokend/web-client/compare/1.0.3-rc.2...1.0.3-rc.6
 [1.0.3-rc.2]: https://github.com/tokend/web-client/compare/1.0.3-rc.1...1.0.3-rc.2
 [1.0.3-rc.1]: https://github.com/tokend/web-client/compare/1.0.3-rc.0...1.0.3-rc.1

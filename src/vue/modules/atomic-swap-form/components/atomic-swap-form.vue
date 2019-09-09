@@ -29,18 +29,11 @@
 
       <div class="app__form-row">
         <div class="app__form-field">
-          <input-field
+          <amount-input-field
             v-model="form.amount"
-            @blur="touchField('form.amount')"
             name="atomic-swap-amount"
-            type="number"
-            :error-message="getFieldErrorMessage(
-              'form.amount',
-              {
-                from: config.MIN_AMOUNT,
-                to: atomicSwap.availableAmount,
-              })"
-            white-autofill
+            :asset="assetByCode(atomicSwap.baseAsset)"
+            :max="atomicSwap.availableAmount"
             :label="'atomic-swap-form.amount' | globalize({
               asset: atomicSwap.baseAssetName
             })"
