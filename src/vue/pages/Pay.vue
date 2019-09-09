@@ -1,5 +1,5 @@
 <template>
-  <div class="pay">
+  <div class="pay" v-if="isLoaded">
     <div class="pay__top-bar">
       <div class="pay__headers">
         <h1 class="pay__top-bar-title">
@@ -14,23 +14,34 @@
       </div>
     </div>
     <div class="pay__description">
-      <div class="pay__asset-information">
-        Asset info
-      </div>
+      <asset-information
+        class="pay__asset-information"
+        :asset-code="atomicSwapAsk.baseAsset"
+      />
       <pay-form class="pay__form" />
+    </div>
+
+    <div class="pay__footer-section">
+      <app-footer />
     </div>
   </div>
 </template>
 
 <script>
 import PayForm from '@/vue/forms/PayForm'
+import AppFooter from '@/vue/navigation/Footer'
+import AssetInformation from './pay/AssetInformation'
 import { api } from '@/api'
 import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
   name: 'pay',
-  components: { PayForm },
+  components: {
+    PayForm,
+    AppFooter,
+    AssetInformation,
+  },
 
   data () {
     return {
@@ -92,6 +103,7 @@ export default {
     background-color: $col-block-bg;
     padding: $pading;
     display: flex;
+    justify-content: space-between;
 
     @include box-shadow();
   }
@@ -103,8 +115,20 @@ export default {
     width: inherit;
   }
 
-  .pay__form,
-  .pay__asset-information {
+  .pay__form {
     width: 50%;
+  }
+
+  .pay__asset-information {
+    width: 47%;
+    border-right: 0.2rem solid $col-text-secondary;
+  }
+
+  .pay__footer-section {
+    padding: 1.6rem;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
   }
 </style>
