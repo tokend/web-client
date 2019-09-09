@@ -2400,8 +2400,8 @@
       "available-balance": "Баланс: {{amount, number}}"
     },
     "atomic-swap-quote-assets-form": {
-      "quote-assets-subheading": "Котируемый актив {{number}}",
-      "add-quote-asset-btn": "Добавить котируемый актив",
+      "assets-subheading": "Котируемый актив {{number}}",
+      "add-asset-btn": "Добавить котируемый актив",
       "address-lbl": "Адрес",
       "card-number-lbl": "Номер карты",
       "asset-lbl": "Актив",

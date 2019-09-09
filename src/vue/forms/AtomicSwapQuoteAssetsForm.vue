@@ -5,15 +5,15 @@
     @submit.prevent="submit()"
   >
     <div
-      class="atomic-swap-quote-assets-form__quote-asset-wrp"
+      class="atomic-swap-quote-assets-form__asset-wrp"
       v-for="(quoteAsset, index) in form.quoteAssets"
       :key="index"
     >
-      <div class="atomic-swap-quote-assets-form__quote-asset">
-        <div class="atomic-swap-quote-assets-form__quote-assets-subheading-wrp">
+      <div class="atomic-swap-quote-assets-form__asset">
+        <div class="atomic-swap-quote-assets-form__assets-subheading-wrp">
           <!-- eslint-disable-next-line max-len -->
-          <h3 class="app__form-subheading atomic-swap-quote-assets-form__quote-assets-subheading">
-            {{ 'atomic-swap-quote-assets-form.quote-assets-subheading' |
+          <h3 class="app__form-subheading atomic-swap-quote-assets-form__assets-subheading">
+            {{ 'atomic-swap-quote-assets-form.assets-subheading' |
               globalize({number: index + 1})
             }}
           </h3>
@@ -21,12 +21,12 @@
           <button
             v-if="canDeleteQuoteAsset(index + 1)"
             type="button"
-            class="atomic-swap-quote-assets-form__delete-quote-asset-btn"
+            class="atomic-swap-quote-assets-form__delete-asset-btn"
             @click="deleteQuoteAsset(index)"
             :disabled="isDisabled"
           >
             <!-- eslint-disable-next-line max-len -->
-            <i class="mdi mdi-minus-circle-outline atomic-swap-quote-assets-form__delete-quote-asset-icon" />
+            <i class="mdi mdi-minus-circle-outline atomic-swap-quote-assets-form__delete-asset-icon" />
           </button>
         </div>
 
@@ -75,20 +75,20 @@
         </div>
       </div>
       <div
-        class="atomic-swap-quote-assets-form__add-quote-asset-wrp"
+        class="atomic-swap-quote-assets-form__add-asset-wrp"
         v-if="canAddQuoteAsset(index + 1)"
       >
-        <p class="atomic-swap-quote-assets-form__add-quote-asset">
+        <div class="atomic-swap-quote-assets-form__add-asset">
           <button
-            class="atomic-swap-quote-assets-form__add-quote-asset-btn"
+            class="atomic-swap-quote-assets-form__add-asset-btn"
             type="button"
             @click="addQuoteAsset(index)"
             :disabled="isDisabled"
           >
             <!-- eslint-disable-next-line max-len -->
-            {{ 'atomic-swap-quote-assets-form.add-quote-asset-btn' | globalize }}
+            {{ 'atomic-swap-quote-assets-form.add-asset-btn' | globalize }}
           </button>
-        </p>
+        </div>
       </div>
     </div>
 
@@ -108,7 +108,6 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 import {
   required,
-  selectedSameAssetCode,
   cardNumber,
   address,
 } from '@validators'
@@ -128,7 +127,7 @@ export default {
   },
   data: _ => ({
     form: {
-      quoteAssets: [{ price: '', asset: {}, destination: '' }],
+      quoteAssets: [{ asset: {}, destination: '' }],
     },
     isLoaded: false,
     isLoadFailed: false,
@@ -143,10 +142,7 @@ export default {
             asset: {
               required,
               selectedSameAssetCode: asset => {
-                /* eslint-disable max-len */
-                const selectedAssets = this.getSelectedAssetsByAssetCode(asset.code)
-                return selectedSameAssetCode(selectedAssets)
-                /* eslint-enable max-len */
+                return !this.isRepeatAssets(asset.code)
               },
             },
             destination: {
@@ -166,6 +162,7 @@ export default {
   computed: {
     ...mapGetters({
       quoteAtomicSwapAssets: vuexTypes.quoteAtomicSwapAssets,
+      assetByCode: vuexTypes.assetByCode,
     }),
   },
 
@@ -177,19 +174,19 @@ export default {
       this.$emit(EVENTS.submit, this.form)
     },
 
-    getSelectedAssetsByAssetCode (assetCode) {
-      const selectedAssetsCode = []
-      this.form.quoteAssets.forEach(quoteAsset => {
-        if (quoteAsset.asset.code === assetCode) {
-          selectedAssetsCode.push(quoteAsset.asset.code)
-        }
-      })
-      return selectedAssetsCode
+    isRepeatAssets (assetCode) {
+      const repeatAssets = this.form.quoteAssets
+        .reduce((count, quoteAsset) => {
+          return quoteAsset.asset.code === assetCode
+            ? ++count
+            : count
+        }, 0)
+
+      return repeatAssets > 1
     },
 
     setQuoteAssetByCode (code, index) {
-      this.form.quoteAssets[index].asset = this.quoteAtomicSwapAssets
-        .find(item => item.code === code)
+      this.form.quoteAssets[index].asset = this.assetByCode(code)
     },
 
     addQuoteAsset () {
@@ -227,11 +224,11 @@ export default {
 <style lang="scss" scoped>
 @import '~@/vue/forms/app-form';
 
-.atomic-swap-quote-assets-form__add-quote-asset {
+.atomic-swap-quote-assets-form__add-asset {
   margin-top: 1rem;
 }
 
-.atomic-swap-quote-assets-form__add-quote-asset-btn {
+.atomic-swap-quote-assets-form__add-asset-btn {
   cursor: pointer;
   white-space: nowrap;
   position: relative;
@@ -253,11 +250,11 @@ export default {
   }
 }
 
-.atomic-swap-quote-assets-form__quote-asset-wrp {
+.atomic-swap-quote-assets-form__asset-wrp {
   margin-top: 3rem;
 }
 
-.atomic-swap-quote-assets-form__delete-quote-asset-btn {
+.atomic-swap-quote-assets-form__delete-asset-btn {
   margin-top: 1.4rem;
   margin-left: 0.6rem;
   max-width: 2.4rem;
@@ -276,17 +273,17 @@ export default {
   }
 }
 
-.atomic-swap-quote-assets-form__delete-quote-asset-icon {
+.atomic-swap-quote-assets-form__delete-asset-icon {
   font-size: 2.4rem;
 }
 
-.atomic-swap-quote-assets-form__quote-assets-subheading-wrp {
+.atomic-swap-quote-assets-form__assets-subheading-wrp {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.atomic-swap-quote-assets-form__quote-assets-subheading {
+.atomic-swap-quote-assets-form__assets-subheading {
   margin-top: 0;
 }
 </style>
