@@ -67,6 +67,22 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
+        <file-field
+          name="create-asset-logo"
+          v-model="form.logo"
+          :note="'create-asset-form.logo-note' | globalize"
+          :file-extensions="['jpg', 'png']"
+          :document-type="DOCUMENT_TYPES.assetLogo"
+          :label="'create-asset-form.logo-lbl' | globalize"
+          :min-width="120"
+          :min-height="120"
+          :disabled="isDisabled"
+        />
+      </div>
+    </div>
+
+    <div class="app__form-row">
+      <div class="app__form-field">
         <tick-field
           v-model="form.policies"
           :cb-value="ASSET_POLICIES.transferable"
@@ -82,55 +98,10 @@
         <tick-field
           v-model="form.isSellable"
           :disabled="isDisabled"
+          @input="$emit(EVENTS.updateIsSellable, form.isSellable)"
         >
           {{ 'create-asset-form.can-be-bought-lbl' | globalize }}
         </tick-field>
-      </div>
-    </div>
-
-    <template v-if="form.isSellable">
-      <div class="app__form-row">
-        <div class="app__form-field">
-          <input-field
-            white-autofill
-            v-model="form.amountToSell"
-            type="number"
-            :step="inputStep"
-            :max="MAX_AMOUNT"
-            @blur="touchField('form.amountToSell')"
-            name="create-asset-form-amount-to-sell"
-            :label="'create-asset-form.amount-to-sell-lbl' | globalize({
-              quoteAsset: businessStatsQuoteAsset
-            })"
-            :error-message="getFieldErrorMessage('form.amountToSell', {
-              from: {
-                value: MIN_AMOUNT,
-                currency: form.code,
-              },
-              to: {
-                value: MAX_AMOUNT,
-                currency: form.code,
-              },
-            })"
-            :disabled="isDisabled"
-          />
-        </div>
-      </div>
-    </template>
-
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <file-field
-          name="create-asset-logo"
-          v-model="form.logo"
-          :note="'create-asset-form.logo-note' | globalize"
-          :file-extensions="['jpg', 'png']"
-          :document-type="DOCUMENT_TYPES.assetLogo"
-          :label="'create-asset-form.logo-lbl' | globalize"
-          :min-width="120"
-          :min-height="120"
-          :disabled="isDisabled"
-        />
       </div>
     </div>
 
@@ -141,7 +112,11 @@
         class="app__button-raised information-step-form__btn"
         :disabled="isDisabled"
       >
-        {{ 'create-asset-form.next-btn' | globalize }}
+        {{ (form.isSellable
+          ? 'create-asset-form.next-btn'
+          : 'create-asset-form.create-btn'
+        ) | globalize
+        }}
       </button>
     </div>
   </form>
@@ -163,7 +138,6 @@ import {
   required,
   maxLength,
   amountRange,
-  requiredIf,
 } from '@validators'
 
 import config from '@/config'
@@ -174,7 +148,7 @@ import { inputStepByDigitsCount } from '@/js/helpers/input-trailing-digits-count
 
 const EVENTS = {
   submit: 'submit',
-  updateIsDisabled: 'update:isDisabled',
+  updateIsSellable: 'update-is-sellable',
 }
 
 const NAME_MAX_LENGTH = 255
@@ -196,7 +170,6 @@ export default {
       policies: ASSET_POLICIES.canBeBaseInAtomicSwap,
       description: '',
       isSellable: false,
-      amountToSell: '',
     },
     MIN_AMOUNT: config.MIN_AMOUNT,
     MAX_AMOUNT: config.MAX_AMOUNT,
@@ -204,6 +177,7 @@ export default {
     DOCUMENT_TYPES,
     NAME_MAX_LENGTH,
     DESCRIPTION_MAX_LENGTH,
+    EVENTS,
   }),
 
   validations () {
@@ -218,12 +192,6 @@ export default {
         },
         price: {
           required,
-          amountRange: amountRange(this.MIN_AMOUNT, this.MAX_AMOUNT),
-        },
-        amountToSell: {
-          required: requiredIf(function () {
-            return this.form.isSellable
-          }),
           amountRange: amountRange(this.MIN_AMOUNT, this.MAX_AMOUNT),
         },
       },
@@ -270,11 +238,6 @@ export default {
         this.form.code = this.getAssetCode()
         this.$emit(EVENTS.submit, this.form)
       }
-    },
-
-    setConfirmationState () {
-      this.showConfirmation()
-      this.$emit(EVENTS.updateIsDisabled, true)
     },
   },
 }

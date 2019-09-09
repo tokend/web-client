@@ -131,8 +131,9 @@
       "field-error_minLength": "This field must contain minimum {{minLength}} symbols",
       "field-error_selectedSameAssetCode": "Not allowed duplicated quote asset codes",
       "field-error_validatePhoneNumber": "Make sure the phone number is correct",
-      "field-error_emailOrPhoneNumberOrTelegram": "This field should be a valid email or phone or telegram username number",
-      "field-error_telegramUsername": "Make sure the telegram username is correct"
+      "field-error_emailOrPhoneNumber": "This field should be a valid email or phone number",
+      "field-error_telegramUsername": "The telegram username is incorrect",
+      "field-error_cryptoAddressOrCreditCardNumber": "This field should be valid crypto address or card number"
     },
     "errors": {
       "default": "Something bad happened. Please try again later or contact the system owner.",
@@ -1198,6 +1199,7 @@
       "loading-msg": "Loading…",
       "load-failed-msg": "There was an error while loading.",
       "next-btn": "Next",
+      "create-btn": "Create",
       "create-request-btn": "Create request",
       "update-request-btn": "Update request",
       "information-step": "Asset information",
@@ -2390,11 +2392,16 @@
       "available-amount-hint": "Available: {{amount, money}}",
       "create-btn": "Create",
       "price-lbl": "Price ({{asset}})",
-      "address-lbl": "Address",
-      "add-quote-asset-btn": "Add quote asset",
-      "quote-assets-subheading": "Quote asset {{ number }}",
       "created-atomic-swap-msg": "Atomic swap request successfully created",
-      "available-balance":"Balance: {{amount, number}}"
+      "available-balance": "Balance: {{amount, number}}"
+    },
+    "atomic-swap-quote-assets-form": {
+      "assets-subheading": "Quote asset {{ number }}",
+      "add-asset-btn": "Add quote asset",
+      "address-lbl": "Address",
+      "card-number-lbl": "Card number",
+      "asset-lbl": "Asset",
+      "create-btn": "Create"
     },
     "atomic-swaps-explore": {
       "atomic-swap-drawer-title": "Atomic swap details",
@@ -2439,7 +2446,8 @@
       "price-key": "Price",
       "total-current-cap-key": "Total current cap",
       "address-key": "Address",
-      "quote-assets-subheading": "Quote asset #{{ number }}"
+      "quote-assets-subheading": "Quote asset #{{ number }}",
+      "destination-key": "Destination"
     },
     "atomic-swap-card": {
       "available": "Available: {{ amount, balance }}",

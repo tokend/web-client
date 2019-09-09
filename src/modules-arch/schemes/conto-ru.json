@@ -284,12 +284,13 @@
     "polls": {
       "all": "Опросы"
     },
-    "create-asset-form": {
-      "next-btn": "Создать"
-    },
     "settings-page": {
       "security-tab": "Общее",
       "my-account-tab": "Бизнес"
+    },
+    "create-asset-form": {
+      "advanced-step": "Информация для магазина",
+      "information-step": "Информация об активе"
     }
   }
 }

@@ -9,6 +9,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Handle new types of atomic swap bid requests
+- Ability to set crypto addresses and card
 
 #### Fixed
 - Russian localization

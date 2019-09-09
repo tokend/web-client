@@ -277,12 +277,12 @@
       "no-list-msg": "Here will be the list of direct sell offerings",
       "owned-by-me-filter-lbl": "Owned by me"
     },
-    "create-asset-form": {
-      "next-btn": "Create"
-    },
     "settings-page": {
       "security-tab": "General",
       "my-account-tab": "Business"
+    },
+    "create-asset-form": {
+      "advanced-step": "Shop info"
     }
   }
 }
