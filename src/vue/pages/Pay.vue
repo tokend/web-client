@@ -72,7 +72,10 @@ export default {
 
 <style lang="scss" scoped>
   @import '~@/vue/forms/app-form';
+  @import '~@scss/mixins.scss';
+
   $pading: 2.4rem;
+  $media-small-desktop: 960px;
 
   .pay {
     padding: 3.5rem 15%;
@@ -106,6 +109,9 @@ export default {
     justify-content: space-between;
 
     @include box-shadow();
+    @include respond-to-custom($media-small-desktop) {
+      flex-direction: column;
+    }
   }
 
   .pay__logo {
@@ -117,11 +123,21 @@ export default {
 
   .pay__form {
     width: 50%;
+
+    @include respond-to-custom($media-small-desktop) {
+      width: 100%;
+    }
   }
 
   .pay__asset-information {
     width: 47%;
-    border-right: 0.2rem solid $col-text-secondary;
+    border-right: 0.2rem solid $col-border;
+
+    @include respond-to-custom($media-small-desktop) {
+      width: 100%;
+      border-right: none;
+      margin-bottom: 2rem;
+    }
   }
 
   .pay__footer-section {
