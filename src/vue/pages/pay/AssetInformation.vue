@@ -12,6 +12,13 @@
         </p>
       </div>
     </div>
+    <div
+      v-if="asset.description"
+      class="asset-information__description"
+    >
+      <h3>{{ 'asset-information.description-title' | globalize }}</h3>
+      <p>{{ asset.description }}</p>
+    </div>
   </div>
 </template>
 
@@ -74,5 +81,9 @@ export default {
   font-size: 1.8rem;
   font-weight: 700;
   color: $col-primary;
+}
+
+.asset-information__description {
+  margin-top: 2rem;
 }
 </style>

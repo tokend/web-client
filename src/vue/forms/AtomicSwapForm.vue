@@ -2,9 +2,8 @@
   <div class="atomic-swap-form">
     <form
       novalidate
-      v-if="!atomicSwapBidDetails.address"
       class="app__form"
-      @submit.prevent="isFormValid() && showConfirmation()"
+      @submit.prevent="submit()"
     >
       <div class="app__form-row">
         <div class="app__form-field">
@@ -13,7 +12,7 @@
             name="atomic-swap-quote-asset"
             :value="form.quoteAsset"
             @input="setQuoteAsset"
-            :disabled="formMixin.isDisabled"
+            :disabled="isDisabled"
             class="app__select"
           >
             <option
@@ -37,7 +36,7 @@
             :label="'atomic-swap-form.amount' | globalize({
               asset: atomicSwap.baseAssetName
             })"
-            :disabled="formMixin.isDisabled"
+            :disabled="isDisabled"
           />
           <p class="app__form-field-description">
             {{ 'atomic-swap-form.available' | globalize({
@@ -65,18 +64,10 @@
       </div>
 
       <div class="app__form-actions">
-        <form-confirmation
-          v-if="formMixin.isConfirmationShown"
-          :is-pending="isSubmitting"
-          @ok="submit()"
-          @cancel="hideConfirmation()"
-        />
-
         <button
-          v-else
           v-ripple
           type="submit"
-          :disabled="formMixin.isDisabled"
+          :disabled="isDisabled"
           class="app__button-raised atomic-swap-form__btn"
         >
           <template>
@@ -85,33 +76,19 @@
         </button>
       </div>
     </form>
-    <address-viewer
-      v-else
-      :asset-code="assetByCode(form.quoteAsset).code"
-      :amount="atomicSwapBidDetails.amount"
-      :address="atomicSwapBidDetails.address"
-      :end-time="atomicSwapBidDetails.endTime"
-    />
   </div>
 </template>
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import ReadonlyField from '@/vue/fields/ReadonlyField'
-import AddressViewer from '@/vue/common/address-viewer'
 import config from '@/config'
 
 import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
-import { AtomicSwapBidRecord } from '../wrappers/atomic-swap-bid.record'
-import { ErrorHandler } from '@/js/helpers/error-handler'
 import { formatMoney } from '@/vue/filters/formatMoney'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 import { MathUtil } from '@/js/utils'
-import { ATOMIC_SWAP_BID_TYPES } from '@/js/const/atomic-swap-bid-types.const'
-
-import { api } from '@/api'
-import { base } from '@tokend/js-sdk'
 
 import {
   amountRange,
@@ -127,27 +104,18 @@ export default {
   name: 'atomic-swap-form',
   components: {
     ReadonlyField,
-    AddressViewer,
   },
   mixins: [FormMixin],
   props: {
-    atomicSwap: {
-      type: AtomicSwapRecord,
-      required: true,
-    },
+    atomicSwap: { type: AtomicSwapRecord, required: true },
+    isDisabled: { type: Boolean, default: false },
   },
   data () {
     return {
       config,
-      isSubmitting: false,
       form: {
         amount: '',
         quoteAsset: '',
-      },
-      atomicSwapBidDetails: {
-        address: '',
-        endTime: -1,
-        amount: '',
       },
     }
   },
@@ -195,41 +163,7 @@ export default {
       this.form.quoteAsset = code
     },
     async submit () {
-      try {
-        this.isSubmitting = true
-        const createAtomicSwapBidOperation =
-          this.buildCreateAtomicSwapBidOperation()
-
-        // eslint-disable-next-line max-len
-        const { data } = await api.postOperationsToSpecificEndpoint(
-          '/integrations/marketplace/buy',
-          createAtomicSwapBidOperation
-        )
-        const atomicSwapBid = new AtomicSwapBidRecord(data.data.attributes)
-        if (atomicSwapBid.type === ATOMIC_SWAP_BID_TYPES.redirect) {
-          window.location.href = atomicSwapBid.payUrl
-        } else {
-          this.atomicSwapBidDetails = atomicSwapBid
-          this.$emit(EVENTS.submitted)
-        }
-      } catch (e) {
-        ErrorHandler.process(e)
-      }
-      this.isSubmitting = false
-      this.hideConfirmation()
-    },
-
-    buildCreateAtomicSwapBidOperation () {
-      const operation = {
-        askID: this.atomicSwap.id,
-        baseAmount: this.form.amount,
-        quoteAsset: this.form.quoteAsset,
-        creatorDetails: {
-          request_identifier: +new Date() + '',
-        },
-      }
-      return base.CreateAtomicSwapBidRequestBuilder
-        .createAtomicSwapBidRequest(operation)
+      this.$emit(EVENTS.submitted, this.form)
     },
   },
 }

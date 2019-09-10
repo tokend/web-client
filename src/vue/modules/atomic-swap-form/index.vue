@@ -12,9 +12,18 @@
       <p>{{ assetByCode(atomicSwap.baseAsset).description }}</p>
     </div>
     <atomic-swap-form
+      v-if="!atomicSwapBidDetails.address"
       :atomic-swap="atomicSwap"
+      :is-disabled="isDisabled"
       @submitted="handleAtomicSwapFormSubmitted"
       @select-asset="selectQuoteAsset"
+    />
+    <address-viewer
+      v-else
+      :asset-code="assetByCode(form.quoteAsset).code"
+      :amount="atomicSwapBidDetails.amount"
+      :address="atomicSwapBidDetails.address"
+      :end-time="atomicSwapBidDetails.endTime"
     />
     <div
       class="atomic-swap__pending-atomic-swap-table-table-wrp"
@@ -44,18 +53,22 @@
 </template>
 
 <script>
-import AtomicSwapForm from './components/atomic-swap-form'
+import AtomicSwapForm from '@/vue/forms/AtomicSwapForm'
 import PendingAtomicSwapTable from './components/pending-atomic-swap-table'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import Loader from '@/vue/common/Loader'
-import { AtomicSwapBidRecord } from './wrappers/atomic-swap-bid.record'
+import FormMixin from '@/vue/mixins/form.mixin'
+import AddressViewer from '@/vue/common/address-viewer'
+import { AtomicSwapBidRecord } from '@/js/records/entities/atomic-swap-bid.record'
 import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
 import { api } from '@/api'
+import { base } from '@tokend/js-sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 
 import { REQUEST_STATES } from '@/js/const/request-states.const'
+import { ATOMIC_SWAP_BID_TYPES } from '@/js/const/atomic-swap-bid-types.const'
 
 const EVENTS = {
   updateList: 'update-list',
@@ -68,7 +81,9 @@ export default {
     PendingAtomicSwapTable,
     CollectionLoader,
     Loader,
+    AddressViewer,
   },
+  mixins: [FormMixin],
   props: {
     atomicSwap: {
       type: AtomicSwapRecord,
@@ -77,9 +92,19 @@ export default {
   },
   data () {
     return {
+      form: {
+        amount: '',
+        quoteAsset: '',
+      },
       isLoading: true,
       isFailed: false,
+      isDisabled: false,
       selectedQuoteAsset: {},
+      atomicSwapBidDetails: {
+        address: '',
+        endTime: -1,
+        amount: '',
+      },
       pendingAtomicSwapBids: [],
     }
   },
@@ -128,10 +153,48 @@ export default {
       })
       return response
     },
-    handleAtomicSwapFormSubmitted () {
-      this.$refs.table.resetAtomicSwapBidsSelection()
-      this.$emit(EVENTS.updateList)
+
+    async handleAtomicSwapFormSubmitted (form) {
+      if (!this.isFormValid()) return
+      this.form.amount = form.amount
+      this.form.quoteAsset = form.quoteAsset
+
+      this.isDisabled = true
+      try {
+        const createAtomicSwapBidOperation =
+          this.buildCreateAtomicSwapBidOperation()
+
+        const { data } = await api.postOperationsToSpecificEndpoint(
+          '/integrations/marketplace/buy',
+          createAtomicSwapBidOperation
+        )
+        const atomicSwapBid = new AtomicSwapBidRecord(data.data.attributes)
+        if (atomicSwapBid.type === ATOMIC_SWAP_BID_TYPES.redirect) {
+          window.location.href = atomicSwapBid.payUrl
+        } else {
+          this.atomicSwapBidDetails = atomicSwapBid
+          this.$refs.table.resetAtomicSwapBidsSelection()
+          this.$emit(EVENTS.updateList)
+        }
+      } catch (e) {
+        ErrorHandler.process(e)
+      }
+      this.isDisabled = false
     },
+
+    buildCreateAtomicSwapBidOperation () {
+      const operation = {
+        askID: this.atomicSwap.id,
+        baseAmount: this.form.amount,
+        quoteAsset: this.form.quoteAsset,
+        creatorDetails: {
+          request_identifier: +new Date() + '',
+        },
+      }
+      return base.CreateAtomicSwapBidRequestBuilder
+        .createAtomicSwapBidRequest(operation)
+    },
+
     selectQuoteAsset (code) {
       this.selectedQuoteAsset = this.assetByCode(code)
     },

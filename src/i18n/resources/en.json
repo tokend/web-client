@@ -2577,6 +2577,9 @@
     },
     "pay-form": {
       "email": "Email"
+    },
+    "asset-information": {
+      "description-title": "Description"
     }
   }
 }

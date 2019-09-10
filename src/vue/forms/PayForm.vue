@@ -2,8 +2,7 @@
   <div>
     <form
       novalidate
-      class="app__form"
-      @submit.prevent="submit()"
+      class="pay-form app__form"
     >
       <div class="app__form-row">
         <div class="app__form-field">
@@ -16,22 +15,45 @@
           />
         </div>
       </div>
+
+      <atomic-swap-form
+        class="pay-form__atomic-swap-bid"
+        @submitted="submit"
+        :is-disabled="isDisabled"
+        :atomic-swap="atomicSwap"
+      />
     </form>
   </div>
 </template>
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
+import AtomicSwapForm from '@/vue/forms/AtomicSwapForm'
 import { required } from '@validators'
+import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
+import { api } from '@/api'
+import { base } from '@tokend/js-sdk'
+import { ATOMIC_SWAP_BID_TYPES } from '@/js/const/atomic-swap-bid-types.const'
+import { AtomicSwapBidRecord } from '@/js/records/entities/atomic-swap-bid.record'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
   name: 'pay-form',
+  components: { AtomicSwapForm },
   mixins: [FormMixin],
-
+  props: { atomicSwap: { type: AtomicSwapRecord, required: true } },
   data () {
     return {
       form: {
         email: '',
+        amount: '',
+        quoteAsset: '',
+      },
+      isDisabled: false,
+      atomicSwapBidDetails: {
+        address: '',
+        endTime: -1,
+        amount: '',
       },
     }
   },
@@ -39,18 +61,60 @@ export default {
   validations () {
     return {
       form: {
-        amount: {
-          required,
-        },
         email: {
           required,
         },
       },
     }
   },
+
+  methods: {
+    async submit (form) {
+      if (!this.isFormValid()) return
+      this.form.amount = form.amount
+      this.form.quoteAsset = form.quoteAsset
+
+      this.isDisabled = true
+      try {
+        const createAtomicSwapBidOperation =
+          this.buildCreateAtomicSwapBidOperation()
+
+        const { data } = await api.postOperationsToSpecificEndpoint(
+          '/integrations/marketplace/buy',
+          createAtomicSwapBidOperation
+        )
+        const atomicSwapBid = new AtomicSwapBidRecord(data.data.attributes)
+        if (atomicSwapBid.type === ATOMIC_SWAP_BID_TYPES.redirect) {
+          window.location.href = atomicSwapBid.payUrl
+        } else {
+          this.atomicSwapBidDetails = atomicSwapBid
+        }
+      } catch (e) {
+        ErrorHandler.process(e)
+      }
+      this.isDisabled = false
+    },
+
+    buildCreateAtomicSwapBidOperation () {
+      const operation = {
+        askID: this.atomicSwap.id,
+        baseAmount: this.form.amount,
+        quoteAsset: this.form.quoteAsset,
+        creatorDetails: {
+          request_identifier: +new Date() + '',
+        },
+      }
+      return base.CreateAtomicSwapBidRequestBuilder
+        .createAtomicSwapBidRequest(operation)
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
   @import '~@/vue/forms/app-form';
+
+  .pay-form__atomic-swap-bid {
+    margin-top: 2.4rem;
+  }
 </style>

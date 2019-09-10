@@ -2581,6 +2581,9 @@
     },
     "pay-form": {
       "email":"Имейл"
+    },
+    "asset-information": {
+      "description-title": "Описание"
     }
   }
 }
