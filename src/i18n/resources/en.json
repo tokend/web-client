@@ -132,7 +132,8 @@
       "field-error_selectedSameAssetCode": "Not allowed duplicated quote asset codes",
       "field-error_validatePhoneNumber": "Make sure the phone number is correct",
       "field-error_emailOrPhoneNumber": "This field should be a valid email or phone number",
-      "field-error_telegramUsername": "Make sure the telegram username is correct"
+      "field-error_telegramUsername": "The telegram username is incorrect",
+      "field-error_cryptoAddressOrCreditCardNumber": "This field should be valid crypto address or card number"
     },
     "errors": {
       "default": "Something bad happened. Please try again later or contact the system owner.",
@@ -1123,7 +1124,7 @@
       "balance": "Balance is {{amount, money}} {{asset}}",
       "amount-lbl": "Amount",
       "insufficient-sales": "Insufficient balance",
-      "recipient-lbl": "Recipient email or phone",
+      "recipient-lbl": "Recipient email or phone or telegram username",
       "subject-lbl": "Add note",
       "continue-btn": "Continue",
       "recheck-form": "Please recheck the form before proceeding",
@@ -1198,6 +1199,7 @@
       "loading-msg": "Loading…",
       "load-failed-msg": "There was an error while loading.",
       "next-btn": "Next",
+      "create-btn": "Create",
       "create-request-btn": "Create request",
       "update-request-btn": "Update request",
       "information-step": "Asset information",
@@ -2389,12 +2391,17 @@
       "amount-lbl": "Amount",
       "available-amount-hint": "Available: {{amount, money}}",
       "create-btn": "Create",
-      "price-lbl": "Price",
-      "address-lbl": "Address",
-      "add-quote-asset-btn": "Add quote asset",
-      "quote-assets-subheading": "Quote asset {{ number }}",
+      "price-lbl": "Price ({{asset}})",
       "created-atomic-swap-msg": "Atomic swap request successfully created",
-      "available-balance":"Balance: {{amount, number}}"
+      "available-balance": "Balance: {{amount, number}}"
+    },
+    "atomic-swap-quote-assets-form": {
+      "assets-subheading": "Quote asset {{ number }}",
+      "add-asset-btn": "Add quote asset",
+      "address-lbl": "Address",
+      "card-number-lbl": "Card number",
+      "asset-lbl": "Asset",
+      "create-btn": "Create"
     },
     "atomic-swaps-explore": {
       "atomic-swap-drawer-title": "Atomic swap details",
@@ -2416,7 +2423,7 @@
       "asset-description-lbl": "Asset description"
     },
     "atomic-swap-actions": {
-      "cancel-btn": "Cancel",
+      "cancel-btn": "Cancel direct sell",
       "yes-msg": "Yes",
       "no-msg": "No",
       "cancellation-msg": "Are you sure to cancel the atomic swap?",
@@ -2439,7 +2446,8 @@
       "price-key": "Price",
       "total-current-cap-key": "Total current cap",
       "address-key": "Address",
-      "quote-assets-subheading": "Quote asset #{{ number }}"
+      "quote-assets-subheading": "Quote asset #{{ number }}",
+      "destination-key": "Destination"
     },
     "atomic-swap-card": {
       "available": "Available: {{ amount, balance }}",

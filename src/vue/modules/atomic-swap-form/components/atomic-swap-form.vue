@@ -2,7 +2,7 @@
   <div class="atomic-swap-form">
     <form
       novalidate
-      v-if="!atomicSwapBidRecord.address"
+      v-if="!atomicSwapBidDetails.address"
       class="app__form"
       @submit.prevent="isFormValid() && showConfirmation()"
     >
@@ -29,18 +29,11 @@
 
       <div class="app__form-row">
         <div class="app__form-field">
-          <input-field
+          <amount-input-field
             v-model="form.amount"
-            @blur="touchField('form.amount')"
             name="atomic-swap-amount"
-            type="number"
-            :error-message="getFieldErrorMessage(
-              'form.amount',
-              {
-                from: config.MIN_AMOUNT,
-                to: atomicSwap.availableAmount,
-              })"
-            white-autofill
+            :asset="assetByCode(atomicSwap.baseAsset)"
+            :max="atomicSwap.availableAmount"
             :label="'atomic-swap-form.amount' | globalize({
               asset: atomicSwap.baseAssetName
             })"
@@ -57,14 +50,16 @@
 
       <div class="app__form-row">
         <div class="app__form-field">
+          <!-- eslint-disable max-len -->
           <readonly-field
             class="atomic-swap-form__price"
             :label="'atomic-swap-form.price' | globalize"
-            :value="`${formatMoney(quoteAssetPrice)} ${form.quoteAsset}`"
+            :value="`${formatMoney(quoteAssetPrice)} ${statsQuoteAsset.code}`"
           />
+          <!-- eslint-enable max-len -->
           <readonly-field
             :label="'atomic-swap-form.total-price' | globalize"
-            :value="`${formatMoney(totalPrice)} ${form.quoteAsset}`"
+            :value="`${formatMoney(totalPrice)} ${statsQuoteAsset.code}`"
           />
         </div>
       </div>
@@ -92,14 +87,11 @@
     </form>
     <address-viewer
       v-else
-      :asset-code="atomicSwapBidRecord.quoteAssetCode"
-      :amount="atomicSwapBidRecord.amount"
-      :address="atomicSwapBidRecord.address"
-      :end-time="atomicSwapBidRecord.endTime"
+      :asset-code="assetByCode(form.quoteAsset).code"
+      :amount="atomicSwapBidDetails.amount"
+      :address="atomicSwapBidDetails.address"
+      :end-time="atomicSwapBidDetails.endTime"
     />
-    <p v-if="isFailedLoadAtomicSwapBidRecord">
-      {{ 'atomic-swap-form.error-msg' | globalize }}
-    </p>
   </div>
 </template>
 
@@ -116,11 +108,10 @@ import { formatMoney } from '@/vue/filters/formatMoney'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 import { MathUtil } from '@/js/utils'
+import { ATOMIC_SWAP_BID_TYPES } from '@/js/const/atomic-swap-bid-types.const'
 
 import { api } from '@/api'
 import { base } from '@tokend/js-sdk'
-
-import { REQUEST_STATES } from '@/js/const/request-states.const'
 
 import {
   amountRange,
@@ -131,6 +122,7 @@ const EVENTS = {
   selectAsset: 'select-asset',
   submitted: 'submitted',
 }
+
 export default {
   name: 'atomic-swap-form',
   components: {
@@ -147,16 +139,16 @@ export default {
   data () {
     return {
       config,
-      loadTickerTimeout: 3000,
-      intervalId: '',
       isSubmitting: false,
-      isFailedLoadAtomicSwapBidRecord: false,
-      requestIdentifier: '', // TODO: remove, crutch because back
       form: {
         amount: '',
         quoteAsset: '',
       },
-      atomicSwapBidRecord: {},
+      atomicSwapBidDetails: {
+        address: '',
+        endTime: -1,
+        amount: '',
+      },
     }
   },
   validations () {
@@ -174,9 +166,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      vuexTypes.accountId,
       vuexTypes.assetByCode,
-      vuexTypes.walletAccountId,
+      vuexTypes.statsQuoteAsset,
     ]),
     quoteAssets () {
       return this.atomicSwap.quoteAssets.map(item => this.assetByCode(item.id))
@@ -198,9 +189,6 @@ export default {
   async created () {
     this.form.quoteAsset = this.atomicSwap.quoteAssets[0].id
   },
-  destroyed () {
-    clearInterval(this.intervalId)
-  },
   methods: {
     formatMoney,
     setQuoteAsset (code) {
@@ -211,72 +199,37 @@ export default {
         this.isSubmitting = true
         const createAtomicSwapBidOperation =
           this.buildCreateAtomicSwapBidOperation()
-        if (this.assetByCode(this.form.quoteAsset).isCoinpayments) {
-          await api.postOperations(createAtomicSwapBidOperation)
-          this.intervalId = setInterval(() => {
-            this.loadPendingAtomicSwapBidRequests()
-          }, this.loadTickerTimeout)
+
+        // eslint-disable-next-line max-len
+        const { data } = await api.postOperationsToSpecificEndpoint(
+          '/integrations/marketplace/buy',
+          createAtomicSwapBidOperation
+        )
+        const atomicSwapBid = new AtomicSwapBidRecord(data.data.attributes)
+        if (atomicSwapBid.type === ATOMIC_SWAP_BID_TYPES.redirect) {
+          window.location.href = atomicSwapBid.payUrl
         } else {
-          const response =
-          await api.postOperationsToSpecificEndpoint(
-            '/integrations/fiat/pay',
-            createAtomicSwapBidOperation
-          )
-          window.location.href = response.data.data.attributes.payUrl
+          this.atomicSwapBidDetails = atomicSwapBid
+          this.$emit(EVENTS.submitted)
         }
-        this.$emit(EVENTS.submitted)
       } catch (e) {
         ErrorHandler.process(e)
-        this.isSubmitting = false
-        this.hideConfirmation()
       }
+      this.isSubmitting = false
+      this.hideConfirmation()
     },
 
     buildCreateAtomicSwapBidOperation () {
-      this.requestIdentifier = +new Date() + ''
       const operation = {
         askID: this.atomicSwap.id,
         baseAmount: this.form.amount,
         quoteAsset: this.form.quoteAsset,
         creatorDetails: {
-          request_identifier: this.requestIdentifier,
+          request_identifier: +new Date() + '',
         },
       }
       return base.CreateAtomicSwapBidRequestBuilder
         .createAtomicSwapBidRequest(operation)
-    },
-
-    async loadPendingAtomicSwapBidRequests () {
-      try {
-        const endpoint = '/v3/create_atomic_swap_bid_requests'
-        const response = await api.getWithSignature(endpoint, {
-          filter: {
-            requestor: this.accountId,
-            state: REQUEST_STATES.pending,
-          },
-          page: {
-            order: 'desc',
-            limit: 3,
-          },
-          include: 'request_details',
-        })
-        const records = response.data
-          .map(item => new AtomicSwapBidRecord(item))
-        const newAtomicSwapBidRecord = records
-          .find(item => item.requestIdentifier === this.requestIdentifier)
-        if (newAtomicSwapBidRecord && newAtomicSwapBidRecord.address) {
-          this.atomicSwapBidRecord = newAtomicSwapBidRecord
-          clearInterval(this.intervalId)
-          this.isSubmitting = false
-          this.hideConfirmation()
-        }
-      } catch (e) {
-        this.isFailedLoadAtomicSwapBidRecord = true
-        ErrorHandler.processWithoutFeedback(e)
-        this.isSubmitting = false
-        this.hideConfirmation()
-        clearInterval(this.intervalId)
-      }
     },
   },
 }

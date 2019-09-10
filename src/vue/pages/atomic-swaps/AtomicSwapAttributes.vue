@@ -32,6 +32,19 @@
 
           <tr>
             <td>
+              {{ 'atomic-swap-attributes.price-key' | globalize }}
+            </td>
+            <td :title="atomicSwap.quoteAssets[0].price | formatMoney">
+              {{ {
+                value: atomicSwap.quoteAssets[0].price,
+                currency: statsQuoteAsset.code
+              } | formatMoney
+              }}
+            </td>
+          </tr>
+
+          <tr>
+            <td>
               {{ 'atomic-swap-attributes.is-canceled-key' | globalize }}
             </td>
             <td>
@@ -78,11 +91,10 @@
             </tr>
             <tr>
               <td>
-                {{ 'atomic-swap-attributes.price-key' | globalize }}
+                {{ 'atomic-swap-attributes.destination-key' | globalize }}
               </td>
-              <td :title="quoteAsset.price | formatMoney">
-                <!-- eslint-disable-next-line max-len -->
-                {{ { value: quoteAsset.price, currency: quoteAsset.id } | formatMoney }}
+              <td>
+                {{ quoteAsset.destination }}
               </td>
             </tr>
           </tbody>
@@ -94,6 +106,8 @@
 
 <script>
 import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 export default {
   name: 'atomic-swap-attributes',
@@ -102,6 +116,11 @@ export default {
       type: AtomicSwapRecord,
       required: true,
     },
+  },
+  computed: {
+    ...mapGetters([
+      vuexTypes.statsQuoteAsset,
+    ]),
   },
 }
 </script>

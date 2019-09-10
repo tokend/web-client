@@ -6,7 +6,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
-## [Unreleased]
+## [1.0.3-rc.8] - 2019-09-09
+#### Added
+- Handle new types of atomic swap bid requests
+- Ability to set crypto addresses and card
+
+#### Fixed
+- Russian localization
+
+#### Changed
+- Shown only small balances
+
+## [1.0.3-rc.7] - 2019-09-06
+#### Added
+- Sending to telegram username
+#### Fixed
+- Color scheme
+
+## [1.0.3-rc.6] - 2019-09-04
 #### Added
 - Get data from store for general kyc form
 - A loader on kyc recovery management page
@@ -16,6 +33,8 @@ for further information about branching and tagging conventions.
 - A bug with trailing digits count on amount fields
 - Missing Russian localization
 - A bug with not show more button on tx history
+- A bug with displaying long asset name
+- A bug with displaying long input field label
 
 ### "Under the hood" changes
 #### Changed
@@ -232,7 +251,10 @@ for further information about branching and tagging conventions.
 #### Removed
 - `RECOVERY_MODE` config key due to unused anymore
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.0.3-rc.2...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.0.3-rc.8...HEAD
+[1.0.3-rc.8]: https://github.com/tokend/web-client/compare/1.0.3-rc.7...1.0.3-rc.8
+[1.0.3-rc.7]: https://github.com/tokend/web-client/compare/1.0.3-rc.6...1.0.3-rc.7
+[1.0.3-rc.6]: https://github.com/tokend/web-client/compare/1.0.3-rc.2...1.0.3-rc.6
 [1.0.3-rc.2]: https://github.com/tokend/web-client/compare/1.0.3-rc.1...1.0.3-rc.2
 [1.0.3-rc.1]: https://github.com/tokend/web-client/compare/1.0.3-rc.0...1.0.3-rc.1
 [1.0.3-rc.0]: https://github.com/tokend/web-client/compare/1.0.2...1.0.3-rc.0

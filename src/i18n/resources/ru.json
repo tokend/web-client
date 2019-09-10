@@ -132,7 +132,8 @@
       "field-error_selectedSameAssetCode": "Не могут быть выбраны два одинаковых актива",
       "field-error_validatePhoneNumber": "Неверный номер телефона",
       "field-error_emailOrPhoneNumber": "Неверный имейл или телефон получателя",
-      "field-error_telegramUsername" : "Убедитесь что имя пользователя верное"
+      "field-error_telegramUsername": "Имя пользователя неверное",
+      "field-error_cryptoAddressOrCreditCardNumber": "Неверный криптоадрес или номер карты"
     },
     "errors": {
       "default": "Что-то пошло не так. Пожалуйста, повторите попытку позже или свяжитесь с владельцем системы.",
@@ -1127,8 +1128,8 @@
       "balance": "Доступно {{amount, money}} {{asset}}",
       "amount-lbl": "Количество",
       "insufficient-sales": "Недостаточно средств",
-      "recipient-lbl": "Имейл или телефон получателя",
-      "subject-lbl": "Добавить примечание (опц.)",
+      "recipient-lbl": "Имейл или телефон или имя пользователя телеграм получателя",
+      "subject-lbl": "Добавить примечание (опционально)",
       "continue-btn": "Далее",
       "recheck-form": "Пожалуйста, перепроверьте форму.",
       "submit-btn": "Отправить",
@@ -1202,6 +1203,7 @@
       "loading-msg": "Загружаем…",
       "load-failed-msg": "Произошла ошибка при загрузке.",
       "next-btn": "Далее",
+      "create-btn": "Создать",
       "create-request-btn": "Создать запрос",
       "update-request-btn": "Обновить запрос",
       "information-step": "Основной",
@@ -2393,12 +2395,17 @@
       "amount-lbl": "Количество",
       "available-amount-hint": "Доступно: {{amount, money}}",
       "create-btn": "Создать",
-      "price-lbl": "Цена",
-      "address-lbl": "Адрес",
-      "add-quote-asset-btn": "Добавить котируемый актив",
-      "quote-assets-subheading": "Котируемый актив {{number}}",
+      "price-lbl": "Цена ({{asset}})",
       "created-atomic-swap-msg": "Запрос отправлен",
       "available-balance": "Баланс: {{amount, number}}"
+    },
+    "atomic-swap-quote-assets-form": {
+      "assets-subheading": "Котируемый актив {{number}}",
+      "add-asset-btn": "Добавить котируемый актив",
+      "address-lbl": "Адрес",
+      "card-number-lbl": "Номер карты",
+      "asset-lbl": "Актив",
+      "create-btn": "Создать"
     },
     "customers-page": {
       "invite-btn": "Пригласить клиента",
@@ -2544,10 +2551,11 @@
       "current-cap-key": "Продано",
       "hard-cap-key": "Максимум",
       "total-current-cap-key": "Суммарно продано",
-      "quote-assets-subheading": "Котируемый актив №{{ number }}"
+      "quote-assets-subheading": "Котируемый актив №{{ number }}",
+      "destination-key": "Назначение"
     },
     "atomic-swap-actions": {
-      "cancel-btn": "Отменить",
+      "cancel-btn": "Отменить продажу",
       "yes-msg": "Да",
       "no-msg": "Нет",
       "cancellation-msg": "Уверены, что хотите отменить предложение?",

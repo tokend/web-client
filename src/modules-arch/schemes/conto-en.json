@@ -6,18 +6,18 @@
     },
     "passport": {
       "account-unverified": "General account",
-      "account-corporate": "Business level 1 account"
+      "account-corporate": "Business account"
     },
     "verification-form": {
       "avatar-lbl": "Logo (Optional)"
     },
     "verification-page": {
-      "account-type-corporate-title": "Business level 1",
+      "account-type-corporate-title": "Business",
       "account-type-corporate-description": "Invite customers, create assets",
       "account-type-general-description": "Transfer assets"
     },
     "sidebar": {
-      "section-corporate": "Business level 1"
+      "section-corporate": "Business"
     },
     "validation": {
       "field-error_noMoreThanSaleCap": "Provided amount has exceeded the goal {{saleCap, money}}"
@@ -277,12 +277,12 @@
       "no-list-msg": "Here will be the list of direct sell offerings",
       "owned-by-me-filter-lbl": "Owned by me"
     },
-    "create-asset-form": {
-      "next-btn": "Create"
-    },
     "settings-page": {
       "security-tab": "General",
       "my-account-tab": "Business"
+    },
+    "create-asset-form": {
+      "advanced-step": "Shop info"
     }
   }
 }

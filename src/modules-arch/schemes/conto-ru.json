@@ -6,18 +6,18 @@
     },
     "passport": {
       "account-unverified": "Стандартный аккаунт",
-      "account-corporate": "Аккаунта бизнеса I уровня"
+      "account-corporate": "Аккаунт бизнеса"
     },
     "verification-form": {
       "avatar-lbl": "Лого (Необязательно)"
     },
     "verification-page": {
-      "account-type-corporate-title": "Бизнес I уровня",
+      "account-type-corporate-title": "Бизнес",
       "account-type-corporate-description": "Приглашайте клиентов, создавайте активы",
       "account-type-general-description": "Трансфер активов"
     },
     "sidebar": {
-      "section-corporate": "Бизнес I уровня"
+      "section-corporate": "Бизнес"
     },
     "validation": {
       "field-error_noMoreThanSaleCap": "Сумма превышает цель краудфанда: {{saleCap, money}}"
@@ -284,12 +284,13 @@
     "polls": {
       "all": "Опросы"
     },
-    "create-asset-form": {
-      "next-btn": "Создать"
-    },
     "settings-page": {
       "security-tab": "Общее",
       "my-account-tab": "Бизнес"
+    },
+    "create-asset-form": {
+      "advanced-step": "Информация для магазина",
+      "information-step": "Информация об активе"
     }
   }
 }

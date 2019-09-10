@@ -53,6 +53,7 @@
       <submodule-importer
         v-else
         :submodule="getModule().getSubmodule(AtomicSwapFormModule)"
+        @update-list="updateList()"
         :atomic-swap="atomicSwapToBrowse"
       />
     </drawer>
@@ -164,6 +165,9 @@ export default {
 
     closeDrawerAndUpdateList () {
       this.isDrawerShown = false
+      this.emitUpdateList('atomicSwaps:updateList')
+    },
+    updateList () {
       this.emitUpdateList('atomicSwaps:updateList')
     },
   },

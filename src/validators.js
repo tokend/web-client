@@ -58,8 +58,10 @@ export const emailOrAccountId = value => {
 export const telegramUsername = value => {
   return /^[a-zA-Z0-9_-]{3,16}$/.test(value)
 }
-export const emailOrPhoneNumber = value => {
-  return validateEmail(value) || validatePhoneNumber(value)
+export const emailOrPhoneNumberOrTelegram = value => {
+  return validateEmail(value) ||
+    validatePhoneNumber(value) ||
+    telegramUsername(value)
 }
 export const accountId = value => {
   return base.Keypair.isValidPublicKey(value)
@@ -156,17 +158,6 @@ export const validateUrl = url => {
 
 export const assetCode = value => {
   return _isString(value) && /^[a-z\d]{1,16}$/i.test(value)
-}
-
-export const selectedSameAssetCode = (selectedAssetsByCode) => {
-  const ONE_ASSET_CODE = 1
-
-  const countSameAssetCode = selectedAssetsByCode.length
-  if (countSameAssetCode > ONE_ASSET_CODE) {
-    return false
-  } else {
-    return true
-  }
 }
 
 export const validatePhoneNumber = value => {
