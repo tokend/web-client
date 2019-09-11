@@ -2573,7 +2573,8 @@
     },
     "pay-page": {
       "pay-title": "Pay",
-      "buy-sum-assets": "Buy sum assets"
+      "no-atomic-swap-title": "No such offer found",
+      "no-atomic-swap-msg": "Please make sure the link is correct"
     },
     "pay-form": {
       "email": "Email"

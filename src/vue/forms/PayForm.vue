@@ -1,6 +1,7 @@
 <template>
   <div>
     <form
+      v-if="!atomicSwapBidDetails.address"
       novalidate
       class="pay-form app__form"
     >
@@ -23,12 +24,21 @@
         :atomic-swap="atomicSwap"
       />
     </form>
+
+    <address-viewer
+      v-else
+      :asset-code="assetByCode(form.quoteAsset).code"
+      :amount="atomicSwapBidDetails.amount"
+      :address="atomicSwapBidDetails.address"
+      :end-time="atomicSwapBidDetails.endTime"
+    />
   </div>
 </template>
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import AtomicSwapForm from '@/vue/forms/AtomicSwapForm'
+import AddressViewer from '@/vue/common/address-viewer'
 import { required } from '@validators'
 import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
 import { api } from '@/api'
@@ -36,10 +46,15 @@ import { base } from '@tokend/js-sdk'
 import { ATOMIC_SWAP_BID_TYPES } from '@/js/const/atomic-swap-bid-types.const'
 import { AtomicSwapBidRecord } from '@/js/records/entities/atomic-swap-bid.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { vuexTypes } from '@/vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'pay-form',
-  components: { AtomicSwapForm },
+  components: {
+    AtomicSwapForm,
+    AddressViewer,
+  },
   mixins: [FormMixin],
   props: { atomicSwap: { type: AtomicSwapRecord, required: true } },
   data () {
@@ -66,6 +81,17 @@ export default {
         },
       },
     }
+  },
+
+  computed: {
+    ...mapGetters([
+      vuexTypes.assetByCode,
+      vuexTypes.walletEmail,
+    ]),
+  },
+
+  created () {
+    this.form.email = this.walletEmail
   },
 
   methods: {

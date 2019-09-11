@@ -2576,8 +2576,9 @@
       "last-name-lbl": "Фамилия"
     },
     "pay-page": {
-      "pay-title": "Оплата",
-      "buy-sum-assets": "Купить сумму активов"
+      "pay-title": "Покупка",
+      "no-atomic-swap-title": "Такое предложение не найдено",
+      "no-atomic-swap-msg": "Пожалуйста, убедитесь, что ссылка верна"
     },
     "pay-form": {
       "email":"Имейл"
