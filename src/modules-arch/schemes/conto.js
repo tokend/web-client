@@ -36,6 +36,7 @@ import { AtomicSwapFormModule } from '@modules/atomic-swap-form/module'
 import { AtomicSwapsExplorePageModule } from '@/vue/pages/atomic-swaps/atomic-swaps-explore-page-module'
 import { CreateAtomicSwapFormModule } from '@/vue/modules/create-atomic-swap-form/module'
 import { SharesPageModule } from '@/vue/pages/shares-page-module'
+import { SponsorshipPageModule } from '@/vue/pages/sponsorship-page-module'
 
 export default {
   importLanguageResource (lng) {
@@ -319,6 +320,29 @@ export default {
           new MovementsHistoryModule(),
         ],
         isCorporateOnly: true,
+      },
+    ),
+
+    new SponsorshipPageModule(
+      {
+        routerEntry: {
+          path: '/sponsorship',
+          name: vueRoutes.sponsorship.name,
+          meta: { pageNameTranslationId: 'pages-names.sponsorship' },
+        },
+        menuButtonTranslationId: 'pages-names.sponsorship',
+        menuButtonMdiName: 'account-group',
+        isAutoRedirectToFirstChild: true,
+        isCorporateOnly: true,
+        submodules: [
+          new BusinessesAllPageModule({
+            routerEntry: {
+              path: '/sponsorship/all',
+              name: vueRoutes.sponsorshipAllBusinesses.name,
+              props: true,
+            },
+          }),
+        ],
       },
     ),
 

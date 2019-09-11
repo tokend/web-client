@@ -772,7 +772,8 @@
       "customers": "Клиенты",
       "customers-list": "Список клиентов",
       "businesses": "Бизнесы",
-      "kyc-recovery": "Восстановление по KYC"
+      "kyc-recovery": "Восстановление по KYC",
+      "sponsorship": "Спонсортсво"
     },
     "limits": {
       "explore-limits": "Просмотр лимитов",
@@ -2487,7 +2488,8 @@
     "businesses-all": {
       "no-list-title": "Нет бизнесов",
       "no-list-msg": "Здесь будет список бизнесов",
-      "business-details-title": "Детали бизнеса"
+      "business-details-title": "Детали бизнеса",
+      "business-assets-title": "Активы бизнеса"
     },
     "business-viewer": {
       "add-btn": "Добавить бизнес",
@@ -2574,6 +2576,16 @@
       "logout-btn": "Выйти",
       "first-name-lbl": "Имя",
       "last-name-lbl": "Фамилия"
+    },
+    "business-assets-viewer": {
+      "asset-name-th": "Имя актива",
+      "number-of-holders-th": "Количество держателей",
+      "sponsor-btn": "Спонсировать",
+      "no-data-msg": "У бизнеса еще нет активов.",
+      "error-msg": "Произошла ошибка при загрузке списка. Пожалуйста, свяжитесь с владельцем системы."
+    },
+    "sponsor-business-form": {
+      "form-heading": "Спонсирование"
     }
   }
 }

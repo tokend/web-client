@@ -768,7 +768,8 @@
       "customers": "Customers",
       "customers-list": "Customers list",
       "businesses": "Businesses",
-      "kyc-recovery": "KYC Recovery"
+      "kyc-recovery": "KYC Recovery",
+      "sponsorship": "Sponsorship"
     },
     "limits": {
       "explore-limits": "Explore limits",
@@ -2533,7 +2534,8 @@
     "businesses-all": {
       "no-list-title": "No businesses here yet",
       "no-list-msg": "Here will be the list of businesses",
-      "business-details-title": "Business details"
+      "business-details-title": "Business details",
+      "business-assets-title": "Business assets"
     },
     "business-viewer": {
       "add-btn": "Add business",
@@ -2570,6 +2572,16 @@
       "logout-btn": "Logout",
       "first-name-lbl": "First name",
       "last-name-lbl": "Last name"
+    },
+    "business-assets-viewer": {
+      "asset-name-th": "Asset name",
+      "number-of-holders-th": "Number of holders",
+      "sponsor-btn": "Sponsor",
+      "no-data-msg": "Business don't have any assets yet.",
+      "error-msg": "An error occurred while loading the list, please contact system owner to resolve the issue."
+    },
+    "sponsor-business-form": {
+      "form-heading": "Sponsorship"
     }
   }
 }
