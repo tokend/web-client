@@ -70,7 +70,7 @@ export default {
     return {
       atomicSwapAsk: {},
       isLoaded: false,
-      isLoading: true,
+      isLoading: false,
       isNotFoundAtomicSwap: false,
       vueRoutes,
     }
@@ -80,13 +80,13 @@ export default {
     this.isLoading = true
     try {
       await this.getAtomicSwapAsk(this.$route.query.id)
-      this.isLoaded = false
+      this.isLoaded = true
     } catch (e) {
       this.isLoading = false
       this.isNotFoundAtomicSwap = true
       ErrorHandler.processWithoutFeedback()
     }
-    this.isLoading = true
+    this.isLoading = false
   },
 
   methods: {
