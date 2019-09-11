@@ -22,7 +22,10 @@
           class="pay__asset-information"
           :asset-code="atomicSwapAsk.baseAsset"
         />
-        <pay-form :atomic-swap="atomicSwapAsk" class="pay__form" />
+        <pay-form
+          :atomic-swap="atomicSwapAsk"
+          class="pay__form"
+        />
       </div>
     </template>
 
