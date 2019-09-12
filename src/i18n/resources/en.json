@@ -2544,7 +2544,8 @@
     "business-attributes": {
       "id-key": "ID",
       "owner-key": "Owner",
-      "industry-key": "Industry"
+      "industry-key": "Industry",
+      "my-business-label": "It's your business"
     },
     "businesses-my": {
       "no-list-title": "No businesses here yet",
