@@ -7,7 +7,7 @@
         </template>
         <request-viewer
           :request="selectedRequest"
-          @cancel="closeDrawerAndUpdateList()"
+          @request-updated="closeDrawerAndUpdateList()"
         />
       </drawer>
 

@@ -1,5 +1,10 @@
 <template>
   <div class="request-viewer">
+    <request-message-viewer
+      class="request-viewer__state-message"
+      :request="request"
+    />
+
     <request-attributes-viewer
       class="request-viewer__table"
       :request="request"
@@ -16,6 +21,7 @@
 <script>
 import RequestAttributesViewer from './request-attributes-viewer'
 import RequestActions from './request-actions'
+import RequestMessageViewer from './request-message-viewer'
 
 import { SponsorshipRequest } from '../wrappers/sponsorship-request'
 
@@ -28,6 +34,7 @@ export default {
   components: {
     RequestAttributesViewer,
     RequestActions,
+    RequestMessageViewer,
   },
 
   props: {
