@@ -209,7 +209,7 @@ const getters = {
   assetsByOwner: 'assetsByOwner',
   balancesAssets: 'balancesAssets',
   balancesAssetsByOwner: 'balancesAssetsByOwner',
-  fiatAssets: 'fiatAssets',
+  balancesBaseAssets: 'balancesBaseAssets',
   depositableAssets: 'depositableAssets',
   coinpaymentsAssets: 'coinpaymentsAssets',
   transferableAssetsBalancesByOwner: 'transferableAssetsBalancesByOwner',
@@ -220,6 +220,7 @@ const getters = {
   baseAtomicSwapBalancesAssets: 'baseAtomicSwapBalancesAssets',
   quoteAtomicSwapAssets: 'quoteAtomicSwapAssets',
   businessStatsQuoteAsset: 'businessStatsQuoteAsset',
+  baseAssets: 'baseAssets',
 
   // conto hacks
   isCustomerUiShown: 'isCustomerUiShown',
