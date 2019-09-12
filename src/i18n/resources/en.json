@@ -1320,7 +1320,8 @@
       "asset-update-title": "Asset update",
       "sale-creation-title": "Sale creation",
       "pre-issuance-upload-title": "Pre-issuance upload",
-      "incoming-withdrawal-title": "Incoming withdrawal"
+      "incoming-withdrawal-title": "Incoming withdrawal",
+      "incoming-sponsorship-title": "Incoming sponsorship"
     },
     "request-states": {
       "approved-state": "Approved",
@@ -2570,6 +2571,39 @@
       "logout-btn": "Logout",
       "first-name-lbl": "First name",
       "last-name-lbl": "Last name"
+    },
+    "sponsorship-requests": {
+      "loading-msg": "Loading sponsorship requests…",
+      "loading-error-msg": "There was an error while loading.",
+      "details-title": "Sponsorship request",
+      "requestor-header": "Requestor",
+      "asset-code-header": "Asset code",
+      "amount-header": "Amount",
+      "request-state-header": "Request state",
+      "created-header": "Created",
+      "review-btn": "Review",
+      "no-history-title": "No request history",
+      "no-history-desc": "Here will be the list of sponsorship requests",
+      "request-id": "Request ID",
+      "created": "Created",
+      "requestor-email": "Requestor email",
+      "requestor-id": "Requestor ID",
+      "comment": "Comment",
+      "amount": "Amount",
+      "fixed-fee": "Fixed fee",
+      "calculated-percent-fee": "Calculated percent fee",
+      "total-fee": "Total fee",
+      "approve-btn": "Approve",
+      "reject-btn": "REJECT",
+      "cancel-btn": "Cancel",
+      "reject-reason": "Reject reason",
+      "reject-action-btn": "Reject",
+      "yes-msg": "Yes",
+      "no-msg": "No",
+      "request-rejected-msg": "Your request was successfully rejected",
+      "request-approved-msg": "Your request was successfully approved",
+      "approving-msg": "Are you sure to approve the request?",
+      "rejecting-msg": "Are you sure to reject the request?"
     }
   }
 }

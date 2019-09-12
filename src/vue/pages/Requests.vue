@@ -41,6 +41,15 @@
             {{ 'requests-page.incoming-withdrawal-title' | globalize }}
           </span>
         </router-link>
+
+        <router-link
+          v-if="getModule().canRenderSubmodule(SponsorshipIncomingRequestsPageModule)"
+          :to="vueRoutes.sponsorshipIncomingRequests"
+        >
+          <span>
+            {{ 'requests-page.incoming-sponsorship-title' | globalize }}
+          </span>
+        </router-link>
         <!-- eslint-enable max-len -->
       </template>
     </top-bar>
@@ -58,6 +67,7 @@ import { AssetUpdateRequestsPageModule } from '@/vue/pages/asset-update-requests
 import { SaleCreationRequestsPageModule } from '@/vue/pages/sale-creation-requests-page'
 import { PreIssuanceRequestsPageModule } from '@/vue/pages/pre-issuance-requests-page'
 import { IncomingWithdrawalRequestsPageModule } from '@/vue/pages/incoming-withdrawal-requests-page'
+import { SponsorshipIncomingRequestsPageModule } from '@/vue/pages/sponsorship-incoming-requests-page-module'
 
 export default {
   name: 'requests',
@@ -71,6 +81,7 @@ export default {
     SaleCreationRequestsPageModule,
     PreIssuanceRequestsPageModule,
     IncomingWithdrawalRequestsPageModule,
+    SponsorshipIncomingRequestsPageModule,
   }),
 }
 </script>

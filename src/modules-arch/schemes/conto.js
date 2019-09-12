@@ -36,6 +36,9 @@ import { AtomicSwapFormModule } from '@modules/atomic-swap-form/module'
 import { AtomicSwapsExplorePageModule } from '@/vue/pages/atomic-swaps/atomic-swaps-explore-page-module'
 import { CreateAtomicSwapFormModule } from '@/vue/modules/create-atomic-swap-form/module'
 import { SharesPageModule } from '@/vue/pages/shares-page-module'
+import { RequestsPageModule } from '@/vue/pages/requests-page-module'
+import { SponsorshipIncomingRequestsPageModule } from '@/vue/pages/sponsorship-incoming-requests-page-module'
+import { SponsorshipRequestsModule } from '@/vue/modules/requests/sponsorship-requests/module'
 
 export default {
   importLanguageResource (lng) {
@@ -320,6 +323,31 @@ export default {
         ],
         isCorporateOnly: true,
       },
+    ),
+
+    new RequestsPageModule(
+      {
+        routerEntry: {
+          path: '/requests',
+          name: vueRoutes.requests.name,
+          meta: { pageNameTranslationId: 'pages-names.requests' },
+        },
+        isCorporateOnly: true,
+        menuButtonTranslationId: 'pages-names.requests',
+        menuButtonMdiName: 'book-open-variant',
+        isAutoRedirectToFirstChild: true,
+        submodules: [
+          new SponsorshipIncomingRequestsPageModule({
+            routerEntry: {
+              path: '/requests/sponsorship-incoming',
+              name: vueRoutes.sponsorshipIncomingRequests.name,
+            },
+            submodules: [
+              new SponsorshipRequestsModule(),
+            ],
+          }),
+        ],
+      }
     ),
 
     new SettingsPageModule(

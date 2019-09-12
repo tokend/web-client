@@ -4,6 +4,7 @@ import { AssetUpdateRequestsPageModule } from './asset-update-requests-page'
 import { SaleCreationRequestsPageModule } from './sale-creation-requests-page'
 import { PreIssuanceRequestsPageModule } from './pre-issuance-requests-page'
 import { IncomingWithdrawalRequestsPageModule } from './incoming-withdrawal-requests-page'
+import { SponsorshipIncomingRequestsPageModule } from '@/vue/pages/sponsorship-incoming-requests-page-module'
 
 export class RequestsPageModule extends PageModuleDescriptor {
   constructor (opts = {}) {
@@ -16,6 +17,7 @@ export class RequestsPageModule extends PageModuleDescriptor {
         SaleCreationRequestsPageModule,
         PreIssuanceRequestsPageModule,
         IncomingWithdrawalRequestsPageModule,
+        SponsorshipIncomingRequestsPageModule,
       ],
     })
   }

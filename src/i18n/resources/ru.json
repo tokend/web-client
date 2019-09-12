@@ -1324,7 +1324,8 @@
       "asset-update-title": "Обновление актива",
       "sale-creation-title": "Создание сейла",
       "pre-issuance-upload-title": "Загрузка предэмиссии",
-      "incoming-withdrawal-title": "Вывод активов"
+      "incoming-withdrawal-title": "Вывод активов",
+      "incoming-sponsorship-title": "Спонсортсво"
     },
     "request-states": {
       "approved-state": "Подтвержден",
@@ -2574,6 +2575,39 @@
       "logout-btn": "Выйти",
       "first-name-lbl": "Имя",
       "last-name-lbl": "Фамилия"
+    },
+    "sponsorship-requests": {
+      "loading-msg": "Загружаем ваши запросы…",
+      "loading-error-msg": "Произошла ошибка при загрузке.",
+      "details-title": "Запрос на спонсирование",
+      "requestor-header": "Запрашивающий",
+      "asset-code-header": "Актив",
+      "amount-header": "Количество",
+      "request-state-header": "Статус",
+      "created-header": "Создано",
+      "review-btn": "Рассмотреть",
+      "no-request-history-title": "Нет запросов",
+      "no-history-desc": "Здесь будет список ваших запросов на спонсирование",
+      "request-id": "Идентификатор запроса",
+      "created": "Создано",
+      "requestor-email": "Имейл запрашивающего",
+      "requestor-id": "Идентификатор запрашивающего",
+      "comment": "Комментарий",
+      "amount": "Количество",
+      "fixed-fee": "Фиксированная комиссия",
+      "calculated-percent-fee": "Рассчитанная процентная комиссия",
+      "total-fee": "Общая комиисия",
+      "approve-btn": "Подтвержден",
+      "reject-btn": "Отклонен",
+      "cancel-btn": "Отменен",
+      "reject-reason": "Причина отклонения",
+      "reject-action-btn": "Отклонить",
+      "yes-msg": "Да",
+      "no-msg": "Нет",
+      "request-rejected-msg": "Запрос был отклонен",
+      "request-approved-msg": "Запрос подтвержден",
+      "approving-msg": "Вы уверены что хотите подтвердить запрос?",
+      "rejecting-msg": "Вы уверены что хотите отклонить запрос?"
     }
   }
 }
