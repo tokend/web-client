@@ -58,5 +58,8 @@ export const vueRoutes = Object.freeze({
   businesses: { name: 'app.businesses' },
   allBusinesses: { name: 'app.all-businesses.list' },
   myBusinesses: { name: 'app.my-businesses.list' },
+  sponsorship: { name: 'app.sponsorship' },
+  sponsorshipAllBusinesses: { name: 'sponsorship-all-businesses.list' },
   sponsorshipIncomingRequests: { name: 'app.sponsorship-incoming-requests' },
+  sponsorshipOutgoingRequests: { name: 'app.sponsorship-outgoing-requests' },
 })

@@ -41,15 +41,6 @@
             {{ 'requests-page.incoming-withdrawal-title' | globalize }}
           </span>
         </router-link>
-
-        <router-link
-          v-if="getModule().canRenderSubmodule(SponsorshipIncomingRequestsPageModule)"
-          :to="vueRoutes.sponsorshipIncomingRequests"
-        >
-          <span>
-            {{ 'requests-page.incoming-sponsorship-title' | globalize }}
-          </span>
-        </router-link>
         <!-- eslint-enable max-len -->
       </template>
     </top-bar>

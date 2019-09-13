@@ -772,7 +772,8 @@
       "customers": "Клиенты",
       "customers-list": "Список клиентов",
       "businesses": "Бизнесы",
-      "kyc-recovery": "Восстановление по KYC"
+      "kyc-recovery": "Восстановление по KYC",
+      "sponsorship": "Спонсортсво"
     },
     "limits": {
       "explore-limits": "Просмотр лимитов",
@@ -2488,7 +2489,8 @@
     "businesses-all": {
       "no-list-title": "Нет бизнесов",
       "no-list-msg": "Здесь будет список бизнесов",
-      "business-details-title": "Детали бизнеса"
+      "business-details-title": "Детали бизнеса",
+      "business-assets-title": "Активы бизнеса"
     },
     "business-viewer": {
       "add-btn": "Добавить бизнес",
@@ -2497,7 +2499,8 @@
     "business-attributes": {
       "id-key": "Идентификатор",
       "owner-key": "Владелец",
-      "industry-key": "Индустрия"
+      "industry-key": "Индустрия",
+      "my-business-label": "Это ваш бизнес"
     },
     "businesses-my": {
       "no-list-title": "Нет бизнесов",
@@ -2608,6 +2611,21 @@
       "request-approved-msg": "Запрос подтвержден",
       "approving-msg": "Вы уверены что хотите подтвердить запрос?",
       "rejecting-msg": "Вы уверены что хотите отклонить запрос?"
+    },
+    "business-assets-viewer": {
+      "asset-name-th": "Имя актива",
+      "number-of-holders-th": "Количество держателей",
+      "sponsor-btn": "Спонсировать",
+      "no-data-msg": "У бизнеса еще нет активов.",
+      "error-msg": "Произошла ошибка при загрузке списка. Пожалуйста, свяжитесь с владельцем системы."
+    },
+    "sponsor-business-form": {
+      "form-heading": "Спонсирование"
+    },
+    "sponsorship-page": {
+      "businesses-tab": "Бизнесы",
+      "incoming-requests-tab": "Входящие запросы",
+      "outgoing-requests-tab": "Исходящие запросы"
     }
   }
 }

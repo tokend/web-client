@@ -768,7 +768,8 @@
       "customers": "Customers",
       "customers-list": "Customers list",
       "businesses": "Businesses",
-      "kyc-recovery": "KYC Recovery"
+      "kyc-recovery": "KYC Recovery",
+      "sponsorship": "Sponsorship"
     },
     "limits": {
       "explore-limits": "Explore limits",
@@ -2534,7 +2535,8 @@
     "businesses-all": {
       "no-list-title": "No businesses here yet",
       "no-list-msg": "Here will be the list of businesses",
-      "business-details-title": "Business details"
+      "business-details-title": "Business details",
+      "business-assets-title": "Business assets"
     },
     "business-viewer": {
       "add-btn": "Add business",
@@ -2543,7 +2545,8 @@
     "business-attributes": {
       "id-key": "ID",
       "owner-key": "Owner",
-      "industry-key": "Industry"
+      "industry-key": "Industry",
+      "my-business-label": "It's your business"
     },
     "businesses-my": {
       "no-list-title": "No businesses here yet",
@@ -2604,6 +2607,21 @@
       "request-approved-msg": "Your request was successfully approved",
       "approving-msg": "Are you sure to approve the request?",
       "rejecting-msg": "Are you sure to reject the request?"
+    },
+    "business-assets-viewer": {
+      "asset-name-th": "Asset name",
+      "number-of-holders-th": "Number of holders",
+      "sponsor-btn": "Sponsor",
+      "no-data-msg": "Business don't have any assets yet.",
+      "error-msg": "An error occurred while loading the list, please contact system owner to resolve the issue."
+    },
+    "sponsor-business-form": {
+      "form-heading": "Sponsorship"
+    },
+    "sponsorship-page": {
+      "businesses-tab": "Businesses",
+      "incoming-requests-tab": "Incoming requests",
+      "outgoing-requests-tab": "Outgoing requests"
     }
   }
 }
