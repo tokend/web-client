@@ -10,6 +10,9 @@ for further information about branching and tagging conventions.
 #### Changed
 - Show all base assets in set default quote asset select
 
+#### Fixed
+- A bug when don't show a error message when field was touched
+
 ## [1.0.3-rc.8] - 2019-09-09
 #### Added
 - Handle new types of atomic swap bid requests
