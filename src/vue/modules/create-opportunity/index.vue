@@ -706,7 +706,7 @@ export default {
   },
   async created () {
     this.form.information.formType = this.FORM_TYPES[0]
-    await this.loadAssets()
+    await this.loadAccountBalances()
     await this.loadBaseAssetsPairs()
     this.kvAssetTypeKycRequired = await this.loadKvAssetTypeKycRequired()
     this.assignDefaultAssetSubtype()
@@ -716,7 +716,7 @@ export default {
     moment,
     formatDate,
     ...mapActions({
-      loadAssets: vuexTypes.LOAD_ASSETS,
+      loadAccountBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     ...mapActions('create-opportunity', {
       loadKvAssetTypeKycRequired: types.LOAD_KV_KYC_REQUIRED,
