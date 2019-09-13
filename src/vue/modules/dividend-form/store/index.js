@@ -95,9 +95,11 @@ export const getters = {
   [types.assets]: state => state.assets.filter(
     item => item.balance.id && item.isTransferable && item.isBaseAsset
   ),
-  [types.ownedAssets]: (state, rootGetters) => state.assets.filter(item =>
-    item.owner === rootGetters[vuexTypes.accountId] && item.isShareSubtype
-  ),
+  [types.ownedAssets]: (state, getters, rootState, rootGetters) =>
+    state.assets.filter(
+      item =>
+        item.owner === rootGetters[vuexTypes.accountId] && item.isShareSubtype
+    ),
   [types.balanceHolders]: state => state.balanceHolders
     .map(item => new Balance(item)),
 }

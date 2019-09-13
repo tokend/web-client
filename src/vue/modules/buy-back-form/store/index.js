@@ -59,7 +59,7 @@ export const actions = {
 
 export const getters = {
   [types.balances]: state => state.balances.map(b => new Balance(b)),
-  [types.assets]: (state, rootGetters) => state.assets
+  [types.assets]: (state, getters, rootState, rootGetters) => state.assets
     .map(a => new AssetRecord(a))
     .filter(a => a.isAllowedToBuyBack && a.owner.id ===
       rootGetters[vuexTypes.accountId]),
