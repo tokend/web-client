@@ -9,6 +9,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Changed
 - Show all base assets in set default quote asset select
+- Renamed direct sell to offering
 
 ## [1.0.3-rc.8] - 2019-09-09
 #### Added

@@ -240,24 +240,24 @@
     },
     "assets": {
       "vendor-code": "Артикул",
-      "can-be-base-in-atomic-swap-title": "Может быть базовым активом в прямой продаже",
-      "can-be-quote-in-atomic-swap-title": "Может быть котируемым активом в прямой продаже"
+      "can-be-base-in-atomic-swap-title": "Может быть базовым активом в предложении",
+      "can-be-quote-in-atomic-swap-title": "Может быть котируемым активом в предложении"
     },
     "assets-page": {
       "explore-title": "Активы бизнеса",
       "balances-title": "Мой кошелек"
     },
     "asset-details": {
-      "can-be-base-in-atomic-swap-title": "Может быть базовым активом в прямой продаже",
-      "can-be-quote-in-atomic-swap-title": "Может быть котируемым активом в прямой продаже"
+      "can-be-base-in-atomic-swap-title": "Может быть базовым активом в предложении",
+      "can-be-quote-in-atomic-swap-title": "Может быть котируемым активом в предложении"
     },
     "update-asset-requests": {
-      "can-be-base-in-atomic-swap-title": "Может быть базовым активом в прямой продаже",
-      "can-be-quote-in-atomic-swap-title": "Может быть котируемым активом в прямой продаже"
+      "can-be-base-in-atomic-swap-title": "Может быть базовым активом в предложении",
+      "can-be-quote-in-atomic-swap-title": "Может быть котируемым активом в предложении"
     },
     "create-asset-requests": {
-      "can-be-base-in-atomic-swap-title": "Может быть базовым активом в прямой продаже",
-      "can-be-quote-in-atomic-swap-title": "Может быть котируемым активом в прямой продаже"
+      "can-be-base-in-atomic-swap-title": "Может быть базовым активом в предложении",
+      "can-be-quote-in-atomic-swap-title": "Может быть котируемым активом в предложении"
     },
     "atomic-swaps": {
       "explore-atomic-swaps": "Предложения",
@@ -269,9 +269,9 @@
     },
     "create-atomic-swap-form": {
       "no-base-atomic-swap-assets-title": "Нет базовых активов",
-      "no-base-atomic-swap-assets-msg": "Пожалуйста, создайте актив, который может быть базовым в прямой продаже, чтобы создать прямую покупку",
+      "no-base-atomic-swap-assets-msg": "Пожалуйста, создайте актив, который может быть базовым в предложении, чтобы создать прямую покупку",
       "no-quote-atomic-swap-assets-title": "Нет котируемых активов",
-      "no-quote-atomic-swap-assets-msg": "Пожалуйста, создайте актив, который может быть котируемым в прямой продаже, чтобы создать прямую покупку",
+      "no-quote-atomic-swap-assets-msg": "Пожалуйста, создайте актив, который может быть котируемым в предложении, чтобы создать прямую покупку",
       "created-atomic-swap-msg": "Предложение успешно создано"
     },
     "atomic-swaps-explore": {
