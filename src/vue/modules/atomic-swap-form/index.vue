@@ -12,7 +12,7 @@
       <p>{{ assetByCode(atomicSwap.baseAsset).description }}</p>
     </div>
     <atomic-swap-form
-      v-if="!atomicSwapBidDetails.address"
+      v-if="!isAtomicSwapBidCreated"
       :atomic-swap="atomicSwap"
       :is-disabled="isDisabled"
       @submitted="handleAtomicSwapFormSubmitted"
@@ -115,6 +115,9 @@ export default {
     ]),
     firstPageLoader () {
       return _ => this.loadFirstPage()
+    },
+    isAtomicSwapBidCreated () {
+      return Boolean(this.atomicSwapBidDetails.address)
     },
   },
   methods: {

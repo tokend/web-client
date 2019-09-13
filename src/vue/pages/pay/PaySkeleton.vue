@@ -1,19 +1,17 @@
 <template>
-  <div class="skeleton-loader-pay">
-    <div class="pay__asset-information">
-      <div class="asset-information__header">
+  <div class="pay-skeleton">
+    <div class="pay-skeleton__asset-viewer">
+      <div class="pay-skeleton__asset-header">
         <skeleton-loader
           template="bigIcon"
         />
-        <div class="asset-information__info">
-          <skeleton-loader
-            class="skeleton-loader-pay__asset-name"
-            template="smallString"
-          />
-        </div>
+        <skeleton-loader
+          class="pay-skeleton__asset-name"
+          template="smallString"
+        />
       </div>
       <div
-        class="asset-information__description"
+        class="pay-skeleton__asset-description"
       >
         <skeleton-loader
           template="smallString"
@@ -23,7 +21,7 @@
         />
       </div>
     </div>
-    <div class="pay__form">
+    <div class="pay-skeleton__form">
       <form
         class="app__form"
       >
@@ -76,7 +74,7 @@ import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
 import SkeletonLoaderField from '@/vue/common/skeleton-loader/SkeletonLoaderField'
 
 export default {
-  name: 'skeleton-loader-pay',
+  name: 'pay-skeleton',
   components: {
     SkeletonLoader,
     SkeletonLoaderField,
@@ -91,7 +89,7 @@ export default {
 
 $media-small-desktop: 960px;
 
-.skeleton-loader-pay {
+.pay-skeleton {
   padding: 2.4rem;
   display: flex;
   justify-content: space-between;
@@ -103,7 +101,43 @@ $media-small-desktop: 960px;
   }
 }
 
-.skeleton-loader-pay__asset-name {
+.pay-skeleton__asset-header {
+  display: flex;
+  align-items: center;
+}
+
+.pay-skeleton__asset-name {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: $col-primary;
+  margin-left: 1.8rem;
   min-width: 10rem;
+}
+
+.pay-skeleton__asset-description {
+  margin-top: 2rem;
+}
+
+.pay-skeleton__form {
+  width: 50%;
+  padding-left: 1.5%;
+
+  @include respond-to-custom($media-small-desktop) {
+    width: 100%;
+    padding-left: 0;
+  }
+}
+
+.pay-skeleton__asset-viewer {
+  width: 50%;
+  padding-right: 1.5%;
+  border-right: 0.2rem solid $col-border;
+
+  @include respond-to-custom($media-small-desktop) {
+    width: 100%;
+    padding-right: 0;
+    border-right: none;
+    margin-bottom: 2rem;
+  }
 }
 </style>

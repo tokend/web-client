@@ -2579,7 +2579,7 @@
     "pay-form": {
       "email": "Recipient Email in Conto"
     },
-    "asset-information": {
+    "asset-viewer": {
       "description-title": "Description"
     }
   }

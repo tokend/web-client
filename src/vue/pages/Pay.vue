@@ -18,8 +18,8 @@
 
     <template v-if="isLoaded">
       <div class="pay__description">
-        <asset-information
-          class="pay__asset-information"
+        <asset-viewer
+          class="pay__asset-viewer"
           :asset-code="atomicSwapAsk.baseAsset"
         />
         <pay-form
@@ -51,7 +51,7 @@
 <script>
 import PayForm from '@/vue/forms/PayForm'
 import AppFooter from '@/vue/navigation/Footer'
-import AssetInformation from './pay/AssetInformation'
+import AssetViewer from './pay/AssetViewer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import PaySkeleton from './pay/PaySkeleton'
 import { api } from '@/api'
@@ -64,7 +64,7 @@ export default {
   components: {
     PayForm,
     AppFooter,
-    AssetInformation,
+    AssetViewer,
     NoDataMessage,
     PaySkeleton,
   },
@@ -177,7 +177,7 @@ export default {
     }
   }
 
-  .pay__asset-information {
+  .pay__asset-viewer {
     width: 50%;
     padding-right: 1.5%;
     border-right: 0.2rem solid $col-border;

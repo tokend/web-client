@@ -1,22 +1,20 @@
 <template>
-  <div class="asset-information">
-    <div class="asset-information__header">
+  <div class="asset-viewer">
+    <div class="asset-viewer__header">
       <asset-logo-dark
-        class="asset-information__logo"
+        class="asset-viewer__logo"
         :asset-code="asset.code"
         :logo-url="assetLogoUrl"
       />
-      <div class="asset-information__info">
-        <p class="asset-information__name">
-          {{ asset.name }}
-        </p>
+      <div class="asset-viewer__name">
+        {{ asset.name }}
       </div>
     </div>
     <div
       v-if="asset.description"
-      class="asset-information__description"
+      class="asset-viewer__description"
     >
-      <h3>{{ 'asset-information.description-title' | globalize }}</h3>
+      <h3>{{ 'asset-viewer.description-title' | globalize }}</h3>
       <p>{{ asset.description }}</p>
     </div>
   </div>
@@ -29,7 +27,7 @@ import { vuexTypes } from '@/vuex'
 import { documentsManager } from '@/api'
 
 export default {
-  name: 'asset-information',
+  name: 'asset-viewer',
   components: { AssetLogoDark },
 
   props: {
@@ -62,28 +60,25 @@ export default {
 <style lang="scss">
 @import '~@scss/variables';
 
-.asset-information__header {
+.asset-viewer__header {
   display: flex;
   align-items: center;
 }
 
-.asset-information__logo {
+.asset-viewer__logo {
   width: 5rem;
   height: 5rem;
   border-radius: 50%;
 }
 
-.asset-information__info {
-  margin-left: 1.8rem;
-}
-
-.asset-information__name {
+.asset-viewer__name {
   font-size: 1.8rem;
   font-weight: 700;
   color: $col-primary;
+  margin-left: 1.8rem;
 }
 
-.asset-information__description {
+.asset-viewer__description {
   margin-top: 2rem;
 }
 </style>

@@ -2583,7 +2583,7 @@
     "pay-form": {
       "email":"Имейл получателя в Конто"
     },
-    "asset-information": {
+    "asset-viewer": {
       "description-title": "Описание"
     }
   }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <form
-      v-if="!atomicSwapBidDetails.address"
+      v-if="!isAtomicSwapBidCreated"
       novalidate
       class="pay-form app__form"
     >
@@ -39,7 +39,7 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 import AtomicSwapForm from '@/vue/forms/AtomicSwapForm'
 import AddressViewer from '@/vue/common/address-viewer'
-import { required } from '@validators'
+import { required, email } from '@validators'
 import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
 import { api } from '@/api'
 import { base } from '@tokend/js-sdk'
@@ -78,6 +78,7 @@ export default {
       form: {
         email: {
           required,
+          email,
         },
       },
     }
@@ -88,6 +89,10 @@ export default {
       vuexTypes.assetByCode,
       vuexTypes.walletEmail,
     ]),
+
+    isAtomicSwapBidCreated () {
+      return Boolean(this.atomicSwapBidDetails.address)
+    },
   },
 
   created () {
