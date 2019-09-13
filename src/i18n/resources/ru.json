@@ -2581,7 +2581,7 @@
       "no-atomic-swap-msg": "Пожалуйста, убедитесь, что ссылка верна"
     },
     "pay-form": {
-      "email":"Имейл"
+      "email":"Имейл получателя в Конто"
     },
     "asset-information": {
       "description-title": "Описание"

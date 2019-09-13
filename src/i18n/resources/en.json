@@ -2577,7 +2577,7 @@
       "no-atomic-swap-msg": "Please make sure the link is correct"
     },
     "pay-form": {
-      "email": "Email"
+      "email": "Recipient Email in Conto"
     },
     "asset-information": {
       "description-title": "Description"
