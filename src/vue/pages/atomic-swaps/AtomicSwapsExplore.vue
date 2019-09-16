@@ -126,8 +126,7 @@ export default {
 
       let result
       try {
-        result = await api.getWithSignature('/v3/atomic_swap_asks', {
-          include: ['owner', 'base_asset', 'quote_assets'],
+        result = await api.getWithSignature('/integrations/marketplace/offers', {
           filter: {
             ...(
               this.businessToBrowse.accountId

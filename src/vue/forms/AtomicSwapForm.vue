@@ -32,7 +32,7 @@
             v-model="form.amount"
             name="atomic-swap-amount"
             :asset="assetByCode(atomicSwap.baseAsset)"
-            :max="atomicSwap.availableAmount"
+            :max="atomicSwap.amount"
             :label="'atomic-swap-form.amount' | globalize({
               asset: atomicSwap.baseAssetName
             })"
@@ -40,7 +40,7 @@
           />
           <p class="app__form-field-description">
             {{ 'atomic-swap-form.available' | globalize({
-              amount: atomicSwap.availableAmount,
+              amount: atomicSwap.amount,
               asset: '',
             }) }}
           </p>
@@ -125,7 +125,7 @@ export default {
         amount: {
           amountRange: amountRange(
             config.MIN_AMOUNT,
-            this.atomicSwap.availableAmount
+            this.atomicSwap.amount
           ),
           required,
         },

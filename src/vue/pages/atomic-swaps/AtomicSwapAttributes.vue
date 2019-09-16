@@ -14,19 +14,10 @@
 
           <tr>
             <td>
-              {{ 'atomic-swap-attributes.available-amount-key' | globalize }}
+              {{ 'atomic-swap-attributes.amount-key' | globalize }}
             </td>
-            <td :title="atomicSwap.availableAmount | formatMoney">
-              {{ atomicSwap.availableAmount | formatBalance }}
-            </td>
-          </tr>
-
-          <tr>
-            <td>
-              {{ 'atomic-swap-attributes.locked-amount-key' | globalize }}
-            </td>
-            <td :title="atomicSwap.lockedAmount | formatMoney">
-              {{ atomicSwap.lockedAmount | formatBalance }}
+            <td :title="atomicSwap.amount | formatMoney">
+              {{ atomicSwap.amount | formatBalance }}
             </td>
           </tr>
 
@@ -34,35 +25,12 @@
             <td>
               {{ 'atomic-swap-attributes.price-key' | globalize }}
             </td>
-            <td :title="atomicSwap.quoteAssets[0].price | formatMoney">
+            <td :title="atomicSwap.price | formatMoney">
               {{ {
-                value: atomicSwap.quoteAssets[0].price,
+                value: atomicSwap.price,
                 currency: statsQuoteAsset.code
               } | formatMoney
               }}
-            </td>
-          </tr>
-
-          <tr>
-            <td>
-              {{ 'atomic-swap-attributes.is-canceled-key' | globalize }}
-            </td>
-            <td>
-              <template v-if="atomicSwap.isCanceled">
-                {{ 'atomic-swap-attributes.yes-val' | globalize }}
-              </template>
-              <template v-else>
-                {{ 'atomic-swap-attributes.no-val' | globalize }}
-              </template>
-            </td>
-          </tr>
-
-          <tr>
-            <td>
-              {{ 'atomic-swap-attributes.created-key' | globalize }}
-            </td>
-            <td>
-              {{ atomicSwap.createdAt | formatDateDMYT }}
             </td>
           </tr>
         </tbody>

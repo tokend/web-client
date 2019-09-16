@@ -4,7 +4,7 @@
       v-ripple
       v-if="!formMixin.isConfirmationShown"
       class="app__button-raised app__button-raised--danger"
-      :disabled="isAtomicSwapCanceling || atomicSwap.isCanceled"
+      :disabled="isAtomicSwapCanceling"
       @click="cancelRequest"
     >
       {{ 'atomic-swap-actions.cancel-btn' | globalize }}
@@ -18,7 +18,6 @@ import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
 import { api } from '@/api'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { base } from '@tokend/js-sdk'
 
 const EVENTS = {
   cancel: 'cancel',
@@ -43,21 +42,13 @@ export default {
       this.isAtomicSwapCanceling = true
 
       try {
-        await api.postOperations(
-          this.buildCancelAtomicSwapOperation(),
-        )
+        await api.deleteWithSignature(`/integrations/marketplace/offers/${this.atomicSwap.id}`)
         Bus.success('atomic-swap-actions.atomic-swap-canceled-msg')
         this.$emit(EVENTS.cancel)
       } catch (e) {
         this.isAtomicSwapCanceling = false
         ErrorHandler.process(e)
       }
-    },
-
-    buildCancelAtomicSwapOperation () {
-      return base.CancelAtomicSwapAskBuilder.cancelAtomicSwapAsk({
-        askID: this.atomicSwap.id,
-      })
     },
   },
 }

@@ -1,25 +1,22 @@
 import _get from 'lodash/get'
-import camelCase from 'lodash/camelCase'
+import { store, vuexTypes } from '@/vuex/index'
 
 export class AtomicSwapRecord {
   constructor (record) {
     this._record = record
 
     this.id = record.id
-    this.ownerId = _get(record, 'owner.id')
-    this.availableAmount = _get(record, 'availableAmount')
-    this.createdAt = _get(record, 'createdAt')
-    this.isCanceled = _get(record, 'isCanceled')
-    this.lockedAmount = _get(record, 'lockedAmount')
-    this.baseAsset = _get(record, 'baseBalance.asset.id')
-    this.baseAssetName = _get(record, 'baseBalance.asset.details.name')
+    this.ownerId = _get(record, 'owner')
+    this.amount = _get(record, 'baseAmount')
+    this.baseAsset = _get(record, 'baseAsset')
+    this.baseAssetName = store.getters[vuexTypes.assetByCode](this.baseAsset)
+      .name
+    this.price = _get(record, 'price')
 
-    this.quoteAssets = _get(record, 'quoteAssets', [])
+    this.quoteAssets = _get(record, 'paymentMethods', [])
       .map(item => ({
-        id: item.quoteAsset,
-        price: item.price,
-        // we use camelCase because js-sdk parse response data keys in camelCase
-        destination: _get(record, `details.destination[${camelCase(item.quoteAsset)}]`),
+        id: item.asset,
+        destination: _get(item, 'destination') || '',
       }))
   }
 }

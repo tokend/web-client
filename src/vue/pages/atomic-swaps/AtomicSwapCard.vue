@@ -12,16 +12,16 @@
 
       <div>
         <p class="atomic-swap-card__amount">
-          <span :title="atomicSwap.availableAmount | formatMoney">
+          <span :title="atomicSwap.amount | formatMoney">
             {{ 'atomic-swap-card.available' | globalize({
-              amount: atomicSwap.availableAmount
+              amount: atomicSwap.amount
             }) }}
           </span>
         </p>
         <p class="atomic-swap-card__amount">
-          <span :title="atomicSwap.quoteAssets[0].price | formatMoney">
+          <span :title="atomicSwap.price | formatMoney">
             {{ 'atomic-swap-card.price' | globalize({
-              amount: atomicSwap.quoteAssets[0].price,
+              amount: atomicSwap.price,
               code: statsQuoteAsset.code
             }) }}
           </span>
