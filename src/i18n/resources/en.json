@@ -1371,7 +1371,10 @@
       "update-btn": "Update",
       "cancel-btn": "CANCEL",
       "request-canceled-msg": "Your request was successfully cancelled",
-      "whitelisted-title": "Whitelisted"
+      "whitelisted-title": "Whitelisted",
+      "type-title": "Type",
+      "fixed-price": "Fixed price",
+      "immediate": "Immediate"
     },
     "pre-issuance-requests": {
       "loading-msg": "Loading your requests…",
@@ -1693,7 +1696,10 @@
       "owner-lbl": "Owner",
       "whitelisted-title": "Whitelisted",
       "yes-msg": "Yes",
-      "no-msg": "No"
+      "no-msg": "No",
+      "type-title": "Type",
+      "fixed-price": "Fixed price",
+      "immediate": "Immediate"
     },
     "sale-statistics": {
       "loading-msg": "Loading sale participations…",
@@ -1784,7 +1790,10 @@
       "update-request-btn": "Update request",
       "no-investable-assets-err": "This asset has no acceptable investment assets. Please, select another one",
       "request-submitted-msg": "Your request was successfully processed. Please, wait for approval",
-      "price": "Price in {{asset}}"
+      "price": "Price in {{asset}}",
+      "type-lbl": "Type",
+      "fixed-price": "Fixed price",
+      "immediate": "Immediate"
     },
     "withdrawal-fiat-module": {
       "form-title": "Withdrawal fiat",

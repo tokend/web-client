@@ -35,6 +35,7 @@ export class CreateSaleRequest {
     )
 
     this.definitionType = safeGet(record, 'requestDetails.accessDefinitionType.value')
+    this.saleType = safeGet(record, 'requestDetails.saleType.value') + ''
   }
 
   get isWhitelisted () {

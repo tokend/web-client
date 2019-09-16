@@ -1,6 +1,6 @@
 import ManageSaleDescriptionMixin from './manage-sale-description.mixin'
 
-import { base, SALE_TYPES } from '@tokend/js-sdk'
+import { base } from '@tokend/js-sdk'
 
 import { api } from '@/api'
 
@@ -30,7 +30,7 @@ export default {
 
       return {
         requestID: this.requestId || NEW_CREATE_SALE_REQUEST_ID,
-        saleEnumType: SALE_TYPES.fixedPrice,
+        saleEnumType: this.informationStepForm.type,
         saleType: DEFAULT_SALE_TYPE,
         startTime: DateUtil.toTimestamp(this.informationStepForm.startTime),
         endTime: DateUtil.toTimestamp(this.informationStepForm.endTime),
