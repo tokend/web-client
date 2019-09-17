@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
+## [Unreleased]
+#### Changed
+- Show all base assets in set default quote asset select
+- Renamed direct sell to offering
+
+#### Fixed
+- A bug when don't show an error message when field was touched
+
 ## [1.0.3-rc.8] - 2019-09-09
 #### Added
 - Handle new types of atomic swap bid requests
