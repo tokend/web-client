@@ -94,7 +94,7 @@ export default {
 
   methods: {
     async getAtomicSwapAsk (id) {
-      const { data } = await api.getWithSignature(`/integrations/marketplace/offers/${id}`)
+      const { data } = await api.get(`/integrations/marketplace/offers/${id}`)
       this.atomicSwapAsk = new AtomicSwapRecord(data)
     },
   },

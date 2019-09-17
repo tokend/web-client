@@ -101,7 +101,7 @@ export default {
     },
 
     async createAtomicSwapBidOperation () {
-      const { data } = await api.postWithSignature(
+      const { data } = await api.post(
         '/integrations/marketplace/buy',
         this.buildCreateAtomicSwapBidOperation()
       )
