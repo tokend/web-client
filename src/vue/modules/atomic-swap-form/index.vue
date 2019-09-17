@@ -70,10 +70,9 @@ import { mapGetters } from 'vuex'
 import { REQUEST_STATES } from '@/js/const/request-states.const'
 import { ATOMIC_SWAP_BID_TYPES } from '@/js/const/atomic-swap-bid-types.const'
 
-// Temporary hidden
-// const EVENTS = {
-//   updateList: 'update-list',
-// }
+const EVENTS = {
+  updateList: 'update-list',
+}
 
 const TEMPORARY_HIDDEN = false
 
@@ -175,7 +174,7 @@ export default {
           this.atomicSwapBidDetails = atomicSwapBid
           // Temporary hidden
           // this.$refs.table.resetAtomicSwapBidsSelection()
-          // this.$emit(EVENTS.updateList)
+          this.$emit(EVENTS.updateList)
         }
       } catch (e) {
         ErrorHandler.process(e)
