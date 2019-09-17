@@ -39,6 +39,7 @@ export class CreateSaleRequest extends Request {
     )
 
     this.definitionType = safeGet(record, 'requestDetails.accessDefinitionType.value')
+    this.saleType = safeGet(record, 'requestDetails.saleType.value') + ''
   }
 
   get youtubeVideoUrl () {

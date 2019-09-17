@@ -783,10 +783,10 @@
   resolved "https://registry.yarnpkg.com/@sinonjs/text-encoding/-/text-encoding-0.7.1.tgz#8da5c6530915653f3a1f38fd5f101d8c3f8079c5"
   integrity sha512-+iTbntw2IZPb/anVDbypzfQa+ay64MW0Zo8aJ8gZPWMMK6/OubMVb6lUPMagqjOPnmtauXnFCACVl3O7ogjeqQ==
 
-"@tokend/js-sdk@1.10.1":
-  version "1.10.1"
-  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.10.1.tgz#5df4ec60be649b423e0d4079df0505a44ff31504"
-  integrity sha512-595J1FzKq1BX6X9cPADN3iNnCJCwOwRgQpmo1Sv/XFfunl+BgwtAlRBFf5iy5dWmHl8PR1iaHu0LrRUXOPh0Ng==
+"@tokend/js-sdk@1.10.2-rc.0":
+  version "1.10.2-rc.0"
+  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.10.2-rc.0.tgz#c46ffc248c49429217538dcd47b8a40e0fa63062"
+  integrity sha512-VIOFnKa5ldRg4XuE9afkgSMhYr6VQyVO4Smak1Rsan7+AhiqsewbyOzac6nDSg3X3jofQPLh+jDJLrOrHqPKUg==
   dependencies:
     axios "0.19.0"
     base32.js "0.1.0"

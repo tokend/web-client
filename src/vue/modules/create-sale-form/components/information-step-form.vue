@@ -6,6 +6,25 @@
   >
     <div class="app__form-row">
       <div class="app__form-field">
+        <select-field
+          :value="form.type"
+          @input="setSaleType"
+          name="create-sale-type"
+          :label="'create-sale-form.type-lbl' | globalize"
+        >
+          <option
+            v-for="type in localizedSaleTypes"
+            :key="type.key"
+            :value="type.value"
+          >
+            {{ type.key | globalize }}
+          </option>
+        </select-field>
+      </div>
+    </div>
+
+    <div class="app__form-row">
+      <div class="app__form-field">
         <input-field
           white-autofill
           v-model="form.name"
@@ -243,6 +262,7 @@ import LoadAssetPairsMixin from '../mixins/load-asset-pairs.mixin'
 import moment from 'moment'
 
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
+import { SALE_TYPES } from '@tokend/js-sdk'
 
 import { MathUtil } from '@/js/utils'
 
@@ -276,6 +296,7 @@ export default {
 
   data: _ => ({
     form: {
+      type: '',
       name: '',
       baseAsset: {},
       capAsset: {},
@@ -355,6 +376,19 @@ export default {
     yesterday () {
       return moment().subtract(1, 'days').toISOString()
     },
+
+    localizedSaleTypes () {
+      return [
+        {
+          key: 'create-sale-form.fixed-price',
+          value: SALE_TYPES.fixedPrice,
+        },
+        {
+          key: 'create-sale-form.immediate',
+          value: SALE_TYPES.immediate,
+        },
+      ]
+    },
   },
 
   watch: {
@@ -375,6 +409,7 @@ export default {
     if (this.request) {
       this.populateForm()
     } else {
+      this.form.type = this.localizedSaleTypes[0].value
       this.form.baseAsset = this.ownedAssets[0] || {}
       this.form.capAsset = this.baseAssets[0] || {}
     }
@@ -383,6 +418,10 @@ export default {
   methods: {
     setBaseAssetByCode (code) {
       this.form.baseAsset = this.ownedAssets.find(item => item.code === code)
+    },
+
+    setSaleType (type) {
+      this.form.type = +type
     },
 
     setCapAssetByCode (code) {
@@ -395,6 +434,7 @@ export default {
 
     populateForm () {
       this.form.name = this.request.name
+      this.form.type = +this.request.saleType
       this.form.baseAsset = this.ownedAssets
         .find(item => item.code === this.request.baseAsset)
       this.form.capAsset = this.baseAssets

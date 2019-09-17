@@ -1373,7 +1373,10 @@
       "update-btn": "Обновить",
       "cancel-btn": "Отменить",
       "request-canceled-msg": "Запрос успешно отменен",
-      "whitelisted-title": "Белый список"
+      "whitelisted-title": "Белый список",
+      "type-title": "Тип",
+      "fixed-price": "Фиксированная цена",
+      "immediate": "Немедленный"
     },
     "pre-issuance-requests": {
       "loading-msg": "Загружаем ваши запросы…",
@@ -1695,7 +1698,10 @@
       "owner-lbl": "Владелец",
       "whitelisted-title": "Белый список",
       "yes-msg": "Да",
-      "no-msg": "Нет"
+      "no-msg": "Нет",
+      "type-title": "Тип",
+      "fixed-price": "Фиксированная цена",
+      "immediate": "Немедленный"
     },
     "sale-statistics": {
       "loading-msg": "Загружаем…",
@@ -1786,7 +1792,10 @@
       "update-request-btn": "Обновить запрос",
       "no-investable-assets-err": "Этот актив не имеет приемлемых инвестиционных активов. Пожалуйста, выберите другой",
       "request-submitted-msg": "Запрос отправлен",
-      "price": "Цена в {{asset}}"
+      "price": "Цена в {{asset}}",
+      "type-lbl": "Тип",
+      "fixed-price": "Фиксированная цена",
+      "immediate": "Немедленный"
     },
     "withdrawal-fiat-module": {
       "form-title": "Withdrawal fiat",

@@ -4,6 +4,15 @@
       <tbody>
         <tr>
           <td>
+            {{ 'sale-overview.type-title' | globalize }}
+          </td>
+          <td>
+            {{ localizedSaleTypes[sale.saleType] | globalize }}
+          </td>
+        </tr>
+
+        <tr>
+          <td>
             {{ 'sale-overview.start-time-title' | globalize }}
           </td>
           <td>
@@ -104,6 +113,7 @@
 </template>
 
 <script>
+import { SALE_TYPES } from '@tokend/js-sdk'
 import { SaleRecord } from '@/js/records/entities/sale.record'
 import EmailGetter from '@/vue/common/EmailGetter'
 
@@ -114,6 +124,14 @@ export default {
   },
   props: {
     sale: { type: SaleRecord, required: true },
+  },
+  computed: {
+    localizedSaleTypes () {
+      const keyValue = {}
+      keyValue[SALE_TYPES.fixedPrice] = 'sale-overview.fixed-price'
+      keyValue[SALE_TYPES.immediate] = 'sale-overview.immediate'
+      return keyValue
+    },
   },
 }
 </script>

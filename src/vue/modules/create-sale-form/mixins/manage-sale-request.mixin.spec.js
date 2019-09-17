@@ -19,6 +19,7 @@ const Component = {
   data: _ => ({
     informationStepForm: {
       name: '',
+      type: '',
       baseAsset: {},
       capAsset: {},
       startTime: '',
