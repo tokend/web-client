@@ -1,2 +1,5 @@
-export const CREATE_OFFER_TYPE = 'create-offer'
-export const CREATE_PAYMENT_METHOD_TYPE = 'create-payment-method'
+export const ATOMIC_SWAP_REQUEST_TYPES = {
+  createOffer: 'create-offer',
+  createPaymentMethod: 'create-payment-method',
+  createBuyRequest: 'create-buy-request',
+}

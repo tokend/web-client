@@ -27,7 +27,7 @@
     />
     <div
       class="atomic-swap__pending-atomic-swap-table-table-wrp"
-      v-if="selectedQuoteAsset.isCoinpayments"
+      v-if="selectedQuoteAsset.isCoinpayments && TEMPORARY_HIDDEN"
     >
       <pending-atomic-swap-table
         v-if="!isLoading"
@@ -59,10 +59,10 @@ import CollectionLoader from '@/vue/common/CollectionLoader'
 import Loader from '@/vue/common/Loader'
 import FormMixin from '@/vue/mixins/form.mixin'
 import AddressViewer from '@/vue/common/address-viewer'
+import AtomicSwapMixin from '@/vue/mixins/atomic-swap.mixin'
 import { AtomicSwapBidRecord } from '@/js/records/entities/atomic-swap-bid.record'
 import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
 import { api } from '@/api'
-import { base } from '@tokend/js-sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
@@ -74,6 +74,8 @@ const EVENTS = {
   updateList: 'update-list',
 }
 
+const TEMPORARY_HIDDEN = false
+
 export default {
   name: 'atomic-swap',
   components: {
@@ -83,7 +85,7 @@ export default {
     Loader,
     AddressViewer,
   },
-  mixins: [FormMixin],
+  mixins: [FormMixin, AtomicSwapMixin],
   props: {
     atomicSwap: {
       type: AtomicSwapRecord,
@@ -95,6 +97,7 @@ export default {
       form: {
         amount: '',
         quoteAsset: '',
+        paymentMethodId: '',
       },
       isLoading: true,
       isFailed: false,
@@ -106,6 +109,7 @@ export default {
         amount: '',
       },
       pendingAtomicSwapBids: [],
+      TEMPORARY_HIDDEN,
     }
   },
   computed: {
@@ -159,19 +163,11 @@ export default {
 
     async handleAtomicSwapFormSubmitted (form) {
       if (!this.isFormValid()) return
-      this.form.amount = form.amount
-      this.form.quoteAsset = form.quoteAsset
+      Object.assign(this.form, form)
 
       this.isDisabled = true
       try {
-        const createAtomicSwapBidOperation =
-          this.buildCreateAtomicSwapBidOperation()
-
-        const { data } = await api.postOperationsToSpecificEndpoint(
-          '/integrations/marketplace/buy',
-          createAtomicSwapBidOperation
-        )
-        const atomicSwapBid = new AtomicSwapBidRecord(data.data.attributes)
+        const atomicSwapBid = await this.createAtomicSwapBidOperation()
         if (atomicSwapBid.type === ATOMIC_SWAP_BID_TYPES.redirect) {
           window.location.href = atomicSwapBid.payUrl
         } else {
@@ -183,19 +179,6 @@ export default {
         ErrorHandler.process(e)
       }
       this.isDisabled = false
-    },
-
-    buildCreateAtomicSwapBidOperation () {
-      const operation = {
-        askID: this.atomicSwap.id,
-        baseAmount: this.form.amount,
-        quoteAsset: this.form.quoteAsset,
-        creatorDetails: {
-          request_identifier: +new Date() + '',
-        },
-      }
-      return base.CreateAtomicSwapBidRequestBuilder
-        .createAtomicSwapBidRequest(operation)
     },
 
     selectQuoteAsset (code) {

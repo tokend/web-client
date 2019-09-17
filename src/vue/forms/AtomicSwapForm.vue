@@ -53,7 +53,7 @@
           <readonly-field
             class="atomic-swap-form__price"
             :label="'atomic-swap-form.price' | globalize"
-            :value="`${formatMoney(quoteAssetPrice)} ${statsQuoteAsset.code}`"
+            :value="`${formatMoney(atomicSwap.price)} ${statsQuoteAsset.code}`"
           />
           <!-- eslint-enable max-len -->
           <readonly-field
@@ -116,6 +116,7 @@ export default {
       form: {
         amount: '',
         quoteAsset: '',
+        paymentMethodId: '',
       },
     }
   },
@@ -140,13 +141,8 @@ export default {
     quoteAssets () {
       return this.atomicSwap.quoteAssets.map(item => this.assetByCode(item.id))
     },
-    quoteAssetPrice () {
-      return this.atomicSwap.quoteAssets
-        .find(item => item.id === this.form.quoteAsset)
-        .price
-    },
     totalPrice () {
-      return MathUtil.multiply(this.quoteAssetPrice, this.form.amount || 0)
+      return MathUtil.multiply(this.atomicSwap.price, this.form.amount || 0)
     },
   },
   watch: {
@@ -154,16 +150,26 @@ export default {
       this.$emit(EVENTS.selectAsset, value)
     },
   },
-  async created () {
+  created () {
     this.form.quoteAsset = this.atomicSwap.quoteAssets[0].id
   },
   methods: {
     formatMoney,
+
     setQuoteAsset (code) {
       this.form.quoteAsset = code
     },
-    async submit () {
+
+    submit () {
+      this.getPaymentMethodId()
       this.$emit(EVENTS.submitted, this.form)
+    },
+
+    getPaymentMethodId () {
+      const selectedQuoteAsset = this.atomicSwap.quoteAssets.find(item => {
+        return item.id === this.form.quoteAsset
+      })
+      this.form.paymentMethodId = selectedQuoteAsset.paymentMethodId
     },
   },
 }

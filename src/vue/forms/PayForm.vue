@@ -11,6 +11,7 @@
             v-model="form.email"
             @blur="touchField('form.email')"
             name="pay-email"
+            :disabled="isLoggedIn"
             :label="'pay-form.email' | globalize"
             :error-message="getFieldErrorMessage('form.email')"
           />
@@ -39,12 +40,10 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 import AtomicSwapForm from '@/vue/forms/AtomicSwapForm'
 import AddressViewer from '@/vue/common/address-viewer'
+import AtomicSwapMixin from '@/vue/mixins/atomic-swap.mixin'
 import { required, email } from '@validators'
 import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
-import { api } from '@/api'
-import { base } from '@tokend/js-sdk'
 import { ATOMIC_SWAP_BID_TYPES } from '@/js/const/atomic-swap-bid-types.const'
-import { AtomicSwapBidRecord } from '@/js/records/entities/atomic-swap-bid.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
@@ -55,7 +54,7 @@ export default {
     AtomicSwapForm,
     AddressViewer,
   },
-  mixins: [FormMixin],
+  mixins: [FormMixin, AtomicSwapMixin],
   props: { atomicSwap: { type: AtomicSwapRecord, required: true } },
   data () {
     return {
@@ -63,6 +62,7 @@ export default {
         email: '',
         amount: '',
         quoteAsset: '',
+        paymentMethodId: '',
       },
       isDisabled: false,
       atomicSwapBidDetails: {
@@ -102,19 +102,11 @@ export default {
   methods: {
     async submit (form) {
       if (!this.isFormValid()) return
-      this.form.amount = form.amount
-      this.form.quoteAsset = form.quoteAsset
+      Object.assign(this.form, form)
 
       this.isDisabled = true
       try {
-        const createAtomicSwapBidOperation =
-          this.buildCreateAtomicSwapBidOperation()
-
-        const { data } = await api.postOperationsToSpecificEndpoint(
-          '/integrations/marketplace/buy',
-          createAtomicSwapBidOperation
-        )
-        const atomicSwapBid = new AtomicSwapBidRecord(data.data.attributes)
+        const atomicSwapBid = await this.createAtomicSwapBidOperation()
         if (atomicSwapBid.type === ATOMIC_SWAP_BID_TYPES.redirect) {
           window.location.href = atomicSwapBid.payUrl
         } else {
@@ -124,19 +116,6 @@ export default {
         ErrorHandler.process(e)
       }
       this.isDisabled = false
-    },
-
-    buildCreateAtomicSwapBidOperation () {
-      const operation = {
-        askID: this.atomicSwap.id,
-        baseAmount: this.form.amount,
-        quoteAsset: this.form.quoteAsset,
-        creatorDetails: {
-          request_identifier: +new Date() + '',
-        },
-      }
-      return base.CreateAtomicSwapBidRequestBuilder
-        .createAtomicSwapBidRequest(operation)
     },
   },
 }

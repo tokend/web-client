@@ -3,11 +3,9 @@ import { api } from '@/api'
 
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
-import {
-  CREATE_PAYMENT_METHOD_TYPE,
-  CREATE_OFFER_TYPE,
-} from '@/js/const/atomic-swap.const'
+import { ATOMIC_SWAP_REQUEST_TYPES } from '@/js/const/atomic-swap.const'
 import { CreateAtomicSwapRecord } from '@/js/records/entities/create-atomic-swap.record'
+import { AtomicSwapBidRecord } from '@/js/records/entities/atomic-swap-bid.record'
 
 export default {
   data () {
@@ -20,6 +18,7 @@ export default {
       accountBalanceByCode: vuexTypes.accountBalanceByCode,
       accountId: vuexTypes.accountId,
       statsQuoteAsset: vuexTypes.statsQuoteAsset,
+      isLoggedIn: vuexTypes.isLoggedIn,
     }),
 
     accountBalance () {
@@ -67,7 +66,7 @@ export default {
       this.atomicSwapAsk.quoteAssets.forEach(quoteAsset => {
         quoteAssets.push({
           id: quoteAsset.asset.code,
-          type: CREATE_PAYMENT_METHOD_TYPE,
+          type: ATOMIC_SWAP_REQUEST_TYPES.createPaymentMethod,
           attributes: {
             asset: quoteAsset.asset.code,
             destination: quoteAsset.destination,
@@ -76,13 +75,13 @@ export default {
 
         quoteAssetsKey.push({
           id: quoteAsset.asset.code,
-          type: CREATE_PAYMENT_METHOD_TYPE,
+          type: ATOMIC_SWAP_REQUEST_TYPES.createPaymentMethod,
         })
       })
 
       const operation = {
         data: {
-          type: CREATE_OFFER_TYPE,
+          type: ATOMIC_SWAP_REQUEST_TYPES.createOffer,
           attributes: {
             payment_tx_envelope: paymentTx,
             price: this.atomicSwapAsk.price,
@@ -99,6 +98,31 @@ export default {
       }
 
       return operation
+    },
+
+    async createAtomicSwapBidOperation () {
+      const { data } = await api.postWithSignature(
+        '/integrations/marketplace/buy',
+        this.buildCreateAtomicSwapBidOperation()
+      )
+      return new AtomicSwapBidRecord(data)
+    },
+
+    buildCreateAtomicSwapBidOperation () {
+      return {
+        data: {
+          type: ATOMIC_SWAP_REQUEST_TYPES.createBuyRequest,
+          attributes: {
+            amount: this.form.amount,
+            offer_id: Number(this.atomicSwap.id),
+            payment_method_id: Number(this.form.paymentMethodId),
+            ...(this.isLoggedIn
+              ? { sender_account_id: this.accountId }
+              : { sender_email: this.form.email }
+            ),
+          },
+        },
+      }
     },
   },
 }

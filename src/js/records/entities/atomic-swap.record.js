@@ -16,6 +16,7 @@ export class AtomicSwapRecord {
     this.quoteAssets = _get(record, 'paymentMethods', [])
       .map(item => ({
         id: item.asset,
+        paymentMethodId: item.id,
         destination: _get(item, 'destination') || '',
       }))
   }
