@@ -16,11 +16,11 @@
             class="app__select"
           >
             <option
-              v-for="asset in quoteAssets"
-              :key="asset.code"
-              :value="asset.code"
+              v-for="quoteAsset in atomicSwapAsk.quoteAssets"
+              :key="quoteAsset.asset.code"
+              :value="quoteAsset.asset.code"
             >
-              {{ asset.name }}
+              {{ quoteAsset.asset.name }}
             </option>
           </select-field>
         </div>
@@ -31,7 +31,7 @@
           <amount-input-field
             v-model="form.amount"
             name="buy-atomic-swap-amount"
-            :asset="assetByCode(atomicSwapAsk.baseAsset)"
+            :asset="assetByCode(atomicSwapAsk.baseAssetCode)"
             :max="atomicSwapAsk.amount"
             :label="'buy-atomic-swap-form.amount' | globalize({
               asset: atomicSwapAsk.baseAssetName
@@ -138,34 +138,24 @@ export default {
       vuexTypes.assetByCode,
       vuexTypes.statsQuoteAsset,
     ]),
-    quoteAssets () {
-      // eslint-disable-next-line max-len
-      return this.atomicSwapAsk.quoteAssets.map(item => this.assetByCode(item.id))
-    },
     totalPrice () {
       return MathUtil.multiply(this.atomicSwapAsk.price, this.form.amount || 0)
     },
   },
   created () {
-    this.form.quoteAssetCode = this.atomicSwapAsk.quoteAssets[0].id
+    this.setQuoteAssetCode(this.atomicSwapAsk.quoteAssets[0].asset.code)
   },
   methods: {
     formatMoney,
 
     submit () {
-      this.getPaymentMethodId()
       this.$emit(EVENTS.submitted, this.form)
     },
 
     setQuoteAssetCode (code) {
       this.form.quoteAssetCode = code
-    },
-
-    getPaymentMethodId () {
-      const selectedQuoteAsset = this.atomicSwapAsk.quoteAssets.find(item => {
-        return item.id === this.form.quoteAssetCode
-      })
-      this.form.paymentMethodId = selectedQuoteAsset.paymentMethodId
+      this.form.paymentMethodId = this.atomicSwapAsk
+        .getPaymentMethodIdByAssetCode(code)
     },
   },
 }

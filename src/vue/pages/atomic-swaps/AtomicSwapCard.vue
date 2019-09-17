@@ -2,7 +2,7 @@
   <div class="atomic-swap-card">
     <div class="atomic-swap-card__logo">
       <logo-viewer
-        :asset="assetByCode(atomicSwapAsk.baseAsset)"
+        :asset="assetByCode(atomicSwapAsk.baseAssetCode)"
       />
     </div>
     <div class="atomic-swap-card__info">

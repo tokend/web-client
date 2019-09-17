@@ -18,7 +18,7 @@
       <div class="pay__description">
         <asset-viewer
           class="pay__asset-viewer"
-          :asset-code="atomicSwapAsk.baseAsset"
+          :asset-code="atomicSwapAsk.baseAssetCode"
         />
         <pay-form
           :atomic-swap-ask="atomicSwapAsk"

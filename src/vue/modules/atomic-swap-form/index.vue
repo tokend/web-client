@@ -2,14 +2,14 @@
   <div>
     <div
       class="atomic-swap__asset-description"
-      v-if="assetByCode(atomicSwapAsk.baseAsset).description"
+      v-if="assetByCode(atomicSwapAsk.baseAssetCode).description"
     >
       <p
         class="atomic-swap__asset-description-lbl"
       >
         {{ 'buy-atomic-swap-form.asset-description-lbl' | globalize }}:
       </p>
-      <p>{{ assetByCode(atomicSwapAsk.baseAsset).description }}</p>
+      <p>{{ assetByCode(atomicSwapAsk.baseAssetCode).description }}</p>
     </div>
     <buy-atomic-swap-form
       v-if="!isAtomicSwapBidCreated"

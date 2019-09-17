@@ -108,7 +108,8 @@ export default {
       this.atomicSwapRequests = atomicSwapRequests
         .map(item => new AtomicSwapRequestsRecord(
           item,
-          this.assetByCode(this.atomicSwapAsk.baseAsset).trailingDigitsCount,
+          // eslint-disable-next-line max-len
+          this.assetByCode(this.atomicSwapAsk.baseAssetCode).trailingDigitsCount,
           this.assetByCode(item.requestDetails.quoteAsset.quoteAsset)
             .trailingDigitsCount,
         )
@@ -119,7 +120,8 @@ export default {
         atomicSwapRequests.data
           .map(item => new AtomicSwapRequestsRecord(
             item,
-            this.assetByCode(this.atomicSwapAsk.baseAsset).trailingDigitsCount,
+            // eslint-disable-next-line max-len
+            this.assetByCode(this.atomicSwapAsk.baseAssetCode).trailingDigitsCount,
             this.assetByCode(item.requestDetails.quoteAsset.quoteAsset)
               .trailingDigitsCount,
           )
