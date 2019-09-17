@@ -70,9 +70,10 @@ import { mapGetters } from 'vuex'
 import { REQUEST_STATES } from '@/js/const/request-states.const'
 import { ATOMIC_SWAP_BID_TYPES } from '@/js/const/atomic-swap-bid-types.const'
 
-const EVENTS = {
-  updateList: 'update-list',
-}
+// Temporary hidden
+// const EVENTS = {
+//   updateList: 'update-list',
+// }
 
 const TEMPORARY_HIDDEN = false
 
@@ -172,8 +173,9 @@ export default {
           window.location.href = atomicSwapBid.payUrl
         } else {
           this.atomicSwapBidDetails = atomicSwapBid
-          this.$refs.table.resetAtomicSwapBidsSelection()
-          this.$emit(EVENTS.updateList)
+          // Temporary hidden
+          // this.$refs.table.resetAtomicSwapBidsSelection()
+          // this.$emit(EVENTS.updateList)
         }
       } catch (e) {
         ErrorHandler.process(e)
