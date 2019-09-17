@@ -2410,7 +2410,7 @@
       "owned-by-me-filter-lbl": "Owned by me",
       "buying": "Buying {{asset}}"
     },
-    "atomic-swap-form":{
+    "buy-atomic-swap-form":{
       "available": "Available {{amount, money}} {{asset}}",
       "asset-in-which-buying": "Payment method",
       "amount": "Amount to buy {{asset}}",
@@ -2432,14 +2432,9 @@
     "atomic-swap-attributes": {
       "id-key": "ID",
       "owner-key": "Owner",
-      "created-key": "Created",
       "base-asset-key": "Base asset code",
       "base-asset-name": "Base asset name",
-      "available-amount-key": "Available amount",
-      "locked-amount-key": "Locked amount",
-      "is-canceled-key": "Is canceled?",
-      "yes-val": "Yes",
-      "no-val": "No",
+      "amount-key": "Amount",
       "quote-asset-key": "Code",
       "current-cap-key": "Current cap",
       "hard-cap-key": "Hard cap",
@@ -2570,6 +2565,17 @@
       "logout-btn": "Logout",
       "first-name-lbl": "First name",
       "last-name-lbl": "Last name"
+    },
+    "pay-page": {
+      "pay-title": "Pay",
+      "no-atomic-swap-title": "No such offer found",
+      "no-atomic-swap-msg": "Please make sure the link is correct"
+    },
+    "pay-form": {
+      "email-lbl": "Recipient Email in Conto"
+    },
+    "asset-viewer": {
+      "description-title": "Description"
     }
   }
 }

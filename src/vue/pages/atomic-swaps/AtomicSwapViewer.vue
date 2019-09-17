@@ -1,12 +1,12 @@
 <template>
   <div class="atomic-swap-viewer">
-    <atomic-swap-attributes :atomic-swap="currentAtomicSwap" />
+    <atomic-swap-attributes :atomic-swap-ask="currentAtomicSwapAsk" />
     <atomic-swap-actions
       v-if="isAtomicSwapOwner()"
-      :atomic-swap="currentAtomicSwap"
+      :atomic-swap-ask="currentAtomicSwapAsk"
       @cancel="$emit(EVENTS.closeDrawerAndUpdateList)"
     />
-    <atomic-swap-requests :atomic-swap="currentAtomicSwap" />
+    <atomic-swap-requests :atomic-swap-ask="currentAtomicSwapAsk" />
   </div>
 </template>
 
@@ -14,7 +14,7 @@
 import AtomicSwapAttributes from './AtomicSwapAttributes'
 import AtomicSwapRequests from './AtomicSwapRequests'
 import AtomicSwapActions from './AtomicSwapActions'
-import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
+import { AtomicSwapAskRecord } from '@/js/records/entities/atomic-swap-ask.record'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 
@@ -32,8 +32,8 @@ export default {
   },
 
   props: {
-    currentAtomicSwap: {
-      type: AtomicSwapRecord,
+    currentAtomicSwapAsk: {
+      type: AtomicSwapAskRecord,
       required: true,
     },
   },
@@ -52,7 +52,7 @@ export default {
 
   methods: {
     isAtomicSwapOwner () {
-      return this.currentAtomicSwap.ownerId === this.accountId
+      return this.currentAtomicSwapAsk.ownerId === this.accountId
     },
   },
 }

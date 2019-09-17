@@ -2512,7 +2512,7 @@
       "no-list-title": "Нет предложений",
       "no-list-msg": "Здесь будут предложения"
     },
-    "atomic-swap-form":{
+    "buy-atomic-swap-form":{
       "available": "Доступно для покупки {{amount, money}} {{asset}}",
       "asset-in-which-buying": "Cпособ оплаты",
       "amount": "Количество {{asset}}",
@@ -2537,14 +2537,9 @@
     "atomic-swap-attributes": {
       "id-key": "Идентификатор",
       "owner-key": "Владелец",
-      "created-key": "Создано",
       "base-asset-key": "Код базового актива",
       "base-asset-name": "Имя базового актива",
-      "available-amount-key": "Доступно",
-      "locked-amount-key": "Заблокировано",
-      "is-canceled-key": "Отменен?",
-      "yes-val": "Да",
-      "no-val": "Нет",
+      "amount-key": "Доступно",
       "quote-asset-key": "Код",
       "price-key": "Цена",
       "address-key": "Адрес",
@@ -2574,6 +2569,17 @@
       "logout-btn": "Выйти",
       "first-name-lbl": "Имя",
       "last-name-lbl": "Фамилия"
+    },
+    "pay-page": {
+      "pay-title": "Покупка",
+      "no-atomic-swap-title": "Такое предложение не найдено",
+      "no-atomic-swap-msg": "Пожалуйста, убедитесь, что ссылка верна"
+    },
+    "pay-form": {
+      "email-lbl":"Имейл получателя в Конто"
+    },
+    "asset-viewer": {
+      "description-title": "Описание"
     }
   }
 }
