@@ -2410,7 +2410,7 @@
       "owned-by-me-filter-lbl": "Owned by me",
       "buying": "Buying {{asset}}"
     },
-    "atomic-swap-form":{
+    "buy-atomic-swap-form":{
       "available": "Available {{amount, money}} {{asset}}",
       "asset-in-which-buying": "Payment method",
       "amount": "Amount to buy {{asset}}",
@@ -2572,7 +2572,7 @@
       "no-atomic-swap-msg": "Please make sure the link is correct"
     },
     "pay-form": {
-      "email": "Recipient Email in Conto"
+      "email-lbl": "Recipient Email in Conto"
     },
     "asset-viewer": {
       "description-title": "Description"

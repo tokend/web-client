@@ -11,7 +11,7 @@
             class="atomic-swaps-explore__list-item-btn"
             @click="selectItem(item)"
           >
-            <atomic-swap-card :atomic-swap="item" />
+            <atomic-swap-card :atomic-swap-ask="item" />
           </button>
         </div>
       </div>
@@ -47,14 +47,14 @@
 
       <atomic-swap-viewer
         v-if="atomicSwapToBrowse.ownerId === accountId"
-        :current-atomic-swap="atomicSwapToBrowse"
+        :current-atomic-swap-ask="atomicSwapToBrowse"
         @close-drawer-and-update-list="closeDrawerAndUpdateList()"
       />
       <submodule-importer
         v-else
         :submodule="getModule().getSubmodule(AtomicSwapFormModule)"
         @update-list="updateList()"
-        :atomic-swap="atomicSwapToBrowse"
+        :atomic-swap-ask="atomicSwapToBrowse"
       />
     </drawer>
   </div>
@@ -69,7 +69,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import UpdateList from '@/vue/mixins/update-list.mixin'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { AtomicSwapFormModule } from '@modules/atomic-swap-form/module'
-import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
+import { AtomicSwapAskRecord } from '@/js/records/entities/atomic-swap-ask.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { api } from '@/api'
 import { vuexTypes } from '@/vuex'
@@ -144,12 +144,12 @@ export default {
     },
 
     setList (newList) {
-      this.list = newList.map(i => new AtomicSwapRecord(i))
+      this.list = newList.map(i => new AtomicSwapAskRecord(i))
     },
 
     concatList (newChunk) {
       this.list = this.list.concat(
-        newChunk.map(i => new AtomicSwapRecord(i))
+        newChunk.map(i => new AtomicSwapAskRecord(i))
       )
     },
 

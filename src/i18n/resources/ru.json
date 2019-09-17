@@ -2512,7 +2512,7 @@
       "no-list-title": "Нет предложений",
       "no-list-msg": "Здесь будут предложения"
     },
-    "atomic-swap-form":{
+    "buy-atomic-swap-form":{
       "available": "Доступно для покупки {{amount, money}} {{asset}}",
       "asset-in-which-buying": "Cпособ оплаты",
       "amount": "Количество {{asset}}",
@@ -2576,7 +2576,7 @@
       "no-atomic-swap-msg": "Пожалуйста, убедитесь, что ссылка верна"
     },
     "pay-form": {
-      "email":"Имейл получателя в Конто"
+      "email-lbl":"Имейл получателя в Конто"
     },
     "asset-viewer": {
       "description-title": "Описание"

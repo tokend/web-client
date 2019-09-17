@@ -49,7 +49,7 @@ import EmailGetter from '@/vue/common/EmailGetter'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import Loader from '@/vue/common/Loader'
 
-import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
+import { AtomicSwapAskRecord } from '@/js/records/entities/atomic-swap-ask.record'
 import { AtomicSwapRequestsRecord } from '@/js/records/requests/atomic-swap-requests.record'
 import { api } from '@/api'
 
@@ -68,7 +68,7 @@ export default {
     Loader,
   },
   props: {
-    atomicSwap: { type: AtomicSwapRecord, required: true },
+    atomicSwapAsk: { type: AtomicSwapAskRecord, required: true },
   },
   data () {
     return {
@@ -93,7 +93,7 @@ export default {
             filter: {
               'state': REQUEST_STATES.approved,
               'request_details.ask_owner': this.accountId,
-              'request_details.ask_id': this.atomicSwap.id,
+              'request_details.ask_id': this.atomicSwapAsk.id,
             },
             include: ['request_details', 'request_details.quote_asset'],
           })
@@ -108,7 +108,7 @@ export default {
       this.atomicSwapRequests = atomicSwapRequests
         .map(item => new AtomicSwapRequestsRecord(
           item,
-          this.assetByCode(this.atomicSwap.baseAsset).trailingDigitsCount,
+          this.assetByCode(this.atomicSwapAsk.baseAsset).trailingDigitsCount,
           this.assetByCode(item.requestDetails.quoteAsset.quoteAsset)
             .trailingDigitsCount,
         )
@@ -119,7 +119,7 @@ export default {
         atomicSwapRequests.data
           .map(item => new AtomicSwapRequestsRecord(
             item,
-            this.assetByCode(this.atomicSwap.baseAsset).trailingDigitsCount,
+            this.assetByCode(this.atomicSwapAsk.baseAsset).trailingDigitsCount,
             this.assetByCode(item.requestDetails.quoteAsset.quoteAsset)
               .trailingDigitsCount,
           )

@@ -8,7 +8,7 @@
               {{ 'atomic-swap-attributes.base-asset-name' | globalize }}
             </td>
             <td>
-              {{ atomicSwap.baseAssetName }}
+              {{ atomicSwapAsk.baseAssetName }}
             </td>
           </tr>
 
@@ -16,8 +16,8 @@
             <td>
               {{ 'atomic-swap-attributes.amount-key' | globalize }}
             </td>
-            <td :title="atomicSwap.amount | formatMoney">
-              {{ atomicSwap.amount | formatBalance }}
+            <td :title="atomicSwapAsk.amount | formatMoney">
+              {{ atomicSwapAsk.amount | formatBalance }}
             </td>
           </tr>
 
@@ -25,9 +25,9 @@
             <td>
               {{ 'atomic-swap-attributes.price-key' | globalize }}
             </td>
-            <td :title="atomicSwap.price | formatMoney">
+            <td :title="atomicSwapAsk.price | formatMoney">
               {{ {
-                value: atomicSwap.price,
+                value: atomicSwapAsk.price,
                 currency: statsQuoteAsset.code
               } | formatMoney
               }}
@@ -38,7 +38,7 @@
     </div>
 
     <template
-      v-for="(quoteAsset, index) in atomicSwap.quoteAssets"
+      v-for="(quoteAsset, index) in atomicSwapAsk.quoteAssets"
     >
       <div class="app__table app__table--last-td-to-right" :key="quoteAsset.id">
         <h4 class="atomic-swap-attributes__quote-asset-header">
@@ -73,15 +73,15 @@
 </template>
 
 <script>
-import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
+import { AtomicSwapAskRecord } from '@/js/records/entities/atomic-swap-ask.record'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 export default {
   name: 'atomic-swap-attributes',
   props: {
-    atomicSwap: {
-      type: AtomicSwapRecord,
+    atomicSwapAsk: {
+      type: AtomicSwapAskRecord,
       required: true,
     },
   },

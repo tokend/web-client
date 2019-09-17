@@ -12,23 +12,23 @@
             @blur="touchField('form.email')"
             name="pay-email"
             :disabled="isLoggedIn"
-            :label="'pay-form.email' | globalize"
+            :label="'pay-form.email-lbl' | globalize"
             :error-message="getFieldErrorMessage('form.email')"
           />
         </div>
       </div>
 
-      <atomic-swap-form
+      <buy-atomic-swap-form
         class="pay-form__atomic-swap-bid"
         @submitted="submit"
         :is-disabled="isDisabled"
-        :atomic-swap="atomicSwap"
+        :atomic-swap-ask="atomicSwapAsk"
       />
     </form>
 
     <address-viewer
       v-else
-      :asset-code="assetByCode(form.quoteAsset).code"
+      :asset-code="form.quoteAssetCode"
       :amount="atomicSwapBidDetails.amount"
       :address="atomicSwapBidDetails.address"
       :end-time="atomicSwapBidDetails.endTime"
@@ -38,11 +38,11 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-import AtomicSwapForm from '@/vue/forms/AtomicSwapForm'
+import BuyAtomicSwapForm from '@/vue/forms/BuyAtomicSwapForm'
 import AddressViewer from '@/vue/common/address-viewer'
-import AtomicSwapMixin from '@/vue/mixins/atomic-swap.mixin'
+import AtomicSwapBidMixin from '@/vue/mixins/atomic-swap-bid.mixin'
 import { required, email } from '@validators'
-import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
+import { AtomicSwapAskRecord } from '@/js/records/entities/atomic-swap-ask.record'
 import { ATOMIC_SWAP_BID_TYPES } from '@/js/const/atomic-swap-bid-types.const'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { vuexTypes } from '@/vuex'
@@ -51,17 +51,17 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'pay-form',
   components: {
-    AtomicSwapForm,
+    BuyAtomicSwapForm,
     AddressViewer,
   },
-  mixins: [FormMixin, AtomicSwapMixin],
-  props: { atomicSwap: { type: AtomicSwapRecord, required: true } },
+  mixins: [FormMixin, AtomicSwapBidMixin],
+  props: { atomicSwapAsk: { type: AtomicSwapAskRecord, required: true } },
   data () {
     return {
       form: {
         email: '',
         amount: '',
-        quoteAsset: '',
+        quoteAssetCode: '',
         paymentMethodId: '',
       },
       isDisabled: false,
@@ -86,7 +86,6 @@ export default {
 
   computed: {
     ...mapGetters([
-      vuexTypes.assetByCode,
       vuexTypes.walletEmail,
     ]),
 
@@ -106,7 +105,13 @@ export default {
 
       this.isDisabled = true
       try {
-        const atomicSwapBid = await this.createAtomicSwapBidOperation()
+        // eslint-disable-next-line max-len
+        const atomicSwapBid = await this.createAtomicSwapBidOperation(
+          this.form.amount,
+          this.form.paymentMethodId,
+          this.atomicSwapAsk.id,
+          this.form.email
+        )
         if (atomicSwapBid.type === ATOMIC_SWAP_BID_TYPES.redirect) {
           window.location.href = atomicSwapBid.payUrl
         } else {

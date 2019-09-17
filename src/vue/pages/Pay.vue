@@ -6,14 +6,12 @@
           {{ 'pay-page.pay-title' | globalize }}
         </h1>
       </div>
-      <div class="pay__right-side">
-        <router-link
-          class="pay__login-link"
-          :to="vueRoutes.login"
-        >
-          <img class="pay__logo" src="/static/conto-logo.png">
-        </router-link>
-      </div>
+      <router-link
+        class="pay__login-link"
+        :to="vueRoutes.login"
+      >
+        <img class="pay__logo" src="/static/conto-logo.png">
+      </router-link>
     </div>
 
     <template v-if="isLoaded">
@@ -23,7 +21,7 @@
           :asset-code="atomicSwapAsk.baseAsset"
         />
         <pay-form
-          :atomic-swap="atomicSwapAsk"
+          :atomic-swap-ask="atomicSwapAsk"
           class="pay__form"
         />
       </div>
@@ -55,7 +53,7 @@ import AssetViewer from './pay/AssetViewer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import PaySkeleton from './pay/PaySkeleton'
 import { api } from '@/api'
-import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
+import { AtomicSwapAskRecord } from '@/js/records/entities/atomic-swap-ask.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { vueRoutes } from '@/vue-router/routes'
 
@@ -95,7 +93,7 @@ export default {
   methods: {
     async getAtomicSwapAsk (id) {
       const { data } = await api.get(`/integrations/marketplace/offers/${id}`)
-      this.atomicSwapAsk = new AtomicSwapRecord(data)
+      this.atomicSwapAsk = new AtomicSwapAskRecord(data)
     },
   },
 }

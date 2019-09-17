@@ -2,25 +2,24 @@
   <div>
     <div
       class="atomic-swap__asset-description"
-      v-if="assetByCode(atomicSwap.baseAsset).description"
+      v-if="assetByCode(atomicSwapAsk.baseAsset).description"
     >
       <p
         class="atomic-swap__asset-description-lbl"
       >
-        {{ 'atomic-swap-form.asset-description-lbl' | globalize }}:
+        {{ 'buy-atomic-swap-form.asset-description-lbl' | globalize }}:
       </p>
-      <p>{{ assetByCode(atomicSwap.baseAsset).description }}</p>
+      <p>{{ assetByCode(atomicSwapAsk.baseAsset).description }}</p>
     </div>
-    <atomic-swap-form
+    <buy-atomic-swap-form
       v-if="!isAtomicSwapBidCreated"
-      :atomic-swap="atomicSwap"
+      :atomic-swap-ask="atomicSwapAsk"
       :is-disabled="isDisabled"
       @submitted="handleAtomicSwapFormSubmitted"
-      @select-asset="selectQuoteAsset"
     />
     <address-viewer
       v-else
-      :asset-code="assetByCode(form.quoteAsset).code"
+      :asset-code="form.quoteAssetCode"
       :amount="atomicSwapBidDetails.amount"
       :address="atomicSwapBidDetails.address"
       :end-time="atomicSwapBidDetails.endTime"
@@ -29,11 +28,11 @@
 </template>
 
 <script>
-import AtomicSwapForm from '@/vue/forms/AtomicSwapForm'
+import BuyAtomicSwapForm from '@/vue/forms/BuyAtomicSwapForm'
 import FormMixin from '@/vue/mixins/form.mixin'
 import AddressViewer from '@/vue/common/address-viewer'
-import AtomicSwapMixin from '@/vue/mixins/atomic-swap.mixin'
-import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
+import AtomicSwapBidMixin from '@/vue/mixins/atomic-swap-bid.mixin'
+import { AtomicSwapAskRecord } from '@/js/records/entities/atomic-swap-ask.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
@@ -47,13 +46,13 @@ const EVENTS = {
 export default {
   name: 'atomic-swap',
   components: {
-    AtomicSwapForm,
+    BuyAtomicSwapForm,
     AddressViewer,
   },
-  mixins: [FormMixin, AtomicSwapMixin],
+  mixins: [FormMixin, AtomicSwapBidMixin],
   props: {
-    atomicSwap: {
-      type: AtomicSwapRecord,
+    atomicSwapAsk: {
+      type: AtomicSwapAskRecord,
       required: true,
     },
   },
@@ -61,11 +60,10 @@ export default {
     return {
       form: {
         amount: '',
-        quoteAsset: '',
+        quoteAssetCode: '',
         paymentMethodId: '',
       },
       isDisabled: false,
-      selectedQuoteAsset: {},
       atomicSwapBidDetails: {
         address: '',
         endTime: -1,
@@ -89,7 +87,12 @@ export default {
 
       this.isDisabled = true
       try {
-        const atomicSwapBid = await this.createAtomicSwapBidOperation()
+        // eslint-disable-next-line max-len
+        const atomicSwapBid = await this.createAtomicSwapBidOperation(
+          this.form.amount,
+          this.form.paymentMethodId,
+          this.atomicSwapAsk.id
+        )
         if (atomicSwapBid.type === ATOMIC_SWAP_BID_TYPES.redirect) {
           window.location.href = atomicSwapBid.payUrl
         } else {
@@ -100,10 +103,6 @@ export default {
         ErrorHandler.process(e)
       }
       this.isDisabled = false
-    },
-
-    selectQuoteAsset (code) {
-      this.selectedQuoteAsset = this.assetByCode(code)
     },
   },
 }

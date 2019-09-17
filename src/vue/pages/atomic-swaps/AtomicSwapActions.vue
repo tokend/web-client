@@ -14,7 +14,7 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
+import { AtomicSwapAskRecord } from '@/js/records/entities/atomic-swap-ask.record'
 import { api } from '@/api'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -28,7 +28,7 @@ export default {
   mixins: [FormMixin],
 
   props: {
-    atomicSwap: { type: AtomicSwapRecord, required: true },
+    atomicSwapAsk: { type: AtomicSwapAskRecord, required: true },
   },
 
   data: _ => ({
@@ -42,7 +42,7 @@ export default {
       this.isAtomicSwapCanceling = true
 
       try {
-        await api.deleteWithSignature(`/integrations/marketplace/offers/${this.atomicSwap.id}`)
+        await api.deleteWithSignature(`/integrations/marketplace/offers/${this.atomicSwapAsk.id}`)
         Bus.success('atomic-swap-actions.atomic-swap-canceled-msg')
         this.$emit(EVENTS.cancel)
       } catch (e) {

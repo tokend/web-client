@@ -1,4 +1,4 @@
-import AtomicSwapMixin from '@/vue/mixins/atomic-swap.mixin'
+import AtomicSwapAskMixin from '@/vue/mixins/atomic-swap-ask.mixin'
 import { uploadDocuments } from '@/js/helpers/upload-documents'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
@@ -14,7 +14,7 @@ import { store, vuexTypes } from '@/vuex/index'
 const NEW_CREATE_ASSET_REQUEST_ID = '0'
 
 export default {
-  mixins: [AtomicSwapMixin],
+  mixins: [AtomicSwapAskMixin],
   data () {
     return {
       collectedAttributes: {},
@@ -71,7 +71,12 @@ export default {
       )
 
       if (this.collectedAttributes.isSellable) {
-        await this.createAtomicSwapAsk(this.collectedAttributes)
+        await this.createAtomicSwapAsk(
+          this.collectedAttributes.code,
+          this.collectedAttributes.amountToSell,
+          this.collectedAttributes.price,
+          this.collectedAttributes.quoteAssets,
+        )
       }
     },
 

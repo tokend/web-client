@@ -1,7 +1,7 @@
 import _get from 'lodash/get'
 import { store, vuexTypes } from '@/vuex/index'
 
-export class AtomicSwapRecord {
+export class AtomicSwapAskRecord {
   constructor (record) {
     this._record = record
 

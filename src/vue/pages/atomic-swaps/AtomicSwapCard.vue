@@ -2,26 +2,26 @@
   <div class="atomic-swap-card">
     <div class="atomic-swap-card__logo">
       <logo-viewer
-        :asset="assetByCode(atomicSwap.baseAsset)"
+        :asset="assetByCode(atomicSwapAsk.baseAsset)"
       />
     </div>
     <div class="atomic-swap-card__info">
       <h3 class="atomic-swap-card__title">
-        {{ atomicSwap.baseAssetName }}
+        {{ atomicSwapAsk.baseAssetName }}
       </h3>
 
       <div>
         <p class="atomic-swap-card__amount">
-          <span :title="atomicSwap.amount | formatMoney">
+          <span :title="atomicSwapAsk.amount | formatMoney">
             {{ 'atomic-swap-card.available' | globalize({
-              amount: atomicSwap.amount
+              amount: atomicSwapAsk.amount
             }) }}
           </span>
         </p>
         <p class="atomic-swap-card__amount">
-          <span :title="atomicSwap.price | formatMoney">
+          <span :title="atomicSwapAsk.price | formatMoney">
             {{ 'atomic-swap-card.price' | globalize({
-              amount: atomicSwap.price,
+              amount: atomicSwapAsk.price,
               code: statsQuoteAsset.code
             }) }}
           </span>
@@ -33,7 +33,7 @@
 
 <script>
 import LogoViewer from '@/vue/modules/assets/shared/components/logo-viewer'
-import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
+import { AtomicSwapAskRecord } from '@/js/records/entities/atomic-swap-ask.record'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
@@ -44,8 +44,8 @@ export default {
   },
 
   props: {
-    atomicSwap: {
-      type: AtomicSwapRecord,
+    atomicSwapAsk: {
+      type: AtomicSwapAskRecord,
       required: true,
     },
   },

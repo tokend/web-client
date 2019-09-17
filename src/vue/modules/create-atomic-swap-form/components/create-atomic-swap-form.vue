@@ -70,7 +70,7 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-import AtomicSwapMixin from '@/vue/mixins/atomic-swap.mixin'
+import AtomicSwapAskMixin from '@/vue/mixins/atomic-swap-ask.mixin'
 import AtomicSwapQuoteAssetsForm from '@/vue/forms/AtomicSwapQuoteAssetsForm'
 import {
   required,
@@ -97,7 +97,7 @@ export default {
   components: {
     AtomicSwapQuoteAssetsForm,
   },
-  mixins: [FormMixin, AtomicSwapMixin],
+  mixins: [FormMixin, AtomicSwapAskMixin],
   data: _ => ({
     form: {
       asset: {},
@@ -162,7 +162,13 @@ export default {
           const createIssuanceOperation = this.buildCreateIssuanceOperation()
           await api.postOperations(createIssuanceOperation)
         }
-        await this.createAtomicSwapAsk(this.form)
+
+        await this.createAtomicSwapAsk(
+          this.form.asset.code,
+          this.form.amount,
+          this.form.price,
+          this.form.quoteAssets
+        )
         Bus.success('create-atomic-swap-form.created-atomic-swap-msg')
         this.$emit(EVENTS.createdAtomicSwap)
       } catch (e) {
