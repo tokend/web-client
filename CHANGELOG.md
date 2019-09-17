@@ -11,6 +11,9 @@ for further information about branching and tagging conventions.
 - Show all base assets in set default quote asset select
 - Renamed direct sell to offering
 
+#### Fixed
+- A bug when don't show an error message when field was touched
+
 ## [1.0.3-rc.8] - 2019-09-09
 #### Added
 - Handle new types of atomic swap bid requests
