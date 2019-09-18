@@ -2588,7 +2588,12 @@
       "error-msg": "An error occurred while loading the list, please contact system owner to resolve the issue."
     },
     "sponsor-business-form": {
-      "form-heading": "Sponsorship"
+      "form-heading": "Sponsorship",
+      "asset-lbl": "Asset",
+      "amount-lbl": "Amount per 1 holder",
+      "total-amount": "Total amount",
+      "create-contract-btn": "Create contract",
+      "create-contract-successful": "Contract created successfully"
     }
   }
 }

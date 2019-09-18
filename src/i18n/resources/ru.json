@@ -2592,7 +2592,12 @@
       "error-msg": "Произошла ошибка при загрузке списка. Пожалуйста, свяжитесь с владельцем системы."
     },
     "sponsor-business-form": {
-      "form-heading": "Спонсирование"
+      "form-heading": "Спонсирование",
+      "asset-lbl": "Актив",
+      "amount-lbl": "Количество для 1 держателя",
+      "total-amount": "Общее количество",
+      "create-contract-btn": "Создать контракт",
+      "create-contract-successful": "Контракт успешно создан"
     }
   }
 }

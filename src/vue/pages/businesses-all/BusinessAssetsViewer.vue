@@ -4,7 +4,10 @@
       <table class="business-assets-viewer__table">
         <thead>
           <tr>
-            <th :title="'business-assets-viewer.asset-name-th' | globalize">
+            <th
+              class="business-assets-viewer__asset-name"
+              :title="'business-assets-viewer.asset-name-th' | globalize"
+            >
               {{ 'business-assets-viewer.asset-name-th' | globalize }}
             </th>
             <!-- eslint-disable-next-line max-len -->
@@ -20,14 +23,16 @@
         <tbody v-if="businessAssets.length">
           <tr
             v-for="businessAsset in businessAssets"
-            :key="businessAsset.id"
+            :key="businessAsset.asset.code"
           >
-            <td>
-              Name
+            <td
+              class="business-assets-viewer__asset-name"
+            >
+              {{ businessAsset.asset.name }}
             </td>
 
             <td>
-              Quantity
+              {{ businessAsset.holders }}
             </td>
 
             <td>
@@ -65,6 +70,10 @@
       <template slot="heading">
         {{ 'sponsor-business-form.form-heading' | globalize }}
       </template>
+      <sponsor-business-form
+        :business-asset="currentBusinessAsset"
+        @contract-created="closeDrawer"
+      />
     </drawer>
   </div>
 </template>
@@ -73,10 +82,13 @@
 import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 import Drawer from '@/vue/common/Drawer'
-
-import { mapGetters } from 'vuex'
+import SponsorBusinessForm from '@/vue/forms/SponsorBusinessForm'
+import { BusinessAssetRecord } from '@/js/records/entities/business-asset.record'
+import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { BusinessRecord } from '@/js/records/entities/business.record'
+import { api } from '@/api'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
   name: 'business-assets-viewer',
@@ -85,6 +97,7 @@ export default {
     EmptyTbodyPlaceholder,
     SkeletonLoaderTableBody,
     Drawer,
+    SponsorBusinessForm,
   },
 
   props: {
@@ -111,14 +124,50 @@ export default {
     ]),
   },
 
-  created () {
-    this.businessAssets = this.assetsByOwner(this.business.accountId)
+  async created () {
+    await this.init()
   },
 
   methods: {
+    ...mapActions({
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+    }),
+
+    async init () {
+      try {
+        await this.loadBalances()
+        await this.loadingBusinessAssetsViaLoop()
+        this.isLoaded = true
+      } catch (e) {
+        this.isLoadFailed = true
+        ErrorHandler.processWithoutFeedback(e)
+      }
+    },
+
     selectItem (item) {
       this.currentBusinessAsset = item
       this.isDrawerShown = true
+    },
+
+    async loadingBusinessAssetsViaLoop () {
+      let response = await api.getWithSignature(
+        `/integrations/dns/businesses/${this.business.accountId}/assets`
+      )
+      let assets = response.data
+      let holders = response._rawResponse.data.meta
+
+      while (response.data.length) {
+        response = await response.fetchNext()
+        assets = [...assets, ...response.data]
+        Object.assign(holders, response._rawResponse.data.meta)
+      }
+
+      this.businessAssets = assets
+        .map(asset => new BusinessAssetRecord(asset, holders))
+    },
+
+    closeDrawer () {
+      this.isDrawerShown = false
     },
   },
 }
@@ -130,5 +179,9 @@ export default {
 .business-assets-viewer__sponsor-btn {
   font-size: 1.2rem;
   color: $col-primary-lighten;
+}
+
+.business-assets-viewer__asset-name {
+  min-width: 12rem;
 }
 </style>

@@ -43,7 +43,7 @@
         {{ 'businesses-all.business-details-title' | globalize }}
       </template>
 
-      <template v-if="isCustomerUiShown">
+      <template v-if="isCustomerUiShown || isAccountGeneral">
         <business-viewer
           :business="currentBusiness"
           @business-added="closeDrawerAndUpdateList"
@@ -53,7 +53,7 @@
         <business-attributes
           :business="currentBusiness"
         />
-        <template v-if="!isMyBusiness">
+        <template v-if="!isBusinessOwner">
           <h3 class="businesses-all__bussiness-assets-title">
             {{ 'businesses-all.business-assets-title' | globalize }}
           </h3>
@@ -124,7 +124,12 @@ export default {
     ...mapGetters({
       accountId: vuexTypes.accountId,
       isCustomerUiShown: vuexTypes.isCustomerUiShown,
+      isAccountGeneral: vuexTypes.isAccountGeneral,
     }),
+
+    isBusinessOwner () {
+      return this.currentBusiness.accountId === this.accountId
+    },
   },
 
   async created () {
@@ -158,10 +163,9 @@ export default {
     },
 
     checkIsMyBusiness (currentBusiness) {
-      return Boolean(currentBusiness.accountId === this.accountId ||
-        this.myBusiness.find(business => {
-          return business.id === currentBusiness.id
-        })
+      return Boolean(this.myBusiness.find(business => {
+        return business.id === currentBusiness.id
+      })
       )
     },
 
@@ -177,7 +181,8 @@ export default {
 
     selectItem (item) {
       this.isMyBusiness = this.checkIsMyBusiness(item)
-      if (this.isMyBusiness && this.isCustomerUiShown) {
+      // eslint-disable-next-line max-len
+      if (this.isMyBusiness && (this.isCustomerUiShown || this.isAccountGeneral)) {
         Bus.emit('businesses:setCurrentBusiness', {
           business: item,
           redirectTo: vueRoutes.assets,
