@@ -241,40 +241,40 @@
     },
     "assets": {
       "vendor-code": "Vendor code",
-      "can-be-base-in-atomic-swap-title": "Can be base in direct sell",
-      "can-be-quote-in-atomic-swap-title": "Can be quote in direct sell"
+      "can-be-base-in-atomic-swap-title": "Can be base in offering",
+      "can-be-quote-in-atomic-swap-title": "Can be quote in offering"
     },
     "asset-details": {
-      "can-be-base-in-atomic-swap-title": "Can be base in direct sell",
-      "can-be-quote-in-atomic-swap-title": "Can be quote in direct sell"
+      "can-be-base-in-atomic-swap-title": "Can be base in offering",
+      "can-be-quote-in-atomic-swap-title": "Can be quote in offering"
     },
     "update-asset-requests": {
-      "can-be-base-in-atomic-swap-title": "Can be base in direct sell",
-      "can-be-quote-in-atomic-swap-title": "Can be quote in direct sell"
+      "can-be-base-in-atomic-swap-title": "Can be base in offering",
+      "can-be-quote-in-atomic-swap-title": "Can be quote in offering"
     },
     "create-asset-requests": {
-      "can-be-base-in-atomic-swap-title": "Can be base in direct sell",
-      "can-be-quote-in-atomic-swap-title": "Can be quote in direct sell"
+      "can-be-base-in-atomic-swap-title": "Can be base in offering",
+      "can-be-quote-in-atomic-swap-title": "Can be quote in offering"
     },
     "atomic-swaps": {
-      "explore-atomic-swaps": "Explore direct sell offerings",
+      "explore-atomic-swaps": "Explore offerings",
       "create-atomic-swap-bth": "Create",
-      "new-atomic-swap": "New direct sell offering",
+      "new-atomic-swap": "New offering",
       "loading": "Loading",
       "purchases": "Purchases",
       "loading-error-msg": "There was an error while loading."
     },
     "create-atomic-swap-form": {
-      "no-base-atomic-swap-assets-title": "No base direct sell assets yet",
-      "no-base-atomic-swap-assets-msg": "Please create an asset to create direct sell",
-      "no-quote-atomic-swap-assets-title": "No quote direct sell assets yet",
-      "no-quote-atomic-swap-assets-msg": "Please create an asset to create direct sell",
-      "created-atomic-swap-msg": "Direct sell offering successfully created"
+      "no-base-atomic-swap-assets-title": "No base offering assets yet",
+      "no-base-atomic-swap-assets-msg": "Please create an asset to create offering",
+      "no-quote-atomic-swap-assets-title": "No quote offering assets yet",
+      "no-quote-atomic-swap-assets-msg": "Please create an asset to create offering",
+      "created-atomic-swap-msg": "Offering successfully created"
     },
     "atomic-swaps-explore": {
-      "atomic-swap-drawer-title": "Direct sell details",
+      "atomic-swap-drawer-title": "Offering details",
       "no-list-title": "No offerings yet",
-      "no-list-msg": "Here will be the list of direct sell offerings",
+      "no-list-msg": "Here will be the list of offerings",
       "owned-by-me-filter-lbl": "Owned by me"
     },
     "settings-page": {

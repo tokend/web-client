@@ -2511,11 +2511,11 @@
     "atomic-swaps-explore": {
       "owned-by-me-filter-lbl": "Принадлежит мне",
       "buying": "Покупка {{asset}}",
-      "atomic-swap-drawer-title": "Детали прямого обмена",
+      "atomic-swap-drawer-title": "Детали предложения",
       "no-list-title": "Нет предложений",
-      "no-list-msg": "Здесь будут предложения прямого обмена"
+      "no-list-msg": "Здесь будут предложения"
     },
-    "atomic-swap-form":{
+    "buy-atomic-swap-form":{
       "available": "Доступно для покупки {{amount, money}} {{asset}}",
       "asset-in-which-buying": "Cпособ оплаты",
       "amount": "Количество {{asset}}",
@@ -2540,14 +2540,9 @@
     "atomic-swap-attributes": {
       "id-key": "Идентификатор",
       "owner-key": "Владелец",
-      "created-key": "Создано",
       "base-asset-key": "Код базового актива",
       "base-asset-name": "Имя базового актива",
-      "available-amount-key": "Доступно",
-      "locked-amount-key": "Заблокировано",
-      "is-canceled-key": "Отменен?",
-      "yes-val": "Да",
-      "no-val": "Нет",
+      "amount-key": "Доступно",
       "quote-asset-key": "Код",
       "price-key": "Цена",
       "address-key": "Адрес",
@@ -2558,7 +2553,7 @@
       "destination-key": "Назначение"
     },
     "atomic-swap-actions": {
-      "cancel-btn": "Отменить продажу",
+      "cancel-btn": "Отменить предложение",
       "yes-msg": "Да",
       "no-msg": "Нет",
       "cancellation-msg": "Уверены, что хотите отменить предложение?",
@@ -2577,6 +2572,17 @@
       "logout-btn": "Выйти",
       "first-name-lbl": "Имя",
       "last-name-lbl": "Фамилия"
+    },
+    "pay-page": {
+      "pay-title": "Покупка",
+      "no-atomic-swap-title": "Такое предложение не найдено",
+      "no-atomic-swap-msg": "Пожалуйста, убедитесь, что ссылка верна"
+    },
+    "pay-form": {
+      "email-lbl":"Имейл получателя в Конто"
+    },
+    "asset-viewer": {
+      "description-title": "Описание"
     },
     "business-assets-viewer": {
       "asset-name-th": "Имя актива",

@@ -70,6 +70,7 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
+import AtomicSwapAskMixin from '@/vue/mixins/atomic-swap-ask.mixin'
 import AtomicSwapQuoteAssetsForm from '@/vue/forms/AtomicSwapQuoteAssetsForm'
 import {
   required,
@@ -96,7 +97,7 @@ export default {
   components: {
     AtomicSwapQuoteAssetsForm,
   },
-  mixins: [FormMixin],
+  mixins: [FormMixin, AtomicSwapAskMixin],
   data: _ => ({
     form: {
       asset: {},
@@ -125,9 +126,7 @@ export default {
   computed: {
     ...mapGetters({
       baseAtomicSwapBalancesAssets: vuexTypes.baseAtomicSwapBalancesAssets,
-      accountBalanceByCode: vuexTypes.accountBalanceByCode,
       accountId: vuexTypes.accountId,
-      statsQuoteAsset: vuexTypes.statsQuoteAsset,
     }),
 
     accountBalance () {
@@ -156,19 +155,20 @@ export default {
 
     async submit () {
       if (!this.isFormValid()) return
-      let operations = []
       this.disableForm()
 
       try {
         if (this.isAssetOwner && this.isAmountMoreThanBalance()) {
           const createIssuanceOperation = this.buildCreateIssuanceOperation()
-          operations.push(createIssuanceOperation)
+          await api.postOperations(createIssuanceOperation)
         }
 
-        const createAtomicSwapOperation = this.buildCreateAtomicSwapOperation()
-        operations.push(createAtomicSwapOperation)
-        await api.postOperations(...operations)
-
+        await this.createAtomicSwapAsk(
+          this.form.asset.code,
+          this.form.amount,
+          this.form.price,
+          this.form.quoteAssets
+        )
         Bus.success('create-atomic-swap-form.created-atomic-swap-msg')
         this.$emit(EVENTS.createdAtomicSwap)
       } catch (e) {
@@ -176,31 +176,6 @@ export default {
       }
 
       this.enableForm()
-    },
-
-    buildCreateAtomicSwapOperation () {
-      const balanceID = this.accountBalanceByCode(this.form.asset.code).id
-      const quoteAssets = []
-      const destinations = {}
-
-      this.form.quoteAssets.forEach(quoteAsset => {
-        destinations[quoteAsset.asset.code] = quoteAsset.destination
-        quoteAssets.push({
-          price: this.form.price,
-          asset: quoteAsset.asset.code,
-        })
-      })
-
-      const operation = {
-        balanceID: balanceID,
-        amount: this.form.amount,
-        quoteAssets: quoteAssets,
-        creatorDetails: {
-          destination: destinations,
-        },
-      }
-      // eslint-disable-next-line max-len
-      return base.CreateAtomicSwapAskRequestBuilder.createAtomicSwapAskRequest(operation)
     },
 
     buildCreateIssuanceOperation () {

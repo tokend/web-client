@@ -1,3 +1,4 @@
+import AtomicSwapAskMixin from '@/vue/mixins/atomic-swap-ask.mixin'
 import { uploadDocuments } from '@/js/helpers/upload-documents'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
@@ -13,6 +14,7 @@ import { store, vuexTypes } from '@/vuex/index'
 const NEW_CREATE_ASSET_REQUEST_ID = '0'
 
 export default {
+  mixins: [AtomicSwapAskMixin],
   data () {
     return {
       collectedAttributes: {},
@@ -23,7 +25,6 @@ export default {
     ...mapGetters([
       vuexTypes.businessStatsQuoteAsset,
       vuexTypes.accountId,
-      vuexTypes.accountBalanceByCode,
     ]),
   },
 
@@ -70,8 +71,11 @@ export default {
       )
 
       if (this.collectedAttributes.isSellable) {
-        await api.postOperations(
-          this.$buildAtomicSwapCreationOperation(),
+        await this.createAtomicSwapAsk(
+          this.collectedAttributes.code,
+          this.collectedAttributes.amountToSell,
+          this.collectedAttributes.price,
+          this.collectedAttributes.quoteAssets,
         )
       }
     },
@@ -128,32 +132,6 @@ export default {
         })
 
       return operation
-    },
-
-    $buildAtomicSwapCreationOperation () {
-      const balance = this.accountBalanceByCode(this.collectedAttributes.code)
-      const quoteAssets = []
-      const destinations = {}
-
-      this.collectedAttributes.quoteAssets.forEach(quoteAsset => {
-        destinations[quoteAsset.asset.code] = quoteAsset.destination
-
-        quoteAssets.push({
-          price: this.collectedAttributes.price,
-          asset: quoteAsset.asset.code,
-        })
-      })
-
-      const operation = {
-        balanceID: balance.id,
-        amount: this.collectedAttributes.amountToSell,
-        quoteAssets: quoteAssets,
-        creatorDetails: {
-          destination: destinations,
-        },
-      }
-      // eslint-disable-next-line max-len
-      return base.CreateAtomicSwapAskRequestBuilder.createAtomicSwapAskRequest(operation)
     },
 
     $getDocumentDetailsOrEmptyDocument (doc) {

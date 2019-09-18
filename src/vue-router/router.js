@@ -65,6 +65,11 @@ export function buildRouter (store) {
         component: resolve => require(['@/vue/pages/PreIssuanceGuide'], resolve),
       },
       {
+        path: '/pay',
+        name: vueRoutes.pay.name,
+        component: resolve => require(['@/vue/pages/Pay'], resolve),
+      },
+      {
         path: '/kyc-recovery-management',
         name: vueRoutes.kycRecoveryManagement.name,
         component: resolve => require(['@/vue/pages/KycRecovery/KycRecoveryManagement'], resolve),
