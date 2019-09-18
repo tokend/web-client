@@ -8,25 +8,16 @@
               {{ 'atomic-swap-attributes.base-asset-name' | globalize }}
             </td>
             <td>
-              {{ atomicSwap.baseAssetName }}
+              {{ atomicSwapAsk.baseAssetName }}
             </td>
           </tr>
 
           <tr>
             <td>
-              {{ 'atomic-swap-attributes.available-amount-key' | globalize }}
+              {{ 'atomic-swap-attributes.amount-key' | globalize }}
             </td>
-            <td :title="atomicSwap.availableAmount | formatMoney">
-              {{ atomicSwap.availableAmount | formatBalance }}
-            </td>
-          </tr>
-
-          <tr>
-            <td>
-              {{ 'atomic-swap-attributes.locked-amount-key' | globalize }}
-            </td>
-            <td :title="atomicSwap.lockedAmount | formatMoney">
-              {{ atomicSwap.lockedAmount | formatBalance }}
+            <td :title="atomicSwapAsk.amount | formatMoney">
+              {{ atomicSwapAsk.amount | formatBalance }}
             </td>
           </tr>
 
@@ -34,35 +25,12 @@
             <td>
               {{ 'atomic-swap-attributes.price-key' | globalize }}
             </td>
-            <td :title="atomicSwap.quoteAssets[0].price | formatMoney">
+            <td :title="atomicSwapAsk.price | formatMoney">
               {{ {
-                value: atomicSwap.quoteAssets[0].price,
+                value: atomicSwapAsk.price,
                 currency: statsQuoteAsset.code
               } | formatMoney
               }}
-            </td>
-          </tr>
-
-          <tr>
-            <td>
-              {{ 'atomic-swap-attributes.is-canceled-key' | globalize }}
-            </td>
-            <td>
-              <template v-if="atomicSwap.isCanceled">
-                {{ 'atomic-swap-attributes.yes-val' | globalize }}
-              </template>
-              <template v-else>
-                {{ 'atomic-swap-attributes.no-val' | globalize }}
-              </template>
-            </td>
-          </tr>
-
-          <tr>
-            <td>
-              {{ 'atomic-swap-attributes.created-key' | globalize }}
-            </td>
-            <td>
-              {{ atomicSwap.createdAt | formatDateDMYT }}
             </td>
           </tr>
         </tbody>
@@ -70,9 +38,12 @@
     </div>
 
     <template
-      v-for="(quoteAsset, index) in atomicSwap.quoteAssets"
+      v-for="(quoteAsset, index) in atomicSwapAsk.quoteAssets"
     >
-      <div class="app__table app__table--last-td-to-right" :key="quoteAsset.id">
+      <div
+        class="app__table app__table--last-td-to-right"
+        :key="quoteAsset.asset.code"
+      >
         <h4 class="atomic-swap-attributes__quote-asset-header">
           {{ 'atomic-swap-attributes.quote-assets-subheading'
             | globalize({ number: index + 1 })
@@ -86,7 +57,7 @@
                 {{ 'atomic-swap-attributes.quote-asset-key' | globalize }}
               </td>
               <td>
-                {{ quoteAsset.id }}
+                {{ quoteAsset.asset.code }}
               </td>
             </tr>
             <tr>
@@ -105,15 +76,15 @@
 </template>
 
 <script>
-import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
+import { AtomicSwapAskRecord } from '@/js/records/entities/atomic-swap-ask.record'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 export default {
   name: 'atomic-swap-attributes',
   props: {
-    atomicSwap: {
-      type: AtomicSwapRecord,
+    atomicSwapAsk: {
+      type: AtomicSwapAskRecord,
       required: true,
     },
   },

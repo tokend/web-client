@@ -8,7 +8,6 @@
         v-model="defaultQuoteAsset"
         @input="setDefaultQuoteAsset"
         class="
-          default-quote-asset-select-field__asset-select
           app__select-with-label--no-border
           app__select-panel--right
         "
@@ -48,21 +47,21 @@ export default {
 
   computed: {
     ...mapGetters({
-      baseAssets: vuexTypes.fiatAssets,
+      baseAssets: vuexTypes.baseAssets,
       businessStatsQuoteAsset: vuexTypes.businessStatsQuoteAsset,
       accountId: vuexTypes.accountId,
     }),
   },
 
   async created () {
-    await this.loadAccountBalances()
+    await this.loadAssets()
     this.defaultQuoteAsset = this.businessStatsQuoteAsset
     this.isLoaded = true
   },
 
   methods: {
     ...mapActions({
-      loadAccountBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+      loadAssets: vuexTypes.LOAD_ASSETS,
       loadBusinessStatsQuoteAsset: vuexTypes.LOAD_BUSINESS_STATS_QUOTE_ASSET,
     }),
 
@@ -91,9 +90,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.default-quote-asset-select-field__asset-select {
-  min-width: 18rem;
-}
-</style>

@@ -117,8 +117,8 @@ export default {
       }
     },
 
-    touchField (fieldName) {
-      const field = safeGet(this.$v, fieldName)
+    touchField (fieldPath) {
+      const field = this._extractVuelidateField(fieldPath)
       if (field) {
         field.$touch()
       }

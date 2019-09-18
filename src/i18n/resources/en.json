@@ -2412,7 +2412,7 @@
       "owned-by-me-filter-lbl": "Owned by me",
       "buying": "Buying {{asset}}"
     },
-    "atomic-swap-form":{
+    "buy-atomic-swap-form":{
       "available": "Available {{amount, money}} {{asset}}",
       "asset-in-which-buying": "Payment method",
       "amount": "Amount to buy {{asset}}",
@@ -2425,7 +2425,7 @@
       "asset-description-lbl": "Asset description"
     },
     "atomic-swap-actions": {
-      "cancel-btn": "Cancel direct sell",
+      "cancel-btn": "Cancel offering",
       "yes-msg": "Yes",
       "no-msg": "No",
       "cancellation-msg": "Are you sure to cancel the atomic swap?",
@@ -2434,14 +2434,9 @@
     "atomic-swap-attributes": {
       "id-key": "ID",
       "owner-key": "Owner",
-      "created-key": "Created",
       "base-asset-key": "Base asset code",
       "base-asset-name": "Base asset name",
-      "available-amount-key": "Available amount",
-      "locked-amount-key": "Locked amount",
-      "is-canceled-key": "Is canceled?",
-      "yes-val": "Yes",
-      "no-val": "No",
+      "amount-key": "Amount",
       "quote-asset-key": "Code",
       "current-cap-key": "Current cap",
       "hard-cap-key": "Hard cap",
@@ -2608,6 +2603,17 @@
       "approving-msg": "Are you sure to approve the request?",
       "rejecting-msg": "Are you sure to reject the request?"
     },
+    "pay-page": {
+      "pay-title": "Pay",
+      "no-atomic-swap-title": "No such offer found",
+      "no-atomic-swap-msg": "Please make sure the link is correct"
+    },
+    "pay-form": {
+      "email-lbl": "Recipient Email in Conto"
+    },
+    "asset-viewer": {
+      "description-title": "Description"
+    },
     "business-assets-viewer": {
       "asset-name-th": "Asset name",
       "number-of-holders-th": "Number of holders",
@@ -2616,7 +2622,12 @@
       "error-msg": "An error occurred while loading the list, please contact system owner to resolve the issue."
     },
     "sponsor-business-form": {
-      "form-heading": "Sponsorship"
+      "form-heading": "Sponsorship",
+      "asset-lbl": "Asset",
+      "amount-lbl": "Amount per 1 holder",
+      "total-amount": "Total amount",
+      "create-contract-btn": "Create contract",
+      "create-contract-successful": "Contract created successfully"
     },
     "sponsorship-page": {
       "businesses-tab": "Businesses",

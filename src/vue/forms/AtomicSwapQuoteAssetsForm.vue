@@ -78,7 +78,7 @@
         <button
           class="atomic-swap-quote-assets-form__add-asset-btn"
           type="button"
-          @click="addQuoteAsset(index)"
+          @click="addQuoteAsset()"
           :disabled="isDisabled"
         >
           <!-- eslint-disable-next-line max-len -->
