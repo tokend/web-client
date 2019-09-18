@@ -88,8 +88,6 @@ const EVENTS = {
   contractCreated: 'contract-created',
 }
 
-const ROUND_DOWN = 1
-
 export default {
   name: 'sponsorhip-form',
   components: {
@@ -135,7 +133,7 @@ export default {
       return MathUtil.multiply(
         this.businessAsset.holders,
         this.form.amount || 0,
-        ROUND_DOWN
+        MathUtil.roundingModes.ROUND_DOWN
       )
     },
   },
