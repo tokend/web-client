@@ -16,7 +16,6 @@
       v-if="isIncomingRequests"
       class="request-viewer__actions"
       :request="request"
-      :is-incoming-requests="isIncomingRequests"
       @request-updated="$emit(EVENTS.requestUpdated)"
     />
   </div>

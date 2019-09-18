@@ -3,10 +3,10 @@
     <button
       v-ripple
       class="
-            request-actions__button
-            request-actions__button--approve
-            app__button-raised
-          "
+        request-actions__button
+        request-actions__button--approve
+        app__button-raised
+      "
       :disabled="!canBeReviewed || isDisabled"
       @click="sendRequest(CONTRACT_ACTIONS.approve)"
     >
@@ -16,11 +16,11 @@
     <button
       v-ripple
       class="
-            request-actions__button
-            request-actions__button--reject
-            app__button-flat
-          "
-      :disabled="!canBeReviewed"
+        request-actions__button
+        request-actions__button--reject
+        app__button-flat
+      "
+      :disabled="!canBeReviewed || isDisabled"
       @click="sendRequest(CONTRACT_ACTIONS.permanentlyReject)"
     >
       {{ 'sponsorship-requests.reject-btn' | globalize }}
