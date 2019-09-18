@@ -10,7 +10,6 @@
       class="request-viewer__table"
       :request="request"
       :is-incoming-requests="isIncomingRequests"
-
     />
 
     <request-actions

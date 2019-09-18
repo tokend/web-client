@@ -51,8 +51,6 @@ export default {
   &--approved { background-color: $col-request-approved; }
   &--pending { background-color: $col-request-pending; }
 
-  &--rejected,
-  &--canceled,
   &--permanently-rejected {
     background-color: $col-request-rejected;
   }
