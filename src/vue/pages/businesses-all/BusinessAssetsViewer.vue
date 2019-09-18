@@ -32,7 +32,7 @@
             </td>
 
             <td>
-              {{ businessAsset.holders }}
+              {{ businessAsset.holders | formatNumber }}
             </td>
 
             <td>
@@ -68,11 +68,11 @@
 
     <drawer :is-shown.sync="isDrawerShown">
       <template slot="heading">
-        {{ 'sponsor-business-form.form-heading' | globalize }}
+        {{ 'sponsorship-form.form-heading' | globalize }}
       </template>
-      <sponsor-business-form
-        :business-asset="currentBusinessAsset"
-        @contract-created="closeDrawer"
+      <sponsorship-form
+        :business-asset="selectedBusinessAsset"
+        @contract-created="isDrawerShown = false"
       />
     </drawer>
   </div>
@@ -82,7 +82,7 @@
 import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 import Drawer from '@/vue/common/Drawer'
-import SponsorBusinessForm from '@/vue/forms/SponsorBusinessForm'
+import SponsorshipForm from '@/vue/forms/SponsorshipForm'
 import { BusinessAssetRecord } from '@/js/records/entities/business-asset.record'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -97,7 +97,7 @@ export default {
     EmptyTbodyPlaceholder,
     SkeletonLoaderTableBody,
     Drawer,
-    SponsorBusinessForm,
+    SponsorshipForm,
   },
 
   props: {
@@ -110,7 +110,7 @@ export default {
   data () {
     return {
       businessAssets: [],
-      currentBusinessAsset: {},
+      selectedBusinessAsset: {},
       isLoaded: true,
       isLoadFailed: false,
       isDrawerShown: false,
@@ -136,7 +136,7 @@ export default {
     async init () {
       try {
         await this.loadBalances()
-        await this.loadingBusinessAssetsViaLoop()
+        await this.loadAllBusinessAssets()
         this.isLoaded = true
       } catch (e) {
         this.isLoadFailed = true
@@ -145,11 +145,11 @@ export default {
     },
 
     selectItem (item) {
-      this.currentBusinessAsset = item
+      this.selectedBusinessAsset = item
       this.isDrawerShown = true
     },
 
-    async loadingBusinessAssetsViaLoop () {
+    async loadAllBusinessAssets () {
       let response = await api.getWithSignature(
         `/integrations/dns/businesses/${this.business.accountId}/assets`
       )
@@ -164,10 +164,6 @@ export default {
 
       this.businessAssets = assets
         .map(asset => new BusinessAssetRecord(asset, holders))
-    },
-
-    closeDrawer () {
-      this.isDrawerShown = false
     },
   },
 }

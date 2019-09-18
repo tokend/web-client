@@ -1,5 +1,5 @@
 <template>
-  <div class="sponsor-business-form">
+  <div class="sponsorship-form">
     <form
       novalidate
       class="app__form"
@@ -9,10 +9,10 @@
         <div class="app__form-field">
           <select-field
             :value="form.assetCode"
-            @input="setAssetByCode"
-            :label="'sponsor-business-form.asset-lbl' | globalize"
-            name="sponsor-business-form-asset"
-            @blur="touchField('form.asset')"
+            @input="setAssetCode"
+            :label="'sponsorship-form.asset-lbl' | globalize"
+            name="sponsorship-form-asset-code"
+            @blur="touchField('form.assetCode')"
             :disabled="formMixin.isDisabled"
           >
             <option
@@ -20,7 +20,7 @@
               :key="asset.code"
               :value="asset.code"
             >
-              {{ assetByCode(asset.code).name }}
+              {{ asset.name }}
             </option>
           </select-field>
         </div>
@@ -30,10 +30,10 @@
         <div class="app__form-field">
           <amount-input-field
             v-model="form.amount"
-            name="sponsor-business-form-amount"
+            name="sponsorship-form-amount"
             validation-type="outgoing"
             :max="assetBalance.balance"
-            :label="'sponsor-business-form.amount-lbl' | globalize"
+            :label="'sponsorship-form.amount-lbl' | globalize"
             :asset="form.assetCode"
             :readonly="formMixin.isDisabled"
           />
@@ -43,7 +43,7 @@
       <div class="app__form-row">
         <div class="app__form-field">
           <readonly-field
-            :label="'sponsor-business-form.total-amount' | globalize"
+            :label="'sponsorship-form.total-amount' | globalize"
             :value="totalAmount"
             :error-message="getFieldErrorMessage(
               'totalAmount',
@@ -60,10 +60,10 @@
           v-ripple
           type="button"
           @click="submit"
-          class="app__button-raised sponsor-business-form__submit-btn"
+          class="app__button-raised sponsorship-form__submit-btn"
           :disabled="formMixin.isDisabled"
         >
-          {{ 'sponsor-business-form.create-contract-btn' | globalize }}
+          {{ 'sponsorship-form.create-contract-btn' | globalize }}
         </button>
       </div>
     </form>
@@ -88,8 +88,10 @@ const EVENTS = {
   contractCreated: 'contract-created',
 }
 
+const ROUND_DOWN = 1
+
 export default {
-  name: 'sponsor-business-form',
+  name: 'sponsorhip-form',
   components: {
     ReadonlyField,
   },
@@ -111,9 +113,6 @@ export default {
     return {
       form: {
         assetCode: { required },
-        amount: {
-          required,
-        },
       },
       totalAmount: {
         noMoreThanAvailableOnBalance: maxValueBig(this.assetBalance.balance),
@@ -126,7 +125,6 @@ export default {
       vuexTypes.balancesAssets,
       vuexTypes.accountBalanceByCode,
       vuexTypes.accountId,
-      vuexTypes.assetByCode,
     ]),
 
     assetBalance () {
@@ -135,7 +133,9 @@ export default {
 
     totalAmount () {
       return MathUtil.multiply(
-        this.businessAsset.holders, this.form.amount || 0
+        this.businessAsset.holders,
+        this.form.amount || 0,
+        ROUND_DOWN
       )
     },
   },
@@ -145,7 +145,7 @@ export default {
   },
 
   methods: {
-    setAssetByCode (code) {
+    setAssetCode (code) {
       this.form.assetCode = code
     },
 
@@ -159,7 +159,7 @@ export default {
         const paymentOperation = this.buildPaymentOperation(paymentAccount.id)
         await api.postOperations(paymentOperation)
 
-        Bus.success('sponsor-business-form.create-contract-successful')
+        Bus.success('sponsorship-form.create-contract-successful')
         this.$emit(EVENTS.contractCreated)
       } catch (e) {
         ErrorHandler.process(e)
@@ -173,7 +173,7 @@ export default {
         consumers_asset: this.businessAsset.asset.code,
         sponsor_asset: this.form.assetCode,
         sponsor_business: this.accountId,
-        sponsor_amount: Number(this.form.amount),
+        sponsor_amount: this.form.amount,
         max_users_count: this.businessAsset.holders,
       }
     },
