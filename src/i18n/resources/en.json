@@ -2611,7 +2611,7 @@
       "no-data-msg": "Business don't have any assets yet.",
       "error-msg": "An error occurred while loading the list, please contact system owner to resolve the issue."
     },
-    "sponsor-business-form": {
+    "sponsorship-form": {
       "form-heading": "Sponsorship",
       "asset-lbl": "Asset",
       "amount-lbl": "Amount per 1 holder",
