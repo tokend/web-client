@@ -1,6 +1,7 @@
 <template>
   <div class="request-viewer">
     <request-message-viewer
+      v-if="isIncomingRequests"
       class="request-viewer__state-message"
       :request="request"
     />

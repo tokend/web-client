@@ -2584,7 +2584,7 @@
       "sponsor-business-key": "Спонсирующий бизнес",
       "consumer-business-key": "Спонисруемый бизнес",
       "sponsor-asset-name-key": "Спонсирующий актив",
-      "amount-key": "Amount",
+      "amount-key": "Количество",
       "asset-code-header": "Актив",
       "amount-header": "Количество",
       "request-state-header": "Статус",
