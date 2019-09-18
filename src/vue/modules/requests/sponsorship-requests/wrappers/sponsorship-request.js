@@ -1,17 +1,20 @@
 import safeGet from 'lodash/get'
 import { Request } from '../../shared/wrappers/request'
+import { store, vuexTypes } from '@/vuex/index'
 
 export class SponsorshipRequest extends Request {
   constructor (record) {
     super(record)
 
-    this.assetCode = safeGet(record, 'requestDetails.asset.id')
-    this.amount = safeGet(record, 'requestDetails.amount')
-    this.fixedFee = safeGet(record, 'requestDetails.fee.fixed')
-    this.calculatedPercentFee = safeGet(
-      record, 'requestDetails.fee.calculatedPercent'
-    )
-
-    this.comment = safeGet(record, 'requestDetails.creatorDetails.comment')
+    this.id = record.id
+    this.consumerBusiness = safeGet(record, 'consumerBusiness.id')
+    this.consumerAsset =
+      store.getters[vuexTypes.assetByCode](record.consumerAsset.id)
+    this.maxUsersCountToIssue = safeGet(record, 'maxUsersCountToIssue')
+    this.amount = safeGet(record, 'sponsorAmount')
+    this.sponsorAsset =
+      store.getters[vuexTypes.assetByCode](record.sponsorAsset.id)
+    this.sponsorBusiness = safeGet(record, 'sponsorBusiness.id')
+    this.status = safeGet(record, 'status.value')
   }
 }

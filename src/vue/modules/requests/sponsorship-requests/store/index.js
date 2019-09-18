@@ -1,7 +1,5 @@
 import { SponsorshipRequest } from '../wrappers/sponsorship-request'
 
-import { base } from '@tokend/js-sdk'
-
 import { types } from './types'
 import { api } from '@/api'
 import { vuexTypes } from '@/vuex'
@@ -20,55 +18,24 @@ export const mutations = {
 }
 
 export const actions = {
-  [types.LOAD_REQUESTS] ({ rootGetters }) {
-    return api.getWithSignature('/v3/create_withdraw_requests', {
-      page: {
-        order: 'desc',
-      },
+  [types.LOAD_REQUESTS] ({ rootGetters }, isIncomingRequests) {
+    return api.getWithSignature('/integrations/sponsorship/contracts', {
       filter: {
-        reviewer: rootGetters[vuexTypes.accountId],
+        ...(isIncomingRequests
+          ? { consumer_business: rootGetters[vuexTypes.accountId] }
+          : { sponsor_business: rootGetters[vuexTypes.accountId] }
+        ),
       },
-      include: ['request_details'],
     })
   },
 
-  async [types.APPROVE_REQUEST] (_, request) {
-    const operation = createReviewSponsorshipRequestOp({
-      request,
-      reason: '',
-      action: base.xdr.ReviewRequestOpAction.approve().value,
+  async [types.APPROVE_OR_REJECT_REQUEST] (_, { requestId, action }) {
+    await api.postWithSignature(`/integrations/sponsorship/contracts/${requestId}`, {
+      data: {
+        action: action,
+      },
     })
-
-    await api.postOperations(operation)
   },
-
-  async [types.REJECT_REQUEST] (_, { request, reason }) {
-    const operation = createReviewSponsorshipRequestOp({
-      request,
-      reason,
-      action: base.xdr.ReviewRequestOpAction.permanentReject().value,
-    })
-
-    await api.postOperations(operation)
-  },
-}
-
-function createReviewSponsorshipRequestOp ({ request, action, reason }) {
-  const reviewDetails = {
-    tasksToAdd: 0,
-    tasksToRemove: request.pendingTasks,
-    externalDetails: {},
-  }
-
-  return base.ReviewRequestBuilder.reviewWithdrawRequest({
-    requestID: request.id,
-    requestHash: request.hash,
-    requestType: request.typeI,
-    reviewDetails,
-    requestDetails: JSON.stringify(reviewDetails),
-    action,
-    reason,
-  })
 }
 
 export const getters = {

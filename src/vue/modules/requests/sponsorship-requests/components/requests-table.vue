@@ -6,21 +6,29 @@
       <table>
         <thead>
           <tr>
-            <th :title="'sponsorship-requests.requestor-header' | globalize">
-              {{ 'sponsorship-requests.requestor-header' | globalize }}
+            <template v-if="isIncomingRequests">
+              <!-- eslint-disable max-len -->
+              <th :title="'sponsorship-requests.sponsor-business-header' | globalize">
+                {{ 'sponsorship-requests.sponsor-business-header' | globalize }}
+              </th>
+            </template>
+            <template v-else>
+              <th :title="'sponsorship-requests.consumer-business-header' | globalize">
+                {{ 'sponsorship-requests.consumer-business-header' | globalize }}
+              </th>
+            </template>
+
+            <th :title="'sponsorship-requests.sponsor-asset-name-header' | globalize">
+              {{ 'sponsorship-requests.sponsor-asset-name-header' | globalize }}
             </th>
-            <th :title="'sponsorship-requests.asset-code-header' | globalize">
-              {{ 'sponsorship-requests.asset-code-header' | globalize }}
-            </th>
+            <!-- eslint-enable max-len -->
+
             <th :title="'sponsorship-requests.amount-header' | globalize">
               {{ 'sponsorship-requests.amount-header' | globalize }}
             </th>
             <!-- eslint-disable-next-line max-len -->
             <th :title="'sponsorship-requests.request-state-header' | globalize">
               {{ 'sponsorship-requests.request-state-header' | globalize }}
-            </th>
-            <th :title="'sponsorship-requests.created-header' | globalize">
-              {{ 'sponsorship-requests.created-header' | globalize }}
             </th>
           </tr>
         </thead>
@@ -32,24 +40,28 @@
             v-for="(request, index) in requests"
             :key="index"
           >
-            <td :title="request.requestor">
-              <email-getter :account-id="request.requestor" />
-            </td>
+            <template v-if="isIncomingRequests">
+              <td :title="request.sponsorBusiness">
+                <email-getter :account-id="request.sponsorBusiness" />
+              </td>
+            </template>
+            <template v-else>
+              <td :title="request.consumerBusiness">
+                <email-getter :account-id="request.consumerBusiness" />
+              </td>
+            </template>
 
-            <td :title="request.assetCode">
-              {{ request.assetCode }}
+            <td :title="request.consumerAsset.name">
+              {{ request.consumerAsset.name }}
             </td>
 
             <td :title="request.amount | formatMoney">
               {{ request.amount | formatMoney }}
+              {{ request.sponsorAsset.name }}
             </td>
 
             <td>
               <request-state-viewer :request="request" />
-            </td>
-
-            <td :title="request.createdAt | formatCalendar">
-              {{ request.createdAt | formatCalendar }}
             </td>
 
             <td>
@@ -98,6 +110,7 @@ export default {
   props: {
     requests: { type: Array, required: true },
     isLoaded: { type: Boolean, required: true },
+    isIncomingRequests: { type: Boolean, default: false },
   },
 
   data: _ => ({

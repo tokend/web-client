@@ -8,11 +8,15 @@
     <request-attributes-viewer
       class="request-viewer__table"
       :request="request"
+      :is-incoming-requests="isIncomingRequests"
+
     />
 
     <request-actions
+      v-if="isIncomingRequests"
       class="request-viewer__actions"
       :request="request"
+      :is-incoming-requests="isIncomingRequests"
       @request-updated="$emit(EVENTS.requestUpdated)"
     />
   </div>
@@ -39,6 +43,8 @@ export default {
 
   props: {
     request: { type: SponsorshipRequest, required: true },
+    isIncomingRequests: { type: Boolean, default: false },
+
   },
 
   data: _ => ({

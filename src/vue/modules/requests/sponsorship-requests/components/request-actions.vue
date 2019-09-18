@@ -1,60 +1,34 @@
 <template>
   <div class="request-actions">
-    <reject-request-form
-      v-if="isRejectFormShown"
-      class="request-actions__reject-form"
-      :request="request"
-      @close="isRejectFormShown = false"
-      @request-rejected="$emit(EVENTS.requestUpdated)"
-    />
-
-    <div v-else class="request-actions__buttons">
-      <template v-if="formMixin.isConfirmationShown">
-        <form-confirmation
-          :is-pending="isRequestApproving"
-          message-id="sponsorship-requests.approving-msg"
-          ok-button-text-id="sponsorship-requests.yes-msg"
-          cancel-button-text-id="sponsorship-requests.no-msg"
-          @ok="approveRequest"
-          @cancel="hideConfirmation"
-        />
-      </template>
-
-      <template v-else>
-        <button
-          v-ripple
-          class="
+    <button
+      v-ripple
+      class="
             request-actions__button
             request-actions__button--approve
             app__button-raised
           "
-          :disabled="!canBeReviewed"
-          @click="showConfirmation"
-        >
-          {{ 'sponsorship-requests.approve-btn' | globalize }}
-        </button>
+      :disabled="!canBeReviewed || isDisabled"
+      @click="sendRequest(CONTRACT_ACTIONS.approve)"
+    >
+      {{ 'sponsorship-requests.approve-btn' | globalize }}
+    </button>
 
-        <button
-          v-ripple
-          class="
+    <button
+      v-ripple
+      class="
             request-actions__button
             request-actions__button--reject
             app__button-flat
           "
-          :disabled="!canBeReviewed"
-          @click="isRejectFormShown = true"
-        >
-          {{ 'sponsorship-requests.reject-btn' | globalize }}
-        </button>
-      </template>
-    </div>
+      :disabled="!canBeReviewed"
+      @click="sendRequest(CONTRACT_ACTIONS.permanentlyReject)"
+    >
+      {{ 'sponsorship-requests.reject-btn' | globalize }}
+    </button>
   </div>
 </template>
 
 <script>
-import FormMixin from '@/vue/mixins/form.mixin'
-import RejectRequestForm from './reject-request-form'
-
 import { SponsorshipRequest } from '../wrappers/sponsorship-request'
 
 import { mapActions } from 'vuex'
@@ -67,21 +41,22 @@ const EVENTS = {
   requestUpdated: 'request-updated',
 }
 
+const CONTRACT_ACTIONS = {
+  approve: 1,
+  permanentlyReject: 3,
+}
+
 export default {
   name: 'request-actions',
-  components: {
-    RejectRequestForm,
-  },
-  mixins: [FormMixin],
 
   props: {
     request: { type: SponsorshipRequest, required: true },
   },
 
   data: _ => ({
-    isRejectFormShown: false,
-    isRequestApproving: false,
     EVENTS,
+    isDisabled: false,
+    CONTRACT_ACTIONS,
   }),
 
   computed: {
@@ -92,45 +67,35 @@ export default {
 
   methods: {
     ...mapActions('sponsorship-requests', {
-      approveSponsorshipRequest: types.APPROVE_REQUEST,
+      sendApproveOrRejectRequest: types.APPROVE_OR_REJECT_REQUEST,
     }),
 
-    async approveRequest () {
-      this.isRequestApproving = true
+    async sendRequest (action) {
+      this.isDisabled = true
       try {
-        await this.approveSponsorshipRequest(this.request)
-        Bus.success('sponsorship-requests.request-approved-msg')
+        await this.sendApproveOrRejectRequest(
+          {
+            requestId: this.request.id,
+            action,
+          })
+        if (action === CONTRACT_ACTIONS.approve) {
+          Bus.success('sponsorship-requests.request-approved-msg')
+        } else {
+          Bus.success('sponsorship-requests.request-rejected-msg')
+        }
         this.$emit(EVENTS.requestUpdated)
       } catch (e) {
-        this.isRequestApproving = false
         ErrorHandler.process(e)
       }
+      this.isDisabled = false
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.request-actions__buttons {
+.request-actions {
   display: flex;
-}
-
-.request-actions__button {
-  & + & {
-    margin-left: auto;
-  }
-
-  &--approve {
-    max-width: 18rem;
-    width: 100%;
-  }
-
-  &--reject {
-    font-weight: 400;
-  }
-}
-
-.request-actions__reject-form {
-  margin-top: 2rem;
+  justify-content: space-between;
 }
 </style>

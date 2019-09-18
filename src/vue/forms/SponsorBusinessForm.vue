@@ -173,7 +173,7 @@ export default {
         consumers_asset: this.businessAsset.asset.code,
         sponsor_asset: this.form.assetCode,
         sponsor_business: this.accountId,
-        sponsor_amount: Number(this.form.amount),
+        sponsor_amount: this.form.amount,
         max_users_count: this.businessAsset.holders,
       }
     },

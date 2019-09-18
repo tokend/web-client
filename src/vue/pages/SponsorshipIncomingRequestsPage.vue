@@ -3,6 +3,7 @@
     <submodule-importer
       v-if="getModule().canRenderSubmodule(SponsorshipRequestsModule)"
       :submodule="getModule().getSubmodule(SponsorshipRequestsModule)"
+      is-incoming-requests
     />
   </div>
 </template>

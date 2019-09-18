@@ -12,7 +12,7 @@ export class Request {
     this.hash = record.hash
     this.pendingTasks = record.pendingTasks
 
-    this.stateI = record.stateI
+    this.stateI = record.stateI || safeGet(record, 'status.value')
     this.typeI = safeGet(record, 'xdrType.value')
     this.rejectReason = record.rejectReason
   }

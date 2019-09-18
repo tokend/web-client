@@ -8,51 +8,36 @@
         </tr>
 
         <tr>
-          <td>{{ 'sponsorship-requests.created' | globalize }}</td>
-          <td>{{ request.createdAt | formatCalendar }}</td>
+          <!-- eslint-disable max-len -->
+          <template v-if="isIncomingRequests">
+            <td>{{ 'sponsorship-requests.sponsor-business-key' | globalize }}</td>
+            <td :title="request.sponsorBusiness">
+              <email-getter :account-id="request.sponsorBusiness" />
+            </td>
+          </template>
+          <template v-else>
+            <td>{{ 'sponsorship-requests.consumer-business-key' | globalize }}</td>
+            <td :title="request.consumerBusiness">
+              <email-getter :account-id="request.consumerBusiness" />
+            </td>
+          </template>
+        </tr>
+
+        <tr>
+          <td>{{ 'sponsorship-requests.sponsor-asset-name-key' | globalize }}</td>
+          <td>{{ request.consumerAsset.name }}</td>
         </tr>
 
         <tr>
           <td>
-            {{ 'sponsorship-requests.requestor-email' | globalize }}
+            {{ 'sponsorship-requests.amount-key' | globalize }}
           </td>
           <td>
-            <email-getter :account-id="request.requestor" />
+            {{ request.amount | formatMoney }}
+            {{ request.sponsorAsset.name }}
           </td>
         </tr>
-
-        <tr>
-          <td>{{ 'sponsorship-requests.requestor-id' | globalize }}</td>
-          <td>{{ request.requestor }}</td>
-        </tr>
-
-        <tr>
-          <td>{{ 'sponsorship-requests.comment' | globalize }}</td>
-          <td>{{ request.comment }}</td>
-        </tr>
-
-        <tr>
-          <td>{{ 'sponsorship-requests.amount' | globalize }}</td>
-          <td>{{ request.amount | formatMoney }}  </td>
-        </tr>
-
-        <tr>
-          <td>{{ 'sponsorship-requests.fixed-fee' | globalize }}</td>
-          <td>{{ request.fixedFee | formatMoney }}</td>
-        </tr>
-
-        <tr>
-          <td>
-            <!-- eslint-disable-next-line max-len -->
-            {{ 'sponsorship-requests.calculated-percent-fee' | globalize }}
-          </td>
-          <td>{{ request.calculatedPercentFee | formatMoney }}</td>
-        </tr>
-
-        <tr>
-          <td>{{ 'sponsorship-requests.total-fee' | globalize }}</td>
-          <td>{{ request.totalFee | formatMoney }}</td>
-        </tr>
+        <!-- eslint-enable max-len -->
       </tbody>
     </table>
   </div>
@@ -70,6 +55,7 @@ export default {
   },
   props: {
     request: { type: SponsorshipRequest, required: true },
+    isIncomingRequests: { type: Boolean, default: false },
   },
 }
 </script>

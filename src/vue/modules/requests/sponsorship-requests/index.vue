@@ -7,6 +7,7 @@
         </template>
         <request-viewer
           :request="selectedRequest"
+          :is-incoming-requests="isIncomingRequests"
           @request-updated="closeDrawerAndUpdateList()"
         />
       </drawer>
@@ -14,6 +15,7 @@
       <requests-table
         :requests="requests"
         :is-loaded="isLoaded"
+        :is-incoming-requests="isIncomingRequests"
         @select="showRequestDetails"
       />
     </template>
@@ -49,6 +51,11 @@ export default {
     Drawer,
     RequestViewer,
   },
+
+  props: {
+    isIncomingRequests: { type: Boolean, default: false },
+  },
+
   data: _ => ({
     isLoaded: false,
     isLoadingFailed: false,
@@ -78,7 +85,9 @@ export default {
     async loadRequests () {
       this.isLoaded = false
       try {
-        const response = await this.loadSponsorshipRequests()
+        const response = await this.loadSponsorshipRequests(
+          this.isIncomingRequests
+        )
         this.isLoaded = true
         return response
       } catch (e) {

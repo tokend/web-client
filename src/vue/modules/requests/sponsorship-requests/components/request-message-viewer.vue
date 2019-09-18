@@ -19,36 +19,12 @@
     </div>
 
     <div
-      v-else-if="request.isRejected"
-      class="request-message-viewer--rejected"
-    >
-      <p class="request-message-viewer__content">
-        {{
-          'request-messages.rejected-incoming-msg' | globalize({
-            reason: request.rejectReason
-          })
-        }}
-      </p>
-    </div>
-
-    <div
-      v-else-if="request.isCanceled"
-      class="request-message-viewer--canceled"
-    >
-      <p class="request-message-viewer__content">
-        {{ 'request-messages.canceled-incoming-msg' | globalize }}
-      </p>
-    </div>
-
-    <div
       v-else-if="request.isPermanentlyRejected"
       class="request-message-viewer--permanently-rejected"
     >
       <p class="request-message-viewer__content">
         {{
-          'request-messages.permanently-rejected-incoming-msg' | globalize({
-            reason: request.rejectReason
-          })
+          'request-messages.permanently-rejected-incoming-msg' | globalize
         }}
       </p>
     </div>
