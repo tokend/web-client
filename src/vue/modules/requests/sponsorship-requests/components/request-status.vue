@@ -1,30 +1,30 @@
 <template>
-  <div class="request-message-viewer">
+  <div class="request-status">
     <div
       v-if="request.isApproved"
-      class="request-message-viewer--approved"
+      class="request-status--approved"
     >
-      <p class="request-message-viewer__content">
-        {{ 'request-messages.approved-incoming-msg' | globalize }}
+      <p class="request-status__content">
+        {{ 'request-status.approved-incoming-msg' | globalize }}
       </p>
     </div>
 
     <div
       v-else-if="request.isPending"
-      class="request-message-viewer--pending"
+      class="request-status--pending"
     >
-      <p class="request-message-viewer__content">
-        {{ 'request-messages.pending-incoming-msg' | globalize }}
+      <p class="request-status__content">
+        {{ 'request-status.pending-incoming-msg' | globalize }}
       </p>
     </div>
 
     <div
       v-else-if="request.isPermanentlyRejected"
-      class="request-message-viewer--permanently-rejected"
+      class="request-status--permanently-rejected"
     >
-      <p class="request-message-viewer__content">
+      <p class="request-status__content">
         {{
-          'request-messages.permanently-rejected-incoming-msg' | globalize
+          'request-status.permanently-rejected-incoming-msg' | globalize
         }}
       </p>
     </div>
@@ -35,7 +35,7 @@
 import { SponsorshipRequest } from '../wrappers/sponsorship-request'
 
 export default {
-  name: 'request-message-viewer',
+  name: 'request-status',
   props: {
     request: { type: SponsorshipRequest, required: true },
   },
@@ -45,7 +45,7 @@ export default {
 <style lang="scss" scoped>
 @import '~@scss/variables';
 
-.request-message-viewer {
+.request-status {
   min-height: 6.4rem;
 
   &--approved { background-color: $col-request-approved; }
@@ -56,7 +56,7 @@ export default {
   }
 }
 
-.request-message-viewer__content {
+.request-status__content {
   padding: 2.4rem;
   font-size: 1.3rem;
   font-weight: 400;

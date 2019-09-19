@@ -67,13 +67,13 @@ export default {
 
   methods: {
     ...mapActions('sponsorship-requests', {
-      sendApproveOrRejectRequest: types.APPROVE_OR_REJECT_REQUEST,
+      approveOrRejectRequest: types.APPROVE_OR_REJECT_REQUEST,
     }),
 
     async sendRequest (action) {
       this.isDisabled = true
       try {
-        await this.sendApproveOrRejectRequest(
+        await this.approveOrRejectRequest(
           {
             requestId: this.request.id,
             action,

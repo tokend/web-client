@@ -2627,6 +2627,11 @@
       "businesses-tab": "Бизнесы",
       "incoming-requests-tab": "Входящие запросы",
       "outgoing-requests-tab": "Исходящие запросы"
+    },
+    "request-status": {
+      "approved-incoming-msg": "Запрос подтвержден",
+      "pending-incoming-msg": "Запрос ждет вашего рассмотрения. Пожалуйста подтвердите или отклоните этот запрос",
+      "permanently-rejected-incoming-msg": "Запрос отклонен навсегда"
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="request-viewer">
-    <request-message-viewer
+    <request-status
       v-if="isIncomingRequests"
       class="request-viewer__state-message"
       :request="request"
@@ -24,7 +24,7 @@
 <script>
 import RequestAttributesViewer from './request-attributes-viewer'
 import RequestActions from './request-actions'
-import RequestMessageViewer from './request-message-viewer'
+import RequestStatus from './request-status'
 
 import { SponsorshipRequest } from '../wrappers/sponsorship-request'
 
@@ -37,7 +37,7 @@ export default {
   components: {
     RequestAttributesViewer,
     RequestActions,
-    RequestMessageViewer,
+    RequestStatus,
   },
 
   props: {

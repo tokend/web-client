@@ -2623,6 +2623,11 @@
       "businesses-tab": "Businesses",
       "incoming-requests-tab": "Incoming requests",
       "outgoing-requests-tab": "Outgoing requests"
+    },
+    "request-status": {
+      "approved-incoming-msg": "This request was approved",
+      "pending-incoming-msg": "This request is waiting for your review. Please approve or reject it",
+      "permanently-rejected-incoming-msg": "This request was rejected permanently"
     }
   }
 }
