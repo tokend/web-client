@@ -3,7 +3,7 @@
     <form
       novalidate
       class="app__form"
-      @submit.prevent="submit"
+      @submit.prevent="isFormValid() && showConfirmation()"
     >
       <div class="app__form-row">
         <div class="app__form-field">
@@ -55,17 +55,26 @@
         </div>
       </div>
 
-      <div class="app__form-actions">
-        <button
-          v-ripple
-          type="button"
-          @click="submit"
-          class="app__button-raised sponsorship-form__submit-btn"
-          :disabled="formMixin.isDisabled"
-        >
-          {{ 'sponsorship-form.create-contract-btn' | globalize }}
-        </button>
-      </div>
+      <template v-if="formMixin.isConfirmationShown">
+        <form-confirmation
+          @cancel="hideConfirmation"
+          @ok="submit"
+          :is-pending="isFormSubmitting"
+          class="app__form-confirmation"
+        />
+      </template>
+
+      <template v-else>
+        <div class="app__form-actions">
+          <button
+            v-ripple
+            type="submit"
+            class="app__button-raised sponsorship-form__submit-btn"
+          >
+            {{ 'sponsorship-form.create-contract-btn' | globalize }}
+          </button>
+        </div>
+      </template>
     </form>
   </div>
 </template>
@@ -105,6 +114,7 @@ export default {
       assetCode: '',
       amount: '',
     },
+    isFormSubmitting: false,
   }),
 
   validations () {
@@ -148,8 +158,7 @@ export default {
     },
 
     async submit () {
-      if (!this.isFormValid()) return
-      this.disableForm()
+      this.isFormSubmitting = true
       try {
         const contract = this.buildContract()
         await api.postWithSignature('/integrations/sponsorship/contracts', contract)
@@ -162,7 +171,8 @@ export default {
       } catch (e) {
         ErrorHandler.process(e)
       }
-      this.enableForm()
+      this.isFormSubmitting = false
+      this.hideConfirmation()
     },
 
     buildContract () {
