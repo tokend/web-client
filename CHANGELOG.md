@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
+## [Unrealesed]
+### "Under the hood" changes
+#### Changed
+- Sponsorship request structure for approve or reject
+
 ## [1.0.3-rc.10] - 2019-09-19
 #### Added
 - Sponsorship page
