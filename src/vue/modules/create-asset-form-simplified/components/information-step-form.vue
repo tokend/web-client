@@ -153,7 +153,10 @@ const EVENTS = {
 
 const NAME_MAX_LENGTH = 255
 const DESCRIPTION_MAX_LENGTH = 255
-
+const DEFAULT_POLICIES = [
+  ASSET_POLICIES.canBeBaseInAtomicSwap,
+  ASSET_POLICIES.swappable,
+]
 export default {
   name: 'information-step-form',
   mixins: [FormMixin],
@@ -167,7 +170,7 @@ export default {
       name: '',
       code: '',
       logo: null,
-      policies: ASSET_POLICIES.canBeBaseInAtomicSwap,
+      policies: 0,
       description: '',
       isSellable: false,
     },
@@ -209,6 +212,7 @@ export default {
   },
 
   created () {
+    this.form.policies = DEFAULT_POLICIES.reduce((s, p) => s | p, 0)
     if (this.request) {
       this.populateForm()
     }
