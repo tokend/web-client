@@ -36,7 +36,10 @@ import { AtomicSwapFormModule } from '@modules/atomic-swap-form/module'
 import { AtomicSwapsExplorePageModule } from '@/vue/pages/atomic-swaps/atomic-swaps-explore-page-module'
 import { CreateAtomicSwapFormModule } from '@/vue/modules/create-atomic-swap-form/module'
 import { SharesPageModule } from '@/vue/pages/shares-page-module'
+import { SponsorshipIncomingRequestsPageModule } from '@/vue/pages/sponsorship-incoming-requests-page-module'
+import { SponsorshipRequestsModule } from '@/vue/modules/requests/sponsorship-requests/module'
 import { SponsorshipPageModule } from '@/vue/pages/sponsorship-page-module'
+import { SponsorshipOutgoingRequestsPageModule } from '@/vue/pages/sponsorship-outgoing-requests-page-module'
 
 export default {
   importLanguageResource (lng) {
@@ -341,6 +344,24 @@ export default {
               name: vueRoutes.sponsorshipAllBusinesses.name,
               props: true,
             },
+          }),
+          new SponsorshipIncomingRequestsPageModule({
+            routerEntry: {
+              path: '/sponsorship/incoming-requests',
+              name: vueRoutes.sponsorshipIncomingRequests.name,
+            },
+            submodules: [
+              new SponsorshipRequestsModule(),
+            ],
+          }),
+          new SponsorshipOutgoingRequestsPageModule({
+            routerEntry: {
+              path: '/sponsorship/outgoing-requests',
+              name: vueRoutes.sponsorshipOutgoingRequests.name,
+            },
+            submodules: [
+              new SponsorshipRequestsModule(),
+            ],
           }),
         ],
       },

@@ -1321,7 +1321,8 @@
       "asset-update-title": "Asset update",
       "sale-creation-title": "Sale creation",
       "pre-issuance-upload-title": "Pre-issuance upload",
-      "incoming-withdrawal-title": "Incoming withdrawal"
+      "incoming-withdrawal-title": "Incoming withdrawal",
+      "incoming-sponsorship-title": "Incoming sponsorship"
     },
     "request-states": {
       "approved-state": "Approved",
@@ -2569,6 +2570,29 @@
       "first-name-lbl": "First name",
       "last-name-lbl": "Last name"
     },
+    "sponsorship-requests": {
+      "loading-msg": "Loading sponsorship requests…",
+      "loading-error-msg": "There was an error while loading.",
+      "details-title": "Sponsorship request",
+      "sponsor-business-header": "Sponsor business",
+      "consumer-business-header": "Consumer business",
+      "sponsor-asset-name-header": "Business asset name",
+      "sponsor-business-key": "Sponsor business",
+      "consumer-business-key": "Consumer business",
+      "sponsor-asset-name-key": "Business asset name",
+      "amount-key": "Amount",
+      "asset-code-header": "Asset code",
+      "amount-header": "Amount",
+      "request-state-header": "Request state",
+      "review-btn": "Review",
+      "no-history-title": "No request history",
+      "no-history-desc": "Here will be the list of sponsorship requests",
+      "request-id": "Request ID",
+      "approve-btn": "Approve",
+      "reject-btn": "Reject",
+      "request-rejected-msg": "Your request was successfully rejected",
+      "request-approved-msg": "Your request was successfully approved"
+    },
     "pay-page": {
       "pay-title": "Pay",
       "no-atomic-swap-title": "No such offer found",
@@ -2594,6 +2618,16 @@
       "total-amount": "Total amount",
       "create-contract-btn": "Create contract",
       "create-contract-successful": "Contract created successfully"
+    },
+    "sponsorship-page": {
+      "businesses-tab": "Businesses",
+      "incoming-requests-tab": "Incoming requests",
+      "outgoing-requests-tab": "Outgoing requests"
+    },
+    "request-status": {
+      "approved-incoming-msg": "This request was approved",
+      "pending-incoming-msg": "This request is waiting for your review. Please approve or reject it",
+      "permanently-rejected-incoming-msg": "This request was rejected permanently"
     }
   }
 }

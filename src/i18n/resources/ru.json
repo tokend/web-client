@@ -1325,7 +1325,8 @@
       "asset-update-title": "Обновление актива",
       "sale-creation-title": "Создание сейла",
       "pre-issuance-upload-title": "Загрузка предэмиссии",
-      "incoming-withdrawal-title": "Вывод активов"
+      "incoming-withdrawal-title": "Вывод активов",
+      "incoming-sponsorship-title": "Спонсортсво"
     },
     "request-states": {
       "approved-state": "Подтвержден",
@@ -2573,6 +2574,29 @@
       "first-name-lbl": "Имя",
       "last-name-lbl": "Фамилия"
     },
+    "sponsorship-requests": {
+      "loading-msg": "Загружаем ваши запросы…",
+      "loading-error-msg": "Произошла ошибка при загрузке.",
+      "details-title": "Запрос на спонсирование",
+      "sponsor-business-header": "Спонсирующий бизнес",
+      "consumer-business-header": "Спонисруемый бизнес",
+      "sponsor-asset-name-header": "Спонсирующий актив",
+      "sponsor-business-key": "Спонсирующий бизнес",
+      "consumer-business-key": "Спонисруемый бизнес",
+      "sponsor-asset-name-key": "Спонсирующий актив",
+      "amount-key": "Количество",
+      "asset-code-header": "Актив",
+      "amount-header": "Количество",
+      "request-state-header": "Статус",
+      "review-btn": "Рассмотреть",
+      "no-request-history-title": "Нет запросов",
+      "no-history-desc": "Здесь будет список ваших запросов на спонсирование",
+      "request-id": "Идентификатор запроса",
+      "approve-btn": "Подтвердить",
+      "reject-btn": "Отклонить",
+      "request-rejected-msg": "Запрос был отклонен",
+      "request-approved-msg": "Запрос подтвержден"
+    },
     "pay-page": {
       "pay-title": "Покупка",
       "no-atomic-swap-title": "Такое предложение не найдено",
@@ -2598,6 +2622,16 @@
       "total-amount": "Общее количество",
       "create-contract-btn": "Создать контракт",
       "create-contract-successful": "Контракт успешно создан"
+    },
+    "sponsorship-page": {
+      "businesses-tab": "Бизнесы",
+      "incoming-requests-tab": "Входящие запросы",
+      "outgoing-requests-tab": "Исходящие запросы"
+    },
+    "request-status": {
+      "approved-incoming-msg": "Запрос подтвержден",
+      "pending-incoming-msg": "Запрос ждет вашего рассмотрения. Пожалуйста подтвердите или отклоните этот запрос",
+      "permanently-rejected-incoming-msg": "Запрос отклонен навсегда"
     }
   }
 }

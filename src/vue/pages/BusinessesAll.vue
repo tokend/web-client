@@ -128,7 +128,7 @@ export default {
     }),
 
     isBusinessOwner () {
-      return this.currentBusiness.accountId === this.accountId
+      return Boolean(this.currentBusiness.accountId === this.accountId)
     },
   },
 
