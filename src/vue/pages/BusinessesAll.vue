@@ -43,10 +43,25 @@
         {{ 'businesses-all.business-details-title' | globalize }}
       </template>
 
-      <business-viewer
-        :business="currentBusiness"
-        @business-added="closeDrawerAndUpdateList"
-      />
+      <template v-if="isCustomerUiShown || isAccountGeneral">
+        <business-viewer
+          :business="currentBusiness"
+          @business-added="closeDrawerAndUpdateList"
+        />
+      </template>
+      <template v-else>
+        <business-attributes
+          :business="currentBusiness"
+        />
+        <template v-if="!isBusinessOwner">
+          <h3 class="businesses-all__bussiness-assets-title">
+            {{ 'businesses-all.business-assets-title' | globalize }}
+          </h3>
+          <business-assets-viewer
+            :business="currentBusiness"
+          />
+        </template>
+      </template>
     </drawer>
 
     <div class="businesses-all__requests-collection-loader">
@@ -68,6 +83,8 @@ import BusinessCard from './businesses-all/BusinessCard'
 import BusinessCardSkeleton from './businesses-all/BusinessCardSkeleton'
 import Drawer from '@/vue/common/Drawer'
 import BusinessViewer from './businesses-all/BusinessViewer'
+import BusinessAttributes from './businesses-all/BusinessAttributes'
+import BusinessAssetsViewer from './businesses-all/BusinessAssetsViewer'
 
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
@@ -88,6 +105,8 @@ export default {
     NoDataMessage,
     Drawer,
     BusinessViewer,
+    BusinessAttributes,
+    BusinessAssetsViewer,
   },
 
   data () {
@@ -97,13 +116,20 @@ export default {
       myBusiness: [],
       isDrawerShown: false,
       currentBusiness: {},
+      isMyBusiness: false,
     }
   },
 
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
+      isCustomerUiShown: vuexTypes.isCustomerUiShown,
+      isAccountGeneral: vuexTypes.isAccountGeneral,
     }),
+
+    isBusinessOwner () {
+      return Boolean(this.currentBusiness.accountId === this.accountId)
+    },
   },
 
   async created () {
@@ -139,7 +165,8 @@ export default {
     checkIsMyBusiness (currentBusiness) {
       return Boolean(this.myBusiness.find(business => {
         return business.id === currentBusiness.id
-      }))
+      })
+      )
     },
 
     setList (newList) {
@@ -153,8 +180,9 @@ export default {
     },
 
     selectItem (item) {
-      const isMyBusiness = this.checkIsMyBusiness(item)
-      if (isMyBusiness) {
+      this.isMyBusiness = this.checkIsMyBusiness(item)
+      // eslint-disable-next-line max-len
+      if (this.isMyBusiness && (this.isCustomerUiShown || this.isAccountGeneral)) {
         Bus.emit('businesses:setCurrentBusiness', {
           business: item,
           redirectTo: vueRoutes.assets,
@@ -244,5 +272,9 @@ $filter-field-to-filter-field-margin: 2rem;
 
 .businesses-all__no-data-message {
   margin-top: 4.8rem;
+}
+
+.businesses-all__bussiness-assets-title {
+  margin: 2rem 0;
 }
 </style>

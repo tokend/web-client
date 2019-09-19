@@ -768,7 +768,8 @@
       "customers": "Customers",
       "customers-list": "Customers list",
       "businesses": "Businesses",
-      "kyc-recovery": "KYC Recovery"
+      "kyc-recovery": "KYC Recovery",
+      "sponsorship": "Sponsorship"
     },
     "limits": {
       "explore-limits": "Explore limits",
@@ -1320,7 +1321,8 @@
       "asset-update-title": "Asset update",
       "sale-creation-title": "Sale creation",
       "pre-issuance-upload-title": "Pre-issuance upload",
-      "incoming-withdrawal-title": "Incoming withdrawal"
+      "incoming-withdrawal-title": "Incoming withdrawal",
+      "incoming-sponsorship-title": "Incoming sponsorship"
     },
     "request-states": {
       "approved-state": "Approved",
@@ -2528,7 +2530,8 @@
     "businesses-all": {
       "no-list-title": "No businesses here yet",
       "no-list-msg": "Here will be the list of businesses",
-      "business-details-title": "Business details"
+      "business-details-title": "Business details",
+      "business-assets-title": "Business assets"
     },
     "business-viewer": {
       "add-btn": "Add business",
@@ -2537,7 +2540,8 @@
     "business-attributes": {
       "id-key": "ID",
       "owner-key": "Owner",
-      "industry-key": "Industry"
+      "industry-key": "Industry",
+      "my-business-label": "It's your business"
     },
     "businesses-my": {
       "no-list-title": "No businesses here yet",
@@ -2566,6 +2570,29 @@
       "first-name-lbl": "First name",
       "last-name-lbl": "Last name"
     },
+    "sponsorship-requests": {
+      "loading-msg": "Loading sponsorship requests…",
+      "loading-error-msg": "There was an error while loading.",
+      "details-title": "Sponsorship request",
+      "sponsor-business-header": "Sponsor business",
+      "consumer-business-header": "Consumer business",
+      "sponsor-asset-name-header": "Business asset name",
+      "sponsor-business-key": "Sponsor business",
+      "consumer-business-key": "Consumer business",
+      "sponsor-asset-name-key": "Business asset name",
+      "amount-key": "Amount",
+      "asset-code-header": "Asset code",
+      "amount-header": "Amount",
+      "request-state-header": "Request state",
+      "review-btn": "Review",
+      "no-history-title": "No request history",
+      "no-history-desc": "Here will be the list of sponsorship requests",
+      "request-id": "Request ID",
+      "approve-btn": "Approve",
+      "reject-btn": "Reject",
+      "request-rejected-msg": "Your request was successfully rejected",
+      "request-approved-msg": "Your request was successfully approved"
+    },
     "pay-page": {
       "pay-title": "Pay",
       "no-atomic-swap-title": "No such offer found",
@@ -2576,6 +2603,31 @@
     },
     "asset-viewer": {
       "description-title": "Description"
+    },
+    "business-assets-viewer": {
+      "asset-name-th": "Asset name",
+      "number-of-holders-th": "Number of holders",
+      "sponsor-btn": "Sponsor",
+      "no-data-msg": "Business don't have any assets yet.",
+      "error-msg": "An error occurred while loading the list, please contact system owner to resolve the issue."
+    },
+    "sponsorship-form": {
+      "form-heading": "Sponsorship",
+      "asset-lbl": "Asset",
+      "amount-lbl": "Amount per 1 holder",
+      "total-amount": "Total amount",
+      "create-contract-btn": "Create contract",
+      "create-contract-successful": "Contract created successfully"
+    },
+    "sponsorship-page": {
+      "businesses-tab": "Businesses",
+      "incoming-requests-tab": "Incoming requests",
+      "outgoing-requests-tab": "Outgoing requests"
+    },
+    "request-status": {
+      "approved-incoming-msg": "This request was approved",
+      "pending-incoming-msg": "This request is waiting for your review. Please approve or reject it",
+      "permanently-rejected-incoming-msg": "This request was rejected permanently"
     }
   }
 }
