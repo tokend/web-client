@@ -31,9 +31,7 @@ export const actions = {
 
   async [types.APPROVE_OR_REJECT_REQUEST] (_, { requestId, action }) {
     await api.postWithSignature(`/integrations/sponsorship/contracts/${requestId}`, {
-      data: {
-        action: action,
-      },
+      action: action,
     })
   },
 }
