@@ -26,7 +26,7 @@
     "@mdi/font": "3.6.95",
     "@sentry/browser": "5.4.0",
     "@sentry/integrations": "5.4.1",
-    "@tokend/js-sdk": "1.10.2-rc.0",
+    "@tokend/js-sdk": "1.10.2-rc.1",
     "bignumber.js": "8.0.1",
     "card-validator": "6.1.0",
     "clipboard": "2.0.4",

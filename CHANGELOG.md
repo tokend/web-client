@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
+## [Unrealesed]
+#### Added
+- Swappable asset policy at create asset
+
 ## [1.10.2-rc.0] - 2019-09-16
 #### Added
 - New sale types

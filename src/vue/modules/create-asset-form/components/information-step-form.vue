@@ -137,7 +137,7 @@ export default {
       name: '',
       code: '',
       logo: null,
-      policies: 0,
+      policies: ASSET_POLICIES.swappable,
     },
     MIN_AMOUNT: config.MIN_AMOUNT,
     ASSET_POLICIES,
