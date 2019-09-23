@@ -30,36 +30,6 @@
         />
       </template>
 
-      <template v-else-if="viewMode === VIEW_MODES.viewSecretSeed">
-        <template slot="heading">
-          {{ 'security-page.secret-seed-title' | globalize }}
-        </template>
-        <div class="secret-seed">
-          <p class="secret-seed__description">
-            {{ 'security-page.secret-seed-desc' | globalize }}
-          </p>
-          <clipboard-field
-            :value="walletSeed"
-            :label="'security-page.secret-seed-title' | globalize"
-          />
-        </div>
-      </template>
-
-      <template v-else-if="viewMode === VIEW_MODES.viewNetworkPassphrase">
-        <template slot="heading">
-          {{ 'security-page.network-passphrase-title' | globalize }}
-        </template>
-        <div class="network-passphrase">
-          <p class="network-passphrase__description">
-            {{ 'security-page.network-passphrase-desc' | globalize }}
-          </p>
-          <clipboard-field
-            :value="api.networkDetails.networkPassphrase"
-            :label="'security-page.network-passphrase-title' | globalize"
-          />
-        </div>
-      </template>
-
       <template v-else-if="viewMode === VIEW_MODES.changePhoneNumber">
         <template slot="heading">
           <template v-if="isPhoneEnabled">
@@ -183,7 +153,6 @@
 
 <script>
 import SwitchField from '@/vue/fields/SwitchField'
-import ClipboardField from '@/vue/fields/ClipboardField'
 
 import Drawer from '@/vue/common/Drawer'
 import KeyViewer from '@/vue/common/KeyViewer'
@@ -195,7 +164,6 @@ import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { api } from '@/api'
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
 
@@ -209,8 +177,6 @@ const VIEW_MODES = {
   enableTfa: 'enableTfa',
   changePassword: 'changePassword',
   viewAccountId: 'viewAccountId',
-  viewSecretSeed: 'viewSecretSeed',
-  viewNetworkPassphrase: 'viewNetworkPassphrase',
   changePhoneNumber: 'changePhoneNumber',
   changeTelegramUsername: 'changeTelegramUsername',
   default: '',
@@ -222,7 +188,6 @@ export default {
     SwitchField,
     Drawer,
     KeyViewer,
-    ClipboardField,
     ChangePasswordForm,
     TfaForm,
     PhoneNumberForm,
@@ -237,8 +202,6 @@ export default {
     PhoneNumberFormPseudoModule,
     TelegramFormPseudoModule,
     DefaultQuoteAssetPseudoModule,
-    api,
-    walletSeed: '',
   }),
 
   computed: {
@@ -253,7 +216,6 @@ export default {
   async created () {
     try {
       await this.loadFactors()
-      this.walletSeed = await this.decryptSecretSeed()
     } catch (e) {
       ErrorHandler.processWithoutFeedback(e)
     }
@@ -262,7 +224,6 @@ export default {
   methods: {
     ...mapActions({
       loadFactors: vuexTypes.LOAD_FACTORS,
-      decryptSecretSeed: vuexTypes.DECRYPT_SECRET_SEED,
     }),
     showDrawer (viewMode) {
       this.viewMode = viewMode
