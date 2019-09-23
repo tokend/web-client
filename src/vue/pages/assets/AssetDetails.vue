@@ -101,7 +101,6 @@ import { base } from '@tokend/js-sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 
-import { ASSET_SUBTYPE } from '@/js/const/asset-subtypes.const'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import config from '@/config'
@@ -129,7 +128,6 @@ export default {
   data: _ => ({
     isBalanceCreating: false,
     EVENTS,
-    ASSET_SUBTYPE,
     config,
   }),
   computed: {

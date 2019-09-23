@@ -40,21 +40,19 @@ describe('Assets renderer', () => {
 
     describe('method', () => {
       describe('selectAsset', () => {
-        it('sets selectedAsset property to passed param, isUpdateMode property to false, and isDrawerShown property to true', () => {
+        it('sets selectedAsset property to passed param, isDrawerShown property to true', () => {
           const asset = new AssetRecord({ id: 'USD' }, [{
             asset: { code: 'USD' },
             balance: '1.000000',
           }])
 
           wrapper.setData({
-            isUpdateMode: true,
             isDrawerShown: false,
           })
 
           wrapper.vm.selectAsset(asset)
 
           expect(wrapper.vm.selectedAsset).to.deep.equal(asset)
-          expect(wrapper.vm.isUpdateMode).to.be.false
           expect(wrapper.vm.isDrawerShown).to.be.true
         })
       })
