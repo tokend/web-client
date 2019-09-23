@@ -19,9 +19,7 @@ import { DefaultQuoteAssetPseudoModule } from '@/modules-arch/pseudo-modules/def
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
 import { AssetExplorerPageModule } from '@/vue/pages/asset-explorer-page'
-import { BalancesPageModule } from '@/vue/pages/balances-page'
 import { AssetExplorerModule } from '@/vue/modules/assets/asset-explorer/module'
-import { BalanceExplorerModule } from '@/vue/modules/assets/balance-explorer/module'
 
 import { MyAssetsPageModule } from '@/vue/pages/my-assets-page-module'
 import { MyAssetsExplorerModule } from '@/vue/modules/assets/my-assets-explorer/module'
@@ -42,12 +40,6 @@ import { SponsorshipPageModule } from '@/vue/pages/sponsorship-page-module'
 import { SponsorshipOutgoingRequestsPageModule } from '@/vue/pages/sponsorship-outgoing-requests-page-module'
 
 export default {
-  importLanguageResource (lng) {
-    return {
-      'en': import('@/modules-arch/schemes/conto-en.json'),
-      'ru': import('@/modules-arch/schemes/conto-ru.json'),
-    }[lng]
-  },
   modules: [
     new CurrentBusinessIndicatorModule({
       isGeneralOnly: true,
@@ -139,17 +131,6 @@ export default {
             ],
             isGeneralOnly: true,
           }),
-          new BalancesPageModule({
-            routerEntry: {
-              path: '/assets/balances',
-              name: vueRoutes.balances.name,
-              meta: { pageNameTranslationId: 'pages-names.assets' },
-            },
-            submodules: [
-              new BalanceExplorerModule(),
-            ],
-            isGeneralOnly: true,
-          }),
           new MyAssetsPageModule({
             routerEntry: {
               path: '/assets/my-assets',
@@ -167,96 +148,6 @@ export default {
         ],
       },
     ),
-
-    // HINT: temp. disabled
-    // new SalesPageModule(
-    //   {
-    //     routerEntry: {
-    //       path: '/sales',
-    //       name: vueRoutes.sales.name,
-    //       meta: { pageNameTranslationId: 'pages-names.sales' },
-    //     },
-    //     menuButtonTranslationId: 'pages-names.sales',
-    //     menuButtonMdiName: 'trending-up',
-    //     isAutoRedirectToFirstChild: true,
-    //     submodules: [
-    //       new SalesListPageModule({
-    //         routerEntry: {
-    //           path: '/sales/all',
-    //           name: vueRoutes.investableSales.name,
-    //           props: {
-    //             default: true,
-    //             isUserSales: false,
-    //           },
-    //         },
-    //         isGeneralOnly: true,
-    //       }),
-    //       new SalesListOwnedPageModule({
-    //         routerEntry: {
-    //           path: '/sales/my',
-    //           name: vueRoutes.userOwnedSales.name,
-    //           props: {
-    //             default: true,
-    //             isUserSales: true,
-    //           },
-    //         },
-    //         isCorporateOnly: true,
-    //       }),
-    //       new CreateSaleFormModuleSimplified({
-    //         isCorporateOnly: true,
-    //       }),
-    //     ],
-    //   },
-    // ),
-
-    // new SaleDetailsPageModule(
-    //   {
-    //     routerEntry: {
-    //       path: '/sales/:id',
-    //       name: vueRoutes.saleDetails.name,
-    //       meta: { pageNameTranslationId: 'pages-names.sale-details' },
-    //       redirect: to => ({ ...vueRoutes.saleCampaign, params: to.params }),
-    //       props: true,
-    //     },
-    //     submodules: [
-    //       new SimplifySaleCampaignViewerPageModule({
-    //         routerEntry: {
-    //           path: '/sales/:id/campaign',
-    //           name: vueRoutes.saleCampaign.name,
-    //           props: true,
-    //         },
-    //         submodules: [
-    //           new SimplifySaleStateWidgetModule(),
-    //         ],
-    //       }),
-    //     ],
-    //   },
-    // ),
-
-    // new PollsPageModule(
-    //   {
-    //     routerEntry: {
-    //       path: '/polls',
-    //       name: vueRoutes.polls.name,
-    //       meta: { pageNameTranslationId: 'pages-names.polls' },
-    //     },
-    //     menuButtonTranslationId: 'pages-names.polls',
-    //     menuButtonMdiName: 'vote',
-    //     isAutoRedirectToFirstChild: true,
-    //     submodules: [
-    //       new PollsAllPageModule({
-    //         routerEntry: {
-    //           path: '/polls/all',
-    //           name: vueRoutes.allPolls.name,
-    //           props: true,
-    //         },
-    //       }),
-    //       new CreatePollFormModule({
-    //         isCorporateOnly: true,
-    //       }),
-    //     ],
-    //   },
-    // ),
 
     new AtomicSwapsPageModule(
       {

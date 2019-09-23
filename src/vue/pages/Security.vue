@@ -127,35 +127,6 @@
       </div>
     </template>
 
-    <template v-if="getModule().canRenderSubmodule(ShowSeedPseudoModule)">
-      <div class="security-page__row">
-        <p class="security-page__row-title">
-          {{ 'security-page.secret-seed-title' | globalize }}
-        </p>
-        <a
-          class="security-page__row-action"
-          @click="showDrawer(VIEW_MODES.viewSecretSeed)"
-        >
-          {{ 'security-page.view-secret-seed-btn' | globalize }}
-        </a>
-      </div>
-    </template>
-
-    <!-- eslint-disable-next-line max-len -->
-    <template v-if="getModule().canRenderSubmodule(ShowNetworkPassphrasePseudoModule)">
-      <div class="security-page__row">
-        <p class="security-page__row-title">
-          {{ 'security-page.network-passphrase-title' | globalize }}
-        </p>
-        <a
-          class="security-page__row-action"
-          @click="showDrawer(VIEW_MODES.viewNetworkPassphrase)"
-        >
-          {{ 'security-page.view-network-passphrase-btn' | globalize }}
-        </a>
-      </div>
-    </template>
-
     <!-- eslint-disable-next-line max-len -->
     <template v-if="getModule().canRenderSubmodule(PhoneNumberFormPseudoModule)">
       <div class="security-page__row">
@@ -229,9 +200,7 @@ import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
 
 import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-account-id-pseudo-module'
-import { ShowSeedPseudoModule } from '@/modules-arch/pseudo-modules/show-seed-pseudo-module'
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
-import { ShowNetworkPassphrasePseudoModule } from '@/modules-arch/pseudo-modules/show-network-passphrase-pseudo-module'
 import { PhoneNumberFormPseudoModule } from '@/modules-arch/pseudo-modules/phone-number-form-pseudo-module'
 import { TelegramFormPseudoModule } from '@/modules-arch/pseudo-modules/telegram-form-pseudo-module'
 import { DefaultQuoteAssetPseudoModule } from '@/modules-arch/pseudo-modules/default-quote-asset-pseudo-module'
@@ -264,9 +233,7 @@ export default {
     viewMode: VIEW_MODES.default,
     VIEW_MODES,
     ShowAccountIdPseudoModule,
-    ShowSeedPseudoModule,
     ChangePasswordPseudoModule,
-    ShowNetworkPassphrasePseudoModule,
     PhoneNumberFormPseudoModule,
     TelegramFormPseudoModule,
     DefaultQuoteAssetPseudoModule,

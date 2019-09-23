@@ -8,8 +8,6 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 const ROUTES_WITH_OWNER_FILTER = [
-  vueRoutes.polls.name,
-  vueRoutes.allPolls.name,
   vueRoutes.atomicSwapsExplore.name,
 ]
 

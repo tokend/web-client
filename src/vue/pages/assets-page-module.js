@@ -1,7 +1,5 @@
 import { PageModuleDescriptor } from '@/modules-arch/page-module-descriptor'
 import { AssetExplorerPageModule } from './asset-explorer-page'
-import { BalancesPageModule } from './balances-page'
-import { CreateAssetFormModule } from '@modules/create-asset-form/module'
 import { CreateAssetFormSimplifiedModule } from '@modules/create-asset-form-simplified/module'
 import { MyAssetsPageModule } from './my-assets-page-module'
 
@@ -12,8 +10,6 @@ export class AssetsPageModule extends PageModuleDescriptor {
       importComponentFn: _ => import('@/vue/pages/Assets'),
       allowedSubmodules: [
         AssetExplorerPageModule,
-        BalancesPageModule,
-        CreateAssetFormModule,
         CreateAssetFormSimplifiedModule,
         MyAssetsPageModule,
       ],

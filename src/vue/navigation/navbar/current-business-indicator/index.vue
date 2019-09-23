@@ -36,15 +36,7 @@ import { vuexTypes } from '@/vuex'
 const ROUTES_WITH_OWNER_FILTER = [
   vueRoutes.movements.name,
   vueRoutes.assets.name,
-  vueRoutes.balances.name,
   vueRoutes.assetsExplore.name,
-  vueRoutes.sales.name,
-  vueRoutes.saleDetails.name,
-  vueRoutes.saleCampaign.name,
-  vueRoutes.investableSales.name,
-  vueRoutes.userOwnedSales.name,
-  vueRoutes.polls.name,
-  vueRoutes.allPolls.name,
   vueRoutes.atomicSwaps.name,
   vueRoutes.atomicSwapsExplore.name,
 ]

@@ -55,7 +55,6 @@ class I18n {
           await require.ensure([], require => require('./resources/en')),
           await require.ensure([], require => require('./resources/en.terms')),
           await require.ensure([], require => require('./resources/en.pre-issuance-guide')),
-          await require.ensure([], require => require('./resources/en.countries')),
         )
         break
 
@@ -64,7 +63,6 @@ class I18n {
           await require.ensure([], require => require('./resources/ru')),
           await require.ensure([], require => require('./resources/ru.terms')),
           await require.ensure([], require => require('./resources/ru.pre-issuance-guide')),
-          await require.ensure([], require => require('./resources/ru.countries')),
         )
         break
 

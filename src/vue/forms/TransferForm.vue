@@ -94,18 +94,6 @@
             </div>
           </div>
 
-          <div
-            class="transfer__fee-box"
-            v-if="isFeesLoaded && formMixin.isDisabled &&
-              fees.isAny
-            "
-          >
-            <fees-renderer
-              :fees-collection="fees"
-              :paid-for-destination.sync="form.isPaidForRecipient"
-            />
-          </div>
-
           <div class="app__form-actions">
             <template v-if="formMixin.isConfirmationShown">
               <form-confirmation
@@ -150,11 +138,7 @@ import { vueRoutes } from '@/vue-router/routes'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import FeesMixin from '@/vue/common/fees/fees.mixin'
-import {
-  base,
-  FEE_TYPES,
-} from '@tokend/js-sdk'
+import { base } from '@tokend/js-sdk'
 import config from '@/config'
 import { api } from '@/api'
 import { Bus } from '@/js/helpers/event-bus'
@@ -177,7 +161,6 @@ export default {
   mixins: [
     FormMixin,
     IdentityGetterMixin,
-    FeesMixin,
   ],
   props: {
     assetToTransfer: { type: String, default: '' },
@@ -192,7 +175,6 @@ export default {
       subject: '',
       isPaidForRecipient: false,
     },
-    fees: {},
     view: {
       opts: {},
     },
@@ -201,7 +183,6 @@ export default {
     isFeesLoaded: false,
     vueRoutes,
     config,
-    FEE_TYPES,
   }),
   validations () {
     return {

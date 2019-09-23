@@ -8,17 +8,6 @@
       />
     </template>
 
-    <template v-if="getModule().canRenderSubmodule(MovementsTopBarReitModule)">
-      <submodule-importer
-        :submodule="getModule().getSubmodule(MovementsTopBarReitModule)"
-        :config="movementsTopBarReitConfig"
-        @asset-updated="updateAsset"
-        @withdrawn="withdrawalFiatModuleWithdrawn"
-        @deposited="depositFiatModuleDeposited"
-        @redeemed="redeemModuleSubmitted"
-      />
-    </template>
-
     <template v-if="getModule().canRenderSubmodule(MovementsHistoryModule)">
       <submodule-importer
         v-if="true"
@@ -40,11 +29,9 @@
 <script>
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
-import config from '@/config'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
-import { MovementsTopBarReitModule } from '@modules/movements-top-bar-reit/module'
 import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
@@ -59,15 +46,8 @@ export default {
   data: _ => ({
     MovementsHistoryModule,
     MovementsTopBarModule,
-    MovementsTopBarReitModule,
     asset: {},
     isLoadFailed: false,
-    movementsTopBarReitConfig: {
-      horizonURL: config.HORIZON_SERVER,
-      minAmount: config.MIN_AMOUNT,
-      maxAmount: config.MAX_AMOUNT,
-      decimalPoints: config.DECIMAL_POINTS,
-    },
     historyState: 0,
   }),
 
@@ -82,18 +62,6 @@ export default {
   methods: {
     updateAsset (asset) {
       this.asset = asset
-    },
-
-    withdrawalFiatModuleWithdrawn () {
-      this.emitUpdateList('movements:updateList')
-    },
-
-    depositFiatModuleDeposited () {
-      this.emitUpdateList('movements:updateList')
-    },
-
-    redeemModuleSubmitted () {
-      this.emitUpdateList('movements:updateList')
     },
 
     updateMovementsHistoryList () {

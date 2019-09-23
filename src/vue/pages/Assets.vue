@@ -5,8 +5,7 @@
       <template
         slot="extra"
         v-if="
-          getModule().canRenderSubmodule(CreateAssetFormModule) ||
-            getModule().canRenderSubmodule(CreateAssetFormSimplifiedModule)
+          getModule().canRenderSubmodule(CreateAssetFormSimplifiedModule)
         "
       >
         <button
@@ -21,19 +20,6 @@
         </button>
       </template>
     </top-bar>
-
-    <template v-if="getModule().canRenderSubmodule(CreateAssetFormModule)">
-      <drawer :is-shown.sync="isAssetDrawerShown">
-        <template slot="heading">
-          {{ 'assets-page.create-asset-title' | globalize }}
-        </template>
-
-        <submodule-importer
-          :submodule="getModule().getSubmodule(CreateAssetFormModule)"
-          @submitted="closeDrawerAndUpdateList()"
-        />
-      </drawer>
-    </template>
 
     <!-- eslint-disable-next-line max-len -->
     <template v-if="getModule().canRenderSubmodule(CreateAssetFormSimplifiedModule)">
@@ -63,10 +49,8 @@ import { vueRoutes } from '@/vue-router/routes'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
-import { CreateAssetFormModule } from '@modules/create-asset-form/module'
 import { CreateAssetFormSimplifiedModule } from '@modules/create-asset-form-simplified/module'
 import { AssetExplorerPageModule } from './asset-explorer-page'
-import { BalancesPageModule } from './balances-page'
 import { MyAssetsPageModule } from './my-assets-page-module'
 import UpdateList from '@/vue/mixins/update-list.mixin'
 
@@ -80,10 +64,8 @@ export default {
   mixins: [UpdateList],
   data: _ => ({
     vueRoutes,
-    CreateAssetFormModule,
     CreateAssetFormSimplifiedModule,
     AssetExplorerPageModule,
-    BalancesPageModule,
     MyAssetsPageModule,
     isAssetDrawerShown: false,
   }),

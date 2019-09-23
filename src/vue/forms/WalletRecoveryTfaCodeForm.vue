@@ -53,7 +53,7 @@ const FACTOR_TYPES = {
   email: 'email',
 }
 export default {
-  name: 'wallet-recovery-form',
+  name: 'wallet-recovery-tfa-code-form',
   mixins: [FormMixin],
   props: {
     error: {

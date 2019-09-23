@@ -60,11 +60,6 @@ export function buildRouter (store) {
         component: resolve => require(['@/vue/pages/IosInstallationGuide'], resolve),
       },
       {
-        path: '/pre-issuance-guide',
-        name: vueRoutes.preIssuanceGuide.name,
-        component: resolve => require(['@/vue/pages/PreIssuanceGuide'], resolve),
-      },
-      {
         path: '/pay',
         name: vueRoutes.pay.name,
         component: resolve => require(['@/vue/pages/Pay'], resolve),

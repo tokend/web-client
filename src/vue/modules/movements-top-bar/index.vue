@@ -30,40 +30,6 @@
         slot="extra"
       >
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)">
-          <!-- TODO, currently unverified users can't withdraw, wait for
-            devops initscripts update -->
-          <button
-            v-ripple
-            class="app__button-raised movements-top-bar__actions-btn"
-            @click="isWithdrawalDrawerShown = true"
-            :disabled="!asset.isWithdrawable || isAccountUnverified"
-            :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isWithdrawable) |
-              globalize({ asset: asset.code })
-            "
-          >
-            <i class="mdi mdi-download movements-top-bar__btn-icon" />
-            {{ 'op-pages.withdraw' | globalize }}
-          </button>
-        </template>
-
-        <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(DepositFormPseudoModule)">
-          <button
-            v-ripple
-            class="app__button-raised movements-top-bar__actions-btn"
-            @click="isDepositDrawerShown = true"
-            :disabled="!asset.isDepositable"
-            :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isDepositable) |
-              globalize({ asset: asset.code })
-            "
-          >
-            <i class="mdi mdi-upload movements-top-bar__btn-icon" />
-            {{ 'op-pages.deposit' | globalize }}
-          </button>
-        </template>
-
-        <!-- eslint-disable-next-line max-len -->
         <template v-if="getModule().canRenderSubmodule(TransferDrawerPseudoModule)">
           <button
             v-ripple
@@ -81,31 +47,12 @@
       </div>
     </top-bar>
 
-    <drawer :is-shown.sync="isWithdrawalDrawerShown">
-      <template slot="heading">
-        {{ 'withdrawal-form.withdrawal' | globalize }}
-      </template>
-      <withdrawal-form
-        :asset-code="asset.code"
-        @operation-submitted="closeWithdrawalDrawerAndEmitEvent()"
-      />
-    </drawer>
-
-    <drawer :is-shown.sync="isDepositDrawerShown">
-      <template slot="heading">
-        {{ 'deposit-form.deposit' | globalize }}
-      </template>
-      <submodule-importer
-        :submodule="getModule().getSubmodule(DepositFormPseudoModule)"
-        :asset-code="asset.code"
-      />
-    </drawer>
-
     <drawer :is-shown.sync="isTransferDrawerShown">
       <template slot="heading">
         {{ 'transfer-form.form-heading' | globalize }}
       </template>
-      <transfer-form
+      <submodule-importer
+        :submodule="getModule().getSubmodule(TransferDrawerPseudoModule)"
         @operation-submitted="$emit(EVENTS.movementsUpdateRequired)"
         :asset-to-transfer="asset.code"
       />
@@ -121,12 +68,8 @@ import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
 import SelectField from '@/vue/fields/SelectField'
 
-import WithdrawalForm from '@/vue/forms/WithdrawalForm'
-import TransferForm from '@/vue/forms/TransferForm'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
-import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
-import { DepositFormPseudoModule } from '@/modules-arch/pseudo-modules/deposit-form-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { vueRoutes } from '@/vue-router/routes'
 
@@ -136,8 +79,6 @@ const EVENTS = {
 }
 
 const ASSET_POLICIES_STR = {
-  isDepositable: 'isDepositable',
-  isWithdrawable: 'isWithdrawable',
   isTransferable: 'isTransferable',
 }
 
@@ -147,18 +88,11 @@ export default {
     SelectField,
     TopBar,
     Drawer,
-    WithdrawalForm,
-    TransferForm,
     SubmoduleImporter,
   },
   data: _ => ({
     isInitialized: false,
     isTransferDrawerShown: false,
-    isReedemDrawerShown: false,
-    isDepositDrawerShown: false,
-    isWithdrawalDrawerShown: false,
-    WithdrawalDrawerPseudoModule,
-    DepositFormPseudoModule,
     TransferDrawerPseudoModule,
     asset: {},
     EVENTS,
@@ -221,23 +155,9 @@ export default {
     getMessageIdForPolicy (policy) {
       let messageId = ''
       if (!this.asset[policy]) {
-        if (policy === ASSET_POLICIES_STR.isDepositable) {
-          messageId = 'op-pages.not-depositable-msg'
-        } else if (policy === ASSET_POLICIES_STR.isWithdrawable) {
-          if (this.isAccountUnverified) {
-            messageId = 'op-pages.unverified-cant-do-msg'
-          } else {
-            messageId = 'op-pages.not-withdrawable-msg'
-          }
-        } else if (policy === ASSET_POLICIES_STR.isTransferable) {
-          messageId = 'op-pages.not-transferable-msg'
-        }
+        messageId = 'op-pages.not-transferable-msg'
       }
       return messageId
-    },
-    closeWithdrawalDrawerAndEmitEvent () {
-      this.isWithdrawalDrawerShown = false
-      this.$emit(EVENTS.movementsUpdateRequired)
     },
     getBalance () {
       const balance = +this.accountBalanceByCode(this.asset.code).balance

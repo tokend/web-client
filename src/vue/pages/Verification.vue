@@ -86,7 +86,6 @@ import config from '@/config'
 
 import { VerificationCorporatePageModule } from './verification-corporate-page-module'
 import { VerificationGeneralPageModule } from './verification-general-page-module'
-import { VerificationGeneralAdvancedPageModule } from './verification-general-advanced-page-module'
 
 // The guard doesn't allow the user to visit a verification page
 // if he/she has already sent the verification request, and the admin
@@ -139,7 +138,6 @@ export default {
     config,
     VerificationCorporatePageModule,
     VerificationGeneralPageModule,
-    VerificationGeneralAdvancedPageModule,
   }),
 
   computed: {

@@ -11,9 +11,7 @@ import moment from 'moment'
 
 import { extendStoreWithScheme } from '@/vuex'
 import { buildRouter } from '@/vue-router'
-import { tableScrollShadow } from '@/vue/directives/tableScrollShadow'
 import { ripple } from '@/vue/directives/ripple'
-import { tooltip } from '@/vue/directives/tooltip'
 import { i18n } from '@/i18n'
 import { globalize } from '@/vue/filters/globalize'
 import { globalizeCountry } from './vue/filters/globalizeCountry'
@@ -53,9 +51,7 @@ async function init () {
   Vue.config.productionTip = false
   Vue.use(Vuelidate)
   Vue.use(VueResource)
-  Vue.directive('table-scroll-shadow', tableScrollShadow)
   Vue.directive('ripple', ripple)
-  Vue.directive('tooltip', tooltip)
   Vue.filter('globalize', globalize)
   Vue.filter('globalizeCountry', globalizeCountry)
   Vue.filter('formatDate', formatDate)
