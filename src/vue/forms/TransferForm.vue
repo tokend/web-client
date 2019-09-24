@@ -198,20 +198,26 @@ export default {
       vuexTypes.accountId,
       vuexTypes.transferableAssetsBalancesByOwner,
       vuexTypes.accountBalanceByCode,
+      vuexTypes.isBusinessToBrowse,
+      vuexTypes.businessToBrowse,
     ]),
     balance () {
       return this.accountBalanceByCode(this.form.asset.code)
     },
     assets () {
-      if (this.$route && this.$route.query && this.$route.query.owner) {
-        return this.transferableAssetsBalancesByOwner(this.$route.query.owner)
-          .filter(i => +i.balance > 0)
-          .map(i => i.asset)
+      let accountId = ''
+
+      if (this.isBusinessToBrowse) {
+        accountId = this.$route && this.$route.query && this.$route.query.owner
+          ? this.$route.query.owner
+          : this.businessToBrowse.accountId
       } else {
-        return this.transferableAssetsBalancesByOwner(this.accountId)
-          .filter(i => +i.balance > 0)
-          .map(i => i.asset)
+        accountId = this.accountId
       }
+
+      return this.transferableAssetsBalancesByOwner(accountId)
+        .filter(i => +i.balance > 0)
+        .map(i => i.asset)
     },
   },
   async created () {
