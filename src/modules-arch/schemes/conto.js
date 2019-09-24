@@ -21,8 +21,6 @@ import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
 import { AssetExplorerPageModule } from '@/vue/pages/asset-explorer-page'
 import { AssetExplorerModule } from '@/vue/modules/assets/asset-explorer/module'
 
-import { MyAssetsPageModule } from '@/vue/pages/my-assets-page-module'
-import { MyAssetsExplorerModule } from '@/vue/modules/assets/my-assets-explorer/module'
 import { CustomersListPageModule } from '@/vue/pages/customers-list-page-module'
 import { BusinessesPageModule } from '@/vue/pages/businesses-page'
 import { BusinessesAllPageModule } from '@/vue/pages/businesses-all-page-module'
@@ -129,18 +127,6 @@ export default {
             submodules: [
               new AssetExplorerModule(),
             ],
-            isGeneralOnly: true,
-          }),
-          new MyAssetsPageModule({
-            routerEntry: {
-              path: '/assets/my-assets',
-              name: vueRoutes.myAssets.name,
-              meta: { pageNameTranslationId: 'pages-names.assets' },
-            },
-            submodules: [
-              new MyAssetsExplorerModule(),
-            ],
-            isCorporateOnly: true,
           }),
           new CreateAssetFormSimplifiedModule({
             isCorporateOnly: true,

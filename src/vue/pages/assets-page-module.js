@@ -1,7 +1,6 @@
 import { PageModuleDescriptor } from '@/modules-arch/page-module-descriptor'
 import { AssetExplorerPageModule } from './asset-explorer-page'
 import { CreateAssetFormSimplifiedModule } from '@modules/create-asset-form-simplified/module'
-import { MyAssetsPageModule } from './my-assets-page-module'
 
 export class AssetsPageModule extends PageModuleDescriptor {
   constructor (opts = {}) {
@@ -11,7 +10,6 @@ export class AssetsPageModule extends PageModuleDescriptor {
       allowedSubmodules: [
         AssetExplorerPageModule,
         CreateAssetFormSimplifiedModule,
-        MyAssetsPageModule,
       ],
     })
   }
