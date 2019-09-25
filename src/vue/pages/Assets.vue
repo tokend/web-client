@@ -50,8 +50,6 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import { CreateAssetFormSimplifiedModule } from '@modules/create-asset-form-simplified/module'
-import { AssetExplorerPageModule } from './asset-explorer-page'
-import { MyAssetsPageModule } from './my-assets-page-module'
 import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
@@ -65,8 +63,6 @@ export default {
   data: _ => ({
     vueRoutes,
     CreateAssetFormSimplifiedModule,
-    AssetExplorerPageModule,
-    MyAssetsPageModule,
     isAssetDrawerShown: false,
   }),
   computed: {

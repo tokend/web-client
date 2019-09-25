@@ -3,13 +3,11 @@
     <top-bar>
       <template slot="main">
         <router-link
-          v-if="getModule().canRenderSubmodule(SecurityPageModule)"
           :to="vueRoutes.security"
         >
           <span>{{ 'settings-page.security-tab' | globalize }}</span>
         </router-link>
         <router-link
-          v-if="getModule().canRenderSubmodule(VerificationPageModule)"
           :to="vueRoutes.verification"
         >
           <span>{{ verificationTabId | globalize }}</span>
@@ -29,8 +27,6 @@ import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
-import { VerificationPageModule } from '@/vue/pages/verification-page-module'
-import { SecurityPageModule } from '@/vue/pages/security-page-module'
 
 export default {
   name: 'settings',
@@ -39,8 +35,6 @@ export default {
   },
   data: _ => ({
     vueRoutes,
-    VerificationPageModule,
-    SecurityPageModule,
   }),
   computed: {
     ...mapGetters({
