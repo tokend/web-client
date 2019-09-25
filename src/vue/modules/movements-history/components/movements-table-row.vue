@@ -1,6 +1,11 @@
 <template>
   <tbody class="movements-table-row">
-    <tr class="movements-table-row__brief">
+    <tr
+      class="movements-table-row__brief"
+      :class="isCustomerMovements
+        ? 'movements-table-row__brief-customer'
+        : 'movements-table-row__brief--with-shadow'
+      ">
       <td
         class="movements-table-row__cell
                movements-table-row__cell--bold
@@ -11,6 +16,7 @@
         {{ movement.effect | effectTypeTranslationId | globalize }}
       </td>
       <td
+        v-if="!isCustomerMovements"
         class="movements-table-row__cell"
         :title="movement.operationDetails
           | operationTypeTranslationId
@@ -38,6 +44,7 @@
       >
         <button
           class="movements-table-row__btn"
+          :class="{'movements-table-row__btn--small': isCustomerMovements}"
           @click="isAttributesViewerShown = !isAttributesViewerShown"
         >
           <i
@@ -50,12 +57,16 @@
 
     <tr
       v-if="isAttributesViewerShown"
-      class="movements-table-row__attributes"
+      :class="movements-table-row__attributes"
     >
-      <td colspan="5">
-        <div class="movements-table-row__attributes-viewer-wrp">
+      <td :colspan="isCustomerMovements ? 4 : 5">
+        <!-- eslint-disable max-len -->
+        <div
+          class="movements-table-row__attributes-viewer-wrp"
+          :class="{'movements-table-row__attributes-viewer-wrp--with-shadow': !isCustomerMovements}">
           <movement-attributes-viewer :movement="movement" />
         </div>
+        <!-- eslint-enable max-len -->
       </td>
     </tr>
   </tbody>
@@ -102,6 +113,10 @@ export default {
 
   props: {
     movement: { type: Movement, required: true },
+    isCustomerMovements: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data: () => ({
@@ -118,7 +133,9 @@ export default {
 .movements-table-row__brief {
   background-color: $col-block-bg;
 
-  @include box-shadow;
+  &--with-shadow {
+    @include box-shadow;
+  }
 }
 
 .movements-table-row__cell {
@@ -174,6 +191,11 @@ export default {
   &:active {
     background-color: $movements-table-row-btn-active-bg;
   }
+
+  &--small {
+    width: 2rem;
+    height: 2.2rem;
+  }
 }
 
 .movements-table-row__toggle-icon {
@@ -187,12 +209,14 @@ export default {
 .movements-table-row__attributes-viewer-wrp {
   background: $col-block-bg;
   padding:
-    0.75rem $movements-table-cell-width-expand-btn-wrp
+    0.75rem $movements-table-cell-side-padding
     0.7rem $movements-table-cell-side-padding;
   margin-top: -0.6rem;
   position: relative;
 
-  @include box-shadow();
+  &--with-shadow {
+    @include box-shadow();
+  }
 
   &:before {
     // HACK: to cover sticking out shadow at the top
@@ -205,6 +229,18 @@ export default {
     left: 0;
     right: 0;
     transform: translateY(-50%);
+  }
+}
+
+.movements-table-row__brief-customer {
+  .movements-table-row__cell {
+    border-top: 0.1rem solid darken($col-button-flat-disabled-txt, 5%);
+    padding: 1.4rem $movements-table-cell-side-padding
+      0.7rem $movements-table-cell-side-padding;
+
+    &--iconed {
+      padding-left: $movements-table-cell-icon-padding;
+    }
   }
 }
 </style>

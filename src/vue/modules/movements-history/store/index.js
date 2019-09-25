@@ -3,7 +3,6 @@ import { Movement } from '../wrappers/movement'
 import { types } from './types'
 import { api } from '@/api'
 import { vuexTypes } from '@/vuex'
-import _isEmpty from 'lodash/isEmpty'
 
 export const state = {
   movements: [],
@@ -19,31 +18,24 @@ export const mutations = {
 }
 
 export const actions = {
-  [types.LOAD_MOVEMENTS] ({ rootGetters }, assetCode) {
-    const balance = rootGetters[vuexTypes.accountBalanceByCode](assetCode)
-
-    if (_isEmpty(balance)) {
-      throw new Error(`No balance found for ${assetCode}`)
-    }
+  [types.LOAD_MOVEMENTS] ({ rootGetters }, filters) {
+    const accountId = filters.accountId
+      ? filters.accountId
+      : rootGetters[vuexTypes.accountId]
 
     return api.getWithSignature('/v3/history', {
       page: {
         order: 'desc',
       },
       filter: {
-        account: rootGetters[vuexTypes.accountId],
-        balance: balance.id,
+        asset: filters.assetCode,
+        account: accountId,
       },
       include: ['effect', 'operation.details'],
     })
   },
 
   [types.LOAD_SHARE_MOVEMENTS] ({ rootGetters }, assetCode) {
-    const balance = rootGetters[vuexTypes.accountBalanceByCode](assetCode)
-    if (_isEmpty(balance)) {
-      throw new Error(`No balance found for ${assetCode}`)
-    }
-
     return api.getWithSignature('/v3/movements', {
       page: {
         order: 'desc',

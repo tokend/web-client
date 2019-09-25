@@ -5,7 +5,7 @@
              movements-empty-list-placeholder__no-data"
     >
       <td
-        colspan="5"
+        :colspan="isCustomerMovements ? 4 : 5"
         class="movements-empty-list-placeholder__cell--align-center"
       >
         {{ 'movements-history.no-movements-msg' | globalize }}
@@ -17,6 +17,12 @@
 <script>
 export default {
   name: 'movements-empty-list-placeholder',
+  props: {
+    isCustomerMovements: {
+      type: Boolean,
+      default: false,
+    },
+  },
 }
 </script>
 

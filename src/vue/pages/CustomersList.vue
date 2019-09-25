@@ -5,9 +5,7 @@
         :customers-list="list"
         :is-loaded="isLoaded"
         :is-load-failed="isLoadFailed"
-        @details-button-clicked="
-          (customerToBrowse = $event) && (isDrawerShown = true)
-        "
+        @details-button-clicked="setCustomerToBrowse($event)"
       />
     </div>
 
@@ -28,11 +26,32 @@
         :customer="customerToBrowse"
         @close-drawer="isDrawerShown = false"
       />
+
+      <template v-if="assetsCodes.length">
+        <div class="customers-list__user-movements-history-select">
+          <select-field
+            :value="assetCode"
+            @input="setAssetCode"
+            class="app__select"
+          >
+            <option
+              v-for="asset in assetsCodes"
+              :key="asset"
+              :value="asset"
+            >
+              {{ assetByCode(asset).name }}
+            </option>
+          </select-field>
+        </div>
+      </template>
+
       <submodule-importer
-        v-if="getModule().canRenderSubmodule(UserMovementsHistoryModule)"
-        :submodule="getModule().getSubmodule(UserMovementsHistoryModule)"
+        v-if="getModule().canRenderSubmodule(MovementsHistoryModule)"
+        :submodule="getModule().getSubmodule(MovementsHistoryModule)"
         :customer="customerToBrowse"
+        :asset-code="assetCode"
         :key="`user-movements-history`"
+        class="customers-list__user-movements-history"
       >
         <loader
           slot="loader"
@@ -44,24 +63,25 @@
 </template>
 
 <script>
-import { ErrorHandler } from '@/js/helpers/error-handler'
-
-import { api } from '@/api'
-import { mapGetters } from 'vuex'
-import { vuexTypes } from '@/vuex'
-import { UserMovementsHistoryModule } from '@/vue/modules/user-movements-history/module'
-
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import Loader from '@/vue/common/Loader'
 
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import Drawer from '@/vue/common/Drawer'
+import SelectField from '@/vue/fields/SelectField'
+import _isEmpty from 'lodash/isEmpty'
 
-import { CustomerRecord } from '@/js/records/entities/customer.record'
 import CustomerAttributes from './customers-list/CustomerAttributes'
 import CustomersTable from './customers-list/CustomersTable'
 import { Bus } from '@/js/helpers/event-bus'
 import { errors } from '@tokend/js-sdk'
+import { CustomerRecord } from '@/js/records/entities/customer.record'
+import { ErrorHandler } from '@/js/helpers/error-handler'
+
+import { api } from '@/api'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
+import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 
 export default {
   name: 'customers-list',
@@ -73,12 +93,14 @@ export default {
     CustomersTable,
     SubmoduleImporter,
     Loader,
+    SelectField,
   },
 
   data () {
     return {
-      UserMovementsHistoryModule,
+      MovementsHistoryModule,
       list: [],
+      assetCode: '',
       isLoaded: false,
       isLoadFailed: false,
       isDrawerShown: false,
@@ -87,7 +109,18 @@ export default {
   },
 
   computed: {
-    ...mapGetters([vuexTypes.accountId]),
+    ...mapGetters([
+      vuexTypes.accountId,
+      vuexTypes.assetByCode,
+    ]),
+
+    assetsCodes () {
+      if (!_isEmpty(this.customerToBrowse)) {
+        return this.customerToBrowse.balances.map(item => item.assetCode)
+      } else {
+        return []
+      }
+    },
   },
 
   created () {
@@ -141,6 +174,16 @@ export default {
     reloadList () {
       return this.$refs.listCollectionLoader.loadFirstPage()
     },
+
+    setAssetCode (assetCode) {
+      this.assetCode = assetCode
+    },
+
+    setCustomerToBrowse ($event) {
+      this.customerToBrowse = $event
+      this.assetCode = this.assetsCodes[0]
+      this.isDrawerShown = true
+    },
   },
 }
 </script>
@@ -148,5 +191,11 @@ export default {
 <style lang="scss">
 .customers-list__loader {
   margin-top: 1rem;
+}
+
+.customers-list__user-movements-history-select {
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+  padding: 0 1.6rem;
 }
 </style>

@@ -1,5 +1,5 @@
 import { PageModuleDescriptor } from '@/modules-arch/page-module-descriptor'
-import { UserMovementsHistoryModule } from '@modules/user-movements-history/module'
+import { MovementsHistoryModule } from '@modules/movements-history/module'
 
 export class CustomersListPageModule extends PageModuleDescriptor {
   constructor (opts = {}) {
@@ -7,7 +7,7 @@ export class CustomersListPageModule extends PageModuleDescriptor {
       ...opts,
       importComponentFn: _ => import('@/vue/pages/CustomersList'),
       allowedSubmodules: [
-        UserMovementsHistoryModule,
+        MovementsHistoryModule,
       ],
     })
   }

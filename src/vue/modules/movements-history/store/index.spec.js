@@ -89,7 +89,7 @@ describe('movements-history.module', () => {
           },
           filter: {
             account: 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
-            balance: 'BDPFDXJAL6UY53L52NNWPD7RTAO4EVZL55SWHNYVYJQ44BOEIQKL4FOJ',
+            asset: 'BTC',
           },
           include: ['effect', 'operation.details'],
         }
@@ -98,13 +98,11 @@ describe('movements-history.module', () => {
           {
             rootGetters: {
               accountId,
-              accountBalanceByCode: () => ({
-                id: 'BDPFDXJAL6UY53L52NNWPD7RTAO4EVZL55SWHNYVYJQ44BOEIQKL4FOJ',
-                assetCode: 'BTC',
-              }),
             },
           },
-          assetCode
+          {
+            assetCode,
+          }
         )
 
         expect(api.getWithSignature)
