@@ -57,7 +57,7 @@
 
     <tr
       v-if="isAttributesViewerShown"
-      :class="movements-table-row__attributes"
+      class="movements-table-row__attributes"
     >
       <td :colspan="isCustomerMovements ? 4 : 5">
         <!-- eslint-disable max-len -->
