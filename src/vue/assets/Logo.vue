@@ -6,7 +6,7 @@
 
 <script>
 import { vueRoutes } from '@/vue-router/routes'
-import { SchemeRegistry } from '@/modules-arch/scheme-registry'
+// import { SchemeRegistry } from '@/modules-arch/scheme-registry'
 
 const DEFAULT_LOGO_URL = '/static/conto-logo.png'
 
@@ -17,7 +17,7 @@ export default {
 
   computed: {
     logoUrl () {
-      return SchemeRegistry.current.appLogoUrl || DEFAULT_LOGO_URL
+      return DEFAULT_LOGO_URL
     },
   },
 }

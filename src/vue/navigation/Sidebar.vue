@@ -20,7 +20,7 @@
     >
       <section class="sidebar__logo-section">
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getScheme().canRenderModule(CurrentBusinessIndicatorModule)">
+        <template v-if="false">
           <div class="navbar__current-business-indicator">
             <!-- eslint-disable-next-line max-len -->
             <submodule-importer :submodule="getScheme().findModule(CurrentBusinessIndicatorModule)">
@@ -43,7 +43,7 @@
           </router-link>
         </template>
 
-        <template v-if="getScheme().canRenderModule(BusinessOwnershipModule)">
+        <template v-if="false">
           <!-- eslint-disable-next-line max-len -->
           <submodule-importer :submodule="getScheme().findModule(BusinessOwnershipModule)" />
         </template>
@@ -57,32 +57,128 @@
 
       <section class="sidebar__links-section">
         <nav
-          v-for="[sectionName, menuItems] of Object.entries(sectionsToRender)"
-          :key="sectionName"
           class="sidebar__links-group"
         >
-          <p
-            v-if="sectionName !== DEFAULT_SECTION_NAME"
-            class="sidebar__links-group-title"
-          >
-            {{ sectionName | globalize }}
-          </p>
-
           <router-link
-            v-for="item in menuItems"
-            :key="item.menuButtonTranslationId"
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
-            :to="item.routerEntry.path"
+            :to="vueRoutes.customers"
             tag="a"
           >
             <i
-              class="sidebar__link-icon"
-              :class="`mdi mdi-${item.menuButtonMdiName}`"
+              class="sidebar__link-icon mdi mdi-account"
             />
             <span>
-              {{ item.menuButtonTranslationId | globalize }}
+              {{ 'pages-names.customers' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            :to="vueRoutes.businesses"
+            tag="a"
+          >
+            <i
+              class="sidebar__link-icon mdi mdi-domain"
+            />
+            <span>
+              {{ 'pages-names.businesses' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            :to="vueRoutes.assets"
+            tag="a"
+          >
+            <i
+              class="sidebar__link-icon mdi mdi-coins"
+            />
+            <span>
+              {{ 'pages-names.assets' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            :to="vueRoutes.atomicSwaps"
+            tag="a"
+          >
+            <i
+              class="sidebar__link-icon mdi mdi-swap-horizontal"
+            />
+            <span>
+              {{ 'pages-names.atomic-swaps' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            :to="vueRoutes.movements"
+            tag="a"
+          >
+            <i
+              class="sidebar__link-icon mdi mdi-menu"
+            />
+            <span>
+              {{ 'pages-names.movements' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            :to="vueRoutes.registerOfShares"
+            tag="a"
+          >
+            <i
+              class="sidebar__link-icon mdi mdi-book-open"
+            />
+            <span>
+              {{ 'pages-names.register-of-shares' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            :to="vueRoutes.sponsorship"
+            tag="a"
+          >
+            <i
+              class="sidebar__link-icon mdi mdi-account-group"
+            />
+            <span>
+              {{ 'pages-names.sponsorship' | globalize }}
+            </span>
+          </router-link>
+        </nav>
+        <nav
+          class="sidebar__links-group"
+        >
+          <p
+            class="sidebar__links-group-title"
+          >
+            {{ "sidebar.section-account" | globalize }}
+          </p>
+
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            :to="vueRoutes.settings"
+            tag="a"
+          >
+            <i
+              class="sidebar__link-icon mdi mdi-account-settings"
+            />
+            <span>
+              {{ 'pages-names.settings' | globalize }}
             </span>
           </router-link>
         </nav>
@@ -105,7 +201,6 @@ import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 
 import config from '@/config'
-import { SchemeRegistry } from '@/modules-arch/scheme-registry'
 
 import { CurrentBusinessIndicatorModule } from '@/vue/navigation/navbar/current-business-indicator/module'
 import { BusinessOwnershipModule } from '@/vue/navigation/navbar/business-ownership/module'
@@ -134,15 +229,19 @@ export default {
   computed: {
     ...mapGetters({
       isAccountCorporate: vuexTypes.isAccountCorporate,
+      isAccountGeneral: vuexTypes.isAccountGeneral,
     }),
-    sectionsToRender () {
-      const sections = this.groupPagesBySections(SchemeRegistry.current.pages)
-      const filteredSections = this.filterUnrenderedSections(sections)
-      return filteredSections
-    },
     schemeLabel () {
-      return SchemeRegistry.current.sidebarLabel
+      //  return SchemeRegistry.current.sidebarLabel
+      return ''
     },
+    isAccessibleForGeneral () {
+      return this.isAccountCorporate
+    },
+
+  },
+
+  created () {
   },
 
   methods: {
@@ -152,42 +251,6 @@ export default {
 
     closeSidebar () {
       this.isOpened = false
-    },
-
-    groupPagesBySections (pages) {
-      const result = { [DEFAULT_SECTION_NAME]: [] }
-
-      for (const item of pages) {
-        const translationId = item.menuSectionTranslationId
-        if (!translationId) {
-          result[DEFAULT_SECTION_NAME].push(item)
-        } else {
-          if (!result[translationId]) {
-            result[translationId] = []
-          }
-          result[translationId].push(item)
-        }
-      }
-
-      return result
-    },
-
-    filterUnrenderedSections (sections) {
-      const result = { ...sections }
-
-      for (const [key, value] of Object.entries(result)) {
-        const filteredValue = value
-          .filter(item => item.menuButtonTranslationId)
-          .filter(item => item.isAccessible)
-
-        if (filteredValue.length) {
-          result[key] = filteredValue
-        } else {
-          delete result[key]
-        }
-      }
-
-      return result
     },
   },
 }
