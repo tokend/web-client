@@ -1,24 +1,26 @@
 <template>
   <div class="movements">
-    <template v-if="getModule().canRenderSubmodule(MovementsTopBarModule)">
-      <submodule-importer
-        :submodule="getModule().getSubmodule(MovementsTopBarModule)"
-        @asset-updated="updateAsset"
-        @movements-update-required="emitUpdateList('movements:updateList')"
-      />
-    </template>
+    <movements-top-bar
+      @asset-code-updated="updateAssetCode"
+      @movements-update-required="emitUpdateList('movements:updateList')"
+    />
 
-    <movements-history-module
-      v-if="!isLoadFailed"
-      :asset-code="asset.code"
+    <movements-history
+      v-if="assetCode"
+      :asset-code="assetCode"
       :key="`movements-history-state-${historyState}`"
     />
 
     <no-data-message
-      v-else-if="isLoadFailed"
+      v-else-if="!assetCode"
       icon-name="trending-up"
       :title="'op-pages.no-data-title' | globalize"
       :message="'op-pages.no-data-msg' | globalize"
+    />
+
+    <loader
+      v-else
+      message-id="op-pages.assets-loading-msg"
     />
   </div>
 </template>
@@ -26,25 +28,24 @@
 <script>
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
-import MovementsHistoryModule from '@/vue/modules/movements-history/index'
-import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
+import MovementsHistory from '@/vue/modules/movements-history'
+import MovementsTopBar from '@modules/movements-top-bar'
 import UpdateList from '@/vue/mixins/update-list.mixin'
+import Loader from '@/vue/common/Loader'
 
 export default {
   name: 'movements-page',
   components: {
     NoDataMessage,
-    SubmoduleImporter,
-    MovementsHistoryModule,
+    MovementsTopBar,
+    MovementsHistory,
+    Loader,
   },
 
   mixins: [UpdateList],
 
   data: _ => ({
-    MovementsTopBarModule,
-    asset: {},
-    isLoadFailed: false,
+    assetCode: '',
     historyState: 0,
   }),
 
@@ -57,8 +58,8 @@ export default {
   },
 
   methods: {
-    updateAsset (asset) {
-      this.asset = asset
+    updateAssetCode (assetCode) {
+      this.assetCode = assetCode
     },
 
     updateMovementsHistoryList () {

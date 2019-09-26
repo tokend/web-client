@@ -1,24 +1,23 @@
-import { SponsorshipRequest } from '../wrappers/sponsorship-request'
+import { SponsorshipRequest } from '@/vue/modules/requests/sponsorship-requests/wrappers/sponsorship-request'
 
-import { types } from './types'
 import { api } from '@/api'
-import { vuexTypes } from '@/vuex'
+import { vuexTypes } from './types'
 
 export const state = {
   requests: [],
 }
 
 export const mutations = {
-  [types.SET_REQUESTS] (state, requests) {
+  [vuexTypes.SET_SPONSORSHIP_REQUESTS] (state, requests) {
     state.requests = requests
   },
-  [types.CONCAT_REQUESTS] (state, requests) {
+  [vuexTypes.CONCAT_SPONSORSHIP_REQUESTS] (state, requests) {
     state.requests = state.requests.concat(requests)
   },
 }
 
 export const actions = {
-  [types.LOAD_REQUESTS] ({ rootGetters }, isIncomingRequests) {
+  [vuexTypes.LOAD_SPONSORSHIP_REQUESTS] ({ rootGetters }, isIncomingRequests) {
     return api.getWithSignature('/integrations/sponsorship/contracts', {
       filter: {
         ...(isIncomingRequests
@@ -29,7 +28,8 @@ export const actions = {
     })
   },
 
-  async [types.APPROVE_OR_REJECT_REQUEST] (_, { requestId, action }) {
+  // eslint-disable-next-line max-len
+  async [vuexTypes.APPROVE_OR_REJECT_SPONSORSHIP_REQUEST] (_, { requestId, action }) {
     await api.postWithSignature(`/integrations/sponsorship/contracts/${requestId}`, {
       action: action,
     })
@@ -37,13 +37,11 @@ export const actions = {
 }
 
 export const getters = {
-  [types.requests]: state => state.requests
+  [vuexTypes.sponsorshipRequests]: state => state.requests
     .map(r => new SponsorshipRequest(r)),
 }
 
-export const sponsorshipRequestsModule = {
-  name: 'sponsorship-requests',
-  namespaced: true,
+export default {
   state,
   getters,
   actions,

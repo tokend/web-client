@@ -45,7 +45,7 @@
         </div>
       </template>
 
-      <movements-history-module
+      <movements-history
         :customer="customerToBrowse"
         :asset-code="assetCode"
         class="customers-list__user-movements-history"
@@ -59,7 +59,7 @@ import CollectionLoader from '@/vue/common/CollectionLoader'
 import Drawer from '@/vue/common/Drawer'
 import SelectField from '@/vue/fields/SelectField'
 import _isEmpty from 'lodash/isEmpty'
-import MovementsHistoryModule from '@/vue/modules/movements-history/index'
+import MovementsHistory from '@/vue/modules/movements-history'
 
 import CustomerAttributes from './customers-list/CustomerAttributes'
 import CustomersTable from './customers-list/CustomersTable'
@@ -81,7 +81,7 @@ export default {
     CustomerAttributes,
     CustomersTable,
     SelectField,
-    MovementsHistoryModule,
+    MovementsHistory,
   },
 
   data () {

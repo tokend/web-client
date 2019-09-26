@@ -10,8 +10,8 @@
             {{ 'op-pages.filters-prefix' | globalize }}
           </span>
           <select-field
-            :value="asset.code"
-            @input="setAssetByCode"
+            :value="assetCode"
+            @input="setAssetCode"
             class="app__select app__select--no-border"
           >
             <option
@@ -25,25 +25,22 @@
         </div>
       </template>
       <div
-        v-if="!isSharesPage"
+        v-if="isBusinessToBrowse"
         class="movements-top-bar__actions"
         slot="extra"
       >
-        <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(TransferDrawerPseudoModule)">
-          <button
-            v-ripple
-            class="app__button-raised movements-top-bar__actions-btn"
-            @click="isTransferDrawerShown = true"
-            :disabled="!(asset.isTransferable && isHaveBalance)"
-            :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isTransferable) |
-              globalize({ asset: asset.code })
-            "
-          >
-            <i class="mdi mdi-send movements-top-bar__btn-icon" />
-            {{ 'op-pages.send' | globalize }}
-          </button>
-        </template>
+        <button
+          v-ripple
+          class="app__button-raised movements-top-bar__actions-btn"
+          @click="isTransferDrawerShown = true"
+          :disabled="!(assetCode.isTransferable && isHaveBalance)"
+          :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isTransferable) |
+            globalize({ asset: assetCode })
+          "
+        >
+          <i class="mdi mdi-send movements-top-bar__btn-icon" />
+          {{ 'op-pages.send' | globalize }}
+        </button>
       </div>
     </top-bar>
 
@@ -51,10 +48,9 @@
       <template slot="heading">
         {{ 'transfer-form.form-heading' | globalize }}
       </template>
-      <submodule-importer
-        :submodule="getModule().getSubmodule(TransferDrawerPseudoModule)"
+      <transfer-form
         @operation-submitted="$emit(EVENTS.movementsUpdateRequired)"
-        :asset-to-transfer="asset.code"
+        :asset-to-transfer="assetCode"
       />
     </drawer>
   </div>
@@ -68,13 +64,10 @@ import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
 import SelectField from '@/vue/fields/SelectField'
 
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
-
-import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
-import { vueRoutes } from '@/vue-router/routes'
+import TransferForm from '@/vue/forms/TransferForm'
 
 const EVENTS = {
-  assetUpdated: 'asset-updated',
+  assetCodeUpdated: 'asset-code-updated',
   movementsUpdateRequired: 'movements-update-required',
 }
 
@@ -88,51 +81,45 @@ export default {
     SelectField,
     TopBar,
     Drawer,
-    SubmoduleImporter,
+    TransferForm,
   },
   data: _ => ({
     isInitialized: false,
     isTransferDrawerShown: false,
-    TransferDrawerPseudoModule,
-    asset: {},
+    assetCode: '',
     EVENTS,
     ASSET_POLICIES_STR,
     isHaveBalance: true,
   }),
   computed: {
     ...mapGetters({
-      balancesAssets: vuexTypes.balancesAssets,
       balancesAssetsByOwner: vuexTypes.balancesAssetsByOwner,
       accountBalanceByCode: vuexTypes.accountBalanceByCode,
-      accountBalances: vuexTypes.accountBalances,
       ownedAssets: vuexTypes.ownedBalancesAssets,
       isAccountUnverified: vuexTypes.isAccountUnverified,
+      isBusinessToBrowse: vuexTypes.isBusinessToBrowse,
+      assetByCode: vuexTypes.assetByCode,
     }),
 
-    isSharesPage () {
-      return this.$route.name === vueRoutes.registerOfShares.name
-    },
-
     assets () {
-      if (this.isSharesPage) {
-        return this.ownedAssets
-      } else if (this.$route.query.owner) {
-        return this.balancesAssetsByOwner(this.$route.query.owner)
+      if (this.isBusinessToBrowse) {
+        // eslint-disable-next-line max-len
+        const accountId = this.$route && this.$route.query && this.$route.query.owner
+          ? this.$route.query.owner
+          : this.businessToBrowse.accountId
+        return this.balancesAssetsByOwner(accountId)
       } else {
-        return this.balancesAssets
+        return this.ownedAssets
       }
     },
   },
   watch: {
-    asset: {
-      deep: true,
-      handler (value) {
-        this.getBalance()
-        this.$router.push({
-          query: { asset: value.code },
-        })
-        this.$emit(EVENTS.assetUpdated, value)
-      },
+    assetCode (value) {
+      this.getBalance()
+      this.$router.push({
+        query: { assetCode: value },
+      })
+      this.$emit(EVENTS.assetCodeUpdated, value)
     },
   },
   async created () {
@@ -144,23 +131,27 @@ export default {
     ...mapActions({
       loadAccountBalancesDetails: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
-    setAssetByCode (code) {
-      this.asset = this.assets.find(item => item.code === code)
+    setAssetCode (code) {
+      this.assetCode = code
     },
     setDefaultAsset () {
-      this.asset = this.assets
-        .find(item => item.code === this.$route.query.asset) ||
-        this.assets[0]
+      const queryAsset = this.assets
+        .find(item => item.code === this.$route.query.assetCode)
+
+      this.assetCode = queryAsset
+        ? queryAsset.code
+        : this.assets[0].code
     },
     getMessageIdForPolicy (policy) {
       let messageId = ''
-      if (!this.asset[policy]) {
+      const asset = this.assetByCode(this.assetCode)
+      if (!asset[policy]) {
         messageId = 'op-pages.not-transferable-msg'
       }
       return messageId
     },
     getBalance () {
-      const balance = +this.accountBalanceByCode(this.asset.code).balance
+      const balance = +this.accountBalanceByCode(this.assetCode).balance
       this.isHaveBalance = balance > 0
     },
   },

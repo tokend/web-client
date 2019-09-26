@@ -1,25 +1,16 @@
 <template>
   <div class="asset-explorer">
-    <template v-if="getModule().canRenderSubmodule(AssetExplorerModule)">
-      <submodule-importer
-        :submodule="getModule().getSubmodule(AssetExplorerModule)"
-      />
-    </template>
+    <asset-explorer />
   </div>
 </template>
 
 <script>
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
-import { AssetExplorerModule } from '@modules/assets/asset-explorer/module'
+import AssetExplorer from '@modules/assets/asset-explorer'
 
 export default {
   name: 'assets-explorer',
   components: {
-    SubmoduleImporter,
+    AssetExplorer,
   },
-
-  data: _ => ({
-    AssetExplorerModule,
-  }),
 }
 </script>

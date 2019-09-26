@@ -10,6 +10,7 @@ import identities from './identities.module'
 import keyValue from './key-value.module'
 import kycRecovery from './kyc-recovery.module'
 import movementsHistory from './movements-history.module'
+import sponsorshipRequests from './sponsorship-requests.module'
 import { vuexTypes } from '@/vuex/types'
 import { sessionStoragePlugin } from './plugins/session-storage'
 import idleHandler from './idle-handler.module'
@@ -88,6 +89,7 @@ function buildStore () {
       idleHandler,
       kycRecovery,
       movementsHistory,
+      sponsorshipRequests,
     },
     plugins: [sessionStoragePlugin],
   })

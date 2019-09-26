@@ -38,7 +38,7 @@
 import Drawer from '@/vue/common/Drawer'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapActions, mapMutations, mapGetters } from 'vuex'
-import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import RequestsTable from './components/requests-table'
 import RequestViewer from './components/request-viewer'
@@ -65,8 +65,8 @@ export default {
   }),
 
   computed: {
-    ...mapGetters('sponsorship-requests', {
-      requests: types.requests,
+    ...mapGetters({
+      requests: vuexTypes.sponsorshipRequests,
     }),
   },
 
@@ -75,12 +75,12 @@ export default {
   },
 
   methods: {
-    ...mapMutations('sponsorship-requests', {
-      setRequests: types.SET_REQUESTS,
-      concatRequests: types.CONCAT_REQUESTS,
+    ...mapMutations({
+      setRequests: vuexTypes.SET_SPONSORSHIP_REQUESTS,
+      concatRequests: vuexTypes.CONCAT_SPONSORSHIP_REQUESTS,
     }),
-    ...mapActions('sponsorship-requests', {
-      loadSponsorshipRequests: types.LOAD_REQUESTS,
+    ...mapActions({
+      loadSponsorshipRequests: vuexTypes.LOAD_SPONSORSHIP_REQUESTS,
     }),
     async loadRequests () {
       this.isLoaded = false

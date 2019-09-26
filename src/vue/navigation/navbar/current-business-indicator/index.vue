@@ -104,7 +104,7 @@ export default {
       this.SET_BUSINESS_STATS_QUOTE_ASSET(value._record.statsQuoteAsset)
       this.SELECT_BUSINESS_TO_BROWSE(value._record)
       // erase movements list
-      this.$store.commit('movements-history/SET_MOVEMENTS', [])
+      this.$store.commit('SET_MOVEMENTS', [])
     },
 
     initRouterHooks () {

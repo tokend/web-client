@@ -61,6 +61,10 @@ const mutations = {
   // movements-history
   SET_MOVEMENTS: 'SET_MOVEMENTS',
   CONCAT_MOVEMENTS: 'CONCAT_MOVEMENTS',
+
+  // sponsorship-requests
+  SET_SPONSORSHIP_REQUESTS: 'SET_SPONSORSHIP_REQUESTS',
+  CONCAT_SPONSORSHIP_REQUESTS: 'CONCAT_SPONSORSIP_REQUESTS',
 }
 
 const actions = {
@@ -118,6 +122,10 @@ const actions = {
   // movements-history
   LOAD_MOVEMENTS: 'LOAD_MOVEMENTS',
   LOAD_SHARE_MOVEMENTS: 'LOAD_SHARE_MOVEMENTS',
+
+  // sponsorship-requests
+  LOAD_SPONSORSHIP_REQUESTS: 'LOAD_SPONSORSHIP_REQUESTS',
+  APPROVE_OR_REJECT_SPONSORSHIP_REQUEST: 'APPROVE_OR_REJECT_SPONSORSHIP_REQUEST',
 }
 
 const getters = {
@@ -246,6 +254,9 @@ const getters = {
 
   // movements-history
   movements: 'movements',
+
+  // sponsorship-requests
+  sponsorshipRequests: 'sponsorshipRequests',
 }
 
 export const vuexTypes = {

@@ -34,7 +34,6 @@ import MovementsTable from './components/movements-table'
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { vuexTypes } from '@/vuex'
-import { vueRoutes } from '@/vue-router/routes'
 import { CustomerRecord } from '@/js/records/entities/customer.record'
 
 const REFS = {
@@ -64,8 +63,9 @@ export default {
   }),
 
   computed: {
-    ...mapGetters('movementsHistory', {
+    ...mapGetters({
       movements: vuexTypes.movements,
+      isBusinessToBrowse: vuexTypes.isBusinessToBrowse,
     }),
 
     isCustomerMovements () {
@@ -84,10 +84,6 @@ export default {
 
       return _ => this.loadMovementsFirstPage(assetCode, accountId)
     },
-
-    isSharesPage () {
-      return this.$route.name === vueRoutes.registerOfShares.name
-    },
   },
 
   created () {
@@ -101,11 +97,11 @@ export default {
   },
 
   methods: {
-    ...mapMutations('movementsHistory', {
+    ...mapMutations({
       setMovements: vuexTypes.SET_MOVEMENTS,
       concatMovements: vuexTypes.CONCAT_MOVEMENTS,
     }),
-    ...mapActions('movementsHistory', {
+    ...mapActions({
       loadMovements: vuexTypes.LOAD_MOVEMENTS,
       loadShareMovements: vuexTypes.LOAD_SHARE_MOVEMENTS,
     }),
@@ -114,10 +110,10 @@ export default {
       this.isMovementsLoaded = false
       try {
         let response
-        if (this.isSharesPage) {
-          response = await this.loadShareMovements(assetCode)
-        } else {
+        if (this.isBusinessToBrowse || this.isCustomerMovements) {
           response = await this.loadMovements({ assetCode, accountId })
+        } else {
+          response = await this.loadShareMovements(assetCode)
         }
         this.isMovementsLoaded = true
         return response

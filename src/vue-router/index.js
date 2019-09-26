@@ -16,7 +16,6 @@ import AssetExplorer from '@/vue/pages/AssetExplorer'
 import AtomicSwaps from '@/vue/pages/AtomicSwaps'
 import AtomicSwapsExplore from '@/vue/pages/atomic-swaps/AtomicSwapsExplore'
 import Movements from '@/vue/pages/Movements'
-import Shares from '@/vue/pages/Shares'
 import Sponsorship from '@/vue/pages/Sponsorship'
 import SponsorshipIncomingRequestsPage from '@/vue/pages/SponsorshipIncomingRequestsPage'
 import SponsorshipOutgoingRequestsPage from '@/vue/pages/SponsorshipOutgoingRequestsPage'
@@ -207,19 +206,8 @@ const router = new Router({
           name: vueRoutes.movements.name,
           meta: {
             pageNameTranslationId: 'pages-names.movements',
-            isGeneralOnly: true,
           },
           component: Movements,
-          beforeEnter: inAppRouteGuard,
-        },
-        {
-          path: '/register-of-shares',
-          name: vueRoutes.registerOfShares.name,
-          meta: {
-            pageNameTranslationId: 'pages-names.register-of-shares',
-            isCorporateOnly: true,
-          },
-          component: Shares,
           beforeEnter: inAppRouteGuard,
         },
         {
@@ -243,7 +231,7 @@ const router = new Router({
             },
             {
               path: '/sponsorship/incoming-requests',
-              name: vueRoutes.sponsorshipAllBusinesses.name,
+              name: vueRoutes.sponsorshipIncomingRequests.name,
               component: SponsorshipIncomingRequestsPage,
               beforeEnter: inAppRouteGuard,
               meta: {

@@ -90,7 +90,7 @@
             </span>
           </router-link>
           <router-link
-            v-if="isAccessibleForCustomer && isBusinessToBrowse"
+            v-if="isAccessibleForCorporate || isBusinessToBrowse"
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
@@ -120,7 +120,7 @@
             </span>
           </router-link>
           <router-link
-            v-if="isAccessibleForCustomer && isBusinessToBrowse"
+            v-if="isAccessibleForCorporate || isBusinessToBrowse"
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
@@ -128,25 +128,10 @@
             tag="a"
           >
             <i
-              class="sidebar__link-icon mdi mdi-menu"
-            />
-            <span>
-              {{ 'pages-names.movements' | globalize }}
-            </span>
-          </router-link>
-          <router-link
-            v-if="isAccessibleForCorporate"
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            :to="vueRoutes.registerOfShares"
-            tag="a"
-          >
-            <i
               class="sidebar__link-icon mdi mdi-book-open"
             />
             <span>
-              {{ 'pages-names.register-of-shares' | globalize }}
+              {{ 'pages-names.movements' | globalize }}
             </span>
           </router-link>
           <router-link

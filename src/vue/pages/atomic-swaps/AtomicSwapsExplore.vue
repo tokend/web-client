@@ -50,9 +50,8 @@
         :current-atomic-swap-ask="atomicSwapToBrowse"
         @close-drawer-and-update-list="closeDrawerAndUpdateList()"
       />
-      <submodule-importer
+      <atomic-swap-form
         v-else
-        :submodule="getModule().getSubmodule(AtomicSwapFormModule)"
         @update-list="updateList()"
         :atomic-swap-ask="atomicSwapToBrowse"
       />
@@ -67,8 +66,7 @@ import AtomicSwapCard from './AtomicSwapCard'
 import AtomicSwapViewer from './AtomicSwapViewer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import UpdateList from '@/vue/mixins/update-list.mixin'
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
-import { AtomicSwapFormModule } from '@modules/atomic-swap-form/module'
+import AtomicSwapForm from '@modules/atomic-swap-form'
 import { AtomicSwapAskRecord } from '@/js/records/entities/atomic-swap-ask.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { api } from '@/api'
@@ -84,14 +82,13 @@ export default {
     AtomicSwapCard,
     AtomicSwapViewer,
     NoDataMessage,
-    SubmoduleImporter,
+    AtomicSwapForm,
   },
 
   mixins: [UpdateList],
 
   data () {
     return {
-      AtomicSwapFormModule,
       isLoading: false,
       list: [],
       isDrawerShown: false,

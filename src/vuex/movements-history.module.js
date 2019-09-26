@@ -52,8 +52,6 @@ export const getters = {
 }
 
 export default {
-  name: 'movementsHistory',
-  namespaced: true,
   state,
   getters,
   actions,
