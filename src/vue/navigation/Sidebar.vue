@@ -20,17 +20,17 @@
     >
       <section class="sidebar__logo-section">
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="false">
+        <template v-if="isAccessibleForCustomer">
           <div class="navbar__current-business-indicator">
             <!-- eslint-disable-next-line max-len -->
-            <submodule-importer :submodule="getScheme().findModule(CurrentBusinessIndicatorModule)">
+            <current-business-indicator>
               <router-link
                 @click.native="closeSidebar"
                 :to="vueRoutes.app"
               >
                 <logo class="sidebar__logo" />
               </router-link>
-            </submodule-importer>
+            </current-business-indicator>
           </div>
         </template>
 
@@ -43,9 +43,9 @@
           </router-link>
         </template>
 
-        <template v-if="false">
+        <template v-if="isAccessibleForCorporate">
           <!-- eslint-disable-next-line max-len -->
-          <submodule-importer :submodule="getScheme().findModule(BusinessOwnershipModule)" />
+          <business-ownership />
         </template>
       </section>
 
@@ -60,6 +60,7 @@
           class="sidebar__links-group"
         >
           <router-link
+            v-if="isAccessibleForCorporate"
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
@@ -74,6 +75,7 @@
             </span>
           </router-link>
           <router-link
+            v-if="isAccountGeneral || isCustomerUiShown"
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
@@ -88,6 +90,7 @@
             </span>
           </router-link>
           <router-link
+            v-if="isAccessibleForCustomer && isBusinessToBrowse"
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
@@ -102,6 +105,7 @@
             </span>
           </router-link>
           <router-link
+            v-if="isAccessibleForCorporate || isBusinessToBrowse"
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
@@ -116,6 +120,7 @@
             </span>
           </router-link>
           <router-link
+            v-if="isAccessibleForCustomer && isBusinessToBrowse"
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
@@ -130,6 +135,7 @@
             </span>
           </router-link>
           <router-link
+            v-if="isAccessibleForCorporate"
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
@@ -144,6 +150,7 @@
             </span>
           </router-link>
           <router-link
+            v-if="isAccessibleForCorporate"
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
@@ -195,16 +202,15 @@
 import Logo from '@/vue/assets/Logo'
 import AppFooter from '@/vue/navigation/Footer'
 
+import CurrentBusinessIndicator from '@/vue/navigation/navbar/current-business-indicator'
+import BusinessOwnership from '@/vue/navigation/navbar/business-ownership'
+
 import { vueRoutes } from '@/vue-router/routes'
 
 import { vuexTypes } from '@/vuex'
+
 import { mapGetters } from 'vuex'
-
 import config from '@/config'
-
-import { CurrentBusinessIndicatorModule } from '@/vue/navigation/navbar/current-business-indicator/module'
-import { BusinessOwnershipModule } from '@/vue/navigation/navbar/business-ownership/module'
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
 const DEFAULT_SECTION_NAME = 'default'
 
@@ -212,9 +218,10 @@ export default {
   name: 'sidebar',
 
   components: {
+    CurrentBusinessIndicator,
+    BusinessOwnership,
     Logo,
     AppFooter,
-    SubmoduleImporter,
   },
 
   data: () => ({
@@ -222,23 +229,27 @@ export default {
     config,
     vueRoutes,
     DEFAULT_SECTION_NAME,
-    CurrentBusinessIndicatorModule,
-    BusinessOwnershipModule,
   }),
 
   computed: {
-    ...mapGetters({
-      isAccountCorporate: vuexTypes.isAccountCorporate,
-      isAccountGeneral: vuexTypes.isAccountGeneral,
-    }),
+    ...mapGetters([
+      vuexTypes.isAccountCorporate,
+      vuexTypes.isAccountGeneral,
+      vuexTypes.isBusinessToBrowse,
+      vuexTypes.isCustomerUiShown,
+    ]),
     schemeLabel () {
       //  return SchemeRegistry.current.sidebarLabel
       return ''
     },
-    isAccessibleForGeneral () {
+    isAccessibleForCustomer () {
       return this.isAccountCorporate
+        ? this.isCustomerUiShown
+        : this.isAccountGeneral
     },
-
+    isAccessibleForCorporate () {
+      return this.isAccountCorporate && !this.isCustomerUiShown
+    },
   },
 
   created () {

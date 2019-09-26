@@ -338,6 +338,7 @@ function inAppRouteGuard (to, from, next) {
   if (isLoggedIn && !isAccountUnverified) {
     const isAccountCorporate = store.getters[vuexTypes.isAccountCorporate]
     const isAccountGeneral = store.getters[vuexTypes.isAccountGeneral]
+    const isCustomerUiShown = store.getters[vuexTypes.isCustomerUiShown]
     const isCorporateRouter = _get(to, 'meta.isCorporateOnly')
     const isGeneralRouter = _get(to, 'meta.isGeneralOnly')
     // console.log(isAccountCorporate)
@@ -346,7 +347,7 @@ function inAppRouteGuard (to, from, next) {
     // console.log(isGeneralRouter)
     if (isAccountCorporate && isCorporateRouter) {
       next()
-    } else if (isAccountGeneral && isGeneralRouter) {
+    } else if ((isAccountGeneral || isCustomerUiShown) && isGeneralRouter) {
       next()
     } else if (!isCorporateRouter && !isGeneralRouter) {
       next()
