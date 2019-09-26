@@ -5,6 +5,8 @@ import { store, vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
 import { resolveRedirect } from '@/vue-router/redirect'
 
+import AppContent from '@/vue/AppContent'
+
 import Customers from '@/vue/pages/Customers'
 import Businesses from '@/vue/pages/Businesses'
 import BusinessesMy from '@/vue/pages/BusinessesMy'
@@ -33,7 +35,7 @@ const router = new Router({
   routes: [
     {
       path: '*',
-      redirect: vueRoutes.app,
+      redirect: '/',
     },
     {
       path: '/r/*',
@@ -112,10 +114,10 @@ const router = new Router({
     },
     {
       path: '/',
-      name: 'app',
+      name: vueRoutes.app.name,
       meta: { isNavigationRendered: true },
-      component: resolve => require(['@/vue/AppContent'], resolve),
-      beforeEnter: inAppRouteGuard,
+      component: AppContent,
+      beforeEnter: redirectRouteGuard,
       children: [
         {
           path: '/customers',
@@ -344,30 +346,47 @@ function authPageGuard (to, from, next) {
   isLoggedIn ? next({ name: 'app' }) : next()
 }
 
-function inAppRouteGuard (to, from, next) {
+function redirectRouteGuard (to, from, next) {
   const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
   const isAccountUnverified = store.getters[vuexTypes.isAccountUnverified]
   if (isLoggedIn && !isAccountUnverified) {
-    const isAccountCorporate = store.getters[vuexTypes.isAccountCorporate]
-    const isAccountGeneral = store.getters[vuexTypes.isAccountGeneral]
-    const isCustomerUiShown = store.getters[vuexTypes.isCustomerUiShown]
-    const isCorporateRouter = _get(to, 'meta.isCorporateOnly')
-    const isGeneralRouter = _get(to, 'meta.isGeneralOnly')
-    // console.log(isAccountCorporate)
-    // console.log(isAccountGeneral)
-    // console.log(isCorporateRouter)
-    // console.log(isGeneralRouter)
-    if (isAccountCorporate && isCorporateRouter) {
-      next()
-    } else if ((isAccountGeneral || isCustomerUiShown) && isGeneralRouter) {
-      next()
-    } else if (!isCorporateRouter && !isGeneralRouter) {
-      next()
-    } else {
+    if (to.name === vueRoutes.app.name) {
+      const isAccountCorporate = store.getters[vuexTypes.isAccountCorporate]
+      const isAccountGeneral = store.getters[vuexTypes.isAccountGeneral]
+      const isCustomerUiShown = store.getters[vuexTypes.isCustomerUiShown]
+      if (isAccountCorporate && !isCustomerUiShown) {
+        next(vueRoutes.customers)
+      }
+      if (isAccountGeneral || isCustomerUiShown) {
+        const isBusinessToBrowse = store.getters[vuexTypes.isBusinessToBrowse]
+        if (isBusinessToBrowse) {
+          next(vueRoutes.assetsExplore)
+        } else {
+          next(vueRoutes.businesses)
+        }
+      }
     }
+    next()
   } else if (isLoggedIn && isAccountUnverified) {
     next(vueRoutes.signupKyc)
   } else {
     next(vueRoutes.login)
+  }
+}
+
+function inAppRouteGuard (to, from, next) {
+  const isAccountCorporate = store.getters[vuexTypes.isAccountCorporate]
+  const isAccountGeneral = store.getters[vuexTypes.isAccountGeneral]
+  const isCustomerUiShown = store.getters[vuexTypes.isCustomerUiShown]
+  const isCorporateRouter = _get(to, 'meta.isCorporateOnly')
+  const isGeneralRouter = _get(to, 'meta.isGeneralOnly')
+  if (isAccountCorporate && isCorporateRouter) {
+    next()
+  } else if ((isAccountGeneral || isCustomerUiShown) && isGeneralRouter) {
+    next()
+  } else if (!isCorporateRouter && !isGeneralRouter) {
+    next()
+  } else {
+    next(vueRoutes.app)
   }
 }
