@@ -9,8 +9,6 @@ import config from './config'
 import NProgress from 'nprogress'
 import router from '@/vue-router'
 
-// import moment from 'moment'
-
 import { buildStore } from '@/vuex'
 import { ripple } from '@/vue/directives/ripple'
 import { i18n } from '@/i18n'
@@ -28,23 +26,9 @@ import { formatDateDMY } from '@/vue/filters/formatDateDMY'
 import { formatDateDMYT } from '@/vue/filters/formatDateDMYT'
 import { abbreviate } from '@/vue/filters/abbreviate'
 import { cropAddress } from '@/vue/filters/cropAddress'
-// import { SchemeRegistry } from '@/modules-arch/scheme-registry'
 import { ErrorTracker } from '@/js/helpers/error-tracker'
 
 async function init () {
-  // await SchemeRegistry.useScheme(config.MODULE_SCHEME_NAME)
-  // Vue.use(SchemeRegistry.current)
-
-  // i18n.onLanguageChanged(async lang => {
-  //   if (SchemeRegistry.current.importLanguageResource) {
-  //     const resource = await SchemeRegistry.current
-  //       .importLanguageResource(lang)
-  //     i18n._appendResources(lang, resource)
-  //   }
-  //
-  //   moment.locale(lang)
-  // })
-
   await i18n.init()
 
   log.setDefaultLevel(config.LOG_LEVEL)

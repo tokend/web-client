@@ -67,7 +67,6 @@ describe('account.module', () => {
       }
 
       await actions[vuexTypes.LOAD_ACCOUNT](store)
-
       expect(store.commit.args).to.deep.equal(Object.entries(expectedMutations))
     })
 
