@@ -6,13 +6,13 @@ import { vueRoutes } from '@/vue-router/routes'
 import { resolveRedirect } from '@/vue-router/redirect'
 
 import Customers from '@/vue/pages/Customers'
+import CustomersList from '@/vue/pages/CustomersList'
 import Businesses from '@/vue/pages/Businesses'
 import BusinessesMy from '@/vue/pages/BusinessesMy'
 import BusinessesAll from '@/vue/pages/BusinessesAll'
 
 import Assets from '@/vue/pages/Assets'
 import AssetExplorer from '@/vue/pages/AssetExplorer'
-import MyAssets from '@/vue/pages/MyAssets'
 import AtomicSwaps from '@/vue/pages/AtomicSwaps'
 import AtomicSwapsExplore from '@/vue/pages/atomic-swaps/AtomicSwapsExplore'
 import Movements from '@/vue/pages/Movements'
@@ -129,7 +129,7 @@ const router = new Router({
             {
               path: '/customers/list',
               name: vueRoutes.customersList.name,
-              component: Customers,
+              component: CustomersList,
               beforeEnter: inAppRouteGuard,
               meta: {
                 isCorporateOnly: true,
@@ -182,18 +182,6 @@ const router = new Router({
               name: vueRoutes.assetsExplore.name,
               component: AssetExplorer,
               beforeEnter: inAppRouteGuard,
-              meta: {
-                isGeneralOnly: true,
-              },
-            },
-            {
-              path: '/assets/my-assets',
-              name: vueRoutes.myAssets.name,
-              component: MyAssets,
-              beforeEnter: inAppRouteGuard,
-              meta: {
-                isCorporateOnly: true,
-              },
             },
           ],
         },

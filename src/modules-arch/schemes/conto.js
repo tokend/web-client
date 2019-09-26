@@ -1,6 +1,5 @@
 import { vueRoutes } from '@/vue-router/routes'
 
-import { MovementsHistoryModule } from '@modules/movements-history/module'
 import { MovementsHistoryPageModule } from '@/vue/pages/movements-page-module'
 import { CustomersPageModule } from '@/vue/pages/customers-page-module'
 import { AssetsPageModule } from '@/vue/pages/assets-page-module'
@@ -65,9 +64,6 @@ export default {
               meta: { pageNameTranslationId: 'pages-names.customers-list' },
             },
             isCorporateOnly: true,
-            submodules: [
-              new MovementsHistoryModule(),
-            ],
           }),
         ],
       },
@@ -175,7 +171,6 @@ export default {
         isGeneralOnly: true,
         isWithBusinessToBrowseOnly: true,
         submodules: [
-          new MovementsHistoryModule(),
           new MovementsTopBarModule({
             submodules: [
               new TransferDrawerPseudoModule(),
@@ -196,7 +191,6 @@ export default {
         menuButtonMdiName: 'book-open',
         submodules: [
           new MovementsTopBarModule(),
-          new MovementsHistoryModule(),
         ],
         isCorporateOnly: true,
       },

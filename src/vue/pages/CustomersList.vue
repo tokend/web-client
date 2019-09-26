@@ -45,31 +45,21 @@
         </div>
       </template>
 
-      <submodule-importer
-        v-if="getModule().canRenderSubmodule(MovementsHistoryModule)"
-        :submodule="getModule().getSubmodule(MovementsHistoryModule)"
+      <movements-history-module
         :customer="customerToBrowse"
         :asset-code="assetCode"
-        :key="`user-movements-history`"
         class="customers-list__user-movements-history"
-      >
-        <loader
-          slot="loader"
-          message-id="op-pages.assets-loading-msg"
-        />
-      </submodule-importer>
+      />
     </drawer>
   </div>
 </template>
 
 <script>
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
-import Loader from '@/vue/common/Loader'
-
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import Drawer from '@/vue/common/Drawer'
 import SelectField from '@/vue/fields/SelectField'
 import _isEmpty from 'lodash/isEmpty'
+import MovementsHistoryModule from '@/vue/modules/movements-history/index'
 
 import CustomerAttributes from './customers-list/CustomerAttributes'
 import CustomersTable from './customers-list/CustomersTable'
@@ -81,7 +71,6 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { api } from '@/api'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 
 export default {
   name: 'customers-list',
@@ -91,14 +80,12 @@ export default {
     Drawer,
     CustomerAttributes,
     CustomersTable,
-    SubmoduleImporter,
-    Loader,
     SelectField,
+    MovementsHistoryModule,
   },
 
   data () {
     return {
-      MovementsHistoryModule,
       list: [],
       assetCode: '',
       isLoaded: false,

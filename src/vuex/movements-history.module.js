@@ -1,24 +1,23 @@
-import { Movement } from '../wrappers/movement'
+import { Movement } from '@/vue/modules/movements-history/wrappers/movement'
 
-import { types } from './types'
+import { vuexTypes } from './types'
 import { api } from '@/api'
-import { vuexTypes } from '@/vuex'
 
 export const state = {
   movements: [],
 }
 
 export const mutations = {
-  [types.SET_MOVEMENTS] (state, movements) {
+  [vuexTypes.SET_MOVEMENTS] (state, movements) {
     state.movements = movements
   },
-  [types.CONCAT_MOVEMENTS] (state, movements) {
+  [vuexTypes.CONCAT_MOVEMENTS] (state, movements) {
     state.movements = state.movements.concat(movements)
   },
 }
 
 export const actions = {
-  [types.LOAD_MOVEMENTS] ({ rootGetters }, filters) {
+  [vuexTypes.LOAD_MOVEMENTS] ({ rootGetters }, filters) {
     const accountId = filters.accountId
       ? filters.accountId
       : rootGetters[vuexTypes.accountId]
@@ -35,7 +34,7 @@ export const actions = {
     })
   },
 
-  [types.LOAD_SHARE_MOVEMENTS] ({ rootGetters }, assetCode) {
+  [vuexTypes.LOAD_SHARE_MOVEMENTS] ({ rootGetters }, assetCode) {
     return api.getWithSignature('/v3/movements', {
       page: {
         order: 'desc',
@@ -49,11 +48,11 @@ export const actions = {
 }
 
 export const getters = {
-  [types.movements]: state => state.movements.map(m => new Movement(m)),
+  [vuexTypes.movements]: state => state.movements.map(m => new Movement(m)),
 }
 
-export const movementsHistoryModule = {
-  name: 'movements-history',
+export default {
+  name: 'movementsHistory',
   namespaced: true,
   state,
   getters,

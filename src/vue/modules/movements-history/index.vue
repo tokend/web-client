@@ -33,7 +33,7 @@ import MovementsTable from './components/movements-table'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
 import { CustomerRecord } from '@/js/records/entities/customer.record'
 
@@ -64,8 +64,8 @@ export default {
   }),
 
   computed: {
-    ...mapGetters('movements-history', {
-      movements: types.movements,
+    ...mapGetters('movementsHistory', {
+      movements: vuexTypes.movements,
     }),
 
     isCustomerMovements () {
@@ -101,13 +101,13 @@ export default {
   },
 
   methods: {
-    ...mapMutations('movements-history', {
-      setMovements: types.SET_MOVEMENTS,
-      concatMovements: types.CONCAT_MOVEMENTS,
+    ...mapMutations('movementsHistory', {
+      setMovements: vuexTypes.SET_MOVEMENTS,
+      concatMovements: vuexTypes.CONCAT_MOVEMENTS,
     }),
-    ...mapActions('movements-history', {
-      loadMovements: types.LOAD_MOVEMENTS,
-      loadShareMovements: types.LOAD_SHARE_MOVEMENTS,
+    ...mapActions('movementsHistory', {
+      loadMovements: vuexTypes.LOAD_MOVEMENTS,
+      loadShareMovements: vuexTypes.LOAD_SHARE_MOVEMENTS,
     }),
 
     async loadMovementsFirstPage (assetCode, accountId) {

@@ -9,31 +9,23 @@
       />
     </template>
 
-    <template v-if="getModule().canRenderSubmodule(MovementsHistoryModule)">
-      <submodule-importer
-        v-if="asset.code"
-        :submodule="getModule().getSubmodule(MovementsHistoryModule)"
-        :asset-code="asset.code"
-        :key="`movements-history-state-${historyState}`"
-      >
-        <loader
-          slot="loader"
-          message-id="op-pages.assets-loading-msg"
-        />
-      </submodule-importer>
+    <movements-history-module
+      v-if="asset.code"
+      :asset-code="asset.code"
+      :key="`movements-history-state-${historyState}`"
+    />
 
-      <no-data-message
-        v-else-if="!asset.code"
-        icon-name="trending-up"
-        :title="'op-pages.no-data-title' | globalize"
-        :message="'op-pages.no-data-msg' | globalize"
-      />
+    <no-data-message
+      v-else-if="!asset.code"
+      icon-name="trending-up"
+      :title="'op-pages.no-data-title' | globalize"
+      :message="'op-pages.no-data-msg' | globalize"
+    />
 
-      <loader
-        v-else
-        message-id="op-pages.assets-loading-msg"
-      />
-    </template>
+    <loader
+      v-else
+      message-id="op-pages.assets-loading-msg"
+    />
   </div>
 </template>
 
@@ -43,7 +35,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import Loader from '@/vue/common/Loader'
 
 import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
-import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
+import MovementsHistoryModule from '@/vue/modules/movements-history/index'
 
 export default {
   name: 'register-of-shares-page',
@@ -51,11 +43,11 @@ export default {
     SubmoduleImporter,
     NoDataMessage,
     Loader,
+    MovementsHistoryModule,
   },
 
   data: _ => ({
     MovementsTopBarModule,
-    MovementsHistoryModule,
     asset: {},
     historyState: 0,
   }),
@@ -63,19 +55,6 @@ export default {
   methods: {
     updateAsset (asset) {
       this.asset = asset
-    },
-
-    // MovementsHistoryModule uses these 3 methods below
-    withdrawalFiatModuleWithdrawn () {
-      this.updateList()
-    },
-
-    depositFiatModuleDeposited () {
-      this.updateList()
-    },
-
-    redeemModuleSubmitted () {
-      this.updateList()
     },
 
     updateList () {

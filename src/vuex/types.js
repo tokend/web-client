@@ -57,6 +57,10 @@ const mutations = {
 
   // identities
   SET_IDENTITIES: 'SET_IDENTITIES',
+
+  // movements-history
+  SET_MOVEMENTS: 'SET_MOVEMENTS',
+  CONCAT_MOVEMENTS: 'CONCAT_MOVEMENTS',
 }
 
 const actions = {
@@ -110,6 +114,10 @@ const actions = {
 
   // identities
   LOAD_IDENTITIES_BY_ACCOUNT_ID: 'LOAD_IDENTITIES_BY_ACCOUNT_ID',
+
+  // movements-history
+  LOAD_MOVEMENTS: 'LOAD_MOVEMENTS',
+  LOAD_SHARE_MOVEMENTS: 'LOAD_SHARE_MOVEMENTS',
 }
 
 const getters = {
@@ -235,6 +243,9 @@ const getters = {
   emailByAccountId: 'emailByAccountId',
   phoneNumberByAccountId: 'phoneNumberByAccountId',
   telegramUsernameByAccountId: 'telegramUsernameByAccountId',
+
+  // movements-history
+  movements: 'movements',
 }
 
 export const vuexTypes = {
