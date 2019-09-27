@@ -8,7 +8,6 @@
 import { vueRoutes } from '@/vue-router/routes'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
-// import { SchemeRegistry } from '@/modules-arch/scheme-registry'
 
 const DEFAULT_LOGO_URL = '/static/conto-logo.png'
 

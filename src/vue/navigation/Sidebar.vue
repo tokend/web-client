@@ -46,7 +46,7 @@
 
       <section class="sidebar__scheme-label-section">
         <p class="sidebar__scheme-label">
-          {{ schemeLabel }}
+          {{ label }}
         </p>
       </section>
 
@@ -207,6 +207,7 @@ export default {
     config,
     vueRoutes,
     DEFAULT_SECTION_NAME,
+    label: ''
   }),
 
   computed: {
@@ -216,10 +217,6 @@ export default {
       vuexTypes.isBusinessToBrowse,
       vuexTypes.isCustomerUiShown,
     ]),
-    schemeLabel () {
-      //  return SchemeRegistry.current.sidebarLabel
-      return ''
-    },
     isAccessibleForCustomer () {
       return this.isAccountCorporate
         ? this.isCustomerUiShown

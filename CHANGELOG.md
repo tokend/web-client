@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
+## [1.0.3-rc.12] - 2019-09-27
+#### Removed
+- All schemes
+
+#### Changed
+- Refactored code
+- Update vue-route
+
+
+
 ## [1.0.3-rc.11] - 2019-09-19
 ### "Under the hood" changes
 #### Changed
@@ -272,7 +282,8 @@ for further information about branching and tagging conventions.
 #### Removed
 - `RECOVERY_MODE` config key due to unused anymore
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.0.3-rc.11...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.0.3-rc.12...HEAD
+[1.0.3-rc.12]: https://github.com/tokend/web-client/compare/1.0.3-rc.11...1.0.3-rc.12
 [1.0.3-rc.11]: https://github.com/tokend/web-client/compare/1.0.3-rc.10...1.0.3-rc.11
 [1.0.3-rc.10]: https://github.com/tokend/web-client/compare/1.0.3-rc.9...1.0.3-rc.10
 [1.0.3-rc.9]: https://github.com/tokend/web-client/compare/1.0.3-rc.8...1.0.3-rc.9
