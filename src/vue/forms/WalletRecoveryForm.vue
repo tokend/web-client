@@ -115,7 +115,7 @@ export default {
         await this.login()
 
         Bus.success('auth-pages.recovered')
-        this.$router.push(vueRoutes.app)
+        await this.$router.push(vueRoutes.app)
       } catch (e) {
         switch (e.constructor) {
           case errors.NotFoundError:

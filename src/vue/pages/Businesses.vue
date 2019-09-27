@@ -44,7 +44,7 @@ export default {
     ...mapActions([
       vuexTypes.LOAD_BUSINESS_STATS_QUOTE_ASSET,
     ]),
-  }
+  },
 }
 </script>
 

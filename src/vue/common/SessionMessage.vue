@@ -39,7 +39,7 @@ export default {
       return query.isSessionExpired || /isSessionExpired=true/ig.test(query.redirectPath)
     },
 
-    cleanQueryIsSessionExpired (query) {
+    async cleanQueryIsSessionExpired (query) {
       const noSessionExpiredQuery = Object.assign({}, query)
       delete noSessionExpiredQuery.isSessionExpired
 
@@ -48,7 +48,7 @@ export default {
           noSessionExpiredQuery.redirectPath.replace(/(\?|&)?isSessionExpired=(true|false)/ig, '')
       }
 
-      this.$router.push({
+      await this.$router.push({
         path: this.$route.path,
         query: noSessionExpiredQuery,
       })

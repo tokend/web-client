@@ -114,9 +114,9 @@ export default {
     },
   },
   watch: {
-    assetCode (value) {
+    async assetCode (value) {
       this.getBalance()
-      this.$router.push({
+      await this.$router.push({
         query: { assetCode: value },
       })
       this.$emit(EVENTS.assetCodeUpdated, value)

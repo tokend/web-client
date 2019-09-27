@@ -115,7 +115,7 @@ export default {
         })
         await this.loadAssets()
         await this.loadBusinessStatsQuoteAsset()
-        this.$router.push({ name: 'app' })
+        await this.$router.push({ name: 'app' })
       } catch (e) {
         this.processAuthError(e)
         this.enableForm()

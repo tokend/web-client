@@ -81,7 +81,7 @@ export default {
       try {
         await factorsManager
           .verifyTotpFactorAndRetry(this.error, this.form.code)
-        this.$router.push(vueRoutes.login)
+        await this.$router.push(vueRoutes.login)
       } catch (err) {
         ErrorHandler.process(err)
       }

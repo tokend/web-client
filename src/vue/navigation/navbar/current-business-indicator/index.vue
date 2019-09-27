@@ -74,11 +74,11 @@ export default {
     ]),
 
     listen () {
-      Bus.$on('businesses:setCurrentBusiness', payload => {
+      Bus.$on('businesses:setCurrentBusiness', async (payload) => {
         this.selectBusinessToBrowse(payload.business)
 
         if (payload.redirectTo) {
-          this.$router.push(payload.redirectTo)
+          await this.$router.push(payload.redirectTo)
         }
       })
     },

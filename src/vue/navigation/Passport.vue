@@ -208,20 +208,20 @@ export default {
       location.reload()
     },
 
-    goSettings () {
+    async goSettings () {
       this.closeDropdown()
-      this.$router.push(vueRoutes.settings)
+      await this.$router.push(vueRoutes.settings)
     },
 
-    toggleCustomerUi (isShow) {
+    async toggleCustomerUi (isShow) {
       if (isShow) {
         this.showCustomerUi()
-        this.$router.push(vueRoutes.businesses)
+        await this.$router.push(vueRoutes.businesses)
       } else {
         this.hideCustomerUi()
         this.clearBusinessToBrowse()
         this.loadBusinessStatsQuote()
-        this.$router.push(vueRoutes.customers)
+        await this.$router.push(vueRoutes.customers)
       }
     },
   },
