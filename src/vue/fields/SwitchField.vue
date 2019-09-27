@@ -49,9 +49,9 @@ export default {
 .switch-field__toggle {
   position: relative;
   display: inline-block;
-  width: 5.3rem;
-  min-width: 5.3rem;
-  height: 2.8rem;
+  width: 4.8rem;
+  min-width: 4.8rem;
+  height: 2.3rem;
   background-color: $col-switch-field-background;
   border: solid 0.1rem $col-switch-field-border;
   border-radius: 3.4rem;
@@ -59,9 +59,9 @@ export default {
   &:before {
     position: absolute;
     content: '';
-    height: 2.2rem;
-    width: 2.2rem;
-    min-width: 2.2rem;
+    height: 1.7rem;
+    width: 1.7rem;
+    min-width: 1.7rem;
     left: 0.1rem;
     bottom: 0.1rem;
     background-color: $col-switch-field-disabled;
