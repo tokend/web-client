@@ -145,7 +145,6 @@ const router = new Router({
             pageNameTranslationId: 'pages-names.businesses',
           },
           component: Businesses,
-          redirect: vueRoutes.myBusinesses,
           children: [
             {
               path: '/businesses/my',
@@ -174,6 +173,7 @@ const router = new Router({
           name: vueRoutes.assets.name,
           meta: {
             pageNameTranslationId: 'pages-names.assets',
+            ownerFilter: true,
           },
           component: Assets,
           redirect: vueRoutes.assetsExplore,
@@ -183,6 +183,9 @@ const router = new Router({
               name: vueRoutes.assetsExplore.name,
               component: AssetExplorer,
               beforeEnter: inAppRouteGuard,
+              meta: {
+                ownerFilter: true,
+              },
             },
           ],
         },
@@ -191,6 +194,7 @@ const router = new Router({
           name: vueRoutes.atomicSwaps.name,
           meta: {
             pageNameTranslationId: 'pages-names.atomic-swaps',
+            ownerFilter: true,
           },
           component: AtomicSwaps,
           redirect: vueRoutes.atomicSwapsExplore,
@@ -200,6 +204,9 @@ const router = new Router({
               name: vueRoutes.atomicSwapsExplore.name,
               component: AtomicSwapsExplore,
               beforeEnter: inAppRouteGuard,
+              meta: {
+                ownerFilter: true,
+              },
             },
           ],
         },
@@ -208,6 +215,7 @@ const router = new Router({
           name: vueRoutes.movements.name,
           meta: {
             pageNameTranslationId: 'pages-names.movements',
+            ownerFilter: true,
           },
           component: Movements,
           beforeEnter: inAppRouteGuard,
@@ -296,6 +304,25 @@ const router = new Router({
 
 export default router
 
+router.beforeEach((to, from, next) => {
+  const isCustomerUiShown = store.getters[vuexTypes.isCustomerUiShown]
+  const isAccountGeneral = store.getters[vuexTypes.isAccountGeneral]
+  const businessToBrowse = store.getters[vuexTypes.businessToBrowse]
+  const needOwnerFilter = _get(to, 'meta.ownerFilter')
+  const queryOwner = _get(to, 'query.owner')
+
+  if (
+    (isAccountGeneral || isCustomerUiShown) &&
+    needOwnerFilter &&
+    !queryOwner
+  ) {
+    to.query.owner = businessToBrowse.accountId
+    next(to)
+  } else {
+    next()
+  }
+})
+
 // doesn't allow to visit kyc recovery management page if user's kyc recovery
 // is not initialized
 function kycRecoveryGuard (to, from, next) {
@@ -314,12 +341,12 @@ function signupKycPageGuard (to, from, next) {
 
   isLoggedIn && isAccountUnverified
     ? next()
-    : next(vueRoutes.login)
+    : next(vueRoutes.app)
 }
 
 function authPageGuard (to, from, next) {
   const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
-  isLoggedIn ? next({ name: 'app' }) : next()
+  isLoggedIn ? next(vueRoutes.app) : next()
 }
 
 function redirectRouteGuard (to, from, next) {
@@ -328,21 +355,19 @@ function redirectRouteGuard (to, from, next) {
   if (isLoggedIn && !isAccountUnverified) {
     if (to.name === vueRoutes.app.name) {
       const isAccountCorporate = store.getters[vuexTypes.isAccountCorporate]
-      const isAccountGeneral = store.getters[vuexTypes.isAccountGeneral]
+      const isBusinessToBrowse = store.getters[vuexTypes.isBusinessToBrowse]
       const isCustomerUiShown = store.getters[vuexTypes.isCustomerUiShown]
       if (isAccountCorporate && !isCustomerUiShown) {
         next(vueRoutes.customers)
       }
-      if (isAccountGeneral || isCustomerUiShown) {
-        const isBusinessToBrowse = store.getters[vuexTypes.isBusinessToBrowse]
-        if (isBusinessToBrowse) {
-          next(vueRoutes.assetsExplore)
-        } else {
-          next(vueRoutes.businesses)
-        }
+      if (isBusinessToBrowse) {
+        next(vueRoutes.assetsExplore)
+      } else {
+        next(vueRoutes.businesses)
       }
+    } else {
+      next()
     }
-    next()
   } else if (isLoggedIn && isAccountUnverified) {
     next(vueRoutes.signupKyc)
   } else {

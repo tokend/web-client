@@ -42,11 +42,6 @@
             <logo class="sidebar__logo" />
           </router-link>
         </template>
-
-        <template v-if="isAccessibleForCorporate">
-          <!-- eslint-disable-next-line max-len -->
-          <business-ownership />
-        </template>
       </section>
 
       <section class="sidebar__scheme-label-section">
@@ -188,7 +183,6 @@ import Logo from '@/vue/assets/Logo'
 import AppFooter from '@/vue/navigation/Footer'
 
 import CurrentBusinessIndicator from '@/vue/navigation/navbar/current-business-indicator'
-import BusinessOwnership from '@/vue/navigation/navbar/business-ownership'
 
 import { vueRoutes } from '@/vue-router/routes'
 
@@ -204,7 +198,6 @@ export default {
 
   components: {
     CurrentBusinessIndicator,
-    BusinessOwnership,
     Logo,
     AppFooter,
   },
