@@ -5101,11 +5101,6 @@ i18next@17.0.2:
   dependencies:
     "@babel/runtime" "^7.3.1"
 
-iban@0.0.12:
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/iban/-/iban-0.0.12.tgz#557d4b29b27a5a985e399eaf36f73512c98ec8b6"
-  integrity sha512-j+beWwI28a0tOzb2pTEVPwVl3dpWEuVI7EawGb6bUQD1j2GilGnETTnwIPzQZd1sQQuO4ET0giYt7fQkJ6bB3A==
-
 iconv-lite@0.4, iconv-lite@0.4.24, iconv-lite@^0.4.24, iconv-lite@^0.4.4:
   version "0.4.24"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
@@ -10413,10 +10408,10 @@ vue-resource@1.5.1:
   dependencies:
     got "^8.0.3"
 
-vue-router@3.0.6:
-  version "3.0.6"
-  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.6.tgz#2e4f0f9cbb0b96d0205ab2690cfe588935136ac3"
-  integrity sha512-Ox0ciFLswtSGRTHYhGvx2L44sVbTPNS+uD2kRISuo8B39Y79rOo0Kw0hzupTmiVtftQYCZl87mwldhh2L9Aquw==
+vue-router@3.1.3:
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.1.3.tgz#e6b14fabc0c0ee9fda0e2cbbda74b350e28e412b"
+  integrity sha512-8iSa4mGNXBjyuSZFCCO4fiKfvzqk+mhL0lnKuGcQtO1eoj8nq3CmbEG8FwK5QqoqwDgsjsf1GDuisDX4cdb/aQ==
 
 vue-simplemde@0.5.2:
   version "0.5.2"
