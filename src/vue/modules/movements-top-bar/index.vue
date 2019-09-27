@@ -33,7 +33,7 @@
           v-ripple
           class="app__button-raised movements-top-bar__actions-btn"
           @click="isTransferDrawerShown = true"
-          :disabled="!(assetCode.isTransferable && isHaveBalance)"
+          :disabled="!(assetByCode(assetCode).isTransferable && isHaveBalance)"
           :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isTransferable) |
             globalize({ asset: assetCode })
           "

@@ -43,13 +43,13 @@
             </option>
           </select-field>
         </div>
-      </template>
 
-      <movements-history
-        :customer="customerToBrowse"
-        :asset-code="assetCode"
-        class="customers-list__user-movements-history"
-      />
+        <movements-history
+          :customer="customerToBrowse"
+          :asset-code="assetCode"
+          class="customers-list__user-movements-history"
+        />
+      </template>
     </drawer>
   </div>
 </template>
