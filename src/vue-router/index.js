@@ -145,6 +145,7 @@ const router = new Router({
             pageNameTranslationId: 'pages-names.businesses',
           },
           component: Businesses,
+          redirect: vueRoutes.myBusinesses,
           children: [
             {
               path: '/businesses/my',
@@ -359,8 +360,7 @@ function redirectRouteGuard (to, from, next) {
       const isCustomerUiShown = store.getters[vuexTypes.isCustomerUiShown]
       if (isAccountCorporate && !isCustomerUiShown) {
         next(vueRoutes.customers)
-      }
-      if (isBusinessToBrowse) {
+      } else if (isBusinessToBrowse) {
         next(vueRoutes.assetsExplore)
       } else {
         next(vueRoutes.businesses)
