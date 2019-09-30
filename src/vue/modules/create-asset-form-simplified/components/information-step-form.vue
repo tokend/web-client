@@ -84,18 +84,6 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <tick-field
-          v-model="form.policies"
-          :cb-value="ASSET_POLICIES.transferable"
-          :disabled="isDisabled"
-        >
-          {{ 'create-asset-form.transferable-lbl' | globalize }}
-        </tick-field>
-      </div>
-    </div>
-
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <tick-field
           v-model="form.isSellable"
           :disabled="isDisabled"
           @input="$emit(EVENTS.updateIsSellable, form.isSellable)"
@@ -167,13 +155,13 @@ export default {
       name: '',
       code: '',
       logo: null,
-      policies: ASSET_POLICIES.canBeBaseInAtomicSwap,
+      policies: ASSET_POLICIES.canBeBaseInAtomicSwap |
+        ASSET_POLICIES.transferable,
       description: '',
       isSellable: false,
     },
     MIN_AMOUNT: config.MIN_AMOUNT,
     MAX_AMOUNT: config.MAX_AMOUNT,
-    ASSET_POLICIES,
     DOCUMENT_TYPES,
     NAME_MAX_LENGTH,
     DESCRIPTION_MAX_LENGTH,
