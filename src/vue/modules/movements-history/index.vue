@@ -1,34 +1,29 @@
 <template>
   <div class="movements-history">
-    <template>
-      <template>
-        <h2 class="app__table-title" v-if="latestActivity">
-          {{ 'movements-history.latest-activity' | globalize }}
-        </h2>
-        <div class="movements-history__list-wrp">
-          <movements-table
-            :is-movements-loaded="isMovementsLoaded"
-            :movements="movements"
-          />
-        </div>
-      </template>
-      <template v-if="isMovementsLoadFailed">
-        <p class="movements-history__error-msg">
-          {{ 'movements-history.movements-load-failed-msg' | globalize }}
-        </p>
-      </template>
+    <div class="movements-history__list-wrp">
+      <movements-table
+        :is-movements-loaded="isMovementsLoaded"
+        :movements="movements"
+        :is-customer-movements="isCustomerMovements"
+      />
+    </div>
 
-      <div class="movements-history__collection-loader-wrp">
-        <collection-loader
-          v-if="!isMovementsLoadFailed && assetCode"
-          v-show="isMovementsLoaded && !latestActivity"
-          :first-page-loader="firstPageLoader"
-          @first-page-load="setMovements"
-          @next-page-load="concatMovements"
-          :ref="REFS.collectionLoader"
-        />
-      </div>
+    <template v-if="isMovementsLoadFailed">
+      <p class="movements-history__error-msg">
+        {{ 'movements-history.movements-load-failed-msg' | globalize }}
+      </p>
     </template>
+
+    <div class="movements-history__collection-loader-wrp">
+      <collection-loader
+        v-if="!isMovementsLoadFailed && (assetCode || isCustomerMovements)"
+        v-show="isMovementsLoaded"
+        :first-page-loader="firstPageLoader"
+        @first-page-load="setMovements"
+        @next-page-load="concatMovements"
+        :ref="REFS.collectionLoader"
+      />
+    </div>
   </div>
 </template>
 
@@ -38,8 +33,8 @@ import MovementsTable from './components/movements-table'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { types } from './store/types'
-import { vueRoutes } from '@/vue-router/routes'
+import { vuexTypes } from '@/vuex'
+import { CustomerRecord } from '@/js/records/entities/customer.record'
 
 const REFS = {
   collectionLoader: 'collection-loader',
@@ -56,9 +51,9 @@ export default {
       type: String,
       default: '',
     },
-    latestActivity: {
-      type: Boolean,
-      default: false,
+    customer: {
+      type: CustomerRecord,
+      default: null,
     },
   },
   data: _ => ({
@@ -68,18 +63,26 @@ export default {
   }),
 
   computed: {
-    ...mapGetters('movements-history', {
-      movements: types.movements,
+    ...mapGetters({
+      movements: vuexTypes.movements,
+      isBusinessToBrowse: vuexTypes.isBusinessToBrowse,
     }),
-    firstPageLoader () {
-      const assetCode = this.assetCode // HACK: passing this.assetCode directly
-      // to function will lead to losing reactivity
 
-      return _ => this.loadMovementsFirstPage(assetCode)
+    isCustomerMovements () {
+      return Boolean(this.customer)
     },
 
-    isSharesPage () {
-      return this.$route.name === vueRoutes.registerOfShares.name
+    firstPageLoader () {
+      // HACK: passing this.assetCode and this.customer.accountId directly
+      // to function will lead to losing reactivity
+      const assetCode = this.assetCode
+      let accountId = ''
+
+      if (this.isCustomerMovements) {
+        accountId = this.customer.accountId
+      }
+
+      return _ => this.loadMovementsFirstPage(assetCode, accountId)
     },
   },
 
@@ -94,27 +97,23 @@ export default {
   },
 
   methods: {
-    ...mapMutations('movements-history', {
-      setMovements: types.SET_MOVEMENTS,
-      concatMovements: types.CONCAT_MOVEMENTS,
+    ...mapMutations({
+      setMovements: vuexTypes.SET_MOVEMENTS,
+      concatMovements: vuexTypes.CONCAT_MOVEMENTS,
     }),
-    ...mapActions('movements-history', {
-      loadMovements: types.LOAD_MOVEMENTS,
-      loadShareMovements: types.LOAD_SHARE_MOVEMENTS,
+    ...mapActions({
+      loadMovements: vuexTypes.LOAD_MOVEMENTS,
+      loadShareMovements: vuexTypes.LOAD_SHARE_MOVEMENTS,
     }),
 
-    reloadCollectionLoader () {
-      return this.$refs[REFS.collectionLoader].loadFirstPage()
-    },
-
-    async loadMovementsFirstPage (assetCode) {
+    async loadMovementsFirstPage (assetCode, accountId) {
       this.isMovementsLoaded = false
       try {
         let response
-        if (this.isSharesPage) {
-          response = await this.loadShareMovements(assetCode)
+        if (this.isBusinessToBrowse || this.isCustomerMovements) {
+          response = await this.loadMovements({ assetCode, accountId })
         } else {
-          response = await this.loadMovements(assetCode)
+          response = await this.loadShareMovements(assetCode)
         }
         this.isMovementsLoaded = true
         return response

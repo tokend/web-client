@@ -30,36 +30,6 @@
         />
       </template>
 
-      <template v-else-if="viewMode === VIEW_MODES.viewSecretSeed">
-        <template slot="heading">
-          {{ 'security-page.secret-seed-title' | globalize }}
-        </template>
-        <div class="secret-seed">
-          <p class="secret-seed__description">
-            {{ 'security-page.secret-seed-desc' | globalize }}
-          </p>
-          <clipboard-field
-            :value="walletSeed"
-            :label="'security-page.secret-seed-title' | globalize"
-          />
-        </div>
-      </template>
-
-      <template v-else-if="viewMode === VIEW_MODES.viewNetworkPassphrase">
-        <template slot="heading">
-          {{ 'security-page.network-passphrase-title' | globalize }}
-        </template>
-        <div class="network-passphrase">
-          <p class="network-passphrase__description">
-            {{ 'security-page.network-passphrase-desc' | globalize }}
-          </p>
-          <clipboard-field
-            :value="api.networkDetails.networkPassphrase"
-            :label="'security-page.network-passphrase-title' | globalize"
-          />
-        </div>
-      </template>
-
       <template v-else-if="viewMode === VIEW_MODES.changePhoneNumber">
         <template slot="heading">
           <template v-if="isPhoneEnabled">
@@ -83,8 +53,7 @@
             {{ 'security-page.add-telegram-title' | globalize }}
           </template>
         </template>
-        <submodule-importer
-          :submodule="getModule().getSubmodule(TelegramFormPseudoModule)"
+        <telegram-form
           @submitted="updateFactors"
         />
       </template>
@@ -99,21 +68,19 @@
       </button>
     </div>
 
-    <template v-if="getModule().canRenderSubmodule(ChangePasswordPseudoModule)">
-      <div class="security-page__row">
-        <p class="security-page__row-title">
-          {{ 'security-page.password-title' | globalize }}
-        </p>
-        <a
-          class="security-page__row-action"
-          @click="showDrawer(VIEW_MODES.changePassword)"
-        >
-          {{ 'security-page.change-password-btn' | globalize }}
-        </a>
-      </div>
-    </template>
+    <div class="security-page__row">
+      <p class="security-page__row-title">
+        {{ 'security-page.password-title' | globalize }}
+      </p>
+      <a
+        class="security-page__row-action"
+        @click="showDrawer(VIEW_MODES.changePassword)"
+      >
+        {{ 'security-page.change-password-btn' | globalize }}
+      </a>
+    </div>
 
-    <template v-if="getModule().canRenderSubmodule(ShowAccountIdPseudoModule)">
+    <template v-if="isAccountCorporate && !isCustomerUiShown">
       <div class="security-page__row">
         <p class="security-page__row-title">
           {{ 'security-page.account-id-title' | globalize }}
@@ -127,84 +94,47 @@
       </div>
     </template>
 
-    <template v-if="getModule().canRenderSubmodule(ShowSeedPseudoModule)">
-      <div class="security-page__row">
-        <p class="security-page__row-title">
-          {{ 'security-page.secret-seed-title' | globalize }}
-        </p>
-        <a
-          class="security-page__row-action"
-          @click="showDrawer(VIEW_MODES.viewSecretSeed)"
-        >
-          {{ 'security-page.view-secret-seed-btn' | globalize }}
-        </a>
-      </div>
-    </template>
+    <div class="security-page__row">
+      <p class="security-page__row-title">
+        {{ 'security-page.phone-number-title' | globalize }}
+      </p>
+      <a
+        class="security-page__row-action"
+        @click="showDrawer(VIEW_MODES.changePhoneNumber)"
+      >
+        <template v-if="isPhoneEnabled">
+          {{ 'security-page.change-phone-number-btn' | globalize }}
+        </template>
+        <template v-else>
+          {{ 'security-page.add-phone-number-btn' | globalize }}
+        </template>
+      </a>
+    </div>
+
+    <div class="security-page__row">
+      <p class="security-page__row-title">
+        {{ 'security-page.telegram-title' | globalize }}
+      </p>
+      <a
+        class="security-page__row-action"
+        @click="showDrawer(VIEW_MODES.changeTelegramUsername)"
+      >
+        <template v-if="isTelegramEnabled">
+          {{ 'security-page.change-telegram-btn' | globalize }}
+        </template>
+        <template v-else>
+          {{ 'security-page.add-telegram-btn' | globalize }}
+        </template>
+      </a>
+    </div>
 
     <!-- eslint-disable-next-line max-len -->
-    <template v-if="getModule().canRenderSubmodule(ShowNetworkPassphrasePseudoModule)">
-      <div class="security-page__row">
-        <p class="security-page__row-title">
-          {{ 'security-page.network-passphrase-title' | globalize }}
-        </p>
-        <a
-          class="security-page__row-action"
-          @click="showDrawer(VIEW_MODES.viewNetworkPassphrase)"
-        >
-          {{ 'security-page.view-network-passphrase-btn' | globalize }}
-        </a>
-      </div>
-    </template>
-
-    <!-- eslint-disable-next-line max-len -->
-    <template v-if="getModule().canRenderSubmodule(PhoneNumberFormPseudoModule)">
-      <div class="security-page__row">
-        <p class="security-page__row-title">
-          {{ 'security-page.phone-number-title' | globalize }}
-        </p>
-        <a
-          class="security-page__row-action"
-          @click="showDrawer(VIEW_MODES.changePhoneNumber)"
-        >
-          <template v-if="isPhoneEnabled">
-            {{ 'security-page.change-phone-number-btn' | globalize }}
-          </template>
-          <template v-else>
-            {{ 'security-page.add-phone-number-btn' | globalize }}
-          </template>
-        </a>
-      </div>
-    </template>
-
-    <!-- eslint-disable-next-line max-len -->
-    <template v-if="getModule().canRenderSubmodule(TelegramFormPseudoModule)">
-      <div class="security-page__row">
-        <p class="security-page__row-title">
-          {{ 'security-page.telegram-title' | globalize }}
-        </p>
-        <a
-          class="security-page__row-action"
-          @click="showDrawer(VIEW_MODES.changeTelegramUsername)"
-        >
-          <template v-if="isTelegramEnabled">
-            {{ 'security-page.change-telegram-btn' | globalize }}
-          </template>
-          <template v-else>
-            {{ 'security-page.add-telegram-btn' | globalize }}
-          </template>
-        </a>
-      </div>
-    </template>
-
-    <!-- eslint-disable-next-line max-len -->
-    <template v-if="getModule().canRenderSubmodule(DefaultQuoteAssetPseudoModule)">
+    <template v-if="isAccountCorporate && !isCustomerUiShown">
       <div class="security-page__row">
         <p class="security-page__row-title">
           {{ 'security-page.default-quote-asset-title' | globalize }}
         </p>
-        <submodule-importer
-          :submodule="getModule().getSubmodule(DefaultQuoteAssetPseudoModule)"
-        />
+        <default-quote-asset />
       </div>
     </template>
   </div>
@@ -212,36 +142,22 @@
 
 <script>
 import SwitchField from '@/vue/fields/SwitchField'
-import ClipboardField from '@/vue/fields/ClipboardField'
-
 import Drawer from '@/vue/common/Drawer'
 import KeyViewer from '@/vue/common/KeyViewer'
-
 import ChangePasswordForm from '@/vue/forms/ChangePasswordForm'
 import PhoneNumberForm from '@/vue/forms/PhoneNumberForm'
 import TfaForm from '@/vue/forms/TfaForm'
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
+import TelegramForm from '@/vue/forms/TelegramForm'
+import DefaultQuoteAsset from '@/vue/fields/DefaultQuoteAssetSelectField'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
-
-import { api } from '@/api'
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
-
-import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-account-id-pseudo-module'
-import { ShowSeedPseudoModule } from '@/modules-arch/pseudo-modules/show-seed-pseudo-module'
-import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
-import { ShowNetworkPassphrasePseudoModule } from '@/modules-arch/pseudo-modules/show-network-passphrase-pseudo-module'
-import { PhoneNumberFormPseudoModule } from '@/modules-arch/pseudo-modules/phone-number-form-pseudo-module'
-import { TelegramFormPseudoModule } from '@/modules-arch/pseudo-modules/telegram-form-pseudo-module'
-import { DefaultQuoteAssetPseudoModule } from '@/modules-arch/pseudo-modules/default-quote-asset-pseudo-module'
 
 const VIEW_MODES = {
   enableTfa: 'enableTfa',
   changePassword: 'changePassword',
   viewAccountId: 'viewAccountId',
-  viewSecretSeed: 'viewSecretSeed',
-  viewNetworkPassphrase: 'viewNetworkPassphrase',
   changePhoneNumber: 'changePhoneNumber',
   changeTelegramUsername: 'changeTelegramUsername',
   default: '',
@@ -253,25 +169,16 @@ export default {
     SwitchField,
     Drawer,
     KeyViewer,
-    ClipboardField,
     ChangePasswordForm,
     TfaForm,
     PhoneNumberForm,
-    SubmoduleImporter,
+    TelegramForm,
+    DefaultQuoteAsset,
   },
   data: _ => ({
     isDrawerShown: false,
     viewMode: VIEW_MODES.default,
     VIEW_MODES,
-    ShowAccountIdPseudoModule,
-    ShowSeedPseudoModule,
-    ChangePasswordPseudoModule,
-    ShowNetworkPassphrasePseudoModule,
-    PhoneNumberFormPseudoModule,
-    TelegramFormPseudoModule,
-    DefaultQuoteAssetPseudoModule,
-    api,
-    walletSeed: '',
   }),
 
   computed: {
@@ -280,13 +187,14 @@ export default {
       isTotpEnabled: vuexTypes.isTotpEnabled,
       isPhoneEnabled: vuexTypes.isPhoneEnabled,
       isTelegramEnabled: vuexTypes.isTelegramEnabled,
+      isAccountCorporate: vuexTypes.isAccountCorporate,
+      isCustomerUiShown: vuexTypes.isCustomerUiShown,
     }),
   },
 
   async created () {
     try {
       await this.loadFactors()
-      this.walletSeed = await this.decryptSecretSeed()
     } catch (e) {
       ErrorHandler.processWithoutFeedback(e)
     }
@@ -295,7 +203,6 @@ export default {
   methods: {
     ...mapActions({
       loadFactors: vuexTypes.LOAD_FACTORS,
-      decryptSecretSeed: vuexTypes.DECRYPT_SECRET_SEED,
     }),
     showDrawer (viewMode) {
       this.viewMode = viewMode

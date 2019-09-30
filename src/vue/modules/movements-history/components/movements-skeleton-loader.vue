@@ -25,9 +25,17 @@ export default {
   components: {
     SkeletonLoader,
   },
-  data: _ => ({
-    cells: 5,
-  }),
+  props: {
+    isCustomerMovements: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  computed: {
+    cells () {
+      return this.isCustomerMovements ? 4 : 5
+    },
+  },
   methods: {
     getTemplateNameSkeletonLoader (item) {
       return (item === this.cells)

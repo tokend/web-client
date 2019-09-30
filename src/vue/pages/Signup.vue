@@ -85,9 +85,9 @@ export default {
           await this.storeWallet(wallet)
           await this.loadAccount(this.walletAccountId)
           await this.loadKyc()
-          this.$router.push(vueRoutes.signupKyc)
+          await this.$router.push(vueRoutes.signupKyc)
         } else {
-          this.$router.push({
+          await this.$router.push({
             ...vueRoutes.verify,
             params: {
               paramsBase64: btoa(JSON.stringify({

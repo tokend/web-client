@@ -54,8 +54,6 @@ class I18n {
         result = _merge(
           await require.ensure([], require => require('./resources/en')),
           await require.ensure([], require => require('./resources/en.terms')),
-          await require.ensure([], require => require('./resources/en.pre-issuance-guide')),
-          await require.ensure([], require => require('./resources/en.countries')),
         )
         break
 
@@ -63,8 +61,6 @@ class I18n {
         result = _merge(
           await require.ensure([], require => require('./resources/ru')),
           await require.ensure([], require => require('./resources/ru.terms')),
-          await require.ensure([], require => require('./resources/ru.pre-issuance-guide')),
-          await require.ensure([], require => require('./resources/ru.countries')),
         )
         break
 
@@ -90,12 +86,6 @@ class I18n {
           lang, 'config', parsed.config, true, true
         )
       }
-
-      if (parsed.countries) {
-        this._i18nextInstance.addResourceBundle(
-          lang, 'countries', parsed.countries, true, true
-        )
-      }
     }
   }
 
@@ -112,10 +102,6 @@ class I18n {
 
     if (resource.config) {
       result.config = resource.config
-    }
-
-    if (resource.countries) {
-      result.countries = resource.countries
     }
 
     return result

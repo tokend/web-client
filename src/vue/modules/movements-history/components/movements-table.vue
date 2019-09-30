@@ -9,6 +9,7 @@
           {{ 'movements-history.type-th' | globalize }}
         </th>
         <th
+          v-if="!isCustomerMovements"
           class="movements-table__head-cell"
           :title="'movements-history.operation-th' | globalize"
         >
@@ -35,16 +36,19 @@
 
     <movements-table-row
       v-for="movement in movements"
+      :is-customer-movements="isCustomerMovements"
       :movement="movement"
       :key="movement.id"
     />
     <empty-tbody-placeholder
       v-if="!movements.length && isMovementsLoaded"
+      :is-customer-movements="isCustomerMovements"
     />
     <template v-for="index in 3">
       <movements-skeleton-loader
         v-if="!isMovementsLoaded && !movements.length"
         :key="index"
+        :is-customer-movements="isCustomerMovements"
       />
     </template>
   </table>
@@ -70,6 +74,10 @@ export default {
     isMovementsLoaded: {
       type: Boolean,
       required: true,
+    },
+    isCustomerMovements: {
+      type: Boolean,
+      default: false,
     },
   },
 }

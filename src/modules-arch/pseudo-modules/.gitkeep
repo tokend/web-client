@@ -1,5 +1,0 @@
-Place here modules that actually aren’t modularized yet but needed to enable or
-disable some controllers on pages. This folder isn’t a magic pill and shouldn’t
-be abused, all the pseudo-modules placed here should be truly modularized ASAP.
-
-Use it only in corner cases of your business requirements.

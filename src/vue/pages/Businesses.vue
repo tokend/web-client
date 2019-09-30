@@ -4,17 +4,13 @@
       <top-bar>
         <template slot="main">
           <!-- eslint-disable-next-line max-len -->
-          <template v-if="getModule().canRenderSubmodule(BusinessesMyPageModule)">
-            <router-link :to="vueRoutes.myBusinesses">
-              <span>{{ 'businesses.my-tab' | globalize }}</span>
-            </router-link>
-          </template>
+          <router-link :to="vueRoutes.myBusinesses">
+            <span>{{ 'businesses.my-tab' | globalize }}</span>
+          </router-link>
           <!-- eslint-disable-next-line max-len -->
-          <template v-if="getModule().canRenderSubmodule(BusinessesAllPageModule)">
-            <router-link :to="vueRoutes.allBusinesses">
-              <span>{{ 'businesses.all-tab' | globalize }}</span>
-            </router-link>
-          </template>
+          <router-link :to="vueRoutes.allBusinesses">
+            <span>{{ 'businesses.all-tab' | globalize }}</span>
+          </router-link>
         </template>
       </top-bar>
     </template>
@@ -26,8 +22,8 @@
 <script>
 import TopBar from '@/vue/common/TopBar'
 import { vueRoutes } from '@/vue-router/routes'
-import { BusinessesAllPageModule } from '@/vue/pages/businesses-all-page-module'
-import { BusinessesMyPageModule } from '@/vue/pages/businesses-my-page-module'
+import { mapMutations, mapActions } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 export default {
   name: 'businesses',
@@ -36,9 +32,19 @@ export default {
   },
   data: _ => ({
     vueRoutes,
-    BusinessesAllPageModule,
-    BusinessesMyPageModule,
   }),
+  created () {
+    this.CLEAR_BUSINESS_TO_BROWSE()
+    this.LOAD_BUSINESS_STATS_QUOTE_ASSET()
+  },
+  methods: {
+    ...mapMutations([
+      vuexTypes.CLEAR_BUSINESS_TO_BROWSE,
+    ]),
+    ...mapActions([
+      vuexTypes.LOAD_BUSINESS_STATS_QUOTE_ASSET,
+    ]),
+  },
 }
 </script>
 

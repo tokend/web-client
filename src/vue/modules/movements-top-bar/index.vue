@@ -10,8 +10,8 @@
             {{ 'op-pages.filters-prefix' | globalize }}
           </span>
           <select-field
-            :value="asset.code"
-            @input="setAssetByCode"
+            :value="assetCode"
+            @input="setAssetCode"
             class="app__select app__select--no-border"
           >
             <option
@@ -25,81 +25,24 @@
         </div>
       </template>
       <div
-        v-if="!isSharesPage"
+        v-if="isBusinessToBrowse"
         class="movements-top-bar__actions"
         slot="extra"
       >
-        <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)">
-          <!-- TODO, currently unverified users can't withdraw, wait for
-            devops initscripts update -->
-          <button
-            v-ripple
-            class="app__button-raised movements-top-bar__actions-btn"
-            @click="isWithdrawalDrawerShown = true"
-            :disabled="!asset.isWithdrawable || isAccountUnverified"
-            :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isWithdrawable) |
-              globalize({ asset: asset.code })
-            "
-          >
-            <i class="mdi mdi-download movements-top-bar__btn-icon" />
-            {{ 'op-pages.withdraw' | globalize }}
-          </button>
-        </template>
-
-        <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(DepositFormPseudoModule)">
-          <button
-            v-ripple
-            class="app__button-raised movements-top-bar__actions-btn"
-            @click="isDepositDrawerShown = true"
-            :disabled="!asset.isDepositable"
-            :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isDepositable) |
-              globalize({ asset: asset.code })
-            "
-          >
-            <i class="mdi mdi-upload movements-top-bar__btn-icon" />
-            {{ 'op-pages.deposit' | globalize }}
-          </button>
-        </template>
-
-        <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(TransferDrawerPseudoModule)">
-          <button
-            v-ripple
-            class="app__button-raised movements-top-bar__actions-btn"
-            @click="isTransferDrawerShown = true"
-            :disabled="!(asset.isTransferable && isHaveBalance)"
-            :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isTransferable) |
-              globalize({ asset: asset.code })
-            "
-          >
-            <i class="mdi mdi-send movements-top-bar__btn-icon" />
-            {{ 'op-pages.send' | globalize }}
-          </button>
-        </template>
+        <button
+          v-ripple
+          class="app__button-raised movements-top-bar__actions-btn"
+          @click="isTransferDrawerShown = true"
+          :disabled="!(assetByCode(assetCode).isTransferable && isHaveBalance)"
+          :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isTransferable) |
+            globalize({ asset: assetCode })
+          "
+        >
+          <i class="mdi mdi-send movements-top-bar__btn-icon" />
+          {{ 'op-pages.send' | globalize }}
+        </button>
       </div>
     </top-bar>
-
-    <drawer :is-shown.sync="isWithdrawalDrawerShown">
-      <template slot="heading">
-        {{ 'withdrawal-form.withdrawal' | globalize }}
-      </template>
-      <withdrawal-form
-        :asset-code="asset.code"
-        @operation-submitted="closeWithdrawalDrawerAndEmitEvent()"
-      />
-    </drawer>
-
-    <drawer :is-shown.sync="isDepositDrawerShown">
-      <template slot="heading">
-        {{ 'deposit-form.deposit' | globalize }}
-      </template>
-      <submodule-importer
-        :submodule="getModule().getSubmodule(DepositFormPseudoModule)"
-        :asset-code="asset.code"
-      />
-    </drawer>
 
     <drawer :is-shown.sync="isTransferDrawerShown">
       <template slot="heading">
@@ -107,7 +50,7 @@
       </template>
       <transfer-form
         @operation-submitted="$emit(EVENTS.movementsUpdateRequired)"
-        :asset-to-transfer="asset.code"
+        :asset-to-transfer="assetCode"
       />
     </drawer>
   </div>
@@ -121,23 +64,14 @@ import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
 import SelectField from '@/vue/fields/SelectField'
 
-import WithdrawalForm from '@/vue/forms/WithdrawalForm'
 import TransferForm from '@/vue/forms/TransferForm'
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
-
-import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
-import { DepositFormPseudoModule } from '@/modules-arch/pseudo-modules/deposit-form-pseudo-module'
-import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
-import { vueRoutes } from '@/vue-router/routes'
 
 const EVENTS = {
-  assetUpdated: 'asset-updated',
+  assetCodeUpdated: 'asset-code-updated',
   movementsUpdateRequired: 'movements-update-required',
 }
 
 const ASSET_POLICIES_STR = {
-  isDepositable: 'isDepositable',
-  isWithdrawable: 'isWithdrawable',
   isTransferable: 'isTransferable',
 }
 
@@ -147,58 +81,45 @@ export default {
     SelectField,
     TopBar,
     Drawer,
-    WithdrawalForm,
     TransferForm,
-    SubmoduleImporter,
   },
   data: _ => ({
     isInitialized: false,
     isTransferDrawerShown: false,
-    isReedemDrawerShown: false,
-    isDepositDrawerShown: false,
-    isWithdrawalDrawerShown: false,
-    WithdrawalDrawerPseudoModule,
-    DepositFormPseudoModule,
-    TransferDrawerPseudoModule,
-    asset: {},
+    assetCode: '',
     EVENTS,
     ASSET_POLICIES_STR,
     isHaveBalance: true,
   }),
   computed: {
     ...mapGetters({
-      balancesAssets: vuexTypes.balancesAssets,
       balancesAssetsByOwner: vuexTypes.balancesAssetsByOwner,
       accountBalanceByCode: vuexTypes.accountBalanceByCode,
-      accountBalances: vuexTypes.accountBalances,
       ownedAssets: vuexTypes.ownedBalancesAssets,
       isAccountUnverified: vuexTypes.isAccountUnverified,
+      isBusinessToBrowse: vuexTypes.isBusinessToBrowse,
+      assetByCode: vuexTypes.assetByCode,
     }),
 
-    isSharesPage () {
-      return this.$route.name === vueRoutes.registerOfShares.name
-    },
-
     assets () {
-      if (this.isSharesPage) {
-        return this.ownedAssets
-      } else if (this.$route.query.owner) {
-        return this.balancesAssetsByOwner(this.$route.query.owner)
+      if (this.isBusinessToBrowse) {
+        // eslint-disable-next-line max-len
+        const accountId = this.$route && this.$route.query && this.$route.query.owner
+          ? this.$route.query.owner
+          : this.businessToBrowse.accountId
+        return this.balancesAssetsByOwner(accountId)
       } else {
-        return this.balancesAssets
+        return this.ownedAssets
       }
     },
   },
   watch: {
-    asset: {
-      deep: true,
-      handler (value) {
-        this.getBalance()
-        this.$router.push({
-          query: { asset: value.code },
-        })
-        this.$emit(EVENTS.assetUpdated, value)
-      },
+    async assetCode (value) {
+      this.getBalance()
+      await this.$router.push({
+        query: { assetCode: value },
+      })
+      this.$emit(EVENTS.assetCodeUpdated, value)
     },
   },
   async created () {
@@ -210,37 +131,27 @@ export default {
     ...mapActions({
       loadAccountBalancesDetails: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
-    setAssetByCode (code) {
-      this.asset = this.assets.find(item => item.code === code)
+    setAssetCode (code) {
+      this.assetCode = code
     },
     setDefaultAsset () {
-      this.asset = this.assets
-        .find(item => item.code === this.$route.query.asset) ||
-        this.assets[0]
+      const queryAsset = this.assets
+        .find(item => item.code === this.$route.query.assetCode)
+
+      this.assetCode = queryAsset
+        ? queryAsset.code
+        : this.assets[0].code
     },
     getMessageIdForPolicy (policy) {
       let messageId = ''
-      if (!this.asset[policy]) {
-        if (policy === ASSET_POLICIES_STR.isDepositable) {
-          messageId = 'op-pages.not-depositable-msg'
-        } else if (policy === ASSET_POLICIES_STR.isWithdrawable) {
-          if (this.isAccountUnverified) {
-            messageId = 'op-pages.unverified-cant-do-msg'
-          } else {
-            messageId = 'op-pages.not-withdrawable-msg'
-          }
-        } else if (policy === ASSET_POLICIES_STR.isTransferable) {
-          messageId = 'op-pages.not-transferable-msg'
-        }
+      const asset = this.assetByCode(this.assetCode)
+      if (!asset[policy]) {
+        messageId = 'op-pages.not-transferable-msg'
       }
       return messageId
     },
-    closeWithdrawalDrawerAndEmitEvent () {
-      this.isWithdrawalDrawerShown = false
-      this.$emit(EVENTS.movementsUpdateRequired)
-    },
     getBalance () {
-      const balance = +this.accountBalanceByCode(this.asset.code).balance
+      const balance = +this.accountBalanceByCode(this.assetCode).balance
       this.isHaveBalance = balance > 0
     },
   },
