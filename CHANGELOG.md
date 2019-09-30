@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
+## [Unreleased]
+#### Added
+- Track that offer was canceled on pay page
+
 ## [1.0.3-rc.11] - 2019-09-19
 ### "Under the hood" changes
 #### Changed
