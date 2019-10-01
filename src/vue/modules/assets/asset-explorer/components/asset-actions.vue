@@ -17,6 +17,15 @@
       {{ 'assets.update-btn' | globalize }}
     </button>
 
+    <button
+      v-if="isAssetOwner"
+      v-ripple
+      class="app__button-raised asset-actions__btn"
+      @click="deleteAsset"
+    >
+      {{ 'assets.delete-btn' | globalize }}
+    </button>
+
     <drawer :is-shown.sync="isTransferDrawerShown">
       <template slot="heading">
         {{ 'transfer-form.form-heading' | globalize }}
@@ -39,6 +48,10 @@ import { vuexTypes } from '@/vuex'
 
 import TransferForm from '@/vue/forms/TransferForm'
 import Drawer from '@/vue/common/Drawer'
+import { api } from '@/api'
+import { base } from '@tokend/js-sdk'
+
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const EVENTS = {
   assetTransfered: 'asset-transfered',
@@ -68,6 +81,16 @@ export default {
 
     isAssetOwner () {
       return this.asset.owner === this.accountId
+    },
+  },
+
+  methods: {
+    async deleteAsset () {
+      try {
+        await api.postOperations(base.xdr.RemoveAssetOp(this.asset.code))
+      } catch (error) {
+        ErrorHandler.process(error)
+      }
     },
   },
 }

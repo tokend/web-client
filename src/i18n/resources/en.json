@@ -1112,6 +1112,7 @@
       "us-accreditation-required-msg": "U.S. citizens are required to verify their accreditation before holding this asset",
       "verification-required-msg": "You need to verify your account to hold this asset",
       "update-btn": "Update",
+      "delete-btn": "Delete",
       "no-terms-msg": "No terms",
       "balance-title": "Balance",
       "description-title": "Description",
