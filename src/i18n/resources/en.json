@@ -1401,6 +1401,9 @@
       "approved-incoming-msg": "This request was approved",
       "pending-incoming-msg": "This request is waiting for your review. Please approve or reject it",
       "permanently-rejected-incoming-msg": "This request was rejected permanently"
+    },
+    "asset-actions": {
+      "asset-deleted-msg": "Asset successfully deleted"
     }
   }
 }

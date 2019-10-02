@@ -1403,6 +1403,9 @@
       "approved-incoming-msg": "Запрос подтвержден",
       "pending-incoming-msg": "Запрос ждет вашего рассмотрения. Пожалуйста подтвердите или отклоните этот запрос",
       "permanently-rejected-incoming-msg": "Запрос отклонен навсегда"
+    },
+    "asset-actions": {
+      "asset-deleted-msg": "Актив успешно удален"
     }
   }
 }

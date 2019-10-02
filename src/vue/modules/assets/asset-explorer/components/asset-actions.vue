@@ -50,12 +50,14 @@ import TransferForm from '@/vue/forms/TransferForm'
 import Drawer from '@/vue/common/Drawer'
 import { api } from '@/api'
 import { base } from '@tokend/js-sdk'
+import { Bus } from '@/js/helpers/event-bus'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const EVENTS = {
   assetTransfered: 'asset-transfered',
   updateAsset: 'update-asset',
+  assetDeleted: 'asset-deleted',
 }
 
 export default {
@@ -77,6 +79,7 @@ export default {
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
+      account: vuexTypes.account,
     }),
 
     isAssetOwner () {
@@ -87,9 +90,27 @@ export default {
   methods: {
     async deleteAsset () {
       try {
-        await api.postOperations(base.xdr.RemoveAssetOp(this.asset.code))
+        await this.deleteAssetPairs()
+        await api.postOperations(base.RemoveAssetOpBuilder
+          .removeAssetOp({
+            code: this.asset.code,
+          }))
+        Bus.success('asset-actions.asset-deleted-msg')
+        this.$emit(EVENTS.assetDeleted)
       } catch (error) {
         ErrorHandler.process(error)
+      }
+    },
+    async deleteAssetPairs () {
+      const { data } = await api.get('/v3/asset_pairs', {
+        filter: { asset: this.asset.code },
+      })
+      for (let assetPair of data) {
+        await api.postOperations(base.RemoveAssetPairOpBuilder
+          .removeAssetPairOp({
+            base: assetPair.baseAsset.id,
+            quote: assetPair.quoteAsset.id,
+          }))
       }
     },
   },
