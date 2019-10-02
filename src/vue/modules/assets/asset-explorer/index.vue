@@ -28,6 +28,7 @@
               :asset="selectedBalance.asset"
               @update-asset="isUpdateMode = true"
               @asset-transfered="loadAccountBalancesAndSetSelectedBalance()"
+              @asset-redeemed="setSelectedBalance()"
             />
           </div>
         </template>
@@ -166,10 +167,14 @@ export default {
     async loadAccountBalancesAndSetSelectedBalance () {
       await this.loadAccountBalances()
       if (this.isDrawerShown) {
-        this.selectedBalance = this.accountBalances.find(item => {
-          return item.id === this.selectedBalance.id
-        })
+        this.setSelectedBalance()
       }
+    },
+
+    setSelectedBalance () {
+      this.selectedBalance = this.accountBalances.find(item => {
+        return item.id === this.selectedBalance.id
+      })
     },
   },
 }

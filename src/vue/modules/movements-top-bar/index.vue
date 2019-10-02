@@ -118,7 +118,7 @@ export default {
       this.getBalance()
       await this.$router.push({
         query: { assetCode: value },
-      })
+      }, () => {})
       this.$emit(EVENTS.assetCodeUpdated, value)
     },
   },
