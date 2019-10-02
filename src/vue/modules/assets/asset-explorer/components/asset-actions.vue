@@ -79,7 +79,6 @@ export default {
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
-      account: vuexTypes.account,
     }),
 
     isAssetOwner () {
