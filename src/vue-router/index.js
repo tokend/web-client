@@ -353,17 +353,18 @@ function authPageGuard (to, from, next) {
 function redirectRouteGuard (to, from, next) {
   const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
   const isAccountUnverified = store.getters[vuexTypes.isAccountUnverified]
-  const isKycRecoveryInProgress = store
-    .getters[vuexTypes.isKycRecoveryInProgress]
 
   if (isLoggedIn && !isAccountUnverified) {
-    if (to.name === vueRoutes.app.name) {
+    const isKycRecoveryInProgress = store
+      .getters[vuexTypes.isKycRecoveryInProgress]
+
+    if (isKycRecoveryInProgress) {
+      next(vueRoutes.kycRecoveryManagement)
+    } else if (to.name === vueRoutes.app.name) {
       const isAccountCorporate = store.getters[vuexTypes.isAccountCorporate]
       const isBusinessToBrowse = store.getters[vuexTypes.isBusinessToBrowse]
       const isCustomerUiShown = store.getters[vuexTypes.isCustomerUiShown]
-      if (isKycRecoveryInProgress) {
-        next(vueRoutes.kycRecoveryManagement)
-      } else if (isAccountCorporate && !isCustomerUiShown) {
+      if (isAccountCorporate && !isCustomerUiShown) {
         next(vueRoutes.customers)
       } else if (isBusinessToBrowse) {
         next(vueRoutes.assetsExplore)
