@@ -2598,7 +2598,9 @@
       "no-atomic-swap-title": "No such offer found",
       "no-atomic-swap-msg": "Please make sure the link is correct",
       "offer-canceled-title": "Offer was canceled",
-      "offer-canceled-msg": "The owner canceled this offer"
+      "offer-canceled-msg": "The owner canceled this offer",
+      "no-amount-title": "Offer was sold out",
+      "no-amount-msg": "Contact the owner of the offer"
     },
     "pay-form": {
       "email-lbl": "Recipient Email in Conto"

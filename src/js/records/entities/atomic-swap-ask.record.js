@@ -28,4 +28,8 @@ export class AtomicSwapAskRecord {
     })
     return quoteAsset.paymentMethodId
   }
+
+  get isAmountMoreThanZero () {
+    return +this.amount > 0
+  }
 }
