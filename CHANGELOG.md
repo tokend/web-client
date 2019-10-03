@@ -9,6 +9,19 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Track that offer was canceled on pay page
+#### Removed
+- iOS installation guide
+
+#### Fixed
+- Different validation errors for card and crypto address
+
+## [1.1.0-rc.0] - 2019-09-30
+#### Removed
+- All schemes
+
+#### Changed
+- Refactored code
+- Update vue-route
 
 ## [1.0.3-rc.11] - 2019-09-19
 ### "Under the hood" changes
@@ -18,6 +31,9 @@ for further information about branching and tagging conventions.
 ## [1.0.3-rc.10] - 2019-09-19
 #### Added
 - Sponsorship page
+
+#### Changed
+- Hid transfer policy
 
 ## [1.0.3-rc.9] - 2019-09-17
 #### Added
@@ -276,7 +292,8 @@ for further information about branching and tagging conventions.
 #### Removed
 - `RECOVERY_MODE` config key due to unused anymore
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.0.3-rc.11...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.1.0-rc.0...HEAD
+[1.1.0-rc.0]: https://github.com/tokend/web-client/compare/1.0.3-rc.11...1.1.0-rc.0
 [1.0.3-rc.11]: https://github.com/tokend/web-client/compare/1.0.3-rc.10...1.0.3-rc.11
 [1.0.3-rc.10]: https://github.com/tokend/web-client/compare/1.0.3-rc.9...1.0.3-rc.10
 [1.0.3-rc.9]: https://github.com/tokend/web-client/compare/1.0.3-rc.8...1.0.3-rc.9

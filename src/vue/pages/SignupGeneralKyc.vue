@@ -42,7 +42,7 @@ export default {
 
     async submit () {
       await this.loadAccount(this.walletAccountId)
-      this.$router.push(vueRoutes.app)
+      await this.$router.push(vueRoutes.app)
     },
 
     logOut () {

@@ -1,73 +1,51 @@
 <template>
   <div class="movements">
-    <template v-if="getModule().canRenderSubmodule(MovementsTopBarModule)">
-      <submodule-importer
-        :submodule="getModule().getSubmodule(MovementsTopBarModule)"
-        @asset-updated="updateAsset"
-        @movements-update-required="emitUpdateList('movements:updateList')"
-      />
-    </template>
+    <movements-top-bar
+      @asset-code-updated="updateAssetCode"
+      @movements-update-required="emitUpdateList('movements:updateList')"
+    />
 
-    <template v-if="getModule().canRenderSubmodule(MovementsTopBarReitModule)">
-      <submodule-importer
-        :submodule="getModule().getSubmodule(MovementsTopBarReitModule)"
-        :config="movementsTopBarReitConfig"
-        @asset-updated="updateAsset"
-        @withdrawn="withdrawalFiatModuleWithdrawn"
-        @deposited="depositFiatModuleDeposited"
-        @redeemed="redeemModuleSubmitted"
-      />
-    </template>
+    <movements-history
+      v-if="assetCode"
+      :asset-code="assetCode"
+      :key="`movements-history-state-${historyState}`"
+    />
 
-    <template v-if="getModule().canRenderSubmodule(MovementsHistoryModule)">
-      <submodule-importer
-        v-if="true"
-        :submodule="getModule().getSubmodule(MovementsHistoryModule)"
-        :asset-code="asset.code"
-        :key="`movements-history-state-${historyState}`"
-      />
+    <no-data-message
+      v-else-if="!assetCode"
+      icon-name="trending-up"
+      :title="'op-pages.no-data-title' | globalize"
+      :message="'op-pages.no-data-msg' | globalize"
+    />
 
-      <no-data-message
-        v-else-if="isLoadFailed"
-        icon-name="trending-up"
-        :title="'op-pages.no-data-title' | globalize"
-        :message="'op-pages.no-data-msg' | globalize"
-      />
-    </template>
+    <loader
+      v-else
+      message-id="op-pages.assets-loading-msg"
+    />
   </div>
 </template>
 
 <script>
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
-import config from '@/config'
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
-import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
-import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
-import { MovementsTopBarReitModule } from '@modules/movements-top-bar-reit/module'
+import MovementsHistory from '@/vue/modules/movements-history'
+import MovementsTopBar from '@modules/movements-top-bar'
 import UpdateList from '@/vue/mixins/update-list.mixin'
+import Loader from '@/vue/common/Loader'
 
 export default {
   name: 'movements-page',
   components: {
     NoDataMessage,
-    SubmoduleImporter,
+    MovementsTopBar,
+    MovementsHistory,
+    Loader,
   },
 
   mixins: [UpdateList],
 
   data: _ => ({
-    MovementsHistoryModule,
-    MovementsTopBarModule,
-    MovementsTopBarReitModule,
-    asset: {},
-    isLoadFailed: false,
-    movementsTopBarReitConfig: {
-      horizonURL: config.HORIZON_SERVER,
-      minAmount: config.MIN_AMOUNT,
-      maxAmount: config.MAX_AMOUNT,
-      decimalPoints: config.DECIMAL_POINTS,
-    },
+    assetCode: '',
     historyState: 0,
   }),
 
@@ -80,20 +58,8 @@ export default {
   },
 
   methods: {
-    updateAsset (asset) {
-      this.asset = asset
-    },
-
-    withdrawalFiatModuleWithdrawn () {
-      this.emitUpdateList('movements:updateList')
-    },
-
-    depositFiatModuleDeposited () {
-      this.emitUpdateList('movements:updateList')
-    },
-
-    redeemModuleSubmitted () {
-      this.emitUpdateList('movements:updateList')
+    updateAssetCode (assetCode) {
+      this.assetCode = assetCode
     },
 
     updateMovementsHistoryList () {

@@ -32,7 +32,7 @@
 import { SponsorshipRequest } from '../wrappers/sponsorship-request'
 
 import { mapActions } from 'vuex'
-import { types } from '../store/types'
+import { vuexTypes } from '@/vuex'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -66,8 +66,8 @@ export default {
   },
 
   methods: {
-    ...mapActions('sponsorship-requests', {
-      approveOrRejectRequest: types.APPROVE_OR_REJECT_REQUEST,
+    ...mapActions({
+      approveOrRejectRequest: vuexTypes.APPROVE_OR_REJECT_SPONSORSHIP_REQUEST,
     }),
 
     async sendRequest (action) {

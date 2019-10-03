@@ -73,12 +73,6 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { BalanceRecord } from '@/js/records/entities/balance.record'
 
-const STELLAR_TYPES = {
-  creditAlphanum4: 'credit_alphanum4',
-  creditAlphanum12: 'credit_alphanum12',
-  native: 'native',
-}
-
 export default {
   name: 'asset-attributes-viewer',
   components: {
@@ -87,38 +81,12 @@ export default {
   props: {
     asset: { type: AssetRecord, required: true },
     balance: { type: BalanceRecord, required: true },
-    kycRequiredAssetType: { type: Number, required: true },
-    securityAssetType: { type: Number, required: true },
   },
   computed: {
     ...mapGetters({
       businessStatsQuoteAsset: vuexTypes.businessStatsQuoteAsset,
       isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
-
-    stellarAssetTypeTranslated () {
-      let translationId
-
-      switch (this.asset.stellarAssetType) {
-        case STELLAR_TYPES.creditAlphanum4:
-          translationId = 'assets.credit-alphanum4-stellar-asset-type-lbl'
-          break
-
-        case STELLAR_TYPES.creditAlphanum12:
-          translationId = 'assets.credit-alphanum12-stellar-asset-type-lbl'
-          break
-
-        case STELLAR_TYPES.native:
-          translationId = 'assets.native-stellar-asset-type-lbl'
-          break
-
-        default:
-          translationId = '[UNKNOWN_STELLAR_ASSET_TYPE]'
-          break
-      }
-
-      return this.$options.filters.globalize(translationId)
-    },
   },
 }
 </script>

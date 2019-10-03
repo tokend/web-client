@@ -7,13 +7,10 @@ import VueResource from 'vue-resource'
 import log from 'loglevel'
 import config from './config'
 import NProgress from 'nprogress'
-import moment from 'moment'
+import router from '@/vue-router'
 
-import { extendStoreWithScheme } from '@/vuex'
-import { buildRouter } from '@/vue-router'
-import { tableScrollShadow } from '@/vue/directives/tableScrollShadow'
+import { buildStore } from '@/vuex'
 import { ripple } from '@/vue/directives/ripple'
-import { tooltip } from '@/vue/directives/tooltip'
 import { i18n } from '@/i18n'
 import { globalize } from '@/vue/filters/globalize'
 import { globalizeCountry } from './vue/filters/globalizeCountry'
@@ -29,23 +26,9 @@ import { formatDateDMY } from '@/vue/filters/formatDateDMY'
 import { formatDateDMYT } from '@/vue/filters/formatDateDMYT'
 import { abbreviate } from '@/vue/filters/abbreviate'
 import { cropAddress } from '@/vue/filters/cropAddress'
-import { SchemeRegistry } from '@/modules-arch/scheme-registry'
 import { ErrorTracker } from '@/js/helpers/error-tracker'
 
 async function init () {
-  await SchemeRegistry.useScheme(config.MODULE_SCHEME_NAME)
-  Vue.use(SchemeRegistry.current)
-
-  i18n.onLanguageChanged(async lang => {
-    if (SchemeRegistry.current.importLanguageResource) {
-      const resource = await SchemeRegistry.current
-        .importLanguageResource(lang)
-      i18n._appendResources(lang, resource)
-    }
-
-    moment.locale(lang)
-  })
-
   await i18n.init()
 
   log.setDefaultLevel(config.LOG_LEVEL)
@@ -53,9 +36,7 @@ async function init () {
   Vue.config.productionTip = false
   Vue.use(Vuelidate)
   Vue.use(VueResource)
-  Vue.directive('table-scroll-shadow', tableScrollShadow)
   Vue.directive('ripple', ripple)
-  Vue.directive('tooltip', tooltip)
   Vue.filter('globalize', globalize)
   Vue.filter('globalizeCountry', globalizeCountry)
   Vue.filter('formatDate', formatDate)
@@ -71,8 +52,7 @@ async function init () {
   Vue.filter('abbreviate', abbreviate)
   Vue.filter('cropAddress', cropAddress)
 
-  const store = await extendStoreWithScheme(SchemeRegistry.current)
-  const router = buildRouter(store)
+  const store = buildStore()
 
   router.beforeEach((to, from, next) => {
     if (to.name !== from.name) {

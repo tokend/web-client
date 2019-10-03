@@ -9,6 +9,8 @@ import kyc from './kyc.module'
 import identities from './identities.module'
 import keyValue from './key-value.module'
 import kycRecovery from './kyc-recovery.module'
+import movementsHistory from './movements-history.module'
+import sponsorshipRequests from './sponsorship-requests.module'
 import { vuexTypes } from '@/vuex/types'
 import { sessionStoragePlugin } from './plugins/session-storage'
 import idleHandler from './idle-handler.module'
@@ -73,7 +75,7 @@ export const rootModule = {
 }
 
 let store
-function buildStore (storeModules = []) {
+function buildStore () {
   store = new Vuex.Store({
     ...rootModule,
     modules: {
@@ -86,7 +88,8 @@ function buildStore (storeModules = []) {
       keyValue,
       idleHandler,
       kycRecovery,
-      ...storeModules,
+      movementsHistory,
+      sponsorshipRequests,
     },
     plugins: [sessionStoragePlugin],
   })
@@ -97,17 +100,5 @@ function buildStore (storeModules = []) {
 }
 buildStore()
 
-async function extendStoreWithScheme (scheme = []) {
-  const storeModules = (await Promise
-    .all(
-      scheme.cache
-        .filter(item => item.importStoreFn)
-        .map(item => item.importStoreFn())
-    ))
-    .reduce((res, item) => ({ ...res, [item.name]: item }), [])
-
-  return buildStore(storeModules)
-}
-
-export { extendStoreWithScheme, store }
+export { store, buildStore }
 export { vuexTypes } from './types'

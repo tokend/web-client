@@ -1,5 +1,5 @@
 import MovementsHistoryModule from './index'
-import { movementsHistoryModule } from './store/index'
+import MovementsHistoryModuleStore from '@/vuex/movements-history.module'
 
 import Vuex from 'vuex'
 import { createLocalVue, shallowMount } from '@vue/test-utils'
@@ -19,7 +19,7 @@ describe('Movements history module', () => {
   beforeEach(() => {
     store = new Vuex.Store({
       modules: {
-        'movements-history': movementsHistoryModule,
+        MovementsHistoryModuleStore,
       },
     })
   })
@@ -44,34 +44,32 @@ describe('Movements history module', () => {
 
     describe('method', () => {
       describe('loadMovementsFirstPage', () => {
-        it('calls loadMovements method', async () => {
-          sinon.stub(wrapper.vm, 'loadMovements')
+        it('calls loadShareMovements method', async () => {
+          sinon.stub(wrapper.vm, 'loadShareMovements')
             .withArgs(props.assetCode)
             .resolves()
-
           await wrapper.vm.loadMovementsFirstPage()
 
-          expect(wrapper.vm.loadMovements).to.have.been.calledOnce
+          expect(wrapper.vm.loadShareMovements).to.have.been.calledOnce
 
-          wrapper.vm.loadMovements.restore()
+          wrapper.vm.loadShareMovements.restore()
         })
 
         it('sets isMovementsLoaded property to true if loading was succeded',
           async () => {
-            sinon.stub(wrapper.vm, 'isSharesPage').returns(false)
-            sinon.stub(wrapper.vm, 'loadMovements')
-              .withArgs(props.assetCode)
+            sinon.stub(wrapper.vm, 'loadShareMovements')
+              .withArgs()
               .resolves()
 
-            await wrapper.vm.loadMovementsFirstPage()
+            await wrapper.vm.loadMovementsFirstPage(props.assetCode)
 
             expect(wrapper.vm.isMovementsLoaded).to.be.true
 
-            wrapper.vm.loadMovements.restore()
+            wrapper.vm.loadShareMovements.restore()
           })
 
         it('calls ErrorHandler.processWithoutFeedback', async () => {
-          sinon.stub(wrapper.vm, 'loadMovements')
+          sinon.stub(wrapper.vm, 'loadShareMovements')
             .throws()
           sinon.stub(ErrorHandler, 'processWithoutFeedback')
 
@@ -81,12 +79,12 @@ describe('Movements history module', () => {
             .to.have.been.calledOnce
           expect(wrapper.vm.isMovementsLoadFailed).to.be.true
 
-          wrapper.vm.loadMovements.restore()
+          wrapper.vm.loadShareMovements.restore()
           ErrorHandler.processWithoutFeedback.restore()
         })
 
         it('sets isMovementsLoadFailed to true', async () => {
-          sinon.stub(wrapper.vm, 'loadMovements')
+          sinon.stub(wrapper.vm, 'loadShareMovements')
             .throws()
           sinon.stub(ErrorHandler, 'processWithoutFeedback')
 
@@ -94,7 +92,7 @@ describe('Movements history module', () => {
 
           expect(wrapper.vm.isMovementsLoadFailed).to.be.true
 
-          wrapper.vm.loadMovements.restore()
+          wrapper.vm.loadShareMovements.restore()
           ErrorHandler.processWithoutFeedback.restore()
         })
       })

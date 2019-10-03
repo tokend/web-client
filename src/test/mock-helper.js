@@ -28,7 +28,6 @@ export class MockHelper {
   mockEndpoint (endpoint, response) {
     const url = `${HORIZON_URL}${endpoint}`
       .replace('@', '%40') // FIXME sorry
-
     mock.get(url, {
       status: 200,
       reason: 'OK',

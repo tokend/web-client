@@ -1,12 +1,13 @@
 <template>
-  <router-link class="logotype" :to="vueRoutes.app">
+  <router-link class="logotype" :to="logoRout">
     <img :src="logoUrl" alt="Conto">
   </router-link>
 </template>
 
 <script>
 import { vueRoutes } from '@/vue-router/routes'
-import { SchemeRegistry } from '@/modules-arch/scheme-registry'
+import { vuexTypes } from '@/vuex'
+import { mapGetters } from 'vuex'
 
 const DEFAULT_LOGO_URL = '/static/conto-logo.png'
 
@@ -16,8 +17,22 @@ export default {
   }),
 
   computed: {
+    ...mapGetters([
+      vuexTypes.isAccountCorporate,
+      vuexTypes.isAccountGeneral,
+      vuexTypes.isBusinessToBrowse,
+      vuexTypes.isCustomerUiShown,
+    ]),
     logoUrl () {
-      return SchemeRegistry.current.appLogoUrl || DEFAULT_LOGO_URL
+      return DEFAULT_LOGO_URL
+    },
+    logoRout () {
+      if (this.isAccountCorporate && !this.isCustomerUiShown) {
+        return vueRoutes.customers
+      }
+      return this.isBusinessToBrowse
+        ? vueRoutes.assetsExplore
+        : vueRoutes.businesses
     },
   },
 }

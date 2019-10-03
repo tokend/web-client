@@ -4,14 +4,11 @@
       <top-bar>
         <template slot="main">
           <!-- eslint-disable max-len -->
-          <template v-if="getModule().canRenderSubmodule(BusinessesAllPageModule)">
-            <router-link :to="vueRoutes.sponsorshipAllBusinesses">
-              <span>{{ 'sponsorship-page.businesses-tab' | globalize }}</span>
-            </router-link>
-          </template>
+          <router-link :to="vueRoutes.sponsorshipAllBusinesses">
+            <span>{{ 'sponsorship-page.businesses-tab' | globalize }}</span>
+          </router-link>
 
           <router-link
-            v-if="getModule().canRenderSubmodule(SponsorshipIncomingRequestsPageModule)"
             :to="vueRoutes.sponsorshipIncomingRequests"
           >
             <span>
@@ -20,7 +17,6 @@
           </router-link>
 
           <router-link
-            v-if="getModule().canRenderSubmodule(SponsorshipOutgoingRequestsPageModule)"
             :to="vueRoutes.sponsorshipOutgoingRequests"
           >
             <span>
@@ -39,9 +35,6 @@
 <script>
 import TopBar from '@/vue/common/TopBar'
 import { vueRoutes } from '@/vue-router/routes'
-import { SponsorshipIncomingRequestsPageModule } from '@/vue/pages/sponsorship-incoming-requests-page-module'
-import { SponsorshipOutgoingRequestsPageModule } from '@/vue/pages/sponsorship-outgoing-requests-page-module'
-import { BusinessesAllPageModule } from '@/vue/pages/businesses-all-page-module'
 
 export default {
   name: 'sponsorship',
@@ -50,9 +43,6 @@ export default {
   },
   data: _ => ({
     vueRoutes,
-    SponsorshipIncomingRequestsPageModule,
-    SponsorshipOutgoingRequestsPageModule,
-    BusinessesAllPageModule,
   }),
 }
 </script>

@@ -28,26 +28,9 @@
 <script>
 import { BusinessRecord } from '@/js/records/entities/business.record'
 import { Bus } from '@/js/helpers/event-bus'
-import { vueRoutes } from '@/vue-router/routes'
 import CurrentBusinessLogo from './current-business-logo'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-
-const ROUTES_WITH_OWNER_FILTER = [
-  vueRoutes.movements.name,
-  vueRoutes.assets.name,
-  vueRoutes.balances.name,
-  vueRoutes.assetsExplore.name,
-  vueRoutes.sales.name,
-  vueRoutes.saleDetails.name,
-  vueRoutes.saleCampaign.name,
-  vueRoutes.investableSales.name,
-  vueRoutes.userOwnedSales.name,
-  vueRoutes.polls.name,
-  vueRoutes.allPolls.name,
-  vueRoutes.atomicSwaps.name,
-  vueRoutes.atomicSwapsExplore.name,
-]
 
 /**
  * Warn: conto dirty code
@@ -77,7 +60,6 @@ export default {
 
   created () {
     this.listen()
-    this.initRouterHooks()
   },
 
   methods: {
@@ -92,11 +74,11 @@ export default {
     ]),
 
     listen () {
-      Bus.$on('businesses:setCurrentBusiness', payload => {
+      Bus.$on('businesses:setCurrentBusiness', async (payload) => {
         this.selectBusinessToBrowse(payload.business)
 
         if (payload.redirectTo) {
-          this.$router.push(payload.redirectTo)
+          await this.$router.push(payload.redirectTo)
         }
       })
     },
@@ -112,34 +94,7 @@ export default {
       this.SET_BUSINESS_STATS_QUOTE_ASSET(value._record.statsQuoteAsset)
       this.SELECT_BUSINESS_TO_BROWSE(value._record)
       // erase movements list
-      this.$store.commit('movements-history/SET_MOVEMENTS', [])
-    },
-
-    initRouterHooks () {
-      this.$router.beforeEach((to, from, next) => {
-        if (this.isAccountCorporate && !this.isCustomerUiShown) {
-          next()
-          return
-        }
-
-        if (
-          to.name === vueRoutes.businesses.name ||
-          to.name === vueRoutes.allBusinesses.name
-        ) {
-          this.CLEAR_BUSINESS_TO_BROWSE()
-          this.LOAD_BUSINESS_STATS_QUOTE_ASSET()
-          next()
-        } else if (!ROUTES_WITH_OWNER_FILTER.includes(to.name)) {
-          next()
-        } else if (!this.businessToBrowse.accountId) {
-          next(vueRoutes.businesses)
-        } else if (!to.query.owner) {
-          to.query.owner = this.businessToBrowse.accountId
-          next(to)
-        } else {
-          next()
-        }
-      })
+      this.$store.commit('SET_MOVEMENTS', [])
     },
   },
 }
