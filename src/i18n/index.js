@@ -196,6 +196,8 @@ class I18n {
                 convertedPercent,
                 _get(lngConfig, 'number.formats.percent')
               )
+            case 'lowercase':
+              return param.toLowerCase()
             default:
               console.warn(`Unknown format: ${format}, skipping…`)
               return param

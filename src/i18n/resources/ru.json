@@ -76,7 +76,8 @@
       "calendar": "{{value, calendar}}",
       "calendar-inline": "{{value, calendar-inline}}",
       "order-number": "{{value, orderNumber}}",
-      "percent": "{{value, percent}}"
+      "percent": "{{value, percent}}",
+      "lowercase": "{{value, lowercase}}"
     },
     "common": {
       "browser-not-supported": "К сожалению, мы не полностью поддерживаем ваш браузер. Какой-то функционал может быть недоступен.",
@@ -118,7 +119,7 @@
       "field-error_validatePhoneNumber": "Неверный номер телефона",
       "field-error_emailOrPhoneNumber": "Неверный имейл или телефон получателя",
       "field-error_telegramUsername": "Имя пользователя неверное",
-      "field-error_cryptoAddressOrCreditCardNumber": "Неверный криптоадрес или номер карты"
+      "field-error_cryptoAddressOrCreditCardNumber": "Неверный {{ destinationLabel, lowercase }}"
     },
     "errors": {
       "default": "Что-то пошло не так. Пожалуйста, повторите попытку позже или свяжитесь с владельцем системы.",
