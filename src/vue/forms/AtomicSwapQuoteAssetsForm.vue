@@ -60,7 +60,12 @@
               white-autofill
               v-model="form.quoteAssets[index].destination"
               @blur="touchField(`form.quoteAssets[${index}].destination`)"
-              :error-message="getFieldErrorMessage(`form.quoteAssets[${index}].destination`)"
+              :error-message="getFieldErrorMessage(
+                `form.quoteAssets[${index}].destination`,
+                {
+                  destinationLabel: getDestinationLabel(form.quoteAssets[index].asset)
+                }
+              )"
               :name="'create-atomic-swap-quote-asset-destination'"
               :label="getDestinationLabel(form.quoteAssets[index].asset)"
               :disabled="isDisabled"

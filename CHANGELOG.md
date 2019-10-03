@@ -9,6 +9,10 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Fixed
 - A bug when not able to finish KYC recovery
+- Different validation errors for card and crypto address
+
+#### Removed
+- iOS installation guide
 
 ## [1.1.0-rc.0] - 2019-09-30
 #### Removed
