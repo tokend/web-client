@@ -57,11 +57,6 @@ const router = new Router({
       component: resolve => require(['@/vue/pages/Downloads'], resolve),
     },
     {
-      path: '/ios-installation-guide',
-      name: vueRoutes.iosInstallationGuide.name,
-      component: resolve => require(['@/vue/pages/IosInstallationGuide'], resolve),
-    },
-    {
       path: '/pay',
       name: vueRoutes.pay.name,
       component: resolve => require(['@/vue/pages/Pay'], resolve),

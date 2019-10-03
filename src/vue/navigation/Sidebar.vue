@@ -207,7 +207,7 @@ export default {
     config,
     vueRoutes,
     DEFAULT_SECTION_NAME,
-    label: ''
+    label: '',
   }),
 
   computed: {
@@ -335,6 +335,7 @@ $content-item-right-padding: 2.4rem;
   @include respond-to-custom($sidebar-hide-bp) {
     opacity: 0;
     width: 0;
+    max-width: 0;
     visibility: hidden;
   }
 }
