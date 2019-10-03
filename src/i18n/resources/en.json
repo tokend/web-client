@@ -1073,23 +1073,6 @@
       "pre-issuance-apps-desc": "To pre authorize your assets to be issued, get the Offline Device Pre-issuance tool on your computer.",
       "pre-issuance-app-sources-link": "Source code"
     },
-    "ios-installation-guide": {
-      "go-back-btn": "Go back",
-      "title": "iOS installation guide",
-      "how-to-install-header": "How to install Conto wallet app on iOS",
-      "apple-policy-desc": "Unfortunately, Apple AppStore has a strict and unreliable policy regarding cryptocurrency-related apps. Because of this, we are unable to provide stable application updates through AppStore.",
-      "steps-desc": "In order to install Conto iOS wallet app follow the next steps:",
-      "download-step": "[Download]({{manifestLink}}) the application with your device.",
-      "install-step": "Close browser and wait until the app is downloaded and installed.",
-      "first-launch-step": "On the first attempt to launch the app, you will see a message show on the first image below. Close that dialog and perform next steps (illustrated below for iOS 12). Please make sure you’re connected to the internet.",
-      "system-preferences-substep": "Open “System Preferences”",
-      "general-preferences-substep": "Open “General”",
-      "device-management-substep": "Scroll to “Profiles & Device Management”",
-      "distributed-lab-lp-substep": "Tab “DISTRIBUTED LAB LP”",
-      "trust-substep": "Tab “Trust DISTRIBUTED LAB LP”",
-      "confirm-substep": "Confirm",
-      "use-app-step": "Use the app"
-    },
     "terms-page": {
       "go-back-btn": "Go back",
       "title": "Terms & conditions"

@@ -53,12 +53,16 @@
                 class="downloads__phone-img"
                 :src="iphoneImgUrl"
               >
-              <router-link :to="vueRoutes.iosInstallationGuide">
+              <a
+                :href="config.IOS_MANIFEST_LINK"
+                target="_blank"
+                rel="noopener"
+              >
                 <img
                   class="downloads__store-img"
                   :src="appStoreCroppedImgUrl"
                 >
-              </router-link>
+              </a>
             </div>
           </div>
           <img
@@ -66,8 +70,6 @@
             :src="phonesOverlayImgUrl"
           >
         </div>
-
-        <hr>
       </section>
     </div>
   </div>
@@ -91,18 +93,6 @@ export default {
     vueRoutes,
     config,
   }),
-  computed: {
-    qrConfigText () {
-      const mainPageUrl = window.location.origin
-
-      return JSON.stringify({
-        api: config.HORIZON_SERVER,
-        storage: config.FILE_STORAGE,
-        kyc: `${mainPageUrl}/verification`,
-        terms: `${mainPageUrl}/terms`,
-      })
-    },
-  },
 }
 </script>
 
@@ -192,14 +182,6 @@ export default {
     }
   }
 
-  .downloads__operation-systems-wrapper {
-    height: 47rem;
-
-    @include respond-to(small) {
-      height: 100%;
-    }
-  }
-
   .downloads__phones-overlay {
     margin: 8.3rem auto 0;
     display: block;
@@ -207,18 +189,6 @@ export default {
 
     @include respond-to(small) {
       display: none;
-    }
-  }
-
-  .downloads__pre-issuance-app-img {
-    display: block;
-    max-width: 52.7rem;
-
-    @include respond-to(small) {
-      max-width: 46.7rem;
-    }
-    @include respond-to(xsmall) {
-      width: 100%;
     }
   }
 
@@ -238,22 +208,9 @@ export default {
     }
   }
 
-  .downloads__operation-systems {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-bottom: 0.9rem;
-  }
-
-  .downloads__source-code-link {
-    color: $col-downloads-link;
-  }
-
   .downloads__phone-img,
   .downloads__android,
-  .downloads__ios,
-  .downloads__windows,
-  .downloads__macosx {
+  .downloads__ios {
     max-width: 16rem;
 
     @include respond-to(small) {
@@ -261,9 +218,11 @@ export default {
     }
   }
 
-  .downloads__ios,
-  .downloads__macosx {
+  .downloads__ios {
     margin-left: 2.9rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     @include respond-to(small) {
       margin-left: 0;
@@ -279,18 +238,5 @@ export default {
       max-width: 24rem;
       width: 100%;
     }
-  }
-
-  .downloads__os-store-img {
-    max-width: 16rem;
-
-    @include respond-to(small) {
-      max-width: 24rem;
-      width: 100%;
-    }
-  }
-
-  .downloads__config-qr {
-    margin-top: 4rem;
   }
 </style>
