@@ -9,6 +9,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Track that offer was canceled on pay page
+
 #### Removed
 - iOS installation guide
 
