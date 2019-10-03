@@ -88,12 +88,13 @@ export default {
 
   methods: {
     async deleteAsset () {
+      const operation = base.RemoveAssetOpBuilder
+        .removeAssetOp({
+          code: this.asset.code,
+        })
       try {
         await this.deleteAssetPairs()
-        await api.postOperations(base.RemoveAssetOpBuilder
-          .removeAssetOp({
-            code: this.asset.code,
-          }))
+        await api.postOperations(operation)
         Bus.success('asset-actions.asset-deleted-msg')
         this.$emit(EVENTS.assetDeleted)
       } catch (error) {
@@ -104,13 +105,15 @@ export default {
       const { data } = await api.get('/v3/asset_pairs', {
         filter: { asset: this.asset.code },
       })
-      for (let assetPair of data) {
-        await api.postOperations(base.RemoveAssetPairOpBuilder
+      const promises = data.map(async assetPair => {
+        let response = await api.postOperations(base.RemoveAssetPairOpBuilder
           .removeAssetPairOp({
             base: assetPair.baseAsset.id,
             quote: assetPair.quoteAsset.id,
           }))
-      }
+        return response
+      })
+      await Promise.all(promises)
     },
   },
 }
