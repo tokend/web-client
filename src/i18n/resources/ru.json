@@ -637,7 +637,8 @@
       "customers-list": "Список клиентов",
       "businesses": "Бизнесы",
       "sponsorship": "Спонсортсво",
-      "atomic-swaps": "Магазин"
+      "atomic-swaps": "Магазин",
+      "kyc-recovery": "Восстановление по KYC"
     },
     "passport": {
       "account-us-accredited": "Аккредитованный инвестор (США)",

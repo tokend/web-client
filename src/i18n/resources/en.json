@@ -633,7 +633,8 @@
       "customers-list": "Customers list",
       "businesses": "Businesses",
       "sponsorship": "Sponsorship",
-      "atomic-swaps": "Shop"
+      "atomic-swaps": "Shop",
+      "kyc-recovery": "KYC Recovery"
     },
     "passport": {
       "account-unverified": "General account",
