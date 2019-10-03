@@ -10,6 +10,10 @@ for further information about branching and tagging conventions.
 #### Added
 - Redeem
 
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.10.3-rc.1
+
 ## [1.1.0-rc.0] - 2019-09-30
 #### Removed
 - All schemes
