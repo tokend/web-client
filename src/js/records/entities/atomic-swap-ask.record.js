@@ -9,6 +9,7 @@ export class AtomicSwapAskRecord {
     this.ownerId = _get(record, 'owner')
     this.amount = _get(record, 'baseAmount')
     this.baseAssetCode = _get(record, 'baseAsset')
+    this.isCanceled = _get(record, 'isCanceled')
     // eslint-disable-next-line max-len
     this.baseAssetName = store.getters[vuexTypes.assetByCode](this.baseAssetCode)
       .name
@@ -26,5 +27,9 @@ export class AtomicSwapAskRecord {
       return quoteAsset.asset.code === assetCode
     })
     return quoteAsset.paymentMethodId
+  }
+
+  get isAmountMoreThanZero () {
+    return +this.amount > 0
   }
 }
