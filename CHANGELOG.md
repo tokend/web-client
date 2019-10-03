@@ -10,6 +10,9 @@ for further information about branching and tagging conventions.
 #### Removed
 - iOS installation guide
 
+#### Fixed
+- Different validation errors for card and crypto address
+
 ## [1.1.0-rc.0] - 2019-09-30
 #### Removed
 - All schemes

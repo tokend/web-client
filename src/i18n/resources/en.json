@@ -76,7 +76,8 @@
       "calendar": "{{value, calendar}}",
       "calendar-inline": "{{value, calendar-inline}}",
       "order-number": "{{value, orderNumber}}",
-      "percent": "{{value, percent}}"
+      "percent": "{{value, percent}}",
+      "lowercase": "{{value, lowercase}}"
     },
     "common": {
       "browser-not-supported": "It seems your browser is not supported. Some of the features may not work.",
@@ -118,7 +119,7 @@
       "field-error_validatePhoneNumber": "Make sure the phone number is correct",
       "field-error_emailOrPhoneNumber": "This field should be a valid email or phone number",
       "field-error_telegramUsername": "The telegram username is incorrect",
-      "field-error_cryptoAddressOrCreditCardNumber": "This field should be valid crypto address or card number"
+      "field-error_cryptoAddressOrCreditCardNumber": "This field should be valid {{ destinationLabel, lowercase }}"
     },
     "errors": {
       "default": "Something bad happened. Please try again later or contact the system owner.",
