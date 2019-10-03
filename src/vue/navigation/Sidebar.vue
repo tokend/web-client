@@ -207,7 +207,7 @@ export default {
     config,
     vueRoutes,
     DEFAULT_SECTION_NAME,
-    label: ''
+    label: '',
   }),
 
   computed: {
