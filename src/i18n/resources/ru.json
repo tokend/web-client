@@ -638,7 +638,8 @@
       "customers-list": "Список клиентов",
       "businesses": "Бизнесы",
       "sponsorship": "Спонсортсво",
-      "atomic-swaps": "Магазин"
+      "atomic-swaps": "Магазин",
+      "kyc-recovery": "Восстановление по KYC"
     },
     "passport": {
       "account-us-accredited": "Аккредитованный инвестор (США)",
@@ -1102,6 +1103,7 @@
       "us-accreditation-required-msg": "Необходимо подтверждение аккредитации для граждан США",
       "verification-required-msg": "Вы должны предварительно подтвердить свой аккаунт",
       "update-btn": "Обновить",
+      "delete-btn": "Удалить",
       "no-terms-msg": "Нет соглашения",
       "balance-title": "Баланс",
       "description-title": "Описание",
@@ -1390,6 +1392,9 @@
       "approved-incoming-msg": "Запрос подтвержден",
       "pending-incoming-msg": "Запрос ждет вашего рассмотрения. Пожалуйста подтвердите или отклоните этот запрос",
       "permanently-rejected-incoming-msg": "Запрос отклонен навсегда"
+    },
+    "asset-actions": {
+      "asset-deleted-msg": "Актив успешно удален"
     }
   }
 }

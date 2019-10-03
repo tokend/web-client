@@ -35,9 +35,7 @@ export const rootModule = {
 
       const isKycRecoveryInProgress = getters[vuexTypes.isKycRecoveryInProgress]
 
-      if (isKycRecoveryInProgress) {
-        await dispatch(vuexTypes.LOAD_KYC_RECOVERY)
-      } else {
+      if (!isKycRecoveryInProgress) {
         await dispatch(vuexTypes.LOAD_KYC)
       }
     },

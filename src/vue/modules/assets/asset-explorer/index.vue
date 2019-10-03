@@ -28,6 +28,7 @@
               :asset="selectedBalance.asset"
               @update-asset="isUpdateMode = true"
               @asset-transfered="loadAccountBalancesAndSetSelectedBalance()"
+              @asset-deleted="(isDrawerShown = false) || loadAccountBalances()"
             />
           </div>
         </template>
