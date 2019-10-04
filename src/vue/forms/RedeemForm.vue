@@ -67,7 +67,6 @@ export default {
         amount: 0,
       },
       reddemQrCodeValue: '',
-      loadBalancesInterval: null,
     }
   },
 
@@ -92,7 +91,7 @@ export default {
   },
 
   beforeDestroy () {
-    clearInterval(this.loadBalancesInterval)
+    this.loadAccountBalancesDetails()
   },
 
   methods: {
@@ -108,11 +107,6 @@ export default {
       const redeemOp = this.buildRedeemOp(tx)
       const redeemOpBase64 = btoa(String.fromCharCode(...redeemOp))
       this.reddemQrCodeValue = redeemOpBase64
-
-      clearInterval(this.loadBalancesInterval)
-      this.loadBalancesInterval = setInterval(() => {
-        this.loadAccountBalancesDetails()
-      }, 10000)
     },
 
     buildPaymentOperation (salt) {
