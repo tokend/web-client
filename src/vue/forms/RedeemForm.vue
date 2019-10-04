@@ -48,9 +48,8 @@ import { base } from '@tokend/js-sdk'
 import { api } from '@/api'
 import { MAX_INT_32 } from '@/js/const/numbers.const'
 
-const WITHOUT_SOURCE_ACCOUNT = false
 const EVENTS = {
-  redeemed: 'redeemed',
+  balanceChanged: 'balance-changed',
 }
 
 export default {
@@ -63,7 +62,7 @@ export default {
   mixins: [FormMixin],
 
   props: {
-    assetCode: { type: String, default: '' },
+    assetCode: { type: String, required: true },
   },
 
   data () {
@@ -99,7 +98,7 @@ export default {
   watch: {
     accountBalance (newValue, oldValue) {
       if (+newValue.balance !== +oldValue.balance) {
-        this.$emit(EVENTS.redeemed)
+        this.$emit(EVENTS.balanceChanged)
       }
     },
   },
@@ -122,9 +121,10 @@ export default {
       const redeemOpBase64 = btoa(String.fromCharCode(...redeemOp))
       this.reddemQrCodeValue = redeemOpBase64
 
+      clearInterval(this.loadBalancesInterval)
       this.loadBalancesInterval = setInterval(() => {
         this.loadAccountBalancesDetails()
-      }, 30000)
+      }, 10000)
     },
 
     buildPaymentOperation (salt) {
@@ -146,7 +146,7 @@ export default {
         subject: '',
         reference: salt.toString(),
       },
-      WITHOUT_SOURCE_ACCOUNT
+      false
       )
     },
 

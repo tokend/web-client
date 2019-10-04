@@ -43,9 +43,7 @@
         {{ 'redeem-form.form-heading' | globalize }}
       </template>
       <redeem-form
-        @redeemed="(isRedeemDrawerShown = false) ||
-          $emit(EVENTS.assetRedeemed)
-        "
+        @balance-changed="$emit(EVENTS.balanceChanged)"
         :asset-code="asset.code"
       />
     </drawer>
@@ -65,7 +63,7 @@ import Drawer from '@/vue/common/Drawer'
 const EVENTS = {
   assetTransfered: 'asset-transfered',
   updateAsset: 'update-asset',
-  assetRedeemed: 'asset-redeemed',
+  balanceChanged: 'balance-changed',
 }
 
 export default {

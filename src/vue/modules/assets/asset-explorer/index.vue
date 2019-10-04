@@ -28,7 +28,7 @@
               :asset="selectedBalance.asset"
               @update-asset="isUpdateMode = true"
               @asset-transfered="loadAccountBalancesAndSetSelectedBalance()"
-              @asset-redeemed="setSelectedBalance()"
+              @balance-changed="setSelectedBalance()"
             />
           </div>
         </template>
