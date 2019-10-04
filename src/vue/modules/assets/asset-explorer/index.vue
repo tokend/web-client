@@ -156,6 +156,7 @@ export default {
   methods: {
     ...mapActions({
       loadAccountBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+      loadAssets: vuexTypes.LOAD_ASSETS,
     }),
 
     selectBalance (balance) {
@@ -166,6 +167,7 @@ export default {
 
     async loadAccountBalancesAndSetSelectedBalance () {
       await this.loadAccountBalances()
+      await this.loadAssets()
       if (this.isDrawerShown) {
         this.selectedBalance = this.accountBalances.find(item => {
           return item.id === this.selectedBalance.id

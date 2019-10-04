@@ -7,6 +7,9 @@ import { resolveRedirect } from '@/vue-router/redirect'
 
 import AppContent from '@/vue/AppContent'
 
+import Pay from '@/vue/pages/Pay'
+import Business from '@/vue/pages/Business'
+
 import Customers from '@/vue/pages/Customers'
 import CustomersList from '@/vue/pages/CustomersList'
 import Businesses from '@/vue/pages/Businesses'
@@ -59,7 +62,13 @@ const router = new Router({
     {
       path: '/pay',
       name: vueRoutes.pay.name,
-      component: resolve => require(['@/vue/pages/Pay'], resolve),
+      component: Pay,
+    },
+    {
+      path: '/business/:id',
+      name: vueRoutes.business.name,
+      component: Business,
+      props: true,
     },
     {
       path: '/kyc-recovery-management',

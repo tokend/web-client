@@ -12,13 +12,6 @@
 
       <div>
         <p class="atomic-swap-card__amount">
-          <span :title="atomicSwapAsk.amount | formatMoney">
-            {{ 'atomic-swap-card.available' | globalize({
-              amount: atomicSwapAsk.amount
-            }) }}
-          </span>
-        </p>
-        <p class="atomic-swap-card__amount">
           <span :title="atomicSwapAsk.price | formatMoney">
             {{ 'atomic-swap-card.price' | globalize({
               amount: atomicSwapAsk.price,

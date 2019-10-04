@@ -8,6 +8,7 @@ export class BusinessRecord {
     this.name = _get(record, 'name')
     this.accountId = _get(record, 'accountId')
     this.industry = _get(record, 'industry')
+    this.description = _get(record, 'description')
 
     try {
       this.logo = JSON.parse(_get(this._record, 'logo'))

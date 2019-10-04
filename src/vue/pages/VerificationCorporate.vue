@@ -3,7 +3,6 @@
     <p class="verification-corporate-form__account-info-title">
       {{ 'verification-form.account-information-lbl' | globalize }}
     </p>
-
     <form
       novalidate
       class="app-form verification-corporate-form__tag"
@@ -104,6 +103,15 @@
         </div>
       </div>
 
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <span>
+            {{ 'verification-form.description-lbl' | globalize }}
+          </span>
+          <markdown-field v-model="form.description" />
+        </div>
+      </div>
+
       <div class="app__form-actions">
         <form-confirmation
           v-if="formMixin.isConfirmationShown"
@@ -173,6 +181,7 @@ export default {
       website: '',
       cardNumber: '',
       invite: '',
+      description: '',
     },
     isFormSubmitting: false,
     DOCUMENT_TYPES,
@@ -280,6 +289,7 @@ export default {
         headquarters: this.form.headquarters,
         industry: this.form.industry,
         homepage: this.form.website,
+        description: this.form.description,
         documents: {
           [DOCUMENT_TYPES.kycAvatar]: this.form.avatar
             ? this.form.avatar.getDetailsForSave()
@@ -298,6 +308,7 @@ export default {
           : null,
         headquarters: kycData.headquarters,
         industry: kycData.industry,
+        description: kycData.description,
         website: kycData.homepage,
         cardNumber: kycData.bank_account,
         invite: kycData.invite,
