@@ -3,7 +3,7 @@
     <div class="business__wrp">
       <div class="business__top-bar">
         <div class="business__name-wrp">
-          <h1 class="business__name">
+          <h1 class="business__title">
             {{ business.name }}
           </h1>
           <h3 v-if="business.industry">
@@ -32,7 +32,6 @@
       </template>
       <template v-if="isFailed">
         <no-data-message
-          class="atomic-swaps-explore__no-data-message"
           icon-name="castle"
           :title="'business.error-title' | globalize"
           :message="'business.error-msg' | globalize"
@@ -40,7 +39,7 @@
       </template>
       <template v-if="!isFailed">
         <div class="business__shop">
-          <h1 class="business__name">
+          <h1 class="business__title">
             {{ 'business.shop' | globalize }}
           </h1>
         </div>
@@ -193,7 +192,7 @@ export default {
     }
   }
 
-  .business__name {
+  .business__title {
     color: $col-text-page-heading;
     font-size: 3rem;
     line-height: 1.5;
