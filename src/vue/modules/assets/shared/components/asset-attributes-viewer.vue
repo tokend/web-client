@@ -71,7 +71,6 @@ import LogoViewer from './logo-viewer'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { BalanceRecord } from '@/js/records/entities/balance.record'
 
 export default {
   name: 'asset-attributes-viewer',
@@ -80,13 +79,18 @@ export default {
   },
   props: {
     asset: { type: AssetRecord, required: true },
-    balance: { type: BalanceRecord, required: true },
   },
+
   computed: {
     ...mapGetters({
       businessStatsQuoteAsset: vuexTypes.businessStatsQuoteAsset,
       isAccountCorporate: vuexTypes.isAccountCorporate,
+      accountBalanceByCode: vuexTypes.accountBalanceByCode,
     }),
+
+    balance () {
+      return this.accountBalanceByCode(this.asset.code)
+    },
   },
 }
 </script>

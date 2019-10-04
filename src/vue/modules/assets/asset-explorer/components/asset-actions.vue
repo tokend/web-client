@@ -52,7 +52,6 @@
         {{ 'redeem-form.form-heading' | globalize }}
       </template>
       <redeem-form
-        @balance-changed="$emit(EVENTS.balanceChanged)"
         :asset-code="asset.code"
       />
     </drawer>
@@ -77,7 +76,6 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 const EVENTS = {
   assetTransfered: 'asset-transfered',
   updateAsset: 'update-asset',
-  balanceChanged: 'balance-changed',
   assetDeleted: 'asset-deleted',
 }
 

@@ -48,10 +48,6 @@ import { base } from '@tokend/js-sdk'
 import { api } from '@/api'
 import { MAX_INT_32 } from '@/js/const/numbers.const'
 
-const EVENTS = {
-  balanceChanged: 'balance-changed',
-}
-
 export default {
   name: 'redeem-form',
   components: {
@@ -92,14 +88,6 @@ export default {
 
     isAmountMoreThanZero () {
       return +this.form.amount > 0
-    },
-  },
-
-  watch: {
-    accountBalance (newValue, oldValue) {
-      if (+newValue.balance !== +oldValue.balance) {
-        this.$emit(EVENTS.balanceChanged)
-      }
     },
   },
 
