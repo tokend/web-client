@@ -9,6 +9,15 @@
     </button>
 
     <button
+      v-if="!isAssetOwner"
+      v-ripple
+      class="app__button-raised asset-actions__btn"
+      @click="isRedeemDrawerShown = true"
+    >
+      {{ 'assets.redeem-btn' | globalize }}
+    </button>
+
+    <button
       v-if="isAssetOwner"
       v-ripple
       class="app__button-raised asset-actions__btn"
@@ -37,6 +46,15 @@
         :asset-to-transfer="asset.code"
       />
     </drawer>
+
+    <drawer :is-shown.sync="isRedeemDrawerShown">
+      <template slot="heading">
+        {{ 'redeem-form.form-heading' | globalize }}
+      </template>
+      <redeem-form
+        :asset-code="asset.code"
+      />
+    </drawer>
   </div>
 </template>
 
@@ -47,6 +65,7 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import TransferForm from '@/vue/forms/TransferForm'
+import RedeemForm from '@/vue/forms/RedeemForm'
 import Drawer from '@/vue/common/Drawer'
 import { api } from '@/api'
 import { base } from '@tokend/js-sdk'
@@ -65,6 +84,7 @@ export default {
 
   components: {
     TransferForm,
+    RedeemForm,
     Drawer,
   },
   props: {
@@ -72,6 +92,7 @@ export default {
   },
   data: _ => ({
     isTransferDrawerShown: false,
+    isRedeemDrawerShown: false,
     isPending: false,
     EVENTS,
   }),

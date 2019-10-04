@@ -116,9 +116,10 @@ export default {
   watch: {
     async assetCode (value) {
       this.getBalance()
+      // Vue-router catch hack
       await this.$router.push({
         query: { assetCode: value },
-      })
+      }, () => {})
       this.$emit(EVENTS.assetCodeUpdated, value)
     },
   },

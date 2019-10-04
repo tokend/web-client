@@ -1138,6 +1138,7 @@
       "no-msg": "Нет",
       "send-btn": "Отправить",
       "issue-btn": "Выпустить",
+      "redeem-btn": "Погасить",
       "converted-balance-title": "Конвертированный баланс",
       "vendor-code": "Артикул",
       "can-be-base-in-atomic-swap-title": "Может быть базовым активом в предложении",
@@ -1393,6 +1394,13 @@
       "approved-incoming-msg": "Запрос подтвержден",
       "pending-incoming-msg": "Запрос ждет вашего рассмотрения. Пожалуйста подтвердите или отклоните этот запрос",
       "permanently-rejected-incoming-msg": "Запрос отклонен навсегда"
+    },
+    "redeem-form": {
+      "form-heading": "Погашение",
+      "amount-lbl": "Количество",
+      "no-qr-code-title": "Здесь будет Ваш QR код",
+      "no-qr-code-msg": "Пожалуйста, введите количество для отображения QR кода",
+      "qr-code-msg": "Отсканируйте этот QR код в мобильном приложении"
     },
     "asset-actions": {
       "asset-deleted-msg": "Актив успешно удален"

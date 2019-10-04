@@ -1132,6 +1132,7 @@
       "no-msg": "No",
       "send-btn": "Transfer",
       "issue-btn": "Issue",
+      "redeem-btn": "Redeem",
       "converted-balance-title": "Converted balance",
       "vendor-code": "Vendor code",
       "can-be-base-in-atomic-swap-title": "Can be base in offering",
@@ -1391,6 +1392,13 @@
       "approved-incoming-msg": "This request was approved",
       "pending-incoming-msg": "This request is waiting for your review. Please approve or reject it",
       "permanently-rejected-incoming-msg": "This request was rejected permanently"
+    },
+    "redeem-form": {
+      "form-heading": "Redeem",
+      "amount-lbl": "Amount",
+      "no-qr-code-title": "Your QR code will be here",
+      "no-qr-code-msg": "Please enter the amount to display the QR code",
+      "qr-code-msg": "Scan this QR code in a mobile application"
     },
     "asset-actions": {
       "asset-deleted-msg": "Asset successfully deleted"

@@ -8,6 +8,7 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
+- Redeem
 - Track that offer was canceled on pay page
 - Business page
 
@@ -18,6 +19,10 @@ for further information about branching and tagging conventions.
 #### Fixed
 - A bug when not able to finish KYC recovery
 - Different validation errors for card and crypto address
+
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.10.3-rc.1
 
 ## [1.1.0-rc.0] - 2019-09-30
 #### Removed

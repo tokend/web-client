@@ -101,6 +101,7 @@ export default {
         ...this.$listeners,
         input: event => {
           this.normalizeTargetValue(event.target)
+          if (this.value === event.target.value) return
           this.$emit(EVENTS.input, event.target.value)
         },
       }
