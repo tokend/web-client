@@ -9,6 +9,14 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Redeem
+- Track that offer was canceled on pay page
+
+#### Removed
+- iOS installation guide
+
+#### Fixed
+- A bug when not able to finish KYC recovery
+- Different validation errors for card and crypto address
 
 ### "Under the hood" changes
 #### Changed

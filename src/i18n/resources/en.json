@@ -76,7 +76,8 @@
       "calendar": "{{value, calendar}}",
       "calendar-inline": "{{value, calendar-inline}}",
       "order-number": "{{value, orderNumber}}",
-      "percent": "{{value, percent}}"
+      "percent": "{{value, percent}}",
+      "lowercase": "{{value, lowercase}}"
     },
     "common": {
       "browser-not-supported": "It seems your browser is not supported. Some of the features may not work.",
@@ -118,7 +119,7 @@
       "field-error_validatePhoneNumber": "Make sure the phone number is correct",
       "field-error_emailOrPhoneNumber": "This field should be a valid email or phone number",
       "field-error_telegramUsername": "The telegram username is incorrect",
-      "field-error_cryptoAddressOrCreditCardNumber": "This field should be valid crypto address or card number"
+      "field-error_cryptoAddressOrCreditCardNumber": "This field should be valid {{ destinationLabel, lowercase }}"
     },
     "errors": {
       "default": "Something bad happened. Please try again later or contact the system owner.",
@@ -633,7 +634,8 @@
       "customers-list": "Customers list",
       "businesses": "Businesses",
       "sponsorship": "Sponsorship",
-      "atomic-swaps": "Shop"
+      "atomic-swaps": "Shop",
+      "kyc-recovery": "KYC Recovery"
     },
     "passport": {
       "account-unverified": "General account",
@@ -1073,23 +1075,6 @@
       "pre-issuance-apps-desc": "To pre authorize your assets to be issued, get the Offline Device Pre-issuance tool on your computer.",
       "pre-issuance-app-sources-link": "Source code"
     },
-    "ios-installation-guide": {
-      "go-back-btn": "Go back",
-      "title": "iOS installation guide",
-      "how-to-install-header": "How to install Conto wallet app on iOS",
-      "apple-policy-desc": "Unfortunately, Apple AppStore has a strict and unreliable policy regarding cryptocurrency-related apps. Because of this, we are unable to provide stable application updates through AppStore.",
-      "steps-desc": "In order to install Conto iOS wallet app follow the next steps:",
-      "download-step": "[Download]({{manifestLink}}) the application with your device.",
-      "install-step": "Close browser and wait until the app is downloaded and installed.",
-      "first-launch-step": "On the first attempt to launch the app, you will see a message show on the first image below. Close that dialog and perform next steps (illustrated below for iOS 12). Please make sure you’re connected to the internet.",
-      "system-preferences-substep": "Open “System Preferences”",
-      "general-preferences-substep": "Open “General”",
-      "device-management-substep": "Scroll to “Profiles & Device Management”",
-      "distributed-lab-lp-substep": "Tab “DISTRIBUTED LAB LP”",
-      "trust-substep": "Tab “Trust DISTRIBUTED LAB LP”",
-      "confirm-substep": "Confirm",
-      "use-app-step": "Use the app"
-    },
     "terms-page": {
       "go-back-btn": "Go back",
       "title": "Terms & conditions"
@@ -1112,6 +1097,7 @@
       "us-accreditation-required-msg": "U.S. citizens are required to verify their accreditation before holding this asset",
       "verification-required-msg": "You need to verify your account to hold this asset",
       "update-btn": "Update",
+      "delete-btn": "Delete",
       "no-terms-msg": "No terms",
       "balance-title": "Balance",
       "description-title": "Description",
@@ -1369,7 +1355,11 @@
     "pay-page": {
       "pay-title": "Pay",
       "no-atomic-swap-title": "No such offer found",
-      "no-atomic-swap-msg": "Please make sure the link is correct"
+      "no-atomic-swap-msg": "Please make sure the link is correct",
+      "offer-canceled-title": "Offer was canceled",
+      "offer-canceled-msg": "The owner canceled this offer",
+      "no-amount-title": "Offer was sold out",
+      "no-amount-msg": "Contact the owner of the offer"
     },
     "pay-form": {
       "email-lbl": "Recipient Email in Conto"
@@ -1408,6 +1398,9 @@
       "no-qr-code-title": "Your QR code will be here",
       "no-qr-code-msg": "Please enter the amount to display the QR code",
       "qr-code-msg": "Scan this QR code in a mobile application"
+    },
+    "asset-actions": {
+      "asset-deleted-msg": "Asset successfully deleted"
     }
   }
 }

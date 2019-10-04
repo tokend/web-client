@@ -76,7 +76,8 @@
       "calendar": "{{value, calendar}}",
       "calendar-inline": "{{value, calendar-inline}}",
       "order-number": "{{value, orderNumber}}",
-      "percent": "{{value, percent}}"
+      "percent": "{{value, percent}}",
+      "lowercase": "{{value, lowercase}}"
     },
     "common": {
       "browser-not-supported": "К сожалению, мы не полностью поддерживаем ваш браузер. Какой-то функционал может быть недоступен.",
@@ -118,7 +119,7 @@
       "field-error_validatePhoneNumber": "Неверный номер телефона",
       "field-error_emailOrPhoneNumber": "Неверный имейл или телефон получателя",
       "field-error_telegramUsername": "Имя пользователя неверное",
-      "field-error_cryptoAddressOrCreditCardNumber": "Неверный криптоадрес или номер карты"
+      "field-error_cryptoAddressOrCreditCardNumber": "Неверный {{ destinationLabel, lowercase }}"
     },
     "errors": {
       "default": "Что-то пошло не так. Пожалуйста, повторите попытку позже или свяжитесь с владельцем системы.",
@@ -637,7 +638,8 @@
       "customers-list": "Список клиентов",
       "businesses": "Бизнесы",
       "sponsorship": "Спонсортсво",
-      "atomic-swaps": "Магазин"
+      "atomic-swaps": "Магазин",
+      "kyc-recovery": "Восстановление по KYC"
     },
     "passport": {
       "account-us-accredited": "Аккредитованный инвестор (США)",
@@ -1079,23 +1081,6 @@
       "pre-issuance-apps-desc": "Чтобы предварительно авторизовать выдачу активов, установите инструмент предварительной выдачи на своем компьютере",
       "pre-issuance-app-sources-link": "Исходный код"
     },
-    "ios-installation-guide": {
-      "go-back-btn": "Go back",
-      "title": "iOS installation guide",
-      "how-to-install-header": "How to install TokenD wallet app on iOS",
-      "apple-policy-desc": "Unfortunately, Apple AppStore has a strict and unreliable policy regarding cryptocurrency-related apps. Because of this, we are unable to provide stable application updates through AppStore.",
-      "steps-desc": "In order to install TokenD iOS wallet app follow the next steps:",
-      "download-step": "[Download]({{manifestLink}}) the application with your device.",
-      "install-step": "Close browser and wait until the app is downloaded and installed.",
-      "first-launch-step": "On the first attempt to launch the app, you will see a message show on the first image below. Close that dialog and perform next steps (illustrated below for iOS 12). Please make sure you’re connected to the internet.",
-      "system-preferences-substep": "Open “System Preferences”",
-      "general-preferences-substep": "Open “General”",
-      "device-management-substep": "Scroll to “Profiles & Device Management”",
-      "distributed-lab-lp-substep": "Tab “DISTRIBUTED LAB LP”",
-      "trust-substep": "Tab “Trust DISTRIBUTED LAB LP”",
-      "confirm-substep": "Confirm",
-      "use-app-step": "Use the app"
-    },
     "terms-page": {
       "go-back-btn": "Назад",
       "title": "Условия использования"
@@ -1118,6 +1103,7 @@
       "us-accreditation-required-msg": "Необходимо подтверждение аккредитации для граждан США",
       "verification-required-msg": "Вы должны предварительно подтвердить свой аккаунт",
       "update-btn": "Обновить",
+      "delete-btn": "Удалить",
       "no-terms-msg": "Нет соглашения",
       "balance-title": "Баланс",
       "description-title": "Описание",
@@ -1371,7 +1357,11 @@
     "pay-page": {
       "pay-title": "Покупка",
       "no-atomic-swap-title": "Такое предложение не найдено",
-      "no-atomic-swap-msg": "Пожалуйста, убедитесь, что ссылка верна"
+      "no-atomic-swap-msg": "Пожалуйста, убедитесь, что ссылка верна",
+      "offer-canceled-title": "Предложение было отменено",
+      "offer-canceled-msg": "Владелец отменил это предложение",
+      "no-amount-title": "Предложение было распродано",
+      "no-amount-msg": "Обратитесь к владельцу предложения"
     },
     "pay-form": {
       "email-lbl":"Имейл получателя в Конто"
@@ -1410,6 +1400,9 @@
       "no-qr-code-title": "Здесь будет Ваш QR код",
       "no-qr-code-msg": "Пожалуйста, введите количество для отображения QR кода",
       "qr-code-msg": "Отсканируйте этот QR код в мобильном приложении"
+    },
+    "asset-actions": {
+      "asset-deleted-msg": "Актив успешно удален"
     }
   }
 }

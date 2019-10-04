@@ -26,6 +26,15 @@
       {{ 'assets.update-btn' | globalize }}
     </button>
 
+    <button
+      v-if="isAssetOwner"
+      v-ripple
+      class="app__button-raised asset-actions__btn"
+      @click="deleteAsset"
+    >
+      {{ 'assets.delete-btn' | globalize }}
+    </button>
+
     <drawer :is-shown.sync="isTransferDrawerShown">
       <template slot="heading">
         {{ 'transfer-form.form-heading' | globalize }}
@@ -59,11 +68,17 @@ import { vuexTypes } from '@/vuex'
 import TransferForm from '@/vue/forms/TransferForm'
 import RedeemForm from '@/vue/forms/RedeemForm'
 import Drawer from '@/vue/common/Drawer'
+import { api } from '@/api'
+import { base } from '@tokend/js-sdk'
+import { Bus } from '@/js/helpers/event-bus'
+
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const EVENTS = {
   assetTransfered: 'asset-transfered',
   updateAsset: 'update-asset',
   balanceChanged: 'balance-changed',
+  assetDeleted: 'asset-deleted',
 }
 
 export default {
@@ -91,6 +106,37 @@ export default {
 
     isAssetOwner () {
       return this.asset.owner === this.accountId
+    },
+  },
+
+  methods: {
+    async deleteAsset () {
+      const operation = base.RemoveAssetOpBuilder
+        .removeAssetOp({
+          code: this.asset.code,
+        })
+      try {
+        await this.deleteAssetPairs()
+        await api.postOperations(operation)
+        Bus.success('asset-actions.asset-deleted-msg')
+        this.$emit(EVENTS.assetDeleted)
+      } catch (error) {
+        ErrorHandler.process(error)
+      }
+    },
+    async deleteAssetPairs () {
+      const { data } = await api.get('/v3/asset_pairs', {
+        filter: { asset: this.asset.code },
+      })
+      const promises = data.map(async assetPair => {
+        let response = await api.postOperations(base.RemoveAssetPairOpBuilder
+          .removeAssetPairOp({
+            base: assetPair.baseAsset.id,
+            quote: assetPair.quoteAsset.id,
+          }))
+        return response
+      })
+      await Promise.all(promises)
     },
   },
 }

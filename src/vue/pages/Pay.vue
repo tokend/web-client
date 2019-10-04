@@ -14,7 +14,25 @@
       </router-link>
     </div>
 
-    <template v-if="isLoaded">
+    <template v-if="isLoaded && atomicSwapAsk.isCanceled">
+      <no-data-message
+        class="pay__no-data-message"
+        icon-name="credit-card"
+        :title="'pay-page.offer-canceled-title' | globalize"
+        :message="'pay-page.offer-canceled-msg' | globalize"
+      />
+    </template>
+
+    <template v-else-if="isLoaded && !atomicSwapAsk.isAmountMoreThanZero">
+      <no-data-message
+        class="pay__no-data-message"
+        icon-name="credit-card"
+        :title="'pay-page.no-amount-title' | globalize"
+        :message="'pay-page.no-amount-msg' | globalize"
+      />
+    </template>
+
+    <template v-else-if="isLoaded">
       <div class="pay__description">
         <asset-viewer
           class="pay__asset-viewer"
