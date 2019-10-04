@@ -20,14 +20,13 @@
 
           <asset-attributes-viewer
             :asset="selectedBalance.asset"
-            :balance="selectedBalance"
           />
 
           <div class="assets-explorer__actions">
             <asset-actions
               :asset="selectedBalance.asset"
               @update-asset="isUpdateMode = true"
-              @asset-transfered="loadAccountBalancesAndSetSelectedBalance()"
+              @asset-transfered="loadAccountBalances()"
               @asset-deleted="(isDrawerShown = false) || loadAccountBalances()"
             />
           </div>
@@ -162,15 +161,6 @@ export default {
       this.selectedBalance = balance
       this.isUpdateMode = false
       this.isDrawerShown = true
-    },
-
-    async loadAccountBalancesAndSetSelectedBalance () {
-      await this.loadAccountBalances()
-      if (this.isDrawerShown) {
-        this.selectedBalance = this.accountBalances.find(item => {
-          return item.id === this.selectedBalance.id
-        })
-      }
     },
   },
 }
