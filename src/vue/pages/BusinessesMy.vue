@@ -92,7 +92,7 @@ export default {
     async getList () {
       this.isLoading = true
 
-      let result
+      let result = {}
       try {
         const endpoint = `/integrations/dns/clients/${this.accountId}/businesses`
         result = await api.getWithSignature(endpoint)

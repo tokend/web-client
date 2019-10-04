@@ -39,18 +39,6 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <tick-field
-          v-model="form.policies"
-          :cb-value="ASSET_POLICIES.transferable"
-          :disabled="isDisabled"
-        >
-          {{ 'update-asset-form-simplified.transferable-lbl' | globalize }}
-        </tick-field>
-      </div>
-    </div>
-
-    <div class="app__form-row">
-      <div class="app__form-field">
         <file-field
           name="update-asset-logo"
           v-model="form.logo"
@@ -82,7 +70,6 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
-import { ASSET_POLICIES } from '@tokend/js-sdk'
 
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
@@ -117,10 +104,9 @@ export default {
       name: '',
       code: '',
       logo: null,
-      policies: ASSET_POLICIES.canBeBaseInAtomicSwap,
+      policies: 0,
       description: '',
     },
-    ASSET_POLICIES,
     DOCUMENT_TYPES,
     NAME_MAX_LENGTH,
     DESCRIPTION_MAX_LENGTH,

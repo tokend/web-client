@@ -11,10 +11,17 @@
             class="current-business-indicator__logo"
             :business="businessToBrowse"
           />
-
-          <p class="current-business-indicator__name">
-            {{ businessToBrowse.name }}
-          </p>
+          <div>
+            <p class="current-business-indicator__name">
+              {{ businessToBrowse.name }}
+            </p>
+            <p
+              class="current-business-indicator__industry"
+              v-if="businessToBrowse.industry"
+            >
+              {{ businessToBrowse.industry }}
+            </p>
+          </div>
         </div>
       </div>
     </template>
@@ -101,6 +108,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import '~@scss/variables';
+
 .current-business-indicator__browsing-lbl {
   font-size: 1.3rem;
   font-weight: 700;
@@ -125,5 +134,16 @@ export default {
 
 .current-business-indicator__link-hidden {
   display: none !important; /* stylelint-disable-line */
+}
+
+.current-business-indicator__industry {
+  margin-left: 1.6rem;
+  margin-top: 0.4rem;
+  font-size: 1.2rem;
+  color: $col-sale-details-subtitle;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>

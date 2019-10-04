@@ -609,6 +609,7 @@
       "avatar-lbl": "Logo (Optional)",
       "image-type-note": "image (Max 32mb)",
       "company-lbl": "Company",
+      "description-lbl": "Description",
       "headquarters-lbl": "Headquarters (Optional)",
       "industry-lbl": "Industry (Optional)",
       "website-lbl": "Website (Optional)",
@@ -1401,6 +1402,12 @@
     },
     "asset-actions": {
       "asset-deleted-msg": "Asset successfully deleted"
+    },
+    "business": {
+      "error-msg": "Can not load business description.",
+      "error-title": "There is no such business",
+      "shop": "Shop",
+      "loading-msg": "Loading..."
     }
   }
 }

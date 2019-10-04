@@ -10,9 +10,11 @@ for further information about branching and tagging conventions.
 #### Added
 - Redeem
 - Track that offer was canceled on pay page
+- Business page
 
 #### Removed
 - iOS installation guide
+- Hid transfer policy from asset update form
 
 #### Fixed
 - A bug when not able to finish KYC recovery

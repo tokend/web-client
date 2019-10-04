@@ -155,12 +155,23 @@ export default {
   methods: {
     ...mapActions({
       loadAccountBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+      loadAssets: vuexTypes.LOAD_ASSETS,
     }),
 
     selectBalance (balance) {
       this.selectedBalance = balance
       this.isUpdateMode = false
       this.isDrawerShown = true
+    },
+
+    async loadAccountBalancesAndSetSelectedBalance () {
+      await this.loadAccountBalances()
+      await this.loadAssets()
+      if (this.isDrawerShown) {
+        this.selectedBalance = this.accountBalances.find(item => {
+          return item.id === this.selectedBalance.id
+        })
+      }
     },
   },
 }
