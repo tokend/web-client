@@ -1184,7 +1184,16 @@
       "restrict-who-can-use": "I want to restrict who can use this asset",
       "terms-subheading": "Terms",
       "permissions-subheading": "Permissions",
-      "description-lbl": "Asset description (optional)"
+      "description-lbl": "Asset description (optional)",
+      "stellar": "Stellar",
+      "erc20": "ERC20",
+      "address-lbl": "Address",
+      "integration-with-stellar": "Integration with stellar",
+      "integration-with-erc20": "Integration with erc20",
+      "alphanumeric-4-lbl": "Alphanumeric 4",
+      "alphanumeric-12-lbl": "Alphanumeric 12",
+      "native-lbl": "Native",
+      "stellar-type-lbl": "Asset type"
     },
     "update-asset-form": {
       "loading-msg": "Loading…",

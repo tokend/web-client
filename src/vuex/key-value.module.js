@@ -3,7 +3,6 @@ import { api, loadingDataViaLoop } from '@/api'
 
 function getKvValue (kvKey, kvArray) {
   const kvFound = kvArray.find((key) => key.id === kvKey)
-
   if (!kvFound) {
     return ''
   }
@@ -27,6 +26,7 @@ export const state = {
   kvPollTypeUnrestricted: null,
   defaultQuoteAsset: '',
   kvDefaultSignerRoleId: '',
+  kvIssuanceSignerRoleId: '',
 }
 
 export const mutations = {
@@ -80,6 +80,9 @@ export const mutations = {
   [vuexTypes.SET_KV_DEFAULT_SIGNER_ROLE_ID] (state, kvDefaultSignerRoleId) {
     state.kvDefaultSignerRoleId = kvDefaultSignerRoleId
   },
+  [vuexTypes.SET_KV_ISSUANCE_SIGNER_ROLE_ID] (state, kvIssuanceSignerRoleId) {
+    state.kvIssuanceSignerRoleId = kvIssuanceSignerRoleId
+  },
 }
 
 export const actions = {
@@ -103,6 +106,7 @@ export const actions = {
     const restrictedPollType = getKvValue('poll_type:restricted', data)
     const unrestrictedPollType = getKvValue('poll_type:unrestricted', data)
     const defaultSignerRoleId = getKvValue('signer_role:default', data)
+    const issuanceSignerRoleId = getKvValue('signer_role:issuance', data)
 
     commit(vuexTypes.SET_KV_ENTRY_GENERAL_ROLE_ID, generalRoleId)
     commit(vuexTypes.SET_KV_ENTRY_CORPORATE_ROLE_ID, corporateRoleId)
@@ -116,6 +120,7 @@ export const actions = {
     commit(vuexTypes.SET_KV_POLL_TYPE_RESTRICTED, restrictedPollType)
     commit(vuexTypes.SET_KV_POLL_TYPE_UNRESTRICTED, unrestrictedPollType)
     commit(vuexTypes.SET_KV_DEFAULT_SIGNER_ROLE_ID, defaultSignerRoleId)
+    commit(vuexTypes.SET_KV_ISSUANCE_SIGNER_ROLE_ID, issuanceSignerRoleId)
   },
 }
 
@@ -135,6 +140,7 @@ export const getters = {
   [vuexTypes.kvPollTypeRestricted]: state => state.kvPollTypeRestricted,
   [vuexTypes.kvPollTypeUnrestricted]: state => state.kvPollTypeUnrestricted,
   [vuexTypes.kvDefaultSignerRoleId]: state => state.kvDefaultSignerRoleId,
+  [vuexTypes.kvIssuanceSignerRoleId]: state => state.kvIssuanceSignerRoleId,
 }
 
 export default {
