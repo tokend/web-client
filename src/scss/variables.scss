@@ -27,7 +27,7 @@ $z-tooltip-wrapper: 1;
 $z-skeleton-loader: 1;
 
 $_athensGray: #e9eaed;
-$_primary: #c2185c;
+$_primary: #ffda03;
 $_white: #ffffff;
 $_concrete: #f2f2f2;
 $_black: #000000;
@@ -41,7 +41,7 @@ $_lightGray: #c6c6c6;
 $_mediumGray: #cccccc;
 $_lightRed: #ef5350;
 $_darkRed: #d6244a;
-$_strongPrimary: #d04078;
+$_strongPrimary: #ff615b;
 $_deepBlue: #291e93;
 $_green: #33a494;
 $_lightGreen: #51ca90;
@@ -135,13 +135,13 @@ $col-drawer-head-bg: $_athensGray;
 $col-drawer-head-text: $_primary;
 
 // sidebar
-$col-sidebar-background: $_athensGray;
+$col-sidebar-background: $_lightBlack;
 $col-sidebar-background-media-small: $_thinGray;
-$col-sidebar-text: $col-primary-inactive;
+$col-sidebar-text: $_athensGray;
 $col-sidebar-scheme-label: rgba($col-primary-inactive, 0.5);
 $col-sidebar-burger-icon-color: $_white;
 $col-sidebar-active-elem-text: $col-primary;
-$col-sidebar-active-elem-background: $_thinGray;
+$col-sidebar-active-elem-background: $_thinBlue;
 
 // passport (signed in user details in bg)
 $col-passport-email-abbr-text: $col-text-on-dark-bg;
@@ -167,8 +167,8 @@ $col-switch-field-enabled-border: darken($col-switch-field-enabled, 10%);
 $col-switch-field-disabled-border: darken($col-switch-field-disabled, 10%);
 
 // other colors
-$col-auth-titles-background-light: darken($_primary, 5%);
-$col-auth-titles-background-dark: darken($_primary, 33%);
+$col-auth-titles-background-light: $_lightBlack;
+$col-auth-titles-background-dark: $_lightBlack;
 $col-auth-titles-background-fallback: #332f5c;
 $col-clipboard-background: $_whiteSmoke;
 $col-clipboard-background-darken: darken($col-clipboard-background, 5%);
@@ -377,3 +377,6 @@ $col-hint-wrapper-box-text: $_concrete;
 $col-tooltip-wrapper-msg-bg: rgba($_black, 0.9);
 $col-tooltip-wrapper-msg-text: $_white;
 $col-tooltip-wrapper-border-style: transparent transparent $col-tooltip-wrapper-msg-bg transparent;
+
+// footer
+$color-footer-text: darken($_athensGray, 30%);

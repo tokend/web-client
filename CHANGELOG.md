@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
+## [1.1.0-rcunitcity.0] - 2019-10-08
+#### Added
+- New logo
+- New color scheme
+#### Changed
+- Hid the fields phone number, telegram and default quote asset in settings
+
+
 ## [1.1.0-rc.1] - 2019-10-04
 #### Added
 - Redeem
@@ -301,7 +309,8 @@ for further information about branching and tagging conventions.
 #### Removed
 - `RECOVERY_MODE` config key due to unused anymore
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.1.0-rc.1...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.1.0-rcunitcity.0...HEAD
+[1.1.0-rcunitcity.0]: https://github.com/tokend/web-client/compare/1.1.0-rc.1...1.1.0-rcunitcity.0
 [1.1.0-rc.1]: https://github.com/tokend/web-client/compare/1.1.0-rc.0...1.1.0-rc.1
 [1.1.0-rc.0]: https://github.com/tokend/web-client/compare/1.0.3-rc.11...1.1.0-rc.0
 [1.0.3-rc.11]: https://github.com/tokend/web-client/compare/1.0.3-rc.10...1.0.3-rc.11

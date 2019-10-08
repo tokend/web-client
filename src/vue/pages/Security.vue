@@ -94,49 +94,49 @@
       </div>
     </template>
 
-    <div class="security-page__row">
-      <p class="security-page__row-title">
-        {{ 'security-page.phone-number-title' | globalize }}
-      </p>
-      <a
-        class="security-page__row-action"
-        @click="showDrawer(VIEW_MODES.changePhoneNumber)"
-      >
-        <template v-if="isPhoneEnabled">
-          {{ 'security-page.change-phone-number-btn' | globalize }}
-        </template>
-        <template v-else>
-          {{ 'security-page.add-phone-number-btn' | globalize }}
-        </template>
-      </a>
-    </div>
+    <!--<div class="security-page__row">-->
+    <!--<p class="security-page__row-title">-->
+    <!--{{ 'security-page.phone-number-title' | globalize }}-->
+    <!--</p>-->
+    <!--<a-->
+    <!--class="security-page__row-action"-->
+    <!--@click="showDrawer(VIEW_MODES.changePhoneNumber)"-->
+    <!--&gt;-->
+    <!--<template v-if="isPhoneEnabled">-->
+    <!--{{ 'security-page.change-phone-number-btn' | globalize }}-->
+    <!--</template>-->
+    <!--<template v-else>-->
+    <!--{{ 'security-page.add-phone-number-btn' | globalize }}-->
+    <!--</template>-->
+    <!--</a>-->
+    <!--</div>-->
 
-    <div class="security-page__row">
-      <p class="security-page__row-title">
-        {{ 'security-page.telegram-title' | globalize }}
-      </p>
-      <a
-        class="security-page__row-action"
-        @click="showDrawer(VIEW_MODES.changeTelegramUsername)"
-      >
-        <template v-if="isTelegramEnabled">
-          {{ 'security-page.change-telegram-btn' | globalize }}
-        </template>
-        <template v-else>
-          {{ 'security-page.add-telegram-btn' | globalize }}
-        </template>
-      </a>
-    </div>
+    <!--<div class="security-page__row">-->
+    <!--<p class="security-page__row-title">-->
+    <!--{{ 'security-page.telegram-title' | globalize }}-->
+    <!--</p>-->
+    <!--<a-->
+    <!--class="security-page__row-action"-->
+    <!--@click="showDrawer(VIEW_MODES.changeTelegramUsername)"-->
+    <!--&gt;-->
+    <!--<template v-if="isTelegramEnabled">-->
+    <!--{{ 'security-page.change-telegram-btn' | globalize }}-->
+    <!--</template>-->
+    <!--<template v-else>-->
+    <!--{{ 'security-page.add-telegram-btn' | globalize }}-->
+    <!--</template>-->
+    <!--</a>-->
+    <!--</div>-->
 
-    <!-- eslint-disable-next-line max-len -->
-    <template v-if="isAccountCorporate && !isCustomerUiShown">
-      <div class="security-page__row">
-        <p class="security-page__row-title">
-          {{ 'security-page.default-quote-asset-title' | globalize }}
-        </p>
-        <default-quote-asset />
-      </div>
-    </template>
+    <!--&lt;!&ndash; eslint-disable-next-line max-len &ndash;&gt;-->
+    <!--<template v-if="isAccountCorporate && !isCustomerUiShown">-->
+    <!--<div class="security-page__row">-->
+    <!--<p class="security-page__row-title">-->
+    <!--{{ 'security-page.default-quote-asset-title' | globalize }}-->
+    <!--</p>-->
+    <!--<default-quote-asset />-->
+    <!--</div>-->
+    <!--</template>-->
   </div>
 </template>
 
@@ -145,10 +145,10 @@ import SwitchField from '@/vue/fields/SwitchField'
 import Drawer from '@/vue/common/Drawer'
 import KeyViewer from '@/vue/common/KeyViewer'
 import ChangePasswordForm from '@/vue/forms/ChangePasswordForm'
-import PhoneNumberForm from '@/vue/forms/PhoneNumberForm'
+// import PhoneNumberForm from '@/vue/forms/PhoneNumberForm'
 import TfaForm from '@/vue/forms/TfaForm'
-import TelegramForm from '@/vue/forms/TelegramForm'
-import DefaultQuoteAsset from '@/vue/fields/DefaultQuoteAssetSelectField'
+// import TelegramForm from '@/vue/forms/TelegramForm'
+// import DefaultQuoteAsset from '@/vue/fields/DefaultQuoteAssetSelectField'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { vuexTypes } from '@/vuex'
@@ -171,9 +171,9 @@ export default {
     KeyViewer,
     ChangePasswordForm,
     TfaForm,
-    PhoneNumberForm,
-    TelegramForm,
-    DefaultQuoteAsset,
+    // PhoneNumberForm,
+    // TelegramForm,
+    // DefaultQuoteAsset,
   },
   data: _ => ({
     isDrawerShown: false,
