@@ -286,7 +286,7 @@ export default {
             return this.form.isPreIssuanceEnabled
           }),
           amountRange: amountRange(
-            this.MIN_AMOUNT,
+            0,
             this.maxIssuanceAmount,
           ),
         },
