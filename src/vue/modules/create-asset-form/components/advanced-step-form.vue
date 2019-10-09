@@ -103,7 +103,7 @@
             :label="'create-asset-form.preissued-amount-lbl' | globalize"
             :error-message="getFieldErrorMessage(
               'form.initialPreissuedAmount',
-              { from: MIN_AMOUNT, to: form.maxIssuanceAmount }
+              { from: 0, to: form.maxIssuanceAmount }
             )"
             :disabled="isDisabled"
           />
