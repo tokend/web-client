@@ -174,7 +174,7 @@
         <tick-field
           class="advanced-step-form__stellar-integration-tick-field"
           v-model="form.isStellarIntegrationEnabled"
-          :disabled="isDisabled"
+          :disabled="isDisabled || form.isErc20IntegrationEnabled"
           :cb-value="true"
         >
           {{ 'create-asset-form.integration-with-stellar' | globalize }}
@@ -182,7 +182,9 @@
       </div>
     </div>
 
-    <template v-if="form.isStellarIntegrationEnabled">
+    <template
+      v-if="form.isStellarIntegrationEnabled && !form.isErc20IntegrationEnabled"
+    >
       <div class="app__form-row">
         <div class="app__form-field">
           <tick-field
@@ -260,7 +262,7 @@
         <tick-field
           class="advanced-step-form__stellar-integration-tick-field"
           v-model="form.isErc20IntegrationEnabled"
-          :disabled="isDisabled"
+          :disabled="isDisabled || form.isStellarIntegrationEnabled"
           :cb-value="true"
         >
           {{ 'create-asset-form.integration-with-erc20' | globalize }}
@@ -268,7 +270,9 @@
       </div>
     </div>
 
-    <template v-if="form.isErc20IntegrationEnabled">
+    <template
+      v-if="form.isErc20IntegrationEnabled && !form.isStellarIntegrationEnabled"
+    >
       <div class="app__form-row">
         <div class="app__form-field">
           <tick-field
@@ -374,36 +378,19 @@ import {
 import { vueRoutes } from '@/vue-router/routes'
 import { mapGetters } from 'vuex'
 import { vuexTypes, store } from '@/vuex'
+import {
+  STELLAR_TYPES,
+  STELLAR_ASSET_TYPES,
+  CREDIT_ALPHANUM4_MAX_LENGTH,
+  CREDIT_ALPHANUM12_MIN_LENGTH,
+  CREDIT_ALPHANUM12_MAX_LENGTH,
+  NATIVE_XLM_TYPE,
+} from '@/js/const/asset-subtypes.const'
 
 const EVENTS = {
   submit: 'submit',
   updateIsDisabled: 'update:isDisabled',
 }
-
-const STELLAR_TYPES = {
-  creditAlphanum4: 'credit_alphanum4',
-  creditAlphanum12: 'credit_alphanum12',
-  native: 'native',
-}
-
-const STELLAR_ASSET_TYPES = [
-  {
-    translationId: 'create-asset-form.alphanumeric-4-lbl',
-    value: STELLAR_TYPES.creditAlphanum4,
-  },
-  {
-    translationId: 'create-asset-form.alphanumeric-12-lbl',
-    value: STELLAR_TYPES.creditAlphanum12,
-  },
-  {
-    translationId: 'create-asset-form.native-lbl',
-    value: STELLAR_TYPES.native,
-  },
-]
-const CREDIT_ALPHANUM4_MAX_LENGTH = 4
-const CREDIT_ALPHANUM12_MIN_LENGTH = 5
-const CREDIT_ALPHANUM12_MAX_LENGTH = 12
-const NATIVE_XLM_TYPE = 'XLM'
 
 export default {
   name: 'advanced-step-form',
@@ -550,6 +537,12 @@ export default {
         this.form.stellar.assetCode = NATIVE_XLM_TYPE
       }
     },
+    'form.isStellarIntegrationEnabled' (val) {
+      if (val) this.form.isErc20IntegrationEnabled = false
+    },
+    'form.isErc20IntegrationEnabled' (val) {
+      if (val) this.form.isStellarIntegrationEnabled = false
+    },
   },
 
   created () {
@@ -586,6 +579,19 @@ export default {
         terms: this.request.termsKey
           ? new DocumentContainer(this.request.terms)
           : null,
+        isStellarIntegrationEnabled: this.request.isStellarIntegrationEnabled,
+        isErc20IntegrationEnabled: this.request.isErc20IntegrationEnabled,
+        stellar: {
+          withdraw: this.request.stellarWithdraw,
+          deposit: this.request.stellarDeposit,
+          assetType: this.request.stellarAssetType,
+          assetCode: this.request.stellarAssetCode,
+        },
+        erc20: {
+          withdraw: this.request.erc20Withdraw,
+          deposit: this.request.erc20Deposit,
+          address: this.request.erc20Address,
+        },
       }
     },
 

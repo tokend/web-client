@@ -35,6 +35,7 @@ export default {
           logo: logo ? logo.getDetailsForSave() : EMPTY_DOCUMENT,
           terms: terms ? terms.getDetailsForSave() : EMPTY_DOCUMENT,
           stellar: this.stellarInfo(),
+          erc20: this.erc20Info(),
         },
       }
     },
@@ -105,6 +106,15 @@ export default {
           deposit: this.advancedStepForm.stellar.deposit,
           asset_type: this.advancedStepForm.stellar.assetType,
           asset_code: this.advancedStepForm.stellar.assetCode,
+        }
+        : {}
+    },
+    erc20Info () {
+      return this.advancedStepForm.isErc20IntegrationEnabled
+        ? {
+          withdraw: this.advancedStepForm.erc20.withdraw,
+          deposit: this.advancedStepForm.erc20.deposit,
+          address: this.advancedStepForm.erc20.address,
         }
         : {}
     },

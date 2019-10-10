@@ -8,8 +8,14 @@ import config from '@/config'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 import { store, vuexTypes } from '@/vuex/index'
+import { mapGetters } from 'vuex'
 
 const NEW_CREATE_ASSET_REQUEST_ID = '0'
+
+const DEFAULT_SIGNER_ATTRS = Object.freeze({
+  weight: 1000,
+  identity: 1,
+})
 
 export default {
   data () {
@@ -17,7 +23,25 @@ export default {
       collectedCreateAssetAttributes: {},
     }
   },
-
+  computed: {
+    ...mapGetters([
+      vuexTypes.kvIssuanceSignerRoleId,
+      vuexTypes.accountId,
+      vuexTypes.assets,
+      vuexTypes.assetsByOwner,
+    ]),
+    needAddSigner () {
+      const isUsedIntegration = this.assetsByOwner(this.accountId)
+        .reduce((isUsedIntegration, item) => {
+          return isUsedIntegration ||
+            item.isUseStellarIntegration ||
+            item.isUseErc20Integration
+        }, false)
+      return !isUsedIntegration &&
+        (this.collectedCreateAssetAttributes.isStellarIntegrationEnabled ||
+        this.collectedCreateAssetAttributes.isErc20IntegrationEnabled)
+    },
+  },
   methods: {
     async getCreateAssetRequestById (id, accountId) {
       const endpoint = `/v3/create_asset_requests/${id}`
@@ -40,13 +64,28 @@ export default {
      * @param {string|number} requestId - request Id
      */
     async submitCreateAssetRequest (requestId) {
+      const operations = []
+      if (this.needAddSigner && !requestId) {
+        operations.push(this.$buildCreateSignerOperation())
+      }
       const assetDocuments = [
         this.collectedCreateAssetAttributes.logo,
         this.collectedCreateAssetAttributes.terms,
       ]
       await uploadDocuments(assetDocuments)
-      const operation = this.$buildAssetCreationRequestOperation(requestId)
-      await api.postOperations(operation)
+      operations.push(this.$buildAssetCreationRequestOperation(requestId))
+      await api.postOperations(...operations)
+    },
+
+    $buildCreateSignerOperation () {
+      const opts = {
+        ...DEFAULT_SIGNER_ATTRS,
+        publicKey: api.networkDetails.masterAccountId,
+        roleID: this.kvIssuanceSignerRoleId + '',
+        source: this.accountId,
+        details: {},
+      }
+      return base.ManageSignerBuilder.createSigner(opts)
     },
 
     $buildAssetCreationRequestOperation (requestId) {
@@ -67,6 +106,7 @@ export default {
           logo: this.$getDocumentDetailsOrEmptyDocument(logo),
           terms: this.$getDocumentDetailsOrEmptyDocument(terms),
           stellar: this.$getStellarIntegrationAttributes(),
+          erc20: this.$getErc20IntegrationAttributes(),
         },
       }
 
@@ -106,6 +146,16 @@ export default {
           deposit: this.collectedCreateAssetAttributes.stellar.deposit,
           asset_type: this.collectedCreateAssetAttributes.stellar.assetType,
           asset_code: this.collectedCreateAssetAttributes.stellar.assetCode,
+        }
+        : {}
+    },
+
+    $getErc20IntegrationAttributes () {
+      return this.collectedCreateAssetAttributes.isErc20IntegrationEnabled
+        ? {
+          withdraw: this.collectedCreateAssetAttributes.erc20.withdraw,
+          deposit: this.collectedCreateAssetAttributes.erc20.deposit,
+          address: this.collectedCreateAssetAttributes.erc20.address,
         }
         : {}
     },
