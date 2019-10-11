@@ -30,16 +30,24 @@ export default {
       vuexTypes.assets,
       vuexTypes.assetsByOwner,
     ]),
-    needAddSigner () {
-      const isUsedIntegration = this.assetsByOwner(this.accountId)
+    isStellarOrErc20IntegrationEnable () {
+      return this.assetsByOwner(this.accountId)
         .reduce((isUsedIntegration, item) => {
           return isUsedIntegration ||
-            item.isUseStellarIntegration ||
-            item.isUseErc20Integration
+           item.isUseStellarIntegration ||
+           item.isUseErc20Integration
         }, false)
-      return !isUsedIntegration &&
+    },
+    $needAddSigner () {
+      return !this.isStellarOrErc20IntegrationEnable &&
         (this.collectedCreateAssetAttributes.isStellarIntegrationEnabled ||
-        this.collectedCreateAssetAttributes.isErc20IntegrationEnabled)
+          this.collectedCreateAssetAttributes.isErc20IntegrationEnabled)
+    },
+
+    $nedDeleteSigner () {
+      return !this.isStellarOrErc20IntegrationEnable &&
+        (!this.collectedCreateAssetAttributes.isStellarIntegrationEnabled ||
+          !this.collectedCreateAssetAttributes.isErc20IntegrationEnabled)
     },
   },
   methods: {
@@ -64,9 +72,12 @@ export default {
      * @param {string|number} requestId - request Id
      */
     async submitCreateAssetRequest (requestId) {
+      const isHaveSignerMasterAccountId = await this.$checkSigner()
       const operations = []
-      if (this.needAddSigner && !requestId) {
+      if (this.$needAddSigner && !isHaveSignerMasterAccountId) {
         operations.push(this.$buildCreateSignerOperation())
+      } else if (this.$nedDeleteSigner && isHaveSignerMasterAccountId) {
+        operations.push(this.$buildDeleteSignerOperation())
       }
       const assetDocuments = [
         this.collectedCreateAssetAttributes.logo,
@@ -81,11 +92,20 @@ export default {
       const opts = {
         ...DEFAULT_SIGNER_ATTRS,
         publicKey: api.networkDetails.masterAccountId,
-        roleID: this.kvIssuanceSignerRoleId + '',
-        source: this.accountId,
+        roleID: String(this.kvIssuanceSignerRoleId),
         details: {},
       }
       return base.ManageSignerBuilder.createSigner(opts)
+    },
+
+    $buildDeleteSignerOperation () {
+      const opts = {
+        ...DEFAULT_SIGNER_ATTRS,
+        publicKey: api.networkDetails.masterAccountId,
+        roleID: String(this.kvIssuanceSignerRoleId),
+        details: {},
+      }
+      return base.ManageSignerBuilder.deleteSigner(opts)
     },
 
     $buildAssetCreationRequestOperation (requestId) {
@@ -166,6 +186,16 @@ export default {
       }
 
       return DocumentContainer.getEmptyDetailsForSave()
+    },
+
+    async $checkSigner () {
+      const endpoint = `/v3/accounts/${this.accountId}/signers`
+      const { data } = await api.get(endpoint)
+      return Boolean(data.find(item =>
+        (item.id === api.networkDetails.masterAccountId) &&
+        (+item.role.id === this.kvIssuanceSignerRoleId)
+      )
+      )
     },
   },
 }

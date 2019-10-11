@@ -1184,7 +1184,16 @@
       "restrict-who-can-use": "Я хочу ограничить, кто может использовать этот актив",
       "terms-subheading": "Соглашение",
       "permissions-subheading": "Разрешения",
-      "description-lbl": "Описание актива (необязательно)"
+      "description-lbl": "Описание актива (необязательно)",
+      "stellar": "Stellar",
+      "erc20": "ERC20",
+      "address-lbl": "Адрес",
+      "integration-with-stellar": "Интеграция со stellar",
+      "integration-with-erc20": "Интеграция со erc20",
+      "alphanumeric-4-lbl": "Alphanumeric 4",
+      "alphanumeric-12-lbl": "Alphanumeric 12",
+      "native-lbl": "Native",
+      "stellar-type-lbl": "Тип актива"
     },
     "update-asset-form": {
       "loading-msg": "Загружаем…",
@@ -1212,7 +1221,16 @@
       "native-stellar-asset-type-lbl": "Родной",
       "stellar-asset-type-lbl": "Тип",
       "stellar-asset-code-lbl": "Код актива",
-      "integration-with-stellar-check": "Я хочу интегрироваться с Stellar"
+      "integration-with-stellar-check": "Я хочу интегрироваться с Stellar",
+      "stellar": "Stellar",
+      "erc20": "ERC20",
+      "address-lbl": "Адрес",
+      "integration-with-stellar": "Интеграция со stellar",
+      "integration-with-erc20": "Интеграция со erc20",
+      "alphanumeric-4-lbl": "Alphanumeric 4",
+      "alphanumeric-12-lbl": "Alphanumeric 12",
+      "native-lbl": "Native",
+      "stellar-type-lbl": "Тип актива"
     },
     "assets-list": {
       "update-asset-title": "Обновить актив",
@@ -2055,7 +2073,10 @@
       "credit-alphanum12-stellar-asset-type-lbl": "Alphanumeric 12",
       "native-stellar-asset-type-lbl": "Родной",
       "yes-msg": "Да",
-      "no-msg": "Нет"
+      "no-msg": "Нет",
+      "erc20-withdraw-title": "Erc20 вывод",
+      "erc20-deposit-title": "Erc20 депозит",
+      "erc20-address-title": "Erc20 адрес"
     },
     "create-opportunity": {
       "maturity-date": "Maturity Date",

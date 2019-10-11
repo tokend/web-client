@@ -4,7 +4,7 @@
     @submit.prevent="isFormValid() && setConfirmationState()"
   >
     <h3 class="advanced-step-form__subheading app__form-subheading">
-      {{ 'create-asset-form.stellar' | globalize }}
+      {{ 'update-asset-form.stellar' | globalize }}
     </h3>
 
     <div class="app__form-row">
@@ -15,7 +15,7 @@
           :disabled="isDisabled || form.isErc20IntegrationEnabled"
           :cb-value="true"
         >
-          {{ 'create-asset-form.integration-with-stellar' | globalize }}
+          {{ 'update-asset-form.integration-with-stellar' | globalize }}
         </tick-field>
       </div>
     </div>
@@ -30,7 +30,7 @@
             :disabled="formMixin.isDisabled"
             :cb-value="true"
           >
-            {{ 'create-asset-form.deposit-lbl' | globalize }}
+            {{ 'update-asset-form.deposit-lbl' | globalize }}
           </tick-field>
         </div>
       </div>
@@ -41,7 +41,7 @@
             :disabled="formMixin.isDisabled"
             :cb-value="true"
           >
-            {{ 'create-asset-form.withdraw-lbl' | globalize }}
+            {{ 'update-asset-form.withdraw-lbl' | globalize }}
           </tick-field>
         </div>
       </div>
@@ -50,7 +50,7 @@
           <select-field
             v-model="form.stellar.assetType"
             name="create-asset-type"
-            :label="'create-asset-form.stellar-type-lbl' | globalize"
+            :label="'update-asset-form.stellar-type-lbl' | globalize"
             @blur="touchField('form.stellar.assetType')"
             :error-message="getFieldErrorMessage(
               'form.stellar.assetType',
@@ -74,7 +74,7 @@
             v-model="form.stellar.assetCode"
             @blur="touchField('form.stellar.assetCode')"
             name="create-asset-stellar-code"
-            :label="'create-asset-form.code-lbl' | globalize"
+            :label="'update-asset-form.code-lbl' | globalize"
             :error-message="getFieldErrorMessage(
               'form.stellar.assetCode',
               {
@@ -92,7 +92,7 @@
     </template>
 
     <h3 class="advanced-step-form__subheading app__form-subheading">
-      {{ 'create-asset-form.erc20' | globalize }}
+      {{ 'update-asset-form.erc20' | globalize }}
     </h3>
 
     <div class="app__form-row">
@@ -103,7 +103,7 @@
           :disabled="isDisabled || form.isStellarIntegrationEnabled"
           :cb-value="true"
         >
-          {{ 'create-asset-form.integration-with-erc20' | globalize }}
+          {{ 'update-asset-form.integration-with-erc20' | globalize }}
         </tick-field>
       </div>
     </div>
@@ -118,7 +118,7 @@
             :disabled="formMixin.isDisabled"
             :cb-value="true"
           >
-            {{ 'create-asset-form.deposit-lbl' | globalize }}
+            {{ 'update-asset-form.deposit-lbl' | globalize }}
           </tick-field>
         </div>
       </div>
@@ -129,7 +129,7 @@
             :disabled="formMixin.isDisabled"
             :cb-value="true"
           >
-            {{ 'create-asset-form.withdraw-lbl' | globalize }}
+            {{ 'update-asset-form.withdraw-lbl' | globalize }}
           </tick-field>
         </div>
       </div>
@@ -139,7 +139,7 @@
             white-autofill
             v-model="form.erc20.address"
             name="create-erc20-asset-code"
-            :label="'create-asset-form.address-lbl' | globalize"
+            :label="'update-asset-form.address-lbl' | globalize"
             @blur="touchField('form.erc20.address')"
             :error-message="getFieldErrorMessage('form.erc20.address')"
             :disabled="formMixin.isDisabled"
