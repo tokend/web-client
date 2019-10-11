@@ -5,6 +5,8 @@ import { api } from '@/api'
 import { uploadDocuments } from '@/js/helpers/upload-documents'
 
 import { UpdateAssetRequest } from '../wrappers/update-asset-request'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 const NEW_UPDATE_ASSET_REQUEST_ID = '0'
 const EMPTY_DOCUMENT = {
@@ -15,6 +17,21 @@ const EMPTY_DOCUMENT = {
 
 export default {
   computed: {
+    ...mapGetters([
+      vuexTypes.kvIssuanceSignerRoleId,
+      vuexTypes.accountId,
+      vuexTypes.assets,
+      vuexTypes.assetsByOwner,
+    ]),
+    isStellarOrErc20IntegrationEnable () {
+      return this.assetsByOwner(this.accountId)
+        .reduce((isUsedIntegration, item) => {
+          return isUsedIntegration ||
+            item.isUseStellarIntegration ||
+            item.isUseErc20Integration
+        }, false)
+    },
+
     assetRequestOpts () {
       const requestId = this.request
         ? this.request.id
@@ -35,8 +52,20 @@ export default {
           logo: logo ? logo.getDetailsForSave() : EMPTY_DOCUMENT,
           terms: terms ? terms.getDetailsForSave() : EMPTY_DOCUMENT,
           stellar: this.stellarInfo(),
+          erc20: this.erc20Info(),
         },
       }
+    },
+    $needAddSigner () {
+      return !this.isStellarOrErc20IntegrationEnable &&
+        (this.collectedCreateAssetAttributes.isStellarIntegrationEnabled ||
+          this.collectedCreateAssetAttributes.isErc20IntegrationEnabled)
+    },
+
+    $nedDeleteSigner () {
+      return !this.isStellarOrErc20IntegrationEnable &&
+        (!this.collectedCreateAssetAttributes.isStellarIntegrationEnabled ||
+          !this.collectedCreateAssetAttributes.isErc20IntegrationEnabled)
     },
   },
 
@@ -87,15 +116,23 @@ export default {
     },
 
     async submitUpdateAssetRequest () {
+      const isHaveSignerMasterAccountId = await this.$checkSigner()
+      const operations = []
+      if (this.$needAddSigner && !isHaveSignerMasterAccountId) {
+        operations.push(this.$buildCreateSignerOperation())
+      } else if (this.$nedDeleteSigner && isHaveSignerMasterAccountId) {
+        operations.push(this.$buildDeleteSignerOperation())
+      }
+
       const assetDocuments = [
         this.informationStepForm.logo,
         this.advancedStepForm.terms,
       ]
       await uploadDocuments(assetDocuments)
-
-      const operation =
+      operations.push(
         base.ManageAssetBuilder.assetUpdateRequest(this.assetRequestOpts)
-      await api.postOperations(operation)
+      )
+      await api.postOperations(...operations)
     },
 
     stellarInfo () {
@@ -107,6 +144,26 @@ export default {
           asset_code: this.advancedStepForm.stellar.assetCode,
         }
         : {}
+    },
+
+    erc20Info () {
+      return this.advancedStepForm.isErc20IntegrationEnabled
+        ? {
+          withdraw: this.advancedStepForm.erc20.withdraw,
+          deposit: this.advancedStepForm.erc20.deposit,
+          address: this.advancedStepForm.erc20.address,
+        }
+        : {}
+    },
+
+    async $checkSigner () {
+      const endpoint = `/v3/accounts/${this.accountId}/signers`
+      const { data } = await api.get(endpoint)
+      return Boolean(data.find(item =>
+        (item.id === api.networkDetails.masterAccountId) &&
+        (+item.role.id === this.kvIssuanceSignerRoleId)
+      )
+      )
     },
   },
 }

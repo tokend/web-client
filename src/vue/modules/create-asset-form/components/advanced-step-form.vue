@@ -126,7 +126,7 @@
     </h3>
 
     <div class="app__form-row">
-      <div class="app__from-field">
+      <div class="app__form-field">
         <tick-field
           class="advanced-step-form__stellar-integration-tick-field"
           v-model="form.isUsageRestricted"
@@ -161,6 +161,151 @@
               {{ translateAssetType(kvAssetTypeSecurity) }}
             </option>
           </select-field>
+        </div>
+      </div>
+    </template>
+
+    <h3 class="advanced-step-form__subheading app__form-subheading">
+      {{ 'create-asset-form.stellar' | globalize }}
+    </h3>
+
+    <div class="app__form-row">
+      <div class="app__form-field">
+        <tick-field
+          class="advanced-step-form__stellar-integration-tick-field"
+          v-model="form.isStellarIntegrationEnabled"
+          :disabled="isDisabled || form.isErc20IntegrationEnabled"
+          :cb-value="true"
+        >
+          {{ 'create-asset-form.integration-with-stellar' | globalize }}
+        </tick-field>
+      </div>
+    </div>
+
+    <template
+      v-if="form.isStellarIntegrationEnabled && !form.isErc20IntegrationEnabled"
+    >
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <tick-field
+            v-model="form.stellar.deposit"
+            :disabled="formMixin.isDisabled"
+            :cb-value="true"
+          >
+            {{ 'create-asset-form.deposit-lbl' | globalize }}
+          </tick-field>
+        </div>
+      </div>
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <tick-field
+            v-model="form.stellar.withdraw"
+            :disabled="formMixin.isDisabled"
+            :cb-value="true"
+          >
+            {{ 'create-asset-form.withdraw-lbl' | globalize }}
+          </tick-field>
+        </div>
+      </div>
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <select-field
+            v-model="form.stellar.assetType"
+            name="create-asset-type"
+            :label="'create-asset-form.stellar-type-lbl' | globalize"
+            @blur="touchField('form.stellar.assetType')"
+            :error-message="getFieldErrorMessage(
+              'form.stellar.assetType',
+            )"
+            :disabled="isDisabled"
+          >
+            <option
+              v-for="item in STELLAR_ASSET_TYPES"
+              :value="item.value"
+              :key="item.translationId"
+            >
+              {{ item.translationId | globalize }}
+            </option>
+          </select-field>
+        </div>
+      </div>
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.stellar.assetCode"
+            @blur="touchField('form.stellar.assetCode')"
+            name="create-asset-stellar-code"
+            :label="'create-asset-form.code-lbl' | globalize"
+            :error-message="getFieldErrorMessage(
+              'form.stellar.assetCode',
+              {
+                minLength: getAssetCodeMinLength,
+                maxLength: getAssetCodeMaxLength
+              }
+            )"
+            :disabled="isDisabled ||
+              form.stellar.assetType === STELLAR_TYPES.native"
+            :minlength="getAssetCodeMinLength"
+            :maxlength="getAssetCodeMaxLength"
+          />
+        </div>
+      </div>
+    </template>
+
+    <h3 class="advanced-step-form__subheading app__form-subheading">
+      {{ 'create-asset-form.erc20' | globalize }}
+    </h3>
+
+    <div class="app__form-row">
+      <div class="app__form-field">
+        <tick-field
+          class="advanced-step-form__stellar-integration-tick-field"
+          v-model="form.isErc20IntegrationEnabled"
+          :disabled="isDisabled || form.isStellarIntegrationEnabled"
+          :cb-value="true"
+        >
+          {{ 'create-asset-form.integration-with-erc20' | globalize }}
+        </tick-field>
+      </div>
+    </div>
+
+    <template
+      v-if="form.isErc20IntegrationEnabled && !form.isStellarIntegrationEnabled"
+    >
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <tick-field
+            v-model="form.erc20.deposit"
+            :disabled="formMixin.isDisabled"
+            :cb-value="true"
+          >
+            {{ 'create-asset-form.deposit-lbl' | globalize }}
+          </tick-field>
+        </div>
+      </div>
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <tick-field
+            v-model="form.erc20.withdraw"
+            :disabled="formMixin.isDisabled"
+            :cb-value="true"
+          >
+            {{ 'create-asset-form.withdraw-lbl' | globalize }}
+          </tick-field>
+        </div>
+      </div>
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.erc20.address"
+            name="create-erc20-asset-code"
+            :label="'create-asset-form.address-lbl' | globalize"
+            @blur="touchField('form.erc20.address')"
+            :error-message="getFieldErrorMessage('form.erc20.address')"
+            :disabled="formMixin.isDisabled"
+          />
         </div>
       </div>
     </template>
@@ -226,17 +371,26 @@ import config from '@/config'
 import {
   amountRange,
   requiredIf,
+  maxLength,
+  alphaNum,
+  minLength,
 } from '@validators'
 import { vueRoutes } from '@/vue-router/routes'
 import { mapGetters } from 'vuex'
 import { vuexTypes, store } from '@/vuex'
+import {
+  STELLAR_TYPES,
+  STELLAR_ASSET_TYPES,
+  CREDIT_ALPHANUM4_MAX_LENGTH,
+  CREDIT_ALPHANUM12_MIN_LENGTH,
+  CREDIT_ALPHANUM12_MAX_LENGTH,
+  NATIVE_XLM_TYPE,
+} from '@/js/const/asset-subtypes.const'
 
 const EVENTS = {
   submit: 'submit',
   updateIsDisabled: 'update:isDisabled',
 }
-
-const CREDIT_ALPHANUM12_MIN_LENGTH = 5
 
 export default {
   name: 'advanced-step-form',
@@ -253,18 +407,35 @@ export default {
       maxIssuanceAmount: '',
       isPreIssuanceEnabled: false,
       isUsageRestricted: false,
+      isStellarIntegrationEnabled: false,
+      isErc20IntegrationEnabled: false,
       assetType: store
         ? String(store.getters[vuexTypes.kvAssetTypeDefault])
         : '0',
       preIssuanceAssetSigner: '',
       initialPreissuedAmount: '',
       terms: null,
+      stellar: {
+        withdraw: false,
+        deposit: false,
+        assetType: '',
+        assetCode: '',
+      },
+      erc20: {
+        withdraw: false,
+        deposit: false,
+        address: '',
+      },
     },
     MIN_AMOUNT: config.MIN_AMOUNT,
     MAX_AMOUNT: config.MAX_AMOUNT,
     DOCUMENT_TYPES,
-    vueRoutes,
+    STELLAR_ASSET_TYPES,
+    CREDIT_ALPHANUM4_MAX_LENGTH,
+    CREDIT_ALPHANUM12_MAX_LENGTH,
     CREDIT_ALPHANUM12_MIN_LENGTH,
+    STELLAR_TYPES,
+    vueRoutes,
   }),
 
   validations () {
@@ -295,7 +466,42 @@ export default {
             return this.form.isUsageRestricted
           }),
         },
+        stellar: {
+          assetType: {
+            required: requiredIf(function () {
+              return this.form.isStellarIntegrationEnabled
+            }),
+          },
+          assetCode: {
+            required: requiredIf(function () {
+              return this.form.isStellarIntegrationEnabled
+            }),
+          },
+        },
+        erc20: {
+          address: {
+            required: requiredIf(function () {
+              return this.form.isErc20IntegrationEnabled
+            }),
+          },
+        },
       },
+    }
+    if (this.form.isStellarIntegrationEnabled) {
+      const stellarAssetCode =
+        validations.form.stellar.assetCode
+
+      switch (this.form.stellar.assetType) {
+        case STELLAR_TYPES.creditAlphanum4:
+          stellarAssetCode.maxLength = maxLength(CREDIT_ALPHANUM4_MAX_LENGTH)
+          stellarAssetCode.alphaNum = alphaNum
+          break
+        case STELLAR_TYPES.creditAlphanum12:
+          stellarAssetCode.minLength = minLength(CREDIT_ALPHANUM12_MIN_LENGTH)
+          stellarAssetCode.maxLength = maxLength(CREDIT_ALPHANUM12_MAX_LENGTH)
+          stellarAssetCode.alphaNum = alphaNum
+          break
+      }
     }
     return validations
   },
@@ -307,6 +513,36 @@ export default {
       vuexTypes.kvAssetTypeSecurity,
       vuexTypes.accountId,
     ]),
+    getAssetCodeMaxLength () {
+      /* eslint-disable max-len */
+      if (this.form.stellar.assetType === STELLAR_TYPES.creditAlphanum4) {
+        return CREDIT_ALPHANUM4_MAX_LENGTH
+      } else {
+        return CREDIT_ALPHANUM12_MAX_LENGTH
+      }
+      /* eslint-enable max-len */
+    },
+    getAssetCodeMinLength () {
+      if (this.form.stellar.assetType === STELLAR_TYPES.creditAlphanum4) {
+        return CREDIT_ALPHANUM4_MAX_LENGTH
+      } else {
+        return CREDIT_ALPHANUM12_MIN_LENGTH
+      }
+    },
+  },
+
+  watch: {
+    'form.stellar.assetType' (val) {
+      if (val === STELLAR_TYPES.native) {
+        this.form.stellar.assetCode = NATIVE_XLM_TYPE
+      }
+    },
+    'form.isStellarIntegrationEnabled' (val) {
+      if (val) this.form.isErc20IntegrationEnabled = false
+    },
+    'form.isErc20IntegrationEnabled' (val) {
+      if (val) this.form.isStellarIntegrationEnabled = false
+    },
   },
 
   created () {
@@ -343,6 +579,19 @@ export default {
         terms: this.request.termsKey
           ? new DocumentContainer(this.request.terms)
           : null,
+        isStellarIntegrationEnabled: this.request.isStellarIntegrationEnabled,
+        isErc20IntegrationEnabled: this.request.isErc20IntegrationEnabled,
+        stellar: {
+          withdraw: this.request.stellarWithdraw,
+          deposit: this.request.stellarDeposit,
+          assetType: this.request.stellarAssetType,
+          assetCode: this.request.stellarAssetCode,
+        },
+        erc20: {
+          withdraw: this.request.erc20Withdraw,
+          deposit: this.request.erc20Deposit,
+          address: this.request.erc20Address,
+        },
       }
     },
 

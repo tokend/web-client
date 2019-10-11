@@ -10,6 +10,10 @@ for further information about branching and tagging conventions.
 #### Fixed
 - Asset creation with zero initial pre-issued amount
 
+## [Unreleased]
+#### Added
+- Integration with Erc20 and stellar
+
 ## [1.10.2] - 2019-09-26
 
 ## [1.10.2-rc.0] - 2019-09-16

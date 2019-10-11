@@ -159,9 +159,9 @@ export default {
         const publicKey = await this.getAccountIdByIdentifier(this.form.email)
         const operation = base.ManageSignerBuilder.createSigner({
           ...DEFAULT_SIGNER_ATTRS,
-          publicKey,
-          roleID: this.roleIDToSet,
-          source: this.sourceAccountId,
+          publicKey, // master
+          roleID: this.roleIDToSet, // issuanse
+          source: this.sourceAccountId, // my
           details: {
             isAllowedToManageSigners: this.form.isAllowedToManageSigners,
             isAllowedToUpdateMetadata: this.form.isAllowedToUpdateMetadata,

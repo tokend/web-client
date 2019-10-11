@@ -18,6 +18,7 @@ const mutations = {
 
   SET_DEFAULT_QUOTE_ASSET: 'SET_DEFAULT_QUOTE_ASSET',
   SET_KV_DEFAULT_SIGNER_ROLE_ID: 'SET_KV_DEFAULT_SIGNER_ROLE_ID',
+  SET_KV_ISSUANCE_SIGNER_ROLE_ID: 'SET_KV_ISSUANCE_SIGNER_ROLE_ID',
 
   // account
   SET_ACCOUNT: 'SET_ACCOUNT',
@@ -122,6 +123,7 @@ const getters = {
   kvPollTypeUnrestricted: 'kvPollTypeUnrestricted',
   defaultQuoteAsset: 'defaultQuoteAsset',
   kvDefaultSignerRoleId: 'kvDefaultSignerRoleId',
+  kvIssuanceSignerRoleId: 'kvIssuanceSignerRoleId',
 
   // account
   account: 'account',

@@ -212,6 +212,45 @@
               </td>
             </tr>
           </template>
+
+          <template v-if="asset.erc20Address">
+            <tr>
+              <td :title="'assets.erc20-address-title' | globalize">
+                {{ 'assets.erc20-address-title' | globalize }}
+              </td>
+              <td :title="asset.erc20Address">
+                {{ asset.erc20Address }}
+              </td>
+            </tr>
+
+            <tr :title="'erc20-withdraw-title' | globalize">
+              <td>
+                {{ 'assets.erc20-withdraw-title' | globalize }}
+              </td>
+              <td>
+                <template v-if="asset.erc20Withdraw">
+                  {{ 'assets.yes-msg' | globalize }}
+                </template>
+                <template v-else>
+                  {{ 'assets.no-msg' | globalize }}
+                </template>
+              </td>
+            </tr>
+
+            <tr :title="'assets.erc20-deposit-title' | globalize">
+              <td>
+                {{ 'assets.erc20-deposit-title' | globalize }}
+              </td>
+              <td>
+                <template v-if="asset.erc20Deposit">
+                  {{ 'assets.yes-msg' | globalize }}
+                </template>
+                <template v-else>
+                  {{ 'assets.no-msg' | globalize }}
+                </template>
+              </td>
+            </tr>
+          </template>
         </tbody>
       </table>
     </div>
