@@ -132,10 +132,11 @@ export default {
     },
 
     normalizeTargetValue (target) {
-      if (this.type === 'number' && target.value !== '') {
-        target.value = this.normalizeDecimalPrecision(
+      if (this.type === INPUT_TYPES.number && target.value !== '') {
+        const normalizeValue = this.normalizeDecimalPrecision(
           this.normalizeRange(target.value)
         )
+        if (target.value !== normalizeValue) target.value = normalizeValue
       }
     },
 
