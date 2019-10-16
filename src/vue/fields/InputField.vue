@@ -65,6 +65,11 @@ const EVENTS = {
   input: 'input',
 }
 
+const INPUT_TYPES = {
+  password: 'password',
+  number: 'number',
+}
+
 export default {
   props: {
     label: { type: String, default: 'Label' },
@@ -92,7 +97,7 @@ export default {
     },
 
     isPasswordType () {
-      return this.type === 'password'
+      return this.type === INPUT_TYPES.password
     },
   },
 
