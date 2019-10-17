@@ -6,6 +6,7 @@
         :submodule="getModule().getSubmodule(MovementsTopBarModule)"
         @asset-updated="updateAsset"
         @movements-update-required="updateList"
+        @show-no-data-message="showNoDataMessage = true"
       />
     </template>
 
@@ -23,7 +24,7 @@
       </submodule-importer>
 
       <no-data-message
-        v-else-if="isLoadFailed"
+        v-else-if="showNoDataMessage"
         icon-name="trending-up"
         :title="'op-pages.no-data-title' | globalize"
         :message="'op-pages.no-data-msg' | globalize"
@@ -58,7 +59,7 @@ export default {
     MovementsHistoryModule,
     asset: {},
     historyState: 0,
-    isLoadFailed: false,
+    showNoDataMessage: false,
   }),
 
   methods: {

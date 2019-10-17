@@ -133,6 +133,7 @@ import { vueRoutes } from '@/vue-router/routes'
 const EVENTS = {
   assetUpdated: 'asset-updated',
   movementsUpdateRequired: 'movements-update-required',
+  showNoDataMessage: 'show-no-data-message',
 }
 
 const ASSET_POLICIES_STR = {
@@ -199,6 +200,9 @@ export default {
   },
   async created () {
     await this.loadAccountBalancesDetails()
+    if (!this.assets.length) {
+      this.$emit(EVENTS.showNoDataMessage)
+    }
     this.setDefaultAsset()
     this.isInitialized = true
   },
