@@ -104,6 +104,7 @@ export default {
   font-size: 1.6rem;
   line-height: 1.25;
   padding-right: 1.6rem;
+  color: $col-text;
 }
 
 .form-confirmation__btns {

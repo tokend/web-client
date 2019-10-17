@@ -79,8 +79,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~@scss/variables';
+
 .sale-description-viewer {
   padding: 3.2rem;
+  color: $col-text;
 }
 
 .sale-description-viewer__no-data {
@@ -91,6 +94,7 @@ export default {
 </style>
 
 <style lang="scss">
+/* stylelint-disable no-duplicate-at-import-rules */
 @import '~@scss/variables';
 
 /* stylelint-disable selector-nested-pattern */

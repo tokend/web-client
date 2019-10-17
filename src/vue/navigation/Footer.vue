@@ -63,11 +63,11 @@ export default {
 }
 
 .footer__link {
-  color: $col-link;
+  color: $col-footer-text;
 }
 
 .footer__text {
-  color: $col-text;
+  color: $col-footer-text;
 }
 
 .footer__language-picker,

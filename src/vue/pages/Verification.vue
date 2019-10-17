@@ -247,7 +247,7 @@ export default {
 }
 
 .router-link-exact-active {
-  border: 0.2rem solid $col-primary-lighten;
+  border: 0.2rem solid $col-btn;
 }
 
 .account-type-selector__item-title {
@@ -267,7 +267,7 @@ export default {
   height: 2.4rem;
   padding: 0.2rem;
   background-color: $col-block-bg;
-  border: 0.2rem solid $col-primary-lighten;
+  border: 0.2rem solid $col-btn;
   border-radius: 2rem;
   top: -1.2rem;
   right: -1.2rem;

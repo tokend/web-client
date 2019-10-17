@@ -123,4 +123,8 @@ export default {
   max-width: 100%;
   overflow: hidden;
 }
+
+.poll-card__question {
+  color: $col-text;
+}
 </style>

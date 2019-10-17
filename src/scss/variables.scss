@@ -27,22 +27,31 @@ $z-tooltip-wrapper: 1;
 $z-skeleton-loader: 1;
 
 // colors
-$col-primary: #00b881;
+$col-primary: #3a4180;
 
-$col-text: #d6244a;
-$col-btn: $col-primary;
+$col-btn: #7b6eff;
 $col-text-page-heading: $col-primary;
+$col-sidebar-background: #e9eaed;
+$col-sidebar-text: rgba($col-primary, 0.7);
+$col-footer-text: $col-primary;
 
+$col-text: $col-primary;
 $col-top-bar-tab-active: $col-btn;
 $col-field-txt: $col-primary;
 $col-link: $col-text;
-$col-text-auth-title-small: $col-text;
-$col-text-auth-version: rgba($col-text, 0.65);
 $col-app-content-background: #f6f8fb;
+$col-chart: $col-text;
+$col-text-auth-title-small: #7b6eff;
+$col-text-auth-version: rgba(#7b6eff, 0.65);
+$col-sidebar-active-elem-text: rgba($col-sidebar-text, 1);
+$col-sidebar-active-elem-background: #f2f2f4;
+$col-auth-titles-background-light: #5d5882;
+$col-auth-titles-background-dark: #2a2749;
 
 $col-text-secondary: #837fa1;
 $col-text-auth-title-big: #ffffff;
 $col-btn-txt: #ffffff;
+$col-message-box-text: #ffffff;
 
 $_athensGray: #e9eaed;
 $_white: #ffffff;
@@ -80,7 +89,7 @@ $col-primary-inactive-hover-darken: darken($col-primary-inactive, 20%);
 $col-field-inactive: rgba($col-field-txt, 0.7);
 $col-primary-flat-inactive: rgba($col-btn, 0.7);
 $col-primary-flat-hover: rgba($col-btn, 0.2);
-
+$col-text-inactive: rgba($col-text, 0.7);
 // status colors:
 $col-accent: $_lightRed;
 $col-pending: $_orange;
@@ -141,13 +150,9 @@ $col-drawer-head-bg: $_athensGray;
 $col-drawer-head-text: $col-text-page-heading;
 
 // sidebar
-$col-sidebar-background: $_athensGray;
-$col-sidebar-background-media-small: $_thinGray;
-$col-sidebar-text: $col-primary-inactive;
+$col-sidebar-background-media-small: $col-sidebar-background;
 $col-sidebar-scheme-label: rgba($col-primary-inactive, 0.5);
 $col-sidebar-burger-icon-color: $_white;
-$col-sidebar-active-elem-text: $col-primary;
-$col-sidebar-active-elem-background: $_thinGray;
 
 // passport (signed in user details in bg)
 $col-passport-email-abbr-text: $col-text-on-dark-bg;
@@ -173,8 +178,6 @@ $col-switch-field-enabled-border: darken($col-switch-field-enabled, 10%);
 $col-switch-field-disabled-border: darken($col-switch-field-disabled, 10%);
 
 // other colors
-$col-auth-titles-background-light: darken($col-primary, 5%);
-$col-auth-titles-background-dark: darken($col-primary, 33%);
 $col-auth-titles-background-fallback: #332f5c;
 $col-clipboard-background: $_whiteSmoke;
 $col-clipboard-background-darken: darken($col-clipboard-background, 5%);
@@ -203,8 +206,8 @@ $col-details-value: $col-text;
 $col-details-border: rgba($col-primary, 0.2);
 
 // no-data-message colors:
-$col-no-data-message-text: $col-primary;
-$col-no-data-message-description: $col-primary-inactive;
+$col-no-data-message-text: $col-text;
+$col-no-data-message-description: rgba($col-text, 0.7);
 $col-no-data-message-icon-color: rgba($col-primary, 0.4);
 
 // list colors:
@@ -219,21 +222,21 @@ $col-top-bar-text: $col-text;
 $col-top-bar-tab: $_lightPurple;
 
 // chart colors:
-$col-chart-line: $col-primary-lighten;
+$col-chart-line: rgba($col-chart, 0.7);
 $col-chart-fill: $_white;
-$col-chart-ticks: $col-primary-inactive;
-$col-chart-text: rgba($col-text, 0.7);
+$col-chart-ticks: rgba($col-chart, 0.5);
+$col-chart-text: rgba($col-chart, 0.7);
 $col-chart-tip-circle-border: $_white;
-$col-chart-tip-circle: $col-primary;
-$col-chart-tip-line-inactive: $col-primary;
-$col-chart-tip-line-active: $col-primary-lighten;
+$col-chart-tip-circle: $col-chart;
+$col-chart-tip-line-inactive: $col-chart;
+$col-chart-tip-line-active: rgba($col-chart, 0.7);
 $col-chart-tip-text-box: $_white;
-$col-chart-tip-text-price: $col-primary;
-$col-chart-tip-date-dd: $col-primary;
-$col-chart-tip-date-mm: rgba($col-primary, 0.6);
+$col-chart-tip-text-price: $col-chart;
+$col-chart-tip-date-dd: $col-chart;
+$col-chart-tip-date-mm: rgba($col-chart, 0.6);
 $col-chart-message-wrapper: rgba($col-app-content-background, 0.25);
 $col-chart-message-background: $_white;
-$col-chart-message-text: $col-text;
+$col-chart-message-text: $col-chart;
 
 // form stepper colors
 $col-form-stepper-text: $col-primary;
@@ -264,9 +267,9 @@ $col-sale-card-background: $_white;
 $col-sale-card-shadow: $col-block-shadow;
 $col-sale-card-header-background: $_athensGray;
 $col-sale-card-text-primary: $col-text;
-$col-sale-card-text-bold: $_cornflowerBlue;
+$col-sale-card-text-bold: $col-text;
 $col-sale-card-progress-bar-background: $_thinPurple;
-$col-sale-card-progress-bar-value: $_cornflowerBlue;
+$col-sale-card-progress-bar-value: $col-primary;
 
 // request colors
 $col-request-approved: $_cyan;
@@ -328,7 +331,7 @@ $col-sale-details-text-secondary: $col-text-secondary;
 $col-sale-details-block: $col-block-bg;
 $col-sale-details-logo-bg: $_athensGray;
 $col-sale-details-progress-bar-bg: $_thinPurple;
-$col-sale-details-progress-bar-funded: $col-primary-lighten;
+$col-sale-details-progress-bar-funded: $col-primary;
 // TODO: paste here variables that are ready to use during the refactor process
 
 // movement history colors:
@@ -354,7 +357,7 @@ $col-document-icon-text: $col-primary;
 
 // document-upload-form-colors:
 $col-document-upload-progress-bar-bg: $_gray;
-$col-document-upload-progress-bar-value: $_cornflowerBlue;
+$col-document-upload-progress-bar-value: $col-primary;
 
 // document signer list colors:
 $col-signer-list-item-bg: $_white;
