@@ -66,6 +66,10 @@ export default {
   color: $col-link;
 }
 
+.footer__text {
+  color: $col-text;
+}
+
 .footer__language-picker,
 .footer__link {
   margin: 0 1rem;

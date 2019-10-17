@@ -65,6 +65,13 @@ const EVENTS = {
   input: 'input',
 }
 
+const INPUT_TYPES = {
+  telegram: 'telegram',
+  phoneNumber: 'phone-number',
+  password: 'password',
+  number: 'number',
+}
+
 export default {
   props: {
     label: { type: String, default: 'Label' },

@@ -26,8 +26,25 @@ $z-sidebar: 120;
 $z-tooltip-wrapper: 1;
 $z-skeleton-loader: 1;
 
+// colors
+$col-primary: #00b881;
+
+$col-text: #d6244a;
+$col-btn: $col-primary;
+$col-text-page-heading: $col-primary;
+
+$col-top-bar-tab-active: $col-btn;
+$col-field-txt: $col-primary;
+$col-link: $col-text;
+$col-text-auth-title-small: $col-text;
+$col-text-auth-version: rgba($col-text, 0.65);
+$col-app-content-background: #f6f8fb;
+
+$col-text-secondary: #837fa1;
+$col-text-auth-title-big: #ffffff;
+$col-btn-txt: #ffffff;
+
 $_athensGray: #e9eaed;
-$_eastBay: #3a4180;
 $_white: #ffffff;
 $_concrete: #f2f2f2;
 $_black: #000000;
@@ -55,16 +72,14 @@ $_silverChalice: #aaaaaa;
 $_aliceBlue: #f5f6ff;
 
 // base colors:
-$col-primary: $_eastBay;
 $col-secondary: $_lightPurple;
 $col-primary-lighten: $_cornflowerBlue;
-$col-primary-txt: $_white;
-$col-link: $col-primary-lighten;
 $col-text-on-dark-bg: $_white;
-
 $col-primary-inactive: rgba($col-primary, 0.7);
 $col-primary-inactive-hover-darken: darken($col-primary-inactive, 20%);
-$col-primary-flat-hover: rgba($col-primary, 0.2);
+$col-field-inactive: rgba($col-field-txt, 0.7);
+$col-primary-flat-inactive: rgba($col-btn, 0.7);
+$col-primary-flat-hover: rgba($col-btn, 0.2);
 
 // status colors:
 $col-accent: $_lightRed;
@@ -76,30 +91,22 @@ $col-info: $_cornflowerBlue;
 $col-danger: $_darkRed;
 
 // global colors
-$col-text: $_eastBay;
-$col-text-secondary: $_lightPurple;
-$col-link: $_cornflowerBlue;
 $col-border: $_ghostWhite;
 $col-block-bg: $_white;
 $col-app-background: $_gray;
-$col-app-content-background: $_thinBlue;
 
 // text colors:
 $col-heading: $col-text;
-$col-text-page-heading: $col-heading;
-$col-text-auth-title-big: $_white;
-$col-text-auth-title-small: $_cornflowerBlue;
-$col-text-auth-tip-link: $_cornflowerBlue;
-$col-text-auth-version: rgba($_cornflowerBlue, 0.65);
-$col-text-highlighted: $col-primary-lighten;
+$col-text-auth-tip-link: $col-link;
+$col-text-highlighted: $col-text;
 
 // button colors:
-$col-button-raised: $col-primary-lighten;
-$col-button-raised-txt: $col-primary-txt;
+$col-button-raised: $col-btn;
+$col-button-raised-txt: $col-btn-txt;
 
 $col-button-flat-hover: $col-primary-flat-hover;
-$col-button-flat-txt: $col-primary;
-$col-button-flat-txt-inactive: $col-primary-inactive;
+$col-button-flat-txt: $col-btn;
+$col-button-flat-txt-inactive: $col-primary-flat-inactive;
 $col-button-flat-disabled-txt: $_lightGray;
 
 $col-button-flat-accent-hover: rgba($col-accent, 0.2);
@@ -131,7 +138,7 @@ $col-status-close-btn-hover: rgba(0, 0, 0, 0.1);
 $col-drawer-bg: $col-block-bg;
 $col-drawer-backdrop-bg: rgba(0, 0, 0, 0.1);
 $col-drawer-head-bg: $_athensGray;
-$col-drawer-head-text: $_eastBay;
+$col-drawer-head-text: $col-text-page-heading;
 
 // sidebar
 $col-sidebar-background: $_athensGray;
@@ -144,10 +151,10 @@ $col-sidebar-active-elem-background: $_thinGray;
 
 // passport (signed in user details in bg)
 $col-passport-email-abbr-text: $col-text-on-dark-bg;
-$col-passport-email-abbr-bg: rgba($_eastBay, 0.15);
+$col-passport-email-abbr-bg: rgba($col-primary, 0.15);
 
 // fields colors
-$col-text-field-hint: $col-primary;
+$col-text-field-hint: $col-text;
 $col-text-field-hint-inactive: $col-primary-inactive;
 $col-field-background: $col-block-bg;
 $col-file-field-background: $_whiteSmoke;
@@ -155,19 +162,19 @@ $col-file-field-border: $_ghostWhite;
 $col-file-field-drop-bg: $_aliceBlue;
 $col-field-text-secondary: $_lightPurple;
 $col-field-shadow: rgba(0, 0, 0, 0.1);
-$col-tick-field-shadow: rgba($_eastBay, 0.6);
-$col-select-field-selected-background: rgba($_eastBay, 0.1);
-$col-select-field-hover-background: rgba($_eastBay, 0.05);
+$col-tick-field-shadow: rgba($col-field-txt, 0.6);
+$col-select-field-selected-background: rgba($col-field-txt, 0.1);
+$col-select-field-hover-background: rgba($col-field-txt, 0.05);
 $col-switch-field-background: $_whiteSmoke;
 $col-switch-field-border: $_thinPurple;
 $col-switch-field-disabled: $_mediumGray;
-$col-switch-field-enabled: $_lightGreen;
+$col-switch-field-enabled: $col-btn;
 $col-switch-field-enabled-border: darken($col-switch-field-enabled, 10%);
 $col-switch-field-disabled-border: darken($col-switch-field-disabled, 10%);
 
 // other colors
-$col-auth-titles-background-light: #5d5882;
-$col-auth-titles-background-dark: #2a2749;
+$col-auth-titles-background-light: darken($col-primary, 5%);
+$col-auth-titles-background-dark: darken($col-primary, 33%);
 $col-auth-titles-background-fallback: #332f5c;
 $col-clipboard-background: $_whiteSmoke;
 $col-clipboard-background-darken: darken($col-clipboard-background, 5%);
@@ -175,7 +182,7 @@ $col-clipboard-background-darken: darken($col-clipboard-background, 5%);
 // table colors:
 $col-table-background: $_white;
 $col-table-alt-row-background: $_whiteSmoke;
-$col-table-cell-text: $col-primary;
+$col-table-cell-text: $col-text;
 $col-table-cell-text-inactive: $_lightPurple;
 $col-table-head-text: $_lightPurple;
 $col-table-row-selected: darken($_whiteSmoke, 10%);
@@ -187,12 +194,12 @@ $col-table-scroll-side-shadow: rgba(0, 0, 0, 0.2);
 $col-document-manager-border: $_silverChalice;
 
 // loader colors:
-$col-loader-text: $col-primary;
+$col-loader-text: $col-text;
 $col-loader-icon: $col-primary-inactive;
 
 // details colors:
-$col-details-label: $col-primary-inactive;
-$col-details-value: $col-primary;
+$col-details-label: rgba($col-text, 0.7);
+$col-details-value: $col-text;
 $col-details-border: rgba($col-primary, 0.2);
 
 // no-data-message colors:
@@ -208,15 +215,14 @@ $col-list-btn-details-background: rgba($col-primary, 0.1);
 
 // top bar colors
 $col-top-bar-background: $_white;
-$col-top-bar-text: $_eastBay;
+$col-top-bar-text: $col-text;
 $col-top-bar-tab: $_lightPurple;
-$col-top-bar-tab-active: $_cornflowerBlue;
 
 // chart colors:
 $col-chart-line: $col-primary-lighten;
 $col-chart-fill: $_white;
 $col-chart-ticks: $col-primary-inactive;
-$col-chart-text: $col-primary-inactive;
+$col-chart-text: rgba($col-text, 0.7);
 $col-chart-tip-circle-border: $_white;
 $col-chart-tip-circle: $col-primary;
 $col-chart-tip-line-inactive: $col-primary;
@@ -227,13 +233,13 @@ $col-chart-tip-date-dd: $col-primary;
 $col-chart-tip-date-mm: rgba($col-primary, 0.6);
 $col-chart-message-wrapper: rgba($col-app-content-background, 0.25);
 $col-chart-message-background: $_white;
-$col-chart-message-text: $col-primary;
+$col-chart-message-text: $col-text;
 
 // form stepper colors
 $col-form-stepper-text: $col-primary;
 $col-form-stepper-icon: $col-text-on-dark-bg;
 $col-form-stepper-icon-background: $col-primary;
-$col-form-stepper-tab-active: $col-primary-lighten;
+$col-form-stepper-tab-active: $col-primary;
 $col-form-stepper-tab-border: $_thinPurple;
 
 // asset card colors
@@ -269,7 +275,7 @@ $col-request-rejected: $_lightRed;
 
 // asset logo
 $col-asset-logo-background: $_white;
-$col-asset-logo-text: $col-primary;
+$col-asset-logo-text: $col-text;
 
 // asset logo
 $col-asset-logo-dark-background: $_silverChalice;
@@ -281,7 +287,7 @@ $col-terms-block-bg: $col-block-bg;
 $col-terms-header: $col-primary;
 $col-terms-list-item: $_thinPurple;
 $col-terms-text: $col-secondary;
-$col-terms-link: $col-primary-lighten;
+$col-terms-link: $col-link;
 
 // downloads colors
 $col-downloads-title: $col-primary;
@@ -289,13 +295,13 @@ $col-downloads-block-bg: $col-block-bg;
 $col-downloads-header: $col-primary;
 $col-downloads-text: $col-secondary;
 $col-downloads-line: $_athensGray;
-$col-downloads-link: $col-primary-lighten;
+$col-downloads-link: $col-link;
 
 // iOS guide colors
 $col-ios-guide-title: $col-primary;
 $col-ios-guide-block-bg: $col-block-bg;
 $col-ios-guide-header: $col-primary;
-$col-ios-guide-link: $col-primary-lighten;
+$col-ios-guide-link: $col-link;
 $col-ios-guide-text: $col-secondary;
 $col-ios-guide-step-number-bg: $col-primary;
 $col-ios-guide-step-number-text: $_white;
@@ -306,7 +312,7 @@ $col-ios-guide-substep-text: $col-secondary;
 $col-pre-issuance-guide-title: $col-primary;
 $col-pre-issuance-guide-block-bg: $col-block-bg;
 $col-pre-issuance-guide-header: $col-primary;
-$col-pre-issuance-guide-link: $col-primary-lighten;
+$col-pre-issuance-guide-link: $col-link;
 $col-pre-issuance-guide-text: $col-secondary;
 $col-pre-issuance-guide-list-item: $_thinPurple;
 
@@ -353,7 +359,7 @@ $col-document-upload-progress-bar-value: $_cornflowerBlue;
 // document signer list colors:
 $col-signer-list-item-bg: $_white;
 $col-signer-list-item-shadow: $col-block-shadow;
-$col-signer-list-item-avatar-bg: $_eastBay;
+$col-signer-list-item-avatar-bg: $col-primary;
 $col-signer-list-item-avatar-text: $_white;
 $col-signer-list-item-rule-text: $_lightPurple;
 
@@ -361,12 +367,12 @@ $col-signer-list-item-rule-text: $_lightPurple;
 $col-document-uploader-text-unlighten: $_lightPurple;
 
 // comment-viewer
-$col-border-comment-viewer-header: $_eastBay;
-$col-comment-content-gradient-from: $_eastBay;
+$col-border-comment-viewer-header: $col-primary;
+$col-comment-content-gradient-from: $col-primary;
 $col-comment-content-gradient-to: $_gray;
 
 // skeleton-loader
-$col-background-skeleton-loader: rgba($_eastBay, 0.10);
+$col-background-skeleton-loader: rgba($col-primary, 0.10);
 
 // hint-wrapper
 $col-hint-wrapper-box-bg: rgba($_black, 0.9);
