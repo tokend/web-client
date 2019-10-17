@@ -63,7 +63,7 @@ export default {
 }
 
 .footer__link {
-  color: $col-footer-text;
+  color: $col-link;
 }
 
 .footer__text {
