@@ -10,6 +10,9 @@ for further information about branching and tagging conventions.
 #### Fixed
 - A bug when the user can not enter a value in input-field with type 'number' on Firefox
 
+#### Changed
+- Color scheme improvements
+
 ## [1.10.3-rc.0] - 2019-10-11
 #### Added
 - Integration with Erc20 and stellar
