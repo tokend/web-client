@@ -281,7 +281,7 @@ export default {
 
 .account-type-selector__selected-icon-tag {
   font-size: 1.6rem;
-  color: $col-primary-lighten;
+  color: $col-btn;
 }
 
 .verification__form-label {
