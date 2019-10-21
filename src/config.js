@@ -20,7 +20,7 @@ export default Object.assign(
     /**
      * App name
      */
-    APP_NAME: 'dew',
+    APP_NAME: 'TokenD',
 
     /**
      * URL of the Horizon server. The application is going to fetch all the
