@@ -78,7 +78,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '~@scss/variables';
 
 .sale-description-viewer {
@@ -91,11 +91,6 @@ export default {
   font-weight: 700;
   font-size: 1.6rem;
 }
-</style>
-
-<style lang="scss">
-/* stylelint-disable no-duplicate-at-import-rules */
-@import '~@scss/variables';
 
 /* stylelint-disable selector-nested-pattern */
 .sale-description-viewer__markdown {
