@@ -12,13 +12,21 @@
 
     <div class="ios-installation-guide__content">
       <h3 class="ios-installation-guide__header">
-        {{ 'ios-installation-guide.how-to-install-header' | globalize }}
+        {{ 'ios-installation-guide.how-to-install-header' | globalize(
+          {
+            appName: config.APP_NAME
+          })
+        }}
       </h3>
       <p class="ios-installation-guide__description">
         {{ 'ios-installation-guide.apple-policy-desc' | globalize }}
       </p>
       <p class="ios-installation-guide__steps-header">
-        {{ 'ios-installation-guide.steps-desc' | globalize }}
+        {{ 'ios-installation-guide.steps-desc' | globalize(
+          {
+            appName: config.APP_NAME
+          })
+        }}
       </p>
 
       <div class="ios-installation-guide__steps">
@@ -144,6 +152,7 @@ export default {
   data () {
     return {
       manifestLink: config.IOS_MANIFEST_LINK,
+      config,
     }
   },
 }
