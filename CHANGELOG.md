@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
+## [Unreleased]
+#### Fixed
+- A bug when the user can not update an asset with deposit withdraw integration
+
 ## [1.10.3-rc.1] - 2019-10-18
 #### Fixed
 - A bug when the user can not enter a value in input-field with type 'number' on Firefox
