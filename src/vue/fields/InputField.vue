@@ -66,8 +66,6 @@ const EVENTS = {
 }
 
 const INPUT_TYPES = {
-  telegram: 'telegram',
-  phoneNumber: 'phone-number',
   password: 'password',
   number: 'number',
 }
@@ -99,7 +97,7 @@ export default {
     },
 
     isPasswordType () {
-      return this.type === 'password'
+      return this.type === INPUT_TYPES.password
     },
   },
 
