@@ -116,6 +116,7 @@ export default {
   },
 
   async created () {
+    this.setAppTitle()
     await this.initApp()
 
     this.startIdle()
@@ -178,6 +179,10 @@ export default {
           this.popState()
         }
       }
+    },
+
+    setAppTitle () {
+      document.title = config.APP_NAME
     },
   },
 }
