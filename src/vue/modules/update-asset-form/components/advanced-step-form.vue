@@ -74,7 +74,7 @@
             v-model="form.stellar.assetCode"
             @blur="touchField('form.stellar.assetCode')"
             name="create-asset-stellar-code"
-            :label="'update-asset-form.code-lbl' | globalize"
+            :label="'update-asset-form.stellar-asset-code-lbl' | globalize"
             :error-message="getFieldErrorMessage(
               'form.stellar.assetCode',
               {
