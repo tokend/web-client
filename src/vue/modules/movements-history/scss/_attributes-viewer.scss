@@ -18,6 +18,7 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  color: $col-text;
 
   &:first-of-type {
     color: $col-table-head-text;
