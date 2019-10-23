@@ -140,8 +140,9 @@
       <input-field
         white-autofill
         class="app__form-field"
-        v-model.trim="form.cardCVV3"
+        v-model="form.cardCVV3"
         type="password"
+        :trim="false"
         name="deposit-fiat-card-cvv3"
         :label="'deposit-fiat-card-module.card-cvv3' | globalize"
         :disabled="formMixin.isDisabled"

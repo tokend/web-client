@@ -19,6 +19,7 @@
           @blur="touchField('form.password')"
           name="login-password"
           type="password"
+          :trim="false"
           :error-message="getFieldErrorMessage('form.password')"
           :white-autofill="false"
           :label="'auth-pages.password' | globalize"
