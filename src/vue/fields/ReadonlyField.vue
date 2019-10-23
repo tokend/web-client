@@ -38,6 +38,7 @@ export default {
 .readonly-field__content {
   display: flex;
   justify-content: space-between;
+  color: $col-text;
 }
 
 .readonly-field__label,

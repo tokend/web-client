@@ -182,6 +182,7 @@ export default {
 
 .sale-description-viewer {
   padding: 3.2rem;
+  color: $col-text;
 }
 
 .sale-state-widget__invested,

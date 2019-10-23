@@ -1,8 +1,8 @@
 @import '~@scss/variables';
 
-$col-field-text: $col-primary;
-$col-field-text-unfocused: $col-primary-inactive;
-$col-field-icon: $col-primary;
+$col-field-text: $col-field-txt;
+$col-field-text-unfocused: $col-field-inactive;
+$col-field-icon: $col-field-text;
 $col-dropdown-bg: $_white;
 
 $z-index-select-field-list: 5;
@@ -29,7 +29,7 @@ $file-field-background-color: $col-file-field-background;
 $file-field-border-color: $col-file-field-border;
 $file-field-note-color: $col-field-text-secondary;
 $file-field-drop-bg-color: $col-file-field-drop-bg;
-$col-select-field-hover: rgba($col-primary, 0.1);
+$col-select-field-hover: rgba($col-field-text, 0.1);
 $col-tick-field-unfocused: $col-primary-lighten;
 
 @mixin input-paddings {

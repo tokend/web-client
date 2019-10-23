@@ -113,6 +113,7 @@ export default {
 .fees-renderer__network-fee,
 .fees-renderer__fee-block {
   margin-bottom: 1rem;
+  color: $col-text;
 }
 
 .fees-renderer__view-fees-link {
