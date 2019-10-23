@@ -251,7 +251,7 @@ export default {
 
 .app__warning-message-link {
   margin-left: 0.4rem;
-  color: $col-primary-txt;
+  color: $col-message-box-text;
   font-size: 1.6rem;
 }
 </style>

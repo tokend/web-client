@@ -86,6 +86,6 @@ export default {
   padding: 2.4rem;
   font-size: 1.3rem;
   font-weight: 400;
-  color: $col-primary-txt;
+  color: $col-message-box-text;
 }
 </style>

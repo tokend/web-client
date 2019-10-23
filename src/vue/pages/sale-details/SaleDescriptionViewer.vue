@@ -78,9 +78,12 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+@import '~@scss/variables';
+
 .sale-description-viewer {
   padding: 3.2rem;
+  color: $col-text;
 }
 
 .sale-description-viewer__no-data {
@@ -88,10 +91,6 @@ export default {
   font-weight: 700;
   font-size: 1.6rem;
 }
-</style>
-
-<style lang="scss">
-@import '~@scss/variables';
 
 /* stylelint-disable selector-nested-pattern */
 .sale-description-viewer__markdown {

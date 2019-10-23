@@ -321,6 +321,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '~@/vue/forms/app-form';
+@import '~@scss/variables';
 
 .create-issuance-form__submit-btn {
   max-width: 18rem;
@@ -339,6 +340,7 @@ export default {
 
 .create-issuance-form__total {
   flex-direction: column;
+  color: $col-text;
 }
 
 .create-issuance-form__receiving {

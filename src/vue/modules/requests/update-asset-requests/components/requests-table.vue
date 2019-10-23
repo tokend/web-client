@@ -114,7 +114,7 @@ export default {
 
 .requests-table__details-btn {
   font-size: 1.2rem;
-  color: $col-primary-lighten;
+  color: $col-btn;
   cursor: pointer;
 }
 </style>
