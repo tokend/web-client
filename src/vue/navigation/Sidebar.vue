@@ -314,6 +314,7 @@ $content-item-right-padding: 2.4rem;
   opacity: 0.7;
   font-size: 1.4rem;
   margin-bottom: 0.2rem;
+  color: $col-footer-text;
 }
 
 .sidebar__link {

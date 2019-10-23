@@ -55,13 +55,13 @@ export default {
 .asset-summary-viewer__code {
   font-size: 1.8rem;
   font-weight: 700;
-  color: $col-primary;
+  color: $col-text;
 }
 
 .asset-summary-viewer__name {
   margin-top: 0.1rem;
   font-size: 1.4rem;
   line-height: 1.29;
-  color: $col-primary;
+  color: $col-text;
 }
 </style>

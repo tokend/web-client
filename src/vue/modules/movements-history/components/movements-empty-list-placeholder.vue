@@ -37,5 +37,6 @@ export default {
 
   .movements-empty-list-placeholder__cell--align-center {
     text-align: center;
+    color: $col-text;
   }
 </style>

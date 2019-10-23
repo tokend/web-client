@@ -84,6 +84,7 @@ export default {
   max-width: 100%;
   overflow: hidden;
   overflow-x: hidden;
+  color: $col-text;
 }
 
 .atomic-swap-card__title {
