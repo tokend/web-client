@@ -10,6 +10,9 @@ for further information about branching and tagging conventions.
 #### Added
 - Trim for input field
 
+#### Fixed
+- A bug when the user can not update asset with deposit withdraw integration
+
 #### Changed
 - Moved logo and favicon to branding folder
 

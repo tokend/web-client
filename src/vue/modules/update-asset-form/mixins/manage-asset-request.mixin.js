@@ -14,6 +14,10 @@ const EMPTY_DOCUMENT = {
   name: '',
   key: '',
 }
+const DEFAULT_SIGNER_ATTRS = Object.freeze({
+  weight: 1000,
+  identity: 1,
+})
 
 export default {
   computed: {
@@ -58,14 +62,14 @@ export default {
     },
     $needAddSigner () {
       return !this.isStellarOrErc20IntegrationEnable &&
-        (this.collectedCreateAssetAttributes.isStellarIntegrationEnabled ||
-          this.collectedCreateAssetAttributes.isErc20IntegrationEnabled)
+        (this.advancedStepForm.isStellarIntegrationEnabled ||
+          this.advancedStepForm.isErc20IntegrationEnabled)
     },
 
-    $nedDeleteSigner () {
+    $needDeleteSigner () {
       return !this.isStellarOrErc20IntegrationEnable &&
-        (!this.collectedCreateAssetAttributes.isStellarIntegrationEnabled ||
-          !this.collectedCreateAssetAttributes.isErc20IntegrationEnabled)
+        (!this.advancedStepForm.isStellarIntegrationEnabled ||
+          !this.advancedStepForm.isErc20IntegrationEnabled)
     },
   },
 
@@ -120,7 +124,7 @@ export default {
       const operations = []
       if (this.$needAddSigner && !isHaveSignerMasterAccountId) {
         operations.push(this.$buildCreateSignerOperation())
-      } else if (this.$nedDeleteSigner && isHaveSignerMasterAccountId) {
+      } else if (this.$needDeleteSigner && isHaveSignerMasterAccountId) {
         operations.push(this.$buildDeleteSignerOperation())
       }
 
@@ -164,6 +168,26 @@ export default {
         (+item.role.id === this.kvIssuanceSignerRoleId)
       )
       )
+    },
+
+    $buildDeleteSignerOperation () {
+      const opts = {
+        ...DEFAULT_SIGNER_ATTRS,
+        publicKey: api.networkDetails.masterAccountId,
+        roleID: String(this.kvIssuanceSignerRoleId),
+        details: {},
+      }
+      return base.ManageSignerBuilder.deleteSigner(opts)
+    },
+
+    $buildCreateSignerOperation () {
+      const opts = {
+        ...DEFAULT_SIGNER_ATTRS,
+        publicKey: api.networkDetails.masterAccountId,
+        roleID: String(this.kvIssuanceSignerRoleId),
+        details: {},
+      }
+      return base.ManageSignerBuilder.createSigner(opts)
     },
   },
 }
