@@ -68,7 +68,7 @@ export default {
   position: relative;
   padding: 1.6rem;
   font-size: 1.4rem;
-  color: $col-primary-txt;
+  color: $col-message-box-text;
   line-height: 1.25;
 
   &--success { background-color: $col-success; }
@@ -76,7 +76,7 @@ export default {
   &--error { background-color: $col-error; }
   &--info { background-color: $col-info; }
   &--danger { background-color: $col-danger; }
-  &--default { background-color: $col-text; }
+  &--default { background-color: $col-message-box-text; }
 }
 
 .message-box__message {

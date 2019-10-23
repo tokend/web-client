@@ -18,6 +18,11 @@ function normalizeEnvUrls (env) {
 export default Object.assign(
   {
     /**
+     * App name
+     */
+    APP_NAME: 'TokenD',
+
+    /**
      * URL of the Horizon server. The application is going to fetch all the
      * needed network configs from the provided value.
      */

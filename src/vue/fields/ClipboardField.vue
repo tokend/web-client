@@ -88,7 +88,7 @@ export default {
 .clipboard-field__value {
   width: 100%;
   overflow: auto;
-  color: $field-color-text;
+  color: $col-text;
   padding: 2.6rem 0 0.6rem 1.2rem;
   font-size: 1.3rem;
   line-height: 1.25;
@@ -106,7 +106,7 @@ export default {
   left: 1.2rem;
   top: 0.8rem;
   pointer-events: none;
-  color: $field-color-unfocused;
+  color: $col-text-inactive;
 
   @include label-font-sizes;
 }

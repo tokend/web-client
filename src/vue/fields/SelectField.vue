@@ -160,6 +160,7 @@ export default {
   width: 100%;
   flex: 1;
   position: relative;
+  color: $field-color-text;
 }
 
 .select-field__wrp {
