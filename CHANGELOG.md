@@ -8,7 +8,7 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Fixed
-- A bug with trim in input-field
+- A bug with trim in input fields with type 'password'
 
 ## [1.10.3-rc.1] - 2019-10-18
 #### Fixed
