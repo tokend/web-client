@@ -12,6 +12,7 @@ for further information about branching and tagging conventions.
 
 #### Fixed
 - A bug when the user can not update asset with deposit withdraw integration
+- A bug with trim in input fields with type 'password'
 
 #### Changed
 - Moved logo and favicon to branding folder
