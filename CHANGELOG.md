@@ -6,13 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
-## [Unreleased]
+## [1.10.3-rc.2] - 2019-10-24
 #### Added
 - Trim for input field
 
 #### Fixed
 - A bug when the user can not update asset with deposit withdraw integration
-- A bug with trim in input fields with type 'password'
 
 #### Changed
 - Moved logo and favicon to branding folder
@@ -20,6 +19,8 @@ for further information about branching and tagging conventions.
 ### "Under the hood" changes
 #### Added
 - `APP_NAME` in config
+#### Changed
+- Now using @tokend/js-sdk@1.11.0-rc.0
 
 ## [1.10.3-rc.1] - 2019-10-18
 #### Fixed
@@ -1024,7 +1025,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.10.3-rc.1...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.10.3-rc.2...HEAD
+[1.10.3-rc.2]: https://github.com/tokend/web-client/compare/1.10.3-rc.1...1.10.3-rc.2
 [1.10.3-rc.1]: https://github.com/tokend/web-client/compare/1.10.3-rc.0...1.10.3-rc.1
 [1.10.3-rc.0]: https://github.com/tokend/web-client/compare/1.10.2...1.10.3-rc.0
 [1.10.2]: https://github.com/tokend/web-client/compare/1.10.2-rc.0...1.10.2
