@@ -37,6 +37,10 @@ p {
   font-size: 1.4rem;
 }
 
+p, li, ul {
+  color: $col-text;
+}
+
 button {
   border: none;
   margin: 0;
