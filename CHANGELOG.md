@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
+## [Unreleased]
+#### Fixed
+- A bug with color scheme
+
 ## [1.10.3] - 2019-10-24
 
 ## [1.10.3-rc.2] - 2019-10-24

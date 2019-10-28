@@ -155,6 +155,7 @@ export default {
 
 .verification-state-message__description {
   margin-top: 0.4rem;
+  color: $col-message-box-text;
 }
 
 .verification-state-message__reason {
