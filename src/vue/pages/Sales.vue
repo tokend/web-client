@@ -30,41 +30,7 @@
           {{ 'sales.create-sale' | globalize }}
         </button>
       </template>
-
-      <template
-        v-if="getModule().canRenderSubmodule(CreateOpportunityModule)"
-        slot="extra"
-      >
-        <button
-          v-ripple
-          class="app__button-raised"
-          @click="isAssetSaleDrawerShown = true"
-        >
-          <i class="mdi mdi-plus sales__btn-icon" />
-          {{ 'sales.create-sale' | globalize }}
-        </button>
-      </template>
     </top-bar>
-
-    <template v-if="getModule().canRenderSubmodule(CreateOpportunityModule)">
-      <drawer
-        :is-shown.sync="isAssetSaleDrawerShown"
-        :close-by-click-outside="false"
-      >
-        <template slot="heading">
-          {{ 'sales.create-sale' | globalize }}
-        </template>
-        <submodule-importer
-          :submodule="getModule().getSubmodule(CreateOpportunityModule)"
-          @submitted="closeAssetSaleDrawerAndUpdateList()"
-          :account-id="accountId"
-          :min-amount="MIN_AMOUNT"
-          :max-amount="MAX_AMOUNT"
-          :decimal-pints="DECIMAL_POINTS"
-        />
-      </drawer>
-    </template>
-
     <template v-if="getModule().canRenderSubmodule(CreateSaleFormModule)">
       <drawer
         :is-shown.sync="isCreateSaleDrawerShown"
@@ -98,7 +64,6 @@ import { vueRoutes } from '@/vue-router/routes'
 import { CreateSaleFormModule } from '@modules/create-sale-form/module'
 
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
-import { CreateOpportunityModule } from '@/vue/modules/create-opportunity/module'
 import { SalesListPageModule } from '@/vue/pages/sales/investable-sales-page-module'
 import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
 import UpdateList from '@/vue/mixins/update-list.mixin'
@@ -122,7 +87,6 @@ export default {
     DECIMAL_POINTS: config.DECIMAL_POINTS,
     CreateSaleFormModule,
     vueRoutes,
-    CreateOpportunityModule,
     SalesListPageModule,
     SalesListOwnedPageModule,
   }),

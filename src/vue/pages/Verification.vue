@@ -9,10 +9,8 @@
         </p>
         <div class="account-type-selector">
           <router-link
-            v-if="
-              getModule().canRenderSubmodule(VerificationGeneralPageModule) ||
-                getModule()
-                  .canRenderSubmodule(VerificationGeneralAdvancedPageModule)
+            v-if="getModule()
+              .canRenderSubmodule(VerificationGeneralAdvancedPageModule)
             "
             tag="button"
             :to="vueRoutes.verificationGeneral"
@@ -89,7 +87,6 @@ import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import config from '@/config'
 
 import { VerificationCorporatePageModule } from './verification-corporate-page-module'
-import { VerificationGeneralPageModule } from './verification-general-page-module'
 import { VerificationGeneralAdvancedPageModule } from './verification-general-advanced-page-module'
 
 // The guard doesn't allow the user to visit a verification page
@@ -148,7 +145,6 @@ export default {
     REQUEST_STATES_STR,
     config,
     VerificationCorporatePageModule,
-    VerificationGeneralPageModule,
     VerificationGeneralAdvancedPageModule,
   }),
 

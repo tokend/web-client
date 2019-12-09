@@ -8,17 +8,6 @@
       />
     </template>
 
-    <template v-if="getModule().canRenderSubmodule(MovementsTopBarReitModule)">
-      <submodule-importer
-        :submodule="getModule().getSubmodule(MovementsTopBarReitModule)"
-        :config="movementsTopBarReitConfig"
-        @asset-updated="updateAsset"
-        @withdrawn="withdrawalFiatModuleWithdrawn"
-        @deposited="depositFiatModuleDeposited"
-        @redeemed="redeemModuleSubmitted"
-      />
-    </template>
-
     <template v-if="getModule().canRenderSubmodule(MovementsHistoryModule)">
       <submodule-importer
         v-if="true"
@@ -44,7 +33,6 @@ import config from '@/config'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
-import { MovementsTopBarReitModule } from '@modules/movements-top-bar-reit/module'
 import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
@@ -59,7 +47,6 @@ export default {
   data: _ => ({
     MovementsHistoryModule,
     MovementsTopBarModule,
-    MovementsTopBarReitModule,
     asset: {},
     isLoadFailed: false,
     movementsTopBarReitConfig: {
