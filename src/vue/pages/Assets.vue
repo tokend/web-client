@@ -21,7 +21,7 @@
       </template>
       <template
         slot="extra"
-        v-if="getModule().canRenderSubmodule(CreateAssetFormModule)"
+        v-if="isAccountCorporate"
       >
         <button
           v-ripple
@@ -36,14 +36,12 @@
       </template>
     </top-bar>
 
-    <template v-if="getModule().canRenderSubmodule(CreateAssetFormModule)">
+    <template v-if="isAccountCorporate">
       <drawer :is-shown.sync="isAssetDrawerShown">
         <template slot="heading">
           {{ 'assets-page.create-asset-title' | globalize }}
         </template>
-
-        <submodule-importer
-          :submodule="getModule().getSubmodule(CreateAssetFormModule)"
+        <create-asset-form-module
           @submitted="closeDrawerAndUpdateList()"
         />
       </drawer>
@@ -56,14 +54,13 @@
 <script>
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
+import CreateAssetFormModule from '@modules/create-asset-form'
 
 import { vueRoutes } from '@/vue-router/routes'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
-import { CreateAssetFormModule } from '@modules/create-asset-form/module'
 import { AssetExplorerPageModule } from './asset-explorer-page'
 import { BalancesPageModule } from './balances-page'
 import { MyAssetsPageModule } from './my-assets-page-module'
@@ -74,12 +71,11 @@ export default {
   components: {
     TopBar,
     Drawer,
-    SubmoduleImporter,
+    CreateAssetFormModule,
   },
   mixins: [UpdateList],
   data: _ => ({
     vueRoutes,
-    CreateAssetFormModule,
     AssetExplorerPageModule,
     BalancesPageModule,
     MyAssetsPageModule,
@@ -88,6 +84,7 @@ export default {
   computed: {
     ...mapGetters({
       account: vuexTypes.account,
+      isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
   },
   methods: {

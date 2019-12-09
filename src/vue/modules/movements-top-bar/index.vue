@@ -48,20 +48,18 @@
         </template>
 
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(DepositFormPseudoModule)">
-          <button
-            v-ripple
-            class="app__button-raised movements-top-bar__actions-btn"
-            @click="isDepositDrawerShown = true"
-            :disabled="!asset.isDepositable"
-            :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isDepositable) |
-              globalize({ asset: asset.code })
-            "
-          >
-            <i class="mdi mdi-upload movements-top-bar__btn-icon" />
-            {{ 'op-pages.deposit' | globalize }}
-          </button>
-        </template>
+        <button
+          v-ripple
+          class="app__button-raised movements-top-bar__actions-btn"
+          @click="isDepositDrawerShown = true"
+          :disabled="!asset.isDepositable"
+          :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isDepositable) |
+            globalize({ asset: asset.code })
+          "
+        >
+          <i class="mdi mdi-upload movements-top-bar__btn-icon" />
+          {{ 'op-pages.deposit' | globalize }}
+        </button>
 
         <!-- eslint-disable-next-line max-len -->
         <template v-if="getModule().canRenderSubmodule(TransferDrawerPseudoModule)">
@@ -95,8 +93,7 @@
       <template slot="heading">
         {{ 'deposit-form.deposit' | globalize }}
       </template>
-      <submodule-importer
-        :submodule="getModule().getSubmodule(DepositFormPseudoModule)"
+      <deposit-form
         :asset-code="asset.code"
       />
     </drawer>
@@ -123,10 +120,9 @@ import SelectField from '@/vue/fields/SelectField'
 
 import WithdrawalForm from '@/vue/forms/WithdrawalForm'
 import TransferForm from '@/vue/forms/TransferForm'
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
+import DepositForm from '@/vue/forms/DepositForm'
 
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
-import { DepositFormPseudoModule } from '@/modules-arch/pseudo-modules/deposit-form-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { vueRoutes } from '@/vue-router/routes'
 
@@ -150,7 +146,7 @@ export default {
     Drawer,
     WithdrawalForm,
     TransferForm,
-    SubmoduleImporter,
+    DepositForm,
   },
   data: _ => ({
     isInitialized: false,
@@ -159,7 +155,6 @@ export default {
     isDepositDrawerShown: false,
     isWithdrawalDrawerShown: false,
     WithdrawalDrawerPseudoModule,
-    DepositFormPseudoModule,
     TransferDrawerPseudoModule,
     asset: {},
     EVENTS,
