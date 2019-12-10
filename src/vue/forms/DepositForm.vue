@@ -31,9 +31,7 @@
 
         <template v-for="item in assets">
           <template v-if="item === selectedAsset && item.isCoinpayments">
-            <submodule-importer
-              v-if="getModule().canRenderSubmodule(CoinpaymentsDepositModule)"
-              :submodule="getModule().getSubmodule(CoinpaymentsDepositModule)"
+            <coinpayments-deposit-module
               :asset="item"
               :balance-id="balanceId"
               :account-id="accountId"
@@ -79,12 +77,10 @@
 <script>
 import Loader from '@/vue/common/Loader'
 import AddressLoader from './DepositForm/AddressLoader'
-
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
+import CoinpaymentsDepositModule from '@/vue/modules/coinpayments-deposit'
 
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments-deposit/module'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -95,7 +91,7 @@ export default {
   components: {
     Loader,
     AddressLoader,
-    SubmoduleImporter,
+    CoinpaymentsDepositModule,
   },
   mixins: [FormMixin],
 
@@ -105,7 +101,6 @@ export default {
 
   data () {
     return {
-      CoinpaymentsDepositModule,
       isLoaded: false,
       isLoadingFailed: false,
       assets: [],
