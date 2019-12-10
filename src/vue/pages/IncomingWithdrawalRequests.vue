@@ -1,24 +1,16 @@
 <template>
   <div class="asset-creation-requests-page">
-    <submodule-importer
-      v-if="getModule().canRenderSubmodule(IncomingWithdrawalRequestsModule)"
-      :submodule="getModule().getSubmodule(IncomingWithdrawalRequestsModule)"
-    />
+    <incoming-withdrawal-requests-module />
   </div>
 </template>
 
 <script>
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
-import { IncomingWithdrawalRequestsModule } from '@/vue/modules/requests/incoming-withdrawal-requests/module'
+import IncomingWithdrawalRequestsModule from '@/vue/modules/requests/incoming-withdrawal-requests'
 
 export default {
   name: 'incoming-withdrawal-requests-page',
   components: {
-    SubmoduleImporter,
+    IncomingWithdrawalRequestsModule
   },
-
-  data: _ => ({
-    IncomingWithdrawalRequestsModule,
-  }),
 }
 </script>
