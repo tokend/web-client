@@ -2,19 +2,16 @@
   <div class="sales">
     <top-bar>
       <template slot="main">
-        <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(SalesListPageModule)">
-          <router-link :to="vueRoutes.investableSales">
-            <span>{{ 'sales.investable-sales' | globalize }}</span>
-          </router-link>
-        </template>
+        <router-link :to="vueRoutes.investableSales">
+          <span>{{ 'sales.investable-sales' | globalize }}</span>
+        </router-link>
 
-        <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(SalesListOwnedPageModule)">
-          <router-link :to="vueRoutes.userOwnedSales">
-            <span>{{ 'sales.my-sales' | globalize }}</span>
-          </router-link>
-        </template>
+        <router-link
+          v-if="isAccountCorporate"
+          :to="vueRoutes.userOwnedSales"
+        >
+          <span>{{ 'sales.my-sales' | globalize }}</span>
+        </router-link>
       </template>
 
       <template
@@ -62,8 +59,6 @@ import { vuexTypes } from '@/vuex'
 
 import { vueRoutes } from '@/vue-router/routes'
 
-import { SalesListPageModule } from '@/vue/pages/sales/investable-sales-page-module'
-import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
 import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
@@ -84,8 +79,6 @@ export default {
     MAX_AMOUNT: config.MAX_AMOUNT,
     DECIMAL_POINTS: config.DECIMAL_POINTS,
     vueRoutes,
-    SalesListPageModule,
-    SalesListOwnedPageModule,
   }),
 
   computed: {

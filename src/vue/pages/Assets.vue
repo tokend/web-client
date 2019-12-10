@@ -2,22 +2,15 @@
   <div>
     <top-bar>
       <template slot="main">
-        <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(AssetExplorerPageModule)">
-          <router-link :to="vueRoutes.assetsExplore">
-            <span>{{ 'assets-page.explore-title' | globalize }}</span>
-          </router-link>
-        </template>
-        <template v-if="getModule().canRenderSubmodule(BalancesPageModule)">
-          <router-link :to="vueRoutes.balances">
-            <span>{{ 'assets-page.balances-title' | globalize }}</span>
-          </router-link>
-        </template>
-        <template v-if="getModule().canRenderSubmodule(MyAssetsPageModule)">
-          <router-link :to="vueRoutes.myAssets">
-            <span>{{ 'assets-page.my-assets-title' | globalize }}</span>
-          </router-link>
-        </template>
+        <router-link :to="vueRoutes.assetsExplore">
+          <span>{{ 'assets-page.explore-title' | globalize }}</span>
+        </router-link>
+        <router-link :to="vueRoutes.balances">
+          <span>{{ 'assets-page.balances-title' | globalize }}</span>
+        </router-link>
+        <router-link :to="vueRoutes.myAssets">
+          <span>{{ 'assets-page.my-assets-title' | globalize }}</span>
+        </router-link>
       </template>
       <template
         slot="extra"
@@ -61,9 +54,6 @@ import { vueRoutes } from '@/vue-router/routes'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
-import { AssetExplorerPageModule } from './asset-explorer-page'
-import { BalancesPageModule } from './balances-page'
-import { MyAssetsPageModule } from './my-assets-page-module'
 import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
@@ -76,9 +66,6 @@ export default {
   mixins: [UpdateList],
   data: _ => ({
     vueRoutes,
-    AssetExplorerPageModule,
-    BalancesPageModule,
-    MyAssetsPageModule,
     isAssetDrawerShown: false,
   }),
   computed: {

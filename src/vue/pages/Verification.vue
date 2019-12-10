@@ -9,9 +9,6 @@
         </p>
         <div class="account-type-selector">
           <router-link
-            v-if="getModule()
-              .canRenderSubmodule(VerificationGeneralAdvancedPageModule)
-            "
             tag="button"
             :to="vueRoutes.verificationGeneral"
             class="account-type-selector__item"
@@ -33,9 +30,6 @@
           </router-link>
 
           <router-link
-            v-if="
-              getModule().canRenderSubmodule(VerificationCorporatePageModule)
-            "
             tag="button"
             :to="vueRoutes.verificationCorporate"
             class="account-type-selector__item"
@@ -85,9 +79,6 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import config from '@/config'
-
-import { VerificationCorporatePageModule } from './verification-corporate-page-module'
-import { VerificationGeneralAdvancedPageModule } from './verification-general-advanced-page-module'
 
 // The guard doesn't allow the user to visit a verification page
 // if he/she has already sent the verification request, and the admin
@@ -144,8 +135,6 @@ export default {
     vueRoutes,
     REQUEST_STATES_STR,
     config,
-    VerificationCorporatePageModule,
-    VerificationGeneralAdvancedPageModule,
   }),
 
   computed: {

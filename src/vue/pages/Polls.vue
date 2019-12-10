@@ -3,14 +3,11 @@
     <template>
       <top-bar>
         <template slot="main">
-          <router-link
-            v-if="getModule().canRenderSubmodule(PollsAllPageModule)"
-            :to="vueRoutes.allPolls"
-          >
+          <router-link :to="vueRoutes.allPolls">
             <span>{{ 'polls.all' | globalize }}</span>
           </router-link>
           <router-link
-            v-if="getModule().canRenderSubmodule(PollRequestsPageModule)"
+            v-if="isAccountCorporate"
             :to="vueRoutes.pollRequests"
           >
             <span>{{ 'polls.requests' | globalize }}</span>
@@ -57,9 +54,7 @@ import Drawer from '@/vue/common/Drawer'
 import CreatePollFormModule from '@/vue/modules/create-poll-form'
 import UpdateList from '@/vue/mixins/update-list.mixin'
 
-import { PollRequestsPageModule } from '@/vue/pages/polls/poll-requests-page'
 import { vueRoutes } from '@/vue-router/routes'
-import { PollsAllPageModule } from '@/vue/pages/polls-all-page-module'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -78,8 +73,6 @@ export default {
     isCreatePollDrawerShown: false,
     isPollsLoading: false,
     vueRoutes,
-    PollRequestsPageModule,
-    PollsAllPageModule,
   }),
   computed: {
     ...mapGetters({

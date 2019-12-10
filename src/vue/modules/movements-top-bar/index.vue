@@ -29,25 +29,21 @@
         class="movements-top-bar__actions"
         slot="extra"
       >
-        <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)">
-          <!-- TODO, currently unverified users can't withdraw, wait for
+        <!-- TODO, currently unverified users can't withdraw, wait for
             devops initscripts update -->
-          <button
-            v-ripple
-            class="app__button-raised movements-top-bar__actions-btn"
-            @click="isWithdrawalDrawerShown = true"
-            :disabled="!asset.isWithdrawable || isAccountUnverified"
-            :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isWithdrawable) |
-              globalize({ asset: asset.code })
-            "
-          >
-            <i class="mdi mdi-download movements-top-bar__btn-icon" />
-            {{ 'op-pages.withdraw' | globalize }}
-          </button>
-        </template>
+        <button
+          v-ripple
+          class="app__button-raised movements-top-bar__actions-btn"
+          @click="isWithdrawalDrawerShown = true"
+          :disabled="!asset.isWithdrawable || isAccountUnverified"
+          :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isWithdrawable) |
+            globalize({ asset: asset.code })
+          "
+        >
+          <i class="mdi mdi-download movements-top-bar__btn-icon" />
+          {{ 'op-pages.withdraw' | globalize }}
+        </button>
 
-        <!-- eslint-disable-next-line max-len -->
         <button
           v-ripple
           class="app__button-raised movements-top-bar__actions-btn"
@@ -61,21 +57,18 @@
           {{ 'op-pages.deposit' | globalize }}
         </button>
 
-        <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(TransferDrawerPseudoModule)">
-          <button
-            v-ripple
-            class="app__button-raised movements-top-bar__actions-btn"
-            @click="isTransferDrawerShown = true"
-            :disabled="!asset.isTransferable"
-            :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isTransferable) |
-              globalize({ asset: asset.code })
-            "
-          >
-            <i class="mdi mdi-send movements-top-bar__btn-icon" />
-            {{ 'op-pages.send' | globalize }}
-          </button>
-        </template>
+        <button
+          v-ripple
+          class="app__button-raised movements-top-bar__actions-btn"
+          @click="isTransferDrawerShown = true"
+          :disabled="!asset.isTransferable"
+          :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isTransferable) |
+            globalize({ asset: asset.code })
+          "
+        >
+          <i class="mdi mdi-send movements-top-bar__btn-icon" />
+          {{ 'op-pages.send' | globalize }}
+        </button>
       </div>
     </top-bar>
 
@@ -122,8 +115,6 @@ import WithdrawalForm from '@/vue/forms/WithdrawalForm'
 import TransferForm from '@/vue/forms/TransferForm'
 import DepositForm from '@/vue/forms/DepositForm'
 
-import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
-import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { vueRoutes } from '@/vue-router/routes'
 
 const EVENTS = {
@@ -154,8 +145,6 @@ export default {
     isReedemDrawerShown: false,
     isDepositDrawerShown: false,
     isWithdrawalDrawerShown: false,
-    WithdrawalDrawerPseudoModule,
-    TransferDrawerPseudoModule,
     asset: {},
     EVENTS,
     ASSET_POLICIES_STR,
