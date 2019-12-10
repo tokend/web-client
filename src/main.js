@@ -9,7 +9,7 @@ import config from './config'
 import NProgress from 'nprogress'
 import moment from 'moment'
 
-import { extendStoreWithScheme } from '@/vuex'
+import { buildStore } from '@/vuex'
 import { buildRouter } from '@/vue-router'
 import { tableScrollShadow } from '@/vue/directives/tableScrollShadow'
 import { ripple } from '@/vue/directives/ripple'
@@ -69,7 +69,7 @@ async function init () {
   Vue.filter('abbreviate', abbreviate)
   Vue.filter('cropAddress', cropAddress)
 
-  const store = await extendStoreWithScheme(SchemeRegistry.current)
+  const store = buildStore()
   const router = buildRouter(store)
 
   router.beforeEach((to, from, next) => {

@@ -69,8 +69,7 @@ export const getters = {
   [types.securityAssetType]: state => state.securityAssetType,
 }
 
-export const createAssetRequestsModule = {
-  name: 'create-asset-requests',
+export default {
   namespaced: true,
   state,
   getters,

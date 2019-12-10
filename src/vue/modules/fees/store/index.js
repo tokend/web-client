@@ -29,8 +29,7 @@ export const getters = {
   [types.fees]: state => state.fees.map(f => new Fee(f)),
 }
 
-export const feesModule = {
-  name: 'fees',
+export default {
   namespaced: true,
   state,
   getters,

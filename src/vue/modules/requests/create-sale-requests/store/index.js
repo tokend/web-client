@@ -47,8 +47,7 @@ export const getters = {
     .map(r => new CreateSaleRequest(r)),
 }
 
-export const createSaleRequestsModule = {
-  name: 'create-sale-requests',
+export default {
   namespaced: true,
   state,
   getters,

@@ -9,9 +9,21 @@ import kyc from './kyc.module'
 import identities from './identities.module'
 import keyValue from './key-value.module'
 import kycRecovery from './kyc-recovery.module'
+import assetExplorer from '@/vue/modules/assets/asset-explorer/store'
+import fees from '@/vue/modules/fees/store'
+import movementsHistory from '@/vue/modules/movements-history/store'
+import issuanceExplorer from '@/vue/modules/issuance-explorer/store'
+import createAssetRequests from '@/vue/modules/requests/create-asset-requests/store'
+import createSaleRequests from '@/vue/modules/requests/create-sale-requests/store'
+import incomingWithdrawalRequests from '@/vue/modules/requests/incoming-withdrawal-requests/store'
+import pollRequests from '@/vue/modules/requests/poll-requests/store'
+import preIssuanceRequests from '@/vue/modules/requests/pre-issuance-requests/store'
+import updateAssetRequests from '@/vue/modules/requests/update-asset-requests/store'
+import verificationGeneralForm from '@/vue/modules/verification/general-form/store'
+import documentSignersManager from '@/vue/modules/documents/document-manager/modules/signers-manager/store'
+import idleHandler from './idle-handler.module'
 import { vuexTypes } from '@/vuex/types'
 import { sessionStoragePlugin } from './plugins/session-storage'
-import idleHandler from './idle-handler.module'
 import { errors } from '@/js/errors'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { useWallet } from '@/api'
@@ -66,7 +78,7 @@ export const rootModule = {
 }
 
 let store
-function buildStore (storeModules = []) {
+function buildStore () {
   store = new Vuex.Store({
     ...rootModule,
     modules: {
@@ -79,7 +91,18 @@ function buildStore (storeModules = []) {
       keyValue,
       idleHandler,
       kycRecovery,
-      ...storeModules,
+      'asset-explorer': assetExplorer,
+      'document-signers-manager': documentSignersManager,
+      'fees': fees,
+      'issuance-explorer': issuanceExplorer,
+      'movements-history': movementsHistory,
+      'create-asset-requests': createAssetRequests,
+      'create-sale-requests': createSaleRequests,
+      'incoming-withdrawal-requests': incomingWithdrawalRequests,
+      'poll-requests': pollRequests,
+      'pre-issuance-requests': preIssuanceRequests,
+      'update-asset-requests': updateAssetRequests,
+      'verification-general-form': verificationGeneralForm,
     },
     plugins: [sessionStoragePlugin],
   })
@@ -90,17 +113,5 @@ function buildStore (storeModules = []) {
 }
 buildStore()
 
-async function extendStoreWithScheme (scheme = []) {
-  const storeModules = (await Promise
-    .all(
-      scheme.cache
-        .filter(item => item.importStoreFn)
-        .map(item => item.importStoreFn())
-    ))
-    .reduce((res, item) => ({ ...res, [item.name]: item }), [])
-
-  return buildStore(storeModules)
-}
-
-export { extendStoreWithScheme, store }
+export { store, buildStore }
 export { vuexTypes } from './types'

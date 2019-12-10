@@ -48,9 +48,8 @@ export const getters = {
   [types.securityAssetType]: state => state.securityAssetType,
 }
 
-export const assetExplorerModule = {
+export default {
   namespaced: true,
-  name: 'asset-explorer',
   mutations,
   actions,
   getters,
