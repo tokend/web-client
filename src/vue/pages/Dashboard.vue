@@ -10,7 +10,7 @@
         />
         <div class="dashboard__actions">
           <!-- eslint-disable-next-line max-len -->
-          <template v-if="getModule().canRenderSubmodule(IssuanceFormModule)">
+          <template v-if="isAccountCorporate">
             <button
               class="app__button-raised dashboard__action"
               @click="createIssuanceFormIsShown = true"
@@ -21,41 +21,33 @@
           </template>
 
           <!-- eslint-disable-next-line max-len -->
-          <template v-if="getModule().canRenderSubmodule(TransferDrawerPseudoModule)">
-            <button
-              v-if="currentAsset"
-              class="app__button-raised dashboard__action"
-              @click="transferFormIsShown = true"
-            >
-              <i class="mdi mdi-send mdi-rotate-315 dashboard__send-icon" />
-              {{
-                'dashboard.send-asset-lbl' | globalize({ asset: currentAsset })
-              }}
-            </button>
-          </template>
+          <button
+            v-if="currentAsset"
+            class="app__button-raised dashboard__action"
+            @click="transferFormIsShown = true"
+          >
+            <i class="mdi mdi-send mdi-rotate-315 dashboard__send-icon" />
+            {{
+              'dashboard.send-asset-lbl' | globalize({ asset: currentAsset })
+            }}
+          </button>
         </div>
       </div>
       <template v-if="currentAsset">
         <div
-          v-if="currentAsset !== defaultQuoteAsset &&
-            getModule().getSubmodule(DashboardChartPseudoModule)
-          "
+          v-if="currentAsset !== defaultQuoteAsset"
           class="dashboard__chart"
         >
-          <submodule-importer
-            :submodule="getModule().getSubmodule(DashboardChartPseudoModule)"
+          <chart
             :base-asset="currentAsset"
             :quote-asset="defaultQuoteAsset"
           />
         </div>
         <div
           class="dashboard__activity"
-          v-if="getModule().canRenderSubmodule(MovementsHistoryModule) &&
-            currentAsset
-          "
+          v-if="currentAsset"
         >
-          <submodule-importer
-            :submodule="getModule().getSubmodule(MovementsHistoryModule)"
+          <movements-history-module
             :asset-code="currentAsset"
             :ref="REFS.movementsHistory"
             :latest-activity="true"
@@ -65,16 +57,14 @@
 
       <drawer :is-shown.sync="showDrawer">
         <template
-          v-if="createIssuanceFormIsShown &&
-            getModule().canRenderSubmodule(IssuanceFormModule)"
+          v-if="createIssuanceFormIsShown && isAccountCorporate"
         >
           <template slot="heading">
             {{ 'dashboard.create-issuance-title' | globalize }}
           </template>
 
-          <submodule-importer
-            :submodule="getModule().getSubmodule(IssuanceFormModule)"
-            @issuance-created="closeDrawerAndUpdateList()"
+          <issuance-form-module
+            @issuance-created="closeDrawerAndUpdateList"
           />
         </template>
 
@@ -95,17 +85,15 @@
 <script>
 import AssetSelector from '@/vue/pages/dashboard/Dashboard.AssetSelector.vue'
 import Transfer from '@/vue/forms/TransferForm'
+import IssuanceFormModule from '@/vue/modules/issuance-form'
+import Drawer from '@/vue/common/Drawer'
+import Chart from '@/vue/common/chart/Chart'
+import MovementsHistoryModule from '@/vue/modules/movements-history'
+
+import UpdateList from '@/vue/mixins/update-list.mixin'
 
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import Drawer from '@/vue/common/Drawer'
-import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
-
-import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
-import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
-import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
-import UpdateList from '@/vue/mixins/update-list.mixin'
 
 const REFS = {
   movementsHistory: 'movements-history',
@@ -117,7 +105,9 @@ export default {
     AssetSelector,
     Transfer,
     Drawer,
-    SubmoduleImporter,
+    IssuanceFormModule,
+    Chart,
+    MovementsHistoryModule,
   },
 
   mixins: [UpdateList],
@@ -129,10 +119,6 @@ export default {
     transferFormIsShown: false,
     showDrawer: false,
     scale: 'day',
-    MovementsHistoryModule,
-    IssuanceFormModule,
-    TransferDrawerPseudoModule,
-    DashboardChartPseudoModule,
     REFS,
   }),
   computed: {
