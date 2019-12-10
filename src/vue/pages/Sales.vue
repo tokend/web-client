@@ -18,7 +18,7 @@
       </template>
 
       <template
-        v-if="getModule().canRenderSubmodule(CreateSaleFormModule)"
+        v-if="isAccountCorporate"
         slot="extra"
       >
         <button
@@ -31,7 +31,7 @@
         </button>
       </template>
     </top-bar>
-    <template v-if="getModule().canRenderSubmodule(CreateSaleFormModule)">
+    <template v-if="isAccountCorporate">
       <drawer
         :is-shown.sync="isCreateSaleDrawerShown"
         :close-by-click-outside="false"
@@ -40,8 +40,7 @@
         <template slot="heading">
           {{ 'sales.new-sale' | globalize }}
         </template>
-        <submodule-importer
-          :submodule="getModule().getSubmodule(CreateSaleFormModule)"
+        <create-sale-form-module
           @submitted="closeCreateSaleDrawerAndUpdateList()"
         />
       </drawer>
@@ -56,14 +55,13 @@ import config from '@/config'
 
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
+import CreateSaleFormModule from '@modules/create-sale-form'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+
 import { vueRoutes } from '@/vue-router/routes'
 
-import { CreateSaleFormModule } from '@modules/create-sale-form/module'
-
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { SalesListPageModule } from '@/vue/pages/sales/investable-sales-page-module'
 import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
 import UpdateList from '@/vue/mixins/update-list.mixin'
@@ -73,7 +71,7 @@ export default {
   components: {
     TopBar,
     Drawer,
-    SubmoduleImporter,
+    CreateSaleFormModule,
   },
 
   mixins: [UpdateList],
@@ -85,7 +83,6 @@ export default {
     MIN_AMOUNT: config.MIN_AMOUNT,
     MAX_AMOUNT: config.MAX_AMOUNT,
     DECIMAL_POINTS: config.DECIMAL_POINTS,
-    CreateSaleFormModule,
     vueRoutes,
     SalesListPageModule,
     SalesListOwnedPageModule,
@@ -94,15 +91,11 @@ export default {
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
+      isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
   },
 
   methods: {
-    closeAssetSaleDrawerAndUpdateList () {
-      this.isAssetSaleDrawerShown = false
-      this.emitUpdateList('sales:updateList')
-    },
-
     closeCreateSaleDrawerAndUpdateList () {
       this.isCreateSaleDrawerShown = false
       this.emitUpdateList('sales:updateList')

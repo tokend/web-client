@@ -19,7 +19,7 @@
 
         <template
           slot="extra"
-          v-if="getModule().canRenderSubmodule(CreatePollFormModule)"
+          v-if="isAccountCorporate"
         >
           <button
             v-ripple
@@ -41,9 +41,8 @@
             {{ 'polls.new-poll' | globalize }}
           </template>
 
-          <submodule-importer
-            :submodule="getModule().getSubmodule(CreatePollFormModule)"
-            @submitted="closeDrawerAndUpdateList()"
+          <create-poll-form-module
+            @submitted="closeDrawerAndUpdateList"
           />
         </drawer>
       </template>
@@ -54,20 +53,23 @@
 
 <script>
 import TopBar from '@/vue/common/TopBar'
+import Drawer from '@/vue/common/Drawer'
+import CreatePollFormModule from '@/vue/modules/create-poll-form'
+import UpdateList from '@/vue/mixins/update-list.mixin'
+
 import { PollRequestsPageModule } from '@/vue/pages/polls/poll-requests-page'
 import { vueRoutes } from '@/vue-router/routes'
 import { PollsAllPageModule } from '@/vue/pages/polls-all-page-module'
-import Drawer from '@/vue/common/Drawer'
-import { CreatePollFormModule } from '@/vue/modules/create-poll-form/module'
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
-import UpdateList from '@/vue/mixins/update-list.mixin'
+
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 export default {
   name: 'polls',
   components: {
     TopBar,
     Drawer,
-    SubmoduleImporter,
+    CreatePollFormModule,
   },
 
   mixins: [UpdateList],
@@ -78,8 +80,12 @@ export default {
     vueRoutes,
     PollRequestsPageModule,
     PollsAllPageModule,
-    CreatePollFormModule,
   }),
+  computed: {
+    ...mapGetters({
+      isAccountCorporate: vuexTypes.isAccountCorporate,
+    }),
+  },
 
   beforeDestroy () {
     this.resetUpdateListEvent('polls:updateList')
@@ -93,5 +99,3 @@ export default {
   },
 }
 </script>
-
-<style scoped lang="scss"/>
