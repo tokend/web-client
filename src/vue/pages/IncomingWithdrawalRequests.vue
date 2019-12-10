@@ -10,7 +10,7 @@ import IncomingWithdrawalRequestsModule from '@/vue/modules/requests/incoming-wi
 export default {
   name: 'incoming-withdrawal-requests-page',
   components: {
-    IncomingWithdrawalRequestsModule
+    IncomingWithdrawalRequestsModule,
   },
 }
 </script>
