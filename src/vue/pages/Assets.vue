@@ -8,7 +8,10 @@
         <router-link :to="vueRoutes.balances">
           <span>{{ 'assets-page.balances-title' | globalize }}</span>
         </router-link>
-        <router-link :to="vueRoutes.myAssets">
+        <router-link
+          v-if="isAccountCorporate"
+          :to="vueRoutes.myAssets"
+        >
           <span>{{ 'assets-page.my-assets-title' | globalize }}</span>
         </router-link>
       </template>
