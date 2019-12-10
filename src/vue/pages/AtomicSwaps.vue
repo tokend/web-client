@@ -8,7 +8,7 @@
       </template>
       <template
         slot="extra"
-        v-if="getModule().canRenderSubmodule(CreateAtomicSwapFormModule)"
+        v-if="isAccountCorporate"
       >
         <button
           v-ripple
@@ -28,8 +28,7 @@
         {{ 'atomic-swaps.new-atomic-swap' | globalize }}
       </template>
 
-      <submodule-importer
-        :submodule="getModule().getSubmodule(CreateAtomicSwapFormModule)"
+      <create-atomic-swap-form-module
         @created-atomic-swap="closeDrawerAndUpdateList()"
       />
     </drawer>
@@ -42,16 +41,18 @@
 import TopBar from '@/vue/common/TopBar'
 import { vueRoutes } from '@/vue-router/routes'
 import Drawer from '@/vue/common/Drawer'
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
-import { CreateAtomicSwapFormModule } from '@/vue/modules/create-atomic-swap-form/module'
+import CreateAtomicSwapFormModule from '@/vue/modules/create-atomic-swap-form'
 import UpdateList from '@/vue/mixins/update-list.mixin'
+
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 export default {
   name: 'atomic-swaps',
   components: {
     TopBar,
     Drawer,
-    SubmoduleImporter,
+    CreateAtomicSwapFormModule,
   },
 
   mixins: [UpdateList],
@@ -59,8 +60,12 @@ export default {
   data: () => ({
     isAtomicSwapsCreateDrawerShown: false,
     vueRoutes,
-    CreateAtomicSwapFormModule,
   }),
+  computed: {
+    ...mapGetters([
+      vuexTypes.isAccountCorporate,
+    ]),
+  },
 
   beforeDestroy () {
     this.resetUpdateListEvent('atomicSwaps:updateList')
