@@ -101,12 +101,6 @@ export default {
 
   mixins: [UpdateList],
 
-  props: {
-    defaultQuoteAsset: {
-      type: String,
-      required: true,
-    },
-  },
   data: _ => ({
     isLoaded: false,
     isLoadFailed: false,
@@ -119,15 +113,12 @@ export default {
   }),
 
   computed: {
-    ...mapGetters({
-      accountBalances: vuexTypes.accountBalances,
-      accountId: vuexTypes.accountId,
-    }),
-
     ...mapGetters([
       vuexTypes.accountId,
       vuexTypes.kvAssetTypeKycRequired,
       vuexTypes.kvAssetTypeSecurity,
+      vuexTypes.defaultQuoteAsset,
+      vuexTypes.accountBalances,
     ]),
   },
 

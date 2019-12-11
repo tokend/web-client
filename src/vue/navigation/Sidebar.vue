@@ -27,12 +27,6 @@
         </router-link>
       </section>
 
-      <section class="sidebar__scheme-label-section">
-        <p class="sidebar__scheme-label">
-          {{ schemeLabel }}
-        </p>
-      </section>
-
       <section class="sidebar__links-section">
         <nav class="sidebar__links-group">
           <router-link
@@ -68,6 +62,7 @@
             </span>
           </router-link>
           <router-link
+            v-if="isAccountCorporate"
             key="register-of-shares"
             v-ripple
             class="sidebar__link"
@@ -89,7 +84,7 @@
             class="sidebar__link"
             @click.native="closeSidebar"
             tag="a"
-            :to="vueRoutes.movements"
+            :to="vueRoutes.assetsExplore"
           >
             <i
               class="sidebar__link-icon"
@@ -105,7 +100,7 @@
             class="sidebar__link"
             @click.native="closeSidebar"
             tag="a"
-            :to="vueRoutes.sales"
+            :to="vueRoutes.investableSales"
           >
             <i
               class="sidebar__link-icon"
@@ -121,7 +116,7 @@
             class="sidebar__link"
             @click.native="closeSidebar"
             tag="a"
-            :to="vueRoutes.polls"
+            :to="vueRoutes.allPolls"
           >
             <i
               class="sidebar__link-icon"
@@ -148,12 +143,13 @@
             </span>
           </router-link>
           <router-link
+            v-if="isAccountCorporate"
             key="requests"
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
             tag="a"
-            :to="vueRoutes.requests"
+            :to="vueRoutes.assetCreationRequests"
           >
             <i
               class="sidebar__link-icon"
@@ -217,7 +213,7 @@
             class="sidebar__link"
             @click.native="closeSidebar"
             tag="a"
-            :to="vueRoutes.atomicSwaps"
+            :to="vueRoutes.atomicSwapsExplore"
           >
             <i
               class="sidebar__link-icon"
@@ -271,9 +267,6 @@ import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 
 import config from '@/config'
-import { SchemeRegistry } from '@/modules-arch/scheme-registry'
-
-const DEFAULT_SECTION_NAME = 'default'
 
 export default {
   name: 'sidebar',
@@ -287,16 +280,12 @@ export default {
     isOpened: false,
     config,
     vueRoutes,
-    DEFAULT_SECTION_NAME,
   }),
 
   computed: {
     ...mapGetters({
       isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
-    schemeLabel () {
-      return SchemeRegistry.current.sidebarLabel
-    },
   },
 
   methods: {

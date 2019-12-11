@@ -16,13 +16,13 @@ import SaleDetails from '@/vue/pages/SaleDetails'
 import SaleCampaignViewer from '@/vue/pages/sale-details/SaleCampaignViewer'
 import Polls from '@/vue/pages/Polls'
 import PollsAll from '@/vue/pages/PollsAll'
-import PollRequests from '@/vue/pages/polls/PollRequests'
+import PollRequestsModule from '@/vue/modules/requests/poll-requests'
 import Trade from '@/vue/pages/Trade'
-import AssetCreationRequests from '@/vue/pages/AssetCreationRequests'
-import AssetUpdateRequests from '@/vue/pages/AssetUpdateRequests'
-import SaleCreationRequests from '@/vue/pages/SaleCreationRequests'
-import PreIssuanceRequests from '@/vue/pages/PreIssuanceRequests'
-import IncomingWithdrawalRequests from '@/vue/pages/IncomingWithdrawalRequests'
+import CreateAssetRequestsModule from '@/vue/modules/requests/create-asset-requests'
+import UpdateAssetRequestsModule from '@/vue/modules/requests/update-asset-requests'
+import CreateSaleRequestsModule from '@/vue/modules/requests/create-sale-requests'
+import PreIssuanceRequestsModule from '@/vue/modules/requests/pre-issuance-requests'
+import IncomingWithdrawalRequestsModule from '@/vue/modules/requests/incoming-withdrawal-requests'
 import Issuance from '@/vue/pages/Issuance'
 import Limits from '@/vue/pages/Limits'
 import Fees from '@/vue/pages/Fees'
@@ -34,6 +34,11 @@ import VerificationGeneralAdvanced
   from '@/vue/pages/VerificationGeneralAdvanced'
 import VerificationCorporate from '@/vue/pages/VerificationCorporate'
 import Security from '@/vue/pages/Security'
+import AssetExplorerModule from '@modules/assets/asset-explorer'
+import BalanceExplorerModule from '@modules/assets/balance-explorer'
+import MyAssetsExplorerModule from '@modules/assets/my-assets-explorer'
+import SalesList from '@/vue/pages/sales/SalesList'
+import Requests from '@/vue/pages/Requests'
 
 Vue.use(Router)
 
@@ -150,10 +155,33 @@ const router = new Router({
           path: '/assets',
           name: vueRoutes.assets.name,
           meta: {
-            pageNameTranslationId: 'pages-names.movements',
+            pageNameTranslationId: 'pages-names.assets',
           },
           component: Assets,
           beforeEnter: inAppRouteGuard,
+          children: [
+            {
+              path: '/assets/explore',
+              name: vueRoutes.assetsExplore.name,
+              component: AssetExplorerModule,
+              beforeEnter: inAppRouteGuard,
+            },
+            {
+              path: '/assets/balances',
+              name: vueRoutes.balances.name,
+              component: BalanceExplorerModule,
+              beforeEnter: inAppRouteGuard,
+            },
+            {
+              path: '/assets/my-assets',
+              name: vueRoutes.myAssets.name,
+              meta: {
+                isCorporateOnly: true,
+              },
+              component: MyAssetsExplorerModule,
+              beforeEnter: inAppRouteGuard,
+            },
+          ],
         },
         {
           path: '/sales',
@@ -163,9 +191,31 @@ const router = new Router({
           beforeEnter: inAppRouteGuard,
           children: [
             {
+              path: '/sales/all',
+              name: vueRoutes.investableSales.name,
+              component: SalesList,
+              props: {
+                default: true,
+                isUserSales: false,
+              },
+              beforeEnter: inAppRouteGuard,
+            },
+            {
+              path: '/sales/my',
+              name: vueRoutes.userOwnedSales.name,
+              component: SalesList,
+              props: {
+                default: true,
+                isUserSales: true,
+              },
+              meta: {
+                isCorporateOnly: true,
+              },
+              beforeEnter: inAppRouteGuard,
+            },
+            {
               path: '/sales/:id',
               name: vueRoutes.saleDetails.name,
-              meta: { pageNameTranslationId: 'pages-names.sale-details' },
               component: SaleDetails,
               props: true,
               beforeEnter: inAppRouteGuard,
@@ -173,7 +223,6 @@ const router = new Router({
             {
               path: '/sales/:id/campaign',
               name: vueRoutes.saleCampaign.name,
-              meta: { pageNameTranslationId: 'pages-names.sale-details' },
               component: SaleCampaignViewer,
               props: true,
               beforeEnter: inAppRouteGuard,
@@ -198,7 +247,7 @@ const router = new Router({
               path: '/polls/poll-requests',
               name: vueRoutes.pollRequests.name,
               props: true,
-              component: PollRequests,
+              component: PollRequestsModule,
               meta: {
                 isCorporateOnly: true,
               },
@@ -235,37 +284,37 @@ const router = new Router({
             pageNameTranslationId: 'pages-names.requests',
             isCorporateOnly: true,
           },
-          component: Movements,
+          component: Requests,
           beforeEnter: inAppRouteGuard,
           children: [
             {
               path: '/requests/asset-creation',
               name: vueRoutes.assetCreationRequests.name,
-              component: AssetCreationRequests,
+              component: CreateAssetRequestsModule,
               beforeEnter: inAppRouteGuard,
             },
             {
               path: '/requests/asset-update',
               name: vueRoutes.assetUpdateRequests.name,
-              component: AssetUpdateRequests,
+              component: UpdateAssetRequestsModule,
               beforeEnter: inAppRouteGuard,
             },
             {
               path: '/requests/sale-creation',
               name: vueRoutes.saleCreationRequests.name,
-              component: SaleCreationRequests,
+              component: CreateSaleRequestsModule,
               beforeEnter: inAppRouteGuard,
             },
             {
               path: '/requests/pre-issuance-upload',
               name: vueRoutes.preIssuanceUploadRequests.name,
-              component: PreIssuanceRequests,
+              component: PreIssuanceRequestsModule,
               beforeEnter: inAppRouteGuard,
             },
             {
               path: '/requests/incoming-withdrawal',
               name: vueRoutes.incomingWithdrawalRequests.name,
-              component: IncomingWithdrawalRequests,
+              component: IncomingWithdrawalRequestsModule,
               beforeEnter: inAppRouteGuard,
             },
           ],
@@ -341,15 +390,6 @@ const router = new Router({
               beforeEnter: inAppRouteGuard,
             },
           ],
-        },
-        {
-          path: '/movements',
-          name: vueRoutes.movements.name,
-          meta: {
-            pageNameTranslationId: 'pages-names.movements',
-          },
-          component: Movements,
-          beforeEnter: inAppRouteGuard,
         },
       ],
     },
