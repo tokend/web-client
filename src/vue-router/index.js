@@ -215,13 +215,17 @@ const router = new Router({
               },
               beforeEnter: inAppRouteGuard,
             },
-            {
-              path: '/sales/:id',
-              name: vueRoutes.saleDetails.name,
-              component: SaleDetails,
-              props: true,
-              beforeEnter: inAppRouteGuard,
-            },
+          ],
+        },
+        {
+          path: '/sales/:id',
+          name: vueRoutes.saleDetails.name,
+          meta: { pageNameTranslationId: 'pages-names.sale-details' },
+          redirect: to => ({ ...vueRoutes.saleCampaign, params: to.params }),
+          component: SaleDetails,
+          props: true,
+          beforeEnter: inAppRouteGuard,
+          children: [
             {
               path: '/sales/:id/campaign',
               name: vueRoutes.saleCampaign.name,

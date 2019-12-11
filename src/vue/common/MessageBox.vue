@@ -81,6 +81,7 @@ export default {
 
 .message-box__message {
   margin-top: 0.4rem;
+  color: $col-message-box-text;
 }
 
 .message-box__close-btn {
