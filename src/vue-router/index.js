@@ -159,6 +159,7 @@ const router = new Router({
           },
           component: Assets,
           beforeEnter: inAppRouteGuard,
+          redirect: vueRoutes.assetsExplore,
           children: [
             {
               path: '/assets/explore',
@@ -189,6 +190,7 @@ const router = new Router({
           meta: { pageNameTranslationId: 'pages-names.sales' },
           component: Sales,
           beforeEnter: inAppRouteGuard,
+          redirect: vueRoutes.investableSales,
           children: [
             {
               path: '/sales/all',
@@ -235,6 +237,7 @@ const router = new Router({
           meta: { pageNameTranslationId: 'pages-names.polls' },
           component: Polls,
           beforeEnter: inAppRouteGuard,
+          redirect: vueRoutes.allPolls,
           children: [
             {
               path: '/polls/all',
@@ -286,6 +289,7 @@ const router = new Router({
           },
           component: Requests,
           beforeEnter: inAppRouteGuard,
+          redirect: vueRoutes.assetCreationRequests,
           children: [
             {
               path: '/requests/asset-creation',
@@ -346,6 +350,7 @@ const router = new Router({
           meta: { pageNameTranslationId: 'pages-names.atomic-swaps' },
           component: AtomicSwaps,
           beforeEnter: inAppRouteGuard,
+          redirect: vueRoutes.atomicSwapsExplore,
           children: [
             {
               path: '/atomic-swaps/explore',

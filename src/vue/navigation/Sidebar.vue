@@ -84,7 +84,7 @@
             class="sidebar__link"
             @click.native="closeSidebar"
             tag="a"
-            :to="vueRoutes.assetsExplore"
+            :to="vueRoutes.assets"
           >
             <i
               class="sidebar__link-icon"
@@ -100,7 +100,7 @@
             class="sidebar__link"
             @click.native="closeSidebar"
             tag="a"
-            :to="vueRoutes.investableSales"
+            :to="vueRoutes.sales"
           >
             <i
               class="sidebar__link-icon"
@@ -116,7 +116,7 @@
             class="sidebar__link"
             @click.native="closeSidebar"
             tag="a"
-            :to="vueRoutes.allPolls"
+            :to="vueRoutes.polls"
           >
             <i
               class="sidebar__link-icon"
@@ -149,7 +149,7 @@
             class="sidebar__link"
             @click.native="closeSidebar"
             tag="a"
-            :to="vueRoutes.assetCreationRequests"
+            :to="vueRoutes.requests"
           >
             <i
               class="sidebar__link-icon"
@@ -213,7 +213,7 @@
             class="sidebar__link"
             @click.native="closeSidebar"
             tag="a"
-            :to="vueRoutes.atomicSwapsExplore"
+            :to="vueRoutes.atomicSwaps"
           >
             <i
               class="sidebar__link-icon"
