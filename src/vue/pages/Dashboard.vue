@@ -141,10 +141,10 @@ export default {
     transferFormIsShown (status) {
       this.showDrawer = status
     },
-    currentAsset (value) {
-      this.$router.push({
+    async currentAsset (value) {
+      await this.$router.push({
         query: { asset: value },
-      })
+      }, () => {})
       this.loadBalances()
     },
   },

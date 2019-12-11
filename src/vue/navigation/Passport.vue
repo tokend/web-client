@@ -196,9 +196,9 @@ export default {
       location.reload()
     },
 
-    goSettings () {
+    async goSettings () {
       this.closeDropdown()
-      this.$router.push(vueRoutes.settings)
+      await this.$router.push(vueRoutes.settings)
     },
   },
 }

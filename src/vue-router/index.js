@@ -367,6 +367,7 @@ const router = new Router({
           meta: { pageNameTranslationId: 'pages-names.settings' },
           component: Settings,
           beforeEnter: inAppRouteGuard,
+          redirect: vueRoutes.verification,
           children: [
             {
               path: '/settings/verification',

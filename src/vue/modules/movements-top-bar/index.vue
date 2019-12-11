@@ -174,10 +174,10 @@ export default {
   watch: {
     asset: {
       deep: true,
-      handler (value) {
-        this.$router.push({
+      async handler (value) {
+        await this.$router.push({
           query: { asset: value.code },
-        })
+        }, () => {})
         this.$emit(EVENTS.assetUpdated, value)
       },
     },

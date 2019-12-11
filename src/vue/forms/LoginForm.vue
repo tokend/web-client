@@ -107,9 +107,9 @@ export default {
         })
         await this.loadAssets()
         if (Object.keys(this.$route.query).includes('redirectPath')) {
-          this.$router.push({ path: this.$route.query.redirectPath })
+          await this.$router.push({ path: this.$route.query.redirectPath })
         } else {
-          this.$router.push({ name: 'app' })
+          await this.$router.push({ name: 'app' })
         }
       } catch (e) {
         this.processAuthError(e)
@@ -124,10 +124,10 @@ export default {
         )
       }
     },
-    processAuthError (error) {
+    async processAuthError (error) {
       switch (error.constructor) {
         case errors.VerificationRequiredError:
-          this.$router.push({
+          await this.$router.push({
             ...vueRoutes.verify,
             params: {
               paramsBase64: btoa(JSON.stringify({

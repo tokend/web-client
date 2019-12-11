@@ -95,10 +95,10 @@ export default {
   },
 
   watch: {
-    asset (value) {
-      this.$router.push({
+    async asset (value) {
+      await this.$router.push({
         query: { asset: value.code },
-      })
+      }, () => {})
     },
   },
 
