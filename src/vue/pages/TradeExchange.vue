@@ -16,6 +16,7 @@
           <trade-offers-renderer
             class="trade-exchange__offers-list"
             :asset-pair="assetPair"
+            :key="`buy-offers-${updateOffersKey}`"
             :is-buy="true"
             :is-loading="isBuyOffersLoading"
             :offers-list="buyOffersList"
@@ -25,6 +26,7 @@
           <trade-offers-renderer
             class="trade-exchange__offers-list"
             :asset-pair="assetPair"
+            :key="`sell-offers-${updateOffersKey}`"
             :is-buy="false"
             :is-loading="isSellOffersLoading"
             :offers-list="sellOffersList"
@@ -92,6 +94,7 @@ export default {
     recordsToShow: config.TRANSACTIONS_PER_PAGE,
 
     loadTradeDataTickerIntervalId: -1,
+    updateOffersKey: 0,
     REFS,
   }),
   computed: {
@@ -105,19 +108,22 @@ export default {
   watch: {
     assetPair: {
       deep: true,
-      handler: function (assetPair) {
+      handler: async function (assetPair) {
         this.setCurrentAssets(assetPair)
         if (assetPair.base && assetPair.quote) {
-          this.loadData()
+          await this.loadTradeOffers()
           this.createLoadTradeDataTicker()
         }
       },
     },
   },
   async created () {
+    this.isBuyOffersLoading = true
+    this.isSellOffersLoading = true
+    this.isTradeHistoryLoading = true
     this.setCurrentAssets(this.assetPair)
     if (this.assetPair.base) {
-      await this.loadData()
+      await this.loadTradeOffers()
       this.createLoadTradeDataTicker()
     }
     this.listenUpdateList('trade:updateList', this.reloadTrades)
@@ -134,19 +140,12 @@ export default {
     async createLoadTradeDataTicker () {
       this.clearLoadTradeDataTicker()
       this.loadTradeDataTickerIntervalId = setInterval(async () => {
-        await this.loadData()
+        await this.loadTradeOffers()
+        this.updateOffersKey++
       }, config.RELOAD_DATA_TICKER_INTERVAL_MS)
     },
     async clearLoadTradeDataTicker () {
       clearInterval(this.loadTradeDataTickerIntervalId)
-    },
-    async loadData () {
-      this.isTradeHistoryLoading = true
-      this.isBuyOffersLoading = true
-      this.isSellOffersLoading = true
-
-      await this.loadTradeOffers()
-      await this.loadTradeHistory()
     },
     async loadTradeOffers () {
       try {
