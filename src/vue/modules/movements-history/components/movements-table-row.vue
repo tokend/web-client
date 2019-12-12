@@ -127,6 +127,7 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
   border: none;
+  color: $col-text;
 
   &--bold {
     font-weight: 600;

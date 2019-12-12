@@ -38,8 +38,7 @@ export const getters = {
     .map(r => new PreIssuanceRequest(r)),
 }
 
-export const preIssuanceRequestsModule = {
-  name: 'pre-issuance-requests',
+export default {
   namespaced: true,
   state,
   getters,

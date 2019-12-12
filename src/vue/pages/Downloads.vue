@@ -20,7 +20,11 @@
           {{ 'downloads-page.mobile-apps-header' | globalize }}
         </h3>
         <p class="downloads__section-text">
-          {{ 'downloads-page.mobile-apps-desc' | globalize }}
+          {{ 'downloads-page.mobile-apps-desc' | globalize(
+            {
+              appName: config.APP_NAME
+            })
+          }}
         </p>
 
         <div class="downloads__phones-wrapper">
@@ -147,7 +151,11 @@
           {{ 'downloads-page.config-header' | globalize }}
         </h3>
         <p class="downloads__section-text">
-          {{ 'downloads-page.config-desc' | globalize }}
+          {{ 'downloads-page.config-desc' | globalize(
+            {
+              appName: config.APP_NAME
+            })
+          }}
         </p>
         <qr-code-wrapper
           class="downloads__config-qr"

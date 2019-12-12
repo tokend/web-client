@@ -35,13 +35,10 @@
       </div>
 
       <div class="sale-campaign-viewer__state">
-        <template v-if="getModule().canRenderSubmodule(SaleStateWidgetModule)">
-          <submodule-importer
-            :submodule="getModule().getSubmodule(SaleStateWidgetModule)"
-            :sale="sale"
-            @sale-updated="$emit(EVENTS.saleUpdated)"
-          />
-        </template>
+        <sale-state-widget
+          :sale="sale"
+          @sale-updated="$emit(EVENTS.saleUpdated)"
+        />
       </div>
 
       <drawer :is-shown.sync="isOverviewDrawerShown">
@@ -77,11 +74,10 @@ import Drawer from '@/vue/common/Drawer'
 import SaleOverview from './SaleOverview'
 import SaleStatisticsViewer from './SaleStatisticsViewer'
 import SaleWhitelistManager from './SaleWhitelistManager'
+import SaleStateWidget from '@/vue/pages/sale-details/SaleStateWidget'
 
 import SaleLogoViewer from './SaleLogoViewer'
 import SaleDescriptionViewer from './SaleDescriptionViewer'
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
-import { SaleStateWidgetModule } from '@/vue/pages/sale-details/sale-sate-widget-module'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
@@ -98,10 +94,10 @@ export default {
     Drawer,
     SaleLogoViewer,
     SaleDescriptionViewer,
-    SubmoduleImporter,
     SaleOverview,
     SaleStatisticsViewer,
     SaleWhitelistManager,
+    SaleStateWidget,
   },
 
   props: {
@@ -112,8 +108,6 @@ export default {
     isOverviewDrawerShown: false,
     isStatisticsDrawerShown: false,
     isWhitelistDrawerShown: false,
-
-    SaleStateWidgetModule,
     EVENTS,
   }),
 

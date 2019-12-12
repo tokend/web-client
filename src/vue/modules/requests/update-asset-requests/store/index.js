@@ -46,8 +46,7 @@ export const getters = {
     .map(r => new UpdateAssetRequest(r)),
 }
 
-export const updateAssetRequestsModule = {
-  name: 'update-asset-requests',
+export default {
   namespaced: true,
   state,
   getters,

@@ -119,9 +119,11 @@ export default {
 
 <style lang="scss" scoped>
 @import './app-form';
+@import '~@scss/variables';
 
 .whitelist-invite-form__hint {
   font-size: 1.6rem;
   margin-bottom: 2.4rem;
+  color: $col-text;
 }
 </style>

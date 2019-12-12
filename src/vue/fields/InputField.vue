@@ -65,6 +65,11 @@ const EVENTS = {
   input: 'input',
 }
 
+const INPUT_TYPES = {
+  password: 'password',
+  number: 'number',
+}
+
 export default {
   props: {
     label: { type: String, default: 'Label' },
@@ -73,6 +78,7 @@ export default {
     errorMessage: { type: String, default: undefined },
     whiteAutofill: { type: Boolean, default: true },
     type: { type: String, default: undefined },
+    trim: { type: Boolean, default: true },
   },
 
   data: () => ({
@@ -92,7 +98,7 @@ export default {
     },
 
     isPasswordType () {
-      return this.type === 'password'
+      return this.type === INPUT_TYPES.password
     },
   },
 
@@ -118,6 +124,10 @@ export default {
         document.removeEventListener('keyup', this.detectCapsLock)
 
         if (!this.value) this.isCapsLockOn = false
+      }
+
+      if (this.trim) {
+        this.$emit(EVENTS.input, event.target.value.trim())
       }
     },
 

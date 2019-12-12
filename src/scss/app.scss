@@ -37,6 +37,10 @@ p {
   font-size: 1.4rem;
 }
 
+p, li, ul {
+  color: $col-text;
+}
+
 button {
   border: none;
   margin: 0;
@@ -436,7 +440,7 @@ h6.app__page-heading {
 
   .bar {
     // !importants are for overwrite nprogress’ styles
-    background: $col-primary-lighten !important;
+    background: $col-primary !important;
     height: 0.3rem !important;
   }
 }
