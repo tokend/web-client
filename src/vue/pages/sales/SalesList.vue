@@ -55,6 +55,7 @@
     <collection-loader
       v-show="filteredSales.length"
       class="sales__loader"
+      :key="saleUpdateKey"
       :first-page-loader="recordsLoader"
       @first-page-load="setRecords"
       @next-page-load="extendRecords"
@@ -79,6 +80,7 @@ import { vuexTypes } from '@/vuex'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 import UpdateList from '@/vue/mixins/update-list.mixin'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const SALE_STATES = {
   live: {
@@ -129,6 +131,7 @@ export default {
     itemsPerSkeletonLoader: 3,
     SALE_STATES,
     vueRoutes,
+    saleUpdateKey: 0,
   }),
 
   computed: {
@@ -149,8 +152,38 @@ export default {
           })
       }
     },
+  },
 
-    recordsLoader () {
+  watch: {
+    'filters.state' () {
+      this.saleUpdateKey++
+    },
+    isUserSales () {
+      this.saleUpdateKey++
+    },
+  },
+
+  created () {
+    this.listenUpdateList('sales:updateList', this.recordsLoader)
+  },
+
+  beforeDestroy () {
+    this.resetUpdateListEvent('sales:updateList')
+  },
+
+  methods: {
+    setRecords (data) {
+      this.saleRecords = data.map(sale => new SaleRecord(sale))
+    },
+
+    extendRecords (data) {
+      this.saleRecords = this.saleRecords
+        .concat(data.map(sale => new SaleRecord(sale)))
+    },
+
+    async recordsLoader () {
+      this.isLoaded = false
+      this.saleRecords = []
       const saleState = this.filters.state
 
       let opts = {
@@ -180,38 +213,15 @@ export default {
         opts.filter.owner = this.$route.query.owner
       }
 
-      return function () {
-        return api.getWithSignature(endpoint, opts)
+      let response
+      try {
+        response = await api.getWithSignature(endpoint, opts)
+      } catch (error) {
+        ErrorHandler.processWithoutFeedback(error)
       }
-    },
-  },
-
-  watch: {
-    'recordsLoader': function () {
-      this.saleRecords = []
-    },
-    isUserSales () {
-      this.recordsLoader()
-    },
-  },
-
-  created () {
-    this.listenUpdateList('sales:updateList', this.recordsLoader)
-  },
-
-  beforeDestroy () {
-    this.resetUpdateListEvent('sales:updateList')
-  },
-
-  methods: {
-    setRecords (data) {
-      this.saleRecords = data.map(sale => new SaleRecord(sale))
       this.isLoaded = true
-    },
 
-    extendRecords (data) {
-      this.saleRecords = this.saleRecords
-        .concat(data.map(sale => new SaleRecord(sale)))
+      return response
     },
   },
 }

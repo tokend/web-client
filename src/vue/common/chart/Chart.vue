@@ -83,6 +83,7 @@ export default {
     this.clearLoadPricesTicker()
   },
   async created () {
+    this.isLoading = true
     this.createLoadPricesTicker()
     await this.loadPrices()
     this.scale = this.initialScale
@@ -98,7 +99,6 @@ export default {
       clearInterval(this.loadPricesTickerIntervalId)
     },
     async loadPrices () {
-      this.isLoading = true
       try {
         this.isActualData = true
         const response = this.quoteAsset
