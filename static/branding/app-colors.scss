@@ -7,19 +7,23 @@ $col-text-auth-title-big: #ffffff;
 $col-text-auth-title-small: #7b6eff;
 $col-text-auth-version: rgba(#7b6eff, 0.65);
 
-$col-btn: #7b6eff;
-$col-text-page-heading: $col-primary;
+// sidebar
 $col-sidebar-background: #e9eaed;
 $col-sidebar-text: rgba($col-primary, 0.7);
 $col-footer-text: $col-primary;
+$col-sidebar-active-elem-text: rgba($col-sidebar-text, 1);
+$col-sidebar-active-elem-background: #f2f2f4;
+
+$col-btn: #7b6eff;
+$col-button-disabled: rgba($col-btn, 0.7);
+$col-text-page-heading: $col-primary;
 
 $col-text: $col-primary;
 $col-top-bar-tab-active: $col-btn;
 $col-field-txt: $col-primary;
 $col-link: $col-btn;
 $col-chart: $col-text;
-$col-sidebar-active-elem-text: rgba($col-sidebar-text, 1);
-$col-sidebar-active-elem-background: #f2f2f4;
+$col-chart-text: $col-chart;
 $col-app-content-background: #f6f8fb;
 $col-top-bar-background: #ffffff;
 
