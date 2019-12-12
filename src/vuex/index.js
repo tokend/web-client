@@ -42,7 +42,11 @@ export const rootModule = {
       await dispatch(vuexTypes.LOAD_WALLET, { email, password })
       await dispatch(vuexTypes.LOAD_ACCOUNT, getters[vuexTypes.walletAccountId])
       await dispatch(vuexTypes.LOAD_KV_ENTRIES)
-      await dispatch(vuexTypes.LOAD_KYC)
+
+      const isKycRecoveryInProgress = getters[vuexTypes.isKycRecoveryInProgress]
+      if (!isKycRecoveryInProgress) {
+        await dispatch(vuexTypes.LOAD_KYC)
+      }
     },
     async [vuexTypes.RESTORE_SESSION] ({ getters, dispatch }) {
       let walletSeed
