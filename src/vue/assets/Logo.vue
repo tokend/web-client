@@ -1,23 +1,25 @@
 <template>
-  <router-link class="logotype" :to="vueRoutes.app">
-    <img :src="logoUrl" alt="TokenD">
+  <router-link class="logotype" :to="vueRoutes.dashboard">
+    <img :src="logoUrl" :alt="config.APP_NAME">
   </router-link>
 </template>
 
 <script>
-import { vueRoutes } from '@/vue-router/routes'
-import { SchemeRegistry } from '@/modules-arch/scheme-registry'
+import config from '@/config'
 
-const DEFAULT_LOGO_URL = '/static/logo.svg'
+import { vueRoutes } from '@/vue-router/routes'
+
+const DEFAULT_LOGO_URL = '/static/branding/logo.svg'
 
 export default {
   data: _ => ({
     vueRoutes,
+    config,
   }),
 
   computed: {
     logoUrl () {
-      return SchemeRegistry.current.appLogoUrl || DEFAULT_LOGO_URL
+      return DEFAULT_LOGO_URL
     },
   },
 }

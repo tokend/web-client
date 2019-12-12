@@ -36,9 +36,7 @@
         </template>
       </top-bar>
 
-      <submodule-importer
-        v-if="asset.code && getModule().canRenderSubmodule(FeesModule)"
-        :submodule="getModule().getSubmodule(FeesModule)"
+      <fees-module
         :asset-code="asset.code"
       />
     </template>
@@ -63,6 +61,7 @@
 
 <script>
 import SelectField from '@/vue/fields/SelectField'
+import FeesModule from '@/vue/modules/fees'
 import TopBar from '@/vue/common/TopBar'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
@@ -70,8 +69,6 @@ import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { FeesModule } from '@/vue/modules/fees/module'
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
 
 export default {
@@ -79,8 +76,8 @@ export default {
   components: {
     SelectField,
     TopBar,
+    FeesModule,
     NoDataMessage,
-    SubmoduleImporter,
     SkeletonLoader,
   },
 
@@ -89,7 +86,6 @@ export default {
     isLoadingFailed: false,
     assets: [],
     asset: {},
-    FeesModule,
   }),
 
   computed: {
@@ -99,10 +95,10 @@ export default {
   },
 
   watch: {
-    asset (value) {
-      this.$router.push({
+    async asset (value) {
+      await this.$router.push({
         query: { asset: value.code },
-      })
+      }, () => {})
     },
   },
 

@@ -8,8 +8,14 @@ import config from '@/config'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 import { store, vuexTypes } from '@/vuex/index'
+import { mapGetters } from 'vuex'
 
 const NEW_CREATE_ASSET_REQUEST_ID = '0'
+
+const DEFAULT_SIGNER_ATTRS = Object.freeze({
+  weight: 1000,
+  identity: 1,
+})
 
 export default {
   data () {
@@ -17,7 +23,33 @@ export default {
       collectedCreateAssetAttributes: {},
     }
   },
+  computed: {
+    ...mapGetters([
+      vuexTypes.kvIssuanceSignerRoleId,
+      vuexTypes.accountId,
+      vuexTypes.assets,
+      vuexTypes.assetsByOwner,
+    ]),
+    isStellarOrErc20IntegrationEnable () {
+      return this.assetsByOwner(this.accountId)
+        .reduce((isUsedIntegration, item) => {
+          return isUsedIntegration ||
+           item.isUseStellarIntegration ||
+           item.isUseErc20Integration
+        }, false)
+    },
+    $needAddSigner () {
+      return !this.isStellarOrErc20IntegrationEnable &&
+        (this.collectedCreateAssetAttributes.isStellarIntegrationEnabled ||
+          this.collectedCreateAssetAttributes.isErc20IntegrationEnabled)
+    },
 
+    $nedDeleteSigner () {
+      return !this.isStellarOrErc20IntegrationEnable &&
+        (!this.collectedCreateAssetAttributes.isStellarIntegrationEnabled ||
+          !this.collectedCreateAssetAttributes.isErc20IntegrationEnabled)
+    },
+  },
   methods: {
     async getCreateAssetRequestById (id, accountId) {
       const endpoint = `/v3/create_asset_requests/${id}`
@@ -40,13 +72,40 @@ export default {
      * @param {string|number} requestId - request Id
      */
     async submitCreateAssetRequest (requestId) {
+      const isHaveSignerMasterAccountId = await this.$checkSigner()
+      const operations = []
+      if (this.$needAddSigner && !isHaveSignerMasterAccountId) {
+        operations.push(this.$buildCreateSignerOperation())
+      } else if (this.$nedDeleteSigner && isHaveSignerMasterAccountId) {
+        operations.push(this.$buildDeleteSignerOperation())
+      }
       const assetDocuments = [
         this.collectedCreateAssetAttributes.logo,
         this.collectedCreateAssetAttributes.terms,
       ]
       await uploadDocuments(assetDocuments)
-      const operation = this.$buildAssetCreationRequestOperation(requestId)
-      await api.postOperations(operation)
+      operations.push(this.$buildAssetCreationRequestOperation(requestId))
+      await api.postOperations(...operations)
+    },
+
+    $buildCreateSignerOperation () {
+      const opts = {
+        ...DEFAULT_SIGNER_ATTRS,
+        publicKey: api.networkDetails.masterAccountId,
+        roleID: String(this.kvIssuanceSignerRoleId),
+        details: {},
+      }
+      return base.ManageSignerBuilder.createSigner(opts)
+    },
+
+    $buildDeleteSignerOperation () {
+      const opts = {
+        ...DEFAULT_SIGNER_ATTRS,
+        publicKey: api.networkDetails.masterAccountId,
+        roleID: String(this.kvIssuanceSignerRoleId),
+        details: {},
+      }
+      return base.ManageSignerBuilder.deleteSigner(opts)
     },
 
     $buildAssetCreationRequestOperation (requestId) {
@@ -67,6 +126,7 @@ export default {
           logo: this.$getDocumentDetailsOrEmptyDocument(logo),
           terms: this.$getDocumentDetailsOrEmptyDocument(terms),
           stellar: this.$getStellarIntegrationAttributes(),
+          erc20: this.$getErc20IntegrationAttributes(),
         },
       }
 
@@ -110,12 +170,32 @@ export default {
         : {}
     },
 
+    $getErc20IntegrationAttributes () {
+      return this.collectedCreateAssetAttributes.isErc20IntegrationEnabled
+        ? {
+          withdraw: this.collectedCreateAssetAttributes.erc20.withdraw,
+          deposit: this.collectedCreateAssetAttributes.erc20.deposit,
+          address: this.collectedCreateAssetAttributes.erc20.address,
+        }
+        : {}
+    },
+
     $getDocumentDetailsOrEmptyDocument (doc) {
       if (doc instanceof DocumentContainer) {
         return doc.getDetailsForSave()
       }
 
       return DocumentContainer.getEmptyDetailsForSave()
+    },
+
+    async $checkSigner () {
+      const endpoint = `/v3/accounts/${this.accountId}/signers`
+      const { data } = await api.get(endpoint)
+      return Boolean(data.find(item =>
+        (item.id === api.networkDetails.masterAccountId) &&
+        (+item.role.id === this.kvIssuanceSignerRoleId)
+      )
+      )
     },
   },
 }

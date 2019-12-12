@@ -6,8 +6,59 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
-
 ## [Unreleased]
+#### Fixed
+- A bug with color scheme
+
+#### Removed
+- All schemes
+
+## [1.10.3] - 2019-10-24
+
+## [1.10.3-rc.2] - 2019-10-24
+#### Added
+- Trim for input field
+
+#### Fixed
+- A bug when the user can not update asset with deposit withdraw integration
+
+#### Changed
+- Moved logo and favicon to branding folder
+
+### "Under the hood" changes
+#### Added
+- `APP_NAME` in config
+#### Changed
+- Now using @tokend/js-sdk@1.11.0-rc.0
+
+## [1.10.3-rc.1] - 2019-10-18
+#### Fixed
+- A bug when the user can not enter a value in input-field with type 'number' on Firefox
+- A bug with infinite loading of the page "Register of shares"
+
+#### Changed
+- Color scheme improvements
+
+## [1.10.3-rc.0] - 2019-10-11
+#### Added
+- Integration with Erc20 and stellar
+
+#### Fixed
+- Asset creation with zero initial pre-issued amount
+
+## [1.10.2] - 2019-09-26
+
+## [1.10.2-rc.0] - 2019-09-16
+#### Added
+- New sale types
+
+## [1.10.1] - 2019-09-09
+
+## [1.10.1-rc.1] - 2019-09-06
+#### Fixed
+- A bug with quote asset code in atomic swap
+
+## [1.10.1-rc.0] - 2019-09-05
 #### Added
 - Buying atomic swaps
 - Missed russian translation
@@ -983,7 +1034,16 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.10.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.10.3...HEAD
+[1.10.3]: https://github.com/tokend/web-client/compare/1.10.3-rc.2...1.10.3
+[1.10.3-rc.2]: https://github.com/tokend/web-client/compare/1.10.3-rc.1...1.10.3-rc.2
+[1.10.3-rc.1]: https://github.com/tokend/web-client/compare/1.10.3-rc.0...1.10.3-rc.1
+[1.10.3-rc.0]: https://github.com/tokend/web-client/compare/1.10.2...1.10.3-rc.0
+[1.10.2]: https://github.com/tokend/web-client/compare/1.10.2-rc.0...1.10.2
+[1.10.2-rc.0]: https://github.com/tokend/web-client/compare/1.10.1...1.10.2-rc.0
+[1.10.1]: https://github.com/tokend/web-client/compare/1.10.1-rc.1...1.10.1
+[1.10.1-rc.1]: https://github.com/tokend/web-client/compare/1.10.1-rc.0...1.10.1-rc.1
+[1.10.1-rc.0]: https://github.com/tokend/web-client/compare/1.10.0...1.10.1-rc.0
 [1.10.0]: https://github.com/tokend/web-client/compare/1.10.0-rc.7...1.10.0
 [1.10.0-rc.7]: https://github.com/tokend/web-client/compare/1.10.0-rc.6...1.10.0-rc.7
 [1.10.0-rc.6]: https://github.com/tokend/web-client/compare/1.10.0-rc.5...1.10.0-rc.6

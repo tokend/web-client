@@ -17,5 +17,21 @@ export class Asset {
     this.stellarAssetType = safeGet(record, 'details.stellar.assetType') || ''
     this.stellarWithdraw = safeGet(record, 'details.stellar.withdraw') || false
     this.stellarDeposit = safeGet(record, 'details.stellar.deposit') || false
+
+    this.erc20Address = safeGet(record, 'details.erc20.address') || ''
+    this.erc20Withdraw = safeGet(record, 'details.erc20.withdraw') || false
+    this.erc20Deposit = safeGet(record, 'details.erc20.deposit') || false
+  }
+
+  get isErc20IntegrationEnabled () {
+    return this.erc20Withdraw || this.erc20Deposit || this.erc20Address || false
+  }
+
+  get isStellarIntegrationEnabled () {
+    return this.stellarAssetCode ||
+      this.stellarAssetType ||
+      this.stellarWithdraw ||
+      this.stellarDeposit ||
+      false
   }
 }

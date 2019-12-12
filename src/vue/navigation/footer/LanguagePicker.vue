@@ -78,7 +78,7 @@ $font-size: 1.4rem;
   height: 1.4rem;
   z-index: 0;
   pointer-events: none;
-  border: solid $field-color-text;
+  border: solid $col-footer-text;
   border-width: 0 0.2rem 0.2rem 0;
 }
 
@@ -89,7 +89,7 @@ $font-size: 1.4rem;
   border: 0;
   background: 0;
   padding: 0 1.6rem 0 0;
-  color: $field-color-text;
+  color: $col-footer-text;
   font-size: 1.4rem;
   cursor: pointer;
 }

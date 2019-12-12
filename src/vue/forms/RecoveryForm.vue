@@ -19,6 +19,7 @@
           @blur="touchField('form.password')"
           name="recovery-password"
           type="password"
+          :trim="false"
           :error-message="getFieldErrorMessage('form.password')"
           :label="'auth-pages.new-password' | globalize"
           :white-autofill="false"
@@ -32,6 +33,7 @@
           @blur="touchField('form.confirmPassword')"
           name="recovery-confirm-password"
           type="password"
+          :trim="false"
           :error-message="getFieldErrorMessage('form.confirmPassword')"
           :label="'auth-pages.confirm-password' | globalize"
           :white-autofill="false"
@@ -45,6 +47,7 @@
           @blur="touchField('form.recoverySeed')"
           name="recovery-seed"
           type="password"
+          :trim="false"
           :error-message="getFieldErrorMessage('form.recoverySeed')"
           :label="'auth-pages.recovery-seed' | globalize"
           :white-autofill="false"
@@ -129,7 +132,7 @@ export default {
         await this.login()
 
         Bus.success('auth-pages.recovered')
-        this.$router.push(vueRoutes.app)
+        await this.$router.push(vueRoutes.app)
       } catch (e) {
         switch (e.constructor) {
           case errors.NotFoundError:

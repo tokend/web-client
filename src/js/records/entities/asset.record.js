@@ -47,6 +47,10 @@ export class AssetRecord {
     this.stellarWithdraw = safeGet(record, 'details.stellar.withdraw') || false
     this.stellarDeposit = safeGet(record, 'details.stellar.deposit') || false
 
+    this.erc20Address = safeGet(record, 'details.erc20.address') || ''
+    this.erc20Withdraw = safeGet(record, 'details.erc20.withdraw') || false
+    this.erc20Deposit = safeGet(record, 'details.erc20.deposit') || false
+
     this.description = safeGet(record, 'details.description') || ''
   }
 
@@ -136,5 +140,13 @@ export class AssetRecord {
 
   get isRequiresKYC () {
     return this.assetType
+  }
+
+  get isUseStellarIntegration () {
+    return this.stellarWithdraw || this.stellarDeposit
+  }
+
+  get isUseErc20Integration () {
+    return this.erc20Withdraw || this.erc20Deposit
   }
 }

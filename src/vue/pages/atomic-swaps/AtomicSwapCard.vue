@@ -18,15 +18,15 @@
       <span
         class="atomic-swap-card__assets"
         v-for="(quoteAsset, index) in atomicSwap.quoteAssets"
-        :key="quoteAsset.id"
+        :key="quoteAsset.code"
       >
         <span v-if="index + 1 !== atomicSwap.quoteAssets.length">
           {{ 'atomic-swap-card.quote-asset-with-comma' | globalize({
-            quoteAsset: quoteAsset.id
+            quoteAsset: quoteAsset.code
           }) }}
         </span>
         <span v-else>
-          {{ quoteAsset.id }}
+          {{ quoteAsset.code }}
         </span>
       </span>
     </p>
@@ -84,6 +84,7 @@ export default {
   max-width: 100%;
   overflow: hidden;
   overflow-x: hidden;
+  color: $col-text;
 }
 
 .atomic-swap-card__title {

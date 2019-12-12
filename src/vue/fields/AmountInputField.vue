@@ -189,7 +189,7 @@ export default {
 
   &:enabled:hover,
   &:enabled:focus {
-    color: inherit;
+    color: $col-field-icon;
   }
 }
 

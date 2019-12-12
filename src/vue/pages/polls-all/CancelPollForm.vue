@@ -90,6 +90,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/vue/forms/_app-form';
+@import '~@scss/variables';
 
 .cancel-poll-form__form-actions:not(:first-child) {
   margin-top: 2rem;
@@ -102,5 +103,6 @@ export default {
 
 .cancel-poll-form-description {
   margin-top: 1rem;
+  color: $col-text;
 }
 </style>

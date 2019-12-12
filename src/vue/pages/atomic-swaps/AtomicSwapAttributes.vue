@@ -94,37 +94,9 @@
                 {{ 'atomic-swap-attributes.quote-asset-key' | globalize }}
               </td>
               <td>
-                {{ quoteAsset.id }}
+                {{ quoteAsset.code }}
               </td>
             </tr>
-
-            <tr>
-              <td>
-                {{ 'atomic-swap-attributes.current-cap-key' | globalize }}
-              </td>
-              <td>
-                {{ quoteAsset.currentCap }}
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                {{ 'atomic-swap-attributes.hard-cap-key' | globalize }}
-              </td>
-              <td>
-                {{ quoteAsset.hardCap }}
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                {{ 'atomic-swap-attributes.total-current-cap-key'| globalize }}
-              </td>
-              <td>
-                {{ quoteAsset.totalCurrentCap }}
-              </td>
-            </tr>
-
             <tr>
               <td>
                 {{ 'atomic-swap-attributes.price-key' | globalize }}

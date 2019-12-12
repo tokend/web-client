@@ -11,6 +11,7 @@
             @blur="touchField('form.password')"
             name="tfa-password"
             type="password"
+            :trim="false"
             :error-message="getFieldErrorMessage('form.password')"
             :label="'tfa-form.password-lbl' | globalize"
             :disabled="formMixin.isDisabled"

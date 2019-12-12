@@ -32,6 +32,7 @@ export class SaleRecord {
     this.stateStr = _get(record, 'saleState.name')
 
     this.definitionType = _get(record, 'accessDefinitionType.value')
+    this.saleType = _get(record, 'saleType.value') + ''
 
     this.details = _get(this._record, 'details')
     this.name = _get(record, 'details.name')

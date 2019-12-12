@@ -28,8 +28,7 @@ const getters = {
   [types.signers]: state => state.signers.map(s => new Signer(s)),
 }
 
-export const documentSignersManager = {
-  name: 'document-signers-manager',
+export default {
   namespaced: true,
   mutations,
   actions,

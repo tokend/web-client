@@ -13,6 +13,12 @@
           </tr>
           <tr>
             <td>
+              {{ 'create-sale-requests.type-title' | globalize }}
+            </td>
+            <td>{{ localizedSaleTypes[request.saleType] | globalize }}</td>
+          </tr>
+          <tr>
+            <td>
               {{ 'create-sale-requests.start-time-title' | globalize }}
             </td>
             <td>{{ request.startTime | formatCalendar }}</td>
@@ -87,12 +93,21 @@
 </template>
 
 <script>
+import { SALE_TYPES } from '@tokend/js-sdk'
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
 
 export default {
   name: 'request-attributes-viewer',
   props: {
     request: { type: CreateSaleRequest, required: true },
+  },
+  computed: {
+    localizedSaleTypes () {
+      const keyValue = {}
+      keyValue[SALE_TYPES.fixedPrice] = 'sale-overview.fixed-price'
+      keyValue[SALE_TYPES.immediate] = 'sale-overview.immediate'
+      return keyValue
+    },
   },
 }
 </script>

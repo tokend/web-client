@@ -1,64 +1,55 @@
 <template>
   <div class="register-of-shares">
-    <template
-      v-if="getModule().canRenderSubmodule(MovementsTopBarModule)">
-      <submodule-importer
-        :submodule="getModule().getSubmodule(MovementsTopBarModule)"
-        @asset-updated="updateAsset"
-        @movements-update-required="updateList"
-      />
-    </template>
+    <movements-top-bar-module
+      @asset-updated="updateAsset"
+      @movements-update-required="updateList"
+      @show-no-data-message="showNoDataMessage = true"
+    />
 
-    <template v-if="getModule().canRenderSubmodule(MovementsHistoryModule)">
-      <submodule-importer
-        v-if="asset.code"
-        :submodule="getModule().getSubmodule(MovementsHistoryModule)"
-        :asset-code="asset.code"
-        :key="`movements-history-state-${historyState}`"
-      >
-        <loader
-          slot="loader"
-          message-id="op-pages.assets-loading-msg"
-        />
-      </submodule-importer>
-
-      <no-data-message
-        v-else-if="isLoadFailed"
-        icon-name="trending-up"
-        :title="'op-pages.no-data-title' | globalize"
-        :message="'op-pages.no-data-msg' | globalize"
-      />
-
+    <movements-history-module
+      v-if="asset.code"
+      :asset-code="asset.code"
+      :key="`movements-history-state-${historyState}`"
+    >
       <loader
-        v-else
+        slot="loader"
         message-id="op-pages.assets-loading-msg"
       />
-    </template>
+    </movements-history-module>
+
+    <no-data-message
+      v-else-if="showNoDataMessage"
+      icon-name="trending-up"
+      :title="'op-pages.no-data-title' | globalize"
+      :message="'op-pages.no-data-msg' | globalize"
+    />
+
+    <loader
+      v-else
+      message-id="op-pages.assets-loading-msg"
+    />
   </div>
 </template>
 
 <script>
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import Loader from '@/vue/common/Loader'
-
-import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
-import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
+import MovementsTopBarModule from '@modules/movements-top-bar'
+import MovementsHistoryModule from '@/vue/modules/movements-history'
 
 export default {
   name: 'register-of-shares-page',
   components: {
-    SubmoduleImporter,
     NoDataMessage,
     Loader,
+    MovementsTopBarModule,
+    MovementsHistoryModule,
   },
 
   data: _ => ({
-    MovementsTopBarModule,
-    MovementsHistoryModule,
     asset: {},
     historyState: 0,
-    isLoadFailed: false,
+    showNoDataMessage: false,
   }),
 
   methods: {
