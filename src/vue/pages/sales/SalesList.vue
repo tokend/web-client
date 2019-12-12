@@ -156,10 +156,10 @@ export default {
 
   watch: {
     'filters.state' () {
-      this.saleUpdateKey++
+      this.saleUpdateKey = +new Date()
     },
     isUserSales () {
-      this.saleUpdateKey++
+      this.saleUpdateKey = +new Date()
     },
   },
 
