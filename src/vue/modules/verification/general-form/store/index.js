@@ -265,8 +265,7 @@ const getters = {
   },
 }
 
-export const VerificationGeneralModule = {
-  name: 'verification-general-form',
+export default {
   namespaced: true,
   mutations,
   actions,

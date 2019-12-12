@@ -11,15 +11,13 @@
       {{ { value: item.balance, currency: item.asset.code } | formatMoney }}
     </span>
 
-    <template v-if="isAvailableRouteName(vueRoutes.balances.name)">
-      <router-link
-        class="passport-balances__more-link"
-        :to="vueRoutes.balances"
-        @click.native="showMoreBalances"
-      >
-        {{ 'passport.show-more-link' | globalize }}
-      </router-link>
-    </template>
+    <router-link
+      class="passport-balances__more-link"
+      :to="vueRoutes.balances"
+      @click.native="showMoreBalances"
+    >
+      {{ 'passport.show-more-link' | globalize }}
+    </router-link>
   </div>
 </template>
 

@@ -3,14 +3,11 @@
     <template>
       <top-bar>
         <template slot="main">
-          <router-link
-            v-if="getModule().canRenderSubmodule(PollsAllPageModule)"
-            :to="vueRoutes.allPolls"
-          >
+          <router-link :to="vueRoutes.allPolls">
             <span>{{ 'polls.all' | globalize }}</span>
           </router-link>
           <router-link
-            v-if="getModule().canRenderSubmodule(PollRequestsPageModule)"
+            v-if="isAccountCorporate"
             :to="vueRoutes.pollRequests"
           >
             <span>{{ 'polls.requests' | globalize }}</span>
@@ -19,7 +16,7 @@
 
         <template
           slot="extra"
-          v-if="getModule().canRenderSubmodule(CreatePollFormModule)"
+          v-if="isAccountCorporate"
         >
           <button
             v-ripple
@@ -41,9 +38,8 @@
             {{ 'polls.new-poll' | globalize }}
           </template>
 
-          <submodule-importer
-            :submodule="getModule().getSubmodule(CreatePollFormModule)"
-            @submitted="closeDrawerAndUpdateList()"
+          <create-poll-form-module
+            @submitted="closeDrawerAndUpdateList"
           />
         </drawer>
       </template>
@@ -54,20 +50,21 @@
 
 <script>
 import TopBar from '@/vue/common/TopBar'
-import { PollRequestsPageModule } from '@/vue/pages/polls/poll-requests-page'
-import { vueRoutes } from '@/vue-router/routes'
-import { PollsAllPageModule } from '@/vue/pages/polls-all-page-module'
 import Drawer from '@/vue/common/Drawer'
-import { CreatePollFormModule } from '@/vue/modules/create-poll-form/module'
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
+import CreatePollFormModule from '@/vue/modules/create-poll-form'
 import UpdateList from '@/vue/mixins/update-list.mixin'
+
+import { vueRoutes } from '@/vue-router/routes'
+
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 export default {
   name: 'polls',
   components: {
     TopBar,
     Drawer,
-    SubmoduleImporter,
+    CreatePollFormModule,
   },
 
   mixins: [UpdateList],
@@ -76,10 +73,12 @@ export default {
     isCreatePollDrawerShown: false,
     isPollsLoading: false,
     vueRoutes,
-    PollRequestsPageModule,
-    PollsAllPageModule,
-    CreatePollFormModule,
   }),
+  computed: {
+    ...mapGetters({
+      isAccountCorporate: vuexTypes.isAccountCorporate,
+    }),
+  },
 
   beforeDestroy () {
     this.resetUpdateListEvent('polls:updateList')
@@ -93,5 +92,3 @@ export default {
   },
 }
 </script>
-
-<style scoped lang="scss"/>

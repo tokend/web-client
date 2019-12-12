@@ -29,55 +29,46 @@
         class="movements-top-bar__actions"
         slot="extra"
       >
-        <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)">
-          <!-- TODO, currently unverified users can't withdraw, wait for
+        <!-- TODO, currently unverified users can't withdraw, wait for
             devops initscripts update -->
-          <button
-            v-ripple
-            class="app__button-raised movements-top-bar__actions-btn"
-            @click="isWithdrawalDrawerShown = true"
-            :disabled="!asset.isWithdrawable || isAccountUnverified"
-            :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isWithdrawable) |
-              globalize({ asset: asset.code })
-            "
-          >
-            <i class="mdi mdi-download movements-top-bar__btn-icon" />
-            {{ 'op-pages.withdraw' | globalize }}
-          </button>
-        </template>
+        <button
+          v-ripple
+          class="app__button-raised movements-top-bar__actions-btn"
+          @click="isWithdrawalDrawerShown = true"
+          :disabled="!asset.isWithdrawable || isAccountUnverified"
+          :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isWithdrawable) |
+            globalize({ asset: asset.code })
+          "
+        >
+          <i class="mdi mdi-download movements-top-bar__btn-icon" />
+          {{ 'op-pages.withdraw' | globalize }}
+        </button>
 
-        <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(DepositFormPseudoModule)">
-          <button
-            v-ripple
-            class="app__button-raised movements-top-bar__actions-btn"
-            @click="isDepositDrawerShown = true"
-            :disabled="!asset.isDepositable"
-            :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isDepositable) |
-              globalize({ asset: asset.code })
-            "
-          >
-            <i class="mdi mdi-upload movements-top-bar__btn-icon" />
-            {{ 'op-pages.deposit' | globalize }}
-          </button>
-        </template>
+        <button
+          v-ripple
+          class="app__button-raised movements-top-bar__actions-btn"
+          @click="isDepositDrawerShown = true"
+          :disabled="!asset.isDepositable"
+          :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isDepositable) |
+            globalize({ asset: asset.code })
+          "
+        >
+          <i class="mdi mdi-upload movements-top-bar__btn-icon" />
+          {{ 'op-pages.deposit' | globalize }}
+        </button>
 
-        <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(TransferDrawerPseudoModule)">
-          <button
-            v-ripple
-            class="app__button-raised movements-top-bar__actions-btn"
-            @click="isTransferDrawerShown = true"
-            :disabled="!asset.isTransferable"
-            :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isTransferable) |
-              globalize({ asset: asset.code })
-            "
-          >
-            <i class="mdi mdi-send movements-top-bar__btn-icon" />
-            {{ 'op-pages.send' | globalize }}
-          </button>
-        </template>
+        <button
+          v-ripple
+          class="app__button-raised movements-top-bar__actions-btn"
+          @click="isTransferDrawerShown = true"
+          :disabled="!asset.isTransferable"
+          :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isTransferable) |
+            globalize({ asset: asset.code })
+          "
+        >
+          <i class="mdi mdi-send movements-top-bar__btn-icon" />
+          {{ 'op-pages.send' | globalize }}
+        </button>
       </div>
     </top-bar>
 
@@ -95,8 +86,7 @@
       <template slot="heading">
         {{ 'deposit-form.deposit' | globalize }}
       </template>
-      <submodule-importer
-        :submodule="getModule().getSubmodule(DepositFormPseudoModule)"
+      <deposit-form
         :asset-code="asset.code"
       />
     </drawer>
@@ -123,11 +113,8 @@ import SelectField from '@/vue/fields/SelectField'
 
 import WithdrawalForm from '@/vue/forms/WithdrawalForm'
 import TransferForm from '@/vue/forms/TransferForm'
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
+import DepositForm from '@/vue/forms/DepositForm'
 
-import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
-import { DepositFormPseudoModule } from '@/modules-arch/pseudo-modules/deposit-form-pseudo-module'
-import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { vueRoutes } from '@/vue-router/routes'
 
 const EVENTS = {
@@ -150,7 +137,7 @@ export default {
     Drawer,
     WithdrawalForm,
     TransferForm,
-    SubmoduleImporter,
+    DepositForm,
   },
   data: _ => ({
     isInitialized: false,
@@ -158,9 +145,6 @@ export default {
     isReedemDrawerShown: false,
     isDepositDrawerShown: false,
     isWithdrawalDrawerShown: false,
-    WithdrawalDrawerPseudoModule,
-    DepositFormPseudoModule,
-    TransferDrawerPseudoModule,
     asset: {},
     EVENTS,
     ASSET_POLICIES_STR,
@@ -190,10 +174,10 @@ export default {
   watch: {
     asset: {
       deep: true,
-      handler (value) {
-        this.$router.push({
+      async handler (value) {
+        await this.$router.push({
           query: { asset: value.code },
-        })
+        }, () => {})
         this.$emit(EVENTS.assetUpdated, value)
       },
     },

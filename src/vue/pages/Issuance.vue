@@ -12,7 +12,6 @@
         slot="extra"
       >
         <button
-          v-if="getModule().canRenderSubmodule(PreIssuanceFormModule)"
           v-ripple
           class="app__button-raised"
           @click="isPreIssuanceDrawerShown = true"
@@ -21,7 +20,6 @@
         </button>
 
         <button
-          v-if="getModule().canRenderSubmodule(IssuanceFormModule)"
           v-ripple
           class="app__button-raised"
           @click="isIssuanceDrawerShown = true"
@@ -31,38 +29,27 @@
       </template>
     </top-bar>
 
-    <drawer
-      v-if="getModule().canRenderSubmodule(PreIssuanceFormModule)"
-      :is-shown.sync="isPreIssuanceDrawerShown"
-    >
+    <drawer :is-shown.sync="isPreIssuanceDrawerShown">
       <template slot="heading">
         {{ 'issuance-page.upload-pre-issuance' | globalize }}
       </template>
 
-      <submodule-importer
-        :submodule="getModule().getSubmodule(PreIssuanceFormModule)"
+      <pre-issuance-form-module
         @pre-issuance-created="isPreIssuanceDrawerShown = false"
       />
     </drawer>
 
-    <drawer
-      v-if="getModule().canRenderSubmodule(IssuanceFormModule)"
-      :is-shown.sync="isIssuanceDrawerShown"
-    >
+    <drawer :is-shown.sync="isIssuanceDrawerShown">
       <template slot="heading">
         {{ 'issuance-page.create-issuance-title' | globalize }}
       </template>
 
-      <submodule-importer
-        :submodule="getModule().getSubmodule(IssuanceFormModule)"
+      <issuance-form-module
         @issuance-created="closeDrawerAndUpdateList()"
       />
     </drawer>
 
-    <submodule-importer
-      v-if="getModule().canRenderSubmodule(IssuanceExplorerModule)"
-      :submodule="getModule().getSubmodule(IssuanceExplorerModule)"
-    />
+    <issuance-explorer-module />
   </div>
 </template>
 
@@ -75,10 +62,9 @@ import { vuexTypes } from '@/vuex'
 
 import { vueRoutes } from '@/vue-router/routes'
 
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
-import { IssuanceExplorerModule } from '@modules/issuance-explorer/module'
-import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
-import { PreIssuanceFormModule } from '@modules/pre-issuance-form/module'
+import IssuanceExplorerModule from '@/vue/modules/issuance-explorer'
+import IssuanceFormModule from '@/vue/modules/issuance-form'
+import PreIssuanceFormModule from '@modules/pre-issuance-form'
 import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
@@ -86,7 +72,9 @@ export default {
   components: {
     Drawer,
     TopBar,
-    SubmoduleImporter,
+    IssuanceFormModule,
+    PreIssuanceFormModule,
+    IssuanceExplorerModule,
   },
 
   mixins: [UpdateList],
@@ -96,9 +84,6 @@ export default {
     isPreIssuanceDrawerShown: false,
     isIssuanceCreated: false,
     vueRoutes,
-    IssuanceExplorerModule,
-    IssuanceFormModule,
-    PreIssuanceFormModule,
   }),
 
   computed: {

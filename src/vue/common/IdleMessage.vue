@@ -39,7 +39,7 @@ export default {
       return query.isIdle || /isIdle=true/ig.test(query.redirectPath)
     },
 
-    cleanQueryIsIdle (query) {
+    async cleanQueryIsIdle (query) {
       const noIdleQuery = Object.assign({}, query)
       delete noIdleQuery.isIdle
 
@@ -48,7 +48,7 @@ export default {
           noIdleQuery.redirectPath.replace(/(\?|&)?isIdle=(true|false)/ig, '')
       }
 
-      this.$router.push({
+      await this.$router.push({
         path: this.$route.path,
         query: noIdleQuery,
       })

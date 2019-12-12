@@ -45,8 +45,7 @@ export const getters = {
     .map(r => new PollRequest(r)),
 }
 
-export const pollRequestsModule = {
-  name: 'poll-requests',
+export default {
   namespaced: true,
   state,
   getters,
