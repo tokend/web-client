@@ -300,30 +300,45 @@ const router = new Router({
               name: vueRoutes.assetCreationRequests.name,
               component: CreateAssetRequestsModule,
               beforeEnter: inAppRouteGuard,
+              meta: {
+                isCorporateOnly: true,
+              },
             },
             {
               path: '/requests/asset-update',
               name: vueRoutes.assetUpdateRequests.name,
               component: UpdateAssetRequestsModule,
               beforeEnter: inAppRouteGuard,
+              meta: {
+                isCorporateOnly: true,
+              },
             },
             {
               path: '/requests/sale-creation',
               name: vueRoutes.saleCreationRequests.name,
               component: CreateSaleRequestsModule,
               beforeEnter: inAppRouteGuard,
+              meta: {
+                isCorporateOnly: true,
+              },
             },
             {
               path: '/requests/pre-issuance-upload',
               name: vueRoutes.preIssuanceUploadRequests.name,
               component: PreIssuanceRequestsModule,
               beforeEnter: inAppRouteGuard,
+              meta: {
+                isCorporateOnly: true,
+              },
             },
             {
               path: '/requests/incoming-withdrawal',
               name: vueRoutes.incomingWithdrawalRequests.name,
               component: IncomingWithdrawalRequestsModule,
               beforeEnter: inAppRouteGuard,
+              meta: {
+                isCorporateOnly: true,
+              },
             },
           ],
         },
@@ -426,26 +441,18 @@ function authPageGuard (to, from, next) {
 
 function redirectRouteGuard (to, from, next) {
   const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
-  const isAccountUnverified = store.getters[vuexTypes.isAccountUnverified]
 
-  if (isLoggedIn && !isAccountUnverified) {
+  if (isLoggedIn) {
     const isKycRecoveryInProgress = store
       .getters[vuexTypes.isKycRecoveryInProgress]
 
     if (isKycRecoveryInProgress) {
       next(vueRoutes.kycRecoveryManagement)
     } else if (to.name === vueRoutes.app.name) {
-      const isAccountCorporate = store.getters[vuexTypes.isAccountCorporate]
-      if (isAccountCorporate) {
-        next(vueRoutes.customers)
-      } else {
-        next(vueRoutes.assetsExplore)
-      }
+      next(vueRoutes.dashboard)
     } else {
       next()
     }
-  } else if (isLoggedIn && isAccountUnverified) {
-    next(vueRoutes.signupKyc)
   } else {
     next(vueRoutes.login)
   }
@@ -453,14 +460,10 @@ function redirectRouteGuard (to, from, next) {
 
 function inAppRouteGuard (to, from, next) {
   const isAccountCorporate = store.getters[vuexTypes.isAccountCorporate]
-  const isAccountGeneral = store.getters[vuexTypes.isAccountGeneral]
   const isCorporateRouter = _get(to, 'meta.isCorporateOnly')
-  const isGeneralRouter = _get(to, 'meta.isGeneralOnly')
   if (isAccountCorporate && isCorporateRouter) {
     next()
-  } else if (isAccountGeneral && isGeneralRouter) {
-    next()
-  } else if (!isCorporateRouter && !isGeneralRouter) {
+  } else if (!isCorporateRouter) {
     next()
   } else {
     next(vueRoutes.app)

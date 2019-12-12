@@ -1,5 +1,5 @@
 <template>
-  <router-link class="logotype" :to="vueRoutes.app">
+  <router-link class="logotype" :to="vueRoutes.dashboard">
     <img :src="logoUrl" :alt="config.APP_NAME">
   </router-link>
 </template>

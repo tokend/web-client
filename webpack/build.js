@@ -49,9 +49,6 @@ if (args.envArgs) {
 if (args.setBuildVersion) {
   appEnv.BUILD_VERSION = makeEnvArgValue(args.setBuildVersion)
 }
-if (args.schemeName) {
-  appEnv.MODULE_SCHEME_NAME = makeEnvArgValue(args.schemeName)
-}
 
 /* eslint-disable-next-line no-console */
 console.log(
