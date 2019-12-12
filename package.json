@@ -30,7 +30,7 @@
     "bignumber.js": "8.0.1",
     "card-validator": "6.1.0",
     "clipboard": "2.0.4",
-    "csv-parse": "4.4.3",
+    "csv-parse": "4.4.6",
     "custom-select": "1.1.15",
     "d3": "5.9.2",
     "flatpickr": "4.6.1",
