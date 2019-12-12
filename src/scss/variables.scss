@@ -62,7 +62,7 @@ $col-text-on-dark-bg: $_white;
 $col-primary-inactive: rgba($col-primary, 0.7);
 $col-primary-inactive-hover-darken: darken($col-primary-inactive, 20%);
 $col-field-inactive: rgba($col-field-txt, 0.7);
-$col-primary-flat-inactive: rgba($col-btn, 0.7);
+$col-primary-flat-inactive: $col-button-disabled;
 $col-primary-flat-hover: rgba($col-btn, 0.2);
 $col-text-inactive: rgba($col-text, 0.7);
 // status colors:
@@ -199,7 +199,6 @@ $col-top-bar-tab: $_lightPurple;
 $col-chart-line: rgba($col-chart, 0.7);
 $col-chart-fill: $_white;
 $col-chart-ticks: rgba($col-chart, 0.5);
-$col-chart-text: rgba($col-chart, 0.7);
 $col-chart-tip-circle-border: $_white;
 $col-chart-tip-circle: $col-chart;
 $col-chart-tip-line-inactive: $col-chart;
@@ -211,6 +210,7 @@ $col-chart-tip-date-mm: rgba($col-chart, 0.6);
 $col-chart-message-wrapper: rgba($col-app-content-background, 0.25);
 $col-chart-message-background: $_white;
 $col-chart-message-text: $col-chart;
+$col-chart-tabs: $col-chart-text;
 
 // form stepper colors
 $col-form-stepper-text: $col-primary;
