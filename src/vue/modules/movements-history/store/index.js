@@ -62,8 +62,7 @@ export const getters = {
   [types.movements]: state => state.movements.map(m => new Movement(m)),
 }
 
-export const movementsHistoryModule = {
-  name: 'movements-history',
+export default {
   namespaced: true,
   state,
   getters,

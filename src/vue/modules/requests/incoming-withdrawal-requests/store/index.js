@@ -76,8 +76,7 @@ export const getters = {
     .map(r => new IncomingWithdrawalRequest(r)),
 }
 
-export const incomingWithdrawalRequestsModule = {
-  name: 'incoming-withdrawal-requests',
+export default {
   namespaced: true,
   state,
   getters,

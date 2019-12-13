@@ -234,7 +234,7 @@ export default {
       await this.createChangeRoleRequest(blobId)
       this.uploadState.isCreatingChangeRoleRequest = false
 
-      this.$router.push({
+      await this.$router.push({
         name: vueRoutes.documentExplorer.name,
       })
     },

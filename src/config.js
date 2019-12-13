@@ -101,12 +101,6 @@ export default Object.assign(
     IDLE_TIMEOUT: 15,
 
     /**
-     * Module scheme to use. The module scheme will be used to combine module
-     * set of the application.
-     */
-    MODULE_SCHEME_NAME: 'vanilla',
-
-    /**
      * Data reload interval
      */
     RELOAD_DATA_TICKER_INTERVAL_MS: 10000,

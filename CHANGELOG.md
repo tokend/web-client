@@ -11,6 +11,9 @@ for further information about branching and tagging conventions.
 - A bug with color scheme
 - A bug with reload data on Dashboard, Sales and Trade pages
 
+#### Removed
+- All schemes
+
 ## [1.10.3] - 2019-10-24
 
 ## [1.10.3-rc.2] - 2019-10-24

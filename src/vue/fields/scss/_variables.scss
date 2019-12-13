@@ -7,7 +7,7 @@ $col-dropdown-bg: $_white;
 
 $z-index-select-field-list: 5;
 
-$field-color-background: $_thinBlue;
+$field-color-background: $col-app-content-background;
 $field-color-text: $col-field-text;
 $field-color-focused: $field-color-text;
 $field-color-unfocused: $col-field-text-unfocused;

@@ -24,20 +24,18 @@
       />
     </div>
 
-    <template v-if="isAvailableRouteName(vueRoutes.fees.name)">
-      <div class="fees-renderer__view-fees-link-wrp">
-        <router-link
-          class="fees-renderer__view-fees-link"
-          :to="vueRoutes.fees"
-          target="_blank"
-          rel="noopener"
-        >
-          {{
-            'fees-renderer.view-fees-link' | globalize
-          }}<i class="mdi mdi-open-in-new fees-renderer__view-icon" />
-        </router-link>
-      </div>
-    </template>
+    <div class="fees-renderer__view-fees-link-wrp">
+      <router-link
+        class="fees-renderer__view-fees-link"
+        :to="vueRoutes.fees"
+        target="_blank"
+        rel="noopener"
+      >
+        {{
+          'fees-renderer.view-fees-link' | globalize
+        }}<i class="mdi mdi-open-in-new fees-renderer__view-icon" />
+      </router-link>
+    </div>
 
     <div
       v-if="feesCollection.destinationFee"

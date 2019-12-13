@@ -1,7 +1,6 @@
 <template>
   <div class="verification-general-2">
-    <submodule-importer
-      :submodule="getModule().getSubmodule(VerificationGeneralFormModule)"
+    <verification-general-form-module
       :blob-id="isFormPopulatable ? kycLatestRequestBlobId : ''"
       :request-id="isRequestUpdatable ? String(kycRequestId) : '0'"
 
@@ -12,8 +11,7 @@
 </template>
 
 <script>
-import { VerificationGeneralFormModule } from '@/vue/modules/verification/general-form/module'
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
+import VerificationGeneralFormModule from '@/vue/modules/verification/general-form'
 
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -24,11 +22,8 @@ import { Bus } from '@/js/helpers/event-bus'
 export default {
   name: 'verification-general-2',
   components: {
-    SubmoduleImporter,
-  },
-  data: _ => ({
     VerificationGeneralFormModule,
-  }),
+  },
   computed: {
     ...mapGetters({
       kycState: vuexTypes.kycState,

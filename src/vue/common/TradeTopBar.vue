@@ -196,20 +196,20 @@ export default {
     },
   },
   watch: {
-    selectedPair (value) {
+    async selectedPair (value) {
       if (value) {
         const baseAsset = value.split('/')[0]
         const quoteAsset = value.split('/')[1]
         this.assetPair.base = baseAsset
         this.assetPair.quote = quoteAsset
 
-        this.$router.replace({
+        await this.$router.replace({
           name: this.$route.name,
           query: {
             base: baseAsset,
             quote: quoteAsset,
           },
-        })
+        }, () => {})
       }
     },
   },

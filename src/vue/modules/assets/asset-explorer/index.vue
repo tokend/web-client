@@ -21,7 +21,7 @@
 <script>
 import AssetsRenderer from './components/assets-renderer'
 
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { types } from './store/types'
 import { vuexTypes } from '@/vuex'
 
@@ -33,33 +33,20 @@ export default {
     AssetsRenderer,
   },
 
-  props: {
-    isAccountUnverified: {
-      type: Boolean,
-      required: true,
-    },
-    isAccountUsAccredited: {
-      type: Boolean,
-      required: true,
-    },
-    isAccountUsVerified: {
-      type: Boolean,
-      required: true,
-    },
-    isAccountGeneral: {
-      type: Boolean,
-      required: true,
-    },
-    isAccountCorporate: {
-      type: Boolean,
-      required: true,
-    },
-  },
-
   data: _ => ({
     isLoaded: false,
     isLoadFailed: false,
   }),
+
+  computed: {
+    ...mapGetters([
+      vuexTypes.isAccountUnverified,
+      vuexTypes.isAccountGeneral,
+      vuexTypes.isAccountUsVerified,
+      vuexTypes.isAccountUsAccredited,
+      vuexTypes.isAccountCorporate,
+    ]),
+  },
 
   async created () {
     await this.load()
