@@ -141,7 +141,7 @@ export default {
       this.clearLoadTradeDataTicker()
       this.loadTradeDataTickerIntervalId = setInterval(async () => {
         await this.loadTradeOffers()
-        this.updateOffersKey++
+        this.updateOffersKey = +new Date()
       }, config.RELOAD_DATA_TICKER_INTERVAL_MS)
     },
     async clearLoadTradeDataTicker () {
