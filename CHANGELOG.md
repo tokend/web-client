@@ -9,6 +9,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Fixed
 - A bug with color scheme
+- A bug with reload data on Dashboard, Sales and Trade pages
 
 #### Removed
 - All schemes
