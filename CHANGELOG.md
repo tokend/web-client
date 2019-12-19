@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 #### Fixed
 - A bug with color scheme
 - A bug with reload data on Dashboard, Sales and Trade pages
+- A bug when submit order form closed after reload data
 
 ## [1.10.3] - 2019-10-24
 

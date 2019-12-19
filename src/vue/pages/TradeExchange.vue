@@ -16,7 +16,7 @@
           <trade-offers-renderer
             class="trade-exchange__offers-list"
             :asset-pair="assetPair"
-            :key="`buy-offers-${updateOffersKey}`"
+            :update-offers-key="updateOffersKey"
             :is-buy="true"
             :is-loading="isBuyOffersLoading"
             :offers-list="buyOffersList"
@@ -26,7 +26,7 @@
           <trade-offers-renderer
             class="trade-exchange__offers-list"
             :asset-pair="assetPair"
-            :key="`sell-offers-${updateOffersKey}`"
+            :update-offers-key="updateOffersKey"
             :is-buy="false"
             :is-loading="isSellOffersLoading"
             :offers-list="sellOffersList"

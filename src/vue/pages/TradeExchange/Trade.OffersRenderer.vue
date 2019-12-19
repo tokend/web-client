@@ -39,7 +39,7 @@
             >
               <tr
                 v-for="(offer, o) in offersList"
-                :key="`trade-offers-row-${o}`"
+                :key="`trade-offers-row-${o}-${updateOffersKey}`"
                 @click="selectOffer(offer)"
                 :disabled="offer.ownerId === accountId">
                 <td>{{ offer.baseAmount | formatMoney }}</td>
@@ -121,6 +121,11 @@ export default {
       type: Array,
       required: true,
     },
+    updateOffersKey: {
+      type: Number,
+      default: 0,
+    },
+
   },
   data: () => ({
     isSubmitOfferDrawerShown: false,
