@@ -155,10 +155,10 @@ export default {
     },
   },
   watch: {
-    selectedAsset (value) {
-      this.$router.push({
+    async selectedAsset (value) {
+      await this.$router.push({
         query: { asset: value },
-      })
+      }, () => {})
     },
   },
   async created () {

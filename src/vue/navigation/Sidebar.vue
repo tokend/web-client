@@ -27,40 +27,224 @@
         </router-link>
       </section>
 
-      <section class="sidebar__scheme-label-section">
-        <p class="sidebar__scheme-label">
-          {{ schemeLabel }}
-        </p>
-      </section>
-
       <section class="sidebar__links-section">
-        <nav
-          v-for="[sectionName, menuItems] of Object.entries(sectionsToRender)"
-          :key="sectionName"
-          class="sidebar__links-group"
-        >
-          <p
-            v-if="sectionName !== DEFAULT_SECTION_NAME"
-            class="sidebar__links-group-title"
-          >
-            {{ sectionName | globalize }}
-          </p>
-
+        <nav class="sidebar__links-group">
           <router-link
-            v-for="item in menuItems"
-            :key="item.menuButtonTranslationId"
+            key="dashboard"
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
-            :to="item.routerEntry.path"
             tag="a"
+            :to="vueRoutes.dashboard"
           >
             <i
               class="sidebar__link-icon"
-              :class="`mdi mdi-${item.menuButtonMdiName}`"
+              :class="`mdi mdi-view-dashboard`"
             />
             <span>
-              {{ item.menuButtonTranslationId | globalize }}
+              {{ 'pages-names.dashboard' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            key="movements"
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            tag="a"
+            :to="vueRoutes.movements"
+          >
+            <i
+              class="sidebar__link-icon"
+              :class="`mdi mdi-menu`"
+            />
+            <span>
+              {{ 'pages-names.movements' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            v-if="isAccountCorporate"
+            key="register-of-shares"
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            tag="a"
+            :to="vueRoutes.registerOfShares"
+          >
+            <i
+              class="sidebar__link-icon"
+              :class="`mdi mdi-book-open`"
+            />
+            <span>
+              {{ 'pages-names.register-of-shares' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            key="assets"
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            tag="a"
+            :to="vueRoutes.assets"
+          >
+            <i
+              class="sidebar__link-icon"
+              :class="`mdi mdi-coins`"
+            />
+            <span>
+              {{ 'pages-names.assets' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            key="sales"
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            tag="a"
+            :to="vueRoutes.sales"
+          >
+            <i
+              class="sidebar__link-icon"
+              :class="`mdi mdi-trending-up`"
+            />
+            <span>
+              {{ 'pages-names.sales' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            key="polls"
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            tag="a"
+            :to="vueRoutes.polls"
+          >
+            <i
+              class="sidebar__link-icon"
+              :class="`mdi mdi-vote`"
+            />
+            <span>
+              {{ 'pages-names.polls' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            key="trade"
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            tag="a"
+            :to="vueRoutes.trade"
+          >
+            <i
+              class="sidebar__link-icon"
+              :class="`mdi mdi-finance`"
+            />
+            <span>
+              {{ 'pages-names.trade' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            v-if="isAccountCorporate"
+            key="requests"
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            tag="a"
+            :to="vueRoutes.requests"
+          >
+            <i
+              class="sidebar__link-icon"
+              :class="`mdi mdi-book-open-variant`"
+            />
+            <span>
+              {{ 'pages-names.requests' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            key="issuance"
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            tag="a"
+            :to="vueRoutes.issuance"
+          >
+            <i
+              class="sidebar__link-icon"
+              :class="`mdi mdi-poll`"
+            />
+            <span>
+              {{ 'pages-names.issuance' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            key="limits"
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            tag="a"
+            :to="vueRoutes.limits"
+          >
+            <i
+              class="sidebar__link-icon"
+              :class="`mdi mdi-poll-box`"
+            />
+            <span>
+              {{ 'pages-names.limits' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            key="fees"
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            tag="a"
+            :to="vueRoutes.fees"
+          >
+            <i
+              class="sidebar__link-icon"
+              :class="`mdi mdi-flash`"
+            />
+            <span>
+              {{ 'pages-names.fees' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            key="atomic-swaps"
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            tag="a"
+            :to="vueRoutes.atomicSwaps"
+          >
+            <i
+              class="sidebar__link-icon"
+              :class="`mdi mdi-swap-horizontal`"
+            />
+            <span>
+              {{ 'pages-names.atomic-swaps' | globalize }}
+            </span>
+          </router-link>
+        </nav>
+
+        <nav class="sidebar__links-group">
+          <p
+            class="sidebar__links-group-title"
+          >
+            {{ 'sidebar.section-account' | globalize }}
+          </p>
+          <router-link
+            key="settings"
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            tag="a"
+            :to="vueRoutes.settings"
+          >
+            <i
+              class="sidebar__link-icon"
+              :class="`mdi mdi-account-settings`"
+            />
+            <span>
+              {{ 'pages-names.settings' | globalize }}
             </span>
           </router-link>
         </nav>
@@ -83,9 +267,6 @@ import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 
 import config from '@/config'
-import { SchemeRegistry } from '@/modules-arch/scheme-registry'
-
-const DEFAULT_SECTION_NAME = 'default'
 
 export default {
   name: 'sidebar',
@@ -99,21 +280,12 @@ export default {
     isOpened: false,
     config,
     vueRoutes,
-    DEFAULT_SECTION_NAME,
   }),
 
   computed: {
     ...mapGetters({
       isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
-    sectionsToRender () {
-      const sections = this.groupPagesBySections(SchemeRegistry.current.pages)
-      const filteredSections = this.filterUnrenderedSections(sections)
-      return filteredSections
-    },
-    schemeLabel () {
-      return SchemeRegistry.current.sidebarLabel
-    },
   },
 
   methods: {
@@ -123,42 +295,6 @@ export default {
 
     closeSidebar () {
       this.isOpened = false
-    },
-
-    groupPagesBySections (pages) {
-      const result = { [DEFAULT_SECTION_NAME]: [] }
-
-      for (const item of pages) {
-        const translationId = item.menuSectionTranslationId
-        if (!translationId) {
-          result[DEFAULT_SECTION_NAME].push(item)
-        } else {
-          if (!result[translationId]) {
-            result[translationId] = []
-          }
-          result[translationId].push(item)
-        }
-      }
-
-      return result
-    },
-
-    filterUnrenderedSections (sections) {
-      const result = { ...sections }
-
-      for (const [key, value] of Object.entries(result)) {
-        const filteredValue = value
-          .filter(item => item.menuButtonTranslationId)
-          .filter(item => item.isAccessible)
-
-        if (filteredValue.length) {
-          result[key] = filteredValue
-        } else {
-          delete result[key]
-        }
-      }
-
-      return result
     },
   },
 }

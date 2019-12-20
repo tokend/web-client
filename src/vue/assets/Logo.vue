@@ -1,5 +1,5 @@
 <template>
-  <router-link class="logotype" :to="vueRoutes.app">
+  <router-link class="logotype" :to="vueRoutes.dashboard">
     <img :src="logoUrl" :alt="config.APP_NAME">
   </router-link>
 </template>
@@ -8,7 +8,6 @@
 import config from '@/config'
 
 import { vueRoutes } from '@/vue-router/routes'
-import { SchemeRegistry } from '@/modules-arch/scheme-registry'
 
 const DEFAULT_LOGO_URL = '/static/branding/logo.svg'
 
@@ -20,7 +19,7 @@ export default {
 
   computed: {
     logoUrl () {
-      return SchemeRegistry.current.appLogoUrl || DEFAULT_LOGO_URL
+      return DEFAULT_LOGO_URL
     },
   },
 }

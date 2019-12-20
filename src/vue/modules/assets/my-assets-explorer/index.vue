@@ -33,16 +33,13 @@
               {{ 'assets.update-btn' | globalize }}
             </button>
 
-            <!-- eslint-disable-next-line max-len -->
-            <template v-if="isAvailableRouteName(vueRoutes.registerOfShares.name)">
-              <router-link
-                :to="vueRoutes.registerOfShares"
-                tag="button"
-                class="app__button-flat my-assets-explorer__view-shares-btn"
-              >
-                {{ 'assets.view-shares-btn' | globalize }}
-              </router-link>
-            </template>
+            <router-link
+              :to="vueRoutes.registerOfShares"
+              tag="button"
+              class="app__button-flat my-assets-explorer__view-shares-btn"
+            >
+              {{ 'assets.view-shares-btn' | globalize }}
+            </router-link>
           </div>
         </template>
       </drawer>
@@ -118,12 +115,7 @@ export default {
     AssetSkeletonLoader,
   },
   mixins: [UpdateList],
-  props: {
-    defaultQuoteAsset: {
-      type: String,
-      required: true,
-    },
-  },
+
   data: _ => ({
     isLoaded: false,
     isLoadFailed: false,
@@ -137,16 +129,13 @@ export default {
   }),
 
   computed: {
-    ...mapGetters({
-      ownedAssets: vuexTypes.ownedBalancesAssets,
-      accountBalances: vuexTypes.accountBalances,
-      accountOwnedAssetsBalances: vuexTypes.accountOwnedAssetsBalances,
-    }),
-
     ...mapGetters([
       vuexTypes.accountId,
       vuexTypes.kvAssetTypeKycRequired,
       vuexTypes.kvAssetTypeSecurity,
+      vuexTypes.defaultQuoteAsset,
+      vuexTypes.accountOwnedAssetsBalances,
+      vuexTypes.accountBalances,
     ]),
   },
 

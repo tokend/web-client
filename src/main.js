@@ -8,9 +8,9 @@ import log from 'loglevel'
 import config from './config'
 import NProgress from 'nprogress'
 import moment from 'moment'
+import router from '@/vue-router'
 
-import { extendStoreWithScheme } from '@/vuex'
-import { buildRouter } from '@/vue-router'
+import { buildStore } from '@/vuex'
 import { tableScrollShadow } from '@/vue/directives/tableScrollShadow'
 import { ripple } from '@/vue/directives/ripple'
 import { tooltip } from '@/vue/directives/tooltip'
@@ -28,20 +28,10 @@ import { formatDateDMY } from '@/vue/filters/formatDateDMY'
 import { formatDateDMYT } from '@/vue/filters/formatDateDMYT'
 import { abbreviate } from '@/vue/filters/abbreviate'
 import { cropAddress } from '@/vue/filters/cropAddress'
-import { SchemeRegistry } from '@/modules-arch/scheme-registry'
 import { ErrorTracker } from '@/js/helpers/error-tracker'
 
 async function init () {
-  await SchemeRegistry.useScheme(config.MODULE_SCHEME_NAME)
-  Vue.use(SchemeRegistry.current)
-
-  i18n.onLanguageChanged(async lang => {
-    if (SchemeRegistry.current.importLanguageResource) {
-      const resource = await SchemeRegistry.current
-        .importLanguageResource(lang)
-      i18n._appendResources(lang, resource)
-    }
-
+  i18n.onLanguageChanged(lang => {
     moment.locale(lang)
   })
 
@@ -69,8 +59,7 @@ async function init () {
   Vue.filter('abbreviate', abbreviate)
   Vue.filter('cropAddress', cropAddress)
 
-  const store = await extendStoreWithScheme(SchemeRegistry.current)
-  const router = buildRouter(store)
+  const store = buildStore()
 
   router.beforeEach((to, from, next) => {
     if (to.name !== from.name) {

@@ -879,72 +879,6 @@
       "not-redeemable-msg": "{{asset}} недоступен для погашения",
       "unverified-cant-do-msg": "Недоступно для неподтвержденных аккаунтов"
     },
-    "op-details": {
-      "fixed-fee-lbl": "Fixed fee",
-      "percent-fee-lbl": "Percent fee",
-      "asset-lbl": "Asset",
-      "amount-lbl": "Amount",
-      "base-amount-lbl": "Base amount",
-      "quote-amount-lbl": "Quote amount",
-      "counterparty-email-lbl": "Counterparty email",
-      "id-lbl": "Operation ID",
-      "source-fees-lbl": "Sender fees",
-      "destination-fees-lbl": "Recipient fees",
-      "subject-lbl": "Subject",
-      "sale-name-lbl": "Sale name",
-      "asset-sale-val": "{{asset}} sale",
-      "base-asset-lbl": "Base asset",
-      "fee-paid-lbl": "Fee paid",
-      "price-lbl": "Price",
-      "destination-asset-lbl": "Destination asset",
-      "destination-amount-lbl": "Destination amount",
-      "date-lbl": "Date",
-      "counterparty-lbl": "Counterparty"
-    },
-    "loyalty-points": {
-      "create-invoice-btn": "Create invoice",
-      "create-invoice-form-title": "New invoice",
-      "statistics-page": "Statistics",
-      "invoices-page": "Invoices"
-    },
-    "loyalty-points-invoices": {
-      "history-title": "History"
-    },
-    "loyalty-points-statistics": {
-      "withdrawals-title": "Withdrawals",
-      "withdrawal-requests-title": "Withdrawal requests",
-      "incoming-volume-title": "Withdrawal's incoming volume",
-      "summary-volume-title": "Withdrawal's summary volume"
-    },
-    "incoming-volume-viewer": {
-      "loading-msg": "Loading incoming withdrawal's volume",
-      "loading-error-msg": "There was an error while loading."
-    },
-    "summary-volume-viewer": {
-      "loading-msg": "Loading summary withdrawal's volume…",
-      "loading-error-msg": "There was an error while loading."
-    },
-    "withdrawals-statistics-viewer": {
-      "loading-msg": "Loading withdrawals statistics…",
-      "loading-error-msg": "There was an error while loading."
-    },
-    "withdrawal-requests-viewer": {
-      "loading-msg": "Loading withdrawal requests…",
-      "loading-error-msg": "There was an error while loading.",
-      "approved-request-label": "Approved",
-      "rejected-request-label": "Rejected"
-    },
-    "create-invoice-form": {
-      "amount-lbl": "Amount {{asset}}",
-      "close": "Close",
-      "price": "Price",
-      "asset": "Asset",
-      "total-amount": "Total amount",
-      "create-invoice": "Create invoice",
-      "no-pairs-message": "No pairs found",
-      "here-will-pairs-list": "After creation one of the asset pair, you will able to create an invoice",
-      "loading-msg": "Loading..."
-    },
     "movements-history": {
       "effects": {
         "funded": "Финансировано",
@@ -1585,28 +1519,6 @@
       "no-data-for-asks-message": "Здесь будет список текущих покупок для {{base}}/{{quote}} пары",
       "no-data-for-bids-message": "Здесь будет список текущих продаж для {{base}}/{{quote}} пары"
     },
-    "redeem-form": {
-      "title": "Redeem",
-      "opportunity-uniq-code-lbl": "Opportunity uniq code",
-      "quote-asset-lbl": "Invested in",
-      "total-lbl": "Total",
-      "submit-sell-btn": "Sell",
-      "no-investments": "You have no investments",
-      "here-will-investments-list": "Here will be the list of your investments that you can redeem",
-      "loading-msg": "Loading..."
-    },
-    "buy-back-form": {
-      "title": "Buy back",
-      "opportunity-uniq-code-lbl": "Opportunity uniq code",
-      "quote-asset-lbl": "Invested in",
-      "total-lbl": "Total ({{asset}})",
-      "amount-lbl": "Amount ({{asset}})",
-      "submit-btn": "Buy",
-      "no-investments": "You have no investments",
-      "here-will-investments-list": "Here will be the list of your investments that you can redeem",
-      "loading-msg": "Loading...",
-      "issued-assets-msg": "Issued {{value}}"
-    },
     "create-trade-offer-form": {
       "price-lbl": "Цена за 1 {{baseAsset}} (в {{quoteAsset}})",
       "amount-lbl": "Количество {{asset}}",
@@ -1679,25 +1591,6 @@
       "days-to-end": "дней до закрытия",
       "closed": "Закрыт",
       "canceled": "Отменен"
-    },
-    "opportunity-details": {
-      "loading-msg": "Loading",
-      "loading-error-msg": "There was an error while loading.",
-      "campaign-title": "Campaign",
-      "invest": "Invest",
-      "dividend": "Dividend",
-      "buy-back": "Buy back",
-      "overview-title": "Opportunity overview",
-      "opportunity-not-found-title": "Opportunity not found",
-      "opportunity-not-found-desc": "There are no opportunities with this ID",
-      "no-description-msg": "No description provided",
-      "funded": "{{funded, percent}} funded",
-      "investors": "### {{investors}}\ninvestors",
-      "days-to-go": "### {{days}}\ndays to go",
-      "view-details-btn": "View details",
-      "opportunities-list": "Opportunities list",
-      "dividend-form-title": "Dividends",
-      "buy-back-form-title": "Buy back"
     },
     "sale-overview": {
       "loading-msg": "Загрузка…",
@@ -1814,55 +1707,6 @@
       "fixed-price": "Фиксированная цена",
       "immediate": "Немедленный"
     },
-    "withdrawal-fiat-module": {
-      "form-title": "Withdrawal fiat",
-      "tab-card-lbl": "Card",
-      "tab-bank-lbl": "Bank"
-    },
-    "withdrawal-fiat-bank-module": {
-      "asset": "Asset",
-      "form-title": "Withdrawal fiat",
-      "amount": "Amount ({{asset}})",
-      "user-name": "User full name",
-      "bank-name": "Bank name",
-      "balance": "Balance is {{amount}} {{asset}}.",
-      "iban": "International Bank Account Number (IBAN)",
-      "bank-bic": "Bank BIC/SWIFT code",
-      "loading-msg": "Loading...",
-      "network-fee-hint": "External network fee",
-      "network-fee-unknown": "Unknown",
-      "fixed-fee": "Fixed fee",
-      "percent-fee": "Percent fee",
-      "destination-address": "Destination {{asset}} address",
-      "total-amount-account": "Total fee",
-      "withdrawal": "Withdrawal",
-      "failed-load-fees": "Failed to load fees. Try again later",
-      "withdraw-success": "Withdrawal request successfully created",
-      "fee-loading-msg": "Loading…",
-      "no-assets": "No assets found",
-      "here-will-assets-list": "Here will be the list of your withdrawable assets"
-    },
-    "withdrawal-fiat-card-module": {
-      "asset": "Asset",
-      "form-title": "Withdrawal fiat",
-      "amount": "Amount ({{asset}})",
-      "card-number": "Card number",
-      "card-holder": "Card holder",
-      "balance": "Balance is {{amount}} {{asset}}.",
-      "loading-msg": "Loading...",
-      "network-fee-hint": "External network fee",
-      "network-fee-unknown": "Unknown",
-      "fixed-fee": "Fixed fee",
-      "percent-fee": "Percent fee",
-      "destination-address": "Destination {{asset}} address",
-      "total-amount-account": "Total fee",
-      "withdrawal": "Withdrawal",
-      "failed-load-fees": "Failed to load fees. Try again later",
-      "withdraw-success": "Withdrawal request successfully created",
-      "fee-loading-msg": "Loading…",
-      "no-assets": "No assets found",
-      "here-will-assets-list": "Here will be the list of your withdrawable assets"
-    },
     "withdrawal-form": {
       "withdrawal": "Вывод",
       "asset": "Актив",
@@ -1912,60 +1756,6 @@
       "generate-new-address-btn": "Создать новый",
       "address-lbl": "Адрес",
       "payload-lbl": "Пейлоад"
-    },
-    "deposit-fiat-module": {
-      "form-title": "Deposit fiat",
-      "tab-card-lbl": "Card",
-      "tab-bank-lbl": "Bank"
-    },
-    "deposit-fiat-card-module": {
-      "asset": "Asset",
-      "amount": "Amount ({{asset}})",
-      "card-number": "Card number",
-      "expiration-date": "Card expiration date (mm/yy)",
-      "card-cvv3": "Card CVV3",
-      "card-holder": "Card holder",
-      "balance": "Balance is {{amount}} {{asset}}.",
-      "loading-msg": "Loading...",
-      "network-fee-hint": "External network fee",
-      "network-fee-unknown": "Unknown",
-      "fixed-fee": "Fixed fee",
-      "percent-fee": "Percent fee",
-      "destination-address": "Destination {{asset}} address",
-      "total-amount-account": "Total fee",
-      "deposit": "Deposit",
-      "failed-load-fees": "Failed to load fees. Try again later",
-      "deposit-success": "Deposit request successfully created",
-      "fee-loading-msg": "Loading…",
-      "no-assets": "No assets found",
-      "here-will-assets-list": "Here will be the list of your depositable assets"
-    },
-    "deposit-fiat-bank-module": {
-      "asset": "Asset",
-      "balance": "Balance is {{amount}} {{asset}}.",
-      "beneficiary-title": "Beneficiary",
-      "beneficiary-iban": "International Bank Account Number (IBAN)",
-      "beneficiary-account": "Account No",
-      "beneficiary-receiver": "Receiver",
-      "beneficiary-bank": "Bank",
-      "beneficiary-city": "City",
-      "beneficiary-swift": "Swift code",
-      "intermediary-title": "Intermediary",
-      "intermediary-bank": "Bank",
-      "intermediary-city": "City",
-      "intermediary-account": "Account number",
-      "intermediary-swift": "Swift code",
-      "loading-msg": "Loading...",
-      "network-fee-hint": "External network fee",
-      "network-fee-unknown": "Unknown",
-      "fixed-fee": "Fixed fee",
-      "percent-fee": "Percent fee",
-      "total-amount-account": "Total fee",
-      "payment-details": "Details of payment",
-      "failed-load-fees": "Failed to load fees. Try again later",
-      "fee-loading-msg": "Loading…",
-      "no-assets": "No assets found",
-      "here-will-assets-list": "Here will be the list of your depositable assets"
     },
     "coinpayments-deposit": {
       "amount-lbl": "Количество",
@@ -2077,71 +1867,6 @@
       "erc20-deposit-title": "Erc20 депозит",
       "erc20-address-title": "Erc20 адрес"
     },
-    "create-opportunity": {
-      "maturity-date": "Maturity Date",
-      "annual-return": "Annual return in percents",
-      "expected-revenue": "Expected revenue per year in percents",
-      "bond-creation": "Bond",
-      "property-purchase": "Revenue",
-      "loan": "Loan",
-      "bond-description": "Fixed interest with redemption on maturity date.",
-      "revenue-description": "Variable revenue sharing",
-      "loan-description": "Flexible interest rates and pay off schedule",
-      "opportunity-name": "Opportunity name",
-      "opportunity-code": "Opportunity unique code",
-      "investor-requirements": "Investor Requirements",
-      "transferable-lbl": "Transferable",
-      "logo-note": "JPG or PNG, no less than 120x120 px",
-      "logo-lbl": "Opportunity icon",
-      "next-btn": "Next",
-      "terms-note": "JPG, PNG, PDF, max 5 mb.",
-      "terms-lbl": "Upload terms",
-      "start-time": "Start time",
-      "close-time": "Close time",
-      "soft-cap": "Soft cap ({{asset}})",
-      "hard-cap": "Hard cap ({{asset}})",
-      "max-issuance-amount": "Issuance amount",
-      "accept-investments-in": "Accept investments in:",
-      "upload-image": "Upload the image users will see first in their searcher",
-      "cover-logo": "Cover logo",
-      "short-description": "Short description",
-      "subject-lbl": "Add note",
-      "full-description": "Full description",
-      "submit-btn": "Submit",
-      "asset-type-required-kyc": "Requires KYC",
-      "asset-type-not-required-kyc": "Doesn't require KYC",
-      "loading-msg": "Loading",
-      "information-step": "Provide opportunity information",
-      "provide-sale-information": "Investment information",
-      "add-blurb": "Marketing information",
-      "successfully-submitted-msg": "Your request was successfully submitted"
-    },
-    "dividend-form": {
-      "title": "Dividends",
-      "asset": "Asset",
-      "loading-msg": "Loading...",
-      "loading-error-msg": "There was an error while loading",
-      "submit-btn": "Submit",
-      "no-assets-heading": "Nothing to dividend yet",
-      "no-assets": "Your wallet doesn't contain any owned assets yet. You can discover some on the opportunities list",
-      "discover-assets-btn": "Discover asset",
-      "dividend-btn": "Dividend",
-      "email": "Email",
-      "asset-amount": "Asset amount",
-      "supposed-dividend-amount": "Supposed dividend amount",
-      "failed-load-signers": "Failed to load signers. Try again later",
-      "dividend-success": "Dividend request successfully created",
-      "balance": "Balance is {{amount}} {{asset}}.",
-      "amount": "Amount ({{asset}})",
-      "asset-dividend-pay": "Asset in which dividends will be paid",
-      "asset-holders-not-found": "Asset holders not found",
-      "asset-holders": "Asset holders",
-      "subject-msg": "Dividend for {{asset}}"
-    },
-    "documents-page": {
-      "explore-documents-title": "Explore documents",
-      "upload-document": "Upload document"
-    },
     "document-upload-form": {
       "document-lbl": "Select your document. You cannot upload the same file twice",
       "file-type-note": "image/pdf (Max 32mb)",
@@ -2220,10 +1945,6 @@
     },
     "clipboard-field": {
       "copied": "Скопировано"
-    },
-    "asset-select-field": {
-      "failed-loading-msg": "Ошибка загрузки активов!",
-      "no-assets-for-select": "Нет активов для выбора"
     },
     "polls": {
       "create-poll": "Новый опрос",

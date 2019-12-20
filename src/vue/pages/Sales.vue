@@ -2,23 +2,20 @@
   <div class="sales">
     <top-bar>
       <template slot="main">
-        <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(SalesListPageModule)">
-          <router-link :to="vueRoutes.investableSales">
-            <span>{{ 'sales.investable-sales' | globalize }}</span>
-          </router-link>
-        </template>
+        <router-link :to="vueRoutes.investableSales">
+          <span>{{ 'sales.investable-sales' | globalize }}</span>
+        </router-link>
 
-        <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(SalesListOwnedPageModule)">
-          <router-link :to="vueRoutes.userOwnedSales">
-            <span>{{ 'sales.my-sales' | globalize }}</span>
-          </router-link>
-        </template>
+        <router-link
+          v-if="isAccountCorporate"
+          :to="vueRoutes.userOwnedSales"
+        >
+          <span>{{ 'sales.my-sales' | globalize }}</span>
+        </router-link>
       </template>
 
       <template
-        v-if="getModule().canRenderSubmodule(CreateSaleFormModule)"
+        v-if="isAccountCorporate"
         slot="extra"
       >
         <button
@@ -30,42 +27,8 @@
           {{ 'sales.create-sale' | globalize }}
         </button>
       </template>
-
-      <template
-        v-if="getModule().canRenderSubmodule(CreateOpportunityModule)"
-        slot="extra"
-      >
-        <button
-          v-ripple
-          class="app__button-raised"
-          @click="isAssetSaleDrawerShown = true"
-        >
-          <i class="mdi mdi-plus sales__btn-icon" />
-          {{ 'sales.create-sale' | globalize }}
-        </button>
-      </template>
     </top-bar>
-
-    <template v-if="getModule().canRenderSubmodule(CreateOpportunityModule)">
-      <drawer
-        :is-shown.sync="isAssetSaleDrawerShown"
-        :close-by-click-outside="false"
-      >
-        <template slot="heading">
-          {{ 'sales.create-sale' | globalize }}
-        </template>
-        <submodule-importer
-          :submodule="getModule().getSubmodule(CreateOpportunityModule)"
-          @submitted="closeAssetSaleDrawerAndUpdateList()"
-          :account-id="accountId"
-          :min-amount="MIN_AMOUNT"
-          :max-amount="MAX_AMOUNT"
-          :decimal-pints="DECIMAL_POINTS"
-        />
-      </drawer>
-    </template>
-
-    <template v-if="getModule().canRenderSubmodule(CreateSaleFormModule)">
+    <template v-if="isAccountCorporate">
       <drawer
         :is-shown.sync="isCreateSaleDrawerShown"
         :close-by-click-outside="false"
@@ -74,8 +37,7 @@
         <template slot="heading">
           {{ 'sales.new-sale' | globalize }}
         </template>
-        <submodule-importer
-          :submodule="getModule().getSubmodule(CreateSaleFormModule)"
+        <create-sale-form-module
           @submitted="closeCreateSaleDrawerAndUpdateList()"
         />
       </drawer>
@@ -90,17 +52,13 @@ import config from '@/config'
 
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
+import CreateSaleFormModule from '@modules/create-sale-form'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+
 import { vueRoutes } from '@/vue-router/routes'
 
-import { CreateSaleFormModule } from '@modules/create-sale-form/module'
-
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
-import { CreateOpportunityModule } from '@/vue/modules/create-opportunity/module'
-import { SalesListPageModule } from '@/vue/pages/sales/investable-sales-page-module'
-import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
 import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
@@ -108,7 +66,7 @@ export default {
   components: {
     TopBar,
     Drawer,
-    SubmoduleImporter,
+    CreateSaleFormModule,
   },
 
   mixins: [UpdateList],
@@ -120,25 +78,17 @@ export default {
     MIN_AMOUNT: config.MIN_AMOUNT,
     MAX_AMOUNT: config.MAX_AMOUNT,
     DECIMAL_POINTS: config.DECIMAL_POINTS,
-    CreateSaleFormModule,
     vueRoutes,
-    CreateOpportunityModule,
-    SalesListPageModule,
-    SalesListOwnedPageModule,
   }),
 
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
+      isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
   },
 
   methods: {
-    closeAssetSaleDrawerAndUpdateList () {
-      this.isAssetSaleDrawerShown = false
-      this.emitUpdateList('sales:updateList')
-    },
-
     closeCreateSaleDrawerAndUpdateList () {
       this.isCreateSaleDrawerShown = false
       this.emitUpdateList('sales:updateList')

@@ -53,6 +53,7 @@ $x-large: 1920px;
   &[disabled] {
     box-shadow: none;
     opacity: 0.5;
+    background-color: $col-button-disabled;
   }
 }
 @mixin button-accent () {

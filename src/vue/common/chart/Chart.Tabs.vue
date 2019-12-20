@@ -76,6 +76,7 @@ export default {
 
 .chart-tabs__tab {
   font-weight: 500;
+  color: $col-chart-tabs;
 }
 
 .chart-tabs__tab--selected {
