@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
-## [Unreleased]
+## [1.11.0-rc.0] - 2020-02-05
 #### Fixed
 - A bug with color scheme
 - A bug with reload data on Dashboard, Sales and Trade pages
@@ -1036,7 +1036,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.10.3...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.11.0-rc.0...HEAD
+[1.11.0-rc.0]: https://github.com/tokend/web-client/compare/1.10.3...1.11.0-rc.0
 [1.10.3]: https://github.com/tokend/web-client/compare/1.10.3-rc.2...1.10.3
 [1.10.3-rc.2]: https://github.com/tokend/web-client/compare/1.10.3-rc.1...1.10.3-rc.2
 [1.10.3-rc.1]: https://github.com/tokend/web-client/compare/1.10.3-rc.0...1.10.3-rc.1
