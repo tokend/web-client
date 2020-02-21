@@ -46,6 +46,7 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import config from '@/config'
 import { required, amountRange } from '@validators'
+import { inputStepByDigitsCount } from '@/js/helpers/input-trailing-digits-count'
 
 const EVENTS = {
   input: 'input',
@@ -108,9 +109,9 @@ export default {
     },
 
     step () {
-      return this.assetRecord.trailingDigitsCount
-        ? Math.pow(10, (-1) * this.assetRecord.trailingDigitsCount)
-        : Math.pow(10, (-1) * config.DECIMAL_POINTS)
+      return this.assetRecord.trailingDigits
+        ? inputStepByDigitsCount(this.assetRecord.trailingDigits)
+        : inputStepByDigitsCount(config.DECIMAL_POINTS)
     },
 
     minAmount () {
