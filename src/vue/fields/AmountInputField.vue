@@ -74,7 +74,7 @@ export default {
     value: { type: [Number, String], default: undefined },
     validationType: { type: String, default: '' },
     isMaxButtonShown: { type: Boolean, default: false },
-    min: { type: [Number, String], default: config.MIN_AMOUNT },
+    min: { type: [Number, String], default: '' },
     max: { type: [Number, String], default: config.MAX_AMOUNT },
   },
   data: _ => ({
