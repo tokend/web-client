@@ -10,7 +10,9 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Fixed
 - Trailing digits in amount input field
-- Add error message when input amount is less than min amount
+
+#### Added
+- Error message when input amount is less than min amount
 
 ## [1.11.0-rc.0] - 2020-02-05
 #### Fixed
