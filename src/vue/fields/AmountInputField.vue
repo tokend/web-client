@@ -46,6 +46,8 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import config from '@/config'
 import { required, amountRange } from '@validators'
+import { inputStepByDigitsCount } from '@/js/helpers/input-trailing-digits-count'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const EVENTS = {
   input: 'input',
@@ -72,10 +74,9 @@ export default {
     value: { type: [Number, String], default: undefined },
     validationType: { type: String, default: '' },
     isMaxButtonShown: { type: Boolean, default: false },
-    min: { type: [Number, String], default: config.MIN_AMOUNT },
+    min: { type: [Number, String], default: '' },
     max: { type: [Number, String], default: config.MAX_AMOUNT },
   },
-
   data: _ => ({
     EVENTS,
   }),
@@ -88,7 +89,6 @@ export default {
       },
     }
   },
-
   computed: {
     ...mapGetters([
       vuexTypes.assetByCode,
@@ -109,8 +109,8 @@ export default {
 
     step () {
       return this.assetRecord.trailingDigitsCount
-        ? Math.pow(10, (-1) * this.assetRecord.trailingDigitsCount)
-        : Math.pow(10, (-1) * config.DECIMAL_POINTS)
+        ? inputStepByDigitsCount(this.assetRecord.trailingDigitsCount)
+        : inputStepByDigitsCount(config.DECIMAL_POINTS)
     },
 
     minAmount () {
@@ -163,6 +163,12 @@ export default {
         },
       }
     },
+  },
+  created () {
+    if (this.min && this.min < this.step) {
+      ErrorHandler.processWithoutFeedback(
+        new Error('Min value cannot be less than step'))
+    }
   },
 }
 </script>
