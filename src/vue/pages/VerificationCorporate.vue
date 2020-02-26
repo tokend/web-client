@@ -92,7 +92,7 @@
             name="verification-corporate-team-size"
             :label="'verification-form.team-size-lbl' | globalize"
             :error-message="
-              getFieldErrorMessage('form.teamSize', { value: MIN_TEAM_SIZE})
+              getFieldErrorMessage('form.teamSize', { minValue: MIN_TEAM_SIZE })
             "
             :disabled="formMixin.isDisabled"
           />
