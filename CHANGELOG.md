@@ -10,10 +10,12 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Fixed
 - Trailing digits in amount input field
-- Error with reference length
 
 #### Added
 - Error message when input amount is less than min amount
+
+#### Changed
+- REFERENCE_MAX_LENGTH from 255 to 64
 
 ## [1.11.0-rc.0] - 2020-02-05
 #### Fixed
