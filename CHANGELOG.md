@@ -11,6 +11,7 @@ for further information about branching and tagging conventions.
 #### Fixed
 - Trailing digits in amount input field
 - Corporate KYC "Team size" warning NaN
+- The limits input field accepts values that differ from the numbers
 
 #### Added
 - Error message when input amount is less than min amount
