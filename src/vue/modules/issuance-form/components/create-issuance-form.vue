@@ -171,7 +171,7 @@ import {
   maxDecimalDigitsCount,
 } from '@validators'
 
-const REFERENCE_MAX_LENGTH = 255
+const REFERENCE_MAX_LENGTH = 64
 const EVENTS = {
   submit: 'submit',
 }
