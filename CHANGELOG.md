@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Fixed
 - Trailing digits in amount input field
+- Error with reference length
 
 #### Added
 - Error message when input amount is less than min amount
