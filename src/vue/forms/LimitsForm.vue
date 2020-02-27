@@ -82,6 +82,7 @@
         <input-field
           name="limit-daily-out"
           v-model="form.dailyOut"
+          type="number"
           :label="'limits-form.daily-limit-lbl' | globalize"
           :readonly="formMixin.isDisabled"
           @blur="touchField('form.dailyOut')"
@@ -99,6 +100,7 @@
         <input-field
           name="limit-weekly-out"
           v-model="form.weeklyOut"
+          type="number"
           :label="'limits-form.weekly-limit-lbl' | globalize"
           :readonly="formMixin.isDisabled"
           @blur="touchField('form.weeklyOut')"
@@ -118,6 +120,7 @@
         <input-field
           name="limit-monthly-out"
           v-model="form.monthlyOut"
+          type="number"
           :label="'limits-form.monthly-limit-lbl' | globalize"
           :readonly="formMixin.isDisabled"
           @blur="touchField('form.monthlyOut')"
@@ -135,6 +138,7 @@
         <input-field
           name="limit-annual-out"
           v-model="form.annualOut"
+          type="number"
           :label="'limits-form.annual-limit-lbl' | globalize"
           :readonly="formMixin.isDisabled"
           @blur="touchField('form.annualOut')"
