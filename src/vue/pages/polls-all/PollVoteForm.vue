@@ -21,6 +21,7 @@
             v-model="form.choice"
             :cb-value="item.number"
             :disabled="formMixin.isDisabled"
+            class="poll-vote-form__radio-field"
           >
             {{ item.description }}
           </radio-field>
@@ -235,6 +236,7 @@ export default {
   line-height: 1.4865;
   font-size: 1.6rem;
   color: $col-text;
+  word-break: break-all;
 }
 
 .poll-vote-form__choices {
@@ -257,5 +259,9 @@ export default {
   .poll-vote-form__repeat-vote-msg + & {
     margin-top: 1.2rem;
   }
+}
+
+.poll-vote-form__radio-field {
+  word-break: break-all;
 }
 </style>

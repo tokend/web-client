@@ -12,6 +12,7 @@ for further information about branching and tagging conventions.
 - Trailing digits in amount input field
 - Corporate KYC "Team size" warning NaN
 - The limits input field accepts values that differ from the numbers
+- One line poll question and answers displaying if they are very long
 
 #### Added
 - Error message when input amount is less than min amount
