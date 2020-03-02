@@ -63,7 +63,7 @@ export default {
 
 <style lang="scss" scoped>
   .poll-participants-viewer__answer {
-    word-break: break-all;
+    word-break: break-word;
     white-space: normal;
   }
 </style>
