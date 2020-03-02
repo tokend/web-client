@@ -5,6 +5,8 @@ const config = {
 }
 
 Object.keys(process.env).forEach(varName => {
+  console.log(process.env)
+
   if (varName.startsWith('VUE_APP')) {
     let key = varName.replace('VUE_APP_', '')
     const value = normalize(process.env[varName])

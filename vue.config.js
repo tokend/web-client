@@ -8,6 +8,40 @@ const appDirectory = fs.realpathSync(process.cwd())
 const resolveApp = relativePath => path.resolve(appDirectory, relativePath)
 const root = path.resolve(__dirname, resolveApp('src'))
 
+const ArgumentParser = require('argparse').ArgumentParser
+const parser = new ArgumentParser({ addHelp: true })
+
+function makeEnvArgValue (val) { return `"${val}"` }
+
+if (process.env.NODE_ENV === 'production') {
+  parser.addArgument(['--set-build-version'], {
+    metavar: 'VALUE',
+    help: 'Set build version env key. Equivalent to --env-arg BUILD_VERSION [VALUE]',
+    type: 'string',
+    dest: 'setBuildVersion',
+  })
+
+  const args = parser.parseArgs()
+
+  let appEnv = {}
+
+  if (args.envArgs) {
+    appEnv = {
+      ...appEnv,
+      ...args.envArgs
+        .reduce((res, [key, val]) => ({
+          ...res,
+          ...{ [key]: makeEnvArgValue(val) },
+        }), {}),
+    }
+  }
+  if (args.setBuildVersion) {
+    console.log(args)
+    appEnv.BUILD_VERSION = makeEnvArgValue(args.setBuildVersion)
+  }
+  process.env.VUE_APP_ENV_JSON = JSON.stringify(appEnv)
+}
+
 module.exports = {
   devServer: {
     port: 8095,
@@ -67,34 +101,6 @@ module.exports = {
     // Pre-fetching ALL the chunks harms the app performance
     config.plugins.delete('prefetch')
 
-    // Merge all the CSS into one file
-    config.optimization.splitChunks({
-      cacheGroups: {
-        default: false,
-        styles: {
-          name: 'styles',
-          test: m => m.constructor.name === 'CssModule',
-          chunks: 'all',
-          minChunks: 1,
-          enforce: true,
-        },
-      },
-    })
-
-    // Embed CSS bundle into <head>
-    config.plugin('html-inline-css-webpack-plugin')
-      .use(require('html-inline-css-webpack-plugin').default)
-
-    // Remove link to the CSS bundle from <head>
-    config.plugin('html-webpack-exclude-assets-plugin')
-      .use(require('html-webpack-exclude-assets-plugin'))
-    config
-      .plugin('html')
-      .tap(args => {
-        args[0].excludeAssets = [/styles.*.css/]
-        return args
-      })
-
     config.module
       .rule('scss')
       .oneOf('vue')
@@ -119,7 +125,9 @@ module.exports = {
       .use('resolve-url-loader')
       .loader('resolve-url-loader')
       .before('sass-loader')
-    config.module
+      .end()
+      .end()
+      .end()
       .rule('images')
       .use('url-loader')
       .loader('url-loader')
