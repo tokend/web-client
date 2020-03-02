@@ -13,7 +13,7 @@ module.exports = {
   },
   runtimeCompiler: true,
   transpileDependencies: process.env.NODE_ENV === 'production'
-    ? []
+    ? ['marked', 'd3-array', 'd3-scale']
     : ['marked', 'd3-array', 'd3-scale'],
   configureWebpack: {
     devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'eval-source-map',
@@ -89,6 +89,5 @@ module.exports = {
       .rule('images')
       .use('url-loader')
       .loader('url-loader')
-      .tap(options => Object.assign(options, { limit: 10240 }))
   },
 }
