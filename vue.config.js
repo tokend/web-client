@@ -1,4 +1,5 @@
 const { IgnorePlugin } = require('webpack')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const path = require('path')
 const fs = require('fs')
@@ -19,6 +20,13 @@ module.exports = {
     devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'eval-source-map',
     plugins: [
       new IgnorePlugin(/ed25519/),
+      new CopyWebpackPlugin([
+        {
+          from: path.resolve(__dirname, resolveApp('static')),
+          to: 'static',
+          ignore: ['.*'],
+        },
+      ]),
     ],
     resolve: {
       symlinks: false,
@@ -59,6 +67,34 @@ module.exports = {
     // Pre-fetching ALL the chunks harms the app performance
     config.plugins.delete('prefetch')
 
+    // Merge all the CSS into one file
+    config.optimization.splitChunks({
+      cacheGroups: {
+        default: false,
+        styles: {
+          name: 'styles',
+          test: m => m.constructor.name === 'CssModule',
+          chunks: 'all',
+          minChunks: 1,
+          enforce: true,
+        },
+      },
+    })
+
+    // Embed CSS bundle into <head>
+    config.plugin('html-inline-css-webpack-plugin')
+      .use(require('html-inline-css-webpack-plugin').default)
+
+    // Remove link to the CSS bundle from <head>
+    config.plugin('html-webpack-exclude-assets-plugin')
+      .use(require('html-webpack-exclude-assets-plugin'))
+    config
+      .plugin('html')
+      .tap(args => {
+        args[0].excludeAssets = [/styles.*.css/]
+        return args
+      })
+
     config.module
       .rule('scss')
       .oneOf('vue')
@@ -83,9 +119,7 @@ module.exports = {
       .use('resolve-url-loader')
       .loader('resolve-url-loader')
       .before('sass-loader')
-      .end()
-      .end()
-      .end()
+    config.module
       .rule('images')
       .use('url-loader')
       .loader('url-loader')
