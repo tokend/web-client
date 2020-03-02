@@ -8,6 +8,38 @@ const appDirectory = fs.realpathSync(process.cwd())
 const resolveApp = relativePath => path.resolve(appDirectory, relativePath)
 const root = path.resolve(__dirname, resolveApp('src'))
 
+const ArgumentParser = require('argparse').ArgumentParser
+const parser = new ArgumentParser({
+  addHelp: true,
+})
+
+function makeEnvArgValue (val) { return `"${val}"` }
+
+if (process.env.NODE_ENV === 'production') {
+  parser.addArgument('build')
+  parser.addArgument('--set-build-version')
+
+  const args = parser.parseArgs()
+
+  let appEnv = {}
+
+  if (args.envArgs) {
+    appEnv = {
+      ...appEnv,
+      ...args.envArgs
+        .reduce((res, [key, val]) => ({
+          ...res,
+          ...{ [key]: makeEnvArgValue(val) },
+        }), {}),
+    }
+  }
+  if (args.setBuildVersion) {
+    console.log(args)
+    appEnv.BUILD_VERSION = makeEnvArgValue(args.setBuildVersion)
+  }
+  process.env = appEnv
+}
+
 module.exports = {
   devServer: {
     port: 8095,
