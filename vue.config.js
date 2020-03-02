@@ -8,40 +8,6 @@ const appDirectory = fs.realpathSync(process.cwd())
 const resolveApp = relativePath => path.resolve(appDirectory, relativePath)
 const root = path.resolve(__dirname, resolveApp('src'))
 
-const ArgumentParser = require('argparse').ArgumentParser
-const parser = new ArgumentParser({ addHelp: true })
-
-function makeEnvArgValue (val) { return `"${val}"` }
-
-if (process.env.NODE_ENV === 'production') {
-  parser.addArgument(['--set-build-version'], {
-    metavar: 'VALUE',
-    help: 'Set build version env key. Equivalent to --env-arg BUILD_VERSION [VALUE]',
-    type: 'string',
-    dest: 'setBuildVersion',
-  })
-
-  const args = parser.parseArgs()
-
-  let appEnv = {}
-
-  if (args.envArgs) {
-    appEnv = {
-      ...appEnv,
-      ...args.envArgs
-        .reduce((res, [key, val]) => ({
-          ...res,
-          ...{ [key]: makeEnvArgValue(val) },
-        }), {}),
-    }
-  }
-  if (args.setBuildVersion) {
-    console.log(args)
-    appEnv.BUILD_VERSION = makeEnvArgValue(args.setBuildVersion)
-  }
-  process.env.VUE_APP_ENV_JSON = JSON.stringify(appEnv)
-}
-
 module.exports = {
   devServer: {
     port: 8095,
