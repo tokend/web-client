@@ -10,7 +10,7 @@
     }
   },
   "scripts": {
-    "start": "vue-cli-service serve --set-build-version dnfkjewkj23432kj",
+    "start": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test": "karma start --reporters spec",
     "test:watch": "karma start --no-single-run --auto-watch",
