@@ -19,7 +19,8 @@
           <td>
             <email-getter :account-id="participant.id" />
           </td>
-          <td class="poll-participants-viewer__answer">
+          <td :title="getChoiceDescription(participant.choice)">
+            {{ participant.choice }}
             {{ getChoiceDescription(participant.choice) }}
           </td>
         </tr>
@@ -62,8 +63,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .poll-participants-viewer__answer {
-    word-break: break-word;
-    white-space: normal;
-  }
 </style>

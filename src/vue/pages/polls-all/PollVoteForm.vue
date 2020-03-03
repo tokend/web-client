@@ -21,7 +21,6 @@
             v-model="form.choice"
             :cb-value="item.number"
             :disabled="formMixin.isDisabled"
-            class="poll-vote-form__radio-field"
           >
             {{ item.description }}
           </radio-field>
@@ -261,7 +260,4 @@ export default {
   }
 }
 
-.poll-vote-form__radio-field {
-  word-break: break-word;
-}
 </style>

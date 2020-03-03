@@ -12,10 +12,12 @@ for further information about branching and tagging conventions.
 - Trailing digits in amount input field
 - Corporate KYC "Team size" warning NaN
 - The limits input field accepts values that differ from the numbers
-- One line poll question and answers displaying if they are very long
+- A bug with displaying in one line very long poll question and answers
 
 #### Added
 - Error message when input amount is less than min amount
+- ID of participant's choice to poll participants tab
+- Participant's choice to title attribute on poll participants tab
 
 #### Changed
 - REFERENCE_MAX_LENGTH from 255 to 64
