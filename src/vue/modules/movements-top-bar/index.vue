@@ -186,8 +186,9 @@ export default {
     await this.loadAccountBalancesDetails()
     if (!this.assets.length) {
       this.$emit(EVENTS.showNoDataMessage)
+    } else {
+      this.setDefaultAsset()
     }
-    this.setDefaultAsset()
     this.isInitialized = true
   },
   methods: {

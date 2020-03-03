@@ -42,7 +42,7 @@ module.exports = {
       new UnusedWebpackPlugin({
         directories: [path.join(__dirname, 'src')],
         failOnUnused: process.env.NODE_ENV === 'production',
-        exclude: ['*.spec.js', '*.e2e.js', '*.md'],
+        exclude: ['*.spec.js', '*.e2e.js', '*.md', 'test/*'],
       }),
       new CopyWebpackPlugin([
         {
