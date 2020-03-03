@@ -1,43 +1,30 @@
-const { IgnorePlugin } = require('webpack')
+const UnusedWebpackPlugin = require('unused-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-
+const sharp = require('responsive-loader/sharp')
 const path = require('path')
 const fs = require('fs')
-
 const appDirectory = fs.realpathSync(process.cwd())
 const resolveApp = relativePath => path.resolve(appDirectory, relativePath)
 const root = path.resolve(__dirname, resolveApp('src'))
-
 const ArgumentParser = require('argparse').ArgumentParser
+const { IgnorePlugin } = require('webpack')
+
 const parser = new ArgumentParser({
   addHelp: true,
 })
-
-function makeEnvArgValue (val) { return `"${val}"` }
-
 if (process.env.NODE_ENV === 'production') {
   parser.addArgument('build')
-  parser.addArgument('--set-build-version')
-
+  parser.addArgument(['--set-build-version'], {
+    metavar: 'VALUE',
+    help: 'Set build version env key. Equivalent to --env-arg BUILD_VERSION [VALUE]',
+    type: 'string',
+    dest: 'setBuildVersion',
+  })
   const args = parser.parseArgs()
 
-  let appEnv = {}
-
-  if (args.envArgs) {
-    appEnv = {
-      ...appEnv,
-      ...args.envArgs
-        .reduce((res, [key, val]) => ({
-          ...res,
-          ...{ [key]: makeEnvArgValue(val) },
-        }), {}),
-    }
-  }
   if (args.setBuildVersion) {
-    console.log(args)
-    appEnv.BUILD_VERSION = makeEnvArgValue(args.setBuildVersion)
+    process.env.VUE_APP_BUILD_VERSION = args.setBuildVersion
   }
-  process.env = appEnv
 }
 
 module.exports = {
@@ -52,6 +39,11 @@ module.exports = {
     devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'eval-source-map',
     plugins: [
       new IgnorePlugin(/ed25519/),
+      new UnusedWebpackPlugin({
+        directories: [path.join(__dirname, 'src')],
+        failOnUnused: process.env.NODE_ENV === 'production',
+        exclude: ['*.spec.js', '*.e2e.js', '*.md'],
+      }),
       new CopyWebpackPlugin([
         {
           from: path.resolve(__dirname, resolveApp('static')),
@@ -126,8 +118,26 @@ module.exports = {
       .end()
       .end()
       .end()
-      .rule('images')
+      .rule('img')
+      .test(/(\.png|\.jpg|\.jpeg)$/)
       .use('url-loader')
       .loader('url-loader')
+      .end()
+      .end()
+      .rule('images')
+      .test(/^((?!\/node_modules).)*(\.png|\.jpg|\.jpeg)$/)
+      .use('url-loader')
+      .loader('url-loader')
+      .tap(options => {
+        const fallback = options.fallback
+        fallback.loader = 'responsive-loader'
+        fallback.options = {
+          ...fallback.options,
+          adapter: sharp,
+          sizes: [375, 768, 1200, 1920, 2880, 3840],
+        }
+
+        return options
+      })
   },
 }

@@ -1,6 +1,6 @@
 <template>
   <router-link class="logotype" :to="vueRoutes.dashboard">
-    <img :src="logoUrl" :alt="config.APP_NAME">
+    <img src="@static/branding/logo.svg" :alt="config.APP_NAME">
   </router-link>
 </template>
 
@@ -9,19 +9,11 @@ import config from '@/config'
 
 import { vueRoutes } from '@/vue-router/routes'
 
-const DEFAULT_LOGO_URL = '/static/branding/logo.svg'
-
 export default {
   data: _ => ({
     vueRoutes,
     config,
   }),
-
-  computed: {
-    logoUrl () {
-      return DEFAULT_LOGO_URL
-    },
-  },
 }
 </script>
 
