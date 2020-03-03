@@ -12,7 +12,7 @@ for further information about branching and tagging conventions.
 - Trailing digits in amount input field
 - Corporate KYC "Team size" warning NaN
 - The limits input field accepts values that differ from the numbers
-- One line subject displaying if subject is very long
+- A bug with displaying in one line very long subject
 
 #### Added
 - Error message when input amount is less than min amount
