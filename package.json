@@ -18,7 +18,7 @@
     "lint:scripts": "eslint \"{src,config}/**/*.{js,vue}\" --cache --fix --max-warnings=0",
     "lint:styles": "stylelint \"src/**/*.{vue,css,scss}\" --syntax scss --max-warnings=0",
     "rsc": "node scripts/release-sanity-check.js",
-    "analyze-bundle": "vue-cli-service build --mode bundle-analyzer --modern"
+    "analyze-bundle": "vue-cli-service build --mode bundle-analyzer"
   },
   "dependencies": {
     "@babel/core": "^7.8.4",
