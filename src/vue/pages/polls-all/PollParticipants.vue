@@ -21,7 +21,7 @@
           </td>
           <td :title="getChoiceDescription(participant.choice)">
             {{ participant.choice }}
-            {{ getChoiceDescription(participant.choice) }}
+            ({{ getChoiceDescription(participant.choice) }})
           </td>
         </tr>
       </tbody>
