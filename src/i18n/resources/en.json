@@ -70,7 +70,6 @@
       "percent": "{{value, percent}}"
     },
     "common": {
-      "browser-not-supported": "It seems your browser is not supported. Some of the features may not work.",
       "more-btn": "More"
     },
     "status-message": {
@@ -142,24 +141,6 @@
       "user-doesnt-exist": "This user doesn't exist in system.",
       "balance-not-found": "The user does not have this asset balance yet.",
       "file-upload": "Cannot upload a file to the storage. Please upload another file or try again later."
-    },
-    "supported-browsers": {
-      "title": "Browsers that support all of our features",
-      "description": "Looks like your current browser cannot support some of our features. You need to update your current browser or download browser that supports all of our features by following links below.",
-      "app-store": "App Store",
-      "google-play": "Google Play",
-      "go-to-website": "Go to website",
-      "system-update-required": "System update required",
-      "google-chrome-title": "Google Chrome (68+)",
-      "google-chrome-img-alt": "Google Chrome logo",
-      "mozilla-firefox-title": "Mozilla Firefox (61+)",
-      "mozilla-firefox-img-alt": "Mozilla Firefox logo",
-      "safari-title": "Safari (10+)",
-      "safari-img-alt": "Safari logotype",
-      "edge-title": "Edge (17+)",
-      "edge-img-alt": "Edge logotype",
-      "opera-title": "Opera (54+)",
-      "opera-img-alt": "Opera logotype"
     },
     "transaction-errors": {
       "tx_failed": "Transaction failed",
@@ -1938,8 +1919,7 @@
       "signer-email-lbl": "Email address"
     },
     "warning-banner": {
-      "blocked-desc": "Your account was blocked by administrator. Blocking reason: {{reason}}",
-      "supported-browsers-list": "Supported browsers list"
+      "blocked-desc": "Your account was blocked by administrator. Blocking reason: {{reason}}"
     },
     "clipboard-field": {
       "copied": "Copied"

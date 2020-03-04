@@ -31,12 +31,12 @@ if (process.env.NODE_ENV === 'production' && !process.env.VUE_APP_BUNDLE_ANALYZE
 
 const optionalPlugins = []
 
-if (process.env.NODE_ENV !== "test") {
+if (process.env.NODE_ENV !== 'test') {
   optionalPlugins.push(
     new UnusedWebpackPlugin({
-      directories: [path.join(__dirname, "src")],
-      failOnUnused: process.env.NODE_ENV === "production",
-      exclude: ["*.spec.js", "*.e2e.js", "*.md", "test/*"]
+      directories: [path.join(__dirname, 'src')],
+      failOnUnused: process.env.NODE_ENV === 'production',
+      exclude: ['*.spec.js', '*.e2e.js', '*.md', 'test/*'],
     })
   )
 }
@@ -59,12 +59,23 @@ module.exports = {
       new IgnorePlugin(/ed25519/),
       new CopyWebpackPlugin([
         {
-          from: path.resolve(__dirname, resolveApp('static')),
-          to: 'static',
-          ignore: ['.*'],
+          from: path.resolve(__dirname, resolveApp('static/images/pre-issuance-guide')),
+          to: 'static/images/pre-issuance-guide',
+        },
+        {
+          from: path.resolve(__dirname, resolveApp('static/init-loader')),
+          to: 'static/init-loader',
+        },
+        {
+          from: path.resolve(__dirname, resolveApp('static/noscript')),
+          to: 'static/noscript',
+        },
+        {
+          from: path.resolve(__dirname, resolveApp('static/branding/favicon.png')),
+          to: 'static/branding/favicon.png',
         },
       ]),
-      ...optionalPlugins
+      ...optionalPlugins,
     ],
     resolve: {
       symlinks: false,

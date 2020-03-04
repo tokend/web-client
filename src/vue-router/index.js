@@ -60,11 +60,6 @@ const router = new Router({
       component: resolve => require(['@/vue/pages/Terms'], resolve),
     },
     {
-      path: '/supported-browsers',
-      name: vueRoutes.supportedBrowsers.name,
-      component: resolve => require(['@/vue/pages/SupportedBrowsers'], resolve),
-    },
-    {
       path: '/downloads',
       name: vueRoutes.downloads.name,
       component: resolve => require(['@/vue/pages/Downloads'], resolve),

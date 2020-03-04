@@ -22,6 +22,9 @@ for further information about branching and tagging conventions.
 #### Changed
 - REFERENCE_MAX_LENGTH from 255 to 64
 
+#### Removed
+- `SupportedBrowsers` component
+
 ## [1.11.0-rc.0] - 2020-02-05
 #### Fixed
 - A bug with color scheme
