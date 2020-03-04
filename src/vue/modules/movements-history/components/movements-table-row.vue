@@ -80,19 +80,15 @@ export default {
     movementAmount (movement) {
       let currency = movement.assetCode
       let value
-      if (movement.effect.calculatedPercentFee > 0 ||
-          movement.effect.fixedFee > 0) {
-        const fee = MathUtil.add(
-          movement.effect.calculatedPercentFee,
-          movement.effect.fixedFee
-        )
-        value = MathUtil.add(movement.effect.amount, fee)
-      } else {
-        value = movement.effect.amount
+      const fee = MathUtil.add(
+        movement.effect.calculatedPercentFee,
+        movement.effect.fixedFee
+      )
+      if (movement.isIncoming || movement.isUnlocked) {
+        value = MathUtil.subtract(movement.effect.amount, fee)
       }
-
       if (movement.isOutgoing || movement.isLocked) {
-        value = -value
+        value = -MathUtil.add(movement.effect.amount, fee)
       }
 
       return { currency, value }
