@@ -57,7 +57,9 @@
       <td class="attributes-viewer__table-cell">
         {{ 'movements-history.subject-lbl' | globalize }}
       </td>
-      <td class="attributes-viewer__table-cell">
+      <td
+        class="attributes-viewer__table-cell
+          attributes-viewer__subject">
         {{ operationDetails.subject }}
       </td>
     </tr>
@@ -159,4 +161,9 @@ export default {
 
 <style lang="scss" scoped>
   @import '../../scss/attributes-viewer';
+
+  .attributes-viewer__subject {
+    word-break: break-word;
+    white-space: normal;
+  }
 </style>
