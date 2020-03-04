@@ -19,7 +19,10 @@
           <td>
             <email-getter :account-id="participant.id" />
           </td>
-          <td>{{ getChoiceDescription(participant.choice) }}</td>
+          <td :title="getChoiceDescription(participant.choice)">
+            {{ participant.choice }}
+            ({{ getChoiceDescription(participant.choice) }})
+          </td>
         </tr>
       </tbody>
       <empty-tbody-placeholder

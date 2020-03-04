@@ -235,6 +235,7 @@ export default {
   line-height: 1.4865;
   font-size: 1.6rem;
   color: $col-text;
+  word-break: break-word;
 }
 
 .poll-vote-form__choices {
@@ -258,4 +259,5 @@ export default {
     margin-top: 1.2rem;
   }
 }
+
 </style>
