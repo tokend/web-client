@@ -87,7 +87,7 @@ describe('Issuance form module', () => {
 
             expect(ErrorHandler.processWithoutFeedback)
               .to.have.been.calledOnce
-            expect(wrapper.vm.isLoadFailed).to.be.false
+            expect(wrapper.vm.isLoadFailed).to.be.true
           }
         )
       })
