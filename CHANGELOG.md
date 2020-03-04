@@ -15,6 +15,7 @@ for further information about branching and tagging conventions.
 
 #### Added
 - Error message when input amount is less than min amount
+- New build configuration
 
 #### Changed
 - REFERENCE_MAX_LENGTH from 255 to 64
