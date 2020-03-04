@@ -13,6 +13,8 @@ for further information about branching and tagging conventions.
 - Corporate KYC "Team size" warning NaN
 - The limits input field accepts values that differ from the numbers
 - A bug with incorrect display movement amount value with fees
+- A bug with displaying in one line very long poll question and answers
+- A bug with displaying in one line very long subject
 
 #### Added
 - Error message when input amount is less than min amount
