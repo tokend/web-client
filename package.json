@@ -6,15 +6,14 @@
   "private": true,
   "husky": {
     "hooks": {
-      "pre-push": "yarn rsc"
+      "pre-push": "yarn rsc && yarn test",
+      "pre-commit": "yarn lint"
     }
   },
   "scripts": {
     "start": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test": "karma start --reporters spec",
-    "test:watch": "karma start --no-single-run --auto-watch",
-    "test:watchVerbose": "karma start --no-single-run --auto-watch --reporters spec",
+    "test": "vue-cli-service test:unit \"src/**/*.{spec,e2e}.js\" --require ./test.config.js",
     "lint": "yarn lint:styles && yarn lint:scripts",
     "lint:scripts": "eslint \"{src,config}/**/*.{js,vue}\" --cache --fix --max-warnings=0",
     "lint:styles": "stylelint \"src/**/*.{vue,css,scss}\" --syntax scss --max-warnings=0",
@@ -72,7 +71,7 @@
     "@vue/cli-plugin-babel": "^3.0.3",
     "@vue/cli-plugin-eslint": "^3.0.3",
     "@vue/cli-plugin-router": "~4.2.0",
-    "@vue/cli-plugin-unit-mocha": "~4.2.0",
+    "@vue/cli-plugin-unit-mocha": "~4.2.3",
     "@vue/cli-plugin-vuex": "~4.2.0",
     "@vue/cli-service": "^3.0.3",
     "@vue/eslint-config-standard": "^3.0.4",
@@ -80,7 +79,7 @@
     "babel-eslint": "^10.0.3",
     "babel-plugin-add-module-exports": "^1.0.2",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
-    "chai": "^4.1.2",
+    "chai": "4.2.0",
     "eslint": "^5.16.0",
     "eslint-config-distributed-lab": "^1.2.0",
     "eslint-config-standard": "^12.0.0",
@@ -102,6 +101,11 @@
     "unused-webpack-plugin": "^2.4.0",
     "sharp": "^0.23.3",
     "responsive-loader": "^1.2.0",
-    "copy-webpack-plugin": "^5.1.1"
+    "copy-webpack-plugin": "^5.1.1",
+    "sinon": "9.0.0",
+    "sinon-chai": "3.5.0",
+    "jsdom-global": "3.0.2",
+    "jsdom": "^16.2.0",
+    "xhr-mock": "^2.5.1"
   }
 }

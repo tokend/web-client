@@ -12,6 +12,7 @@ const { IgnorePlugin } = require('webpack')
 const parser = new ArgumentParser({
   addHelp: true,
 })
+
 if (process.env.NODE_ENV === 'production') {
   parser.addArgument('build')
   parser.addArgument(['--set-build-version'], {
@@ -27,6 +28,18 @@ if (process.env.NODE_ENV === 'production') {
   }
 }
 
+const optionalPlugins = []
+
+if (process.env.NODE_ENV !== "test") {
+  optionalPlugins.push(
+    new UnusedWebpackPlugin({
+      directories: [path.join(__dirname, "src")],
+      failOnUnused: process.env.NODE_ENV === "production",
+      exclude: ["*.spec.js", "*.e2e.js", "*.md", "test/*"]
+    })
+  )
+}
+
 module.exports = {
   devServer: {
     port: 8095,
@@ -39,11 +52,6 @@ module.exports = {
     devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'eval-source-map',
     plugins: [
       new IgnorePlugin(/ed25519/),
-      new UnusedWebpackPlugin({
-        directories: [path.join(__dirname, 'src')],
-        failOnUnused: process.env.NODE_ENV === 'production',
-        exclude: ['*.spec.js', '*.e2e.js', '*.md', 'test/*'],
-      }),
       new CopyWebpackPlugin([
         {
           from: path.resolve(__dirname, resolveApp('static')),
@@ -51,6 +59,7 @@ module.exports = {
           ignore: ['.*'],
         },
       ]),
+      ...optionalPlugins
     ],
     resolve: {
       symlinks: false,

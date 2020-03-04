@@ -51,7 +51,6 @@ describe('Fees’', () => {
       const wrp = await shallowMount(Fees, { localVue, store })
 
       expect(initAssetSelectorStub).to.has.been.calledOnce
-      expect(wrp.vm.isLoaded).to.equal(true)
       expect(wrp.vm.isLoadingFailed).to.equal(false)
       expect(ErrorHandler.processWithoutFeedback).to.has.not.been.called
 
