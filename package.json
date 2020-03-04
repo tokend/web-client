@@ -17,7 +17,8 @@
     "lint": "yarn lint:styles && yarn lint:scripts",
     "lint:scripts": "eslint \"{src,config}/**/*.{js,vue}\" --cache --fix --max-warnings=0",
     "lint:styles": "stylelint \"src/**/*.{vue,css,scss}\" --syntax scss --max-warnings=0",
-    "rsc": "node scripts/release-sanity-check.js"
+    "rsc": "node scripts/release-sanity-check.js",
+    "analyze-bundle": "vue-cli-service build --mode bundle-analyzer --modern"
   },
   "dependencies": {
     "@babel/core": "^7.8.4",
@@ -106,6 +107,7 @@
     "sinon-chai": "3.5.0",
     "jsdom-global": "3.0.2",
     "jsdom": "^16.2.0",
-    "xhr-mock": "^2.5.1"
+    "xhr-mock": "^2.5.1",
+    "webpack-bundle-analyzer": "^3.4.1"
   }
 }
