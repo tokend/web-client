@@ -81,6 +81,7 @@
     "babel-plugin-add-module-exports": "^1.0.2",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "chai": "4.2.0",
+    "chalk": "2.4.2",
     "eslint": "^5.16.0",
     "eslint-config-distributed-lab": "^1.2.0",
     "eslint-config-standard": "^12.0.0",
