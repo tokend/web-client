@@ -15,6 +15,7 @@ for further information about branching and tagging conventions.
 - A bug with incorrect display movement amount value with fees
 - A bug with displaying in one line very long poll question and answers
 - A bug with displaying in one line very long subject
+- Some mistakes in russian localization
 
 #### Added
 - Error message when input amount is less than min amount
