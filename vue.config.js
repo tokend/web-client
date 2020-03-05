@@ -50,9 +50,7 @@ module.exports = {
     port: 8095,
   },
   runtimeCompiler: true,
-  transpileDependencies: process.env.NODE_ENV === 'production'
-    ? ['marked', 'd3-array', 'd3-scale']
-    : ['marked', 'd3-array', 'd3-scale'],
+  transpileDependencies: ['marked', 'd3-array', 'd3-scale'],
   configureWebpack: {
     devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'eval-source-map',
     plugins: [
