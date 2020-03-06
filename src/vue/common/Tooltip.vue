@@ -78,9 +78,9 @@ export default {
 .tooltip__wrapper-text {
   display: block;
   position: relative;
-  top: 1.5rem;
+  top: 0.5rem;
   width: 10rem;
-  padding: 0.5rem 0;
+  padding: 0.1rem 0;
   color: $col-tooltip-wrapper-msg-text;
   background: $col-tooltip-wrapper-msg-bg;
   text-align: center;
@@ -93,7 +93,7 @@ export default {
     position: absolute;
     bottom: 100%;
     left: 50%;
-    margin-left: -0.7rem;
+    margin-left: -0.45rem;
     width: 0;
     height: 0;
     border-bottom: 0.7rem solid $col-tooltip-wrapper-msg-bg;
