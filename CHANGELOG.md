@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+#### Fixed
+- A bug with wrong calculate price per one asset in immediate sales
+
+#### Removed
+- load-asset-pairs tests
+
 ## [1.11.0-rc.2] - 2020-03-11
 #### Fixed
 - Tooltip displaying

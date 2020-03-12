@@ -1,12 +1,12 @@
 import ManageSaleDescriptionMixin from './manage-sale-description.mixin'
-
-import { base } from '@tokend/js-sdk'
+import LoadAssetPairsMixin from './load-asset-pairs.mixin'
+import { base, SALE_TYPES } from '@tokend/js-sdk'
 
 import { api } from '@/api'
 
 import { uploadDocument } from '@/js/helpers/upload-documents'
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
-import { DateUtil } from '@/js/utils'
+import { DateUtil, MathUtil } from '@/js/utils'
 
 const NEW_CREATE_SALE_REQUEST_ID = '0'
 const DEFAULT_SALE_TYPE = '0'
@@ -19,9 +19,10 @@ const EMPTY_DOCUMENT = {
 }
 
 export default {
-  mixins: [ManageSaleDescriptionMixin],
+  mixins: [ManageSaleDescriptionMixin, LoadAssetPairsMixin],
   data: _ => ({
     saleDescriptionBlobId: '',
+    assetPairs: [],
   }),
 
   computed: {
@@ -41,7 +42,7 @@ export default {
         requiredBaseAssetForHardCap: this.informationStepForm.assetsToSell,
         quoteAssets: this.informationStepForm.quoteAssets.map((item) => ({
           asset: item,
-          price: DEFAULT_QUOTE_ASSET_PRICE,
+          price: this.getPrice(this.informationStepForm.type, item),
         })),
         creatorDetails: {
           name: this.informationStepForm.name,
@@ -82,10 +83,44 @@ export default {
         quoteAssets: this.informationStepForm.quoteAssets,
         accountId,
       })
-
+      this.assetPairs =
+        await this.loadAssetsPairsByQuote(
+          this.informationStepForm.capAsset.code
+        )
       const operation =
         base.SaleRequestBuilder.createSaleCreationRequest(this.saleRequestOpts)
       await api.postOperations(operation)
+    },
+
+    getPrice (value, asset) {
+      let result
+      const capAsset = this.informationStepForm.capAsset.code
+      const course = MathUtil.divide(
+        this.informationStepForm.hardCap,
+        this.informationStepForm.assetsToSell
+      )
+      if (capAsset !== asset) {
+        switch (+value) {
+          case SALE_TYPES.fixedPrice: {
+            result = DEFAULT_QUOTE_ASSET_PRICE
+            break
+          }
+          case SALE_TYPES.immediate: {
+            let assetPair = this.assetPairs.filter(function (item) {
+              return item.baseAndQuote === `${asset}/${capAsset}`
+            })
+            result = MathUtil.divide(course, assetPair[0].price)
+            break
+          }
+          default: {
+            result = MathUtil.divide(DEFAULT_QUOTE_ASSET_PRICE, course)
+            break
+          }
+        }
+      } else {
+        result = MathUtil.multiply(DEFAULT_QUOTE_ASSET_PRICE, course)
+      }
+      return result
     },
 
     async createBalancesIfNotExist ({ balanceAssets, quoteAssets, accountId }) {
