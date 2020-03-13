@@ -14,6 +14,10 @@ for further information about branching and tagging conventions.
 #### Removed
 - Unused tooltip.js
 
+#### Added
+- 'required' to limits form validation
+- 'min' and 'max' values to limits form
+
 ## [1.11.0-rc.1] - 2020-03-05
 #### Fixed
 - Trailing digits in amount input field

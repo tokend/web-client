@@ -83,6 +83,8 @@
           name="limit-daily-out"
           v-model="form.dailyOut"
           type="number"
+          :min="minValidDailyOutValue"
+          :max="config.MAX_AMOUNT"
           :label="'limits-form.daily-limit-lbl' | globalize"
           :readonly="formMixin.isDisabled"
           @blur="touchField('form.dailyOut')"
@@ -101,6 +103,8 @@
           name="limit-weekly-out"
           v-model="form.weeklyOut"
           type="number"
+          :min="minValidWeeklyOutValue"
+          :max="config.MAX_AMOUNT"
           :label="'limits-form.weekly-limit-lbl' | globalize"
           :readonly="formMixin.isDisabled"
           @blur="touchField('form.weeklyOut')"
@@ -121,6 +125,8 @@
           name="limit-monthly-out"
           v-model="form.monthlyOut"
           type="number"
+          :min="minValidMonthlyOutValue"
+          :max="config.MAX_AMOUNT"
           :label="'limits-form.monthly-limit-lbl' | globalize"
           :readonly="formMixin.isDisabled"
           @blur="touchField('form.monthlyOut')"
@@ -139,6 +145,8 @@
           name="limit-annual-out"
           v-model="form.annualOut"
           type="number"
+          :min="minValidAnnualOutValue"
+          :max="config.MAX_AMOUNT"
           :label="'limits-form.annual-limit-lbl' | globalize"
           :readonly="formMixin.isDisabled"
           @blur="touchField('form.annualOut')"
@@ -199,6 +207,7 @@ import {
   decimal,
   minValue,
   maxDecimalPoints,
+  required,
 } from '@validators'
 import { Bus } from '@/js/helpers/event-bus'
 import { api } from '@/api'
@@ -275,24 +284,28 @@ export default {
           maxValue: maxValue(config.MAX_AMOUNT),
           maxDecimalPoints: maxDecimalPoints(config.DECIMAL_POINTS),
           minValue: minValue(this.minValidDailyOutValue),
+          required,
         },
         weeklyOut: {
           decimal,
           maxValue: maxValue(config.MAX_AMOUNT),
           maxDecimalPoints: maxDecimalPoints(config.DECIMAL_POINTS),
           minValue: minValue(this.minValidWeeklyOutValue),
+          required,
         },
         monthlyOut: {
           decimal,
           maxValue: maxValue(config.MAX_AMOUNT),
           maxDecimalPoints: maxDecimalPoints(config.DECIMAL_POINTS),
           minValue: minValue(this.minValidMonthlyOutValue),
+          required,
         },
         annualOut: {
           decimal,
           maxValue: maxValue(config.MAX_AMOUNT),
           maxDecimalPoints: maxDecimalPoints(config.DECIMAL_POINTS),
           minValue: minValue(this.minValidAnnualOutValue),
+          required,
         },
         note: {
           maxLength: maxLength(this.formNoteMaxLength),
