@@ -101,8 +101,8 @@ describe('Manage sale request mixin', () => {
           .to.equal('10.000000')
         expect(wrapper.vm.saleRequestOpts.quoteAssets)
           .to.deep.equal([
-            { asset: 'BTC', price: '0.050000' },
-            { asset: 'ETH', price: '0.050000' },
+            { asset: 'BTC', price: '1' },
+            { asset: 'ETH', price: '1' },
           ])
 
         expect(wrapper.vm.saleRequestOpts.creatorDetails.name)

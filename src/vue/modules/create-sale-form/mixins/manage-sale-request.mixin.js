@@ -42,7 +42,7 @@ export default {
         requiredBaseAssetForHardCap: this.informationStepForm.assetsToSell,
         quoteAssets: this.informationStepForm.quoteAssets.map((item) => ({
           asset: item,
-          price: this.getPrice(this.informationStepForm.type, item),
+          price: this.getPrice(item, this.getQuoteAssets()),
         })),
         creatorDetails: {
           name: this.informationStepForm.name,
@@ -91,34 +91,29 @@ export default {
         base.SaleRequestBuilder.createSaleCreationRequest(this.saleRequestOpts)
       await api.postOperations(operation)
     },
+    getQuoteAssets () {
+      return {
+        salePrice: MathUtil.divide(
+          this.informationStepForm.hardCap,
+          this.informationStepForm.assetsToSell
+        ),
+      }
+    },
 
-    getPrice (value, asset) {
+    getPrice (assetCode, quoteAssets) {
       let result
       const capAsset = this.informationStepForm.capAsset.code
-      const course = MathUtil.divide(
-        this.informationStepForm.hardCap,
-        this.informationStepForm.assetsToSell
-      )
-      if (capAsset !== asset) {
-        switch (+value) {
-          case SALE_TYPES.fixedPrice: {
-            result = DEFAULT_QUOTE_ASSET_PRICE
-            break
-          }
-          case SALE_TYPES.immediate: {
-            let assetPair = this.assetPairs.filter(function (item) {
-              return item.baseAndQuote === `${asset}/${capAsset}`
-            })
-            result = MathUtil.divide(course, assetPair[0].price)
-            break
-          }
-          default: {
-            result = MathUtil.divide(DEFAULT_QUOTE_ASSET_PRICE, course)
-            break
-          }
+      if (capAsset !== assetCode) {
+        if (this.informationStepForm.type === SALE_TYPES.immediate) {
+          let assetPair = this.assetPairs.filter(item =>
+            item.baseAndQuote === `${assetCode}/${capAsset}`
+          )
+          result = MathUtil.divide(quoteAssets.salePrice, assetPair[0].price)
+        } else {
+          result = DEFAULT_QUOTE_ASSET_PRICE
         }
       } else {
-        result = MathUtil.multiply(DEFAULT_QUOTE_ASSET_PRICE, course)
+        result = quoteAssets.salePrice
       }
       return result
     },
