@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [1.11.0-rc.2] - 2020-03-11
+#### Fixed
+- Tooltip displaying
+
+#### Removed
+- Unused tooltip.js
+
+#### Added
+- 'required' to limits form validation
+- 'min' and 'max' values to limits form
+
 ## [1.11.0-rc.1] - 2020-03-05
 #### Fixed
 - Trailing digits in amount input field
@@ -15,6 +26,7 @@ for further information about branching and tagging conventions.
 - A bug with incorrect display movement amount value with fees
 - A bug with displaying in one line very long poll question and answers
 - A bug with displaying in one line very long subject
+- Some mistakes in russian localization
 
 #### Added
 - Error message when input amount is less than min amount
@@ -1056,7 +1068,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.11.0-rc.1...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.11.0-rc.2...HEAD
+[1.11.0-rc.2]: https://github.com/tokend/web-client/compare/1.11.0-rc.1...1.11.0-rc.2
 [1.11.0-rc.1]: https://github.com/tokend/web-client/compare/1.11.0-rc.0...1.11.0-rc.1
 [1.11.0-rc.0]: https://github.com/tokend/web-client/compare/1.10.3...1.11.0-rc.0
 [1.10.3]: https://github.com/tokend/web-client/compare/1.10.3-rc.2...1.10.3
