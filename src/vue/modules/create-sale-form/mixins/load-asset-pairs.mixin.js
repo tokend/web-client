@@ -31,7 +31,6 @@ export default {
       let result = await api.get('/v3/asset_pairs', {
         filter: { quote_asset: quoteAssetCode },
         page: { limit: MAX_PAGE_LIMIT },
-        include: ['base_asset'],
       })
       result = await loadingDataViaLoop(result)
       return result.map(item => new AssetPairRecord(item))
