@@ -125,12 +125,15 @@ export default {
     removeCustomSelectEvents () {
       this.customSelectInstance.container.removeEventListener(
         'custom-select:open',
+        e => { this.isListOpened = true }
       )
       this.customSelectInstance.container.removeEventListener(
         'custom-select:close',
+        e => { this.isListOpened = false }
       )
       this.customSelectInstance.container.removeEventListener(
         'keydown',
+        e => { e.preventDefault() }
       )
     },
 

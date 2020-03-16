@@ -1,18 +1,27 @@
 import { base } from '@tokend/js-sdk'
-import normalizeUrl from 'normalize-url'
 import packageJson from '../package.json'
 
-function normalizeEnvUrls (env) {
-  let envCopy = Object.assign(env)
+const config = {
+}
 
-  if (envCopy.hasOwnProperty('HORIZON_SERVER')) {
-    envCopy.HORIZON_SERVER = normalizeUrl(envCopy.HORIZON_SERVER)
+Object.keys(process.env).forEach(varName => {
+  if (varName.startsWith('VUE_APP')) {
+    let key = varName.replace('VUE_APP_', '')
+    const value = normalize(process.env[varName])
+    config[key] = value
   }
-  if (envCopy.hasOwnProperty('FILE_STORAGE')) {
-    envCopy.FILE_STORAGE = normalizeUrl(envCopy.FILE_STORAGE)
+})
+
+function normalize (value) {
+  if (value === 'true') {
+    return true
   }
 
-  return envCopy
+  if (value === 'false') {
+    return false
+  }
+
+  return value
 }
 
 export default Object.assign(
@@ -161,9 +170,9 @@ export default Object.assign(
   },
   // process.env,
   process.env
-    ? Object.assign(process.env, normalizeEnvUrls(process.env))
+    ? config
     : process.env,
   document.ENV
-    ? Object.assign(document.ENV, normalizeEnvUrls(document.ENV))
+    ? config
     : document.ENV,
 )

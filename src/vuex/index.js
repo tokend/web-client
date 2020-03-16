@@ -20,7 +20,6 @@ import pollRequests from '@/vue/modules/requests/poll-requests/store'
 import preIssuanceRequests from '@/vue/modules/requests/pre-issuance-requests/store'
 import updateAssetRequests from '@/vue/modules/requests/update-asset-requests/store'
 import verificationGeneralForm from '@/vue/modules/verification/general-form/store'
-import documentSignersManager from '@/vue/modules/documents/document-manager/modules/signers-manager/store'
 import idleHandler from './idle-handler.module'
 import { vuexTypes } from '@/vuex/types'
 import { sessionStoragePlugin } from './plugins/session-storage'
@@ -96,7 +95,6 @@ function buildStore () {
       idleHandler,
       kycRecovery,
       'asset-explorer': assetExplorer,
-      'document-signers-manager': documentSignersManager,
       'fees': fees,
       'issuance-explorer': issuanceExplorer,
       'movements-history': movementsHistory,

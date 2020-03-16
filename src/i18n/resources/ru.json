@@ -70,7 +70,6 @@
       "percent": "{{value, percent}}"
     },
     "common": {
-      "browser-not-supported": "К сожалению, мы не полностью поддерживаем ваш браузер. Какой-то функционал может быть недоступен.",
       "more-btn": "Больше"
     },
     "status-message": {
@@ -142,24 +141,6 @@
       "user-doesnt-exist": "Такой элемент не найден.",
       "balance-not-found": "Получатель не имеет баланса данного актива.",
       "file-upload": "Ошибка при загрузке файла. Пожалуйста, выберите другой файл или свяжитесь с владельцем системы."
-    },
-    "supported-browsers": {
-      "title": "Браузеры, которые полноценно поддерживают наш функционал",
-      "description": "Похоже, ваш браузер не поддерживает какую-то часть нашего функционала. Обновите ваш браузер или воспользуйтесь другим браузером по ссылкам ниже.",
-      "app-store": "App Store",
-      "google-play": "Google Play",
-      "go-to-website": "На вебсайт",
-      "system-update-required": "Необходимо обновление системы",
-      "google-chrome-title": "Google Chrome (68+)",
-      "google-chrome-img-alt": "Google Chrome лого",
-      "mozilla-firefox-title": "Mozilla Firefox (61+)",
-      "mozilla-firefox-img-alt": "Mozilla Firefox logo",
-      "safari-title": "Safari (10+)",
-      "safari-img-alt": "Safari logo",
-      "edge-title": "Edge (17+)",
-      "edge-img-alt": "Edge logo",
-      "opera-title": "Opera (54+)",
-      "opera-img-alt": "Opera logo"
     },
     "transaction-errors": {
       "tx_failed": "Transaction failed",
@@ -1940,8 +1921,7 @@
       "signer-email-lbl": "Email address"
     },
     "warning-banner": {
-      "blocked-desc": "Ваш аккаунт был заблокирован администратором. Причина блокировки: {{reason}}",
-      "supported-browsers-list": "Список поддерживаемых браузеров"
+      "blocked-desc": "Ваш аккаунт был заблокирован администратором. Причина блокировки: {{reason}}"
     },
     "clipboard-field": {
       "copied": "Скопировано"

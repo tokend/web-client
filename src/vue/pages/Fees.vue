@@ -102,14 +102,8 @@ export default {
     },
   },
 
-  async created () {
-    try {
-      await this.initAssetSelector()
-      this.isLoaded = true
-    } catch (error) {
-      this.isLoadingFailed = true
-      ErrorHandler.processWithoutFeedback(error)
-    }
+  created () {
+    this.initAssetSelector()
   },
 
   methods: {
@@ -122,11 +116,17 @@ export default {
     },
 
     async initAssetSelector () {
-      await this.loadAssets()
-      if (this.assets.length) {
-        this.asset = this.assets
-          .find(item => item.code === this.$route.query.asset) ||
+      try {
+        await this.loadAssets()
+        if (this.assets.length) {
+          this.asset = this.assets
+            .find(item => item.code === this.$route.query.asset) ||
           this.assets[0]
+        }
+        this.isLoaded = true
+      } catch (error) {
+        this.isLoadingFailed = true
+        ErrorHandler.processWithoutFeedback(error)
       }
     },
 
