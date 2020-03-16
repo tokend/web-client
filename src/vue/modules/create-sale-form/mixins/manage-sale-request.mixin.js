@@ -40,10 +40,7 @@ export default {
         softCap: this.informationStepForm.softCap,
         hardCap: this.informationStepForm.hardCap,
         requiredBaseAssetForHardCap: this.informationStepForm.assetsToSell,
-        quoteAssets: this.informationStepForm.quoteAssets.map((item) => ({
-          asset: item,
-          price: this.getPrice(item, this.getQuoteAssets()),
-        })),
+        quoteAssets: this.getQuoteAssets(),
         creatorDetails: {
           name: this.informationStepForm.name,
           short_description: this.shortBlurbStepForm.shortDescription,
@@ -92,15 +89,17 @@ export default {
       await api.postOperations(operation)
     },
     getQuoteAssets () {
-      return {
-        salePrice: MathUtil.divide(
-          this.informationStepForm.hardCap,
-          this.informationStepForm.assetsToSell
-        ),
-      }
+      const basePrise = MathUtil.divide(
+        this.informationStepForm.hardCap,
+        this.informationStepForm.assetsToSell
+      )
+      return this.informationStepForm.quoteAssets.map((item) => ({
+        asset: item,
+        price: this.getPrice(item, basePrise),
+      }))
     },
 
-    getPrice (assetCode, quoteAssets) {
+    getPrice (assetCode, basePrise) {
       let result
       const capAsset = this.informationStepForm.capAsset.code
       if (capAsset !== assetCode) {
@@ -108,12 +107,12 @@ export default {
           let assetPair = this.assetPairs.filter(item =>
             item.baseAndQuote === `${assetCode}/${capAsset}`
           )
-          result = MathUtil.divide(quoteAssets.salePrice, assetPair[0].price)
+          result = MathUtil.divide(basePrise, assetPair[0].price)
         } else {
           result = DEFAULT_QUOTE_ASSET_PRICE
         }
       } else {
-        result = quoteAssets.salePrice
+        result = basePrise
       }
       return result
     },
