@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [1.11.0] - 2020-03-16
+
 ## [1.11.0-rc.2] - 2020-03-11
 #### Fixed
 - Tooltip displaying
@@ -1060,7 +1062,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.11.0-rc.2...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.11.0...HEAD
+[1.11.0]: https://github.com/tokend/web-client/compare/1.11.0-rc.2...1.11.0
 [1.11.0-rc.2]: https://github.com/tokend/web-client/compare/1.11.0-rc.1...1.11.0-rc.2
 [1.11.0-rc.1]: https://github.com/tokend/web-client/compare/1.11.0-rc.0...1.11.0-rc.1
 [1.11.0-rc.0]: https://github.com/tokend/web-client/compare/1.10.3...1.11.0-rc.0
