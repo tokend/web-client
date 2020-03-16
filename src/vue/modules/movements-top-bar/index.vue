@@ -240,6 +240,11 @@ export default {
 .movements-top-bar__actions-btn {
   margin-right: 1.2rem;
 
+  @media (max-width: $status-message-reposition-bp) {
+    margin-right: 0.8rem;
+    padding: 0.8rem 0.75rem;
+  }
+
   &:last-child {
     margin-right: 0;
   }

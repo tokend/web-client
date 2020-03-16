@@ -338,6 +338,10 @@ $pwd-toggle-btn-width: 3.2rem;
   top: 0;
   transition: all $field-transition-duration;
   pointer-events: none;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: $field-color-unfocused;
 
   @include label-font-sizes;

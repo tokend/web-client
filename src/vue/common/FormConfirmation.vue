@@ -111,6 +111,10 @@ export default {
   display: flex;
   max-width: 25rem;
   margin-left: auto;
+
+  @media (max-width: $status-message-reposition-bp) {
+    flex-direction: column;
+  }
 }
 
 .form-confirmation__ok-btn {
@@ -129,6 +133,10 @@ export default {
 
   &:not(:first-child) {
     margin-left: 0.5rem;
+
+    @media (max-width: $status-message-reposition-bp) {
+      margin-left: 0;
+    }
   }
 }
 
