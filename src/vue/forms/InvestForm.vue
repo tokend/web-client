@@ -69,7 +69,7 @@
                 }
               )"
               :disabled="view.mode === VIEW_MODES.confirm ||
-                !canUpdateOffer || formMixin.isDisabled"
+                !canUpdateOffer || formMixin.isDisabled || isZeroBalance"
             />
 
             <p class="app__form-field-description">
@@ -153,7 +153,7 @@
               v-if="view.mode === VIEW_MODES.submit"
               click="submit"
               class="app__button-raised"
-              :disabled="formMixin.isDisabled || !canSubmit"
+              :disabled="formMixin.isDisabled || !canSubmit || isZeroBalance"
             >
               {{ 'invest-form.invest-btn' | globalize }}
             </button>
@@ -400,6 +400,10 @@ export default {
       return this.canUpdateOffer &&
         !this.isCapExceeded &&
         this.isAssetPairPriceLoaded
+    },
+
+    isZeroBalance () {
+      return +this.availableBalance.value === 0
     },
 
     totalAmount () {
