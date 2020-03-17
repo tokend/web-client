@@ -33,6 +33,8 @@
     "csv-parse": "4.4.6",
     "custom-select": "1.1.15",
     "d3": "5.9.2",
+    "d3-array": "^2.4.0",
+    "d3-scale": "^3.2.1",
     "flatpickr": "4.6.1",
     "husky": "2.4.0",
     "i18next": "17.0.2",
