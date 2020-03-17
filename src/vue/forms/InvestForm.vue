@@ -23,7 +23,7 @@
               name="invest-asset"
               @blur="touchField('form.asset')"
               :disabled="view.mode === VIEW_MODES.confirm ||
-                !canUpdateOffer || formMixin.isDisabled"
+                formMixin.isDisabled"
             >
               <option
                 v-for="asset in quoteAssetListValues"
@@ -69,7 +69,7 @@
                 }
               )"
               :disabled="view.mode === VIEW_MODES.confirm ||
-                !canUpdateOffer || formMixin.isDisabled || isZeroBalance"
+                !canUpdateOffer || formMixin.isDisabled"
             />
 
             <p class="app__form-field-description">
@@ -153,7 +153,7 @@
               v-if="view.mode === VIEW_MODES.submit"
               click="submit"
               class="app__button-raised"
-              :disabled="formMixin.isDisabled || !canSubmit || isZeroBalance"
+              :disabled="formMixin.isDisabled || !canSubmit"
             >
               {{ 'invest-form.invest-btn' | globalize }}
             </button>
@@ -393,7 +393,8 @@ export default {
         !this.sale.isUpcoming &&
         !this.sale.isClosed &&
         !this.sale.isCanceled &&
-        this.isAllowedAccountType
+        this.isAllowedAccountType &&
+        !this.isZeroBalance
     },
 
     canSubmit () {
