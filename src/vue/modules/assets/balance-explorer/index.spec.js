@@ -22,6 +22,10 @@ describe('Balance explorer module', () => {
     store = new Vuex.Store({
       getters: {
         [vuexTypes.accountBalances]: _ => [],
+        [vuexTypes.kvAssetTypeKycRequired]: _ => false,
+        [vuexTypes.kvAssetTypeSecurity]: _ => null,
+        [vuexTypes.accountId]: _ => 'SOME_ACCOUNT_ID',
+        [vuexTypes.defaultQuoteAsset]: _ => {},
       },
       modules: {
         accountId: 'SOME_ACCOUNT_ID',

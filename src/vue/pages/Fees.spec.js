@@ -48,11 +48,9 @@ describe('Fees’', () => {
         .resolves()
       sinon.stub(ErrorHandler, 'processWithoutFeedback')
 
-      const wrp = await shallowMount(Fees, { localVue, store })
+      await shallowMount(Fees, { localVue, store })
 
       expect(initAssetSelectorStub).to.has.been.calledOnce
-      expect(wrp.vm.isLoaded).to.equal(true)
-      expect(wrp.vm.isLoadingFailed).to.equal(false)
       expect(ErrorHandler.processWithoutFeedback).to.has.not.been.called
 
       initAssetSelectorStub.restore()
@@ -62,7 +60,7 @@ describe('Fees’', () => {
     it('handles an occurred error without any feedback to the user', async () => {
       const theError = new Error()
       const initAssetSelectorStub = sinon
-        .stub(Fees.methods, 'initAssetSelector')
+        .stub(Fees.methods, 'loadAssets')
         .throws(theError)
       sinon.stub(ErrorHandler, 'processWithoutFeedback')
 

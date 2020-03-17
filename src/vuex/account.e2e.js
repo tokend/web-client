@@ -1,4 +1,4 @@
-import { MockHelper } from '../test'
+import { MockWrapper } from '../test'
 import { vuexTypes } from './types'
 
 import account from './account.module'
@@ -6,18 +6,17 @@ import accountJSON from '../test/mocks/account'
 
 import Vuex from 'vuex'
 import Vue from 'vue'
+import { api } from '@/api'
 
 Vue.use(Vuex)
 
 describe('account.module', () => {
-  let mockHelper
   let store
 
   const id = 'GDEDN7XAPJK4GL4AAYV7LJ7NWNKJI7NZAZPKGYHZJGJMCKN2CRTVRAPR'
   const roleId = 2
 
   beforeEach(async () => {
-    mockHelper = new MockHelper()
     store = new Vuex.Store({
       actions: {},
       getters: {},
@@ -26,9 +25,14 @@ describe('account.module', () => {
       modules: { account },
     })
 
-    mockHelper.mockEndpoint(`/v3/accounts/${id}?include=external_system_ids%2Cbalances%2Cbalances.state%2Cbalances.asset`, accountJSON)
+    sinon.stub(api, 'getWithSignature')
+      .resolves(MockWrapper.makeJsonapiResponse(accountJSON))
 
     await store.dispatch(vuexTypes.LOAD_ACCOUNT, id)
+  })
+
+  afterEach(() => {
+    api.getWithSignature.restore()
   })
 
   it('accountId', () => {

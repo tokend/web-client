@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+#### Added
+- Horizontal scroll for request's titles for mobile
+
+#### Fixed
+- En text in ru localization
+- Buttons positions in confirmation form for mobile
+- Text overflow of input field labels if text is too long for mobile
+- Width of account types in verification form for mobile
+- Width of table fields in issuance requests tab
+- Width of tabs in poll's drawer for mobile
+- Buttons dimensions in movements for mobile
+
+## [1.12.0-rc.0] - 2020-03-16
+#### Added
+- New build configuration
+
+#### Removed
+- `SupportedBrowsers` component
+
+## [1.11.0] - 2020-03-16
+
 ## [1.11.0-rc.2] - 2020-03-11
 #### Fixed
 - Tooltip displaying
@@ -1064,7 +1086,9 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.11.0-rc.2...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.12.0-rc.0...HEAD
+[1.12.0-rc.0]: https://github.com/tokend/web-client/compare/1.11.0...1.12.0-rc.0
+[1.11.0]: https://github.com/tokend/web-client/compare/1.11.0-rc.2...1.11.0
 [1.11.0-rc.2]: https://github.com/tokend/web-client/compare/1.11.0-rc.1...1.11.0-rc.2
 [1.11.0-rc.1]: https://github.com/tokend/web-client/compare/1.11.0-rc.0...1.11.0-rc.1
 [1.11.0-rc.0]: https://github.com/tokend/web-client/compare/1.10.3...1.11.0-rc.0
