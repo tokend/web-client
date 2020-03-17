@@ -77,6 +77,10 @@ export default {
 .chart-tabs__tab {
   font-weight: 500;
   color: $col-chart-tabs;
+
+  @media (max-width: $status-message-reposition-bp) {
+    padding: 0.8rem;
+  }
 }
 
 .chart-tabs__tab--selected {

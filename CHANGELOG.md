@@ -8,7 +8,16 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Added
+- Horizontal scroll for request's titles for mobile
+
 #### Fixed
+- En text in ru localization
+- Buttons positions in confirmation form for mobile
+- Text overflow of input field labels if text is too long for mobile
+- Width of account types in verification form for mobile
+- Width of tabs in poll's drawer for mobile
+- Buttons dimensions in movements for mobile
 - Aspect ratio of asset logo
 
 ## [1.12.0-rc.0] - 2020-03-16
