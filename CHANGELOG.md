@@ -18,6 +18,7 @@ for further information about branching and tagging conventions.
 - Width of account types in verification form for mobile
 - Width of tabs in poll's drawer for mobile
 - Buttons dimensions in movements for mobile
+- Aspect ratio of asset logo
 
 ## [1.12.0-rc.0] - 2020-03-16
 #### Added
