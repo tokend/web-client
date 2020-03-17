@@ -316,6 +316,7 @@ h6.app__page-heading {
         text-align: left;
         padding: 1.6rem 1.6rem 1.1rem;
         overflow: hidden;
+        max-width: 12rem;
         text-overflow: ellipsis;
         white-space: nowrap;
         color: $col-table-head-text;
@@ -341,6 +342,7 @@ h6.app__page-heading {
           font-size: 1.4rem;
           text-overflow: ellipsis;
           overflow: hidden;
+          max-width: 12rem;
           white-space: nowrap;
           color: $col-table-cell-text;
           padding: 1rem 1.6rem;

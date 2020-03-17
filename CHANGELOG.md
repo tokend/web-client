@@ -16,7 +16,6 @@ for further information about branching and tagging conventions.
 - Buttons positions in confirmation form for mobile
 - Text overflow of input field labels if text is too long for mobile
 - Width of account types in verification form for mobile
-- Width of table fields in issuance requests tab
 - Width of tabs in poll's drawer for mobile
 - Buttons dimensions in movements for mobile
 
