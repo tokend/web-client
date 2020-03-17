@@ -217,6 +217,10 @@ export default {
   background-color: $col-block-bg;
   text-decoration: none;
 
+  @media (max-width: $sidebar-hide-bp) {
+    padding: 1.2rem;
+  }
+
   @include box-shadow();
 
   &[disabled] {

@@ -182,6 +182,10 @@ $media-custom-breakpoint: 1100px;
 
   @include respond-to-custom($media-custom-breakpoint) {
     font-size: 1.4rem;
+
+    @media (max-width: $status-message-reposition-bp) {
+      font-size: 1.2rem;
+    }
   }
 }
 </style>
