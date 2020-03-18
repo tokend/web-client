@@ -130,6 +130,7 @@
         <date-field
           v-model="form.startTime"
           name="create-sale-start-time"
+          :disable-before="lastTwentyYear"
           :enable-time="true"
           @input="touchField('form.startTime')"
           @blur="touchField('form.startTime')"
@@ -375,6 +376,10 @@ export default {
 
     yesterday () {
       return moment().subtract(1, 'days').toISOString()
+    },
+
+    lastTwentyYear () {
+      return moment().subtract(20, 'years').toISOString()
     },
 
     localizedSaleTypes () {
