@@ -180,6 +180,7 @@ describe('Manage sale request mixin', () => {
 
           sandbox.stub(DocumentUploader, 'uploadDocument').resolves()
           sandbox.stub(wrapper.vm, 'createBalancesIfNotExist').resolves()
+          sandbox.stub(wrapper.vm, 'loadAssetsPairsByQuote').resolves([])
 
           sandbox.stub(wrapper.vm, 'createSaleDescriptionBlob')
             .resolves('BLOB_ID')
