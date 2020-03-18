@@ -254,12 +254,6 @@ export default {
     availableForIssuance () {
       return +this.form.asset.availableForIssuance === 0
     },
-
-    // red () {
-    //   if (availableForIssuance) {
-    //     "{ 'date-field-flatpickr__input--disabled': disabled }"
-    //   }
-    // },
   },
 
   watch: {
