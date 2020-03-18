@@ -121,20 +121,13 @@ export default {
       let result
 
       switch (this.validationType) {
-        case AMOUNT_VALIDATION_TYPE.incoming:
-          result = MathUtil.subtract(
-            this.assetRecord.maxIssuanceAmount, this.balance
-          )
-          break
-
         case AMOUNT_VALIDATION_TYPE.outgoing:
           result = this.balance
           break
-
+        case AMOUNT_VALIDATION_TYPE.incoming:
         case AMOUNT_VALIDATION_TYPE.issuance:
           result = this.assetRecord.availableForIssuance
           break
-
         case AMOUNT_VALIDATION_TYPE.atomicSwap:
           result = MathUtil.add(
             this.assetRecord.availableForIssuance, this.balance

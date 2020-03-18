@@ -112,3 +112,6 @@ $field-to-field-gap: 2rem;
   font-size: 1.2rem;
   margin-top: 0.6rem;
 }
+.app__form-field-description--error {
+  color: $col-error;
+}

@@ -24,7 +24,10 @@
                 </option>
               </select-field>
               <div class="withdrawal__form-field-description">
-                <p>
+                <p
+                  :class="{'withdrawal__form-field-description--error':
+                    zeroBalance}"
+                >
                   {{
                     'withdrawal-form.balance' | globalize({
                       balance: {
@@ -54,7 +57,7 @@
                 asset: form.asset.code
               })"
               :asset="form.asset"
-              :disabled="formMixin.isDisabled"
+              :disabled="formMixin.isDisabled || zeroBalance"
               is-max-button-shown
             />
           </div>
@@ -71,7 +74,7 @@
                 :label="'withdrawal-form.destination-address' | globalize({
                   asset: form.asset.code
                 })"
-                :disabled="formMixin.isDisabled"
+                :disabled="formMixin.isDisabled || zeroBalance"
               />
             </template>
 
@@ -84,7 +87,7 @@
                 @blur="touchField('form.address')"
                 :error-message="getFieldErrorMessage('form.address')"
                 :label="'withdrawal-form.comment' | globalize"
-                :disabled="formMixin.isDisabled"
+                :disabled="formMixin.isDisabled || zeroBalance"
               />
             </template>
           </div>
@@ -105,7 +108,7 @@
               v-if="!formMixin.isConfirmationShown"
               type="submit"
               class="app__button-raised"
-              :disabled="formMixin.isDisabled"
+              :disabled="formMixin.isDisabled || zeroBalance"
             >
               {{ 'withdrawal-form.withdraw-btn' | globalize }}
             </button>
@@ -219,6 +222,9 @@ export default {
     },
     selectedAssetBalance () {
       return this.accountBalanceByCode(this.form.asset.code)
+    },
+    zeroBalance () {
+      return +this.selectedAssetBalance.balance === 0
     },
   },
   watch: {
@@ -341,6 +347,10 @@ export default {
 .withdrawal__form-field-description {
   margin-top: 0.7rem;
   opacity: 0.7;
+}
+
+.withdrawal__form-field-description--error {
+  color: $col-error;
 }
 
 .withdrawal__fee-table {

@@ -42,7 +42,10 @@
                 </option>
               </select-field>
               <template v-if="form.asset.code">
-                <p class="app__form-field-description">
+                <p
+                  class="app__form-field-description"
+                  :class="{ 'app__form-field-description--error': zeroBalance }"
+                >
                   {{
                     'transfer-form.balance' | globalize({
                       amount: balance.balance,
@@ -65,6 +68,7 @@
                 :asset="form.asset"
                 is-max-button-shown
                 :readonly="view.mode === VIEW_MODES.confirm"
+                :disabled="zeroBalance"
               />
             </div>
           </div>
@@ -77,7 +81,7 @@
                 :label="'transfer-form.recipient-lbl' | globalize"
                 :error-message="getFieldErrorMessage('form.recipient')"
                 @blur="touchField('form.recipient')"
-                :disabled="view.mode === VIEW_MODES.confirm"
+                :disabled="view.mode === VIEW_MODES.confirm || zeroBalance"
               />
             </div>
           </div>
@@ -92,6 +96,7 @@
                 })"
                 :maxlength="250"
                 :readonly="view.mode === VIEW_MODES.confirm"
+                :disabled="zeroBalance"
               />
             </div>
           </div>
@@ -114,7 +119,7 @@
               v-if="view.mode === VIEW_MODES.submit"
               type="submit"
               class="app__form-submit-btn app__button-raised"
-              :disabled="formMixin.isDisabled"
+              :disabled="formMixin.isDisabled || zeroBalance"
               form="transfer-form"
             >
               {{ 'transfer-form.continue-btn' | globalize }}
@@ -225,6 +230,9 @@ export default {
     ]),
     balance () {
       return this.accountBalanceByCode(this.form.asset.code)
+    },
+    zeroBalance () {
+      return +this.balance.balance === 0
     },
   },
   async created () {
