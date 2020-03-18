@@ -378,6 +378,10 @@ export default {
       return moment().subtract(1, 'days').toISOString()
     },
 
+    lastTwentyYear () {
+      return moment().subtract(20, 'years').toISOString()
+    },
+
     localizedSaleTypes () {
       return [
         {
