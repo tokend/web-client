@@ -116,6 +116,7 @@ $media-small-desktop: 960px;
 
 .card-viewer__logo {
   margin: 0 auto;
+  object-fit: contain;
 }
 
 .card-viewer__info {
