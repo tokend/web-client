@@ -130,6 +130,7 @@
         <date-field
           v-model="form.startTime"
           name="create-sale-start-time"
+          :disable-before="lastTwentyYear"
           :enable-time="true"
           @input="touchField('form.startTime')"
           @blur="touchField('form.startTime')"
