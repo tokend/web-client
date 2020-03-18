@@ -24,7 +24,6 @@ for further information about branching and tagging conventions.
 - A bug with wrong avatar display in Passport
 - Bug with max value of amount input field for deposit
 
-
 ## [1.12.0-rc.0] - 2020-03-16
 #### Added
 - New build configuration
