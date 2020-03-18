@@ -236,6 +236,7 @@ $dropdown-item-side-padding: 2.4rem;
 
 .passport__avatar-image {
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .passport__email-abbr-btn {

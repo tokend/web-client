@@ -19,6 +19,7 @@ for further information about branching and tagging conventions.
 - Width of tabs in poll's drawer for mobile
 - Buttons dimensions in movements for mobile
 - Aspect ratio of asset logo
+- A bug with wrong avatar display in Passport
 
 ## [1.12.0-rc.0] - 2020-03-16
 #### Added
