@@ -6,7 +6,10 @@
           <span>{{ 'limits.explore-limits' | globalize }}</span>
         </router-link>
       </template>
-      <template slot="extra">
+      <template
+        v-if="!isAccountUnverified"
+        slot="extra"
+      >
         <button
           v-ripple
           class="app__button-raised"
@@ -146,6 +149,7 @@ export default {
     ...mapGetters({
       accountBalances: vuexTypes.accountBalances,
       accountId: vuexTypes.accountId,
+      isAccountUnverified: vuexTypes.isAccountUnverified,
     }),
     accountBalancesAssetsCodes () {
       return this.accountBalances.map(i => i.asset.code)

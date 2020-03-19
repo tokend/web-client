@@ -21,6 +21,7 @@ for further information about branching and tagging conventions.
 - Aspect ratio of asset logo
 - A bug with absence limit select date start time in sale request
 - A bug with wrong avatar display in Passport
+- A bug with display button change limits for unverified account
 
 ## [1.12.0-rc.0] - 2020-03-16
 #### Added
