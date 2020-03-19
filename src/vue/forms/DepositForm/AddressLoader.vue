@@ -8,7 +8,7 @@
         <p class="address-loader__help-message">
           {{ 'deposit-form.where-to' | globalize({ asset: assetCode }) }}
         </p>
-        <div class="app__form-row">
+        <div class="app__form-field">
           <div class="address-loader__key-viewer-wrp">
             <key-viewer
               :value="address"
