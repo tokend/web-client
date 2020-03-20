@@ -589,7 +589,8 @@ export default {
           this.form.amount,
           // TODO: remove DEFAULT_QUOTE_PRICE
           this.sale.quoteAssetPrices[this.form.asset.code] ||
-          DEFAULT_QUOTE_PRICE
+          DEFAULT_QUOTE_PRICE,
+          1
         ),
         // TODO: remove DEFAULT_QUOTE_PRICE
         price: this.sale.quoteAssetPrices[this.form.asset.code] ||

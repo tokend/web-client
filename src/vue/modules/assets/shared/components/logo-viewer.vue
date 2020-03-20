@@ -42,6 +42,7 @@ export default {
 
   &--image {
     display: block;
+    object-fit: contain;
   }
 
   &--abbr {

@@ -8,7 +8,19 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Added
+- Horizontal scroll for request's titles for mobile
+
 #### Fixed
+- En text in ru localization
+- Buttons positions in confirmation form for mobile
+- Text overflow of input field labels if text is too long for mobile
+- Width of account types in verification form for mobile
+- Width of tabs in poll's drawer for mobile
+- Buttons dimensions in movements for mobile
+- Aspect ratio of asset logo
+- A bug with absence limit select date start time in sale request
+- A bug with wrong avatar display in Passport
 - Disabled input field and button in invest form when balance is 0
 
 ## [1.12.0-rc.0] - 2020-03-16
@@ -19,6 +31,13 @@ for further information about branching and tagging conventions.
 - `SupportedBrowsers` component
 
 ## [1.11.0] - 2020-03-16
+
+## [Unreleased]
+#### Fixed
+- A bug with wrong calculate price per one asset in immediate sales
+
+#### Removed
+- load-asset-pairs tests
 
 ## [1.11.0-rc.2] - 2020-03-11
 #### Fixed
