@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Horizontal scroll for request's titles for mobile
+- Max length to withdraw address' input field
 
 #### Fixed
 - En text in ru localization
