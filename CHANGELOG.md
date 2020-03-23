@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Horizontal scroll for request's titles for mobile
+- Max length to withdraw address' input field
 
 #### Fixed
 - En text in ru localization
@@ -22,6 +23,7 @@ for further information about branching and tagging conventions.
 - A bug with absence limit select date start time in sale request
 - A bug with wrong avatar display in Passport
 - A bug with display button change limits for unverified account
+- Disabled input field and button in invest form when balance is 0
 
 ## [1.12.0-rc.0] - 2020-03-16
 #### Added

@@ -63,6 +63,7 @@
             <template v-if="isMasterAssetOwner">
               <input-field
                 white-autofill
+                :maxlength="ADDRESS_MAX_LENGTH"
                 class="app__form-field"
                 v-model.trim="form.address"
                 name="withdrawal-address"
@@ -168,6 +169,8 @@ const EVENTS = {
   operationSubmitted: 'operation-submitted',
 }
 
+const ADDRESS_MAX_LENGTH = 256
+
 export default {
   name: 'withdrawal-form',
   components: {
@@ -194,6 +197,7 @@ export default {
     DECIMAL_POINTS: config.DECIMAL_POINTS,
     vueRoutes,
     FEE_TYPES,
+    ADDRESS_MAX_LENGTH,
   }),
   validations () {
     const addressRules = {

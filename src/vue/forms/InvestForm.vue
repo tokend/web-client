@@ -69,7 +69,7 @@
                 }
               )"
               :disabled="view.mode === VIEW_MODES.confirm ||
-                !canUpdateOffer || formMixin.isDisabled"
+                !canUpdateOffer || formMixin.isDisabled  || isZeroBalance"
             />
 
             <p class="app__form-field-description">
@@ -399,7 +399,12 @@ export default {
     canSubmit () {
       return this.canUpdateOffer &&
         !this.isCapExceeded &&
-        this.isAssetPairPriceLoaded
+        this.isAssetPairPriceLoaded &&
+        !this.isZeroBalance
+    },
+
+    isZeroBalance () {
+      return +this.availableBalance.value === 0
     },
 
     totalAmount () {
