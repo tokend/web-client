@@ -266,15 +266,10 @@ export default {
       }
     },
 
-    setFirstAsset () {
-      let result = this.accountBalances
+    getDefaultAsset () {
+      const accountBalances = this.accountBalances
         .find(item => item === this.assetPair.base)
-      if (result === undefined) {
-        result = this.accountAssets[0]
-      } else {
-        result = _get(result, 'asset.code', this.accountAssets[0])
-      }
-      return result
+      return _get(accountBalances, 'asset.code', this.accountAssets[0])
     },
 
     createOfferOpts () {
@@ -309,7 +304,7 @@ export default {
   async created () {
     try {
       await this.loadBalances()
-      this.form.asset = this.setFirstAsset
+      this.form.asset = this.getDefaultAsset
       await this.loadFees()
       this.isLoaded = true
     } catch (e) {
