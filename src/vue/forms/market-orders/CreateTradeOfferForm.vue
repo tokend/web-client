@@ -266,12 +266,6 @@ export default {
       }
     },
 
-    getDefaultAsset () {
-      const accountBalances = this.accountBalances
-        .find(item => item === this.assetPair.base)
-      return _get(accountBalances, 'asset.code', this.accountAssets[0])
-    },
-
     createOfferOpts () {
       return {
         pair: {
@@ -304,7 +298,7 @@ export default {
   async created () {
     try {
       await this.loadBalances()
-      this.form.asset = this.getDefaultAsset
+      this.setDefaultAsset()
       await this.loadFees()
       this.isLoaded = true
     } catch (e) {
@@ -354,6 +348,12 @@ export default {
       }
       this.isOfferCreating = false
       this.hideConfirmation()
+    },
+
+    setDefaultAsset () {
+      const accountBalances = this.accountBalances
+        .find(item => item === this.assetPair.base)
+      this.form.asset = _get(accountBalances, 'asset.code', this.accountAssets[0])
     },
   },
 }
