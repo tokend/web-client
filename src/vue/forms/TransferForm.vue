@@ -48,9 +48,9 @@
                 >
                   {{
                     'transfer-form.balance' | globalize({
-                      amount: balance.balance,
+                      amount: balance,
                       asset: form.asset.code,
-                      available: balance.balance
+                      available: balance
                     })
                   }}
                 </p>
