@@ -69,7 +69,7 @@
                 }
               )"
               :disabled="view.mode === VIEW_MODES.confirm ||
-                !canUpdateOffer || formMixin.isDisabled"
+                !canUpdateOffer || formMixin.isDisabled  || isZeroBalance"
             />
 
             <p class="app__form-field-description">
@@ -399,7 +399,12 @@ export default {
     canSubmit () {
       return this.canUpdateOffer &&
         !this.isCapExceeded &&
-        this.isAssetPairPriceLoaded
+        this.isAssetPairPriceLoaded &&
+        !this.isZeroBalance
+    },
+
+    isZeroBalance () {
+      return +this.availableBalance.value === 0
     },
 
     totalAmount () {
@@ -584,7 +589,8 @@ export default {
           this.form.amount,
           // TODO: remove DEFAULT_QUOTE_PRICE
           this.sale.quoteAssetPrices[this.form.asset.code] ||
-          DEFAULT_QUOTE_PRICE
+          DEFAULT_QUOTE_PRICE,
+          1
         ),
         // TODO: remove DEFAULT_QUOTE_PRICE
         price: this.sale.quoteAssetPrices[this.form.asset.code] ||
