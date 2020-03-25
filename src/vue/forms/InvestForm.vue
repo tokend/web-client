@@ -69,7 +69,7 @@
                 }
               )"
               :disabled="view.mode === VIEW_MODES.confirm ||
-                !canUpdateOffer || formMixin.isDisabled  || isZeroBalance"
+                !canUpdateOffer || formMixin.isDisabled || isZeroBalance"
             />
 
             <p class="app__form-field-description">

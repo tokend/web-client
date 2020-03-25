@@ -25,6 +25,7 @@ for further information about branching and tagging conventions.
 - A bug with wrong avatar display in Passport
 - A bug with display button change limits for unverified account
 - Disabled input field and button in invest form when balance is 0
+- A bug with impossibility use a comma as a separator in Firefox browser
 
 ## [1.12.0-rc.0] - 2020-03-16
 #### Added
