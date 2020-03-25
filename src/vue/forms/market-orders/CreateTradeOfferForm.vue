@@ -159,6 +159,8 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { MathUtil } from '@/js/utils/math.util'
 import config from '@/config'
 
+import _get from 'lodash/get'
+
 import {
   required,
   amountRange,
@@ -296,7 +298,7 @@ export default {
   async created () {
     try {
       await this.loadBalances()
-      this.form.asset = this.assetPair.base
+      this.setDefaultAsset()
       await this.loadFees()
       this.isLoaded = true
     } catch (e) {
@@ -346,6 +348,12 @@ export default {
       }
       this.isOfferCreating = false
       this.hideConfirmation()
+    },
+
+    setDefaultAsset () {
+      const accountBalances = this.accountBalances
+        .find(item => item === this.assetPair.base)
+      this.form.asset = _get(accountBalances, 'asset.code', this.accountAssets[0])
     },
   },
 }
