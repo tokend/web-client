@@ -20,6 +20,7 @@ for further information about branching and tagging conventions.
 - Width of tabs in poll's drawer for mobile
 - Buttons dimensions in movements for mobile
 - Aspect ratio of asset logo
+- A bug with auto select no balance asset in CreateTradeOfferForm
 - A bug with absence limit select date start time in sale request
 - A bug with wrong avatar display in Passport
 - A bug with display button change limits for unverified account
