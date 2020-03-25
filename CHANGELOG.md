@@ -6,11 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
-
 ## [Unreleased]
 #### Added
-- Horizontal scroll for request's titles for mobile
 - Transfer, withdraw and issuance forms disabling if balance is 0
+
+## [1.12.0-rc.1] - 2020-03-25
+#### Added
+- Horizontal scroll for request's titles for mobile
+- Max length to withdraw address' input field
 
 #### Fixed
 - En text in ru localization
@@ -20,9 +23,16 @@ for further information about branching and tagging conventions.
 - Width of tabs in poll's drawer for mobile
 - Buttons dimensions in movements for mobile
 - Aspect ratio of asset logo
+- A bug with auto select no balance asset in CreateTradeOfferForm
 - A bug with absence limit select date start time in sale request
 - A bug with wrong avatar display in Passport
+<<<<<<< HEAD
 - Bug with max value of amount input field for deposit
+=======
+- A bug with display button change limits for unverified account
+- Disabled input field and button in invest form when balance is 0
+- A bug with impossibility use a comma as a separator in Firefox browser
+>>>>>>> master
 
 ## [1.12.0-rc.0] - 2020-03-16
 #### Added
@@ -1097,7 +1107,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.12.0-rc.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.12.0-rc.1...HEAD
+[1.12.0-rc.1]: https://github.com/tokend/web-client/compare/1.12.0-rc.0...1.12.0-rc.1
 [1.12.0-rc.0]: https://github.com/tokend/web-client/compare/1.11.0...1.12.0-rc.0
 [1.11.0]: https://github.com/tokend/web-client/compare/1.11.0-rc.2...1.11.0
 [1.11.0-rc.2]: https://github.com/tokend/web-client/compare/1.11.0-rc.1...1.11.0-rc.2

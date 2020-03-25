@@ -25,13 +25,13 @@
               </select-field>
               <div class="withdrawal__form-field-description">
                 <p
-                  :class="{'withdrawal__form-field-description--error':
-                    zeroBalance}"
+                  :class="{'withdrawal__form-field-description--error'
+                    : !balance}"
                 >
                   {{
                     'withdrawal-form.balance' | globalize({
                       balance: {
-                        value: selectedAssetBalance.balance,
+                        value: balance,
                         currency: selectedAssetBalance.asset.code
                       }
                     })
@@ -57,7 +57,7 @@
                 asset: form.asset.code
               })"
               :asset="form.asset"
-              :disabled="formMixin.isDisabled || zeroBalance"
+              :disabled="formMixin.isDisabled || !balance"
               is-max-button-shown
             />
           </div>
@@ -66,6 +66,7 @@
             <template v-if="isMasterAssetOwner">
               <input-field
                 white-autofill
+                :maxlength="ADDRESS_MAX_LENGTH"
                 class="app__form-field"
                 v-model.trim="form.address"
                 name="withdrawal-address"
@@ -74,7 +75,7 @@
                 :label="'withdrawal-form.destination-address' | globalize({
                   asset: form.asset.code
                 })"
-                :disabled="formMixin.isDisabled || zeroBalance"
+                :disabled="formMixin.isDisabled || !balance"
               />
             </template>
 
@@ -87,7 +88,7 @@
                 @blur="touchField('form.address')"
                 :error-message="getFieldErrorMessage('form.address')"
                 :label="'withdrawal-form.comment' | globalize"
-                :disabled="formMixin.isDisabled || zeroBalance"
+                :disabled="formMixin.isDisabled || !balance"
               />
             </template>
           </div>
@@ -108,7 +109,7 @@
               v-if="!formMixin.isConfirmationShown"
               type="submit"
               class="app__button-raised"
-              :disabled="formMixin.isDisabled || zeroBalance"
+              :disabled="formMixin.isDisabled || !balance"
             >
               {{ 'withdrawal-form.withdraw-btn' | globalize }}
             </button>
@@ -171,6 +172,8 @@ const EVENTS = {
   operationSubmitted: 'operation-submitted',
 }
 
+const ADDRESS_MAX_LENGTH = 256
+
 export default {
   name: 'withdrawal-form',
   components: {
@@ -197,6 +200,7 @@ export default {
     DECIMAL_POINTS: config.DECIMAL_POINTS,
     vueRoutes,
     FEE_TYPES,
+    ADDRESS_MAX_LENGTH,
   }),
   validations () {
     const addressRules = {
@@ -216,15 +220,14 @@ export default {
       withdrawableBalancesAssets: vuexTypes.withdrawableBalancesAssets,
       accountBalanceByCode: vuexTypes.accountBalanceByCode,
     }),
-
+    balance () {
+      return +this.selectedAssetBalance.balance
+    },
     isMasterAssetOwner () {
       return this.form.asset.owner === api.networkDetails.adminAccountId
     },
     selectedAssetBalance () {
       return this.accountBalanceByCode(this.form.asset.code)
-    },
-    zeroBalance () {
-      return +this.selectedAssetBalance.balance === 0
     },
   },
   watch: {

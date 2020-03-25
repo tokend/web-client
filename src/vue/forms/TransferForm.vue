@@ -44,13 +44,13 @@
               <template v-if="form.asset.code">
                 <p
                   class="app__form-field-description"
-                  :class="{ 'app__form-field-description--error': zeroBalance }"
+                  :class="{ 'app__form-field-description--error': !balance }"
                 >
                   {{
                     'transfer-form.balance' | globalize({
-                      amount: balance.balance,
+                      amount: balance,
                       asset: form.asset.code,
-                      available: balance.balance
+                      available: balance
                     })
                   }}
                 </p>
@@ -68,7 +68,7 @@
                 :asset="form.asset"
                 is-max-button-shown
                 :readonly="view.mode === VIEW_MODES.confirm"
-                :disabled="zeroBalance"
+                :disabled="!balance"
               />
             </div>
           </div>
@@ -81,7 +81,7 @@
                 :label="'transfer-form.recipient-lbl' | globalize"
                 :error-message="getFieldErrorMessage('form.recipient')"
                 @blur="touchField('form.recipient')"
-                :disabled="view.mode === VIEW_MODES.confirm || zeroBalance"
+                :disabled="view.mode === VIEW_MODES.confirm || !balance"
               />
             </div>
           </div>
@@ -96,7 +96,7 @@
                 })"
                 :maxlength="250"
                 :readonly="view.mode === VIEW_MODES.confirm"
-                :disabled="zeroBalance"
+                :disabled="!balance"
               />
             </div>
           </div>
@@ -119,7 +119,7 @@
               v-if="view.mode === VIEW_MODES.submit"
               type="submit"
               class="app__form-submit-btn app__button-raised"
-              :disabled="formMixin.isDisabled || zeroBalance"
+              :disabled="formMixin.isDisabled || !balance"
               form="transfer-form"
             >
               {{ 'transfer-form.continue-btn' | globalize }}
@@ -229,10 +229,7 @@ export default {
       vuexTypes.accountBalanceByCode,
     ]),
     balance () {
-      return this.accountBalanceByCode(this.form.asset.code)
-    },
-    zeroBalance () {
-      return +this.balance.balance === 0
+      return +this.accountBalanceByCode(this.form.asset.code).balance
     },
   },
   async created () {
@@ -288,7 +285,7 @@ export default {
           destinationFixedFee: this.fees.destinationFee.fixed,
           destinationPercentFee: this.fees.destinationFee.calculatedPercent,
           destinationFeeAsset: this.form.asset,
-          sourceBalanceId: this.balance.id,
+          sourceBalanceId: this.accountBalanceByCode(this.form.asset.code).id,
           sourceFixedFee: this.fees.sourceFee.fixed,
           sourcePercentFee: this.fees.sourceFee.calculatedPercent,
           sourceFeeAsset: this.form.asset,
