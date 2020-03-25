@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+#### Added
+- Redirect type invite-verify
+
+#### Fixed
+- redirect types
+
 ## [1.12.0-rc.1] - 2020-03-25
 #### Added
 - Horizontal scroll for request's titles for mobile
