@@ -13,6 +13,7 @@ for further information about branching and tagging conventions.
 
 #### Fixed
 - redirect types
+- number input field
 
 ## [1.12.0-rc.1] - 2020-03-25
 #### Added
