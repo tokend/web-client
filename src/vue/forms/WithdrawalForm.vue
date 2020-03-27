@@ -25,8 +25,10 @@
               </select-field>
               <div class="withdrawal__form-field-description">
                 <p
-                  :class="{'withdrawal__form-field-description--error'
-                    : !balance}"
+                  :class="{
+                    'withdrawal__form-field-description--error'
+                      :zeroBalance
+                  }"
                 >
                   {{
                     'withdrawal-form.balance' | globalize({
