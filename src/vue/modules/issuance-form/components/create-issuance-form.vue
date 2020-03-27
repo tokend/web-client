@@ -46,7 +46,7 @@
                 maxDecimalDigitsCount: DECIMAL_POINTS
               }
             )"
-            :disabled="formMixin.isDisabled"
+            :disabled="formMixin.isDisabled || !availableForIssuance"
           />
 
           <p
@@ -60,6 +60,7 @@
         <p
           v-if="form.asset.availableForIssuance"
           class="app__form-field-description"
+          :class="{'app__form-field-description--error': !availableForIssuance}"
         >
           {{
             'issuance-form.available-for-issuance-hint' | globalize({
@@ -82,7 +83,7 @@
           name="create-issuance-receiver"
           :label="'issuance-form.receiver-lbl' | globalize"
           :error-message="getFieldErrorMessage('form.receiver')"
-          :disabled="formMixin.isDisabled"
+          :disabled="formMixin.isDisabled || !availableForIssuance"
         />
       </div>
     </div>
@@ -100,7 +101,7 @@
           )"
           :label="'issuance-form.reference-lbl' | globalize"
           :maxlength="REFERENCE_MAX_LENGTH"
-          :disabled="formMixin.isDisabled"
+          :disabled="formMixin.isDisabled || !availableForIssuance"
         />
       </div>
     </div>
@@ -133,7 +134,8 @@
         v-else
         v-ripple
         class="create-issuance-form__submit-btn app__button-raised"
-        :disabled="formMixin.isDisabled || !isFeesLoaded"
+        :disabled="formMixin.isDisabled || !isFeesLoaded ||
+          !availableForIssuance"
       >
         {{ 'issuance-form.issue-btn' | globalize }}
       </button>
@@ -216,7 +218,7 @@ export default {
           required,
           amountRange: amountRange(
             config.MIN_AMOUNT,
-            this.form.asset.availableForIssuance
+            this.availableForIssuance
           ),
           maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
         },
@@ -247,6 +249,10 @@ export default {
         value: MathUtil.subtract(this.form.amount, fees),
         currency: this.form.asset.code,
       }
+    },
+
+    availableForIssuance () {
+      return +this.form.asset.availableForIssuance
     },
   },
 
