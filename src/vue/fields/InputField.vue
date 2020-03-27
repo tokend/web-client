@@ -92,12 +92,8 @@ export default {
         ...this.$listeners,
         input: event => {
           this.normalizeTargetValue(event.target)
-          if (this.type === INPUT_TYPES.number) {
-            // eslint-disable-next-line max-len
-            this.$emit(EVENTS.input, event.target.valueAsNumber.toString() || event.target.value)
-          } else {
-            this.$emit(EVENTS.input, event.target.value)
-          }
+          if (this.value === event.target.value) return
+          this.$emit(EVENTS.input, event.target.value)
         },
       }
     },

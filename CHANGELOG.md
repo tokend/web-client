@@ -13,6 +13,14 @@ for further information about branching and tagging conventions.
 #### Fixed
 - Bug with max value of amount input field for deposit
 
+## [Unreleased]
+#### Added
+- Redirect type invite-verify
+
+#### Fixed
+- redirect types
+- number input field
+
 ## [1.12.0-rc.1] - 2020-03-25
 #### Added
 - Horizontal scroll for request's titles for mobile
