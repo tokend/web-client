@@ -27,7 +27,7 @@
                 <p
                   :class="{
                     'withdrawal__form-field-description--error'
-                      : !balance
+                      :!balance
                   }"
                 >
                   {{
