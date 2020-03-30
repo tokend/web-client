@@ -66,7 +66,7 @@ export default {
   }
 
   @media (max-width: $sidebar-hide-bp) {
-    overflow-x: visible;
+    overflow-x: unset;
   }
 }
 
