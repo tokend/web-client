@@ -8,18 +8,13 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
-- Transfer, withdraw and issuance forms disabling if balance is 0
-
-#### Fixed
-- Bug with max value of amount input field for deposit
-
-## [Unreleased]
-#### Added
 - Redirect type invite-verify
+- Transfer, withdraw and issuance forms disabling if balance is 0
 
 #### Fixed
 - redirect types
 - number input field
+- Bug with max value of amount input field for deposit
 
 ## [1.12.0-rc.1] - 2020-03-25
 #### Added
