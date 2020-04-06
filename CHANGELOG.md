@@ -15,6 +15,7 @@ for further information about branching and tagging conventions.
 - redirect types
 - number input field
 - Bug with max value of amount input field for deposit
+- Bug when after update opened buy offer changed type to sell
 
 ## [1.12.0-rc.1] - 2020-03-25
 #### Added

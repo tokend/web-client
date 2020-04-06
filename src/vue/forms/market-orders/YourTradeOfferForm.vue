@@ -237,7 +237,7 @@ export default {
 
   computed: {
     baseAssetLabelTranslationId () {
-      return this.isBuy
+      return this.offer.isBuy
         ? 'your-trade-offer-form.asset-to-buy-lbl'
         : 'your-trade-offer-form.asset-to-sell-lbl'
     },
@@ -291,7 +291,7 @@ export default {
         baseAmount: this.form.baseAmount,
         quoteAmount: this.quoteAmount,
         price: this.form.price,
-        isBuy: this.isBuy,
+        isBuy: this.offer.isBuy,
         fee: this.fees.totalFee,
       }
     },
@@ -382,8 +382,7 @@ export default {
 
             break
           case SUBMIT_MODES.update:
-            await this.cancelOffer(this.cancelOfferOpts)
-            await this.createOffer(this.createOfferOpts)
+            await this.updateOffer(this.cancelOfferOpts, this.createOfferOpts)
 
             Bus.success('your-trade-offer-form.order-updated-msg')
             this.$emit(EVENTS.offerUpdated)
