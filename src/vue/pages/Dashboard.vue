@@ -22,7 +22,7 @@
 
           <!-- eslint-disable-next-line max-len -->
           <button
-            v-if="currentAsset"
+            v-if="isTransferable"
             class="app__button-raised dashboard__action"
             @click="transferFormIsShown = true"
           >
@@ -126,7 +126,12 @@ export default {
       vuexTypes.isAccountCorporate,
       vuexTypes.accountBalances,
       vuexTypes.defaultQuoteAsset,
+      vuexTypes.transferableBalancesAssets,
     ]),
+    isTransferable () {
+      return this.transferableBalancesAssets.some(
+        item => item.code === this.currentAsset)
+    },
   },
   watch: {
     showDrawer (status) {

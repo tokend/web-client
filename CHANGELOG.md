@@ -16,6 +16,9 @@ for further information about branching and tagging conventions.
 - number input field
 - Bug with max value of amount input field for deposit
 
+#### Changed
+- Hide "Send" button for non-transferable asset
+
 ## [1.12.0-rc.1] - 2020-03-25
 #### Added
 - Horizontal scroll for request's titles for mobile
