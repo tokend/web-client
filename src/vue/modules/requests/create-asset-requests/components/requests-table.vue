@@ -31,7 +31,7 @@
             :key="request.id"
           >
             <td :title="request.assetCode">
-              {{ request.assetCode }}
+              {{ request.assetCode.id }}
             </td>
 
             <td>
