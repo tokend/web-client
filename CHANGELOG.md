@@ -16,6 +16,7 @@ for further information about branching and tagging conventions.
 - number input field
 - Bug with max value of amount input field for deposit
 - Visibility of select field options on top-bar if width < 768px
+- Bug with displaying correct unlocked amount in movements
 
 ## [1.12.0-rc.1] - 2020-03-25
 #### Added
