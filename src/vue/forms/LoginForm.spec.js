@@ -38,8 +38,8 @@ describe('LoginForm component unit test', () => {
     })
 
     const expectedResults = {
-      email: ['required', 'email'],
-      password: ['required'],
+      email: ['required', 'email', 'maxLength'],
+      password: ['required', 'maxLength'],
     }
 
     for (const [model, rules] of Object.entries(expectedResults)) {

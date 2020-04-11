@@ -74,7 +74,7 @@ import {
   required,
   password,
   sameAs,
-  maxLength
+  maxLength,
 } from '@validators'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
