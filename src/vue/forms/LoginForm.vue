@@ -7,7 +7,9 @@
           @blur="touchField('form.email')"
           name="login-email"
           :label="'auth-pages.email' | globalize"
-          :error-message="getFieldErrorMessage('form.email')"
+          :error-message="getFieldErrorMessage('form.email', {
+            length: MAX_FIELD_LENGTH.email
+          })"
           :white-autofill="false"
         />
       </div>
@@ -20,7 +22,9 @@
           name="login-password"
           type="password"
           :trim="false"
-          :error-message="getFieldErrorMessage('form.password')"
+          :error-message="getFieldErrorMessage('form.password', {
+            length: MAX_FIELD_LENGTH.password
+          })"
           :white-autofill="false"
           :label="'auth-pages.password' | globalize"
         />
@@ -56,7 +60,7 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { required, requiredIf, email } from '@validators'
+import { required, requiredIf, email, maxLength } from '@validators'
 import { vuexTypes } from '@/vuex'
 import { mapActions, mapGetters } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
@@ -64,6 +68,7 @@ import { vueRoutes } from '@/vue-router/routes'
 import { factorsManager } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@tokend/js-sdk'
+import { MAX_FIELD_LENGTH } from '@/js/const/field-length.const'
 
 export default {
   name: 'login-form',
@@ -75,11 +80,19 @@ export default {
       tfaCode: '',
     },
     tfaError: null,
+    MAX_FIELD_LENGTH,
   }),
   validations: {
     form: {
-      email: { required, email },
-      password: { required },
+      email: {
+        required,
+        email,
+        maxLength: maxLength(MAX_FIELD_LENGTH.email),
+      },
+      password: {
+        required,
+        maxLength: maxLength(MAX_FIELD_LENGTH.password),
+      },
       tfaCode: {
         required: requiredIf(function () { return this.tfaError }),
       },

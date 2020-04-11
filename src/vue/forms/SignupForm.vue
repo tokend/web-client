@@ -10,7 +10,9 @@
           @blur="touchField('form.email')"
           name="signup-email"
           :label="'auth-pages.email' | globalize"
-          :error-message="getFieldErrorMessage('form.email')"
+          :error-message="getFieldErrorMessage('form.email', {
+            length: MAX_FIELD_LENGTH.email,
+          })"
           :white-autofill="false"
           :disabled="isDisabled || formMixin.isDisabled"
         />
@@ -24,7 +26,9 @@
           name="signup-password"
           type="password"
           :trim="false"
-          :error-message="getFieldErrorMessage('form.password')"
+          :error-message="getFieldErrorMessage('form.password', {
+            length: MAX_FIELD_LENGTH.password,
+          })"
           :white-autofill="false"
           :label="'auth-pages.password' | globalize"
           :disabled="isDisabled || formMixin.isDisabled"
@@ -39,7 +43,9 @@
           name="signup-confirm-password"
           type="password"
           :trim="false"
-          :error-message="getFieldErrorMessage('form.confirmPassword')"
+          :error-message="getFieldErrorMessage('form.confirmPassword', {
+            length: MAX_FIELD_LENGTH.password,
+          })"
           :white-autofill="false"
           :label="'auth-pages.confirm-password' | globalize"
           :disabled="isDisabled || formMixin.isDisabled"
@@ -68,11 +74,13 @@ import {
   required,
   password,
   sameAs,
+  maxLength
 } from '@validators'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@/js/errors'
 import { walletsManager } from '@/api'
+import { MAX_FIELD_LENGTH } from '@/js/const/field-length.const'
 
 export default {
   name: 'signup-form',
@@ -93,14 +101,24 @@ export default {
       password: '',
       confirmPassword: '',
     },
+    MAX_FIELD_LENGTH,
   }),
   validations: {
     form: {
-      email: { required, email },
-      password: { required, password },
+      email: {
+        required,
+        email,
+        maxLength: maxLength(MAX_FIELD_LENGTH.email),
+      },
+      password: {
+        required,
+        password,
+        maxLength: maxLength(MAX_FIELD_LENGTH.password),
+      },
       confirmPassword: {
         required,
         password,
+        maxLength: maxLength(MAX_FIELD_LENGTH.password),
         sameAsPassword: sameAs(function () { return this.form.password }),
       },
     },
