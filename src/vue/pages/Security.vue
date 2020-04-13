@@ -232,6 +232,7 @@ export default {
   font-size: 1.3rem;
   cursor: pointer;
   color: $col-link;
+  text-align: end;
 }
 
 .secret-seed__description,
