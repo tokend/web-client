@@ -31,13 +31,18 @@ export default {
      * @param {string} opts.price - offer price
      * @returns {Promise<void>}
      */
-    async cancelOffer (opts) {
-      const operation = base.ManageOfferBuilder.cancelOffer({
+
+    async cancelOpts (opts) {
+      return base.ManageOfferBuilder.cancelOffer({
         ...opts,
         offerID: String(opts.offerId),
         price: opts.price,
         orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
       })
+    },
+
+    async cancelOffer (opts) {
+      const operation = await this.cancelOpts(opts)
       await api.postOperations(operation)
     },
 
@@ -54,7 +59,8 @@ export default {
      * @param {boolean} opts.isBuy
      * @returns {Promise<void>}
      */
-    async someFunc (opts) {
+
+    async createOpts (opts) {
       await this.createAssetPairBalances(opts.pair)
       return {
         amount: opts.baseAmount,
@@ -71,23 +77,15 @@ export default {
     },
 
     async createOffer (opts) {
-      const operationOpts = await this.someFunc(opts)
+      const operationOpts = await this.createOpts(opts)
       const operation = base.ManageOfferBuilder.manageOffer(operationOpts)
-
       await api.postOperations(operation)
     },
 
     async updateOffer (cancelOpts, createOpts) {
-      const cancelOperation = base.ManageOfferBuilder.cancelOffer({
-        ...cancelOpts,
-        offerID: String(cancelOpts.offerId),
-        price: cancelOpts.price,
-        orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
-      })
-      const operationOpts = await this.someFunc(createOpts)
-
+      const cancelOperation = await this.cancelOpts(cancelOpts)
+      const operationOpts = await this.createOpts(createOpts)
       const createOperation = base.ManageOfferBuilder.manageOffer(operationOpts)
-
       await api.postOperations(cancelOperation, createOperation)
     },
 
