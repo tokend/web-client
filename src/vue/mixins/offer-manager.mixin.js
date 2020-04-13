@@ -54,10 +54,9 @@ export default {
      * @param {boolean} opts.isBuy
      * @returns {Promise<void>}
      */
-    async createOffer (opts) {
+    async someFunc (opts) {
       await this.createAssetPairBalances(opts.pair)
-
-      const operationOpts = {
+      return {
         amount: opts.baseAmount,
         price: opts.price,
         orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
@@ -69,6 +68,10 @@ export default {
         // because of this is a back-end business
         fee: opts.fee.calculatedPercent,
       }
+    },
+
+    async createOffer (opts) {
+      const operationOpts = await this.someFunc(opts)
       const operation = base.ManageOfferBuilder.manageOffer(operationOpts)
 
       await api.postOperations(operation)
@@ -81,21 +84,8 @@ export default {
         price: cancelOpts.price,
         orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
       })
+      const operationOpts = await this.someFunc(createOpts)
 
-      await this.createAssetPairBalances(createOpts.pair)
-
-      const operationOpts = {
-        amount: createOpts.baseAmount,
-        price: createOpts.price,
-        orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
-        isBuy: createOpts.isBuy,
-        baseBalance: this.getAssetDetails(createOpts.pair.base).id,
-        quoteBalance: this.getAssetDetails(createOpts.pair.quote).id,
-        // For this operation, back-end creates a "calculated fee", that
-        // calculates as amount * percent fee. We can ignore the fixed fee
-        // because of this is a back-end business
-        fee: createOpts.fee.calculatedPercent,
-      }
       const createOperation = base.ManageOfferBuilder.manageOffer(operationOpts)
 
       await api.postOperations(cancelOperation, createOperation)
