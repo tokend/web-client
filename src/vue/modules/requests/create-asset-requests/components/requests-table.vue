@@ -30,7 +30,7 @@
             v-for="request in requests"
             :key="request.id"
           >
-            <td :title="request.assetCode">
+            <td :title="request.assetCode.id">
               {{ request.assetCode.id }}
             </td>
 
