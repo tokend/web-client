@@ -175,7 +175,7 @@ describe('Dashboard.AssetSelector component', () => {
   describe('computed properties', () => {
     describe('currentAssetForSelect()', () => {
       it('returns asset if this.assets list is not empty', () => {
-        wrapper.vm.currentAsset = 'ETH'
+        wrapper.vm.currentAssetCode = 'ETH'
         wrapper.vm.assets = mockedAssets
 
         expect(wrapper.vm.currentAssetForSelect).to.equal(mockedAssets[2])
