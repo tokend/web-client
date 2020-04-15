@@ -4,8 +4,8 @@
       <div class="dashboard__toolbar">
         <asset-selector
           class="dashboard__asset-selector"
-          :current-asset="currentAsset"
-          @asset-change="currentAsset = $event"
+          :current-asset-code="currentAssetCode"
+          @asset-change="currentAssetCode = $event"
           :scale="scale"
         />
         <div class="dashboard__actions">
@@ -22,33 +22,34 @@
 
           <!-- eslint-disable-next-line max-len -->
           <button
-            v-if="isTransferable"
+            v-if="currentAsset.isTransferable"
             class="app__button-raised dashboard__action"
             @click="transferFormIsShown = true"
           >
             <i class="mdi mdi-send mdi-rotate-315 dashboard__send-icon" />
             {{
-              'dashboard.send-asset-lbl' | globalize({ asset: currentAsset })
+              'dashboard.send-asset-lbl' | globalize({
+                asset: currentAssetCode })
             }}
           </button>
         </div>
       </div>
-      <template v-if="currentAsset">
+      <template v-if="currentAssetCode">
         <div
-          v-if="currentAsset !== defaultQuoteAsset"
+          v-if="currentAssetCode !== defaultQuoteAsset"
           class="dashboard__chart"
         >
           <chart
-            :base-asset="currentAsset"
+            :base-asset="currentAssetCode"
             :quote-asset="defaultQuoteAsset"
           />
         </div>
         <div
           class="dashboard__activity"
-          v-if="currentAsset"
+          v-if="currentAssetCode"
         >
           <movements-history-module
-            :asset-code="currentAsset"
+            :asset-code="currentAssetCode"
             :ref="REFS.movementsHistory"
             :latest-activity="true"
           />
@@ -74,7 +75,7 @@
           </template>
           <transfer
             @operation-submitted="closeDrawerAndUpdateList()"
-            :asset-to-transfer="currentAsset"
+            :asset-to-transfer="currentAssetCode"
           />
         </template>
       </drawer>
@@ -91,7 +92,7 @@ import Chart from '@/vue/common/chart/Chart'
 import MovementsHistoryModule from '@/vue/modules/movements-history'
 
 import UpdateList from '@/vue/mixins/update-list.mixin'
-
+import FeesMixin from '@/vue/common/fees/fees.mixin'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
@@ -110,28 +111,24 @@ export default {
     MovementsHistoryModule,
   },
 
-  mixins: [UpdateList],
+  mixins: [UpdateList, FeesMixin],
 
   data: () => ({
-    currentAsset: null,
+    currentAssetCode: null,
     isLoaded: false,
     createIssuanceFormIsShown: false,
     transferFormIsShown: false,
     showDrawer: false,
     scale: 'day',
     REFS,
+    currentAsset: null,
   }),
   computed: {
     ...mapGetters([
       vuexTypes.isAccountCorporate,
       vuexTypes.accountBalances,
       vuexTypes.defaultQuoteAsset,
-      vuexTypes.transferableBalancesAssets,
     ]),
-    isTransferable () {
-      return this.transferableBalancesAssets.some(
-        item => item.code === this.currentAsset)
-    },
   },
   watch: {
     showDrawer (status) {
@@ -146,7 +143,8 @@ export default {
     transferFormIsShown (status) {
       this.showDrawer = status
     },
-    async currentAsset (value) {
+    async currentAssetCode (value) {
+      this.getCurrentAsset()
       await this.$router.push({
         query: { asset: value },
       }, () => {})
@@ -168,12 +166,16 @@ export default {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
+    async getCurrentAsset () {
+      this.currentAsset = await this.getAssetByCode(this.currentAssetCode)
+      return this.currentAsset
+    },
     setCurrentAsset (value) {
       if (value) {
-        this.currentAsset = value.code
+        this.currentAssetCode = value.code
       } else {
         const keys = this.accountBalances.map(i => i.asset.code)
-        this.currentAsset =
+        this.currentAssetCode =
           keys.find(a => a === this.$route.query.asset) || keys[0] || ''
       }
     },
