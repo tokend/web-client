@@ -182,7 +182,7 @@ describe('Dashboard.AssetSelector component', () => {
       })
 
       it('returns empty object if this.assets list is empty', () => {
-        wrapper.vm.currentAsset = 'ETH'
+        wrapper.vm.currentAssetCode = 'ETH'
         wrapper.vm.assets = []
 
         expect(wrapper.vm.currentAssetForSelect).to.deep.equal({})
@@ -201,7 +201,7 @@ describe('Dashboard.AssetSelector component', () => {
       })
 
       it('returns empty object when current selected asset does not exists in balances', () => {
-        wrapper.vm.currentAsset = 'SOME ASSET'
+        wrapper.vm.currentAssetCode = 'SOME ASSET'
 
         expect(wrapper.vm.currentAssetBalanceDetails).to.deep.equal({})
       })
