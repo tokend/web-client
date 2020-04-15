@@ -194,7 +194,7 @@ describe('Dashboard.AssetSelector component', () => {
         const expectedResult =
           mockedAccountBalances.find(i => i.asset.code === 'ETH')
 
-        wrapper.vm.currentAsset = 'ETH'
+        wrapper.vm.currentAssetCode = 'ETH'
 
         expect(wrapper.vm.currentAssetBalanceDetails)
           .to.deep.equal(expectedResult)
