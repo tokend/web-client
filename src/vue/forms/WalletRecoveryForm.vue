@@ -7,7 +7,9 @@
           @blur="touchField('form.email')"
           name="wallet-recovery-email"
           :label="'auth-pages.email' | globalize"
-          :error-message="getFieldErrorMessage('form.email')"
+          :error-message="getFieldErrorMessage('form.email', {
+            length: MAX_FIELD_LENGTH.email
+          })"
           :white-autofill="false"
         />
       </div>
@@ -21,7 +23,9 @@
           name="wallet-recovery-password"
           type="password"
           :trim="false"
-          :error-message="getFieldErrorMessage('form.password')"
+          :error-message="getFieldErrorMessage('form.password', {
+            length: MAX_FIELD_LENGTH.password
+          })"
           :label="'auth-pages.new-password' | globalize"
           :white-autofill="false"
         />
@@ -36,7 +40,9 @@
           name="wallet-recovery-confirm-password"
           type="password"
           :trim="false"
-          :error-message="getFieldErrorMessage('form.confirmPassword')"
+          :error-message="getFieldErrorMessage('form.confirmPassword', {
+            length: MAX_FIELD_LENGTH.password
+          })"
           :label="'auth-pages.confirm-password' | globalize"
           :white-autofill="false"
         />
@@ -58,7 +64,7 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-import { required, password, sameAs, email } from '@validators'
+import { required, password, sameAs, email, maxLength } from '@validators'
 
 import { walletsManager } from '@/api'
 import { errors } from '@/js/errors'
@@ -69,6 +75,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { vueRoutes } from '@/vue-router/routes'
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
+import { MAX_FIELD_LENGTH } from '@/js/const/field-length.const'
 
 const EVENT = {
   error: 'error',
@@ -82,14 +89,24 @@ export default {
       password: '',
       confirmPassword: '',
     },
+    MAX_FIELD_LENGTH,
   }),
   validations: {
     form: {
-      email: { required, email },
-      password: { required, password },
+      email: {
+        required,
+        email,
+        maxLength: maxLength(MAX_FIELD_LENGTH.email),
+      },
+      password: {
+        required,
+        password,
+        maxLength: maxLength(MAX_FIELD_LENGTH.password),
+      },
       confirmPassword: {
         required,
         password,
+        maxLength: maxLength(MAX_FIELD_LENGTH.password),
         sameAsPassword: sameAs(function () { return this.form.password }),
       },
     },

@@ -1,14 +1,20 @@
-import { base } from '@tokend/js-sdk'
 import packageJson from '../package.json'
+import _isEmpty from 'lodash/isEmpty'
+import { base } from '@tokend/js-sdk'
 
-const config = {
-}
+const config = {}
 
-Object.keys(process.env).forEach(varName => {
+const env = _isEmpty(document.ENV)
+  ? process.env
+  : document.ENV
+
+Object.keys(env).forEach(varName => {
+  const value = normalize(env[varName])
   if (varName.startsWith('VUE_APP')) {
     let key = varName.replace('VUE_APP_', '')
-    const value = normalize(process.env[varName])
     config[key] = value
+  } else {
+    config[varName] = value
   }
 })
 
