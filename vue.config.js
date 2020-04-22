@@ -72,6 +72,10 @@ module.exports = {
           from: path.resolve(__dirname, resolveApp('static/branding/favicon.png')),
           to: 'static/branding/favicon.png',
         },
+        {
+          from: path.resolve(__dirname, resolveApp('static/env.js')),
+          to: 'static/env.js',
+        },
       ]),
       ...optionalPlugins,
     ],
