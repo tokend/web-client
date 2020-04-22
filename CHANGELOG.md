@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 #### Added
 - Redirect type invite-verify
 - Transfer, withdraw and issuance forms disabling if balance is 0
+- Validation to registration, sign in, recovery, change password input fields
 
 #### Fixed
 - redirect types
