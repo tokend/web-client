@@ -122,6 +122,7 @@ export default {
     REFS,
     currentAsset: null,
   }),
+
   computed: {
     ...mapGetters([
       vuexTypes.isAccountCorporate,
@@ -130,6 +131,7 @@ export default {
       vuexTypes.assetByCode,
     ]),
   },
+
   watch: {
     showDrawer (status) {
       if (!status) {
