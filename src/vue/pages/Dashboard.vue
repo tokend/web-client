@@ -92,7 +92,6 @@ import Chart from '@/vue/common/chart/Chart'
 import MovementsHistoryModule from '@/vue/modules/movements-history'
 
 import UpdateList from '@/vue/mixins/update-list.mixin'
-import FeesMixin from '@/vue/common/fees/fees.mixin'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
@@ -111,7 +110,7 @@ export default {
     MovementsHistoryModule,
   },
 
-  mixins: [UpdateList, FeesMixin],
+  mixins: [UpdateList],
 
   data: () => ({
     currentAssetCode: null,
@@ -128,6 +127,7 @@ export default {
       vuexTypes.isAccountCorporate,
       vuexTypes.accountBalances,
       vuexTypes.defaultQuoteAsset,
+      vuexTypes.assetByCode,
     ]),
   },
   watch: {
@@ -167,7 +167,7 @@ export default {
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async getCurrentAsset () {
-      this.currentAsset = await this.getAssetByCode(this.currentAssetCode)
+      this.currentAsset = await this.assetByCode(this.currentAssetCode)
       return this.currentAsset
     },
     setCurrentAsset (value) {
