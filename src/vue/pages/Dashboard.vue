@@ -92,6 +92,7 @@ import Chart from '@/vue/common/chart/Chart'
 import MovementsHistoryModule from '@/vue/modules/movements-history'
 
 import UpdateList from '@/vue/mixins/update-list.mixin'
+
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
