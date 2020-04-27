@@ -11,7 +11,9 @@
           name="change-password-current-password"
           type="password"
           :trim="false"
-          :error-message="getFieldErrorMessage('form.currentPassword')"
+          :error-message="getFieldErrorMessage('form.currentPassword', {
+            length: MAX_FIELD_LENGTH.password
+          })"
           :label="'change-password-form.current-password-lbl' | globalize"
           :disabled="formMixin.isDisabled"
         />
@@ -25,7 +27,9 @@
           name="change-password-new-password"
           type="password"
           :trim="false"
-          :error-message="getFieldErrorMessage('form.newPassword')"
+          :error-message="getFieldErrorMessage('form.newPassword', {
+            length: MAX_FIELD_LENGTH.password
+          })"
           :label="'change-password-form.new-password-lbl' | globalize"
           :disabled="formMixin.isDisabled"
         />
@@ -39,7 +43,9 @@
           name="change-password-new-password-confirm"
           type="password"
           :trim="false"
-          :error-message="getFieldErrorMessage('form.confirmPassword')"
+          :error-message="getFieldErrorMessage('form.confirmPassword', {
+            length: MAX_FIELD_LENGTH.password
+          })"
           :label="'change-password-form.confirm-password-lbl' | globalize"
           :disabled="formMixin.isDisabled"
         />
@@ -82,7 +88,7 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { required, requiredIf, password, sameAs } from '@validators'
+import { required, requiredIf, password, sameAs, maxLength } from '@validators'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
@@ -92,6 +98,7 @@ import { errors } from '@tokend/js-sdk'
 
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
+import { MAX_FIELD_LENGTH } from '@/js/const/field-length.const'
 
 export default {
   name: 'change-password-form',
@@ -103,14 +110,24 @@ export default {
       confirmPassword: '',
       tfaCode: '',
     },
+    MAX_FIELD_LENGTH,
   }),
   validations: {
     form: {
-      currentPassword: { required, password },
-      newPassword: { required, password },
+      currentPassword: {
+        required,
+        password,
+        maxLength: maxLength(MAX_FIELD_LENGTH.password),
+      },
+      newPassword: {
+        required,
+        password,
+        maxLength: maxLength(MAX_FIELD_LENGTH.password),
+      },
       confirmPassword: {
         required,
         password,
+        maxLength: maxLength(MAX_FIELD_LENGTH.password),
         sameAsPassword: sameAs(function () { return this.form.newPassword }),
       },
       tfaCode: {

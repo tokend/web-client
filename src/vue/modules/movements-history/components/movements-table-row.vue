@@ -84,8 +84,11 @@ export default {
         movement.effect.calculatedPercentFee,
         movement.effect.fixedFee
       )
-      if (movement.isIncoming || movement.isUnlocked) {
+      if (movement.isIncoming) {
         value = MathUtil.subtract(movement.effect.amount, fee)
+      }
+      if (movement.isUnlocked) {
+        value = MathUtil.add(movement.effect.amount, fee)
       }
       if (movement.isOutgoing || movement.isLocked) {
         value = -MathUtil.add(movement.effect.amount, fee)

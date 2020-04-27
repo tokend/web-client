@@ -33,9 +33,9 @@ describe('SignupForm component test', () => {
     })
 
     const expectedResults = {
-      email: ['required', 'email'],
-      password: ['required', 'password'],
-      confirmPassword: ['required', 'password', 'sameAsPassword'],
+      email: ['required', 'email', 'maxLength'],
+      password: ['required', 'password', 'maxLength'],
+      confirmPassword: ['required', 'password', 'maxLength', 'sameAsPassword'],
     }
 
     for (const [model, rules] of Object.entries(expectedResults)) {
