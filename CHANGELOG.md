@@ -21,6 +21,9 @@ for further information about branching and tagging conventions.
 - Text align in security tab in settings for mobile
 - A bug with env config
 
+#### Changed
+- Hide "Send" button for non-transferable asset
+
 ## [1.12.0-rc.1] - 2020-03-25
 #### Added
 - Horizontal scroll for request's titles for mobile
