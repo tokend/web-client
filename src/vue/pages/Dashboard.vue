@@ -29,7 +29,8 @@
             <i class="mdi mdi-send mdi-rotate-315 dashboard__send-icon" />
             {{
               'dashboard.send-asset-lbl' | globalize({
-                asset: currentAssetCode })
+                asset: currentAssetCode
+              })
             }}
           </button>
         </div>
@@ -121,7 +122,6 @@ export default {
     showDrawer: false,
     scale: 'day',
     REFS,
-    currentAsset: null,
   }),
 
   computed: {
@@ -131,6 +131,9 @@ export default {
       vuexTypes.defaultQuoteAsset,
       vuexTypes.assetByCode,
     ]),
+    currentAsset () {
+      return this.assetByCode(this.currentAssetCode)
+    },
   },
 
   watch: {
@@ -147,7 +150,6 @@ export default {
       this.showDrawer = status
     },
     async currentAssetCode (value) {
-      this.getCurrentAsset()
       await this.$router.push({
         query: { asset: value },
       }, () => {})
@@ -169,10 +171,6 @@ export default {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
-    async getCurrentAsset () {
-      this.currentAsset = await this.assetByCode(this.currentAssetCode)
-      return this.currentAsset
-    },
     setCurrentAsset (value) {
       if (value) {
         this.currentAssetCode = value.code
