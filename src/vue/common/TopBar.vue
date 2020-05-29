@@ -63,6 +63,10 @@ export default {
     justify-content: center;
     align-items: start;
   }
+
+  @media (max-width: $sidebar-hide-bp) {
+    overflow-x: unset;
+  }
 }
 
 .top-bar__main {

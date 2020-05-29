@@ -31,6 +31,7 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import SignupForm from '@/vue/forms/SignupForm'
+import _isEmpty from 'lodash/isEmpty'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base } from '@tokend/js-sdk'
@@ -48,21 +49,36 @@ export default {
   data: _ => ({
     recoveryKeypair: null,
     password: null,
-    email: null,
+    email: '',
     vueRoutes,
     isConfirmedSeedCopied: false,
+    inviteVerificationInfo: {},
   }),
   computed: {
     ...mapGetters({
       walletAccountId: vuexTypes.walletAccountId,
     }),
+
+    isInviteVerificationInfoExists () {
+      return !_isEmpty(this.inviteVerificationInfo)
+    },
+
+    isCurrentAndVerificationEmailsIdentical () {
+      return this.email === this.inviteVerificationInfo.email
+    },
   },
+
+  created () {
+    this.inviteVerificationInfo = this.$route.params.inviteVerificationInfo
+  },
+
   methods: {
     ...mapActions({
       storeWallet: vuexTypes.STORE_WALLET,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
       loadKyc: vuexTypes.LOAD_KYC,
       loadKvEntries: vuexTypes.LOAD_KV_ENTRIES,
+      loadWallet: vuexTypes.LOAD_WALLET,
     }),
     handleChildFormSubmit (form) {
       this.email = form.email
@@ -83,6 +99,24 @@ export default {
         )
         if (response.data.verified) {
           await this.storeWallet(wallet)
+          await this.loadAccount(this.walletAccountId)
+          await this.loadKyc()
+          await this.$router.push(vueRoutes.app)
+        } if (this.isInviteVerificationInfoExists &&
+          this.isCurrentAndVerificationEmailsIdentical) {
+          const encodedVerificationInfo = btoa(JSON.stringify({
+            meta: {
+              wallet_id: wallet.id,
+              token: this.inviteVerificationInfo.token,
+            },
+          }))
+          await walletsManager.verifyEmail(encodedVerificationInfo)
+          // temporary fix when wallet unverified we don't get info about
+          // session
+          await this.loadWallet({
+            email: this.email.toLowerCase(),
+            password: this.password,
+          })
           await this.loadAccount(this.walletAccountId)
           await this.loadKyc()
           await this.$router.push(vueRoutes.app)
