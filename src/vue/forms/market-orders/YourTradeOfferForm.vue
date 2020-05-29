@@ -191,7 +191,6 @@ export default {
 
   props: {
     assetPair: { type: Object, required: true },
-    isBuy: { type: Boolean, default: false },
     offer: { type: Object, required: true },
   },
 
@@ -221,14 +220,14 @@ export default {
         baseAmount: {
           required,
           decimal,
-          noMoreThanAvailableOnBalance: this.isBuy ||
+          noMoreThanAvailableOnBalance: this.offer.isBuy ||
             maxValueBig(this.baseAssetBalance),
           amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
         },
       },
 
       quoteAmount: {
-        noMoreThanAvailableOnBalance: !this.isBuy ||
+        noMoreThanAvailableOnBalance: !this.offer.isBuy ||
           maxValueBig(this.quoteAssetBalance),
         amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
       },
@@ -253,7 +252,7 @@ export default {
         .find(balance => balance.asset.code === this.offer.baseAsset.id)
 
       if (balanceItem) {
-        return this.isBuy
+        return this.offer.isBuy
           ? balanceItem.balance
           : MathUtil.add(balanceItem.balance, this.offer.baseAmount)
       } else {
@@ -266,7 +265,7 @@ export default {
         .find(balance => balance.asset.code === this.assetPair.quote)
 
       if (balanceItem) {
-        return this.isBuy
+        return this.offer.isBuy
           ? balanceItem.balance
           : MathUtil.add(balanceItem.balance, this.offer.quoteAmount)
       } else {
