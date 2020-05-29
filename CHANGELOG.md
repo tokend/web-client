@@ -10,12 +10,20 @@ for further information about branching and tagging conventions.
 #### Added
 - Redirect type invite-verify
 - Transfer, withdraw and issuance forms disabling if balance is 0
+- Validation to registration, sign in, recovery, change password input fields
 
 #### Fixed
 - redirect types
 - number input field
 - Bug with max value of amount input field for deposit
 - Bug when after update opened buy offer changed type to sell
+- Visibility of select field options on top-bar if width < 768px
+- Bug with displaying correct unlocked amount in movements
+- Text align in security tab in settings for mobile
+- A bug with env config
+
+#### Changed
+- Hide "Send" button for non-transferable asset
 
 ## [1.12.0-rc.1] - 2020-03-25
 #### Added

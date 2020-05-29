@@ -64,6 +64,10 @@ export default {
     align-items: start;
     overflow-x: auto;
   }
+
+  @media (max-width: $sidebar-hide-bp) {
+    overflow-x: unset;
+  }
 }
 
 .top-bar__main {

@@ -175,14 +175,14 @@ describe('Dashboard.AssetSelector component', () => {
   describe('computed properties', () => {
     describe('currentAssetForSelect()', () => {
       it('returns asset if this.assets list is not empty', () => {
-        wrapper.vm.currentAsset = 'ETH'
+        wrapper.vm.currentAssetCode = 'ETH'
         wrapper.vm.assets = mockedAssets
 
         expect(wrapper.vm.currentAssetForSelect).to.equal(mockedAssets[2])
       })
 
       it('returns empty object if this.assets list is empty', () => {
-        wrapper.vm.currentAsset = 'ETH'
+        wrapper.vm.currentAssetCode = 'ETH'
         wrapper.vm.assets = []
 
         expect(wrapper.vm.currentAssetForSelect).to.deep.equal({})
@@ -194,14 +194,14 @@ describe('Dashboard.AssetSelector component', () => {
         const expectedResult =
           mockedAccountBalances.find(i => i.asset.code === 'ETH')
 
-        wrapper.vm.currentAsset = 'ETH'
+        wrapper.vm.currentAssetCode = 'ETH'
 
         expect(wrapper.vm.currentAssetBalanceDetails)
           .to.deep.equal(expectedResult)
       })
 
       it('returns empty object when current selected asset does not exists in balances', () => {
-        wrapper.vm.currentAsset = 'SOME ASSET'
+        wrapper.vm.currentAssetCode = 'SOME ASSET'
 
         expect(wrapper.vm.currentAssetBalanceDetails).to.deep.equal({})
       })
