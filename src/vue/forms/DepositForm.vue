@@ -153,6 +153,10 @@ export default {
 <style lang="scss" scoped>
 @import '@/scss/variables';
 
+.deposit {
+  overflow-x: hidden;
+}
+
 .deposit-form__help-message {
   font-size: 1.4rem;
   opacity: 0.7;

@@ -40,6 +40,8 @@ for further information about branching and tagging conventions.
 - A bug with auto select no balance asset in CreateTradeOfferForm
 - A bug with absence limit select date start time in sale request
 - A bug with wrong avatar display in Passport
+- A bug with wrong display deposit form
+- A bug with wrong display topBar with selectField on smartphone
 - A bug with display button change limits for unverified account
 - Disabled input field and button in invest form when balance is 0
 - A bug with impossibility use a comma as a separator in Firefox browser
