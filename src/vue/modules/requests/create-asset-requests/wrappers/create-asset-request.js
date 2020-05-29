@@ -8,7 +8,7 @@ export class CreateAssetRequest extends Request {
   constructor (record) {
     super(record)
 
-    this.assetCode = safeGet(record, 'requestDetails.asset')
+    this.assetCode = safeGet(record, 'requestDetails.asset.id')
     this.assetType = safeGet(record, 'requestDetails.type')
     this.assetName = safeGet(record, 'requestDetails.creatorDetails.name')
 
