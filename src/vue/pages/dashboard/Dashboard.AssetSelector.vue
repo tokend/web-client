@@ -6,7 +6,7 @@
       >
         <div class="asset-selector__select">
           <skeleton-loader
-            v-if="imgUrl === null || !currentAsset ||
+            v-if="imgUrl === null || !currentAssetCode ||
               assets.length === 0"
             template="bigIcon"
             class="asset-selector__select-picture"
@@ -18,15 +18,15 @@
               :src="imgUrl"
             >
             <p
-              v-if="currentAsset && !imgUrl"
+              v-if="currentAssetCode && !imgUrl"
               class="asset-selector__asset-code-abbr"
             >
-              {{ currentAsset | abbreviate }}
+              {{ currentAssetCode | abbreviate }}
             </p>
           </div>
           <div>
             <skeleton-loader
-              v-if="imgUrl === null || !currentAsset ||
+              v-if="imgUrl === null || !currentAssetCode ||
                 assets.length === 0"
               class="app__select"
               template="bigString"
@@ -54,7 +54,7 @@
           <div class="asset-selector__asset-available">
             <div class="asset-selector__asset-value">
               <skeleton-loader
-                v-if="!currentAsset"
+                v-if="!currentAssetCode"
                 template="bigString"
               />
               <span
@@ -64,14 +64,14 @@
                 {{
                   {
                     value: currentAssetBalanceDetails.balance,
-                    currency: currentAsset
+                    currency: currentAssetCode
                   } | formatMoney
                 }}
               </span>
             </div>
             <div class="asset-selector__asset-subvalue">
               <skeleton-loader
-                v-if="!currentAsset &&
+                v-if="!currentAssetCode &&
                   currentAssetBalanceDetails.convertedBalance"
                 template="bigString"
               />
@@ -92,7 +92,7 @@
           </div>
         </div>
       </template>
-      <template v-if="assets.length && !currentAsset">
+      <template v-if="assets.length && !currentAssetCode">
         <no-data-message
           :title="'dashboard.no-assets-in-your-wallet' | globalize"
           :message="'dashboard.here-will-be-the-assets' | globalize"
@@ -131,7 +131,7 @@ export default {
     SkeletonLoader,
   },
   props: {
-    currentAsset: {
+    currentAssetCode: {
       type: [String],
       default: '',
     },
@@ -168,17 +168,17 @@ export default {
       ]
     },
     currentAssetForSelect () {
-      return this.assets.find(t => t.code === this.currentAsset) || {}
+      return this.assets.find(t => t.code === this.currentAssetCode) || {}
     },
     currentAssetBalanceDetails () {
       return this.balances
-        .find(i => i.asset.code === this.currentAsset) || {}
+        .find(i => i.asset.code === this.currentAssetCode) || {}
     },
     imgUrl () {
-      if (this.balances.length && this.currentAsset) {
+      if (this.balances.length && this.currentAssetCode) {
         try {
           const balance = this.balances
-            .find(i => i.asset.code === this.currentAsset)
+            .find(i => i.asset.code === this.currentAssetCode)
           return documentsManager.getDocumentUrlByKey(balance.asset.logoKey)
         } catch {
           return null

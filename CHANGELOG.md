@@ -10,15 +10,21 @@ for further information about branching and tagging conventions.
 #### Added
 - Redirect type invite-verify
 - Transfer, withdraw and issuance forms disabling if balance is 0
+- Validation to registration, sign in, recovery, change password input fields
 
 #### Fixed
 - redirect types
 - number input field
 - Bug with max value of amount input field for deposit
 - A bug with wrong displaying asset code in requests asset creation table
+- A bug when after update opened buy offer changed type to sell
 - Visibility of select field options on top-bar if width < 768px
 - Bug with displaying correct unlocked amount in movements
+- Text align in security tab in settings for mobile
 - A bug with env config
+
+#### Changed
+- Hide "Send" button for non-transferable asset
 
 ## [1.12.0-rc.1] - 2020-03-25
 #### Added
@@ -36,6 +42,8 @@ for further information about branching and tagging conventions.
 - A bug with auto select no balance asset in CreateTradeOfferForm
 - A bug with absence limit select date start time in sale request
 - A bug with wrong avatar display in Passport
+- A bug with wrong display deposit form
+- A bug with wrong display topBar with selectField on smartphone
 - A bug with display button change limits for unverified account
 - Disabled input field and button in invest form when balance is 0
 - A bug with impossibility use a comma as a separator in Firefox browser

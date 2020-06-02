@@ -62,7 +62,6 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: start;
-    overflow-x: auto;
   }
 
   @media (max-width: $sidebar-hide-bp) {
