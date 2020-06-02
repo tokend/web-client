@@ -16,7 +16,8 @@ for further information about branching and tagging conventions.
 - redirect types
 - number input field
 - Bug with max value of amount input field for deposit
-- Bug when after update opened buy offer changed type to sell
+- A bug with wrong displaying asset code in requests asset creation table
+- A bug when after update opened buy offer changed type to sell
 - Visibility of select field options on top-bar if width < 768px
 - Bug with displaying correct unlocked amount in movements
 - Text align in security tab in settings for mobile
