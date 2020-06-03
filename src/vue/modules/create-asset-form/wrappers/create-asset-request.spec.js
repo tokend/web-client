@@ -5,7 +5,7 @@ describe('Create asset request', () => {
     it('should properly parse record', () => {
       const record = {
         requestDetails: {
-          asset: 'USD',
+          asset: { id: 'USD' },
           type: 1,
           maxIssuanceAmount: '2000.000000',
           initialPreissuedAmount: '1000.000000',
