@@ -1,6 +1,6 @@
 {
   "name": "tokend-web-client",
-  "version": "1.12.0-rc.2",
+  "version": "1.12.0-rc.3",
   "description": "TokenD web-client",
   "author": "Distributed Lab <contact@distributedlab.com>",
   "private": true,
@@ -26,6 +26,7 @@
     "@sentry/browser": "^5.12.4",
     "@sentry/integrations": "^5.12.4",
     "@tokend/js-sdk": "1.12.1",
+    "babel-runtime": "^6.26.0",
     "bignumber.js": "^9.0.0",
     "card-validator": "^6.2.0",
     "clipboard": "^2.0.4",
