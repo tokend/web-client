@@ -16,7 +16,10 @@
 
     <aside
       class="sidebar__aside"
-      :class="{ 'sidebar__aside--closed': !isOpened }"
+      :class="{
+        'sidebar__aside--closed': !isOpened,
+        'sidebar__aside--open': isOpened
+      }"
     >
       <section class="sidebar__logo-section">
         <router-link
@@ -268,6 +271,11 @@ import { mapGetters } from 'vuex'
 
 import config from '@/config'
 
+const EVENTS = {
+  open: 'open',
+  close: 'close',
+}
+
 export default {
   name: 'sidebar',
 
@@ -291,10 +299,12 @@ export default {
   methods: {
     openSidebar () {
       this.isOpened = true
+      this.$emit(EVENTS.open)
     },
 
     closeSidebar () {
       this.isOpened = false
+      this.$emit(EVENTS.close)
     },
   },
 }
@@ -394,6 +404,15 @@ $content-item-right-padding: 2.4rem;
     opacity: 0;
     width: 0;
     visibility: hidden;
+  }
+}
+
+.sidebar__aside--open {
+  @include respond-to-custom($sidebar-hide-bp) {
+    max-height: 100vh;
+    overflow: scroll;
+    padding-bottom: 10rem;
+    z-index: $z-sidebar;
   }
 }
 

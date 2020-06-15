@@ -11,10 +11,19 @@
         })"
         message-type="danger"
       />
-      <div class="app__container">
-        <sidebar />
+      <div
+        class="app__container"
+        :class="{'app__container--fixed': isSidebarOpen}"
+      >
+        <sidebar
+          @open="isSidebarOpen = true"
+          @close="isSidebarOpen = false"
+        />
 
-        <div class="app__main-content">
+        <div
+          class="app__main-content"
+          :class="{'app__container--fixed': isSidebarOpen}"
+        >
           <div class="app__navbar">
             <navbar />
           </div>
@@ -71,6 +80,7 @@ export default {
     isAppInitialized: false,
     vueRoutes,
     lang: i18n.language,
+    isSidebarOpen: false,
   }),
 
   computed: {
@@ -173,6 +183,11 @@ export default {
   align-items: stretch;
   overflow-x: hidden;
   flex: 1;
+}
+
+.app__container--fixed {
+  max-height: 100vh;
+  overflow: hidden;
 }
 
 .app__main-content {
