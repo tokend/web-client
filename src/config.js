@@ -182,7 +182,7 @@ export default Object.assign(
     MOBILE_APP_NAME: 'TokenD Wallet',
     MOBILE_APP_AUTHOR: 'Distributed Lab',
     PLAY_MARKET_ID: 'org.tokend.template',
-    PLAY_MARKET_ICON: 'https://lh3.googleusercontent.com/8tEH4ghp-M6drXeSynFS9DpyC5RHOXsajFfRK2wMBQaAUE-y7C8hbIpDOjZ3BGwW5Q=s180-rw',
+    PLAY_MARKET_ICON: 'https://lh3.googleusercontent.com/bmLBXL-kVOlgN1mTBLwbofapeB5MnjwVy_4mFnNGoZxcNsUcibvJp4_zrTuLkwL2LAY=s180-rw',
     APP_STORE_ID: '',
     APP_STORE_ICON: '',
   },
