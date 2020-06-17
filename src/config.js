@@ -173,6 +173,18 @@ export default Object.assign(
      */
     STORAGE_KEY: 'TokenDStore-v2',
 
+    /**
+     * Related Mobile application configuration. You can omit:
+     * MOBILE_APP_NAME, MOBILE_APP_AUTHOR - The Smart App Banner won’t show
+     * PLAY_MARKET_ID - Play Market prompt won’t show
+     * APP_STORE_ID - App Store prompt won’t show
+     */
+    MOBILE_APP_NAME: 'TokenD Wallet',
+    MOBILE_APP_AUTHOR: 'Distributed Lab',
+    PLAY_MARKET_ID: 'org.tokend.template',
+    PLAY_MARKET_ICON: 'https://lh3.googleusercontent.com/8tEH4ghp-M6drXeSynFS9DpyC5RHOXsajFfRK2wMBQaAUE-y7C8hbIpDOjZ3BGwW5Q=s180-rw',
+    APP_STORE_ID: '',
+    APP_STORE_ICON: '',
   },
   // process.env,
   process.env
