@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 ## [Unreleased]
+#### Added
+- Smart App Banner
+
 #### Fixed
 - Stretching mobile sidebar
 
@@ -191,7 +194,7 @@ for further information about branching and tagging conventions.
 ## [1.10.0-rc.5] - 2019-08-06
 #### Fixed
 - A bug when cannot deposit
- 
+
 ## [1.10.0-rc.4] - 2019-08-02
 #### Fixed
 - A bug when you cannot return from "Downloads" if the tab was opened in new tab

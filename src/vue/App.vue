@@ -40,6 +40,7 @@
     </template>
 
     <status-message />
+    <smart-app-banner />
   </div>
 </template>
 
@@ -48,6 +49,7 @@ import StatusMessage from '@/vue/common/StatusMessage'
 import Navbar from '@/vue/navigation/Navbar.vue'
 import Sidebar from '@/vue/navigation/Sidebar.vue'
 import WarningBanner from '@/vue/common/WarningBanner'
+import SmartAppBanner from '@/vue/common/SmartAppBanner'
 
 import {
   mapGetters,
@@ -74,6 +76,7 @@ export default {
     Sidebar,
     StatusMessage,
     WarningBanner,
+    SmartAppBanner,
   },
 
   data: () => ({

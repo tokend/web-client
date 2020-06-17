@@ -2109,6 +2109,9 @@
       "price-key": "Цена",
       "address-key": "Адрес",
       "quote-assets-subheading": "Котируемый актив #{{ number }}"
+    },
+    "smart-banner": {
+      "open-store-btn": "ОТКРЫТЬ"
     }
   }
 }

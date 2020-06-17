@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from '@/vue/App'
 import Vuelidate from 'vuelidate'
 import VueResource from 'vue-resource'
+import VueHead from 'vue-head'
 import log from 'loglevel'
 import config from './config'
 import NProgress from 'nprogress'
@@ -41,6 +42,7 @@ async function init () {
   Vue.config.productionTip = false
   Vue.use(Vuelidate)
   Vue.use(VueResource)
+  Vue.use(VueHead)
   Vue.directive('table-scroll-shadow', tableScrollShadow)
   Vue.directive('ripple', ripple)
   Vue.filter('globalize', globalize)
