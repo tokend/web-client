@@ -2,14 +2,13 @@
   <div class="create-asset-requests">
     <template>
       <drawer :is-shown.sync="isDrawerShown">
-        <template v-if="isUpdateMode">
+        <template v-if="isUpdateFormShown">
           <template slot="heading">
             {{ 'create-asset-requests.update-asset-title' | globalize }}
           </template>
           <create-asset-form-module
-            :request-id="selectedRequest.id"
-            @submitted="isDrawerShown = false"
-            @request-updated="closeDrawerAndUpdateList()"
+            :collector="collector"
+            @submitted="closeDrawerAndUpdateList()"
           />
         </template>
 
@@ -19,7 +18,7 @@
           </template>
           <request-viewer
             :request="selectedRequest"
-            @update-click="isUpdateMode = true"
+            @update-click="showUpdateForm()"
             @cancel="closeDrawerAndUpdateList()"
           />
         </template>
@@ -52,6 +51,7 @@ import CollectionLoader from '@/vue/common/CollectionLoader'
 
 import RequestViewer from './components/request-viewer'
 import RequestsTable from './components/requests-table'
+import { CreateAssetRequest } from './wrappers/create-asset-request'
 
 import CreateAssetFormModule from '@modules/create-asset-form'
 
@@ -60,6 +60,8 @@ import { types } from './store/types'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import UpdateList from '@/vue/mixins/update-list.mixin'
+import { AssetCollector } from '@/js/collectors/AssetCollector'
+import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 export default {
   name: 'create-asset-requests-module',
@@ -77,9 +79,10 @@ export default {
     isLoaded: false,
     isLoadingFailed: false,
     isDrawerShown: false,
-    isUpdateMode: false,
-    selectedRequest: {},
-    firstPageLoader: () => {},
+    isUpdateFormShown: false,
+    selectedRequest: new CreateAssetRequest({}),
+    collector: new AssetCollector('create'),
+    firstPageLoader: () => { },
   }),
 
   computed: {
@@ -136,9 +139,41 @@ export default {
     },
 
     showRequestDetails (request) {
-      this.isUpdateMode = false
+      this.isUpdateFormShown = false
       this.selectedRequest = request
       this.isDrawerShown = true
+    },
+
+    showUpdateForm () {
+      this.collector.add({
+        requestId: this.selectedRequest.id,
+        code: this.selectedRequest.assetCode,
+        policies: this.selectedRequest.policy,
+        assetType: this.selectedRequest.assetType,
+        maxIssuanceAmount: this.selectedRequest.maxIssuanceAmount,
+        preIssuanceAssetSigner: this.selectedRequest.preIssuanceAssetSigner,
+        initialPreissuedAmount: this.selectedRequest.initialPreissuedAmount,
+        name: this.selectedRequest.assetName,
+        logo: this.selectedRequest.logoKey
+          ? new DocumentContainer(this.selectedRequest.logo)
+          : null,
+        terms: this.selectedRequest.termsKey
+          ? new DocumentContainer(this.selectedRequest.terms)
+          : null,
+        stellarIntegration: {
+          isWithdrawable: this.selectedRequest.stellarWithdraw,
+          isDepositable: this.selectedRequest.stellarDeposit,
+          assetType: this.selectedRequest.stellarAssetType,
+          assetCode: this.selectedRequest.stellarAssetCode,
+        },
+        erc20Integration: {
+          isWithdrawable: this.selectedRequest.erc20Withdraw,
+          isDepositable: this.selectedRequest.erc20Deposit,
+          address: this.selectedRequest.erc20Address,
+        },
+      })
+
+      this.isUpdateFormShown = true
     },
 
     closeDrawerAndUpdateList () {

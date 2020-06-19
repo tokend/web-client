@@ -46,11 +46,6 @@ const STEPS = {
   },
 }
 
-const EVENTS = {
-  requestUpdated: 'request-updated',
-  submitted: 'submitted',
-}
-
 export default {
   name: 'create-asset-form-module',
   components: {
@@ -86,18 +81,11 @@ export default {
         const ops = await this.collector.buildOps()
         await api.postOperations(...ops)
         Bus.success('create-asset-form.request-submitted-msg')
-        this.emitSubmitEvents()
+        this.$emit('submitted')
       } catch (e) {
         this.isDisabled = false
         ErrorHandler.process(e)
       }
-    },
-
-    emitSubmitEvents () {
-      if (this.requestId) {
-        this.$emit(EVENTS.requestUpdated)
-      }
-      this.$emit(EVENTS.submitted)
     },
   },
 }

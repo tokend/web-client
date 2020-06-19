@@ -13,6 +13,7 @@ export function reqId (val) {
 }
 
 export function str (val) {
+  if (val === 0) return '0'
   return String(val || '') // cuz String(undefined) returns 'undefined'
 }
 

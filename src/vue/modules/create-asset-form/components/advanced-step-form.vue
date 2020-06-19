@@ -432,7 +432,7 @@ export default {
         isUsageRestricted,
         assetType: isUsageRestricted ? attrs.assetType : '',
 
-        isStellarIntegration: false,
+        isStellarIntegration,
         stellar: isStellarIntegration
           ? {
             withdraw: attrs.stellarIntegration.isWithdrawable,

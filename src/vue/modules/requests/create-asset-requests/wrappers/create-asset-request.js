@@ -32,6 +32,10 @@ export class CreateAssetRequest extends Request {
     this.stellarAssetType = safeGet(record, 'requestDetails.creatorDetails.stellar.assetType') || ''
     this.stellarWithdraw = safeGet(record, 'requestDetails.creatorDetails.stellar.withdraw') || false
     this.stellarDeposit = safeGet(record, 'requestDetails.creatorDetails.stellar.deposit') || false
+
+    this.erc20Withdraw = safeGet(record, 'requestDetails.creatorDetails.erc20.withdraw') || false
+    this.erc20Deposit = safeGet(record, 'requestDetails.creatorDetails.erc20.deposit') || false
+    this.erc20Address = safeGet(record, 'requestDetails.creatorDetails.erc20.address') || ''
   }
 
   get isTransferable () {

@@ -41,7 +41,7 @@ export class AssetCollector extends Collector {
   //     page: { limit: 100 },
   //     filter: { owner },
   //   })
-  //   const ownedAssets = await loadingDataaViaLoop(response)
+  //   const ownedAssets = await loadingDataViaLoop(response)
   //   const hasIntegratedAssets = ownedAssets.some(el =>
   //     get(el, 'details.stellar.withdraw') ||
   //     get(el, 'details.stellar.deposit') ||
@@ -49,7 +49,8 @@ export class AssetCollector extends Collector {
   //     get(el, 'details.erc20.deposit')
   //   )
 
-  //   const issuanceSignerRoleId = store.getters[vuexTypes.kvIssuanceSignerRoleId]
+  //   const issuanceSignerRoleId =
+  //     store.getters[vuexTypes.kvIssuanceSignerRoleId]
   //   const { signers } = await api.get(`/v3/accounts/${owner}/signers`)
   //   const isIssuanceSignerExist = signers.some(el =>
   //     el.id === api.networkDetails.masterAccountId &&
@@ -61,8 +62,9 @@ export class AssetCollector extends Collector {
   //     this.attrs.stellarIntegration.isDepositable ||
   //     this.attrs.erc20Integration.isWithdrawable ||
   //     this.attrs.erc20Integration.isDepositable
-  //   const needIssuanceSigner = !hasIntegratedAssets && !isIssuanceSignerExist && willIntegrate
-  //   const needRemoveIssuanceSigner = !hasIntegratedAssets &&  && !willIntegrate
+  //   const needIssuanceSigner = !hasIntegratedAssets &&
+  //      !isIssuanceSignerExist && willIntegrate
+  //   const needRemoveIssuanceSigner = !hasIntegratedAssets && !willIntegrate
   // } TODO: to account creation
 
   _buildOpCreate () {
