@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "allowSyntheticDefaultImports": false,
+    "baseUrl": "./",
+    "paths": {
+      "@validators": ["src/validators.js"],
+      "@scss/*": ["src/scss/*"],
+      "@modules/*": ["src/vue/modules/*"],
+      "@test": ["src/test/index.js"],
+      "@test/*": ["src/test/*"],
+      "@/js/utils": ["src/js/utils/index.js"],
+      "@/*": ["src/*"],
+      "@static/*": ["static/*"],
+      "@tokend/js-sdk": ["node_modules/@tokend/js-sdk/lib/index.js"],
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}

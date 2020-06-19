@@ -6,7 +6,7 @@ import { base } from '@tokend/js-sdk'
 import { api } from '@/api'
 import config from '@/config'
 
-import { CreateAssetRequest } from '../wrappers/create-asset-request'
+// import { CreateAssetRequest } from '../wrappers/create-asset-request'
 import { store, vuexTypes } from '@/vuex/index'
 import { mapGetters } from 'vuex'
 
@@ -51,21 +51,21 @@ export default {
     },
   },
   methods: {
-    async getCreateAssetRequestById (id, accountId) {
-      const endpoint = `/v3/create_asset_requests/${id}`
-      const { data: record } = await api.getWithSignature(endpoint, {
-        filter: {
-          requestor: accountId,
-        },
-        include: ['request_details'],
-      })
+    // async getCreateAssetRequestById (id, accountId) {
+    //   const endpoint = `/v3/create_asset_requests/${id}`
+    //   const { data: record } = await api.getWithSignature(endpoint, {
+    //     filter: {
+    //       requestor: accountId,
+    //     },
+    //     include: ['request_details'],
+    //   })
 
-      return new CreateAssetRequest(record)
-    },
+    //   return new CreateAssetRequest(record)
+    // },
 
-    collectAssetAttributes (newAttributes) {
-      Object.assign(this.collectedCreateAssetAttributes, newAttributes)
-    },
+    // collectAssetAttributes (newAttributes) {
+    //   Object.assign(this.collectedCreateAssetAttributes, newAttributes)
+    // },
 
     /**
      * Submits "create asset request" operation

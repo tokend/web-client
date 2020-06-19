@@ -39,6 +39,7 @@ async function init () {
 
   log.setDefaultLevel(config.LOG_LEVEL)
 
+  Vue.config.devtools = process.env.NODE_ENV === 'development'
   Vue.config.productionTip = false
   Vue.use(Vuelidate)
   Vue.use(VueResource)

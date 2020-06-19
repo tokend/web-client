@@ -2,7 +2,7 @@
   <form
     novalidate
     class="app__form information-step-form"
-    @submit.prevent="submit"
+    @submit.prevent="next"
   >
     <div class="app__form-row">
       <div class="app__form-field">
@@ -111,39 +111,34 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { ASSET_POLICIES } from '@tokend/js-sdk'
 
-import { DocumentContainer } from '@/js/helpers/DocumentContainer'
-
-import { CreateAssetRequest } from '../wrappers/create-asset-request'
-
 import { required, maxLength, assetCode } from '@validators'
 
-import config from '@/config'
-
-const EVENTS = {
-  submit: 'submit',
-}
+import { AssetCollector } from '@/js/collectors/AssetCollector'
 
 const NAME_MAX_LENGTH = 255
 
 export default {
   name: 'information-step-form',
+
   mixins: [FormMixin],
+
   props: {
-    request: { type: CreateAssetRequest, default: null },
+    collector: { type: AssetCollector, required: true },
   },
 
-  data: _ => ({
-    form: {
-      name: '',
-      code: '',
-      logo: null,
-      policies: 0,
-    },
-    MIN_AMOUNT: config.MIN_AMOUNT,
-    ASSET_POLICIES,
-    DOCUMENT_TYPES,
-    NAME_MAX_LENGTH,
-  }),
+  data () {
+    return {
+      form: {
+        name: this.collector.attrs.name || '',
+        code: this.collector.attrs.code || '',
+        logo: this.collector.attrs.logo || null,
+        policies: this.collector.attrs.policies || 0,
+      },
+      ASSET_POLICIES,
+      DOCUMENT_TYPES,
+      NAME_MAX_LENGTH,
+    }
+  },
 
   validations () {
     return {
@@ -160,28 +155,16 @@ export default {
     }
   },
 
-  created () {
-    if (this.request) {
-      this.populateForm()
-    }
-  },
-
   methods: {
-    populateForm () {
-      this.form = {
-        name: this.request.assetName,
-        code: this.request.assetCode,
-        logo: this.request.logoKey
-          ? new DocumentContainer(this.request.logo)
-          : null,
-        policies: this.request.policy,
-      }
-    },
-
-    submit () {
-      if (this.isFormValid()) {
-        this.$emit(EVENTS.submit, this.form)
-      }
+    next () {
+      if (!this.isFormValid()) return
+      this.collector.add({
+        name: this.form.name,
+        code: this.form.code,
+        logo: this.form.logo,
+        policies: this.form.policies,
+      })
+      this.$emit('next')
     },
   },
 }
@@ -193,9 +176,5 @@ export default {
 .information-step-form__btn {
   max-width: 14.4rem;
   width: 100%;
-}
-
-.information-step-form__kyc-required-row {
-  margin-top: 2.1rem;
 }
 </style>

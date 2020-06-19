@@ -1,7 +1,7 @@
 <template>
   <form
     class="app__form advanced-step-form"
-    @submit.prevent="isFormValid() && setConfirmationState()"
+    @submit.prevent="confirm()"
   >
     <!-- eslint-disable-next-line max-len -->
 
@@ -173,8 +173,8 @@
       <div class="app__form-field">
         <tick-field
           class="advanced-step-form__stellar-integration-tick-field"
-          v-model="form.isStellarIntegrationEnabled"
-          :disabled="isDisabled || form.isErc20IntegrationEnabled"
+          v-model="form.isStellarIntegration"
+          :disabled="isDisabled || form.isErc20Integration"
           :cb-value="true"
         >
           {{ 'create-asset-form.integration-with-stellar' | globalize }}
@@ -182,9 +182,7 @@
       </div>
     </div>
 
-    <template
-      v-if="form.isStellarIntegrationEnabled && !form.isErc20IntegrationEnabled"
-    >
+    <template v-if="form.isStellarIntegration && !form.isErc20Integration">
       <div class="app__form-row">
         <div class="app__form-field">
           <tick-field
@@ -261,8 +259,8 @@
       <div class="app__form-field">
         <tick-field
           class="advanced-step-form__stellar-integration-tick-field"
-          v-model="form.isErc20IntegrationEnabled"
-          :disabled="isDisabled || form.isStellarIntegrationEnabled"
+          v-model="form.isErc20Integration"
+          :disabled="isDisabled || form.isStellarIntegration"
           :cb-value="true"
         >
           {{ 'create-asset-form.integration-with-erc20' | globalize }}
@@ -270,9 +268,7 @@
       </div>
     </div>
 
-    <template
-      v-if="form.isErc20IntegrationEnabled && !form.isStellarIntegrationEnabled"
-    >
+    <template v-if="form.isErc20Integration && !form.isStellarIntegration">
       <div class="app__form-row">
         <div class="app__form-field">
           <tick-field
@@ -332,7 +328,7 @@
       <form-confirmation
         v-if="formMixin.isConfirmationShown"
         @ok="hideConfirmation() || submit()"
-        @cancel="hideConfirmation() || emitEnabledState()"
+        @cancel="hideConfirmation() || $emit('update:isDisabled', false)"
       />
 
       <button
@@ -342,7 +338,7 @@
         class="app__button-raised advanced-step-form__btn"
         :disabled="isDisabled"
       >
-        <template v-if="request">
+        <template v-if="Number(collector.attrs.requestId)">
           {{ 'create-asset-form.update-request-btn' | globalize }}
         </template>
 
@@ -364,8 +360,6 @@ import VueMarkdown from 'vue-markdown'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
-import { CreateAssetRequest } from '../wrappers/create-asset-request'
-
 import config from '@/config'
 
 import {
@@ -386,57 +380,96 @@ import {
   CREDIT_ALPHANUM12_MAX_LENGTH,
   NATIVE_XLM_TYPE,
 } from '@/js/const/asset-subtypes.const'
-
-const EVENTS = {
-  submit: 'submit',
-  updateIsDisabled: 'update:isDisabled',
-}
+import { AssetCollector } from '@/js/collectors/AssetCollector'
 
 export default {
   name: 'advanced-step-form',
   components: { VueMarkdown },
   mixins: [FormMixin],
   props: {
-    request: { type: CreateAssetRequest, default: null },
+    collector: { type: AssetCollector, required: true },
     isDisabled: { type: Boolean, default: false },
   },
 
-  data: _ => ({
-    form: {
-      isMaxAmountRestricted: false,
-      maxIssuanceAmount: '',
-      isPreIssuanceEnabled: false,
-      isUsageRestricted: false,
-      isStellarIntegrationEnabled: false,
-      isErc20IntegrationEnabled: false,
-      assetType: store
-        ? String(store.getters[vuexTypes.kvAssetTypeDefault])
-        : '0',
-      preIssuanceAssetSigner: '',
-      initialPreissuedAmount: '',
-      terms: null,
-      stellar: {
-        withdraw: false,
-        deposit: false,
-        assetType: '',
-        assetCode: '',
+  data () {
+    const attrs = this.collector.attrs
+    const defaultAssetType = store.getters[vuexTypes.kvAssetTypeDefault]
+
+    const isMaxAmountRestricted = !!attrs.maxIssuanceAmount &&
+      attrs.maxIssuanceAmount !== this.MAX_AMOUNT
+
+    const isPreIssuanceEnabled = !!attrs.preIssuanceAssetSigner &&
+      attrs.preIssuanceAssetSigner !== config.NULL_ASSET_SIGNER
+
+    const isUsageRestricted = !!attrs.assetType &&
+      attrs.assetType !== defaultAssetType
+
+    const isStellarIntegration = !!attrs.stellarIntegration && (
+      attrs.stellarIntegration.isWithdrawable ||
+      attrs.stellarIntegration.isDepositable
+    )
+
+    const isErc20Integration = !!attrs.erc20Integration && (
+      attrs.erc20Integration.isWithdrawable ||
+      attrs.erc20Integration.isDepositable
+    )
+
+    return {
+      form: {
+        isMaxAmountRestricted,
+        maxIssuanceAmount: isMaxAmountRestricted
+          ? attrs.maxIssuanceAmount
+          : '',
+
+        isPreIssuanceEnabled,
+        preIssuanceAssetSigner: isPreIssuanceEnabled
+          ? attrs.preIssuanceAssetSigner
+          : '',
+        initialPreissuedAmount: isPreIssuanceEnabled
+          ? attrs.initialPreissuedAmount
+          : '',
+
+        isUsageRestricted,
+        assetType: isUsageRestricted ? attrs.assetType : '',
+
+        isStellarIntegration: false,
+        stellar: isStellarIntegration
+          ? {
+            withdraw: attrs.stellarIntegration.isWithdrawable,
+            deposit: attrs.stellarIntegration.isDepositable,
+            assetType: attrs.stellarIntegration.assetType,
+            assetCode: attrs.stellarIntegration.assetCode,
+          } : {
+            withdraw: false,
+            deposit: false,
+            assetType: '',
+            assetCode: '',
+          },
+
+        isErc20Integration,
+        erc20: isErc20Integration
+          ? {
+            withdraw: attrs.erc20Integration.isWithdrawable,
+            deposit: attrs.erc20Integration.isDepositable,
+            address: attrs.erc20Integration.address,
+          } : {
+            withdraw: false,
+            deposit: false,
+            address: '',
+          },
+
+        terms: attrs.terms && attrs.terms.key
+          ? new DocumentContainer(attrs.terms)
+          : null,
       },
-      erc20: {
-        withdraw: false,
-        deposit: false,
-        address: '',
-      },
-    },
-    MIN_AMOUNT: config.MIN_AMOUNT,
-    MAX_AMOUNT: config.MAX_AMOUNT,
-    DOCUMENT_TYPES,
-    STELLAR_ASSET_TYPES,
-    CREDIT_ALPHANUM4_MAX_LENGTH,
-    CREDIT_ALPHANUM12_MAX_LENGTH,
-    CREDIT_ALPHANUM12_MIN_LENGTH,
-    STELLAR_TYPES,
-    vueRoutes,
-  }),
+      MIN_AMOUNT: config.MIN_AMOUNT,
+      MAX_AMOUNT: config.MAX_AMOUNT,
+      DOCUMENT_TYPES,
+      STELLAR_ASSET_TYPES,
+      STELLAR_TYPES,
+      vueRoutes,
+    }
+  },
 
   validations () {
     let validations = {
@@ -469,25 +502,26 @@ export default {
         stellar: {
           assetType: {
             required: requiredIf(function () {
-              return this.form.isStellarIntegrationEnabled
+              return this.form.isStellarIntegration
             }),
           },
           assetCode: {
             required: requiredIf(function () {
-              return this.form.isStellarIntegrationEnabled
+              return this.form.isStellarIntegration
             }),
           },
         },
         erc20: {
           address: {
             required: requiredIf(function () {
-              return this.form.isErc20IntegrationEnabled
+              return this.form.isErc20Integration
             }),
           },
         },
       },
     }
-    if (this.form.isStellarIntegrationEnabled) {
+
+    if (this.form.isStellarIntegration) {
       const stellarAssetCode =
         validations.form.stellar.assetCode
 
@@ -513,15 +547,15 @@ export default {
       vuexTypes.kvAssetTypeSecurity,
       vuexTypes.accountId,
     ]),
+
     getAssetCodeMaxLength () {
-      /* eslint-disable max-len */
       if (this.form.stellar.assetType === STELLAR_TYPES.creditAlphanum4) {
         return CREDIT_ALPHANUM4_MAX_LENGTH
       } else {
         return CREDIT_ALPHANUM12_MAX_LENGTH
       }
-      /* eslint-enable max-len */
     },
+
     getAssetCodeMinLength () {
       if (this.form.stellar.assetType === STELLAR_TYPES.creditAlphanum4) {
         return CREDIT_ALPHANUM4_MAX_LENGTH
@@ -537,81 +571,42 @@ export default {
         this.form.stellar.assetCode = NATIVE_XLM_TYPE
       }
     },
-    'form.isStellarIntegrationEnabled' (val) {
-      if (val) this.form.isErc20IntegrationEnabled = false
+    'form.isStellarIntegration' (val) {
+      if (val) this.form.isErc20Integration = false
     },
-    'form.isErc20IntegrationEnabled' (val) {
-      if (val) this.form.isStellarIntegrationEnabled = false
+    'form.isErc20Integration' (val) {
+      if (val) this.form.isStellarIntegration = false
     },
-  },
-
-  created () {
-    if (this.request) {
-      this.populateForm()
-    }
   },
 
   methods: {
-    populateForm () {
-      const isMaxAmountRestricted = this.request.maxIssuanceAmount &&
-        this.request.maxIssuanceAmount !== this.MAX_AMOUNT
-
-      const isPreIssuanceEnabled =
-        this.request.preIssuanceAssetSigner !== config.NULL_ASSET_SIGNER
-
-      const isUsageRestricted = this.request.assetType &&
-        this.request.assetType !== this.kvAssetTypeDefault
-
-      this.form = {
-        isMaxAmountRestricted,
-        maxIssuanceAmount: isMaxAmountRestricted
-          ? this.request.maxIssuanceAmount
-          : '',
-        isPreIssuanceEnabled,
-        preIssuanceAssetSigner: isPreIssuanceEnabled
-          ? this.request.preIssuanceAssetSigner
-          : '',
-        initialPreissuedAmount: isPreIssuanceEnabled
-          ? this.request.initialPreissuedAmount
-          : '',
-        isUsageRestricted,
-        assetType: String(this.request.assetType),
-        terms: this.request.termsKey
-          ? new DocumentContainer(this.request.terms)
-          : null,
-        isStellarIntegrationEnabled: this.request.isStellarIntegrationEnabled,
-        isErc20IntegrationEnabled: this.request.isErc20IntegrationEnabled,
-        stellar: {
-          withdraw: this.request.stellarWithdraw,
-          deposit: this.request.stellarDeposit,
-          assetType: this.request.stellarAssetType,
-          assetCode: this.request.stellarAssetCode,
-        },
-        erc20: {
-          withdraw: this.request.erc20Withdraw,
-          deposit: this.request.erc20Deposit,
-          address: this.request.erc20Address,
-        },
-      }
+    confirm () {
+      if (!this.isFormValid()) return
+      this.showConfirmation()
+      this.$emit('update:isDisabled', true)
     },
 
     submit () {
-      if (this.isFormValid()) {
-        this.$emit(EVENTS.submit, this.form)
-      }
-    },
-
-    setConfirmationState () {
-      this.showConfirmation()
-      this.emitDisabledState()
-    },
-
-    emitDisabledState () {
-      this.$emit(EVENTS.updateIsDisabled, true)
-    },
-
-    emitEnabledState () {
-      this.$emit(EVENTS.updateIsDisabled, false)
+      if (!this.isFormValid()) return
+      this.collector.add({
+        maxIssuanceAmount: this.form.maxIssuanceAmount,
+        preIssuanceAssetSigner: this.form.preIssuanceAssetSigner,
+        initialPreissuedAmount: this.form.initialPreissuedAmount,
+        assetType: this.form.assetType,
+        stellarIntegration: {
+          isWithdrawable: this.form.stellar.withdraw,
+          isDepositable: this.form.stellar.deposit,
+          assetType: this.form.stellar.assetType,
+          assetCode: this.form.stellar.assetCode,
+        },
+        erc20Integration: {
+          isWithdrawable: this.form.erc20.withdraw,
+          isDepositable: this.form.erc20.deposit,
+          address: this.form.erc20.address,
+        },
+        terms: this.form.terms,
+      })
+      this.$emit('next')
     },
 
     translateAssetType (value) {
