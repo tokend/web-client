@@ -22,8 +22,6 @@
 </template>
 
 <script>
-import ManageAssetRequestMixin from './mixins/manage-asset-request.mixin'
-
 import InformationStepForm from './components/information-step-form'
 import AdvancedStepForm from './components/advanced-step-form'
 
@@ -53,7 +51,6 @@ export default {
     InformationStepForm,
     AdvancedStepForm,
   },
-  mixins: [ManageAssetRequestMixin],
   props: {
     collector: {
       type: AssetCollector,
