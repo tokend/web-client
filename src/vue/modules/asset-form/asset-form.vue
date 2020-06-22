@@ -1,5 +1,5 @@
 <template>
-  <div class="create-asset-form">
+  <div class="asset-form">
     <form-stepper
       :steps="STEPS"
       :current-step.sync="currentStep"
@@ -38,16 +38,16 @@ import { api } from '@/api'
 const STEPS = {
   information: {
     number: 1,
-    titleId: 'create-asset-form.information-step',
+    titleId: 'asset-form.information-step',
   },
   advanced: {
     number: 2,
-    titleId: 'create-asset-form.advanced-step',
+    titleId: 'asset-form.advanced-step',
   },
 }
 
 export default {
-  name: 'create-asset-form-module',
+  name: 'asset-form',
   components: {
     FormStepper,
     InformationStepForm,
@@ -80,7 +80,7 @@ export default {
       try {
         const ops = await this.collector.buildOps()
         await api.postOperations(...ops)
-        Bus.success('create-asset-form.request-submitted-msg')
+        Bus.success('asset-form.request-submitted-msg')
         this.$emit('submitted')
       } catch (e) {
         this.isDisabled = false

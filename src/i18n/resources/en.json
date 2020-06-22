@@ -1054,7 +1054,7 @@
       "create-btn": "Create",
       "my-assets-title": "My assets"
     },
-    "create-asset-form": {
+    "asset-form": {
       "loading-msg": "Loading…",
       "load-failed-msg": "There was an error while loading.",
       "next-btn": "Next",

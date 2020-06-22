@@ -1054,9 +1054,7 @@
       "create-btn": "Создать",
       "my-assets-title": "Мои активы"
     },
-    "create-asset-form": {
-      "loading-msg": "Загружаем…",
-      "load-failed-msg": "Произошла ошибка при загрузке.",
+    "asset-form": {
       "next-btn": "Далее",
       "create-request-btn": "Создать запрос",
       "update-request-btn": "Обновить запрос",
@@ -1114,32 +1112,6 @@
       "details-title": "Детали актива",
       "list-item-balance-line": "Баланс: {{value, money}}",
       "no-balance-msg": "Нет баланса"
-    },
-    "asset-form": {
-      "loading-msg": "Загружаем…",
-      "loading-error-msg": "Произошла ошибка при загрузке.",
-      "next-btn": "Далее",
-      "asset-type": "Тип актива",
-      "submit-btn": "Отправить",
-      "information-step": "Информация об активах",
-      "advanced-step": "Продвинутый",
-      "name-lbl": "Название актива",
-      "code-lbl": "Код актива",
-      "max-issuance-amount-lbl": "Максимальная сумма выпуска",
-      "logo-lbl": "Значок актива",
-      "logo-note": "JPG или PNG, не менее 120x120 пикселей",
-      "transferable-lbl": "Можно передавать",
-      "withdrawable-lbl": "Можно выводить",
-      "kyc-required-lbl": "Требуется KYC",
-      "additional-issuance-check": "Я хочу выполнить дополнительную эмиссию позже",
-      "preissued-asset-signer-lbl": "ID подписчика предэмиссии",
-      "use-my-account-id-btn": "Мой",
-      "initial-preissued-amount-lbl": "Предэмитировано",
-      "terms-lbl": "Соглашение",
-      "terms-note": "JPG, PNG, PDF, максимум 5 МБ.",
-      "asset-request-submitted-msg": "Запрос отправлен",
-      "asset-type-required-kyc": "Требуется KYC",
-      "asset-type-not-required-kyc": "Не требуется KYC"
     },
     "requests-page": {
       "asset-creation-title": "Создание актива",

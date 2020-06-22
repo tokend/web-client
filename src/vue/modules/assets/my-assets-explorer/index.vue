@@ -7,7 +7,7 @@
             {{ 'assets.update-drawer-title' | globalize }}
           </template>
 
-          <create-asset-form-module
+          <asset-form
             :collector="collector"
             @submitted="onAssetUpdate()"
           />
@@ -95,7 +95,7 @@ import CardViewer from '../shared/components/card-viewer'
 import AssetAttributesViewer from '../shared/components/asset-attributes-viewer'
 import AssetSkeletonLoader from './components/asset-skeleton-loader'
 
-import CreateAssetFormModule from '@modules/create-asset-form'
+import AssetForm from '@modules/asset-form'
 
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -112,7 +112,7 @@ export default {
     NoDataMessage,
     CardViewer,
     AssetAttributesViewer,
-    CreateAssetFormModule,
+    AssetForm,
     AssetSkeletonLoader,
   },
   mixins: [UpdateList],

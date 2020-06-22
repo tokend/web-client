@@ -5,7 +5,7 @@
   >
     <template v-if="collector.isCreateMode">
       <h3 class="advanced-step-form__subheading app__form-subheading">
-        {{ 'create-asset-form.issuance-subheading' | globalize }}
+        {{ 'asset-form.issuance-subheading' | globalize }}
       </h3>
 
       <div class="app__form-row">
@@ -15,7 +15,7 @@
             v-model="form.isMaxAmountRestricted"
             :disabled="isDisabled"
           >
-            {{ 'create-asset-form.restrict-max-amount-check' | globalize }}
+            {{ 'asset-form.restrict-max-amount-check' | globalize }}
           </tick-field>
         </div>
       </div>
@@ -32,7 +32,7 @@
               v-model="form.maxIssuanceAmount"
               @blur="touchField('form.maxIssuanceAmount')"
               name="create-asset-max-issuance-amount"
-              :label="'create-asset-form.max-issuance-amount-lbl' | globalize"
+              :label="'asset-form.max-issuance-amount-lbl' | globalize"
               :error-message="getFieldErrorMessage(
                 'form.maxIssuanceAmount', { from: MIN_AMOUNT, to: MAX_AMOUNT }
               )"
@@ -48,7 +48,7 @@
               v-model="form.isPreIssuanceEnabled"
               :disabled="isDisabled"
             >
-              {{ 'create-asset-form.additional-issuance-check' | globalize }}
+              {{ 'asset-form.additional-issuance-check' | globalize }}
             </tick-field>
           </div>
         </div>
@@ -63,7 +63,7 @@
                 v-model="form.preIssuanceAssetSigner"
                 @blur="touchField('form.preIssuanceAssetSigner')"
                 name="create-asset-pre-issuance-asset-signer"
-                :label="'create-asset-form.pre-issuance-signer-lbl' | globalize"
+                :label="'asset-form.pre-issuance-signer-lbl' | globalize"
                 :error-message="getFieldErrorMessage(
                   'form.preIssuanceAssetSigner',
                 )"
@@ -72,18 +72,18 @@
               <button
                 v-ripple
                 type="button"
-                class="app__button-flat advanced-step-form__insert-account-id-btn"
+                class="app__button-flat advanced-step-form__use-my-address-btn"
                 :disabled="isDisabled"
                 @click="form.preIssuanceAssetSigner = accountId"
               >
-                {{ 'create-asset-form.use-my-account-id-btn' | globalize }}
+                {{ 'asset-form.use-my-account-id-btn' | globalize }}
               </button>
             </div>
 
             <vue-markdown
               v-if="form.preIssuanceAssetSigner === accountId"
               class="advanced-step-form__pre-issuance-disclaimer"
-              :source="'create-asset-form.pre-issuance-disclaimer' | globalize"
+              :source="'asset-form.pre-issuance-disclaimer' | globalize"
             />
           </div>
         </div>
@@ -99,7 +99,7 @@
               v-model="form.initialPreissuedAmount"
               @blur="touchField('form.initialPreissuedAmount')"
               name="create-asset-initial-preissued-amount"
-              :label="'create-asset-form.preissued-amount-lbl' | globalize"
+              :label="'asset-form.preissued-amount-lbl' | globalize"
               :error-message="getFieldErrorMessage(
                 'form.initialPreissuedAmount',
                 { from: 0, to: form.maxIssuanceAmount }
@@ -112,7 +112,7 @@
               target="_blank"
               rel="noopener"
             >
-              {{ 'create-asset-form.pre-issuance-guide-link' | globalize }}
+              {{ 'asset-form.pre-issuance-guide-link' | globalize }}
               <!-- eslint-disable-next-line max-len -->
               <i class="mdi mdi-launch advanced-step-form__pre-issuance-guide-link-launch-icon" />
             </router-link>
@@ -121,7 +121,7 @@
       </template>
 
       <h3 class="advanced-step-form__subheading app__form-subheading">
-        {{ 'create-asset-form.permissions-subheading' | globalize }}
+        {{ 'asset-form.permissions-subheading' | globalize }}
       </h3>
 
       <div class="app__form-row">
@@ -132,7 +132,7 @@
             :disabled="isDisabled"
             :cb-value="true"
           >
-            {{ 'create-asset-form.restrict-who-can-use' | globalize }}
+            {{ 'asset-form.restrict-who-can-use' | globalize }}
           </tick-field>
         </div>
       </div>
@@ -143,7 +143,7 @@
             <select-field
               v-model="form.assetType"
               name="create-asset-type"
-              :label="'create-asset-form.asset-type-lbl' | globalize"
+              :label="'asset-form.asset-type-lbl' | globalize"
               @blur="touchField('form.assetType')"
               :error-message="getFieldErrorMessage('form.assetType')"
               :disabled="isDisabled"
@@ -164,7 +164,7 @@
     </template>
 
     <h3 class="advanced-step-form__subheading app__form-subheading">
-      {{ 'create-asset-form.stellar' | globalize }}
+      {{ 'asset-form.stellar' | globalize }}
     </h3>
 
     <div class="app__form-row">
@@ -175,7 +175,7 @@
           :disabled="isDisabled || form.isErc20Integration"
           :cb-value="true"
         >
-          {{ 'create-asset-form.integration-with-stellar' | globalize }}
+          {{ 'asset-form.integration-with-stellar' | globalize }}
         </tick-field>
       </div>
     </div>
@@ -188,7 +188,7 @@
             :disabled="isDisabled"
             :cb-value="true"
           >
-            {{ 'create-asset-form.deposit-lbl' | globalize }}
+            {{ 'asset-form.deposit-lbl' | globalize }}
           </tick-field>
         </div>
       </div>
@@ -199,7 +199,7 @@
             :disabled="isDisabled"
             :cb-value="true"
           >
-            {{ 'create-asset-form.withdraw-lbl' | globalize }}
+            {{ 'asset-form.withdraw-lbl' | globalize }}
           </tick-field>
         </div>
       </div>
@@ -208,7 +208,7 @@
           <select-field
             v-model="form.stellar.assetType"
             name="create-asset-type"
-            :label="'create-asset-form.stellar-type-lbl' | globalize"
+            :label="'asset-form.stellar-type-lbl' | globalize"
             @blur="touchField('form.stellar.assetType')"
             :error-message="getFieldErrorMessage(
               'form.stellar.assetType',
@@ -232,7 +232,7 @@
             v-model="form.stellar.assetCode"
             @blur="touchField('form.stellar.assetCode')"
             name="create-asset-stellar-code"
-            :label="'create-asset-form.code-lbl' | globalize"
+            :label="'asset-form.code-lbl' | globalize"
             :error-message="getFieldErrorMessage(
               'form.stellar.assetCode',
               {
@@ -250,7 +250,7 @@
     </template>
 
     <h3 class="advanced-step-form__subheading app__form-subheading">
-      {{ 'create-asset-form.erc20' | globalize }}
+      {{ 'asset-form.erc20' | globalize }}
     </h3>
 
     <div class="app__form-row">
@@ -261,7 +261,7 @@
           :disabled="isDisabled || form.isStellarIntegration"
           :cb-value="true"
         >
-          {{ 'create-asset-form.integration-with-erc20' | globalize }}
+          {{ 'asset-form.integration-with-erc20' | globalize }}
         </tick-field>
       </div>
     </div>
@@ -274,7 +274,7 @@
             :disabled="isDisabled"
             :cb-value="true"
           >
-            {{ 'create-asset-form.deposit-lbl' | globalize }}
+            {{ 'asset-form.deposit-lbl' | globalize }}
           </tick-field>
         </div>
       </div>
@@ -285,7 +285,7 @@
             :disabled="isDisabled"
             :cb-value="true"
           >
-            {{ 'create-asset-form.withdraw-lbl' | globalize }}
+            {{ 'asset-form.withdraw-lbl' | globalize }}
           </tick-field>
         </div>
       </div>
@@ -295,7 +295,7 @@
             white-autofill
             v-model="form.erc20.address"
             name="create-erc20-asset-code"
-            :label="'create-asset-form.address-lbl' | globalize"
+            :label="'asset-form.address-lbl' | globalize"
             @blur="touchField('form.erc20.address')"
             :error-message="getFieldErrorMessage('form.erc20.address')"
             :disabled="isDisabled"
@@ -305,7 +305,7 @@
     </template>
 
     <h3 class="advanced-step-form__subheading app__form-subheading">
-      {{ 'create-asset-form.terms-subheading' | globalize }}
+      {{ 'asset-form.terms-subheading' | globalize }}
     </h3>
 
     <div class="app__form-row">
@@ -313,10 +313,10 @@
         <file-field
           v-model="form.terms"
           name="create-asset-terms"
-          :note="'create-asset-form.terms-note' | globalize"
+          :note="'asset-form.terms-note' | globalize"
           :file-extensions="['jpg', 'png', 'pdf']"
           :document-type="DOCUMENT_TYPES.assetTerms"
-          :label="'create-asset-form.terms-lbl' | globalize"
+          :label="'asset-form.terms-lbl' | globalize"
           :disabled="isDisabled"
         />
       </div>
@@ -337,11 +337,11 @@
         :disabled="isDisabled"
       >
         <template v-if="collector.isUpdateRequest">
-          {{ 'create-asset-form.update-request-btn' | globalize }}
+          {{ 'asset-form.update-request-btn' | globalize }}
         </template>
 
         <template v-else>
-          {{ 'create-asset-form.create-request-btn' | globalize }}
+          {{ 'asset-form.create-request-btn' | globalize }}
         </template>
       </button>
     </div>
@@ -610,9 +610,9 @@ export default {
 
     translateAssetType (value) {
       const translationId = {
-        [+this.kvAssetTypeDefault]: 'create-asset-form.verification-not-required-lbl',
-        [+this.kvAssetTypeKycRequired]: 'create-asset-form.verification-required-lbl',
-        [+this.kvAssetTypeSecurity]: 'create-asset-form.security-asset-lbl',
+        [+this.kvAssetTypeDefault]: 'asset-form.verification-not-required-lbl',
+        [+this.kvAssetTypeKycRequired]: 'asset-form.verification-required-lbl',
+        [+this.kvAssetTypeSecurity]: 'asset-form.security-asset-lbl',
       }[+value]
 
       return this.$options.filters.globalize(translationId)
@@ -635,7 +635,7 @@ export default {
   align-items: center;
 }
 
-.advanced-step-form__insert-account-id-btn {
+.advanced-step-form__use-my-address-btn {
   margin-left: 0.4rem;
 }
 

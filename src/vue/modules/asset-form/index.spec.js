@@ -1,4 +1,4 @@
-import CreateAssetForm from './index'
+import AssetForm from './index'
 
 import Vuelidate from 'vuelidate'
 
@@ -12,7 +12,7 @@ import { api } from '@/api'
 const localVue = createLocalVue()
 localVue.use(Vuelidate)
 
-describe('Create asset form module', () => {
+describe('Asset form module', () => {
   let sandbox
 
   beforeEach(() => {
@@ -27,7 +27,7 @@ describe('Create asset form module', () => {
     let wrapper
 
     beforeEach(() => {
-      wrapper = shallowMount(CreateAssetForm, { localVue })
+      wrapper = shallowMount(AssetForm, { localVue })
     })
 
     describe('method', () => {
@@ -54,7 +54,7 @@ describe('Create asset form module', () => {
 
             expect(wrapper.vm.collector.buildOps).to.have.been.calledOnce
             expect(api.postOperations).to.have.been.calledOnceWith()
-            expect(Bus.success).to.have.been.calledOnceWith('create-asset-form.request-submitted-msg')
+            expect(Bus.success).to.have.been.calledOnceWith('asset-form.request-submitted-msg')
             expect(wrapper.emitted('submitted')).to.exist
             expect(wrapper.vm.isDisabled).to.be.true
           }

@@ -27,7 +27,7 @@ describe('Information step form', () => {
     beforeEach(() => {
       wrapper = mount(InformationStepForm, {
         localVue,
-        propsData: { collector: new AssetCollector() },
+        propsData: { collector: new AssetCollector('create') },
       })
     })
 

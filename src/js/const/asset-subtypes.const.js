@@ -16,15 +16,15 @@ export const STELLAR_TYPES = {
 
 export const STELLAR_ASSET_TYPES = [
   {
-    translationId: 'create-asset-form.alphanumeric-4-lbl',
+    translationId: 'asset-form.alphanumeric-4-lbl',
     value: STELLAR_TYPES.creditAlphanum4,
   },
   {
-    translationId: 'create-asset-form.alphanumeric-12-lbl',
+    translationId: 'asset-form.alphanumeric-12-lbl',
     value: STELLAR_TYPES.creditAlphanum12,
   },
   {
-    translationId: 'create-asset-form.native-lbl',
+    translationId: 'asset-form.native-lbl',
     value: STELLAR_TYPES.native,
   },
 ]

@@ -86,7 +86,7 @@ describe('Balance explorer module', () => {
       })
 
       describe('selectBalance', () => {
-        it('sets selectedBalance property to passed param, isUpdateMode property to false, and isDrawerShown property to true', () => {
+        it('sets selectedBalance property to passed param, isAssetFormShown property to false, and isDrawerShown property to true', () => {
           const asset = new AssetRecord({ id: 'USD' }, [{
             asset: { code: 'USD' },
             balance: '1.000000',
@@ -94,14 +94,14 @@ describe('Balance explorer module', () => {
           )
 
           wrapper.setData({
-            isUpdateMode: true,
+            isAssetFormShown: true,
             isDrawerShown: false,
           })
 
           wrapper.vm.selectBalance({ asset })
 
           expect(wrapper.vm.selectedBalance).to.deep.equal({ asset })
-          expect(wrapper.vm.isUpdateMode).to.be.false
+          expect(wrapper.vm.isAssetFormShown).to.be.false
           expect(wrapper.vm.isDrawerShown).to.be.true
         })
       })

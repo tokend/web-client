@@ -6,7 +6,7 @@
           <template slot="heading">
             {{ 'create-asset-requests.update-asset-title' | globalize }}
           </template>
-          <create-asset-form-module
+          <asset-form
             :collector="collector"
             @submitted="onRequestUpdate()"
           />
@@ -53,7 +53,7 @@ import RequestViewer from './components/request-viewer'
 import RequestsTable from './components/requests-table'
 import { AssetRequest } from '@/js/records/requests/asset-request.record'
 
-import CreateAssetFormModule from '@modules/create-asset-form'
+import AssetForm from '@modules/asset-form'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
@@ -69,7 +69,7 @@ export default {
     CollectionLoader,
     RequestsTable,
     RequestViewer,
-    CreateAssetFormModule,
+    AssetForm,
   },
 
   mixins: [UpdateList],
