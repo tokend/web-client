@@ -391,14 +391,18 @@ export default {
   data () {
     const attrs = this.collector.attrs
     const defaultAssetType = store.getters[vuexTypes.kvAssetTypeDefault]
+    const isCreateMode = this.collector.isCreateMode
 
-    const isMaxAmountRestricted = attrs.maxIssuanceAmount &&
+    const isMaxAmountRestricted = isCreateMode &&
+      attrs.maxIssuanceAmount &&
       attrs.maxIssuanceAmount !== this.MAX_AMOUNT
 
-    const isPreIssuanceEnabled = attrs.preIssuanceAssetSigner &&
+    const isPreIssuanceEnabled = isCreateMode &&
+      attrs.preIssuanceAssetSigner &&
       attrs.preIssuanceAssetSigner !== config.NULL_ASSET_SIGNER
 
-    const isUsageRestricted = attrs.assetType &&
+    const isUsageRestricted = isCreateMode &&
+      attrs.assetType &&
       attrs.assetType !== defaultAssetType
 
     const isStellarIntegration = Boolean(attrs.stellarIntegration && (
