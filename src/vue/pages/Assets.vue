@@ -37,9 +37,7 @@
         <template slot="heading">
           {{ 'assets-page.create-asset-title' | globalize }}
         </template>
-        <create-asset-form-module
-          @submitted="closeDrawerAndUpdateList()"
-        />
+        <create-asset-form-module @submitted="onAssetFormSubmit()" />
       </drawer>
     </template>
 
@@ -78,7 +76,7 @@ export default {
     }),
   },
   methods: {
-    closeDrawerAndUpdateList () {
+    onAssetFormSubmit () {
       this.isAssetDrawerShown = false
       this.emitUpdateList('assets:updateList')
     },
