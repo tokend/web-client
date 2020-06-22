@@ -16,10 +16,9 @@ import { uploadDocument } from '@/js/helpers/upload-documents'
 export class Collector {
   /**
    * @constructor
-   * @param {object} initialAttrs
    */
-  constructor (initialAttrs = {}) {
-    this.attrs = initialAttrs
+  constructor () {
+    this.attrs = {}
   }
 
   /**
@@ -30,6 +29,15 @@ export class Collector {
   add (source) {
     this.attrs = merge(this.attrs, source)
     return this
+  }
+
+  /**
+   * Parse the predefined structure to populate the collector
+   * @param {object} source
+   * @returns {Collector}
+   */
+  from (source) {
+    throw new ReferenceError('Not implemented')
   }
 
   /**

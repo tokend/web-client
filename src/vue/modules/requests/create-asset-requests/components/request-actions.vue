@@ -42,7 +42,7 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { CreateAssetRequest } from '../wrappers/create-asset-request'
+import { CreateAssetRequest } from '@/js/records/requests/create-asset-request.record'
 
 import { mapActions } from 'vuex'
 import { types } from '../store/types'

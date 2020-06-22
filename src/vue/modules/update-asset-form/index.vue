@@ -9,14 +9,14 @@
         <information-step-form
           v-show="currentStep === STEPS.information.number"
           :record="request || asset"
-          @submit="setInformationStepForm($event) || moveToNextStep()"
+          @next="toNextStep()"
         />
 
         <advanced-step-form
           v-show="currentStep === STEPS.advanced.number"
           :record="request || asset"
           :is-disabled.sync="isDisabled"
-          @submit="setAdvancedStepForm($event) || submit()"
+          @next="submit()"
         />
       </form-stepper>
     </template>
@@ -48,6 +48,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { api } from '@/api'
 
 const STEPS = {
   information: {
@@ -58,10 +59,6 @@ const STEPS = {
     number: 2,
     titleId: 'update-asset-form.advanced-step',
   },
-}
-const EVENTS = {
-  requestUpdated: 'request-updated',
-  submitted: 'submitted',
 }
 
 export default {
@@ -87,8 +84,6 @@ export default {
   data: _ => ({
     request: null,
     asset: null,
-    informationStepForm: {},
-    advancedStepForm: {},
     isLoaded: false,
     isLoadFailed: false,
     isDisabled: false,
@@ -107,42 +102,7 @@ export default {
   },
 
   methods: {
-    async init () {
-      try {
-        await this.loadUpdateAssetRecord()
-        this.isLoaded = true
-      } catch (e) {
-        this.isLoadFailed = true
-        ErrorHandler.processWithoutFeedback(e)
-      }
-    },
-
-    async loadUpdateAssetRecord () {
-      const request = await this.getUpdateRequest()
-
-      if (request) {
-        this.request = request
-      } else {
-        this.asset = await this.getAssetByCode(this.assetCode)
-      }
-    },
-
-    async getUpdateRequest () {
-      let request
-
-      if (this.requestId) {
-        request = await this.getUpdateAssetRequestById(
-          this.requestId,
-          this.accountId
-        )
-      } else if (this.assetCode) {
-        request = await this.getUpdatableRequest(this.assetCode, this.accountId)
-      }
-
-      return request
-    },
-
-    moveToNextStep () {
+    toNextStep () {
       this.currentStep++
       if (this.$el.parentElement) {
         this.$el.parentElement.scrollTop = 0
@@ -160,10 +120,10 @@ export default {
     async submit () {
       this.isDisabled = true
       try {
-        await this.submitUpdateAssetRequest()
+        const ops = await this.collector.buildOps()
+        await api.postOperations(...ops)
         Bus.success('update-asset-form.request-submitted-msg')
-        this.$emit(EVENTS.requestUpdated)
-        this.$emit(EVENTS.submitted)
+        this.$emit('submitted')
       } catch (e) {
         this.isDisabled = false
         ErrorHandler.process(e)

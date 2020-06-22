@@ -51,7 +51,7 @@ import CollectionLoader from '@/vue/common/CollectionLoader'
 
 import RequestViewer from './components/request-viewer'
 import RequestsTable from './components/requests-table'
-import { CreateAssetRequest } from './wrappers/create-asset-request'
+import { CreateAssetRequest } from '@/js/records/requests/create-asset-request.record'
 
 import CreateAssetFormModule from '@modules/create-asset-form'
 
@@ -61,7 +61,6 @@ import { types } from './store/types'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import UpdateList from '@/vue/mixins/update-list.mixin'
 import { AssetCollector } from '@/js/collectors/AssetCollector'
-import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 export default {
   name: 'create-asset-requests-module',
@@ -145,34 +144,7 @@ export default {
     },
 
     showUpdateForm () {
-      this.collector.add({
-        requestId: this.selectedRequest.id,
-        code: this.selectedRequest.assetCode,
-        policies: this.selectedRequest.policy,
-        assetType: this.selectedRequest.assetType,
-        maxIssuanceAmount: this.selectedRequest.maxIssuanceAmount,
-        preIssuanceAssetSigner: this.selectedRequest.preIssuanceAssetSigner,
-        initialPreissuedAmount: this.selectedRequest.initialPreissuedAmount,
-        name: this.selectedRequest.assetName,
-        logo: this.selectedRequest.logoKey
-          ? new DocumentContainer(this.selectedRequest.logo)
-          : null,
-        terms: this.selectedRequest.termsKey
-          ? new DocumentContainer(this.selectedRequest.terms)
-          : null,
-        stellarIntegration: {
-          isWithdrawable: this.selectedRequest.stellarWithdraw,
-          isDepositable: this.selectedRequest.stellarDeposit,
-          assetType: this.selectedRequest.stellarAssetType,
-          assetCode: this.selectedRequest.stellarAssetCode,
-        },
-        erc20Integration: {
-          isWithdrawable: this.selectedRequest.erc20Withdraw,
-          isDepositable: this.selectedRequest.erc20Deposit,
-          address: this.selectedRequest.erc20Address,
-        },
-      })
-
+      this.collector.from(this.selectedRequest)
       this.isUpdateFormShown = true
     },
 

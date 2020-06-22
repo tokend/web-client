@@ -1,4 +1,4 @@
-import { CreateAssetRequest } from '../wrappers/create-asset-request'
+import { CreateAssetRequest } from '@/js/records/requests/create-asset-request.record'
 
 import { base } from '@tokend/js-sdk'
 

@@ -1,29 +1,23 @@
 import { REQUEST_STATES } from '../const/request-states.const'
-import _get from 'lodash/get'
+import get from 'lodash/get'
 
 export class RequestRecord {
   constructor (record = {}) {
     this._record = record
 
     this.id = record.id || '0'
-    this.requestor = record.requestor
-    this.reviewer = record.reviewer
-    this.reference = record.reference
-    this.rejectReason = record.rejectReason
-    this.hash = record.hash
-    this.createdAt = record.createdAt
-    this.updatedAt = record.updatedAt
     this.state = record.state || record.requestState
     this.stateI = record.stateI || record.requestStateI
+    this.typeI = get(record, 'xdrType.value')
 
-    this.requestType = _get(record, 'details.requestType')
-    this.requestTypeI = _get(record, 'details.requestTypeI')
+    this.createdAt = record.createdAt
+    this.updatedAt = record.updatedAt
+    this.requestor = get(record, 'requestor.id')
+    this.reference = record.reference
+    this.rejectReason = record.rejectReason
 
-    this.limitsUpdate = _get(record, 'details.limitsUpdate')
-    this.amlAlert = _get(record, 'details.createAmlAlert')
-    this.updateSaleDetails = _get(record, 'details.updateSaleDetails')
-    this.updateSaleEndTime = _get(record, 'details.updateSaleEndTime')
-    this.promotionUpdateRequest = _get(record, 'details.promotionUpdateRequest')
+    this.hash = record.hash
+    this.pendingTasks = record.pendingTasks
   }
 
   get isPending () {

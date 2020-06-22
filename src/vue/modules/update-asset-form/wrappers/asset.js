@@ -1,4 +1,5 @@
 import safeGet from 'lodash/get'
+import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 export class Asset {
   constructor (record) {
@@ -10,7 +11,7 @@ export class Asset {
     this.terms = safeGet(record, 'details.terms')
     this.termsKey = safeGet(record, 'details.terms.key')
 
-    this.logo = safeGet(record, 'details.logo')
+    this.logo = DocumentContainer.fromObj(safeGet(record, 'details.logo'))
     this.logoKey = safeGet(record, 'details.logo.key')
 
     this.stellarAssetCode = safeGet(record, 'details.stellar.assetCode') || ''

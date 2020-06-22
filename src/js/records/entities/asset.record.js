@@ -24,8 +24,6 @@ export class AssetRecord {
 
     this.logo = safeGet(record, 'details.logo')
     this.logoKey = safeGet(record, 'details.logo.key')
-    this.logoName = safeGet(record, 'details.logo.name')
-    this.logoType = safeGet(record, 'details.logo.type')
 
     this.maturityDate = safeGet(record, 'details.maturityDate')
     this.annualReturn = safeGet(record, 'details.annualReturn')

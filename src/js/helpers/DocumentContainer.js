@@ -32,6 +32,16 @@ export class DocumentContainer {
     this._dataUrl = ''
   }
 
+  static fromObj (obj) {
+    if (!DocumentContainer.isDoc(obj)) return null
+    return new DocumentContainer(obj)
+  }
+
+  static isDoc (obj) {
+    if (!(obj && typeof obj === 'object')) return false
+    return Boolean(obj.file || obj.key)
+  }
+
   getDetailsForSave () {
     return {
       mime_type: this.mimeType,

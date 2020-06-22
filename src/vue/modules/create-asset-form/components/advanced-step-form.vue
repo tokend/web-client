@@ -187,7 +187,7 @@
         <div class="app__form-field">
           <tick-field
             v-model="form.stellar.deposit"
-            :disabled="formMixin.isDisabled"
+            :disabled="isDisabled"
             :cb-value="true"
           >
             {{ 'create-asset-form.deposit-lbl' | globalize }}
@@ -198,7 +198,7 @@
         <div class="app__form-field">
           <tick-field
             v-model="form.stellar.withdraw"
-            :disabled="formMixin.isDisabled"
+            :disabled="isDisabled"
             :cb-value="true"
           >
             {{ 'create-asset-form.withdraw-lbl' | globalize }}
@@ -273,7 +273,7 @@
         <div class="app__form-field">
           <tick-field
             v-model="form.erc20.deposit"
-            :disabled="formMixin.isDisabled"
+            :disabled="isDisabled"
             :cb-value="true"
           >
             {{ 'create-asset-form.deposit-lbl' | globalize }}
@@ -284,7 +284,7 @@
         <div class="app__form-field">
           <tick-field
             v-model="form.erc20.withdraw"
-            :disabled="formMixin.isDisabled"
+            :disabled="isDisabled"
             :cb-value="true"
           >
             {{ 'create-asset-form.withdraw-lbl' | globalize }}
@@ -300,7 +300,7 @@
             :label="'create-asset-form.address-lbl' | globalize"
             @blur="touchField('form.erc20.address')"
             :error-message="getFieldErrorMessage('form.erc20.address')"
-            :disabled="formMixin.isDisabled"
+            :disabled="isDisabled"
           />
         </div>
       </div>
@@ -358,7 +358,6 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import VueMarkdown from 'vue-markdown'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
-import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import config from '@/config'
 
@@ -395,24 +394,27 @@ export default {
     const attrs = this.collector.attrs
     const defaultAssetType = store.getters[vuexTypes.kvAssetTypeDefault]
 
-    const isMaxAmountRestricted = !!attrs.maxIssuanceAmount &&
+    const isMaxAmountRestricted = attrs.maxIssuanceAmount &&
       attrs.maxIssuanceAmount !== this.MAX_AMOUNT
 
-    const isPreIssuanceEnabled = !!attrs.preIssuanceAssetSigner &&
+    const isPreIssuanceEnabled = attrs.preIssuanceAssetSigner &&
       attrs.preIssuanceAssetSigner !== config.NULL_ASSET_SIGNER
 
-    const isUsageRestricted = !!attrs.assetType &&
+    const isUsageRestricted = attrs.assetType &&
       attrs.assetType !== defaultAssetType
 
-    const isStellarIntegration = !!attrs.stellarIntegration && (
+    const isStellarIntegration = Boolean(attrs.stellarIntegration && (
       attrs.stellarIntegration.isWithdrawable ||
-      attrs.stellarIntegration.isDepositable
-    )
+      attrs.stellarIntegration.isDepositable ||
+      attrs.stellarIntegration.assetType ||
+      attrs.stellarIntegration.assetCode
+    ))
 
-    const isErc20Integration = !!attrs.erc20Integration && (
+    const isErc20Integration = Boolean(attrs.erc20Integration && (
       attrs.erc20Integration.isWithdrawable ||
-      attrs.erc20Integration.isDepositable
-    )
+      attrs.erc20Integration.isDepositable ||
+      attrs.erc20Integration.address
+    ))
 
     return {
       form: {
@@ -458,9 +460,7 @@ export default {
             address: '',
           },
 
-        terms: attrs.terms && attrs.terms.key
-          ? new DocumentContainer(attrs.terms)
-          : null,
+        terms: attrs.terms,
       },
       MIN_AMOUNT: config.MIN_AMOUNT,
       MAX_AMOUNT: config.MAX_AMOUNT,
@@ -588,22 +588,23 @@ export default {
 
     submit () {
       if (!this.isFormValid()) return
+
       this.collector.add({
         maxIssuanceAmount: this.form.maxIssuanceAmount,
         preIssuanceAssetSigner: this.form.preIssuanceAssetSigner,
         initialPreissuedAmount: this.form.initialPreissuedAmount,
         assetType: this.form.assetType,
-        stellarIntegration: {
+        stellarIntegration: this.form.isStellarIntegration ? {
           isWithdrawable: this.form.stellar.withdraw,
           isDepositable: this.form.stellar.deposit,
           assetType: this.form.stellar.assetType,
           assetCode: this.form.stellar.assetCode,
-        },
-        erc20Integration: {
+        } : {},
+        erc20Integration: this.form.isErc20Integration ? {
           isWithdrawable: this.form.erc20.withdraw,
           isDepositable: this.form.erc20.deposit,
           address: this.form.erc20.address,
-        },
+        } : {},
         terms: this.form.terms,
       })
       this.$emit('next')

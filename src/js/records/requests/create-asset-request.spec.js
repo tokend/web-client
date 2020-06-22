@@ -1,4 +1,4 @@
-import { CreateAssetRequest } from './create-asset-request'
+import { CreateAssetRequest } from './create-asset-request.record'
 
 describe('Create asset request', () => {
   describe('constructor', () => {

@@ -42,13 +42,14 @@
 
 <script>
 import { Request } from '../wrappers/request'
+import { RequestRecord } from '@/js/records/request-record'
 
 export default {
   name: 'request-state-viewer',
 
   props: {
     request: {
-      type: Request,
+      type: [Request, RequestRecord],
       required: true,
     },
   },

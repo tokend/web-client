@@ -5,6 +5,10 @@ export function doc (doc) {
     return doc.getDetailsForSave()
   }
 
+  if (DocumentContainer.isDoc(doc)) {
+    return new DocumentContainer(doc).getDetailsForSave()
+  }
+
   return DocumentContainer.getEmptyDetailsForSave()
 }
 

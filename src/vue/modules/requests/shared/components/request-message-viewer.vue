@@ -57,11 +57,12 @@
 
 <script>
 import { Request } from '../wrappers/request'
+import { RequestRecord } from '@/js/records/request-record'
 
 export default {
   name: 'request-message-viewer',
   props: {
-    request: { type: Request, required: true },
+    request: { type: [Request, RequestRecord], required: true },
   },
 }
 </script>
