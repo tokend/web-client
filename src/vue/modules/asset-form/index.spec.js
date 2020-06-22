@@ -62,7 +62,7 @@ describe('Asset form module', () => {
 
         it('handles a thrown error properly and set isDisabled property to false',
           async () => {
-            sandbox.stub(wrapper.vm, 'submitCreateAssetRequest').rejects()
+            sandbox.stub(wrapper.vm.collector, 'buildOps').rejects()
             sandbox.stub(ErrorHandler, 'process')
             wrapper.setData({
               isDisabled: true,
