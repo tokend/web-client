@@ -134,7 +134,7 @@
 </template>
 
 <script>
-import { UpdateAssetRequest } from '../wrappers/update-asset-request'
+import { AssetRequest } from '@/js/records/requests/asset-request.record'
 
 import { documentsManager } from '@/api'
 
@@ -147,7 +147,7 @@ const STELLAR_TYPES = {
 export default {
   name: 'request-attributes-viewer',
   props: {
-    request: { type: UpdateAssetRequest, required: true },
+    request: { type: AssetRequest, required: true },
   },
 
   computed: {

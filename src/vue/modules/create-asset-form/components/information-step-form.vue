@@ -21,18 +21,20 @@
       </div>
     </div>
 
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <input-field
-          white-autofill
-          v-model="form.code"
-          @blur="touchField('form.code')"
-          name="create-asset-code"
-          :label="'create-asset-form.code-lbl' | globalize"
-          :error-message="getFieldErrorMessage('form.code')"
-        />
+    <template v-if="collector.isCreateMode">
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.code"
+            @blur="touchField('form.code')"
+            name="create-asset-code"
+            :label="'create-asset-form.code-lbl' | globalize"
+            :error-message="getFieldErrorMessage('form.code')"
+          />
+        </div>
       </div>
-    </div>
+    </template>
 
     <div class="app__form-row">
       <div class="app__form-field">

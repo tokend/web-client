@@ -2,14 +2,13 @@
   <div class="update-asset-requests">
     <template>
       <drawer :is-shown.sync="isDrawerShown">
-        <template v-if="isUpdateMode">
+        <template v-if="isAssetFormShown">
           <template slot="heading">
             {{ 'update-asset-requests.update-asset-title' | globalize }}
           </template>
-          <update-asset-form-module
-            :request-id="selectedRequest.id"
-            @close="isDrawerShown = false"
-            @request-updated="closeDrawerAndUpdateList()"
+          <create-asset-form-module
+            :collector="collector"
+            @submitted="onRequestUpdate()"
           />
         </template>
 
@@ -19,8 +18,8 @@
           </template>
           <request-viewer
             :request="selectedRequest"
-            @update-click="isUpdateMode = true"
-            @cancel="closeDrawerAndUpdateList()"
+            @update-click="showUpdateForm()"
+            @cancel="onRequestUpdate()"
           />
         </template>
       </drawer>
@@ -53,13 +52,14 @@ import CollectionLoader from '@/vue/common/CollectionLoader'
 import RequestViewer from './components/request-viewer'
 import RequestsTable from './components/requests-table'
 
-import UpdateAssetFormModule from '@modules/update-asset-form'
+import CreateAssetFormModule from '@modules/create-asset-form'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import UpdateList from '@/vue/mixins/update-list.mixin'
+import { AssetCollector } from '@/js/collectors/AssetCollector'
 
 export default {
   name: 'update-asset-requests-module',
@@ -68,7 +68,7 @@ export default {
     CollectionLoader,
     RequestsTable,
     RequestViewer,
-    UpdateAssetFormModule,
+    CreateAssetFormModule,
   },
 
   mixins: [UpdateList],
@@ -77,8 +77,9 @@ export default {
     isLoaded: false,
     isLoadingFailed: false,
     isDrawerShown: false,
-    isUpdateMode: false,
+    isAssetFormShown: false,
     selectedRequest: {},
+    collector: new AssetCollector('update'),
     firstPageLoader: () => {},
   }),
 
@@ -124,12 +125,17 @@ export default {
     },
 
     showRequestDetails (request) {
-      this.isUpdateMode = false
+      this.isAssetFormShown = false
       this.selectedRequest = request
       this.isDrawerShown = true
     },
 
-    closeDrawerAndUpdateList () {
+    showUpdateForm () {
+      this.collector.from(this.selectedRequest)
+      this.isAssetFormShown = true
+    },
+
+    onRequestUpdate () {
       this.isDrawerShown = false
       this.emitUpdateList('updateAssetRequests:updateList')
     },

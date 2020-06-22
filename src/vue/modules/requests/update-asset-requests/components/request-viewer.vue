@@ -31,7 +31,7 @@ import RequestMessageViewer from '../../shared/components/request-message-viewer
 import RequestAttributesViewer from './request-attributes-viewer'
 import RequestActions from './request-actions'
 
-import { UpdateAssetRequest } from '../wrappers/update-asset-request'
+import { AssetRequest } from '@/js/records/requests/asset-request.record'
 
 import { documentsManager } from '@/api'
 
@@ -50,7 +50,7 @@ export default {
   },
 
   props: {
-    request: { type: UpdateAssetRequest, required: true },
+    request: { type: AssetRequest, required: true },
   },
 
   data: _ => ({

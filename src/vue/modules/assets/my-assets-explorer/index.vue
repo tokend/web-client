@@ -2,14 +2,14 @@
   <div class="my-assets-explorer">
     <template v-if="isLoaded">
       <drawer :is-shown.sync="isDrawerShown">
-        <template v-if="isUpdateMode">
+        <template v-if="isAssetFormShown">
           <template slot="heading">
             {{ 'assets.update-drawer-title' | globalize }}
           </template>
 
-          <update-asset-form-module
-            :asset-code="selectedBalance.asset.code"
-            @submitted="closeDrawerAndUpdateList()"
+          <create-asset-form-module
+            :collector="collector"
+            @submitted="onAssetUpdate()"
           />
         </template>
 
@@ -28,7 +28,7 @@
             <button
               v-ripple
               class="app__button-raised my-assets-explorer__update-btn"
-              @click="isUpdateMode = true"
+              @click="showUpdateForm()"
             >
               {{ 'assets.update-btn' | globalize }}
             </button>
@@ -95,13 +95,14 @@ import CardViewer from '../shared/components/card-viewer'
 import AssetAttributesViewer from '../shared/components/asset-attributes-viewer'
 import AssetSkeletonLoader from './components/asset-skeleton-loader'
 
-import UpdateAssetFormModule from '@modules/update-asset-form'
+import CreateAssetFormModule from '@modules/create-asset-form'
 
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import UpdateList from '@/vue/mixins/update-list.mixin'
+import { AssetCollector } from '@/js/collectors/AssetCollector'
 
 export default {
   name: 'my-assets-explorer',
@@ -111,7 +112,7 @@ export default {
     NoDataMessage,
     CardViewer,
     AssetAttributesViewer,
-    UpdateAssetFormModule,
+    CreateAssetFormModule,
     AssetSkeletonLoader,
   },
   mixins: [UpdateList],
@@ -120,10 +121,11 @@ export default {
     isLoaded: false,
     isLoadFailed: false,
     isDrawerShown: false,
-    isUpdateMode: false,
+    isAssetFormShown: false,
     selectedBalance: {
       asset: {},
     },
+    collector: new AssetCollector('update'),
     itemsPerSkeletonLoader: 3,
     vueRoutes,
   }),
@@ -165,11 +167,16 @@ export default {
 
     selectBalance (balance) {
       this.selectedBalance = balance
-      this.isUpdateMode = false
+      this.isAssetFormShown = false
       this.isDrawerShown = true
     },
 
-    closeDrawerAndUpdateList () {
+    showUpdateForm () {
+      this.collector.from(this.selectedBalance.asset)
+      this.isAssetFormShown = true
+    },
+
+    onAssetUpdate () {
       this.isDrawerShown = false
       this.emitUpdateList('assets:updateList')
     },

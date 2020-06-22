@@ -4,6 +4,7 @@ import { store, vuexTypes } from '@/vuex/index'
 import { base } from '@tokend/js-sdk'
 import { reqId, doc, str, num } from './op-build-helpers'
 import { AssetRequest } from '@/js/records/requests/asset-request.record'
+import { AssetRecord } from '@/js/records/entities/asset.record'
 
 /**
  * Collects the attributes for asset-related operations
@@ -43,11 +44,29 @@ export class AssetCollector extends Collector {
   }
 
   /**
+   * Is the mode set to 'create'
+   * @returns {boolean}
+   */
+  get isCreateMode () {
+    return this._mode === 'create'
+  }
+
+  /**
+   * Is the collected info is to update a request
+   * @returns {boolean}
+   */
+  get isUpdateRequest () {
+    const id = this.attrs.requestId
+    return id && typeof id === 'string' && id !== '0'
+  }
+
+  /**
    * @param {AssetRequest} source
    */
   from (source) {
     switch (source.constructor) {
       case AssetRequest: this._fromRequest(source); break
+      case AssetRecord: this._fromRecord(source); break
       default: throw ReferenceError('Unknown source type')
     }
   }
@@ -100,7 +119,9 @@ export class AssetCollector extends Collector {
   // } TODO: to account creation
 
   _fromRequest (source) {
-    if (!(source instanceof AssetRequest)) return
+    if (!(source instanceof AssetRequest)) {
+      throw new ReferenceError('Invalid source type')
+    }
     this._mode = this._mode || 'create'
     this.attrs.requestId = source.id
     this.attrs.code = source.assetCode
@@ -121,27 +142,42 @@ export class AssetCollector extends Collector {
     this.attrs.erc20Integration.address = source.erc20Address
   }
 
+  _fromRecord (source) {
+    if (!(source instanceof AssetRecord)) {
+      throw new ReferenceError('Invalid source type')
+    }
+    this._mode = this._mode || 'update'
+    this.attrs.requestId = '0'
+    this.attrs.code = source.code
+    this.attrs.name = source.name
+    this.attrs.logo = source.logo
+    this.attrs.terms = source.terms
+    this.attrs.policies = source.policy
+    this.attrs.assetType = source.assetType
+    this.attrs.maxIssuanceAmount = source.maxIssuanceAmount
+    this.attrs.preIssuanceAssetSigner = source.preissuedAssetSigner
+    this.attrs.initialPreissuedAmount = source.initialPreissuedAmount
+    this.attrs.stellarIntegration.isWithdrawable = source.stellarWithdraw
+    this.attrs.stellarIntegration.isDepositable = source.stellarDeposit
+    this.attrs.stellarIntegration.assetCode = source.stellarAssetCode
+    this.attrs.stellarIntegration.assetType = source.stellarAssetType
+    this.attrs.erc20Integration.isWithdrawable = source.erc20Withdraw
+    this.attrs.erc20Integration.isDepositable = source.erc20Deposit
+    this.attrs.erc20Integration.address = source.erc20Address
+  }
+
   _buildOpCreate () {
     const attrs = this.attrs
 
     const defaultAssetType = store.getters[vuexTypes.kvAssetTypeDefault]
     const nullSigner = config.NULL_ASSET_SIGNER
     const maxIssuance = attrs.maxIssuanceAmount || config.MAX_AMOUNT
-    const isStellarIntegrationEnabled =
-      attrs.stellarIntegration.isWithdrawable ||
-      attrs.stellarIntegration.isDepositable ||
-      attrs.stellarIntegration.assetType ||
-      attrs.stellarIntegration.assetCode
-    const isErc20IntegrationEnabled =
-      attrs.erc20Integration.isWithdrawable ||
-      attrs.erc20Integration.isDepositable ||
-      attrs.erc20Integration.address
 
     const opts = {
       requestID: reqId(attrs.requestId),
-      trailingDigitsCount: num(config.DECIMAL_POINTS),
       code: str(attrs.code),
       policies: num(attrs.policies),
+      trailingDigitsCount: num(config.DECIMAL_POINTS),
       assetType: str(attrs.assetType || defaultAssetType),
       maxIssuanceAmount: str(maxIssuance),
       preissuedAssetSigner: str(attrs.preIssuanceAssetSigner || nullSigner),
@@ -150,17 +186,8 @@ export class AssetCollector extends Collector {
         name: str(attrs.name),
         logo: doc(attrs.logo),
         terms: doc(attrs.terms),
-        stellar: isStellarIntegrationEnabled ? {
-          withdraw: Boolean(attrs.stellarIntegration.isWithdrawable),
-          deposit: Boolean(attrs.stellarIntegration.isDepositable),
-          asset_type: str(attrs.stellarIntegration.assetType),
-          asset_code: str(attrs.stellarIntegration.assetCode),
-        } : {},
-        erc20: isErc20IntegrationEnabled ? {
-          withdraw: Boolean(attrs.erc20Integration.isWithdrawable),
-          deposit: Boolean(attrs.erc20Integration.isDepositable),
-          address: str(attrs.erc20Integration.address),
-        } : {},
+        stellar: this._getStellarOpts(),
+        erc20: this._getErc20Opts(),
       },
     }
 
@@ -168,6 +195,51 @@ export class AssetCollector extends Collector {
   }
 
   _buildOpUpdate () {
-    // TODO
+    const attrs = this.attrs
+
+    const opts = {
+      requestID: reqId(attrs.requestId),
+      code: str(attrs.code),
+      policies: num(attrs.policies),
+      creatorDetails: {
+        name: str(attrs.name),
+        logo: doc(attrs.logo),
+        terms: doc(attrs.terms),
+        stellar: this._getStellarOpts(),
+        erc20: this._getErc20Opts(),
+      },
+    }
+
+    return base.ManageAssetBuilder.assetUpdateRequest(opts)
+  }
+
+  _getStellarOpts (attrs) {
+    const stellarIntegration = this.attrs.stellarIntegration
+    const isIntegrationEnabled =
+      stellarIntegration.isWithdrawable ||
+      stellarIntegration.isDepositable ||
+      stellarIntegration.assetType ||
+      stellarIntegration.assetCode
+
+    return isIntegrationEnabled ? {
+      withdraw: Boolean(stellarIntegration.isWithdrawable),
+      deposit: Boolean(stellarIntegration.isDepositable),
+      asset_type: str(stellarIntegration.assetType),
+      asset_code: str(stellarIntegration.assetCode),
+    } : {}
+  }
+
+  _getErc20Opts () {
+    const erc20Integration = this.attrs.erc20Integration
+    const isIntegrationEnabled =
+      erc20Integration.isWithdrawable ||
+      erc20Integration.isDepositable ||
+      erc20Integration.address
+
+    return isIntegrationEnabled ? {
+      withdraw: Boolean(erc20Integration.isWithdrawable),
+      deposit: Boolean(erc20Integration.isDepositable),
+      address: str(erc20Integration.address),
+    } : {}
   }
 }

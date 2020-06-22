@@ -1,12 +1,15 @@
 import { ASSET_POLICIES } from '@tokend/js-sdk'
-import safeGet from 'lodash/get'
+import get from 'lodash/get'
+import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+
+// TODO: cleanup from unused keys
 
 export class AssetRecord {
   constructor (record = {}, balances = []) {
     this._record = record
 
     this.code = record.id
-    this.owner = safeGet(record, 'owner.id')
+    this.owner = get(record, 'owner.id')
     this.assetType = record.assetType || record.type
     this.preissuedAssetSigner = record.preIssuanceAssetSigner
 
@@ -18,21 +21,21 @@ export class AssetRecord {
     this.trailingDigitsCount = record.trailingDigits
 
     this.details = record.details
-    this.name = safeGet(record, 'details.name')
-    this.externalSystemType = safeGet(record, 'details.externalSystemType')
-    this.isCoinpayments = safeGet(record, 'details.isCoinpayments')
+    this.name = get(record, 'details.name')
+    this.externalSystemType = get(record, 'details.externalSystemType')
+    this.isCoinpayments = get(record, 'details.isCoinpayments')
 
-    this.logo = safeGet(record, 'details.logo')
-    this.logoKey = safeGet(record, 'details.logo.key')
+    const logo = get(record, 'details.logo') || {}
+    this.logo = DocumentContainer.fromObj(logo)
+    this.logoKey = logo.key
 
-    this.maturityDate = safeGet(record, 'details.maturityDate')
-    this.annualReturn = safeGet(record, 'details.annualReturn')
-    this.subtype = safeGet(record, 'details.subtype')
+    const terms = get(record, 'details.terms') || {}
+    this.terms = DocumentContainer.fromObj(terms)
+    this.termsKey = terms.key
 
-    this.terms = safeGet(record, 'details.terms')
-    this.termsKey = safeGet(record, 'details.terms.key')
-    this.termsName = safeGet(record, 'details.terms.name')
-    this.termsType = safeGet(record, 'details.terms.type')
+    this.maturityDate = get(record, 'details.maturityDate')
+    this.annualReturn = get(record, 'details.annualReturn')
+    this.subtype = get(record, 'details.subtype')
 
     this.policies = this._policies()
     this.policy = this._policy()
@@ -40,16 +43,16 @@ export class AssetRecord {
     this.balance = this._getBalance(balances)
     this.convertedBalance = this._getConvertedBalance(balances)
 
-    this.stellarAssetCode = safeGet(record, 'details.stellar.assetCode') || ''
-    this.stellarAssetType = safeGet(record, 'details.stellar.assetType') || ''
-    this.stellarWithdraw = safeGet(record, 'details.stellar.withdraw') || false
-    this.stellarDeposit = safeGet(record, 'details.stellar.deposit') || false
+    this.stellarAssetCode = get(record, 'details.stellar.assetCode') || ''
+    this.stellarAssetType = get(record, 'details.stellar.assetType') || ''
+    this.stellarWithdraw = get(record, 'details.stellar.withdraw') || false
+    this.stellarDeposit = get(record, 'details.stellar.deposit') || false
 
-    this.erc20Address = safeGet(record, 'details.erc20.address') || ''
-    this.erc20Withdraw = safeGet(record, 'details.erc20.withdraw') || false
-    this.erc20Deposit = safeGet(record, 'details.erc20.deposit') || false
+    this.erc20Address = get(record, 'details.erc20.address') || ''
+    this.erc20Withdraw = get(record, 'details.erc20.withdraw') || false
+    this.erc20Deposit = get(record, 'details.erc20.deposit') || false
 
-    this.description = safeGet(record, 'details.description') || ''
+    this.description = get(record, 'details.description') || ''
   }
 
   _getBalance (balances) {
@@ -78,7 +81,7 @@ export class AssetRecord {
   }
 
   _policies () {
-    const policies = safeGet(this._record, 'policies.flags') || []
+    const policies = get(this._record, 'policies.flags') || []
     return policies.map(policy => policy.value)
   }
 

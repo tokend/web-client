@@ -2,13 +2,13 @@
   <div class="create-asset-requests">
     <template>
       <drawer :is-shown.sync="isDrawerShown">
-        <template v-if="isUpdateFormShown">
+        <template v-if="isAssetFormShown">
           <template slot="heading">
             {{ 'create-asset-requests.update-asset-title' | globalize }}
           </template>
           <create-asset-form-module
             :collector="collector"
-            @submitted="closeDrawerAndUpdateList()"
+            @submitted="onRequestUpdate()"
           />
         </template>
 
@@ -19,7 +19,7 @@
           <request-viewer
             :request="selectedRequest"
             @update-click="showUpdateForm()"
-            @cancel="closeDrawerAndUpdateList()"
+            @cancel="onRequestUpdate()"
           />
         </template>
       </drawer>
@@ -78,8 +78,8 @@ export default {
     isLoaded: false,
     isLoadingFailed: false,
     isDrawerShown: false,
-    isUpdateFormShown: false,
-    selectedRequest: new AssetRequest({}),
+    isAssetFormShown: false,
+    selectedRequest: new AssetRequest(),
     collector: new AssetCollector('create'),
     firstPageLoader: () => { },
   }),
@@ -138,17 +138,17 @@ export default {
     },
 
     showRequestDetails (request) {
-      this.isUpdateFormShown = false
+      this.isAssetFormShown = false
       this.selectedRequest = request
       this.isDrawerShown = true
     },
 
     showUpdateForm () {
       this.collector.from(this.selectedRequest)
-      this.isUpdateFormShown = true
+      this.isAssetFormShown = true
     },
 
-    closeDrawerAndUpdateList () {
+    onRequestUpdate () {
       this.isDrawerShown = false
       this.emitUpdateList('createAssetRequests:updateList')
     },

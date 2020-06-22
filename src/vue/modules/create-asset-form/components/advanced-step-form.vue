@@ -3,166 +3,164 @@
     class="app__form advanced-step-form"
     @submit.prevent="confirm()"
   >
-    <!-- eslint-disable-next-line max-len -->
-
-    <h3 class="advanced-step-form__subheading app__form-subheading">
-      {{ 'create-asset-form.issuance-subheading' | globalize }}
-    </h3>
-
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <tick-field
-          class="advanced-step-form__pre-issuance-tick-field"
-          v-model="form.isMaxAmountRestricted"
-          :disabled="isDisabled"
-        >
-          {{ 'create-asset-form.restrict-max-amount-check' | globalize }}
-        </tick-field>
-      </div>
-    </div>
-
-    <template v-if="form.isMaxAmountRestricted">
-      <div class="app__form-row">
-        <div class="app__form-field">
-          <input-field
-            white-autofill
-            type="number"
-            :min="0"
-            :max="MAX_AMOUNT"
-            :step="MIN_AMOUNT"
-            v-model="form.maxIssuanceAmount"
-            @blur="touchField('form.maxIssuanceAmount')"
-            name="create-asset-max-issuance-amount"
-            :label="'create-asset-form.max-issuance-amount-lbl' | globalize"
-            :error-message="getFieldErrorMessage(
-              'form.maxIssuanceAmount', { from: MIN_AMOUNT, to: MAX_AMOUNT }
-            )"
-            :disabled="isDisabled"
-          />
-        </div>
-      </div>
+    <template v-if="collector.isCreateMode">
+      <h3 class="advanced-step-form__subheading app__form-subheading">
+        {{ 'create-asset-form.issuance-subheading' | globalize }}
+      </h3>
 
       <div class="app__form-row">
         <div class="app__form-field">
           <tick-field
             class="advanced-step-form__pre-issuance-tick-field"
-            v-model="form.isPreIssuanceEnabled"
+            v-model="form.isMaxAmountRestricted"
             :disabled="isDisabled"
           >
-            {{ 'create-asset-form.additional-issuance-check' | globalize }}
+            {{ 'create-asset-form.restrict-max-amount-check' | globalize }}
           </tick-field>
         </div>
       </div>
-    </template>
 
-    <template v-if="form.isPreIssuanceEnabled">
-      <div class="app__form-row">
-        <div class="app__form-field">
-          <div class="advanced-step-form__pre-issued-asset-signer-wrp">
+      <template v-if="form.isMaxAmountRestricted">
+        <div class="app__form-row">
+          <div class="app__form-field">
             <input-field
               white-autofill
-              v-model="form.preIssuanceAssetSigner"
-              @blur="touchField('form.preIssuanceAssetSigner')"
-              name="create-asset-pre-issuance-asset-signer"
-              :label="'create-asset-form.pre-issuance-signer-lbl' | globalize"
+              type="number"
+              :min="0"
+              :max="MAX_AMOUNT"
+              :step="MIN_AMOUNT"
+              v-model="form.maxIssuanceAmount"
+              @blur="touchField('form.maxIssuanceAmount')"
+              name="create-asset-max-issuance-amount"
+              :label="'create-asset-form.max-issuance-amount-lbl' | globalize"
               :error-message="getFieldErrorMessage(
-                'form.preIssuanceAssetSigner',
+                'form.maxIssuanceAmount', { from: MIN_AMOUNT, to: MAX_AMOUNT }
               )"
               :disabled="isDisabled"
             />
-            <button
-              v-ripple
-              type="button"
-              class="app__button-flat advanced-step-form__insert-account-id-btn"
-              :disabled="isDisabled"
-              @click="form.preIssuanceAssetSigner = accountId"
-            >
-              {{ 'create-asset-form.use-my-account-id-btn' | globalize }}
-            </button>
           </div>
-
-          <vue-markdown
-            v-if="form.preIssuanceAssetSigner === accountId"
-            class="advanced-step-form__pre-issuance-disclaimer"
-            :source="'create-asset-form.pre-issuance-disclaimer' | globalize"
-          />
         </div>
-      </div>
+
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <tick-field
+              class="advanced-step-form__pre-issuance-tick-field"
+              v-model="form.isPreIssuanceEnabled"
+              :disabled="isDisabled"
+            >
+              {{ 'create-asset-form.additional-issuance-check' | globalize }}
+            </tick-field>
+          </div>
+        </div>
+      </template>
+
+      <template v-if="form.isPreIssuanceEnabled">
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <div class="advanced-step-form__pre-issued-asset-signer-wrp">
+              <input-field
+                white-autofill
+                v-model="form.preIssuanceAssetSigner"
+                @blur="touchField('form.preIssuanceAssetSigner')"
+                name="create-asset-pre-issuance-asset-signer"
+                :label="'create-asset-form.pre-issuance-signer-lbl' | globalize"
+                :error-message="getFieldErrorMessage(
+                  'form.preIssuanceAssetSigner',
+                )"
+                :disabled="isDisabled"
+              />
+              <button
+                v-ripple
+                type="button"
+                class="app__button-flat advanced-step-form__insert-account-id-btn"
+                :disabled="isDisabled"
+                @click="form.preIssuanceAssetSigner = accountId"
+              >
+                {{ 'create-asset-form.use-my-account-id-btn' | globalize }}
+              </button>
+            </div>
+
+            <vue-markdown
+              v-if="form.preIssuanceAssetSigner === accountId"
+              class="advanced-step-form__pre-issuance-disclaimer"
+              :source="'create-asset-form.pre-issuance-disclaimer' | globalize"
+            />
+          </div>
+        </div>
+
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <input-field
+              white-autofill
+              type="number"
+              :min="0"
+              :max="form.maxIssuanceAmount"
+              :step="MIN_AMOUNT"
+              v-model="form.initialPreissuedAmount"
+              @blur="touchField('form.initialPreissuedAmount')"
+              name="create-asset-initial-preissued-amount"
+              :label="'create-asset-form.preissued-amount-lbl' | globalize"
+              :error-message="getFieldErrorMessage(
+                'form.initialPreissuedAmount',
+                { from: 0, to: form.maxIssuanceAmount }
+              )"
+              :disabled="isDisabled"
+            />
+            <router-link
+              class="advanced-step-form__pre-issuance-guide-link"
+              :to="vueRoutes.preIssuanceGuide"
+              target="_blank"
+              rel="noopener"
+            >
+              {{ 'create-asset-form.pre-issuance-guide-link' | globalize }}
+              <!-- eslint-disable-next-line max-len -->
+              <i class="mdi mdi-launch advanced-step-form__pre-issuance-guide-link-launch-icon" />
+            </router-link>
+          </div>
+        </div>
+      </template>
+
+      <h3 class="advanced-step-form__subheading app__form-subheading">
+        {{ 'create-asset-form.permissions-subheading' | globalize }}
+      </h3>
 
       <div class="app__form-row">
         <div class="app__form-field">
-          <input-field
-            white-autofill
-            type="number"
-            :min="0"
-            :max="form.maxIssuanceAmount"
-            :step="MIN_AMOUNT"
-            v-model="form.initialPreissuedAmount"
-            @blur="touchField('form.initialPreissuedAmount')"
-            name="create-asset-initial-preissued-amount"
-            :label="'create-asset-form.preissued-amount-lbl' | globalize"
-            :error-message="getFieldErrorMessage(
-              'form.initialPreissuedAmount',
-              { from: 0, to: form.maxIssuanceAmount }
-            )"
+          <tick-field
+            class="advanced-step-form__stellar-integration-tick-field"
+            v-model="form.isUsageRestricted"
             :disabled="isDisabled"
-          />
-          <router-link
-            class="advanced-step-form__pre-issuance-guide-link"
-            :to="vueRoutes.preIssuanceGuide"
-            target="_blank"
-            rel="noopener"
+            :cb-value="true"
           >
-            {{ 'create-asset-form.pre-issuance-guide-link' | globalize }}
-            <!-- eslint-disable-next-line max-len -->
-            <i class="mdi mdi-launch advanced-step-form__pre-issuance-guide-link-launch-icon" />
-          </router-link>
+            {{ 'create-asset-form.restrict-who-can-use' | globalize }}
+          </tick-field>
         </div>
       </div>
-    </template>
 
-    <h3 class="advanced-step-form__subheading app__form-subheading">
-      {{ 'create-asset-form.permissions-subheading' | globalize }}
-    </h3>
-
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <tick-field
-          class="advanced-step-form__stellar-integration-tick-field"
-          v-model="form.isUsageRestricted"
-          :disabled="isDisabled"
-          :cb-value="true"
-        >
-          {{ 'create-asset-form.restrict-who-can-use' | globalize }}
-        </tick-field>
-      </div>
-    </div>
-
-    <template v-if="form.isUsageRestricted">
-      <div class="app__form-row">
-        <div class="app__form-field">
-          <select-field
-            v-model="form.assetType"
-            name="create-asset-type"
-            :label="'create-asset-form.asset-type-lbl' | globalize"
-            @blur="touchField('form.assetType')"
-            :error-message="getFieldErrorMessage(
-              'form.assetType',
-            )"
-            :disabled="isDisabled"
-          >
-            <option :value="kvAssetTypeDefault">
-              {{ translateAssetType(kvAssetTypeDefault) }}
-            </option>
-            <option :value="kvAssetTypeKycRequired">
-              {{ translateAssetType(kvAssetTypeKycRequired) }}
-            </option>
-            <option :value="kvAssetTypeSecurity">
-              {{ translateAssetType(kvAssetTypeSecurity) }}
-            </option>
-          </select-field>
+      <template v-if="form.isUsageRestricted">
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <select-field
+              v-model="form.assetType"
+              name="create-asset-type"
+              :label="'create-asset-form.asset-type-lbl' | globalize"
+              @blur="touchField('form.assetType')"
+              :error-message="getFieldErrorMessage('form.assetType')"
+              :disabled="isDisabled"
+            >
+              <option :value="kvAssetTypeDefault">
+                {{ translateAssetType(kvAssetTypeDefault) }}
+              </option>
+              <option :value="kvAssetTypeKycRequired">
+                {{ translateAssetType(kvAssetTypeKycRequired) }}
+              </option>
+              <option :value="kvAssetTypeSecurity">
+                {{ translateAssetType(kvAssetTypeSecurity) }}
+              </option>
+            </select-field>
+          </div>
         </div>
-      </div>
+      </template>
     </template>
 
     <h3 class="advanced-step-form__subheading app__form-subheading">
@@ -338,7 +336,7 @@
         class="app__button-raised advanced-step-form__btn"
         :disabled="isDisabled"
       >
-        <template v-if="Number(collector.attrs.requestId)">
+        <template v-if="collector.isUpdateRequest">
           {{ 'create-asset-form.update-request-btn' | globalize }}
         </template>
 
