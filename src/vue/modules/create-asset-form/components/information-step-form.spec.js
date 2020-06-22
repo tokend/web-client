@@ -3,9 +3,12 @@ import InformationStepForm from './information-step-form'
 import Vuelidate from 'vuelidate'
 
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
+import { AssetCollector } from '@/js/collectors/AssetCollector'
 
 const localVue = createLocalVue()
 localVue.use(Vuelidate)
+localVue.filter('globalize', sinon.stub())
+localVue.directive('ripple', sinon.stub())
 
 describe('Information step form', () => {
   let sandbox
@@ -22,7 +25,10 @@ describe('Information step form', () => {
     let wrapper
 
     beforeEach(() => {
-      wrapper = mount(InformationStepForm, { localVue })
+      wrapper = mount(InformationStepForm, {
+        localVue,
+        propsData: { collector: new AssetCollector() },
+      })
     })
 
     const expectedResults = {
@@ -31,7 +37,7 @@ describe('Information step form', () => {
     }
 
     for (const [model, rules] of Object.entries(expectedResults)) {
-      it(`${model} model is validating by proper set of rules`, () => {
+      it(`${model} is validating by proper set of rules`, () => {
         expect(Object.keys(wrapper.vm.$v.form[model].$params))
           .to.deep.equal(rules)
       })
@@ -53,62 +59,26 @@ describe('Information step form', () => {
     }
   })
 
-  describe('created hook', () => {
-    it('calls populateForm only if request was passed as a prop', () => {
-      sandbox.stub(InformationStepForm.methods, 'populateForm')
-
-      shallowMount(InformationStepForm, { localVue })
-      expect(InformationStepForm.methods.populateForm)
-        .to.have.not.been.called
-
-      shallowMount(InformationStepForm, {
-        localVue,
-        propsData: {
-          request: { id: '1' },
-        },
-      })
-      expect(InformationStepForm.methods.populateForm)
-        .to.have.been.calledOnce
-    })
-  })
-
   describe('component', () => {
     let wrapper
 
     beforeEach(() => {
-      wrapper = shallowMount(InformationStepForm, { localVue })
-    })
-
-    describe('populateForm', () => {
-      it('properly sets request prop fields to form property', () => {
-        wrapper.setProps({
-          request: {
-            assetName: 'American dollar',
-            assetCode: 'USD',
-            policy: 16,
-          },
-        })
-
-        wrapper.vm.populateForm()
-
-        expect(wrapper.vm.form.name).to.equal('American dollar')
-        expect(wrapper.vm.form.code).to.equal('USD')
-        expect(wrapper.vm.form.policies).to.equal(16)
+      wrapper = shallowMount(InformationStepForm, {
+        localVue,
+        propsData: { collector: new AssetCollector() },
       })
     })
 
-    describe('submit', () => {
-      it('emits submit event with correct payload', () => {
+    describe('next', () => {
+      it('emits next event with correct payload', () => {
         sandbox.stub(wrapper.vm, 'isFormValid').returns(true)
-        wrapper.setData({
-          form: { code: 'USD' },
-        })
+        sandbox.stub(wrapper.vm.collector, 'add')
+        wrapper.setData({ form: { code: 'USD' } })
 
-        wrapper.vm.submit()
+        wrapper.vm.next()
 
-        expect(wrapper.emitted('submit')).to.exist
-        expect(wrapper.emitted('submit')[0])
-          .to.deep.equal([wrapper.vm.form])
+        expect(wrapper.vm.collector.add).to.have.been.calledWithMatch({ code: 'USD' })
+        expect(wrapper.emitted('next')).to.exist
       })
     })
   })

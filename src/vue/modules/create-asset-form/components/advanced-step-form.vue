@@ -327,7 +327,7 @@
     <div class="app__form-actions">
       <form-confirmation
         v-if="formMixin.isConfirmationShown"
-        @ok="hideConfirmation() || submit()"
+        @ok="hideConfirmation() || next()"
         @cancel="hideConfirmation() || $emit('update:isDisabled', false)"
       />
 
@@ -586,7 +586,7 @@ export default {
       this.$emit('update:isDisabled', true)
     },
 
-    submit () {
+    next () {
       if (!this.isFormValid()) return
 
       this.collector.add({

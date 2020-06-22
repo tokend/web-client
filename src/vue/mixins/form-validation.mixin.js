@@ -65,7 +65,7 @@ export default {
         ErrorHandler.processWithoutFeedback('getFieldErrorMessage: "fieldPath" is required')
       }
 
-      if (!this.$v.$invalid) {
+      if (!this.$v || this.$v.$invalid) {
         return ''
       }
 

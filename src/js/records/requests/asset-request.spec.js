@@ -1,4 +1,5 @@
 import { AssetRequest } from './asset-request.record'
+import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 describe('Asset request', () => {
   describe('constructor', () => {
@@ -31,10 +32,12 @@ describe('Asset request', () => {
 
       expect(result.policy).to.equal(16)
 
-      expect(result.logo).to.deep.equal({ key: 'logo-key' })
+      expect(result.logo).to.be.an.instanceof(DocumentContainer)
+      expect(result.logo).to.have.property('key', 'logo-key')
       expect(result.logoKey).to.equal('logo-key')
 
-      expect(result.terms).to.deep.equal({ key: 'terms-key' })
+      expect(result.terms).to.be.an.instanceof(DocumentContainer)
+      expect(result.terms).to.have.property('key', 'terms-key')
       expect(result.termsKey).to.equal('terms-key')
     })
   })
