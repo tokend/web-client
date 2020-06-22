@@ -6,9 +6,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
-## [Unreleased]
+## [Unreleased]e
 #### Added
 - Smart App Banner
+- Collectors - guys that collect attributes:
+  - Migrate the asset creation/update and asset request creation/update to
+    the collectors
+  - Merge asset create and asset update requests into a single record -
+    `AssetRequest`
+  - Merge asset create and asset update form into a single form - `asset-form`
+  -
+- Add `jsconfig.json`
+
+#### Change
+- `DocumentContainer`:
+  - Add `isDoc()` method that checks whether the provided value looks like a doc
+  - Add `fromObj()` method that creates a new `DocumentContainer` from an
+    object. Or returns `null` if the creation is impossible.
+- Enabled vue-devtools for 'development' env
 
 #### Fixed
 - Stretching mobile sidebar
