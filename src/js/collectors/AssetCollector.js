@@ -3,7 +3,7 @@ import config from '@/config'
 import { store, vuexTypes } from '@/vuex/index'
 import { base } from '@tokend/js-sdk'
 import { reqId, doc, str, num } from './op-build-helpers'
-import { CreateAssetRequest } from '@/js/records/requests/create-asset-request.record'
+import { AssetRequest } from '@/js/records/requests/asset-request.record'
 
 /**
  * Collects the attributes for asset-related operations
@@ -43,11 +43,11 @@ export class AssetCollector extends Collector {
   }
 
   /**
-   * @param {CreateAssetRequest} source
+   * @param {AssetRequest} source
    */
   from (source) {
     switch (source.constructor) {
-      case CreateAssetRequest: this._fromCreationRequest(source); break
+      case AssetRequest: this._fromRequest(source); break
       default: throw ReferenceError('Unknown source type')
     }
   }
@@ -99,8 +99,8 @@ export class AssetCollector extends Collector {
   //   const needRemoveIssuanceSigner = !hasIntegratedAssets && !willIntegrate
   // } TODO: to account creation
 
-  _fromCreationRequest (source) {
-    if (!(source instanceof CreateAssetRequest)) return
+  _fromRequest (source) {
+    if (!(source instanceof AssetRequest)) return
     this._mode = this._mode || 'create'
     this.attrs.requestId = source.id
     this.attrs.code = source.assetCode

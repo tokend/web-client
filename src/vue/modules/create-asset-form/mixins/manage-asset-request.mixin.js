@@ -6,7 +6,7 @@ import { base } from '@tokend/js-sdk'
 import { api } from '@/api'
 import config from '@/config'
 
-// import { CreateAssetRequest } from '../wrappers/create-asset-request'
+// import { AssetRequest } from '../wrappers/asset-request'
 import { store, vuexTypes } from '@/vuex/index'
 import { mapGetters } from 'vuex'
 
@@ -60,7 +60,7 @@ export default {
     //     include: ['request_details'],
     //   })
 
-    //   return new CreateAssetRequest(record)
+    //   return new AssetRequest(record)
     // },
 
     // collectAssetAttributes (newAttributes) {

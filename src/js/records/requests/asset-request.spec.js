@@ -1,6 +1,6 @@
-import { CreateAssetRequest } from './create-asset-request.record'
+import { AssetRequest } from './asset-request.record'
 
-describe('Create asset request', () => {
+describe('Asset request', () => {
   describe('constructor', () => {
     it('should properly parse record', () => {
       const record = {
@@ -19,7 +19,7 @@ describe('Create asset request', () => {
         },
       }
 
-      const result = new CreateAssetRequest(record)
+      const result = new AssetRequest(record)
 
       expect(result.assetCode).to.equal('USD')
       expect(result.assetType).to.equal(1)

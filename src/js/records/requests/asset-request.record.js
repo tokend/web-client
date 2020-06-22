@@ -3,10 +3,9 @@ import { ASSET_POLICIES } from '@tokend/js-sdk'
 import { RequestRecord } from '@/js/records/request-record'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
-export class CreateAssetRequest extends RequestRecord {
+export class AssetRequest extends RequestRecord {
   constructor (record = {}) {
     super(record)
-
     const dts = record.requestDetails || {}
 
     this.assetType = dts.type

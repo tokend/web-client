@@ -174,7 +174,7 @@
 </template>
 
 <script>
-import { CreateAssetRequest } from '@/js/records/requests/create-asset-request.record'
+import { AssetRequest } from '@/js/records/requests/asset-request.record'
 
 import { documentsManager } from '@/api'
 
@@ -187,7 +187,7 @@ const STELLAR_TYPES = {
 export default {
   name: 'request-attributes-viewer',
   props: {
-    request: { type: CreateAssetRequest, required: true },
+    request: { type: AssetRequest, required: true },
     kycRequiredAssetType: { type: Number, required: true },
     securityAssetType: { type: Number, required: true },
   },

@@ -33,7 +33,7 @@ import RequestMessageViewer from '../../shared/components/request-message-viewer
 import RequestAttributesViewer from './request-attributes-viewer'
 import RequestActions from './request-actions'
 
-import { CreateAssetRequest } from '@/js/records/requests/create-asset-request.record'
+import { AssetRequest } from '@/js/records/requests/asset-request.record'
 
 import { mapGetters } from 'vuex'
 import { types } from '../store/types'
@@ -55,7 +55,7 @@ export default {
   },
 
   props: {
-    request: { type: CreateAssetRequest, required: true },
+    request: { type: AssetRequest, required: true },
   },
 
   data: _ => ({

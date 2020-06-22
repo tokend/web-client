@@ -51,7 +51,7 @@ import CollectionLoader from '@/vue/common/CollectionLoader'
 
 import RequestViewer from './components/request-viewer'
 import RequestsTable from './components/requests-table'
-import { CreateAssetRequest } from '@/js/records/requests/create-asset-request.record'
+import { AssetRequest } from '@/js/records/requests/asset-request.record'
 
 import CreateAssetFormModule from '@modules/create-asset-form'
 
@@ -79,7 +79,7 @@ export default {
     isLoadingFailed: false,
     isDrawerShown: false,
     isUpdateFormShown: false,
-    selectedRequest: new CreateAssetRequest({}),
+    selectedRequest: new AssetRequest({}),
     collector: new AssetCollector('create'),
     firstPageLoader: () => { },
   }),

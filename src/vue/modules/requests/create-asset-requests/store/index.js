@@ -1,4 +1,4 @@
-import { CreateAssetRequest } from '@/js/records/requests/create-asset-request.record'
+import { AssetRequest } from '@/js/records/requests/asset-request.record'
 
 import { base } from '@tokend/js-sdk'
 
@@ -64,7 +64,7 @@ export const actions = {
 
 export const getters = {
   [types.requests]: state => state.requests
-    .map(r => new CreateAssetRequest(r)),
+    .map(r => new AssetRequest(r)),
   [types.kycRequiredAssetType]: state => state.kycRequiredAssetType,
   [types.securityAssetType]: state => state.securityAssetType,
 }
