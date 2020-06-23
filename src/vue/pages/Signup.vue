@@ -31,11 +31,12 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import SignupForm from '@/vue/forms/SignupForm'
-import _isEmpty from 'lodash/isEmpty'
+import isEmpty from 'lodash/isEmpty'
+import get from 'lodash/get'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { base } from '@tokend/js-sdk'
-import { walletsManager } from '@/api'
+import { base, Signer } from '@tokend/js-sdk'
+import { walletsManager, api } from '@/api'
 import { vueRoutes } from '@/vue-router/routes'
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -57,10 +58,12 @@ export default {
   computed: {
     ...mapGetters({
       walletAccountId: vuexTypes.walletAccountId,
+      kvBridgesEnabled: vuexTypes.kvBridgesEnabled,
+      kvIssuanceSignerRoleId: vuexTypes.kvIssuanceSignerRoleId,
     }),
 
     isInviteVerificationInfoExists () {
-      return !_isEmpty(this.inviteVerificationInfo)
+      return !isEmpty(this.inviteVerificationInfo)
     },
 
     isCurrentAndVerificationEmailsIdentical () {
@@ -92,18 +95,18 @@ export default {
     async submit () {
       this.disableForm()
       try {
-        const { response, wallet } = await walletsManager.create(
-          this.email.toLowerCase(),
-          this.password,
-          this.recoveryKeypair
-        )
-        if (response.data.verified) {
+        const { isVerified, wallet } = await this.createWallet()
+        if (isVerified) {
           await this.storeWallet(wallet)
           await this.loadAccount(this.walletAccountId)
           await this.loadKyc()
           await this.$router.push(vueRoutes.app)
-        } if (this.isInviteVerificationInfoExists &&
-          this.isCurrentAndVerificationEmailsIdentical) {
+        }
+
+        const shouldVerifyEmail =
+          this.isInviteVerificationInfoExists &&
+          this.isCurrentAndVerificationEmailsIdentical
+        if (shouldVerifyEmail) {
           const encodedVerificationInfo = btoa(JSON.stringify({
             meta: {
               wallet_id: wallet.id,
@@ -136,6 +139,39 @@ export default {
         ErrorHandler.process(e)
       }
       this.enableForm()
+    },
+
+    async createWallet () {
+      const signers = []
+      const recoverySigner = new Signer({
+        id: this.recoveryKeypair.accountId(),
+        roleId: 1,
+        weight: 1000,
+        identity: 1,
+      })
+      signers.push(recoverySigner)
+
+      if (this.kvBridgesEnabled) {
+        const issuanceSigner = new Signer({
+          id: api.networkDetails.masterAccountId,
+          roleId: Number(this.kvIssuanceSignerRoleId),
+          weight: 1000,
+          identity: 1,
+        })
+        signers.push(issuanceSigner)
+      }
+
+      const { response, wallet } = await walletsManager.createWithSigners(
+        this.email.toLowerCase(),
+        this.password,
+        signers,
+      )
+
+      const isVerified = Boolean(get(response, 'data.verified'))
+      return {
+        isVerified,
+        wallet,
+      }
     },
   },
 }

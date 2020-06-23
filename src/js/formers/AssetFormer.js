@@ -85,39 +85,6 @@ export class AssetFormer extends Former {
     return ops
   }
 
-  // async _buildIntegrationFixOp () {
-  //   const owner = store.getters[vuexTypes.accountId]
-
-  //   const response = await api.get(`/v3/assets`, {
-  //     page: { limit: 100 },
-  //     filter: { owner },
-  //   })
-  //   const ownedAssets = await loadingDataViaLoop(response)
-  //   const hasIntegratedAssets = ownedAssets.some(el =>
-  //     get(el, 'details.stellar.withdraw') ||
-  //     get(el, 'details.stellar.deposit') ||
-  //     get(el, 'details.erc20.withdraw') ||
-  //     get(el, 'details.erc20.deposit')
-  //   )
-
-  //   const issuanceSignerRoleId =
-  //     store.getters[vuexTypes.kvIssuanceSignerRoleId]
-  //   const { signers } = await api.get(`/v3/accounts/${owner}/signers`)
-  //   const isIssuanceSignerExist = signers.some(el =>
-  //     el.id === api.networkDetails.masterAccountId &&
-  //     (+el.role.id === +issuanceSignerRoleId)
-  //   )
-
-  //   const willIntegrate =
-  //     this.attrs.stellarIntegration.isWithdrawable ||
-  //     this.attrs.stellarIntegration.isDepositable ||
-  //     this.attrs.erc20Integration.isWithdrawable ||
-  //     this.attrs.erc20Integration.isDepositable
-  //   const needIssuanceSigner = !hasIntegratedAssets &&
-  //      !isIssuanceSignerExist && willIntegrate
-  //   const needRemoveIssuanceSigner = !hasIntegratedAssets && !willIntegrate
-  // } TODO: to account creation
-
   _fromRequest (source) {
     if (!(source instanceof AssetRequest)) {
       throw new ReferenceError('Invalid source type')
@@ -213,13 +180,15 @@ export class AssetFormer extends Former {
     return base.ManageAssetBuilder.assetUpdateRequest(opts)
   }
 
-  _getStellarOpts (attrs) {
+  _getStellarOpts () {
     const stellarIntegration = this.attrs.stellarIntegration
     const isIntegrationEnabled =
-      stellarIntegration.isWithdrawable ||
-      stellarIntegration.isDepositable ||
-      stellarIntegration.assetType ||
-      stellarIntegration.assetCode
+      store.getters[vuexTypes.kvBridgesEnabled] && Boolean(
+        stellarIntegration.isWithdrawable ||
+        stellarIntegration.isDepositable ||
+        stellarIntegration.assetType ||
+        stellarIntegration.assetCode
+      )
 
     return isIntegrationEnabled ? {
       withdraw: Boolean(stellarIntegration.isWithdrawable),
@@ -232,9 +201,11 @@ export class AssetFormer extends Former {
   _getErc20Opts () {
     const erc20Integration = this.attrs.erc20Integration
     const isIntegrationEnabled =
-      erc20Integration.isWithdrawable ||
-      erc20Integration.isDepositable ||
-      erc20Integration.address
+      store.getters[vuexTypes.kvBridgesEnabled] && Boolean(
+        erc20Integration.isWithdrawable ||
+        erc20Integration.isDepositable ||
+        erc20Integration.address
+      )
 
     return isIntegrationEnabled ? {
       withdraw: Boolean(erc20Integration.isWithdrawable),
