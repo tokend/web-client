@@ -160,7 +160,7 @@ export default {
   methods: {
     next () {
       if (!this.isFormValid()) return
-      this.former.collect({
+      this.former.mergeAttrs({
         name: this.form.name,
         code: this.form.code,
         logo: this.form.logo,

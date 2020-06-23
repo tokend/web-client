@@ -72,12 +72,12 @@ describe('Information step form', () => {
     describe('next', () => {
       it('emits next event with correct payload', () => {
         sandbox.stub(wrapper.vm, 'isFormValid').returns(true)
-        sandbox.stub(wrapper.vm.former, 'collect')
+        sandbox.stub(wrapper.vm.former, 'mergeAttrs')
         wrapper.setData({ form: { code: 'USD' } })
 
         wrapper.vm.next()
 
-        expect(wrapper.vm.former.collect).to.have.been.calledWithMatch({ code: 'USD' })
+        expect(wrapper.vm.former.mergeAttrs).to.have.been.calledWithMatch({ code: 'USD' })
         expect(wrapper.emitted('next')).to.exist
       })
     })

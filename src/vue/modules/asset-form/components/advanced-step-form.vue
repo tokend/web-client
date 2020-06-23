@@ -591,7 +591,7 @@ export default {
     next () {
       if (!this.isFormValid()) return
 
-      this.former.collect({
+      this.former.mergeAttrs({
         maxIssuanceAmount: this.form.maxIssuanceAmount,
         preIssuanceAssetSigner: this.form.preIssuanceAssetSigner,
         initialPreissuedAmount: this.form.initialPreissuedAmount,

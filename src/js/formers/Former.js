@@ -29,7 +29,7 @@ export class Former {
    * @param {object} source - the object to merge
    * @returns {Former}
    */
-  collect (source) {
+  mergeAttrs (source) {
     this.attrs = merge(this.attrs, source)
     return this
   }

@@ -40,14 +40,14 @@ describe('Advanced step form', () => {
     describe('next', () => {
       it('emits next event with correct payload', () => {
         sandbox.stub(wrapper.vm, 'isFormValid').returns(true)
-        sandbox.stub(wrapper.vm.former, 'collect')
+        sandbox.stub(wrapper.vm.former, 'mergeAttrs')
         wrapper.setData({
           form: { initialPreissuedAmount: '100.000000' },
         })
 
         wrapper.vm.next()
 
-        expect(wrapper.vm.former.collect).to.have.been.calledWithMatch({ initialPreissuedAmount: '100.000000' })
+        expect(wrapper.vm.former.mergeAttrs).to.have.been.calledWithMatch({ initialPreissuedAmount: '100.000000' })
         expect(wrapper.emitted('next')).to.exist
       })
     })
