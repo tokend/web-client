@@ -5,6 +5,7 @@ import { api } from '@/api'
 
 /**
  * Wrapper to simplify work with documents
+ * @class
  */
 export class DocumentContainer {
   /**

@@ -3,7 +3,7 @@
     class="app__form advanced-step-form"
     @submit.prevent="confirm()"
   >
-    <template v-if="former.isCreateMode">
+    <template v-if="former.isCreateOpBuilder">
       <h3 class="advanced-step-form__subheading app__form-subheading">
         {{ 'asset-form.issuance-subheading' | globalize }}
       </h3>
@@ -391,17 +391,17 @@ export default {
   data () {
     const attrs = this.former.attrs
     const defaultAssetType = store.getters[vuexTypes.kvAssetTypeDefault]
-    const isCreateMode = this.former.isCreateMode
+    const isCreateOpBuilder = this.former.isCreateOpBuilder
 
-    const isMaxAmountRestricted = isCreateMode &&
+    const isMaxAmountRestricted = isCreateOpBuilder &&
       attrs.maxIssuanceAmount &&
       attrs.maxIssuanceAmount !== this.MAX_AMOUNT
 
-    const isPreIssuanceEnabled = isCreateMode &&
+    const isPreIssuanceEnabled = isCreateOpBuilder &&
       attrs.preIssuanceAssetSigner &&
       attrs.preIssuanceAssetSigner !== config.NULL_ASSET_SIGNER
 
-    const isUsageRestricted = isCreateMode &&
+    const isUsageRestricted = isCreateOpBuilder &&
       attrs.assetType &&
       attrs.assetType !== defaultAssetType
 

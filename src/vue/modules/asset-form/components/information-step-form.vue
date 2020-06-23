@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <template v-if="former.isCreateMode">
+    <template v-if="former.isCreateOpBuilder">
       <div class="app__form-row">
         <div class="app__form-field">
           <input-field

@@ -47,7 +47,7 @@ export class AssetFormer extends Former {
    * Is the mode set to 'create'
    * @returns {boolean}
    */
-  get isCreateMode () {
+  get isCreateOpBuilder () {
     return this._mode === 'create'
   }
 
@@ -61,20 +61,18 @@ export class AssetFormer extends Former {
   }
 
   /**
-   * @param {AssetRequest} source
+   * @param {AssetRequest|AssetRecord} source
    */
-  from (source) {
+  populate (source) {
     switch (source.constructor) {
-      case AssetRequest: this._fromRequest(source); break
-      case AssetRecord: this._fromRecord(source); break
+      case AssetRequest: this._populateFromRequest(source); break
+      case AssetRecord: this._populateFromRecord(source); break
       default: throw ReferenceError('Unknown source type')
     }
   }
 
   async buildOps () {
     await this._uploadDocs()
-
-    // const integrationFixOp = await this._buildIntegrationFixOp()
 
     const ops = []
     switch (this._mode) {
@@ -85,10 +83,8 @@ export class AssetFormer extends Former {
     return ops
   }
 
-  _fromRequest (source) {
-    if (!(source instanceof AssetRequest)) {
-      throw new ReferenceError('Invalid source type')
-    }
+  /** @param {AssetRequest} source */
+  _populateFromRequest (source) {
     this._mode = this._mode || 'create'
     this.attrs.requestId = source.id
     this.attrs.code = source.assetCode
@@ -109,10 +105,8 @@ export class AssetFormer extends Former {
     this.attrs.erc20Integration.address = source.erc20Address
   }
 
-  _fromRecord (source) {
-    if (!(source instanceof AssetRecord)) {
-      throw new ReferenceError('Invalid source type')
-    }
+  /** @param {AssetRecord} source */
+  _populateFromRecord (source) {
     this._mode = this._mode || 'update'
     this.attrs.requestId = '0'
     this.attrs.code = source.code

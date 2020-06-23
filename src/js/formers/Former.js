@@ -36,6 +36,7 @@ export class Former {
 
   /**
    * Populate the `attrs` with predefined structures
+   * @abstract
    * @param {object} source
    * @returns {Former}
    */
@@ -45,6 +46,7 @@ export class Former {
 
   /**
    * Build the operations
+   * @abstract
    * @returns {Promise<Array<Operation>>}
    */
   async buildOps () {
