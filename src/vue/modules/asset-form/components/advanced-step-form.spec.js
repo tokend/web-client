@@ -6,7 +6,7 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 import Vuex from 'vuex'
 import accountModule from '@/vuex/account.module'
 import { vuexTypes } from '@/vuex/types'
-import { AssetCollector } from '@/js/collectors/AssetCollector'
+import { AssetFormer } from '@/js/formers/AssetFormer'
 
 const localVue = createLocalVue()
 localVue.use(Vuelidate)
@@ -33,21 +33,21 @@ describe('Advanced step form', () => {
       sandbox.stub(accountModule.getters, vuexTypes.accountId)
         .returns('SOME_ACCOUNT_ID')
       const store = new Vuex.Store({ getters: accountModule.getters })
-      const propsData = { collector: new AssetCollector() }
+      const propsData = { former: new AssetFormer() }
       wrapper = shallowMount(AdvancedStepForm, { localVue, store, propsData })
     })
 
     describe('next', () => {
       it('emits next event with correct payload', () => {
         sandbox.stub(wrapper.vm, 'isFormValid').returns(true)
-        sandbox.stub(wrapper.vm.collector, 'add')
+        sandbox.stub(wrapper.vm.former, 'collect')
         wrapper.setData({
           form: { initialPreissuedAmount: '100.000000' },
         })
 
         wrapper.vm.next()
 
-        expect(wrapper.vm.collector.add).to.have.been.calledWithMatch({ initialPreissuedAmount: '100.000000' })
+        expect(wrapper.vm.former.collect).to.have.been.calledWithMatch({ initialPreissuedAmount: '100.000000' })
         expect(wrapper.emitted('next')).to.exist
       })
     })

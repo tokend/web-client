@@ -7,13 +7,13 @@
     >
       <information-step-form
         v-show="currentStep === STEPS.information.number"
-        :collector="collector"
+        :former="former"
         @next="toNextStep()"
       />
 
       <advanced-step-form
         v-show="currentStep === STEPS.advanced.number"
-        :collector="collector"
+        :former="former"
         :is-disabled.sync="isDisabled"
         @next="submit()"
       />
@@ -30,7 +30,7 @@ import FormStepper from '@/vue/common/FormStepper'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { AssetCollector } from '@/js/collectors/AssetCollector'
+import { AssetFormer } from '@/js/formers/AssetFormer'
 import { api } from '@/api'
 
 const STEPS = {
@@ -52,9 +52,9 @@ export default {
     AdvancedStepForm,
   },
   props: {
-    collector: {
-      type: AssetCollector,
-      default: () => new AssetCollector('create'),
+    former: {
+      type: AssetFormer,
+      default: () => new AssetFormer('create'),
     },
   },
 
@@ -75,7 +75,7 @@ export default {
     async submit () {
       this.isDisabled = true
       try {
-        const ops = await this.collector.buildOps()
+        const ops = await this.former.buildOps()
         await api.postOperations(...ops)
         Bus.success('asset-form.request-submitted-msg')
         this.$emit('submitted')

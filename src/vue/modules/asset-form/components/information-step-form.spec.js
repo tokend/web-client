@@ -3,7 +3,7 @@ import InformationStepForm from './information-step-form'
 import Vuelidate from 'vuelidate'
 
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
-import { AssetCollector } from '@/js/collectors/AssetCollector'
+import { AssetFormer } from '@/js/formers/AssetFormer'
 
 const localVue = createLocalVue()
 localVue.use(Vuelidate)
@@ -27,7 +27,7 @@ describe('Information step form', () => {
     beforeEach(() => {
       wrapper = mount(InformationStepForm, {
         localVue,
-        propsData: { collector: new AssetCollector('create') },
+        propsData: { former: new AssetFormer('create') },
       })
     })
 
@@ -65,19 +65,19 @@ describe('Information step form', () => {
     beforeEach(() => {
       wrapper = shallowMount(InformationStepForm, {
         localVue,
-        propsData: { collector: new AssetCollector() },
+        propsData: { former: new AssetFormer() },
       })
     })
 
     describe('next', () => {
       it('emits next event with correct payload', () => {
         sandbox.stub(wrapper.vm, 'isFormValid').returns(true)
-        sandbox.stub(wrapper.vm.collector, 'add')
+        sandbox.stub(wrapper.vm.former, 'collect')
         wrapper.setData({ form: { code: 'USD' } })
 
         wrapper.vm.next()
 
-        expect(wrapper.vm.collector.add).to.have.been.calledWithMatch({ code: 'USD' })
+        expect(wrapper.vm.former.collect).to.have.been.calledWithMatch({ code: 'USD' })
         expect(wrapper.emitted('next')).to.exist
       })
     })

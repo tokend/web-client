@@ -1,4 +1,4 @@
-import { Collector } from './Collector'
+import { Former } from './Former'
 import config from '@/config'
 import { store, vuexTypes } from '@/vuex/index'
 import { base } from '@tokend/js-sdk'
@@ -10,7 +10,7 @@ import { AssetRecord } from '@/js/records/entities/asset.record'
  * Collects the attributes for asset-related operations
  * @class
  */
-export class AssetCollector extends Collector {
+export class AssetFormer extends Former {
   /**
    * @constructor
    * @param {('create'|'update')} [mode]

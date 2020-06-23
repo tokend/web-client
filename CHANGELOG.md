@@ -9,9 +9,9 @@ for further information about branching and tagging conventions.
 ## [Unreleased]e
 #### Added
 - Smart App Banner
-- Collectors - guys that collect attributes:
+- Formers - guys that collect attributes:
   - Migrate the asset creation/update and asset request creation/update to
-    the collectors
+    the formers
   - Merge asset create and asset update requests into a single record -
     `AssetRequest`
   - Merge asset create and asset update form into a single form - `asset-form`

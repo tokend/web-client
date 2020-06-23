@@ -3,7 +3,7 @@
     class="app__form advanced-step-form"
     @submit.prevent="confirm()"
   >
-    <template v-if="collector.isCreateMode">
+    <template v-if="former.isCreateMode">
       <h3 class="advanced-step-form__subheading app__form-subheading">
         {{ 'asset-form.issuance-subheading' | globalize }}
       </h3>
@@ -336,7 +336,7 @@
         class="app__button-raised advanced-step-form__btn"
         :disabled="isDisabled"
       >
-        <template v-if="collector.isUpdateRequest">
+        <template v-if="former.isUpdateRequest">
           {{ 'asset-form.update-request-btn' | globalize }}
         </template>
 
@@ -377,21 +377,21 @@ import {
   CREDIT_ALPHANUM12_MAX_LENGTH,
   NATIVE_XLM_TYPE,
 } from '@/js/const/asset-subtypes.const'
-import { AssetCollector } from '@/js/collectors/AssetCollector'
+import { AssetFormer } from '@/js/formers/AssetFormer'
 
 export default {
   name: 'advanced-step-form',
   components: { VueMarkdown },
   mixins: [FormMixin],
   props: {
-    collector: { type: AssetCollector, required: true },
+    former: { type: AssetFormer, required: true },
     isDisabled: { type: Boolean, default: false },
   },
 
   data () {
-    const attrs = this.collector.attrs
+    const attrs = this.former.attrs
     const defaultAssetType = store.getters[vuexTypes.kvAssetTypeDefault]
-    const isCreateMode = this.collector.isCreateMode
+    const isCreateMode = this.former.isCreateMode
 
     const isMaxAmountRestricted = isCreateMode &&
       attrs.maxIssuanceAmount &&
@@ -591,7 +591,7 @@ export default {
     next () {
       if (!this.isFormValid()) return
 
-      this.collector.add({
+      this.former.collect({
         maxIssuanceAmount: this.form.maxIssuanceAmount,
         preIssuanceAssetSigner: this.form.preIssuanceAssetSigner,
         initialPreissuedAmount: this.form.initialPreissuedAmount,

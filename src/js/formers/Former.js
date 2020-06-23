@@ -8,12 +8,15 @@ import { uploadDocument } from '@/js/helpers/upload-documents'
  */
 
 /**
-  * Collects attributes to store, process and build operations from them.
+  * Collects attributes, build operations from the collected data.
   * Helps in cases when you got a form split to multiple steps, or forms
   * with amounts of children components that collects the form data.
+  *
+  * Separates complex operation building logic from the representation.
+  *
   * @class
   */
-export class Collector {
+export class Former {
   /**
    * @constructor
    */
@@ -22,21 +25,21 @@ export class Collector {
   }
 
   /**
-   * Merge an object into collection
+   * Merge an object into the `attrs`
    * @param {object} source - the object to merge
-   * @returns {Collector}
+   * @returns {Former}
    */
-  add (source) {
+  collect (source) {
     this.attrs = merge(this.attrs, source)
     return this
   }
 
   /**
-   * Parse the predefined structure to populate the collector
+   * Populate the `attrs` with predefined structures
    * @param {object} source
-   * @returns {Collector}
+   * @returns {Former}
    */
-  from (source) {
+  populate (source) {
     throw new ReferenceError('Not implemented')
   }
 

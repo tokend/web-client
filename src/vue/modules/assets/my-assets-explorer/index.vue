@@ -8,7 +8,7 @@
           </template>
 
           <asset-form
-            :collector="collector"
+            :former="former"
             @submitted="onAssetUpdate()"
           />
         </template>
@@ -102,7 +102,7 @@ import { vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import UpdateList from '@/vue/mixins/update-list.mixin'
-import { AssetCollector } from '@/js/collectors/AssetCollector'
+import { AssetFormer } from '@/js/formers/AssetFormer'
 
 export default {
   name: 'my-assets-explorer',
@@ -125,7 +125,7 @@ export default {
     selectedBalance: {
       asset: {},
     },
-    collector: new AssetCollector('update'),
+    former: new AssetFormer('update'),
     itemsPerSkeletonLoader: 3,
     vueRoutes,
   }),
@@ -172,7 +172,7 @@ export default {
     },
 
     showUpdateForm () {
-      this.collector.from(this.selectedBalance.asset)
+      this.former.populate(this.selectedBalance.asset)
       this.isAssetFormShown = true
     },
 

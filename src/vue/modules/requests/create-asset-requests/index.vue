@@ -7,7 +7,7 @@
             {{ 'create-asset-requests.update-asset-title' | globalize }}
           </template>
           <asset-form
-            :collector="collector"
+            :former="former"
             @submitted="onRequestUpdate()"
           />
         </template>
@@ -60,7 +60,7 @@ import { types } from './store/types'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import UpdateList from '@/vue/mixins/update-list.mixin'
-import { AssetCollector } from '@/js/collectors/AssetCollector'
+import { AssetFormer } from '@/js/formers/AssetFormer'
 
 export default {
   name: 'create-asset-requests-module',
@@ -80,7 +80,7 @@ export default {
     isDrawerShown: false,
     isAssetFormShown: false,
     selectedRequest: new AssetRequest(),
-    collector: new AssetCollector('create'),
+    former: new AssetFormer('create'),
     firstPageLoader: () => { },
   }),
 
@@ -144,7 +144,7 @@ export default {
     },
 
     showUpdateForm () {
-      this.collector.from(this.selectedRequest)
+      this.former.populate(this.selectedRequest)
       this.isAssetFormShown = true
     },
 

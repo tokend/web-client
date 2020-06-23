@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <template v-if="collector.isCreateMode">
+    <template v-if="former.isCreateMode">
       <div class="app__form-row">
         <div class="app__form-field">
           <input-field
@@ -115,7 +115,7 @@ import { ASSET_POLICIES } from '@tokend/js-sdk'
 
 import { required, maxLength, assetCode } from '@validators'
 
-import { AssetCollector } from '@/js/collectors/AssetCollector'
+import { AssetFormer } from '@/js/formers/AssetFormer'
 
 const NAME_MAX_LENGTH = 255
 
@@ -125,16 +125,16 @@ export default {
   mixins: [FormMixin],
 
   props: {
-    collector: { type: AssetCollector, required: true },
+    former: { type: AssetFormer, required: true },
   },
 
   data () {
     return {
       form: {
-        name: this.collector.attrs.name || '',
-        code: this.collector.attrs.code || '',
-        logo: this.collector.attrs.logo || null,
-        policies: this.collector.attrs.policies || 0,
+        name: this.former.attrs.name || '',
+        code: this.former.attrs.code || '',
+        logo: this.former.attrs.logo || null,
+        policies: this.former.attrs.policies || 0,
       },
       ASSET_POLICIES,
       DOCUMENT_TYPES,
@@ -160,7 +160,7 @@ export default {
   methods: {
     next () {
       if (!this.isFormValid()) return
-      this.collector.add({
+      this.former.collect({
         name: this.form.name,
         code: this.form.code,
         logo: this.form.logo,

@@ -46,13 +46,13 @@ describe('Asset form module', () => {
       describe('submit', () => {
         it('calls proper methods and sets isDefault property to true',
           async () => {
-            sandbox.stub(wrapper.vm.collector, 'buildOps').resolves(['op1'])
+            sandbox.stub(wrapper.vm.former, 'buildOps').resolves(['op1'])
             sandbox.stub(api, 'postOperations')
             sandbox.stub(Bus, 'success')
 
             await wrapper.vm.submit()
 
-            expect(wrapper.vm.collector.buildOps).to.have.been.calledOnce
+            expect(wrapper.vm.former.buildOps).to.have.been.calledOnce
             expect(api.postOperations).to.have.been.calledOnceWith()
             expect(Bus.success).to.have.been.calledOnceWith('asset-form.request-submitted-msg')
             expect(wrapper.emitted('submitted')).to.exist
@@ -62,7 +62,7 @@ describe('Asset form module', () => {
 
         it('handles a thrown error properly and set isDisabled property to false',
           async () => {
-            sandbox.stub(wrapper.vm.collector, 'buildOps').rejects()
+            sandbox.stub(wrapper.vm.former, 'buildOps').rejects()
             sandbox.stub(ErrorHandler, 'process')
             wrapper.setData({
               isDisabled: true,
