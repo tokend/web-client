@@ -361,7 +361,10 @@ const router = new Router({
         {
           path: '/atomic-swaps',
           name: vueRoutes.atomicSwaps.name,
-          meta: { pageNameTranslationId: 'pages-names.atomic-swaps' },
+          meta: {
+            pageNameTranslationId: 'pages-names.atomic-swaps',
+            isDisabled: true,
+          },
           component: AtomicSwaps,
           beforeEnter: inAppRouteGuard,
           redirect: vueRoutes.atomicSwapsExplore,
@@ -372,6 +375,9 @@ const router = new Router({
               props: true,
               component: AtomicSwapsExplore,
               beforeEnter: inAppRouteGuard,
+              meta: {
+                isDisabled: true,
+              },
             },
           ],
         },
@@ -456,7 +462,10 @@ function redirectRouteGuard (to, from, next) {
 function inAppRouteGuard (to, from, next) {
   const isAccountCorporate = store.getters[vuexTypes.isAccountCorporate]
   const isCorporateRouter = _get(to, 'meta.isCorporateOnly')
-  if (isAccountCorporate && isCorporateRouter) {
+  const isDisabled = _get(to, 'meta.isDisabled')
+  if (isDisabled) {
+    next(vueRoutes.app)
+  } else if (isAccountCorporate && isCorporateRouter) {
     next()
   } else if (!isCorporateRouter) {
     next()

@@ -10,6 +10,9 @@ for further information about branching and tagging conventions.
 #### Added
 - Smart App Banner
 
+#### Changed
+- Hide 'Atomic swaps'
+
 #### Fixed
 - Stretching mobile sidebar
 
