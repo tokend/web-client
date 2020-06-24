@@ -47,7 +47,7 @@
           <template v-for="asset in assets">
             <card-viewer
               :asset="asset"
-              :balance="getAssetBalance(asset)"
+              :balance="accountBalanceByCode(asset.code).balance"
               :key="asset.code"
               @click="selectAsset(asset)"
             />
@@ -148,6 +148,7 @@ export default {
       assetsAll: vuexTypes.assets,
       assetsByOwner: vuexTypes.assetsByOwner,
       accountBalances: vuexTypes.accountBalances,
+      accountBalanceByCode: vuexTypes.accountBalanceByCode,
     }),
 
     ...mapGetters('asset-explorer', {
@@ -195,12 +196,6 @@ export default {
     ...mapActions({
       loadAssets: vuexTypes.LOAD_ASSETS,
     }),
-
-    getAssetBalance (asset) {
-      const balanceRecord = this.accountBalances
-        .find(b => b.asset.code === asset.code)
-      return balanceRecord ? balanceRecord.balance : ''
-    },
 
     selectAsset (asset) {
       this.selectedAsset = asset
