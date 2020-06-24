@@ -1,4 +1,6 @@
 import { documentsManager } from '@/api'
+import { DocumentContainer } from './DocumentContainer'
+import isObject from 'lodash/isObject'
 
 /**
  * Uploads an array of documents to the storage.
@@ -9,6 +11,11 @@ import { documentsManager } from '@/api'
  */
 export async function uploadDocuments (documents, accountId) {
   await Promise.all(documents.map(doc => uploadDocument(doc, accountId)))
+}
+
+export async function uploadDocumentsDeep (obj, accountId) {
+  const docs = collectDocsToUploadDeep(obj)
+  await uploadDocuments(docs, accountId)
 }
 
 /**
@@ -29,4 +36,18 @@ export async function uploadDocument (document, accountId) {
 
     return key
   }
+}
+
+function collectDocsToUploadDeep (obj = {}) {
+  const docs = []
+  for (const val of Object.values(obj)) {
+    if (val instanceof DocumentContainer && !val.isUploaded) {
+      docs.push(val)
+      continue
+    }
+    if (isObject(val)) {
+      docs.push(...collectDocsToUploadDeep(val))
+    }
+  }
+  return docs
 }

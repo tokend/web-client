@@ -108,7 +108,7 @@ export default {
     selectedBalance: {
       asset: {},
     },
-    former: new AssetFormer('update'),
+    former: new AssetFormer(),
     itemsPerSkeletonLoader: 3,
   }),
 
@@ -153,7 +153,7 @@ export default {
     },
 
     showUpdateForm () {
-      this.former.populate(this.selectedBalance.asset)
+      this.former = new AssetFormer(this.selectedBalance.asset)
       this.isAssetFormShown = true
     },
 

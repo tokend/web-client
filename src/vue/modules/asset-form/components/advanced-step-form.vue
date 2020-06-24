@@ -336,7 +336,7 @@
         class="app__button-raised advanced-step-form__btn"
         :disabled="isDisabled"
       >
-        <template v-if="former.isUpdateRequest">
+        <template v-if="former.willUpdateRequest">
           {{ 'asset-form.update-request-btn' | globalize }}
         </template>
 
@@ -393,17 +393,20 @@ export default {
     const defaultAssetType = store.getters[vuexTypes.kvAssetTypeDefault]
     const isCreateOpBuilder = this.former.isCreateOpBuilder
 
-    const isMaxAmountRestricted = isCreateOpBuilder &&
+    const isMaxAmountRestricted = Boolean(isCreateOpBuilder &&
       attrs.maxIssuanceAmount &&
       attrs.maxIssuanceAmount !== this.MAX_AMOUNT
+    )
 
-    const isPreIssuanceEnabled = isCreateOpBuilder &&
+    const isPreIssuanceEnabled = Boolean(isCreateOpBuilder &&
       attrs.preIssuanceAssetSigner &&
       attrs.preIssuanceAssetSigner !== config.NULL_ASSET_SIGNER
+    )
 
-    const isUsageRestricted = isCreateOpBuilder &&
+    const isUsageRestricted = Boolean(isCreateOpBuilder &&
       attrs.assetType &&
       attrs.assetType !== defaultAssetType
+    )
 
     const isStellarIntegration = Boolean(attrs.stellarIntegration && (
       attrs.stellarIntegration.isWithdrawable ||

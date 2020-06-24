@@ -54,7 +54,7 @@ export default {
   props: {
     former: {
       type: AssetFormer,
-      default: () => new AssetFormer('create'),
+      default: () => new AssetFormer(),
     },
   },
 

@@ -139,7 +139,7 @@ export default {
     isDrawerShown: false,
     isAssetFormShown: false,
     selectedAsset: {},
-    former: new AssetFormer('update'),
+    former: new AssetFormer(),
     itemsPerSkeletonLoader: 3,
   }),
 
@@ -209,7 +209,7 @@ export default {
     },
 
     showUpdateForm () {
-      this.former.populate(this.selectedAsset)
+      this.former = new AssetFormer(this.selectedAsset)
       this.isAssetFormShown = true
     },
 

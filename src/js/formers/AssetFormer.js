@@ -7,85 +7,56 @@ import { AssetRequest } from '@/js/records/requests/asset-request.record'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
 /**
+ * @typedef AssetFormerAttrs
+ * @type {object}
+ * @property {string} requestId
+ * @property {string} code
+ * @property {string} name
+ * @property {DocumentContainer} logo
+ * @property {DocumentContainer} terms
+ * @property {number} policies
+ * @property {string} assetType
+ * @property {string} maxIssuanceAmount
+ * @property {string} preIssuanceAssetSigner
+ * @property {string} initialPreissuedAmount
+ * @property {object} stellarIntegration
+ * @property {boolean} stellarIntegration.isWithdrawable
+ * @property {boolean} stellarIntegration.isDepositable
+ * @property {string} stellarIntegration.assetType
+ * @property {string} stellarIntegration.assetCode
+ * @property {object} erc20Integration
+ * @property {boolean} erc20Integration.isWithdrawable
+ * @property {boolean} erc20Integration.isDepositable
+ * @property {string} erc20Integration.address
+ */
+
+/**
+* @typedef DocumentContainer
+* @type {import('@/js/helpers/DocumentContainer').DocumentContainer}
+*/
+
+/**
  * Collects the attributes for asset-related operations
  * @class
+ * @implements {Former}
  */
 export class AssetFormer extends Former {
-  /**
-   * @constructor
-   * @param {('create'|'update')} [mode]
-   */
-  constructor (mode) {
-    super()
-    this._mode = mode
-    this.attrs = {
-      requestId: '0',
-      code: '',
-      name: '',
-      logo: null,
-      terms: null,
-      policies: 0,
-      assetType: '',
-      maxIssuanceAmount: '',
-      preIssuanceAssetSigner: '',
-      initialPreissuedAmount: '',
-      stellarIntegration: {
-        isWithdrawable: false,
-        isDepositable: false,
-        assetType: '',
-        assetCode: '',
-      },
-      erc20Integration: {
-        isWithdrawable: false,
-        isDepositable: false,
-        address: '',
-      },
-    }
-  }
+  /** @type {AssetFormerAttrs} */
+  attrs = this.attrs || {}
 
-  /**
-   * Is the mode set to 'create'
-   * @returns {boolean}
-   */
-  get isCreateOpBuilder () {
-    return this._mode === 'create'
-  }
-
-  /**
-   * Is the collected info is to update a request
-   * @returns {boolean}
-   */
-  get isUpdateRequest () {
-    const id = this.attrs.requestId
-    return id && typeof id === 'string' && id !== '0'
-  }
-
-  /**
-   * @param {AssetRequest|AssetRecord} source
-   */
+  /** @param {AssetRequest|AssetRecord} source */
   populate (source) {
     switch (source.constructor) {
       case AssetRequest: this._populateFromRequest(source); break
       case AssetRecord: this._populateFromRecord(source); break
       default: throw ReferenceError('Unknown source type')
     }
-  }
-
-  async buildOps () {
-    await this._uploadDocs()
-
-    const ops = []
-    switch (this._mode) {
-      case 'create': ops.push(this._buildOpCreate()); break
-      case 'update': ops.push(this._buildOpUpdate()); break
-      default: throw ReferenceError('Unknown mode')
-    }
-    return ops
+    return this
   }
 
   /** @param {AssetRequest} source */
   _populateFromRequest (source) {
-    this._mode = this._mode || 'create'
+    this.useCreateOpBuilder()
     this.attrs.requestId = source.id
     this.attrs.code = source.assetCode
     this.attrs.name = source.assetName
@@ -96,10 +67,14 @@ export class AssetFormer extends Former {
     this.attrs.maxIssuanceAmount = source.maxIssuanceAmount
     this.attrs.preIssuanceAssetSigner = source.preIssuanceAssetSigner
     this.attrs.initialPreissuedAmount = source.initialPreissuedAmount
+
+    this.attrs.stellarIntegration = {}
     this.attrs.stellarIntegration.isWithdrawable = source.stellarWithdraw
     this.attrs.stellarIntegration.isDepositable = source.stellarDeposit
     this.attrs.stellarIntegration.assetCode = source.stellarAssetCode
     this.attrs.stellarIntegration.assetType = source.stellarAssetType
+
+    this.attrs.erc20Integration = {}
     this.attrs.erc20Integration.isWithdrawable = source.erc20Withdraw
     this.attrs.erc20Integration.isDepositable = source.erc20Deposit
     this.attrs.erc20Integration.address = source.erc20Address
@@ -107,7 +82,7 @@ export class AssetFormer extends Former {
 
   /** @param {AssetRecord} source */
   _populateFromRecord (source) {
-    this._mode = this._mode || 'update'
+    this.useUpdateOpBuilder()
     this.attrs.requestId = '0'
     this.attrs.code = source.code
     this.attrs.name = source.name
@@ -118,10 +93,14 @@ export class AssetFormer extends Former {
     this.attrs.maxIssuanceAmount = source.maxIssuanceAmount
     this.attrs.preIssuanceAssetSigner = source.preissuedAssetSigner
     this.attrs.initialPreissuedAmount = source.initialPreissuedAmount
+
+    this.attrs.stellarIntegration = {}
     this.attrs.stellarIntegration.isWithdrawable = source.stellarWithdraw
     this.attrs.stellarIntegration.isDepositable = source.stellarDeposit
     this.attrs.stellarIntegration.assetCode = source.stellarAssetCode
     this.attrs.stellarIntegration.assetType = source.stellarAssetType
+
+    this.attrs.erc20Integration = {}
     this.attrs.erc20Integration.isWithdrawable = source.erc20Withdraw
     this.attrs.erc20Integration.isDepositable = source.erc20Deposit
     this.attrs.erc20Integration.address = source.erc20Address

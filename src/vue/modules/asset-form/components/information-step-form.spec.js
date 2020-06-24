@@ -27,7 +27,7 @@ describe('Information step form', () => {
     beforeEach(() => {
       wrapper = mount(InformationStepForm, {
         localVue,
-        propsData: { former: new AssetFormer('create') },
+        propsData: { former: new AssetFormer() },
       })
     })
 

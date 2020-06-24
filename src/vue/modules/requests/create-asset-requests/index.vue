@@ -80,7 +80,7 @@ export default {
     isDrawerShown: false,
     isAssetFormShown: false,
     selectedRequest: new AssetRequest(),
-    former: new AssetFormer('create'),
+    former: new AssetFormer(),
     firstPageLoader: () => { },
   }),
 
@@ -144,7 +144,7 @@ export default {
     },
 
     showUpdateForm () {
-      this.former.populate(this.selectedRequest)
+      this.former = new AssetFormer(this.selectedRequest).useCreateOpBuilder()
       this.isAssetFormShown = true
     },
 
