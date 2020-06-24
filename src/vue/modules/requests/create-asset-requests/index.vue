@@ -18,7 +18,7 @@
           </template>
           <request-viewer
             :request="selectedRequest"
-            @update-click="showUpdateForm()"
+            @update-click="showUpdateForm"
             @cancel="onRequestUpdate()"
           />
         </template>
@@ -81,7 +81,7 @@ export default {
     isAssetFormShown: false,
     selectedRequest: new AssetRequest(),
     former: new AssetFormer(),
-    firstPageLoader: () => { },
+    firstPageLoader: () => {},
   }),
 
   computed: {

@@ -9,7 +9,7 @@
 
           <asset-form
             :former="former"
-            @submitted="onAssetUpdate()"
+            @submitted="onAssetUpdate"
           />
         </template>
 
@@ -35,7 +35,7 @@
               :is-account-corporate="isAccountCorporate"
               :kyc-required-asset-type="kycRequiredAssetType"
               :security-asset-type="securityAssetType"
-              @update-click="showUpdateForm()"
+              @update-click="showUpdateForm"
               @balance-added="loadAssets() || (isDrawerShown = false)"
             />
           </div>

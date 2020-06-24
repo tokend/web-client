@@ -9,7 +9,7 @@
 
           <asset-form
             :former="former"
-            @submitted="onAssetUpdate()"
+            @submitted="onAssetUpdate"
           />
         </template>
 
@@ -28,7 +28,7 @@
             v-if="selectedBalance.asset.owner === accountId"
             v-ripple
             class="app__button-raised balance-explorer__update-btn"
-            @click="showUpdateForm()"
+            @click="showUpdateForm"
           >
             {{ 'assets.update-btn' | globalize }}
           </button>

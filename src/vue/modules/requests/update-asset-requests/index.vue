@@ -18,7 +18,7 @@
           </template>
           <request-viewer
             :request="selectedRequest"
-            @update-click="showUpdateForm()"
+            @update-click="showUpdateForm"
             @cancel="onRequestUpdate()"
           />
         </template>
