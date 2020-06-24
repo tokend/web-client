@@ -1,4 +1,4 @@
-import AssetForm from './index'
+import AssetForm from './AssetForm'
 
 import Vuelidate from 'vuelidate'
 

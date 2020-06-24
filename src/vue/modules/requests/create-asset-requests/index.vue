@@ -53,7 +53,7 @@ import RequestViewer from './components/request-viewer'
 import RequestsTable from './components/requests-table'
 import { AssetRequest } from '@/js/records/requests/asset-request.record'
 
-import AssetForm from '@modules/asset-form'
+import AssetForm from '@/vue/forms/AssetForm'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'

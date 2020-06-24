@@ -52,7 +52,7 @@ import CollectionLoader from '@/vue/common/CollectionLoader'
 import RequestViewer from './components/request-viewer'
 import RequestsTable from './components/requests-table'
 
-import AssetForm from '@modules/asset-form'
+import AssetForm from '@/vue/forms/AssetForm'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'

@@ -1,17 +1,17 @@
 <template>
   <form
-    class="app__form advanced-step-form"
+    class="app__form advanced-step"
     @submit.prevent="confirm()"
   >
     <template v-if="former.isCreateOpBuilder">
-      <h3 class="advanced-step-form__subheading app__form-subheading">
+      <h3 class="advanced-step__subheading app__form-subheading">
         {{ 'asset-form.issuance-subheading' | globalize }}
       </h3>
 
       <div class="app__form-row">
         <div class="app__form-field">
           <tick-field
-            class="advanced-step-form__pre-issuance-tick-field"
+            class="advanced-step__pre-issuance-tick-field"
             v-model="form.isMaxAmountRestricted"
             :disabled="isDisabled"
           >
@@ -44,7 +44,7 @@
         <div class="app__form-row">
           <div class="app__form-field">
             <tick-field
-              class="advanced-step-form__pre-issuance-tick-field"
+              class="advanced-step__pre-issuance-tick-field"
               v-model="form.isPreIssuanceEnabled"
               :disabled="isDisabled"
             >
@@ -57,7 +57,7 @@
       <template v-if="form.isPreIssuanceEnabled">
         <div class="app__form-row">
           <div class="app__form-field">
-            <div class="advanced-step-form__pre-issued-asset-signer-wrp">
+            <div class="advanced-step__pre-issued-asset-signer-wrp">
               <input-field
                 white-autofill
                 v-model="form.preIssuanceAssetSigner"
@@ -72,7 +72,7 @@
               <button
                 v-ripple
                 type="button"
-                class="app__button-flat advanced-step-form__use-my-address-btn"
+                class="app__button-flat advanced-step__use-my-address-btn"
                 :disabled="isDisabled"
                 @click="form.preIssuanceAssetSigner = accountId"
               >
@@ -82,7 +82,7 @@
 
             <vue-markdown
               v-if="form.preIssuanceAssetSigner === accountId"
-              class="advanced-step-form__pre-issuance-disclaimer"
+              class="advanced-step__pre-issuance-disclaimer"
               :source="'asset-form.pre-issuance-disclaimer' | globalize"
             />
           </div>
@@ -107,27 +107,27 @@
               :disabled="isDisabled"
             />
             <router-link
-              class="advanced-step-form__pre-issuance-guide-link"
+              class="advanced-step__pre-issuance-guide-link"
               :to="vueRoutes.preIssuanceGuide"
               target="_blank"
               rel="noopener"
             >
               {{ 'asset-form.pre-issuance-guide-link' | globalize }}
               <!-- eslint-disable-next-line max-len -->
-              <i class="mdi mdi-launch advanced-step-form__pre-issuance-guide-link-launch-icon" />
+              <i class="mdi mdi-launch advanced-step__pre-issuance-guide-link-launch-icon" />
             </router-link>
           </div>
         </div>
       </template>
 
-      <h3 class="advanced-step-form__subheading app__form-subheading">
+      <h3 class="advanced-step__subheading app__form-subheading">
         {{ 'asset-form.permissions-subheading' | globalize }}
       </h3>
 
       <div class="app__form-row">
         <div class="app__form-field">
           <tick-field
-            class="advanced-step-form__stellar-integration-tick-field"
+            class="advanced-step__stellar-integration-tick-field"
             v-model="form.isUsageRestricted"
             :disabled="isDisabled"
             :cb-value="true"
@@ -163,14 +163,14 @@
       </template>
     </template>
 
-    <h3 class="advanced-step-form__subheading app__form-subheading">
+    <h3 class="advanced-step__subheading app__form-subheading">
       {{ 'asset-form.stellar' | globalize }}
     </h3>
 
     <div class="app__form-row">
       <div class="app__form-field">
         <tick-field
-          class="advanced-step-form__stellar-integration-tick-field"
+          class="advanced-step__stellar-integration-tick-field"
           v-model="form.isStellarIntegration"
           :disabled="isDisabled || form.isErc20Integration"
           :cb-value="true"
@@ -249,14 +249,14 @@
       </div>
     </template>
 
-    <h3 class="advanced-step-form__subheading app__form-subheading">
+    <h3 class="advanced-step__subheading app__form-subheading">
       {{ 'asset-form.erc20' | globalize }}
     </h3>
 
     <div class="app__form-row">
       <div class="app__form-field">
         <tick-field
-          class="advanced-step-form__stellar-integration-tick-field"
+          class="advanced-step__stellar-integration-tick-field"
           v-model="form.isErc20Integration"
           :disabled="isDisabled || form.isStellarIntegration"
           :cb-value="true"
@@ -304,7 +304,7 @@
       </div>
     </template>
 
-    <h3 class="advanced-step-form__subheading app__form-subheading">
+    <h3 class="advanced-step__subheading app__form-subheading">
       {{ 'asset-form.terms-subheading' | globalize }}
     </h3>
 
@@ -333,7 +333,7 @@
         v-else
         v-ripple
         type="submit"
-        class="app__button-raised advanced-step-form__btn"
+        class="app__button-raised advanced-step__btn"
         :disabled="isDisabled"
       >
         <template v-if="former.willUpdateRequest">
@@ -380,7 +380,7 @@ import {
 import { AssetFormer } from '@/js/formers/AssetFormer'
 
 export default {
-  name: 'advanced-step-form',
+  name: 'advanced-step',
   components: { VueMarkdown },
   mixins: [FormMixin],
   props: {
@@ -632,30 +632,30 @@ export default {
 @import '@/vue/forms/_app-form';
 @import '~@scss/variables';
 
-.advanced-step-form__btn {
+.advanced-step__btn {
   max-width: 14.4rem;
   width: 100%;
 }
 
-.advanced-step-form__pre-issued-asset-signer-wrp {
+.advanced-step__pre-issued-asset-signer-wrp {
   display: flex;
   align-items: center;
 }
 
-.advanced-step-form__use-my-address-btn {
+.advanced-step__use-my-address-btn {
   margin-left: 0.4rem;
 }
 
-.advanced-step-form__pre-issuance-disclaimer {
+.advanced-step__pre-issuance-disclaimer {
   font-size: 1.4rem;
   margin-top: 1rem;
 }
 
-.advanced-step-form__pre-issuance-tick-field {
+.advanced-step__pre-issuance-tick-field {
   margin-bottom: 1rem;
 }
 
-.advanced-step-form__pre-issuance-guide-link {
+.advanced-step__pre-issuance-guide-link {
   text-decoration: none;
   border-bottom: 0.1rem solid $col-link;
   display: inline-block;
@@ -666,11 +666,11 @@ export default {
   }
 }
 
-.advanced-step-form__pre-issuance-guide-link-launch-icon {
+.advanced-step__pre-issuance-guide-link-launch-icon {
   font-size: 1.4rem;
 }
 
-.advanced-step-form__subheading {
+.advanced-step__subheading {
   margin: 0;
 
   &:not(:first-of-type) {

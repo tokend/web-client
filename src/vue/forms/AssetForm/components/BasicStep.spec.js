@@ -1,4 +1,4 @@
-import InformationStepForm from './information-step-form'
+import InformationStepForm from './BasicStep'
 
 import Vuelidate from 'vuelidate'
 

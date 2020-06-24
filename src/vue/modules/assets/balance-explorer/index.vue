@@ -78,7 +78,7 @@ import CardViewer from '../shared/components/card-viewer'
 import AssetAttributesViewer from '../shared/components/asset-attributes-viewer'
 import BalanceSkeletonLoader from './components/balance-skeleton-loader'
 
-import AssetForm from '@modules/asset-form'
+import AssetForm from '@/vue/forms/AssetForm'
 
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'

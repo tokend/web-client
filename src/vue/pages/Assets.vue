@@ -48,7 +48,7 @@
 <script>
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
-import AssetForm from '@modules/asset-form'
+import AssetForm from '@/vue/forms/AssetForm'
 
 import { vueRoutes } from '@/vue-router/routes'
 

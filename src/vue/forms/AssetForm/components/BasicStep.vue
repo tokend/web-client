@@ -1,7 +1,7 @@
 <template>
   <form
     novalidate
-    class="app__form basic-step-form"
+    class="app__form basic-step"
     @submit.prevent="next"
   >
     <div class="app__form-row">
@@ -99,7 +99,7 @@
       <button
         v-ripple
         type="submit"
-        class="app__button-raised basic-step-form__btn"
+        class="app__button-raised basic-step__btn"
       >
         {{ 'asset-form.next-btn' | globalize }}
       </button>
@@ -120,7 +120,7 @@ import { AssetFormer } from '@/js/formers/AssetFormer'
 const NAME_MAX_LENGTH = 255
 
 export default {
-  name: 'basic-step-form',
+  name: 'basic-step',
 
   mixins: [FormMixin],
 
@@ -175,7 +175,7 @@ export default {
 <style lang="scss" scoped>
 @import '@/vue/forms/_app-form';
 
-.basic-step-form__btn {
+.basic-step__btn {
   max-width: 14.4rem;
   width: 100%;
 }

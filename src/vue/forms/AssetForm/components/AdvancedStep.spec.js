@@ -1,4 +1,4 @@
-import AdvancedStepForm from './advanced-step-form'
+import AdvancedStep from './AdvancedStep'
 
 import Vuelidate from 'vuelidate'
 
@@ -34,7 +34,7 @@ describe('Advanced step form', () => {
         .returns('SOME_ACCOUNT_ID')
       const store = new Vuex.Store({ getters: accountModule.getters })
       const propsData = { former: new AssetFormer() }
-      wrapper = shallowMount(AdvancedStepForm, { localVue, store, propsData })
+      wrapper = shallowMount(AdvancedStep, { localVue, store, propsData })
     })
 
     describe('next', () => {

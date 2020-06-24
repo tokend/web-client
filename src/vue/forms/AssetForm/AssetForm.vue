@@ -5,13 +5,13 @@
       :current-step.sync="currentStep"
       :disabled="isDisabled"
     >
-      <information-step-form
+      <basic-step
         v-show="currentStep === STEPS.information.number"
         :former="former"
         @next="toNextStep()"
       />
 
-      <advanced-step-form
+      <advanced-step
         v-show="currentStep === STEPS.advanced.number"
         :former="former"
         :is-disabled.sync="isDisabled"
@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import InformationStepForm from './components/information-step-form'
-import AdvancedStepForm from './components/advanced-step-form'
+import BasicStep from './components/BasicStep'
+import AdvancedStep from './components/AdvancedStep'
 
 import FormStepper from '@/vue/common/FormStepper'
 
@@ -48,8 +48,8 @@ export default {
   name: 'asset-form',
   components: {
     FormStepper,
-    InformationStepForm,
-    AdvancedStepForm,
+    BasicStep,
+    AdvancedStep,
   },
   props: {
     former: {

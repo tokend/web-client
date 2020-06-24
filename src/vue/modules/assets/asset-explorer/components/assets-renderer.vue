@@ -86,7 +86,7 @@ import AssetAttributesViewer from '../../shared/components/asset-attributes-view
 import AssetActions from './asset-actions'
 import AssetSkeletonLoader from './asset-skeleton-loader'
 
-import AssetForm from '@modules/asset-form'
+import AssetForm from '@/vue/forms/AssetForm'
 
 import { mapGetters, mapActions } from 'vuex'
 import { types } from '../store/types'
