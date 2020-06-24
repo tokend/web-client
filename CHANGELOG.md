@@ -15,7 +15,6 @@ for further information about branching and tagging conventions.
   - Merge asset create and asset update requests into a single record -
     `AssetRequest`
   - Merge asset create and asset update form into a single form - `asset-form`
-  -
 - Add `jsconfig.json`
 
 #### Change
