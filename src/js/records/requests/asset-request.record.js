@@ -1,5 +1,5 @@
 import get from 'lodash/get'
-import { ASSET_POLICIES } from '@tokend/js-sdk'
+import { ASSET_POLICIES, REQUEST_TYPES } from '@tokend/js-sdk'
 import { RequestRecord } from '@/js/records/request-record'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
@@ -32,6 +32,14 @@ export class AssetRequest extends RequestRecord {
     this.erc20Address = get(record, 'requestDetails.creatorDetails.erc20.address') || ''
     this.erc20Withdraw = get(record, 'requestDetails.creatorDetails.erc20.withdraw') || false
     this.erc20Deposit = get(record, 'requestDetails.creatorDetails.erc20.deposit') || false
+  }
+
+  get isCreateAssetRequest () {
+    return this.typeI === REQUEST_TYPES.createAsset
+  }
+
+  get isUpdateAssetRequest () {
+    return this.typeI === REQUEST_TYPES.updateAsset
   }
 
   get isErc20IntegrationEnabled () {

@@ -131,7 +131,7 @@ export default {
     },
 
     showUpdateForm () {
-      this.former = new AssetFormer(this.selectedRequest).useUpdateOpBuilder()
+      this.former = new AssetFormer(this.selectedRequest)
       this.isAssetFormShown = true
     },
 

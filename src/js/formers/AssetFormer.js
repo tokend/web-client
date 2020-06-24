@@ -56,7 +56,8 @@ export class AssetFormer extends Former {
 
   /** @param {AssetRequest} source */
   _populateFromRequest (source) {
-    this.useCreateOpBuilder()
+    if (source.isCreateAssetRequest) this.useCreateOpBuilder()
+    if (source.isUpdateAssetRequest) this.useUpdateOpBuilder()
     this.attrs.requestId = source.id
     this.attrs.code = source.assetCode
     this.attrs.name = source.assetName
