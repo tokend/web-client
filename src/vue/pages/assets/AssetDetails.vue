@@ -301,15 +301,9 @@ import { base } from '@tokend/js-sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 
-import { ASSET_SUBTYPE } from '@/js/const/asset-subtypes.const'
+import { ASSET_SUBTYPE, STELLAR_TYPES } from '@/js/const/asset-subtypes.const'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-
-const STELLAR_TYPES = {
-  creditAlphanum4: 'credit_alphanum4',
-  creditAlphanum12: 'credit_alphanum12',
-  native: 'native',
-}
 
 const EVENTS = {
   balanceAdded: 'balance-added',
