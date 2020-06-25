@@ -1,5 +1,6 @@
+import set from 'lodash/set'
+import unset from 'lodash/unset'
 import merge from 'lodash/merge'
-import { uploadDocumentsDeep } from '@/js/helpers/upload-documents'
 
 // TODO: find a way to document mergeAttrs’ source in each implementation
 // TODO: find a better way to document `attrs` in each implementation
@@ -30,55 +31,27 @@ export class Former {
      */
     this.attrs = {}
 
-    /**
-     * Most of the `Operation`s have both update and create variants. Here
-     * we simplify check/switch between them.
-     * @private
-     */
-    this._opBuilder = this._buildOpCreate
-
     if (populateSource) {
       this.populate(populateSource)
     }
   }
 
   /**
-   * Return `true` if the creation operation builder used
-   * @returns {boolean}
+   * Set an attr by field path
+   * @param {string} path
+   * @param {*} value
    */
-  get isCreateOpBuilder () { return this._opBuilder === this._buildOpCreate }
-
-  /**
-   * Return `true` if the update operation builder used
-   * @returns {boolean}
-   */
-  get isUpdateOpBuilder () { return this._opBuilder === this._buildOpUpdate }
-
-  /**
-   * Returns `true` if a `requestId` is provided in the collected attrs, thus
-   * means the operation builder will update an existing request
-   * @returns {boolean}
-   */
-  get willUpdateRequest () {
-    const id = this.attrs.requestId
-    return Boolean(id && typeof id === 'string' && id !== '0')
-  }
-
-  /**
-   * Use builder for the creation operation
-   * @returns {Former}
-   */
-  useCreateOpBuilder () {
-    this._opBuilder = this._buildOpCreate
+  setAttr (path, value) {
+    set(this.attrs, path, value)
     return this
   }
 
   /**
-   * Use builder for the update operation
-   * @returns {Former}
+   * Remove an attr by field path
+   * @param {string} path
    */
-  useUpdateOpBuilder () {
-    this._opBuilder = this._buildOpUpdate
+  unsetAttr (path) {
+    unset(this.attrs, path)
     return this
   }
 
@@ -88,23 +61,21 @@ export class Former {
    * @returns {Former}
    */
   mergeAttrs (source) {
-    this.attrs = merge(this.attrs, source)
+    merge(this.attrs, source)
     return this
   }
 
   /**
    * Build the operations
+   * @abstract
    * @returns {Promise<Array<Operation>>}
    */
-  async buildOps () {
-    await uploadDocumentsDeep(this.attrs)
-    return [this._opBuilder()]
-  }
+  async buildOps () { throw new ReferenceError('Not implemented') }
 
   /**
    * Populate the `attrs` with predefined structures
    * @abstract
-   * @param {object} source
+   * @param {*} source
    * @returns {Former}
    */
   populate (source) { throw new ReferenceError('Not implemented') }

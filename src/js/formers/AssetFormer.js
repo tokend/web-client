@@ -5,6 +5,7 @@ import { base } from '@tokend/js-sdk'
 import { reqId, doc, str, num } from './op-build-helpers'
 import { AssetRequest } from '@/js/records/requests/asset-request.record'
 import { AssetRecord } from '@/js/records/entities/asset.record'
+import { uploadDocumentsDeep } from '@/js/helpers/upload-documents'
 
 /**
  * @typedef AssetFormerAttrs
@@ -43,6 +44,22 @@ import { AssetRecord } from '@/js/records/entities/asset.record'
 export class AssetFormer extends Former {
   /** @type {AssetFormerAttrs} */
   attrs = this.attrs || {}
+
+  _opBuilder = this._opBuilder || this._buildOpCreate
+  get isCreateOpBuilder () { return this._opBuilder === this._buildOpCreate }
+  get isUpdateOpBuilder () { return this._opBuilder === this._buildOpUpdate }
+  useCreateOpBuilder () { this._opBuilder = this._buildOpCreate; return this }
+  useUpdateOpBuilder () { this._opBuilder = this._buildOpUpdate; return this }
+
+  get willUpdateRequest () {
+    const id = this.attrs.requestId
+    return Boolean(id && typeof id === 'string' && id !== '0')
+  }
+
+  async buildOps () {
+    await uploadDocumentsDeep(this.attrs)
+    return [this._opBuilder()]
+  }
 
   /** @param {AssetRequest|AssetRecord} source */
   populate (source) {
@@ -155,7 +172,7 @@ export class AssetFormer extends Former {
   }
 
   _getStellarOpts () {
-    const stellarIntegration = this.attrs.stellarIntegration
+    const stellarIntegration = this.attrs.stellarIntegration || {}
     const isIntegrationEnabled =
       store.getters[vuexTypes.kvBridgesEnabled] && Boolean(
         stellarIntegration.isWithdrawable ||
@@ -173,7 +190,7 @@ export class AssetFormer extends Former {
   }
 
   _getErc20Opts () {
-    const erc20Integration = this.attrs.erc20Integration
+    const erc20Integration = this.attrs.erc20Integration || {}
     const isIntegrationEnabled =
       store.getters[vuexTypes.kvBridgesEnabled] && Boolean(
         erc20Integration.isWithdrawable ||
