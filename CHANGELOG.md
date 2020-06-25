@@ -16,6 +16,8 @@ for further information about branching and tagging conventions.
     `AssetRequest`
   - Merge asset create and asset update form into a single form - `AssetForm`
 - Add `jsconfig.json`
+- Proxy `config` (`$config`) and `vueRoutes` (`$routes`) in Vue.prototype
+  for easier access from the templates
 
 #### Change
 - `DocumentContainer`:

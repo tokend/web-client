@@ -29,6 +29,7 @@ import { formatDateDMYT } from '@/vue/filters/formatDateDMYT'
 import { abbreviate } from '@/vue/filters/abbreviate'
 import { cropAddress } from '@/vue/filters/cropAddress'
 import { ErrorTracker } from '@/js/helpers/error-tracker'
+import { vueRoutes } from './vue-router/routes'
 
 async function init () {
   i18n.onLanguageChanged(lang => {
@@ -59,6 +60,8 @@ async function init () {
   Vue.filter('formatCalendarInline', formatCalendarInline)
   Vue.filter('abbreviate', abbreviate)
   Vue.filter('cropAddress', cropAddress)
+  Vue.prototype.$config = config
+  Vue.prototype.$routes = vueRoutes
 
   const store = buildStore()
 
