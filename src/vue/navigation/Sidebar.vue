@@ -210,22 +210,6 @@
               {{ 'pages-names.fees' | globalize }}
             </span>
           </router-link>
-          <router-link
-            key="atomic-swaps"
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            tag="a"
-            :to="vueRoutes.atomicSwaps"
-          >
-            <i
-              class="sidebar__link-icon"
-              :class="`mdi mdi-swap-horizontal`"
-            />
-            <span>
-              {{ 'pages-names.atomic-swaps' | globalize }}
-            </span>
-          </router-link>
         </nav>
 
         <nav class="sidebar__links-group">

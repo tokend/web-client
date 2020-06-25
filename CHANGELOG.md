@@ -27,6 +27,9 @@ for further information about branching and tagging conventions.
 - Enabled vue-devtools for 'development' env
 - Used common `STELLAR_TYPES` instead of the duplicated one
 
+#### Changed
+- Hide 'Atomic swaps'
+
 #### Fixed
 - Stretching mobile sidebar
 
