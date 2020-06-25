@@ -26,6 +26,7 @@ for further information about branching and tagging conventions.
     object. Or returns `null` if the creation is impossible.
 - Enabled vue-devtools for 'development' env
 - Used common `STELLAR_TYPES` instead of the duplicated one
+- Split advanced step of the asset form into small sections
 
 #### Changed
 - Hide 'Atomic swaps'
