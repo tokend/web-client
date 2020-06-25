@@ -3,50 +3,52 @@
     class="app__form advanced-step"
     @submit.prevent="confirm()"
   >
-    <template v-if="former.isCreateOpBuilder">
-      <issuance-section
-        ref="issuance-section"
+    <div class="advanced-step__sections">
+      <template v-if="former.isCreateOpBuilder">
+        <issuance-section
+          ref="issuance-section"
+          class="app__form advanced-step__section"
+          :former="former"
+          :is-disabled="isDisabled"
+        />
+
+        <permissions-section
+          ref="permissions-section"
+          class="app__form advanced-step__section"
+          :former="former"
+          :is-disabled="isDisabled"
+        />
+      </template>
+
+      <template v-if="kvBridgesEnabled">
+        <stellar-section
+          ref="stellar-section"
+          class="app__form advanced-step__section"
+          :former="former"
+          :is-disabled="isDisabled"
+          :is-other-integration="isOtherIntegration(INTEGRATIONS.stellar)"
+          @enabled="setIntegration(INTEGRATIONS.stellar)"
+          @disabled="unsetIntegration"
+        />
+
+        <erc20-section
+          ref="erc20-section"
+          class="app__form advanced-step__section"
+          :former="former"
+          :is-disabled="isDisabled"
+          :is-other-integration="isOtherIntegration(INTEGRATIONS.erc20)"
+          @enabled="setIntegration(INTEGRATIONS.erc20)"
+          @disabled="unsetIntegration"
+        />
+      </template>
+
+      <terms-section
+        ref="terms-section"
         class="app__form advanced-step__section"
         :former="former"
         :is-disabled="isDisabled"
       />
-
-      <permissions-section
-        ref="permissions-section"
-        class="app__form advanced-step__section"
-        :former="former"
-        :is-disabled="isDisabled"
-      />
-    </template>
-
-    <template v-if="kvBridgesEnabled">
-      <stellar-section
-        ref="stellar-section"
-        class="app__form advanced-step__section"
-        :former="former"
-        :is-disabled="isDisabled"
-        :is-other-integration="!!integration && integration !== 'stellar'"
-        @enabled="integration = 'stellar'"
-        @disabled="integration = integration === 'stellar' ? '' : integration"
-      />
-
-      <erc20-section
-        ref="erc20-section"
-        class="app__form advanced-step__section"
-        :former="former"
-        :is-disabled="isDisabled"
-        :is-other-integration="!!integration && integration !== 'erc20'"
-        @enabled="integration = 'erc20'"
-        @disabled="integration = integration === 'erc20' ? '' : integration"
-      />
-    </template>
-
-    <terms-section
-      ref="terms-section"
-      class="app__form advanced-step__section"
-      :former="former"
-      :is-disabled="isDisabled"
-    />
+    </div>
 
     <div class="app__form-actions">
       <form-confirmation
@@ -85,6 +87,11 @@ import StellarSection from './StellarSection'
 import Erc20Section from './Erc20Section'
 import TermsSection from './TermsSection'
 
+const INTEGRATIONS = {
+  stellar: 'stellar',
+  erc20: 'erc20',
+}
+
 export default {
   name: 'advanced-step',
 
@@ -106,6 +113,7 @@ export default {
   data () {
     return {
       integration: '',
+      INTEGRATIONS,
     }
   },
 
@@ -130,6 +138,20 @@ export default {
       Object.values(this.$refs)
         .filter(el => el.collect).forEach(el => el.collect())
     },
+
+    isOtherIntegration (integration) {
+      if (!this.integration) return false
+      return this.integration !== integration
+    },
+
+    setIntegration (integration) {
+      if (!Object.values(INTEGRATIONS).includes(integration)) return
+      this.integration = integration
+    },
+
+    unsetIntegration () {
+      this.integration = ''
+    },
   },
 }
 </script>
@@ -137,7 +159,7 @@ export default {
 <style lang="scss" scoped>
 @import '~@scss/variables';
 
-.advanced-step {
+.advanced-step__sections {
   display: grid;
   grid: auto-flow auto / auto;
   gap: 3.2rem;
