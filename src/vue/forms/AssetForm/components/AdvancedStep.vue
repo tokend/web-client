@@ -6,7 +6,6 @@
     <div class="advanced-step__sections">
       <template v-if="former.isCreateOpBuilder">
         <issuance-section
-          ref="issuance-section"
           class="app__form advanced-step__section"
           :former="former"
           :on-collect="onCollect"
@@ -14,7 +13,6 @@
         />
 
         <permissions-section
-          ref="permissions-section"
           class="app__form advanced-step__section"
           :former="former"
           :on-collect="onCollect"
@@ -24,7 +22,6 @@
 
       <template v-if="kvBridgesEnabled">
         <stellar-section
-          ref="stellar-section"
           class="app__form advanced-step__section"
           :former="former"
           :on-collect="onCollect"
@@ -35,7 +32,6 @@
         />
 
         <erc20-section
-          ref="erc20-section"
           class="app__form advanced-step__section"
           :former="former"
           :on-collect="onCollect"
@@ -47,7 +43,6 @@
       </template>
 
       <terms-section
-        ref="terms-section"
         class="app__form advanced-step__section"
         :former="former"
         :on-collect="onCollect"
