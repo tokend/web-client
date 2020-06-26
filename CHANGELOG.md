@@ -18,6 +18,7 @@ for further information about branching and tagging conventions.
 - Add `jsconfig.json`
 - Proxy `config` (`$config`) and `vueRoutes` (`$routes`) in Vue.prototype
   for easier access from the templates
+- Browser update banner — notify the user about outdated browser
 
 #### Change
 - `DocumentContainer`:

@@ -30,8 +30,11 @@ import { abbreviate } from '@/vue/filters/abbreviate'
 import { cropAddress } from '@/vue/filters/cropAddress'
 import { ErrorTracker } from '@/js/helpers/error-tracker'
 import { vueRoutes } from './vue-router/routes'
+import { useBrowserUpdateBanner } from './browser-update'
 
 async function init () {
+  useBrowserUpdateBanner(Vue)
+
   i18n.onLanguageChanged(lang => {
     moment.locale(lang)
   })
