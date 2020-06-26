@@ -98,7 +98,7 @@ export default {
   },
 
   methods: {
-    collect (fieldName) {
+    collect () {
       if (!this.form.isUsageRestricted) {
         this.former.unsetAttr('assetType')
         return
