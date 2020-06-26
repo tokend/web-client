@@ -57,6 +57,7 @@
     "smart-app-banner": "2.0.0",
     "url-loader": "^3.0.0",
     "vue": "^2.6.11",
+    "vue-browserupdate": "1.2.0",
     "vue-head": "2.2.0",
     "vue-markdown": "^2.2.4",
     "vue-resource": "^1.5.1",
