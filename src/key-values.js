@@ -1,21 +1,6 @@
 import { api, loadingDataViaLoop } from '@/api'
 
 class KeyValues {
-  generalRoleId = null
-  corporateRoleId = null
-  unverifiedRoleId = null
-  blockedRoleId = null
-  usVerifiedRoleId = null
-  usAccreditedRoleId = null
-  assetTypeDefault = null
-  assetTypeKycRequired = null
-  assetTypeSecurity = null
-  restrictedPollType = null
-  unrestrictedPollType = null
-  defaultSignerRoleId = null
-  issuanceSignerRoleId = null
-  bridgesEnabled = null
-
   async load () {
     const response = await api.get(`/v3/key_values`)
     const kvArray = await loadingDataViaLoop(response)
@@ -41,7 +26,7 @@ class KeyValues {
     return kvKey => {
       const kvFound = kvArray.find((key) => key.id === kvKey)
       if (!kvFound) return null
-      return kvFound.value.u32
+      return Number(kvFound.value.u32)
     }
   }
 }
