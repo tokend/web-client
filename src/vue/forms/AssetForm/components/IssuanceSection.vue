@@ -22,7 +22,7 @@
           <input-field
             white-autofill
             type="number"
-            :min="0"
+            :min="$config.MIN_AMOUNT"
             :max="$config.MAX_AMOUNT"
             :step="$config.MIN_AMOUNT"
             v-model="form.maxIssuanceAmount"
