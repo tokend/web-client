@@ -220,6 +220,7 @@ import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
 import { MathUtil } from '@/js/utils'
+import { keyValues } from '../../key-values'
 
 const EVENTS = {
   submitted: 'submitted',
@@ -295,8 +296,6 @@ export default {
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
-      kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
-      kvAssetTypeSecurity: vuexTypes.kvAssetTypeSecurity,
       isAccountCorporate: vuexTypes.isAccountCorporate,
       isAccountUnverified: vuexTypes.isAccountUnverified,
       isAccountGeneral: vuexTypes.isAccountGeneral,
@@ -377,9 +376,9 @@ export default {
 
     isAllowedAccountType () {
       switch (this.sale.baseAsset.assetType) {
-        case this.kvAssetTypeKycRequired:
+        case keyValues.assetTypeKycRequired:
           return !this.isAccountUnverified
-        case this.kvAssetTypeSecurity:
+        case keyValues.assetTypeSecurity:
           return this.isAccountGeneral ||
                  this.isAccountUsAccredited ||
                  this.isAccountCorporate

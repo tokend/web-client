@@ -2,6 +2,7 @@ import _get from 'lodash/get'
 import { vuexTypes } from './types'
 import { api } from '../api'
 import { BalanceRecord } from '@/js/records/entities/balance.record'
+import { keyValues } from '../key-values'
 
 export const state = {
   account: {},
@@ -65,24 +66,18 @@ export const getters = {
   [vuexTypes.accountDepositAddresses]: state =>
     state.account.externalSystemIds || {},
 
-  [vuexTypes.isAccountGeneral]: (a, getters, b, rootGetters) =>
-    getters[vuexTypes.accountRoleId] ===
-    rootGetters[vuexTypes.kvEntryGeneralRoleId],
-  [vuexTypes.isAccountUsAccredited]: (a, getters, b, rootGetters) =>
-    getters[vuexTypes.accountRoleId] ===
-    rootGetters[vuexTypes.kvEntryUsAccreditedRoleId],
-  [vuexTypes.isAccountUsVerified]: (a, getters, b, rootGetters) =>
-    getters[vuexTypes.accountRoleId] ===
-    rootGetters[vuexTypes.kvEntryUsVerifiedRoleId],
-  [vuexTypes.isAccountCorporate]: (a, getters, b, rootGetters) =>
-    getters[vuexTypes.accountRoleId] ===
-    rootGetters[vuexTypes.kvEntryCorporateRoleId],
-  [vuexTypes.isAccountUnverified]: (a, getters, b, rootGetters) =>
-    getters[vuexTypes.accountRoleId] ===
-    rootGetters[vuexTypes.kvEntryUnverifiedRoleId],
-  [vuexTypes.isAccountBlocked]: (a, getters, b, rootGetters) =>
-    getters[vuexTypes.accountRoleId] ===
-    rootGetters[vuexTypes.kvEntryBlockedRoleId],
+  [vuexTypes.isAccountGeneral]: (_, getters) =>
+    getters[vuexTypes.accountRoleId] === keyValues.generalRoleId,
+  [vuexTypes.isAccountUsAccredited]: (_, getters) =>
+    getters[vuexTypes.accountRoleId] === keyValues.usAccreditedRoleId,
+  [vuexTypes.isAccountUsVerified]: (_, getters) =>
+    getters[vuexTypes.accountRoleId] === keyValues.usVerifiedRoleId,
+  [vuexTypes.isAccountCorporate]: (_, getters) =>
+    getters[vuexTypes.accountRoleId] === keyValues.corporateRoleId,
+  [vuexTypes.isAccountUnverified]: (_, getters) =>
+    getters[vuexTypes.accountRoleId] === keyValues.unverifiedRoleId,
+  [vuexTypes.isAccountBlocked]: (_, getters) =>
+    getters[vuexTypes.accountRoleId] === keyValues.blockedRoleId,
 }
 
 export default {

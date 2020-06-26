@@ -80,6 +80,7 @@ import { base } from '@tokend/js-sdk'
 import { api } from '@/api'
 import { isUSResidence } from './is-us-residence'
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
+import { keyValues } from '@/key-values'
 
 const EVENTS = {
   submit: 'submit',
@@ -113,9 +114,6 @@ export default {
     }),
     ...mapGetters([
       vuexTypes.accountId,
-      vuexTypes.kvEntryGeneralRoleId,
-      vuexTypes.kvEntryUsVerifiedRoleId,
-      vuexTypes.kvEntryUsAccreditedRoleId,
       vuexTypes.kycRequestId,
       vuexTypes.kycRecoveryBlobId,
       vuexTypes.kycRecoveryState,
@@ -129,11 +127,11 @@ export default {
     accountRoleToSet () {
       if (this.isUSResident) {
         return this.isAccredited
-          ? this.kvEntryUsAccreditedRoleId
-          : this.kvEntryUsVerifiedRoleId
+          ? keyValues.usAccreditedRoleId
+          : keyValues.usVerifiedRoleId
       }
 
-      return this.kvEntryGeneralRoleId
+      return keyValues.generalRoleId
     },
   },
   async created () {

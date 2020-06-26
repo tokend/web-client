@@ -91,6 +91,7 @@ import { api } from '@/api'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { PollRecord } from '@/js/records/entities/poll.record'
+import { keyValues } from '@/key-values'
 
 const EVENTS = {
   submitted: 'submitted',
@@ -121,11 +122,10 @@ export default {
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
-      restrictedPollType: vuexTypes.kvPollTypeRestricted,
     }),
 
     isRepeatVoteAllowed () {
-      return this.poll.permissionType !== this.restrictedPollType
+      return this.poll.permissionType !== keyValues.restrictedPollType
     },
   },
 

@@ -20,7 +20,7 @@
         />
       </template>
 
-      <template v-if="kvBridgesEnabled">
+      <template v-if="$kv.bridgesEnabled > 0">
         <stellar-section
           class="app__form advanced-step__section"
           :former="former"
@@ -116,10 +116,6 @@ export default {
       collectCallbacks: [],
       INTEGRATIONS,
     }
-  },
-
-  computed: {
-    ...mapGetters({ kvBridgesEnabled: vuexTypes.kvBridgesEnabled }),
   },
 
   methods: {

@@ -27,13 +27,13 @@
             :error-message="getFieldErrorMessage('form.assetType')"
             :disabled="isDisabled"
           >
-            <option :value="kvAssetTypeDefault">
+            <option :value="$kv.assetTypeDefault">
               {{ 'asset-form.verification-not-required-lbl' | globalize }}
             </option>
-            <option :value="kvAssetTypeKycRequired">
+            <option :value="$kv.assetTypeKycRequired">
               {{ 'asset-form.verification-required-lbl' | globalize }}
             </option>
-            <option :value="kvAssetTypeSecurity">
+            <option :value="$kv.assetTypeSecurity">
               {{ 'asset-form.security-asset-lbl' | globalize }}
             </option>
           </select-field>
@@ -45,10 +45,9 @@
 
 <script>
 import formMixin from '@/vue/mixins/form.mixin'
-import { vuexTypes } from '@/vuex'
 import { requiredIf } from '@validators'
-import { mapGetters } from 'vuex'
 import { AssetFormer } from '@/js/formers/AssetFormer'
+import { keyValues } from '@/key-values'
 
 export default {
   name: 'permissions-section',
@@ -82,15 +81,6 @@ export default {
     }
   },
 
-  computed: {
-    ...mapGetters([
-      vuexTypes.kvAssetTypeDefault,
-      vuexTypes.kvAssetTypeKycRequired,
-      vuexTypes.kvAssetTypeSecurity,
-      vuexTypes.accountId,
-    ]),
-  },
-
   created () {
     this.onCollect(() => { this.collect() })
     this.populateForm()
@@ -103,7 +93,7 @@ export default {
   methods: {
     populateForm () {
       const attrs = this.former.attrs
-      const defaultAssetType = this.kvAssetTypeDefault
+      const defaultAssetType = keyValues.assetTypeDefault
 
       const isUsageRestricted = Boolean(
         attrs.assetType &&

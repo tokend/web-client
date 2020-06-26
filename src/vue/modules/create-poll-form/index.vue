@@ -155,8 +155,6 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import moment from 'moment'
-import { mapGetters } from 'vuex'
-import { vuexTypes } from '@/vuex'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import {
@@ -167,6 +165,7 @@ import {
 import { base } from '@tokend/js-sdk'
 import { DateUtil } from '@/js/utils'
 import { api } from '@/api'
+import { keyValues } from '@/key-values'
 
 const QUESTION_MAX_LENGTH = 255
 const EVENTS = {
@@ -219,10 +218,6 @@ export default {
   },
 
   computed: {
-    ...mapGetters({
-      restrictedPollType: vuexTypes.kvPollTypeRestricted,
-      unrestrictedPollType: vuexTypes.kvPollTypeUnrestricted,
-    }),
     yesterday () {
       return moment().subtract(1, 'days').toISOString()
     },
@@ -230,11 +225,11 @@ export default {
       return [
         {
           labelTranslationId: 'create-poll-form.restricted-poll-lbl',
-          value: this.restrictedPollType,
+          value: keyValues.restrictedPollType,
         },
         {
           labelTranslationId: 'create-poll-form.unrestricted-poll-lbl',
-          value: this.unrestrictedPollType,
+          value: keyValues.unrestrictedPollType,
         },
       ]
     },
@@ -242,7 +237,7 @@ export default {
 
   created () {
     if (!this.form.permissionType) {
-      this.form.permissionType = this.unrestrictedPollType
+      this.form.permissionType = keyValues.unrestrictedPollType
     }
   },
 
