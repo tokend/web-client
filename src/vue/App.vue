@@ -67,6 +67,7 @@ import { vueRoutes } from '@/vue-router/routes'
 
 import config from '@/config'
 import { i18n } from '@/i18n'
+import { keyValues } from '@/key-values'
 
 export default {
   name: 'app',
@@ -142,6 +143,7 @@ export default {
       api.useNetworkDetails(networkDetails)
 
       await this.loadKvEntries()
+      await keyValues.load()
 
       if (this[vuexTypes.isLoggedIn]) {
         await this.restoreSession()
