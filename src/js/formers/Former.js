@@ -79,18 +79,4 @@ export class Former {
    * @returns {Former}
    */
   populate (source) { throw new ReferenceError('Not implemented') }
-
-  /**
-   * Build the creation operation
-   * @abstract
-   * @returns {Operation}
-   */
-  _buildOpCreate () { throw new ReferenceError('Not implemented') }
-
-  /**
-   * Build the update operation
-   * @abstract
-   * @returns {Operation}
-   */
-  _buildOpUpdate () { throw new ReferenceError('Not implemented') }
 }
