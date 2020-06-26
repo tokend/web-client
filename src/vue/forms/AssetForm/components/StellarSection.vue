@@ -118,23 +118,15 @@ export default {
   },
 
   data () {
-    const attrs = this.former.attrs.stellarIntegration
-    const isIntegrated = Boolean(attrs && (
-      attrs.isWithdrawable ||
-      attrs.isDepositable ||
-      attrs.assetType ||
-      attrs.assetCode
-    ))
-
     return {
       form: {
-        isIntegrated,
-        isWithdrawable: isIntegrated ? attrs.isWithdrawable : false,
-        isDepositable: isIntegrated ? attrs.isDepositable : false,
-        stellarAssetType: isIntegrated ? attrs.assetType : '',
-        stellarAssetCode: isIntegrated ? attrs.assetCode : '',
+        isIntegrated: false,
+        isWithdrawable: false,
+        isDepositable: false,
+        stellarAssetType: '',
+        stellarAssetCode: '',
       },
-      onCollectUnsubscriber: () => { },
+      onCollectUnsubscriber: () => {},
       STELLAR_TYPES,
       CODE_MIN_LEN_MAP,
       CODE_MAX_LEN_MAP,
@@ -177,6 +169,7 @@ export default {
 
   created () {
     this.onCollect(() => { this.collect() })
+    this.populateForm()
   },
 
   beforeDestroy () {
@@ -184,6 +177,22 @@ export default {
   },
 
   methods: {
+    populateForm () {
+      const attrs = this.former.attrs.stellarIntegration
+      const isIntegrated = Boolean(attrs && (
+        attrs.isWithdrawable ||
+        attrs.isDepositable ||
+        attrs.assetType ||
+        attrs.assetCode
+      ))
+
+      this.form.isIntegrated = isIntegrated
+      this.form.isWithdrawable = attrs.isWithdrawable || false
+      this.form.isDepositable = attrs.isDepositable || false
+      this.form.stellarAssetType = attrs.assetType || ''
+      this.form.stellarAssetCode = attrs.assetCode || ''
+    },
+
     collect () {
       if (!this.form.isIntegrated || this.isOtherIntegration) {
         this.former.unsetAttr('stellarIntegration')
