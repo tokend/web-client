@@ -91,7 +91,7 @@
           <input-field
             white-autofill
             type="number"
-            :min="0"
+            :min="$config.MIN_AMOUNT"
             :max="form.maxIssuanceAmount"
             :step="$config.MIN_AMOUNT"
             v-model="form.initialPreissuedAmount"
