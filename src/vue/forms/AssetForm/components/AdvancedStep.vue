@@ -9,6 +9,7 @@
           ref="issuance-section"
           class="app__form advanced-step__section"
           :former="former"
+          :on-collect="onCollect"
           :is-disabled="isDisabled"
         />
 
@@ -16,6 +17,7 @@
           ref="permissions-section"
           class="app__form advanced-step__section"
           :former="former"
+          :on-collect="onCollect"
           :is-disabled="isDisabled"
         />
       </template>
@@ -25,20 +27,22 @@
           ref="stellar-section"
           class="app__form advanced-step__section"
           :former="former"
+          :on-collect="onCollect"
           :is-disabled="isDisabled"
           :is-other-integration="isOtherIntegration(INTEGRATIONS.stellar)"
           @enabled="setIntegration(INTEGRATIONS.stellar)"
-          @disabled="unsetIntegration"
+          @disabled="unsetIntegration(INTEGRATIONS.stellar)"
         />
 
         <erc20-section
           ref="erc20-section"
           class="app__form advanced-step__section"
           :former="former"
+          :on-collect="onCollect"
           :is-disabled="isDisabled"
           :is-other-integration="isOtherIntegration(INTEGRATIONS.erc20)"
           @enabled="setIntegration(INTEGRATIONS.erc20)"
-          @disabled="unsetIntegration"
+          @disabled="unsetIntegration(INTEGRATIONS.erc20)"
         />
       </template>
 
@@ -46,6 +50,7 @@
         ref="terms-section"
         class="app__form advanced-step__section"
         :former="former"
+        :on-collect="onCollect"
         :is-disabled="isDisabled"
       />
     </div>
@@ -113,6 +118,7 @@ export default {
   data () {
     return {
       integration: '',
+      collectCallbacks: [],
       INTEGRATIONS,
     }
   },
@@ -122,21 +128,25 @@ export default {
   },
 
   methods: {
+    onCollect (callback) {
+      this.collectCallbacks.push(callback)
+      const unsubscribe = () => {
+        this.collectCallbacks = this.collectCallbacks
+          .filter(el => el !== callback)
+      }
+      return unsubscribe
+    },
+
     confirm () {
       if (!this.isFormValid()) return
       this.showConfirmation()
-      this.collectChildrenAttrs()
       this.$emit('update:isDisabled', true)
     },
 
     next () {
       if (!this.isFormValid()) return
+      this.collectCallbacks.forEach(cb => cb())
       this.$emit('next')
-    },
-
-    collectChildrenAttrs () {
-      Object.values(this.$refs)
-        .filter(el => el.collect).forEach(el => el.collect())
     },
 
     isOtherIntegration (integration) {
@@ -149,7 +159,8 @@ export default {
       this.integration = integration
     },
 
-    unsetIntegration () {
+    unsetIntegration (integration) {
+      if (this.integration && this.integration !== integration) return
       this.integration = ''
     },
   },

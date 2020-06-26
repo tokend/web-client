@@ -112,6 +112,7 @@ export default {
 
   props: {
     former: { type: AssetFormer, required: true },
+    onCollect: { type: Function, required: true },
     isDisabled: { type: Boolean, default: false },
     isOtherIntegration: { type: Boolean, default: false },
   },
@@ -133,6 +134,7 @@ export default {
         stellarAssetType: isIntegrated ? attrs.assetType : '',
         stellarAssetCode: isIntegrated ? attrs.assetCode : '',
       },
+      onCollectUnsubscriber: () => { },
       STELLAR_TYPES,
       CODE_MIN_LEN_MAP,
       CODE_MAX_LEN_MAP,
@@ -171,6 +173,14 @@ export default {
         }
       },
     },
+  },
+
+  created () {
+    this.onCollect(() => { this.collect() })
+  },
+
+  beforeDestroy () {
+    this.onCollectUnsubscriber()
   },
 
   methods: {

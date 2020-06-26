@@ -32,6 +32,7 @@ export default {
 
   props: {
     former: { type: AssetFormer, required: true },
+    onCollect: { type: Function, required: true },
     isDisabled: { type: Boolean, default: false },
   },
 
@@ -40,8 +41,17 @@ export default {
       form: {
         terms: this.former.attrs.terms,
       },
+      onCollectUnsubscriber: () => { },
       DOCUMENT_TYPES,
     }
+  },
+
+  created () {
+    this.onCollect(() => { this.collect() })
+  },
+
+  beforeDestroy () {
+    this.onCollectUnsubscriber()
   },
 
   methods: {

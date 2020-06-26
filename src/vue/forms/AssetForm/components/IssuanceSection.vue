@@ -137,6 +137,7 @@ export default {
 
   props: {
     former: { type: AssetFormer, required: true },
+    onCollect: { type: Function, required: true },
     isDisabled: { type: Boolean, default: false },
   },
 
@@ -166,6 +167,7 @@ export default {
           ? attrs.initialPreissuedAmount
           : '',
       },
+      onCollectUnsubscriber: () => {},
     }
   },
 
@@ -191,6 +193,14 @@ export default {
         },
       },
     }
+  },
+
+  created () {
+    this.onCollect(() => { this.collect() })
+  },
+
+  beforeDestroy () {
+    this.onCollectUnsubscriber()
   },
 
   methods: {

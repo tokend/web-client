@@ -69,6 +69,7 @@ export default {
 
   props: {
     former: { type: AssetFormer, required: true },
+    onCollect: { type: Function, required: true },
     isDisabled: { type: Boolean, default: false },
     isOtherIntegration: { type: Boolean, default: false },
   },
@@ -88,6 +89,7 @@ export default {
         isDepositable: isIntegrated ? attrs.isDepositable : false,
         erc20Address: isIntegrated ? attrs.address : '',
       },
+      onCollectUnsubscriber: () => {},
     }
   },
 
@@ -108,6 +110,14 @@ export default {
       immediate: true,
       handler (v) { this.$emit(v ? 'enabled' : 'disabled') },
     },
+  },
+
+  created () {
+    this.onCollectUnsubscriber = this.onCollect(() => { this.collect() })
+  },
+
+  beforeDestroy () {
+    this.onCollectUnsubscriber()
   },
 
   methods: {

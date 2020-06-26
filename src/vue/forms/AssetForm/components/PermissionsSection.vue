@@ -57,6 +57,7 @@ export default {
 
   props: {
     former: { type: AssetFormer, required: true },
+    onCollect: { type: Function, required: true },
     isDisabled: { type: Boolean, default: false },
   },
 
@@ -74,6 +75,7 @@ export default {
         isUsageRestricted,
         assetType: isUsageRestricted ? attrs.assetType : defaultAssetType,
       },
+      onCollectUnsubscriber: () => {},
     }
   },
 
@@ -95,6 +97,14 @@ export default {
       vuexTypes.kvAssetTypeSecurity,
       vuexTypes.accountId,
     ]),
+  },
+
+  created () {
+    this.onCollect(() => { this.collect() })
+  },
+
+  beforeDestroy () {
+    this.onCollectUnsubscriber()
   },
 
   methods: {

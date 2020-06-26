@@ -40,7 +40,6 @@ describe('Advanced step form', () => {
     describe('next', () => {
       it('emits next event', () => {
         sandbox.stub(wrapper.vm, 'isFormValid').returns(true)
-        sandbox.stub(wrapper.vm, 'collectChildrenAttrs')
         wrapper.setData({
           form: { initialPreissuedAmount: '100.000000' },
         })
