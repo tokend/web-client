@@ -45,7 +45,7 @@
 
 <script>
 import formMixin from '@/vue/mixins/form.mixin'
-import { vuexTypes, store } from '@/vuex'
+import { vuexTypes } from '@/vuex'
 import { requiredIf } from '@validators'
 import { mapGetters } from 'vuex'
 import { AssetFormer } from '@/js/formers/AssetFormer'
@@ -62,18 +62,10 @@ export default {
   },
 
   data () {
-    const attrs = this.former.attrs
-    const defaultAssetType = store.getters[vuexTypes.kvAssetTypeDefault]
-
-    const isUsageRestricted = Boolean(
-      attrs.assetType &&
-      attrs.assetType !== defaultAssetType
-    )
-
     return {
       form: {
-        isUsageRestricted,
-        assetType: isUsageRestricted ? attrs.assetType : defaultAssetType,
+        isUsageRestricted: false,
+        assetType: '',
       },
       onCollectUnsubscriber: () => {},
     }
@@ -101,6 +93,7 @@ export default {
 
   created () {
     this.onCollect(() => { this.collect() })
+    this.populateForm()
   },
 
   beforeDestroy () {
@@ -108,6 +101,19 @@ export default {
   },
 
   methods: {
+    populateForm () {
+      const attrs = this.former.attrs
+      const defaultAssetType = this.kvAssetTypeDefault
+
+      const isUsageRestricted = Boolean(
+        attrs.assetType &&
+        attrs.assetType !== defaultAssetType
+      )
+
+      this.form.isUsageRestricted = isUsageRestricted
+      this.form.assetType = attrs.assetType || defaultAssetType
+    },
+
     collect () {
       if (!this.form.isUsageRestricted) {
         this.former.unsetAttr('assetType')

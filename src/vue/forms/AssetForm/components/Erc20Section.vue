@@ -75,19 +75,12 @@ export default {
   },
 
   data () {
-    const attrs = this.former.attrs.erc20Integration
-    const isIntegrated = Boolean(attrs && (
-      attrs.isWithdrawable ||
-      attrs.isDepositable ||
-      attrs.address
-    ))
-
     return {
       form: {
-        isIntegrated,
-        isWithdrawable: isIntegrated ? attrs.isWithdrawable : false,
-        isDepositable: isIntegrated ? attrs.isDepositable : false,
-        erc20Address: isIntegrated ? attrs.address : '',
+        isIntegrated: false,
+        isWithdrawable: false,
+        isDepositable: false,
+        erc20Address: '',
       },
       onCollectUnsubscriber: () => {},
     }
@@ -113,6 +106,7 @@ export default {
   },
 
   created () {
+    this.populateForm()
     this.onCollectUnsubscriber = this.onCollect(() => { this.collect() })
   },
 
@@ -121,6 +115,20 @@ export default {
   },
 
   methods: {
+    populateForm () {
+      const attrs = this.former.attrs.erc20Integration || {}
+      const isIntegrated = Boolean(attrs && (
+        attrs.isWithdrawable ||
+        attrs.isDepositable ||
+        attrs.address
+      ))
+
+      this.form.isIntegrated = isIntegrated
+      this.form.isWithdrawable = attrs.isWithdrawable || false
+      this.form.isDepositable = attrs.isDepositable || false
+      this.form.erc20Address = attrs.address || ''
+    },
+
     collect () {
       if (!this.form.isIntegrated || this.isOtherIntegration) {
         this.former.unsetAttr('erc20Integration')

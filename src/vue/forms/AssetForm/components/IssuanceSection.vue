@@ -142,32 +142,15 @@ export default {
   },
 
   data () {
-    const attrs = this.former.attrs
-    const isMaxAmountRestricted = Boolean(
-      attrs.maxIssuanceAmount &&
-      attrs.maxIssuanceAmount !== config.MAX_AMOUNT
-    )
-    const isPreIssuanceEnabled = Boolean(
-      attrs.preIssuanceAssetSigner &&
-      attrs.preIssuanceAssetSigner !== config.NULL_ASSET_SIGNER
-    )
-
     return {
       form: {
-        isMaxAmountRestricted,
-        maxIssuanceAmount: isMaxAmountRestricted
-          ? attrs.maxIssuanceAmount
-          : '',
-
-        isPreIssuanceEnabled,
-        preIssuanceAssetSigner: isPreIssuanceEnabled
-          ? attrs.preIssuanceAssetSigner
-          : '',
-        initialPreissuedAmount: isPreIssuanceEnabled
-          ? attrs.initialPreissuedAmount
-          : '',
+        isMaxAmountRestricted: false,
+        maxIssuanceAmount: '',
+        isPreIssuanceEnabled: false,
+        preIssuanceAssetSigner: '',
+        initialPreissuedAmount: '',
       },
-      onCollectUnsubscriber: () => {},
+      onCollectUnsubscriber: () => { },
     }
   },
 
@@ -197,6 +180,7 @@ export default {
 
   created () {
     this.onCollect(() => { this.collect() })
+    this.populateForm()
   },
 
   beforeDestroy () {
@@ -204,6 +188,34 @@ export default {
   },
 
   methods: {
+    populateForm () {
+      const attrs = this.former.attrs
+      const isMaxAmountRestricted = Boolean(
+        attrs.maxIssuanceAmount &&
+        attrs.maxIssuanceAmount !== config.MAX_AMOUNT
+      )
+      const isPreIssuanceEnabled = Boolean(
+        attrs.preIssuanceAssetSigner &&
+        attrs.preIssuanceAssetSigner !== config.NULL_ASSET_SIGNER
+      )
+
+      this.form.isMaxAmountRestricted = isMaxAmountRestricted
+      this.form.maxIssuanceAmount =
+        attrs.maxIssuanceAmount === config.MAX_AMOUNT
+          ? ''
+          : attrs.maxIssuanceAmount || ''
+
+      this.form.isPreIssuanceEnabled = isPreIssuanceEnabled
+      this.form.preIssuanceAssetSigner =
+        attrs.preIssuanceAssetSigner === config.NULL_ASSET_SIGNER
+          ? ''
+          : attrs.preIssuanceAssetSigner || ''
+      this.form.initialPreissuedAmount =
+        attrs.initialPreissuedAmount === config.MAX_AMOUNT
+          ? ''
+          : attrs.initialPreissuedAmount || ''
+    },
+
     collect () {
       if (!this.form.isMaxAmountRestricted) {
         this.former
