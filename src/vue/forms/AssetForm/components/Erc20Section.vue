@@ -116,7 +116,7 @@ export default {
 
   methods: {
     populateForm () {
-      const attrs = this.former.attrs.erc20Integration
+      const attrs = this.former.attrs.erc20Integration || {}
       const isIntegrated = Boolean(attrs && (
         attrs.isWithdrawable ||
         attrs.isDepositable ||

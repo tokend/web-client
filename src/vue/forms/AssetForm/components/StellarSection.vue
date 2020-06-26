@@ -178,7 +178,7 @@ export default {
 
   methods: {
     populateForm () {
-      const attrs = this.former.attrs.stellarIntegration
+      const attrs = this.former.attrs.stellarIntegration || {}
       const isIntegrated = Boolean(attrs && (
         attrs.isWithdrawable ||
         attrs.isDepositable ||
