@@ -37,9 +37,7 @@
         <template slot="heading">
           {{ 'assets-page.create-asset-title' | globalize }}
         </template>
-        <create-asset-form-module
-          @submitted="closeDrawerAndUpdateList()"
-        />
+        <asset-form @submitted="onAssetFormSubmit()" />
       </drawer>
     </template>
 
@@ -50,7 +48,7 @@
 <script>
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
-import CreateAssetFormModule from '@modules/create-asset-form'
+import AssetForm from '@/vue/forms/AssetForm'
 
 import { vueRoutes } from '@/vue-router/routes'
 
@@ -64,7 +62,7 @@ export default {
   components: {
     TopBar,
     Drawer,
-    CreateAssetFormModule,
+    AssetForm,
   },
   mixins: [UpdateList],
   data: _ => ({
@@ -78,7 +76,7 @@ export default {
     }),
   },
   methods: {
-    closeDrawerAndUpdateList () {
+    onAssetFormSubmit () {
       this.isAssetDrawerShown = false
       this.emitUpdateList('assets:updateList')
     },

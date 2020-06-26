@@ -1,4 +1,4 @@
-import { UpdateAssetRequest } from '../wrappers/update-asset-request'
+import { AssetRequest } from '@/js/records/requests/asset-request.record'
 
 import { base } from '@tokend/js-sdk'
 
@@ -43,7 +43,7 @@ export const actions = {
 
 export const getters = {
   [types.requests]: state => state.requests
-    .map(r => new UpdateAssetRequest(r)),
+    .map(r => new AssetRequest(r)),
 }
 
 export default {

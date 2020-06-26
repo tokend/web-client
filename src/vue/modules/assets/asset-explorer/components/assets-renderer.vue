@@ -2,14 +2,14 @@
   <div class="assets-renderer">
     <template>
       <drawer :is-shown.sync="isDrawerShown">
-        <template v-if="isUpdateMode">
+        <template v-if="isAssetFormShown">
           <template slot="heading">
             {{ 'assets.update-drawer-title' | globalize }}
           </template>
 
-          <update-asset-form-module
-            :asset-code="selectedAsset.code"
-            @submitted="closeDrawerAndUpdateList()"
+          <asset-form
+            :former="former"
+            @submitted="onAssetUpdate"
           />
         </template>
 
@@ -35,7 +35,7 @@
               :is-account-corporate="isAccountCorporate"
               :kyc-required-asset-type="kycRequiredAssetType"
               :security-asset-type="securityAssetType"
-              @update-click="isUpdateMode = true"
+              @update-click="showUpdateForm"
               @balance-added="loadAssets() || (isDrawerShown = false)"
             />
           </div>
@@ -47,7 +47,7 @@
           <template v-for="asset in assets">
             <card-viewer
               :asset="asset"
-              :balance="getAssetBalance(asset)"
+              :balance="accountBalanceByCode(asset.code).balance"
               :key="asset.code"
               @click="selectAsset(asset)"
             />
@@ -86,7 +86,7 @@ import AssetAttributesViewer from '../../shared/components/asset-attributes-view
 import AssetActions from './asset-actions'
 import AssetSkeletonLoader from './asset-skeleton-loader'
 
-import UpdateAssetFormModule from '@modules/update-asset-form'
+import AssetForm from '@/vue/forms/AssetForm'
 
 import { mapGetters, mapActions } from 'vuex'
 import { types } from '../store/types'
@@ -94,6 +94,7 @@ import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import UpdateList from '@/vue/mixins/update-list.mixin'
+import { AssetFormer } from '@/js/formers/AssetFormer'
 
 export default {
   name: 'assets-renderer',
@@ -103,7 +104,7 @@ export default {
     CardViewer,
     AssetAttributesViewer,
     AssetActions,
-    UpdateAssetFormModule,
+    AssetForm,
     AssetSkeletonLoader,
   },
 
@@ -136,8 +137,9 @@ export default {
     isLoaded: false,
     isLoadFailed: false,
     isDrawerShown: false,
-    isUpdateMode: false,
+    isAssetFormShown: false,
     selectedAsset: {},
+    former: new AssetFormer(),
     itemsPerSkeletonLoader: 3,
   }),
 
@@ -146,6 +148,7 @@ export default {
       assetsAll: vuexTypes.assets,
       assetsByOwner: vuexTypes.assetsByOwner,
       accountBalances: vuexTypes.accountBalances,
+      accountBalanceByCode: vuexTypes.accountBalanceByCode,
     }),
 
     ...mapGetters('asset-explorer', {
@@ -196,17 +199,16 @@ export default {
 
     selectAsset (asset) {
       this.selectedAsset = asset
-      this.isUpdateMode = false
+      this.isAssetFormShown = false
       this.isDrawerShown = true
     },
 
-    getAssetBalance (asset) {
-      const balanceRecord = this.accountBalances
-        .find(b => b.asset.code === asset.code)
-      return balanceRecord ? balanceRecord.balance : ''
+    showUpdateForm () {
+      this.former = new AssetFormer(this.selectedAsset)
+      this.isAssetFormShown = true
     },
 
-    closeDrawerAndUpdateList () {
+    onAssetUpdate () {
       this.isDrawerShown = false
       this.emitUpdateList('assets:updateList')
     },

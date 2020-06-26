@@ -9,6 +9,24 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Smart App Banner
+- Formers - guys that collect attributes:
+  - Migrate the asset creation/update and asset request creation/update to
+    the formers
+  - Merge asset create and asset update requests into a single record -
+    `AssetRequest`
+  - Merge asset create and asset update form into a single form - `AssetForm`
+- Add `jsconfig.json`
+- Proxy `config` (`$config`) and `vueRoutes` (`$routes`) in Vue.prototype
+  for easier access from the templates
+
+#### Change
+- `DocumentContainer`:
+  - Add `isDoc()` method that checks whether the provided value looks like a doc
+  - Add `fromObj()` method that creates a new `DocumentContainer` from an
+    object. Or returns `null` if the creation is impossible.
+- Enabled vue-devtools for 'development' env
+- Used common `STELLAR_TYPES` instead of the duplicated one
+- Split advanced step of the asset form into small sections
 
 #### Changed
 - Hide 'Atomic swaps'

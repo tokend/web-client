@@ -33,7 +33,7 @@ import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
 import SkeletonLoaderField from '@/vue/common/skeleton-loader/SkeletonLoaderField'
 
 export default {
-  name: 'skeleton-loader-step-form',
+  name: 'step-skeleton-loader',
   components: {
     SkeletonLoader,
     SkeletonLoaderField,

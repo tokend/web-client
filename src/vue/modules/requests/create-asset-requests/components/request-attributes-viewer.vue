@@ -174,20 +174,14 @@
 </template>
 
 <script>
-import { CreateAssetRequest } from '../wrappers/create-asset-request'
-
+import { AssetRequest } from '@/js/records/requests/asset-request.record'
+import { STELLAR_TYPES } from '@/js/const/asset-subtypes.const'
 import { documentsManager } from '@/api'
-
-const STELLAR_TYPES = {
-  creditAlphanum4: 'credit_alphanum4',
-  creditAlphanum12: 'credit_alphanum12',
-  native: 'native',
-}
 
 export default {
   name: 'request-attributes-viewer',
   props: {
-    request: { type: CreateAssetRequest, required: true },
+    request: { type: AssetRequest, required: true },
     kycRequiredAssetType: { type: Number, required: true },
     securityAssetType: { type: Number, required: true },
   },

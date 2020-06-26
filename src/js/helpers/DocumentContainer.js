@@ -5,6 +5,7 @@ import { api } from '@/api'
 
 /**
  * Wrapper to simplify work with documents
+ * @class
  */
 export class DocumentContainer {
   /**
@@ -30,6 +31,16 @@ export class DocumentContainer {
     this._arrayBuffer = []
     this._privateUrl = ''
     this._dataUrl = ''
+  }
+
+  static fromObj (obj) {
+    if (!DocumentContainer.isDoc(obj)) return null
+    return new DocumentContainer(obj)
+  }
+
+  static isDoc (obj) {
+    if (!(obj && typeof obj === 'object')) return false
+    return Boolean(obj.file || obj.key)
   }
 
   getDetailsForSave () {

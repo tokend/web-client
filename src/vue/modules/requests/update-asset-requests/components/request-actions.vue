@@ -34,7 +34,7 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { UpdateAssetRequest } from '../wrappers/update-asset-request'
+import { AssetRequest } from '@/js/records/requests/asset-request.record'
 
 import { mapActions } from 'vuex'
 import { types } from '../store/types'
@@ -52,7 +52,7 @@ export default {
   mixins: [FormMixin],
 
   props: {
-    request: { type: UpdateAssetRequest, required: true },
+    request: { type: AssetRequest, required: true },
   },
 
   data: _ => ({

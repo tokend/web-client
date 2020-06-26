@@ -1,8 +1,8 @@
 <template>
   <form
     novalidate
-    class="app__form information-step-form"
-    @submit.prevent="isFormValid() && $emit(EVENTS.submit, form)"
+    class="app__form basic-step"
+    @submit.prevent="next"
   >
     <div class="app__form-row">
       <div class="app__form-field">
@@ -10,8 +10,8 @@
           white-autofill
           v-model="form.name"
           @blur="touchField('form.name')"
-          name="update-asset-name"
-          :label="'update-asset-form.name-lbl' | globalize"
+          name="create-asset-name"
+          :label="'asset-form.name-lbl' | globalize"
           :error-message="getFieldErrorMessage(
             'form.name',
             { length: NAME_MAX_LENGTH }
@@ -21,13 +21,28 @@
       </div>
     </div>
 
+    <template v-if="former.isCreateOpBuilder">
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.code"
+            @blur="touchField('form.code')"
+            name="create-asset-code"
+            :label="'asset-form.code-lbl' | globalize"
+            :error-message="getFieldErrorMessage('form.code')"
+          />
+        </div>
+      </div>
+    </template>
+
     <div class="app__form-row">
       <div class="app__form-field">
         <tick-field
           v-model="form.policies"
           :cb-value="ASSET_POLICIES.transferable"
         >
-          {{ 'update-asset-form.transferable-lbl' | globalize }}
+          {{ 'asset-form.transferable-lbl' | globalize }}
         </tick-field>
       </div>
     </div>
@@ -38,7 +53,7 @@
           v-model="form.policies"
           :cb-value="ASSET_POLICIES.withdrawable"
         >
-          {{ 'update-asset-form.withdrawable-lbl' | globalize }}
+          {{ 'asset-form.withdrawable-lbl' | globalize }}
         </tick-field>
       </div>
     </div>
@@ -49,7 +64,7 @@
           v-model="form.policies"
           :cb-value="ASSET_POLICIES.canBeBaseInAtomicSwap"
         >
-          {{ 'update-asset-form.can-be-base-in-atomic-swap-lbl' | globalize }}
+          {{ 'asset-form.can-be-base-in-atomic-swap-lbl' | globalize }}
         </tick-field>
       </div>
     </div>
@@ -60,7 +75,7 @@
           v-model="form.policies"
           :cb-value="ASSET_POLICIES.canBeQuoteInAtomicSwap"
         >
-          {{ 'update-asset-form.can-be-quote-in-atomic-swap-lbl' | globalize }}
+          {{ 'asset-form.can-be-quote-in-atomic-swap-lbl' | globalize }}
         </tick-field>
       </div>
     </div>
@@ -68,12 +83,14 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <file-field
-          name="update-asset-logo"
+          name="create-asset-logo"
           v-model="form.logo"
-          :note="'update-asset-form.logo-note' | globalize"
+          :note="'asset-form.logo-note' | globalize"
           :file-extensions="['jpg', 'png']"
           :document-type="DOCUMENT_TYPES.assetLogo"
-          :label="'update-asset-form.logo-lbl' | globalize"
+          :label="'asset-form.logo-lbl' | globalize"
+          :min-width="120"
+          :min-height="120"
         />
       </div>
     </div>
@@ -82,9 +99,9 @@
       <button
         v-ripple
         type="submit"
-        class="app__button-raised information-step-form__btn"
+        class="app__button-raised basic-step__btn"
       >
-        {{ 'update-asset-form.next-btn' | globalize }}
+        {{ 'asset-form.next-btn' | globalize }}
       </button>
     </div>
   </form>
@@ -96,37 +113,34 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { ASSET_POLICIES } from '@tokend/js-sdk'
 
-import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+import { required, maxLength, assetCode } from '@validators'
 
-import { UpdateAssetRequest } from '../wrappers/update-asset-request'
-import { Asset } from '../wrappers/asset'
-
-import { required, maxLength } from '@validators'
-
-const EVENTS = {
-  submit: 'submit',
-}
+import { AssetFormer } from '@/js/formers/AssetFormer'
 
 const NAME_MAX_LENGTH = 255
 
 export default {
-  name: 'information-step-form',
+  name: 'basic-step',
+
   mixins: [FormMixin],
+
   props: {
-    record: { type: [UpdateAssetRequest, Asset], required: true },
+    former: { type: AssetFormer, required: true },
   },
 
-  data: _ => ({
-    form: {
-      name: '',
-      logo: null,
-      policies: 0,
-    },
-    ASSET_POLICIES,
-    DOCUMENT_TYPES,
-    NAME_MAX_LENGTH,
-    EVENTS,
-  }),
+  data () {
+    return {
+      form: {
+        name: this.former.attrs.name || '',
+        code: this.former.attrs.code || '',
+        logo: this.former.attrs.logo || null,
+        policies: this.former.attrs.policies || 0,
+      },
+      ASSET_POLICIES,
+      DOCUMENT_TYPES,
+      NAME_MAX_LENGTH,
+    }
+  },
 
   validations () {
     return {
@@ -135,25 +149,24 @@ export default {
           required,
           maxLength: maxLength(NAME_MAX_LENGTH),
         },
+        code: {
+          required,
+          assetCode,
+        },
       },
     }
   },
 
-  created () {
-    if (this.record) {
-      this.populateForm()
-    }
-  },
-
   methods: {
-    populateForm () {
-      this.form = {
-        name: this.record.name,
-        logo: this.record.logoKey
-          ? new DocumentContainer(this.record.logo)
-          : null,
-        policies: this.record.policy,
-      }
+    next () {
+      if (!this.isFormValid()) return
+      this.former.mergeAttrs({
+        name: this.form.name,
+        code: this.form.code,
+        logo: this.form.logo,
+        policies: this.form.policies,
+      })
+      this.$emit('next')
     },
   },
 }
@@ -162,7 +175,7 @@ export default {
 <style lang="scss" scoped>
 @import '@/vue/forms/_app-form';
 
-.information-step-form__btn {
+.basic-step__btn {
   max-width: 14.4rem;
   width: 100%;
 }

@@ -261,14 +261,8 @@
 import LogoViewer from './logo-viewer'
 import TermsViewer from './terms-viewer'
 import EmailGetter from '@/vue/common/EmailGetter'
-
+import { STELLAR_TYPES } from '@/js/const/asset-subtypes.const'
 import { AssetRecord } from '@/js/records/entities/asset.record'
-
-const STELLAR_TYPES = {
-  creditAlphanum4: 'credit_alphanum4',
-  creditAlphanum12: 'credit_alphanum12',
-  native: 'native',
-}
 
 export default {
   name: 'asset-attributes-viewer',

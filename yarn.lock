@@ -894,10 +894,10 @@
     error-stack-parser "^2.0.0"
     string-width "^2.0.0"
 
-"@tokend/js-sdk@1.12.1":
-  version "1.12.1"
-  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.12.1.tgz#5b1fc4ddb1dd72123d26308e19e05a637692e7c8"
-  integrity sha512-2lDv+uWe7OfmtRkXeUueuyOsYVgw2YEGufGO3GwHDK0VeBtrlWSM8bouWFa+Um1lhFH7b92I+lySX96rpaqtqw==
+"@tokend/js-sdk@1.13.1-rc.0":
+  version "1.13.1-rc.0"
+  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.13.1-rc.0.tgz#4fcaca3f9d269cc3302373975c27251489e9b2a2"
+  integrity sha512-QA4pmB+q1YcQ6UK0+cJ0ke9js04K3d+rFgKNtp7pKjy50/FTXOeWzYhaJJpTTi/QYK5+HgwjulopPyqndZmr5g==
   dependencies:
     axios "0.19.0"
     base32.js "0.1.0"

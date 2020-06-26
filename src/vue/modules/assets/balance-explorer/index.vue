@@ -2,14 +2,14 @@
   <div class="balance-explorer">
     <template>
       <drawer :is-shown.sync="isDrawerShown">
-        <template v-if="isUpdateMode">
+        <template v-if="isAssetFormShown">
           <template slot="heading">
             {{ 'assets.update-drawer-title' | globalize }}
           </template>
 
-          <update-asset-form-module
-            :asset-code="selectedBalance.asset.code"
-            @submitted="closeDrawerAndUpdateList()"
+          <asset-form
+            :former="former"
+            @submitted="onAssetUpdate"
           />
         </template>
 
@@ -28,7 +28,7 @@
             v-if="selectedBalance.asset.owner === accountId"
             v-ripple
             class="app__button-raised balance-explorer__update-btn"
-            @click="isUpdateMode = true"
+            @click="showUpdateForm"
           >
             {{ 'assets.update-btn' | globalize }}
           </button>
@@ -36,9 +36,7 @@
       </drawer>
 
       <div class="balance-explorer__asset-list-wrp">
-        <div
-          class="balance-explorer__asset-list"
-        >
+        <div class="balance-explorer__asset-list">
           <template v-for="item in accountBalances">
             <card-viewer
               :asset="item.asset"
@@ -80,13 +78,14 @@ import CardViewer from '../shared/components/card-viewer'
 import AssetAttributesViewer from '../shared/components/asset-attributes-viewer'
 import BalanceSkeletonLoader from './components/balance-skeleton-loader'
 
-import UpdateAssetFormModule from '@modules/update-asset-form'
+import AssetForm from '@/vue/forms/AssetForm'
 
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import UpdateList from '@/vue/mixins/update-list.mixin'
+import { AssetFormer } from '@/js/formers/AssetFormer'
 
 export default {
   name: 'balance-explorer',
@@ -95,7 +94,7 @@ export default {
     NoDataMessage,
     CardViewer,
     AssetAttributesViewer,
-    UpdateAssetFormModule,
+    AssetForm,
     BalanceSkeletonLoader,
   },
 
@@ -105,10 +104,11 @@ export default {
     isLoaded: false,
     isLoadFailed: false,
     isDrawerShown: false,
-    isUpdateMode: false,
+    isAssetFormShown: false,
     selectedBalance: {
       asset: {},
     },
+    former: new AssetFormer(),
     itemsPerSkeletonLoader: 3,
   }),
 
@@ -148,11 +148,16 @@ export default {
 
     selectBalance (balance) {
       this.selectedBalance = balance
-      this.isUpdateMode = false
+      this.isAssetFormShown = false
       this.isDrawerShown = true
     },
 
-    closeDrawerAndUpdateList () {
+    showUpdateForm () {
+      this.former = new AssetFormer(this.selectedBalance.asset)
+      this.isAssetFormShown = true
+    },
+
+    onAssetUpdate () {
       this.isDrawerShown = false
       this.emitUpdateList('assets:updateList')
     },

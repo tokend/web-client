@@ -13,25 +13,3 @@ export const STELLAR_TYPES = {
   creditAlphanum12: 'credit_alphanum12',
   native: 'native',
 }
-
-export const STELLAR_ASSET_TYPES = [
-  {
-    translationId: 'create-asset-form.alphanumeric-4-lbl',
-    value: STELLAR_TYPES.creditAlphanum4,
-  },
-  {
-    translationId: 'create-asset-form.alphanumeric-12-lbl',
-    value: STELLAR_TYPES.creditAlphanum12,
-  },
-  {
-    translationId: 'create-asset-form.native-lbl',
-    value: STELLAR_TYPES.native,
-  },
-]
-export const CREDIT_ALPHANUM4_MAX_LENGTH = 4
-
-export const CREDIT_ALPHANUM12_MIN_LENGTH = 5
-
-export const CREDIT_ALPHANUM12_MAX_LENGTH = 12
-
-export const NATIVE_XLM_TYPE = 'XLM'
