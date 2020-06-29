@@ -79,7 +79,6 @@ export default {
       storeWallet: vuexTypes.STORE_WALLET,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
       loadKyc: vuexTypes.LOAD_KYC,
-      loadKvEntries: vuexTypes.LOAD_KV_ENTRIES,
       loadWallet: vuexTypes.LOAD_WALLET,
     }),
     handleChildFormSubmit (form) {
@@ -133,7 +132,6 @@ export default {
             },
           })
         }
-        this.loadKvEntries()
       } catch (e) {
         ErrorHandler.process(e)
       }

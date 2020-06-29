@@ -124,7 +124,6 @@ export default {
 
   methods: {
     ...mapActions({
-      loadKvEntries: vuexTypes.LOAD_KV_ENTRIES,
       loadAssets: vuexTypes.LOAD_ASSETS,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
       decryptSecretSeed: vuexTypes.DECRYPT_SECRET_SEED,
@@ -142,7 +141,6 @@ export default {
       const { data: networkDetails } = await api.getRaw('/')
       api.useNetworkDetails(networkDetails)
 
-      await this.loadKvEntries()
       await keyValues.load()
 
       if (this[vuexTypes.isLoggedIn]) {

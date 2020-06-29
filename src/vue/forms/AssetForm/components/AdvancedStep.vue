@@ -79,8 +79,6 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import { AssetFormer } from '@/js/formers/AssetFormer'
-import { vuexTypes } from '@/vuex'
-import { mapGetters } from 'vuex'
 import IssuanceSection from './IssuanceSection'
 import PermissionsSection from './PermissionsSection'
 import StellarSection from './StellarSection'

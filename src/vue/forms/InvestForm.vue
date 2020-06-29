@@ -220,7 +220,7 @@ import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
 import { MathUtil } from '@/js/utils'
-import { keyValues } from '../../key-values'
+import { keyValues } from '@/key-values'
 
 const EVENTS = {
   submitted: 'submitted',

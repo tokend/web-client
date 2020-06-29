@@ -79,7 +79,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import config from '@/config'
-import { keyValues } from '../../key-values'
+import { keyValues } from '@/key-values'
 
 // The guard doesn't allow the user to visit a verification page
 // if he/she has already sent the verification request, and the admin

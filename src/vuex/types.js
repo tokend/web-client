@@ -3,24 +3,6 @@ const mutations = {
   CLEAR_STATE: 'CLEAR_STATE',
   POP_STATE: 'POP_STATE',
 
-  // key-value
-  SET_KV_ENTRY_GENERAL_ROLE_ID: 'SET_KV_ENTRY_GENERAL_ROLE_ID',
-  SET_KV_ENTRY_CORPORATE_ROLE_ID: 'SET_KV_ENTRY_CORPORATE_ROLE_ID',
-  SET_KV_ENTRY_UNVERIFIED_ROLE_ID: 'SET_KV_ENTRY_UNVERIFIED_ROLE_ID',
-  SET_KV_ENTRY_BLOCKED_ROLE_ID: 'SET_KV_ENTRY_BLOCKED_ROLE_ID',
-  SET_KV_ENTRY_US_VERIFIED_ROLE_ID: 'SET_KV_ENTRY_US_VERIFIED_ROLE_ID',
-  SET_KV_ENTRY_US_ACCREDITED_ROLE_ID: 'SET_KV_ENTRY_US_ACCREDITED_ROLE_ID',
-  SET_KV_ASSET_TYPE_DEFAULT: 'SET_KV_ASSET_TYPE_DEFAULT',
-  SET_KV_ASSET_TYPE_KYC_REQUIRED: 'SET_KV_ASSET_TYPE_KYC_REQUIRED',
-  SET_KV_ASSET_TYPE_SECURITY: 'SET_KV_ASSET_TYPE_SECURITY',
-  SET_KV_POLL_TYPE_RESTRICTED: 'SET_KV_POLL_TYPE_RESTRICTED',
-  SET_KV_POLL_TYPE_UNRESTRICTED: 'SET_KV_POLL_TYPE_UNRESTRICTED',
-
-  SET_DEFAULT_QUOTE_ASSET: 'SET_DEFAULT_QUOTE_ASSET',
-  SET_KV_DEFAULT_SIGNER_ROLE_ID: 'SET_KV_DEFAULT_SIGNER_ROLE_ID',
-  SET_KV_ISSUANCE_SIGNER_ROLE_ID: 'SET_KV_ISSUANCE_SIGNER_ROLE_ID',
-  SET_KV_BRIDGES_ENABLED: 'SET_KV_BRIDGES_ENABLED',
-
   // account
   SET_ACCOUNT: 'SET_ACCOUNT',
   SET_ACCOUNT_BALANCES_DETAILS: 'SET_ACCOUNT_BALANCES_DETAILS',
@@ -59,10 +41,6 @@ const actions = {
   LOG_OUT: 'LOG_OUT',
   LOG_IN: 'LOG_IN',
   RESTORE_SESSION: 'RESTORE_SESSION',
-
-  // key-value
-  LOAD_KV_ENTRIES: 'LOAD_KV_ENTRIES',
-  LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS: 'LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS',
 
   // account
   LOAD_ACCOUNT: 'LOAD_ACCOUNT',
@@ -109,23 +87,6 @@ const actions = {
 const getters = {
   // root
   isLoggedIn: 'isLoggedIn',
-
-  // key-values
-  kvEntryGeneralRoleId: 'kvEntryGeneralRoleId',
-  kvEntryCorporateRoleId: 'kvEntryCorporateRoleId',
-  kvEntryUnverifiedRoleId: 'kvEntryUnverifiedRoleId',
-  kvEntryBlockedRoleId: 'kvEntryBlockedRoleId',
-  kvEntryUsVerifiedRoleId: 'kvEntryUsVerifiedRoleId',
-  kvEntryUsAccreditedRoleId: 'kvEntryUsAccreditedRoleId',
-  kvAssetTypeDefault: 'kvAssetTypeDefault',
-  kvAssetTypeKycRequired: 'kvAssetTypeKycRequired',
-  kvAssetTypeSecurity: 'kvAssetTypeSecurity',
-  kvPollTypeRestricted: 'kvPollTypeRestricted',
-  kvPollTypeUnrestricted: 'kvPollTypeUnrestricted',
-  defaultQuoteAsset: 'defaultQuoteAsset',
-  kvDefaultSignerRoleId: 'kvDefaultSignerRoleId',
-  kvIssuanceSignerRoleId: 'kvIssuanceSignerRoleId',
-  kvBridgesEnabled: 'kvBridgesEnabled',
 
   // account
   account: 'account',
@@ -203,6 +164,7 @@ const getters = {
   transferableBalancesAssets: 'transferableBalancesAssets',
   withdrawableBalancesAssets: 'withdrawableBalancesAssets',
   statsQuoteAsset: 'statsQuoteAsset',
+  defaultQuoteAsset: 'defaultQuoteAsset',
   ownedAssets: 'ownedAssets',
   ownedBalancesAssets: 'ownedBalancesAssets',
   baseAtomicSwapBalancesAssets: 'baseAtomicSwapBalancesAssets',

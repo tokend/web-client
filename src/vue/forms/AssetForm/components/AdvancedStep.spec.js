@@ -10,6 +10,7 @@ import { AssetFormer } from '@/js/formers/AssetFormer'
 
 const localVue = createLocalVue()
 localVue.use(Vuelidate)
+localVue.prototype.$kv = {}
 localVue.filter('globalize', sinon.stub())
 localVue.directive('ripple', sinon.stub())
 

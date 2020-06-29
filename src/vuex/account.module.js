@@ -2,7 +2,7 @@ import _get from 'lodash/get'
 import { vuexTypes } from './types'
 import { api } from '../api'
 import { BalanceRecord } from '@/js/records/entities/balance.record'
-import { keyValues } from '../key-values'
+import { keyValues } from '@/key-values'
 
 export const state = {
   account: {},

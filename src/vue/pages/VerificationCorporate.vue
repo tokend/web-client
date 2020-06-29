@@ -158,7 +158,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import { required, validateUrl, integer, minValue } from '@validators'
-import { keyValues } from '../../key-values'
+import { keyValues } from '@/key-values'
 
 const MIN_TEAM_SIZE = 1
 

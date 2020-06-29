@@ -7,7 +7,6 @@ import factors from './factors.module'
 import wallet from './wallet.module'
 import kyc from './kyc.module'
 import identities from './identities.module'
-import keyValue from './key-value.module'
 import kycRecovery from './kyc-recovery.module'
 import assetExplorer from '@/vue/modules/assets/asset-explorer/store'
 import fees from '@/vue/modules/fees/store'
@@ -40,7 +39,6 @@ export const rootModule = {
     async [vuexTypes.LOG_IN] ({ getters, dispatch }, { email, password }) {
       await dispatch(vuexTypes.LOAD_WALLET, { email, password })
       await dispatch(vuexTypes.LOAD_ACCOUNT, getters[vuexTypes.walletAccountId])
-      await dispatch(vuexTypes.LOAD_KV_ENTRIES)
 
       const isKycRecoveryInProgress = getters[vuexTypes.isKycRecoveryInProgress]
       if (!isKycRecoveryInProgress) {
@@ -91,7 +89,6 @@ function buildStore () {
       wallet,
       kyc,
       identities,
-      keyValue,
       idleHandler,
       kycRecovery,
       'asset-explorer': assetExplorer,
