@@ -89,7 +89,7 @@ export const getters = {
       .filter(item => item.isWithdrawable),
   [vuexTypes.statsQuoteAsset]: (a, getters, b, rootGetters) =>
     rootGetters[vuexTypes.assets]
-      .filter(item => item.isStatsQuoteAsset)[0] || {},
+      .find(item => item.isStatsQuoteAsset) || {},
   [vuexTypes.defaultQuoteAsset]: (a, getters, b, rootGetters) =>
     rootGetters[vuexTypes.statsQuoteAsset].code,
   [vuexTypes.ownedBalancesAssets]: (a, getters, b, rootGetters) =>

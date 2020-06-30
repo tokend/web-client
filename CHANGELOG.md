@@ -37,7 +37,7 @@ for further information about branching and tagging conventions.
 - Stretching mobile sidebar
 
 #### Removed
-- Purged old key-value module
+- Old key-value module
 
 ## [1.12.0-rc.6] - 2020-06-09
 #### Fixed

@@ -72,7 +72,7 @@ export const actions = {
       signers: [
         {
           publicKey: rootGetters[vuexTypes.walletPublicKey],
-          roleID: String(rootGetters[keyValues.defaultSignerRoleId]),
+          roleID: String(keyValues.defaultSignerRoleId),
           weight: '1000',
           identity: '1',
           details: {},
