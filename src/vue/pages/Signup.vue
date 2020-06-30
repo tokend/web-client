@@ -40,6 +40,7 @@ import { walletsManager, api } from '@/api'
 import { vueRoutes } from '@/vue-router/routes'
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { keyValues } from '@/key-values'
 
 export default {
   name: 'signup',
@@ -58,8 +59,6 @@ export default {
   computed: {
     ...mapGetters({
       walletAccountId: vuexTypes.walletAccountId,
-      kvBridgesEnabled: vuexTypes.kvBridgesEnabled,
-      kvIssuanceSignerRoleId: vuexTypes.kvIssuanceSignerRoleId,
     }),
 
     isInviteVerificationInfoExists () {
@@ -80,7 +79,6 @@ export default {
       storeWallet: vuexTypes.STORE_WALLET,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
       loadKyc: vuexTypes.LOAD_KYC,
-      loadKvEntries: vuexTypes.LOAD_KV_ENTRIES,
       loadWallet: vuexTypes.LOAD_WALLET,
     }),
     handleChildFormSubmit (form) {
@@ -134,7 +132,6 @@ export default {
             },
           })
         }
-        this.loadKvEntries()
       } catch (e) {
         ErrorHandler.process(e)
       }
@@ -151,10 +148,10 @@ export default {
       })
       signers.push(recoverySigner)
 
-      if (this.kvBridgesEnabled) {
+      if (keyValues.bridgesEnabled > 0) {
         const issuanceSigner = new Signer({
           id: api.networkDetails.masterAccountId,
-          roleId: Number(this.kvIssuanceSignerRoleId),
+          roleId: keyValues.issuanceSignerRoleId,
           weight: 1000,
           identity: 1,
         })

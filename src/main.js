@@ -31,6 +31,7 @@ import { cropAddress } from '@/vue/filters/cropAddress'
 import { ErrorTracker } from '@/js/helpers/error-tracker'
 import { vueRoutes } from './vue-router/routes'
 import { useBrowserUpdateBanner } from './browser-update'
+import { keyValues } from '@/key-values'
 
 async function init () {
   useBrowserUpdateBanner(Vue)
@@ -65,6 +66,7 @@ async function init () {
   Vue.filter('cropAddress', cropAddress)
   Vue.prototype.$config = config
   Vue.prototype.$routes = vueRoutes
+  Vue.prototype.$kv = keyValues
 
   const store = buildStore()
 

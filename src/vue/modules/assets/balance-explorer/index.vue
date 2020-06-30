@@ -20,8 +20,6 @@
           <asset-attributes-viewer
             :asset="selectedBalance.asset"
             :balance="selectedBalance.balance"
-            :kyc-required-asset-type="kvAssetTypeKycRequired"
-            :security-asset-type="kvAssetTypeSecurity"
           />
 
           <button
@@ -115,8 +113,6 @@ export default {
   computed: {
     ...mapGetters([
       vuexTypes.accountId,
-      vuexTypes.kvAssetTypeKycRequired,
-      vuexTypes.kvAssetTypeSecurity,
       vuexTypes.defaultQuoteAsset,
       vuexTypes.accountBalances,
     ]),

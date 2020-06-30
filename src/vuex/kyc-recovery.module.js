@@ -6,6 +6,7 @@ import { base } from '@tokend/js-sdk'
 import safeGet from 'lodash/get'
 import { KYC_RECOVERY_STATES } from '@/js/const/kyc-recovery-states.const'
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
+import { keyValues } from '@/key-values'
 
 export const state = {
   request: {},
@@ -71,7 +72,7 @@ export const actions = {
       signers: [
         {
           publicKey: rootGetters[vuexTypes.walletPublicKey],
-          roleID: String(rootGetters[vuexTypes.kvDefaultSignerRoleId]),
+          roleID: String(keyValues.defaultSignerRoleId),
           weight: '1000',
           identity: '1',
           details: {},

@@ -55,8 +55,7 @@
 
 <script>
 import { PollRequest } from '../wrappers/poll-request'
-import { mapGetters } from 'vuex'
-import { vuexTypes } from '@/vuex'
+import { keyValues } from '@/key-values'
 
 const QUESTION_MAX_LEN = 20
 
@@ -66,10 +65,6 @@ export default {
     request: { type: PollRequest, required: true },
   },
   computed: {
-    ...mapGetters({
-      restrictedPollType: vuexTypes.kvPollTypeRestricted,
-      unrestrictedPollType: vuexTypes.kvPollTypeUnrestricted,
-    }),
     isQuestionMaxLen () {
       return this.request.question.length >= QUESTION_MAX_LEN
     },
@@ -77,11 +72,11 @@ export default {
       let translationId
 
       switch (this.request.permissionType) {
-        case this.restrictedPollType:
+        case keyValues.restrictedPollType:
           translationId = 'poll-requests.restricted-type-desc'
           break
 
-        case this.unrestrictedPollType:
+        case keyValues.unrestrictedPollType:
           translationId = 'poll-requests.unrestricted-type-desc'
           break
 

@@ -147,11 +147,11 @@
               {{ 'assets.asset-type' | globalize }}
             </td>
             <td>
-              <template v-if="asset.assetType === kvAssetTypeKycRequired">
+              <template v-if="asset.assetType === $kv.assetTypeKycRequired">
                 {{ 'asset-details.verification-required-title' | globalize }}
               </template>
 
-              <template v-else-if="asset.assetType === kvAssetTypeSecurity">
+              <template v-else-if="asset.assetType === $kv.assetTypeSecurity">
                 {{ 'asset-details.security-asset-title' | globalize }}
               </template>
 
@@ -166,7 +166,7 @@
               {{ 'asset-details.requires-kyc-title' | globalize }}
             </td>
             <td>
-              <template v-if="asset.assetType === kvAssetTypeKycRequired">
+              <template v-if="asset.assetType === $kv.assetTypeKycRequired">
                 {{ 'asset-details.present-msg' | globalize }}
               </template>
 
@@ -328,8 +328,6 @@ export default {
     ...mapGetters({
       accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
-      kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
-      kvAssetTypeSecurity: vuexTypes.kvAssetTypeSecurity,
       isAccountUnverified: vuexTypes.isAccountUnverified,
       isAccountCorporate: vuexTypes.isAccountCorporate,
     }),

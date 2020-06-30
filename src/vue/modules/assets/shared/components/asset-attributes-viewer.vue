@@ -137,11 +137,11 @@
               {{ 'assets.asset-type' | globalize }}
             </td>
             <td>
-              <template v-if="asset.assetType === kycRequiredAssetType">
+              <template v-if="asset.assetType === $kv.assetTypeKycRequired">
                 {{ 'assets.verification-required-title' | globalize }}
               </template>
 
-              <template v-else-if="asset.assetType === securityAssetType">
+              <template v-else-if="asset.assetType === $kv.assetTypeSecurity">
                 {{ 'assets.security-asset-title' | globalize }}
               </template>
 
@@ -274,8 +274,6 @@ export default {
   props: {
     asset: { type: AssetRecord, required: true },
     balance: { type: String, default: '' },
-    kycRequiredAssetType: { type: Number, required: true },
-    securityAssetType: { type: Number, required: true },
   },
   computed: {
     stellarAssetTypeTranslated () {

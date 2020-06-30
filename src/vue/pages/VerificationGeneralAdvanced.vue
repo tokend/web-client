@@ -18,6 +18,7 @@ import { vuexTypes } from '@/vuex'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import { Bus } from '@/js/helpers/event-bus'
+import { keyValues } from '@/key-values'
 
 export default {
   name: 'verification-general-2',
@@ -29,10 +30,6 @@ export default {
       kycState: vuexTypes.kycState,
       kycRequestId: vuexTypes.kycRequestId,
       kycLatestRequestBlobId: vuexTypes.kycLatestRequestBlobId,
-
-      kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
-      kvEntryUsVerifiedRoleId: vuexTypes.kvEntryUsVerifiedRoleId,
-      kvEntryUsAccreditedRoleId: vuexTypes.kvEntryUsAccreditedRoleId,
 
       isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
       accountRoleToSet: vuexTypes.kycAccountRoleToSet,
@@ -49,11 +46,11 @@ export default {
     },
     isFormPopulatable () {
       return this.isAccountRoleReseted
-        ? this.previousAccountRole === this.kvEntryGeneralRoleId
+        ? this.previousAccountRole === keyValues.generalRoleId
         : (
-          this.accountRoleToSet === this.kvEntryGeneralRoleId ||
-          this.accountRoleToSet === this.kvEntryUsAccreditedRoleId ||
-          this.accountRoleToSet === this.kvEntryUsVerifiedRoleId
+          this.accountRoleToSet === keyValues.generalRoleId ||
+          this.accountRoleToSet === keyValues.usAccreditedRoleId ||
+          this.accountRoleToSet === keyValues.usVerifiedRoleId
         )
     },
   },

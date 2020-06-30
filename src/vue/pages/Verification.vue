@@ -34,7 +34,7 @@
             :to="vueRoutes.verificationCorporate"
             class="account-type-selector__item"
             :disabled="kycState && kycAccountRole &&
-              kycAccountRole !== kvEntryCorporateRoleId &&
+              kycAccountRole !== $kv.corporateRoleId &&
               kycState !== REQUEST_STATES_STR.permanentlyRejected"
           >
             <p class="account-type-selector__item-title">
@@ -79,6 +79,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import config from '@/config'
+import { keyValues } from '@/key-values'
 
 // The guard doesn't allow the user to visit a verification page
 // if he/she has already sent the verification request, and the admin
@@ -92,25 +93,19 @@ import config from '@/config'
 function verificationGuard (to, from, next) {
   const kycState = store.getters[vuexTypes.kycState]
   const kycAccountRole = store.getters[vuexTypes.kycAccountRoleToSet]
-  const kvEntryCorporateRoleId = store.getters[vuexTypes.kvEntryCorporateRoleId]
-  const kvEntryUsVerifiedRoleId =
-    store.getters[vuexTypes.kvEntryUsVerifiedRoleId]
-  const kvEntryUsAccreditedRoleId =
-    store.getters[vuexTypes.kvEntryUsAccreditedRoleId]
-  const kvEntryGeneralRoleId = store.getters[vuexTypes.kvEntryGeneralRoleId]
 
   if (!kycState || kycState === REQUEST_STATES_STR.permanentlyRejected) {
     next()
   } else {
     switch (kycAccountRole) {
-      case kvEntryCorporateRoleId:
+      case keyValues.corporateRoleId:
         to.name === vueRoutes.verificationCorporate.name
           ? next()
           : next(vueRoutes.verificationCorporate)
         break
-      case kvEntryGeneralRoleId:
-      case kvEntryUsVerifiedRoleId:
-      case kvEntryUsAccreditedRoleId:
+      case keyValues.generalRoleId:
+      case keyValues.usVerifiedRoleId:
+      case keyValues.usAccreditedRoleId:
         to.name === vueRoutes.verificationGeneral.name
           ? next()
           : next(vueRoutes.verificationGeneral)
@@ -144,18 +139,13 @@ export default {
 
       kycState: vuexTypes.kycState,
       kycAccountRole: vuexTypes.kycAccountRoleToSet,
-
-      kvEntryCorporateRoleId: vuexTypes.kvEntryCorporateRoleId,
-      kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
-      kvEntryUsVerifiedRoleId: vuexTypes.kvEntryUsVerifiedRoleId,
-      kvEntryUsAccreditedRoleId: vuexTypes.kvEntryUsAccreditedRoleId,
     }),
 
     isKycTypeGeneral () {
       const generalTypeRoles = [
-        this.kvEntryGeneralRoleId,
-        this.kvEntryUsVerifiedRoleId,
-        this.kvEntryUsAccreditedRoleId,
+        keyValues.generalRoleId,
+        keyValues.usVerifiedRoleId,
+        keyValues.usAccreditedRoleId,
       ]
 
       return generalTypeRoles.includes(this.kycAccountRole)

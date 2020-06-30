@@ -19,6 +19,7 @@ for further information about branching and tagging conventions.
 - Proxy `config` (`$config`) and `vueRoutes` (`$routes`) in Vue.prototype
   for easier access from the templates
 - Browser update banner — notify the user about outdated browser
+- New `KeyValues` singleton to store key value
 
 #### Change
 - `DocumentContainer`:
@@ -34,6 +35,9 @@ for further information about branching and tagging conventions.
 
 #### Fixed
 - Stretching mobile sidebar
+
+#### Removed
+- Old key-value module
 
 ## [1.12.0-rc.6] - 2020-06-09
 #### Fixed

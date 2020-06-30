@@ -1,11 +1,11 @@
 import { Former } from './Former'
 import config from '@/config'
-import { store, vuexTypes } from '@/vuex/index'
 import { base } from '@tokend/js-sdk'
 import { reqId, doc, str, num } from './op-build-helpers'
 import { AssetRequest } from '@/js/records/requests/asset-request.record'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { uploadDocumentsDeep } from '@/js/helpers/upload-documents'
+import { keyValues } from '@/key-values'
 
 /**
  * @typedef AssetFormerAttrs
@@ -127,7 +127,7 @@ export class AssetFormer extends Former {
   _buildOpCreate () {
     const attrs = this.attrs
 
-    const defaultAssetType = store.getters[vuexTypes.kvAssetTypeDefault]
+    const defaultAssetType = keyValues.assetTypeDefault
     const nullSigner = config.NULL_ASSET_SIGNER
     const maxIssuance = attrs.maxIssuanceAmount || config.MAX_AMOUNT
 
@@ -174,7 +174,7 @@ export class AssetFormer extends Former {
   _getStellarOpts () {
     const stellarIntegration = this.attrs.stellarIntegration || {}
     const isIntegrationEnabled =
-      store.getters[vuexTypes.kvBridgesEnabled] && Boolean(
+      keyValues.bridgesEnabled > 0 && Boolean(
         stellarIntegration.isWithdrawable ||
         stellarIntegration.isDepositable ||
         stellarIntegration.assetType ||
@@ -192,7 +192,7 @@ export class AssetFormer extends Former {
   _getErc20Opts () {
     const erc20Integration = this.attrs.erc20Integration || {}
     const isIntegrationEnabled =
-      store.getters[vuexTypes.kvBridgesEnabled] && Boolean(
+      keyValues.bridgesEnabled > 0 && Boolean(
         erc20Integration.isWithdrawable ||
         erc20Integration.isDepositable ||
         erc20Integration.address

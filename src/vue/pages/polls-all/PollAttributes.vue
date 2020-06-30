@@ -92,8 +92,7 @@
 <script>
 import { PollRecord } from '@/js/records/entities/poll.record'
 import EmailGetter from '@/vue/common/EmailGetter'
-import { mapGetters } from 'vuex'
-import { vuexTypes } from '@/vuex'
+import { keyValues } from '@/key-values'
 
 export default {
   name: 'poll-attributes',
@@ -110,11 +109,6 @@ export default {
   },
 
   computed: {
-    ...mapGetters([
-      vuexTypes.kvPollTypeRestricted,
-      vuexTypes.kvPollTypeUnrestricted,
-    ]),
-
     pollStateTranslated () {
       let translationId
 
@@ -137,11 +131,11 @@ export default {
       let translationId
 
       switch (this.poll.permissionType) {
-        case this.kvPollTypeRestricted:
+        case keyValues.restrictedPollType:
           translationId = 'poll-attributes.permission-type-restricted-val'
           break
 
-        case this.kvPollTypeUnrestricted:
+        case keyValues.unrestrictedPollType:
           translationId = 'poll-attributes.permission-type-unrestricted-val'
           break
 

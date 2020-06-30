@@ -158,6 +158,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import { required, validateUrl, integer, minValue } from '@validators'
+import { keyValues } from '@/key-values'
 
 const MIN_TEAM_SIZE = 1
 
@@ -210,7 +211,6 @@ export default {
 
   computed: {
     ...mapGetters({
-      kvEntryCorporateRoleId: vuexTypes.kvEntryCorporateRoleId,
       isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
       accountRoleToSet: vuexTypes.kycAccountRoleToSet,
       previousAccountRole: vuexTypes.kycPreviousRequestAccountRoleToSet,
@@ -222,8 +222,8 @@ export default {
 
     isFormPopulatable () {
       return this.isAccountRoleReseted
-        ? this.previousAccountRole === this.kvEntryCorporateRoleId
-        : this.accountRoleToSet === this.kvEntryCorporateRoleId
+        ? this.previousAccountRole === keyValues.corporateRoleId
+        : this.accountRoleToSet === keyValues.corporateRoleId
     },
   },
 
@@ -260,7 +260,7 @@ export default {
         } else {
           const operation = this.createKycOperation(
             kycBlobId,
-            this.kvEntryCorporateRoleId
+            keyValues.corporateRoleId,
           )
 
           await api.postOperations(operation)
