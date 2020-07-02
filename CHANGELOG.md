@@ -21,7 +21,7 @@ for further information about branching and tagging conventions.
 - Browser update banner — notify the user about outdated browser
 - New `KeyValues` singleton to store key value
 
-#### Change
+#### Changed
 - `DocumentContainer`:
   - Add `isDoc()` method that checks whether the provided value looks like a doc
   - Add `fromObj()` method that creates a new `DocumentContainer` from an
@@ -29,9 +29,8 @@ for further information about branching and tagging conventions.
 - Enabled vue-devtools for 'development' env
 - Used common `STELLAR_TYPES` instead of the duplicated one
 - Split advanced step of the asset form into small sections
-
-#### Changed
 - Hide 'Atomic swaps'
+- Clearer asset former collecting on advanced step
 
 #### Fixed
 - Stretching mobile sidebar
