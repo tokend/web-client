@@ -35,6 +35,7 @@ for further information about branching and tagging conventions.
 
 #### Fixed
 - Stretching mobile sidebar
+- input field number validation
 
 #### Removed
 - Old key-value module

@@ -218,7 +218,7 @@ export default {
           required,
           amountRange: amountRange(
             config.MIN_AMOUNT,
-            this.availableForIssuance
+            this.form.asset.availableForIssuance
           ),
           maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
         },
