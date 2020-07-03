@@ -36,6 +36,8 @@ for further information about branching and tagging conventions.
 #### Fixed
 - Stretching mobile sidebar
 - Logo outside section
+- Input field number validation
+- availableForIssuance to number bug
 
 #### Removed
 - Old key-value module
