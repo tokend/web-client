@@ -3,15 +3,23 @@
     <verification-general-form-module
       :blob-id="isFormPopulatable ? kycLatestRequestBlobId : ''"
       :request-id="isRequestUpdatable ? String(kycRequestId) : '0'"
-
       ref="form-module-importer"
       @submit="onFormSubmit"
     />
+
+    <div>
+      <h5 class="form-todo__heading">
+        {{ 'general-form.account-information-lbl' | globalize }}
+      </h5>
+
+      <kyc-general-form class="form-todo" />
+    </div>
   </div>
 </template>
 
 <script>
 import VerificationGeneralFormModule from '@/vue/modules/verification/general-form'
+import KycGeneralForm from '@/vue/forms/KycGeneralForm'
 
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -24,6 +32,7 @@ export default {
   name: 'verification-general-2',
   components: {
     VerificationGeneralFormModule,
+    KycGeneralForm,
   },
   computed: {
     ...mapGetters({
@@ -89,6 +98,25 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '~@/vue/forms/_app-form';
 
+.verification-general-2 {
+  display: grid;
+  grid: auto / auto-flow 1fr;
+}
+
+.form-todo {
+  margin-top: 1rem;
+  background-color: $col-block-bg;
+  padding: 2.4rem;
+
+  @include box-shadow();
+}
+
+.form-todo__heading {
+  font-size: 1.3rem;
+  font-weight: 400;
+  margin-top: 4rem;
+}
 </style>
