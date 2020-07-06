@@ -58,7 +58,7 @@
               name="verification-general-proof-of-investor"
               :note="'general-form.file-type-note' | globalize"
               :file-extensions="['jpg', 'png', 'pdf']"
-              :document-type="DOCUMENT_TYPES.kycProofOfInvestor"
+              :document-type="$DOCUMENT_TYPES.kycProofOfInvestor"
               :label="'general-form.document-poi-lbl' | globalize"
               :disabled="isDisabled"
               :error-message="getFieldErrorMessage('proofOfInvestor')"
@@ -77,7 +77,6 @@ import { KycGeneralFormer } from '@/js/formers/KycGeneralFormer'
 import { isUSResidence } from '@/js/helpers/is-us-residence'
 
 import { COUNTRIES } from '@/js/const/countries'
-import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
 // TODO: disable country change
 
@@ -103,7 +102,6 @@ export default {
       proofOfInvestor: this.former.attrs.proofOfInvestor || null,
       isAccredited: false,
       COUNTRIES,
-      DOCUMENT_TYPES,
     }
   },
 

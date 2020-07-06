@@ -32,6 +32,7 @@ import { ErrorTracker } from '@/js/helpers/error-tracker'
 import { vueRoutes } from './vue-router/routes'
 import { useBrowserUpdateBanner } from './browser-update'
 import { keyValues } from '@/key-values'
+import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
 async function init () {
   useBrowserUpdateBanner(Vue)
@@ -67,6 +68,7 @@ async function init () {
   Vue.prototype.$config = config
   Vue.prototype.$routes = vueRoutes
   Vue.prototype.$kv = keyValues
+  Vue.prototype.$DOCUMENT_TYPES = DOCUMENT_TYPES
 
   const store = buildStore()
 

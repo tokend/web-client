@@ -38,7 +38,7 @@
           name="verification-general-id-document-face"
           :note="'general-form.file-type-note' | globalize"
           :file-extensions="['jpg', 'png', 'pdf']"
-          :document-type="DOCUMENT_TYPES.kycIdDocument"
+          :document-type="$DOCUMENT_TYPES.kycIdDocument"
           :label="'general-form.id-document-face-lbl' | globalize"
           :disabled="isDisabled"
           :error-message="getFieldErrorMessage('idFace')"
@@ -57,7 +57,7 @@
           name="verification-general-id-document-back"
           :note="'general-form.file-type-note' | globalize"
           :file-extensions="['jpg', 'png', 'pdf']"
-          :document-type="DOCUMENT_TYPES.kycIdDocument"
+          :document-type="$DOCUMENT_TYPES.kycIdDocument"
           :label="'general-form.id-document-back-lbl' | globalize"
           :disabled="isDisabled"
           :error-message="getFieldErrorMessage('idBack')"
@@ -71,8 +71,6 @@
 import formMixin from '@/vue/mixins/form.mixin'
 import { required, requiredIf, documentContainer } from '@validators'
 import { KycGeneralFormer } from '@/js/formers/KycGeneralFormer'
-
-import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { ID_DOC_TYPES } from '@/js/const/id-doc-types'
 
 export default {
@@ -96,7 +94,6 @@ export default {
       idType: this.former.attrs.idDocType || '',
       idFace: this.former.attrs.idDocFace || null,
       idBack: this.former.attrs.idDocBack || null,
-      DOCUMENT_TYPES,
       ID_DOC_TYPES,
     }
   },
@@ -114,7 +111,7 @@ export default {
         return
       }
 
-      if (!isRequired) {
+      if (!isRequired && this.idBack) {
         this.former.unsetAttr('idDocBack')
       }
     },
@@ -125,7 +122,6 @@ export default {
     idFace: { documentContainer },
     idBack: {
       required: requiredIf(function () { return this.isBackRequired }),
-      documentContainer,
     },
   },
 }
