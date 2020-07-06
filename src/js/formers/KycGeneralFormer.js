@@ -8,49 +8,30 @@ import { uploadDocumentsDeep } from '@/js/helpers/upload-documents'
 import { keyValues } from '@/key-values'
 
 /**
- * @typedef KycGeneralFormerAttrs
- * @type {object}
- * @property {object} address
- * @property {string} address.line1
- * @property {string} address.line2
- * @property {string} address.city
- * @property {string} address.state
- * @property {string} address.postalCode
- *
- * @property {string} requestId
- * @property {string} code
- * @property {string} name
- * @property {DocumentContainer} logo
- * @property {DocumentContainer} terms
- * @property {number} policies
- * @property {string} assetType
- * @property {string} maxIssuanceAmount
- * @property {string} preIssuanceAssetSigner
- * @property {string} initialPreissuedAmount
- * @property {object} stellarIntegration
- * @property {boolean} stellarIntegration.isWithdrawable
- * @property {boolean} stellarIntegration.isDepositable
- * @property {string} stellarIntegration.assetType
- * @property {string} stellarIntegration.assetCode
- * @property {object} erc20Integration
- * @property {boolean} erc20Integration.isWithdrawable
- * @property {boolean} erc20Integration.isDepositable
- * @property {string} erc20Integration.address
- */
-
-/**
-* @typedef DocumentContainer
-* @type {import('@/js/helpers/DocumentContainer').DocumentContainer}
-*/
-
-/**
  * Collects the attributes for asset-related operations
  * @class
  * @implements {Former}
  */
 export class KycGeneralFormer extends Former {
-  /** @type {KycGeneralFormerAttrs} */
-  attrs = this.attrs || {}
+  _defaultAttrs = {
+    firstName: '',
+    lastName: '',
+    dateOfBirth: new Date(0),
+    address: {
+      line1: '',
+      line2: '',
+      city: '',
+      state: '',
+      postalCode: '',
+      country: '',
+    },
+    idDocType: '',
+    idDocBack: null, // DocumentContainer
+    idDocFace: null, // DocumentContainer
+    proofOfInvestor: null, // DocumentContainer
+  }
+
+  attrs = this.attrs || this._defaultAttrs
 
   _opBuilder = this._opBuilder || this._buildOpCreate
   get isCreateOpBuilder () { return this._opBuilder === this._buildOpCreate }
@@ -178,3 +159,5 @@ export class KycGeneralFormer extends Former {
   //   return base.ManageAssetBuilder.assetUpdateRequest(opts)
   // }
 }
+
+let a = new KycGeneralFormer()

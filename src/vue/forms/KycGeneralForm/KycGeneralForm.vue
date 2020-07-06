@@ -21,6 +21,12 @@
         :is-disabled="formMixin.isDisabled"
         :former="former"
       />
+
+      <id-docs-section
+        class="kyc-general-form__section"
+        :is-disabled="formMixin.isDisabled"
+        :former="former"
+      />
     </div>
 
     <div class="app__form-actions">
@@ -55,11 +61,17 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import CountrySection from './components/CountrySection'
 import PersonalSection from './components/PersonalSection'
 import AddressSection from './components/AddressSection'
+import IdDocsSection from './components/IdDocsSection'
 
 export default {
   name: 'kyc-general-form',
 
-  components: { CountrySection, PersonalSection, AddressSection },
+  components: {
+    CountrySection,
+    PersonalSection,
+    AddressSection,
+    IdDocsSection,
+  },
 
   mixins: [formMixin],
 
