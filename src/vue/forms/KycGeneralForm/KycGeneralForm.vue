@@ -27,6 +27,12 @@
         :is-disabled="formMixin.isDisabled"
         :former="former"
       />
+
+      <selfie-section
+        class="kyc-general-form__section"
+        :is-disabled="formMixin.isDisabled"
+        :former="former"
+      />
     </div>
 
     <div class="app__form-actions">
@@ -62,6 +68,7 @@ import CountrySection from './components/CountrySection'
 import PersonalSection from './components/PersonalSection'
 import AddressSection from './components/AddressSection'
 import IdDocsSection from './components/IdDocsSection'
+import SelfieSection from './components/SelfieSection'
 
 export default {
   name: 'kyc-general-form',
@@ -71,6 +78,7 @@ export default {
     PersonalSection,
     AddressSection,
     IdDocsSection,
+    SelfieSection,
   },
 
   mixins: [formMixin],

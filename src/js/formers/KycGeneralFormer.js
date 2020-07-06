@@ -16,7 +16,7 @@ export class KycGeneralFormer extends Former {
   _defaultAttrs = {
     firstName: '',
     lastName: '',
-    dateOfBirth: new Date(0),
+    dateOfBirth: '',
     address: {
       line1: '',
       line2: '',
@@ -29,6 +29,7 @@ export class KycGeneralFormer extends Former {
     idDocBack: null, // DocumentContainer
     idDocFace: null, // DocumentContainer
     proofOfInvestor: null, // DocumentContainer
+    selfie: null, // DocumentContainer
   }
 
   attrs = this.attrs || this._defaultAttrs
