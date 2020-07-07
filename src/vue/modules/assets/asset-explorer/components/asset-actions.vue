@@ -10,7 +10,9 @@
       >
         {{ 'assets.add-balance-btn' | globalize }}
       </button>
-      <p class="asset-actions__not-allowed-msg" v-else>
+      <p
+        class="asset-actions__not-allowed-msg"
+        v-else>
         <template v-if="isAccountUsVerified">
           {{ 'assets.us-accreditation-required-msg' | globalize }}
         </template>

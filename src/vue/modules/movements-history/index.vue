@@ -2,7 +2,9 @@
   <div class="movements-history">
     <template>
       <template>
-        <h2 class="app__table-title" v-if="latestActivity">
+        <h2
+          class="app__table-title"
+          v-if="latestActivity">
           {{ 'movements-history.latest-activity' | globalize }}
         </h2>
         <div class="movements-history__list-wrp">

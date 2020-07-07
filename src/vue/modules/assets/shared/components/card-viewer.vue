@@ -1,5 +1,7 @@
 <template>
-  <a class="card-viewer" v-on="$listeners">
+  <a
+    class="card-viewer"
+    v-on="$listeners">
     <div class="card-viewer__header">
       <logo-viewer
         class="card-viewer__logo"
@@ -7,10 +9,14 @@
       />
     </div>
     <div class="card-viewer__info">
-      <p :title="asset.code" class="card-viewer__code">
+      <p
+        :title="asset.code"
+        class="card-viewer__code">
         {{ asset.code }}
       </p>
-      <p :title="asset.name || asset.code" class="card-viewer__name">
+      <p
+        :title="asset.name || asset.code"
+        class="card-viewer__name">
         {{ asset.name || asset.code }}
       </p>
       <p
@@ -27,7 +33,9 @@
         }}
       </p>
 
-      <p v-else class="card-viewer__balance card-viewer__no-balance">
+      <p
+        v-else
+        class="card-viewer__balance card-viewer__no-balance">
         {{ 'assets.no-balance-msg' | globalize }}
       </p>
     </div>

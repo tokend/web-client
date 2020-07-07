@@ -51,7 +51,9 @@
     </span>
 
     <transition name="input-field__err-transition">
-      <p v-if="errorMessage" class="input-field__err-mes">
+      <p
+        v-if="errorMessage"
+        class="input-field__err-mes">
         {{ errorMessage }}
       </p>
     </transition>

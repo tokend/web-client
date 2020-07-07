@@ -8,7 +8,9 @@
       @request-rejected="$emit(EVENTS.requestUpdated)"
     />
 
-    <div v-else class="request-actions__buttons">
+    <div
+      v-else
+      class="request-actions__buttons">
       <template v-if="formMixin.isConfirmationShown">
         <form-confirmation
           :is-pending="isRequestApproving"

@@ -14,7 +14,9 @@
     </div>
 
     <transition name="readonly-field__err-transition">
-      <p v-if="errorMessage" class="readonly-field__err-mes">
+      <p
+        v-if="errorMessage"
+        class="readonly-field__err-mes">
         {{ errorMessage }}
       </p>
     </transition>

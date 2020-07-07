@@ -43,7 +43,7 @@ export class Former {
    */
   setAttr (path, value) {
     set(this.attrs, path, value)
-    console.log(this.attrs)
+    // TODO: console.log(this.attrs)
     return this
   }
 
@@ -53,7 +53,7 @@ export class Former {
    */
   unsetAttr (path) {
     unset(this.attrs, path)
-    console.log(this.attrs)
+    // TODO: console.log(this.attrs)
     return this
   }
 
@@ -64,7 +64,7 @@ export class Former {
    */
   mergeAttrs (source) {
     merge(this.attrs, source)
-    console.log(this.attrs)
+    // TODO: console.log(this.attrs)
     return this
   }
 

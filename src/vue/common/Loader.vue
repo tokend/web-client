@@ -1,5 +1,7 @@
 <template>
-  <div class="loader" :class="{ 'loader--position-center': positionCenter }">
+  <div
+    class="loader"
+    :class="{ 'loader--position-center': positionCenter }">
     <div class="loader__animation" />
     <div
       class="loader__message"

@@ -22,7 +22,9 @@
           :src="`https://www.youtube.com/embed/${youtubeId}`"
           class="full-description-step-form__iframe" />
 
-        <div v-else class="full-description-step-form__youtube-video">
+        <div
+          v-else
+          class="full-description-step-form__youtube-video">
           <i class="mdi mdi-youtube full-description-step-form__video-icon" />
           <span>
             {{ 'create-sale-form.preview-video-msg' | globalize }}

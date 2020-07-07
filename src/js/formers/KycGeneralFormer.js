@@ -1,11 +1,11 @@
 import { Former } from './Former'
-import config from '@/config'
-import { base } from '@tokend/js-sdk'
-import { reqId, doc, str, num } from './op-build-helpers'
-import { AssetRequest } from '@/js/records/requests/asset-request.record'
-import { AssetRecord } from '@/js/records/entities/asset.record'
+// import config from '@/config'
+// import { base } from '@tokend/js-sdk'
+// import { reqId, doc, str, num } from './op-build-helpers'
+// import { AssetRequest } from '@/js/records/requests/asset-request.record'
+// import { AssetRecord } from '@/js/records/entities/asset.record'
 import { uploadDocumentsDeep } from '@/js/helpers/upload-documents'
-import { keyValues } from '@/key-values'
+// import { keyValues } from '@/key-values'
 
 /**
  * Collects the attributes for asset-related operations
@@ -128,7 +128,8 @@ export class KycGeneralFormer extends Former {
   //     assetType: str(attrs.assetType || defaultAssetType),
   //     maxIssuanceAmount: str(maxIssuance),
   //     preissuedAssetSigner: str(attrs.preIssuanceAssetSigner || nullSigner),
-  //     initialPreissuedAmount: str(attrs.initialPreissuedAmount || maxIssuance),
+  //     initialPreissuedAmount:
+  //       str(attrs.initialPreissuedAmount || maxIssuance),
   //     creatorDetails: {
   //       name: str(attrs.name),
   //       logo: doc(attrs.logo),
@@ -160,5 +161,3 @@ export class KycGeneralFormer extends Former {
   //   return base.ManageAssetBuilder.assetUpdateRequest(opts)
   // }
 }
-
-let a = new KycGeneralFormer()

@@ -28,7 +28,9 @@
             </tr>
           </thead>
           <tbody v-if="issuances.length">
-            <tr v-for="issuance in issuances" :key="issuance.id">
+            <tr
+              v-for="issuance in issuances"
+              :key="issuance.id">
               <td>
                 <email-getter :balance-id="issuance.counterparty" />
               </td>

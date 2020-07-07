@@ -33,10 +33,14 @@
           v-if="documentUrl && isImageSelected"
           class="file-field__img-preview-wrp"
         >
-          <img class="file-field__img-preview" :src="documentUrl">
+          <img
+            class="file-field__img-preview"
+            :src="documentUrl">
         </div>
 
-        <div v-else class="file-field__icon-preview-wrp">
+        <div
+          v-else
+          class="file-field__icon-preview-wrp">
           <i class="mdi mdi-file file-field__icon-preview" />
         </div>
 

@@ -109,7 +109,7 @@ export default {
     },
 
     confirm () {
-      console.dir(this.former.attrs)
+      // TODO: console.dir(this.former.attrs)
       if (!this.isFormValid()) return
       this.showConfirmation()
     },

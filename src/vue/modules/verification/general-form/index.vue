@@ -1,5 +1,7 @@
 <template>
-  <div class="verification-general-form__outer" v-if="isInitialized">
+  <div
+    class="verification-general-form__outer"
+    v-if="isInitialized">
     <p class="verification-general-form__account-info-title">
       {{ 'general-form.account-information-lbl' | globalize }}
     </p>

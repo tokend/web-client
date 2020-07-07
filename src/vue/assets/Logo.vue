@@ -1,6 +1,10 @@
 <template>
-  <router-link class="logotype" :to="vueRoutes.dashboard">
-    <img src="@static/branding/logo.svg" :alt="config.APP_NAME">
+  <router-link
+    class="logotype"
+    :to="vueRoutes.dashboard">
+    <img
+      src="@static/branding/logo.svg"
+      :alt="config.APP_NAME">
   </router-link>
 </template>
 

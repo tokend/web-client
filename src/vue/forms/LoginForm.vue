@@ -1,5 +1,7 @@
 <template>
-  <form class="app-form auth-form" @submit.prevent="submit">
+  <form
+    class="app-form auth-form"
+    @submit.prevent="submit">
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field

@@ -30,12 +30,16 @@
       {{ label }}
     </span>
 
-    <span v-if="maxlength" class="text-field__length">
+    <span
+      v-if="maxlength"
+      class="text-field__length">
       {{ `${currentLength}/${maxlength}` }}
     </span>
 
     <transition name="text-field__err-transition">
-      <p class="text-field__err-mes" v-if="errorMessage">
+      <p
+        class="text-field__err-mes"
+        v-if="errorMessage">
         {{ errorMessage }}
       </p>
     </transition>
