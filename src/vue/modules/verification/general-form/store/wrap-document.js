@@ -1,7 +1,7 @@
-import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+import { base } from '@tokend/js-sdk'
 
 export function wrapDocument (document, type) {
-  return new DocumentContainer({
+  return new base.Document({
     ...document,
     type,
   })

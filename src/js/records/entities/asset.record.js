@@ -1,6 +1,6 @@
-import { ASSET_POLICIES } from '@tokend/js-sdk'
+import { ASSET_POLICIES, base } from '@tokend/js-sdk'
+
 import get from 'lodash/get'
-import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 // TODO: cleanup from unused keys
 
@@ -26,11 +26,12 @@ export class AssetRecord {
     this.isCoinpayments = get(record, 'details.isCoinpayments')
 
     const logo = get(record, 'details.logo') || {}
-    this.logo = DocumentContainer.fromObj(logo)
+    // if (logo.key) console.log(logo, 'logo from asset record')
+    this.logo = base.Document.fromObj(logo)
     this.logoKey = logo.key
 
     const terms = get(record, 'details.terms') || {}
-    this.terms = DocumentContainer.fromObj(terms)
+    this.terms = base.Document.fromObj(terms)
     this.termsKey = terms.key
 
     this.maturityDate = get(record, 'details.maturityDate')

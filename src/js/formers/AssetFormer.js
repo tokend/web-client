@@ -4,7 +4,6 @@ import { base } from '@tokend/js-sdk'
 import { reqId, doc, str, num } from './op-build-helpers'
 import { AssetRequest } from '@/js/records/requests/asset-request.record'
 import { AssetRecord } from '@/js/records/entities/asset.record'
-import { uploadDocumentsDeep } from '@/js/helpers/upload-documents'
 import { keyValues } from '@/key-values'
 
 /**
@@ -13,8 +12,8 @@ import { keyValues } from '@/key-values'
  * @property {string} requestId
  * @property {string} code
  * @property {string} name
- * @property {DocumentContainer} logo
- * @property {DocumentContainer} terms
+ * @property {base.Document} logo
+ * @property {base.Document} terms
  * @property {number} policies
  * @property {string} assetType
  * @property {string} maxIssuanceAmount
@@ -32,8 +31,8 @@ import { keyValues } from '@/key-values'
  */
 
 /**
-* @typedef DocumentContainer
-* @type {import('@/js/helpers/DocumentContainer').DocumentContainer}
+* @typedef Document
+* @type {base.Document}
 */
 
 /**
@@ -57,7 +56,7 @@ export class AssetFormer extends Former {
   }
 
   async buildOps () {
-    await uploadDocumentsDeep(this.attrs)
+    await base.uploadDocumentsDeep(this.attrs)
     return [this._opBuilder()]
   }
 

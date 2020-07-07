@@ -120,7 +120,7 @@
 
 <script>
 import { FileUtil, FileNotPresentInEventError } from '@/js/utils/file.util'
-import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+import { base } from '@tokend/js-sdk'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -131,7 +131,7 @@ const IMAGE_FILE_EXTENSIONS = ['jpg', 'png']
 export default {
   name: 'file-field',
   props: {
-    value: { type: DocumentContainer, default: null },
+    value: { type: base.Document, default: null },
     label: { type: String, default: '' },
     documentType: { type: String, default: 'default' },
     fileExtensions: { type: Array, default: _ => IMAGE_FILE_EXTENSIONS },
@@ -197,9 +197,9 @@ export default {
 
         if (await this.validateFile(file)) {
           this.documentUrl = await FileUtil.getDataUrl(file)
-          this.document = new DocumentContainer({
+          this.document = new base.Document({
             mimeType: file.type,
-            type: this.documentType,
+            docType: this.documentType,
             name: file.name,
             file: file,
           })

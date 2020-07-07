@@ -1,15 +1,15 @@
-import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+import { base } from '@tokend/js-sdk'
 
 export function doc (doc) {
-  if (doc instanceof DocumentContainer) {
-    return doc.getDetailsForSave()
+  if (doc instanceof base.Document) {
+    return doc.toJSON()
   }
 
-  if (DocumentContainer.isDoc(doc)) {
-    return new DocumentContainer(doc).getDetailsForSave()
+  if (base.Document.isDoc(doc)) {
+    return new base.Document(doc).toJSON()
   }
 
-  return DocumentContainer.getEmptyDetailsForSave()
+  return new base.Document().toJSON()
 }
 
 export function reqId (val) {

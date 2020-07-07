@@ -146,10 +146,7 @@ import { api } from '@/api'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 
-import { BLOB_TYPES } from '@tokend/js-sdk'
-
-import { uploadDocument } from '@/js/helpers/upload-documents'
-import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+import { BLOB_TYPES, base } from '@tokend/js-sdk'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -250,7 +247,9 @@ export default {
       this.isFormSubmitting = true
 
       try {
-        if (!this.isKycRecoveryPage) await uploadDocument(this.form.avatar)
+        if (!this.isKycRecoveryPage) {
+          await base.uploadDocuments(this.form.avatar)
+        }
 
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycCorporate)
 
@@ -317,7 +316,7 @@ export default {
         name: kycData.name,
         company: kycData.company,
         avatar: _get(kycData, `documents.${DOCUMENT_TYPES.kycAvatar}.key`)
-          ? new DocumentContainer(kycData.documents[DOCUMENT_TYPES.kycAvatar])
+          ? new base.Document(kycData.documents[DOCUMENT_TYPES.kycAvatar])
           : null,
         headquarters: kycData.headquarters,
         industry: kycData.industry,
