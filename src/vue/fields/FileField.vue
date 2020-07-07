@@ -199,7 +199,7 @@ export default {
           this.documentUrl = await FileUtil.getDataUrl(file)
           this.document = new base.Document({
             mimeType: file.type,
-            docType: this.documentType,
+            type: this.documentType,
             name: file.name,
             file: file,
           })

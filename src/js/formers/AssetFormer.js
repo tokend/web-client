@@ -12,8 +12,8 @@ import { keyValues } from '@/key-values'
  * @property {string} requestId
  * @property {string} code
  * @property {string} name
- * @property {base.Document} logo
- * @property {base.Document} terms
+ * @property {Document} logo
+ * @property {Document} terms
  * @property {number} policies
  * @property {string} assetType
  * @property {string} maxIssuanceAmount

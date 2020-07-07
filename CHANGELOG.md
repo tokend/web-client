@@ -37,6 +37,7 @@ for further information about branching and tagging conventions.
 - Stretching mobile sidebar
 
 #### Removed
+- removed `DocumentContainer` and `upload-documents.js`, (using SDK instead)
 - Old key-value module
 
 ## [1.12.0-rc.6] - 2020-06-09
