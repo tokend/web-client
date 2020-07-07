@@ -1,12 +1,12 @@
 <template>
   <div class="selfie-section">
-    <h4 class="verification-general-form__section-label">
+    <h4 class="selfie-section__title">
       {{ 'general-form.photo-verification-lbl' | globalize }}
     </h4>
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <p class="verification-general-form__photo-explanation">
+        <p class="selfie-section__explanation">
           {{ 'general-form.photo-explanation-msg' | globalize }}
         </p>
         <button
