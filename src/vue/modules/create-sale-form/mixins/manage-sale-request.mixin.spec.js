@@ -8,7 +8,6 @@ import { api } from '@/api'
 import * as DocumentUploader from '@/js/helpers/upload-documents'
 
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
-import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import Vuex from 'vuex'
 
 const localVue = createLocalVue()
@@ -169,7 +168,7 @@ describe('Manage sale request mixin', () => {
     describe('submitCreateSaleRequest', () => {
       it('calls proper methods with passed params',
         async () => {
-          const saleLogo = new DocumentContainer({ key: 'logo-key' })
+          const saleLogo = new base.Document({ key: 'logo-key' })
 
           wrapper.setData({
             assets: [{ code: 'BTC' }, { code: 'ETH' }],
