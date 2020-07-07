@@ -237,7 +237,6 @@ export default {
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
-      test: vuexTypes.ownedAssets,
     }),
 
     receivingAmount () {

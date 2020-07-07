@@ -176,7 +176,7 @@ describe('Manage sale request mixin', () => {
             fullDescriptionStepForm: { description: 'Sale description' },
           })
 
-          sandbox.stub(base, 'uploadDocument').resolves()
+          sandbox.stub(base, 'uploadDocuments').resolves()
           sandbox.stub(wrapper.vm, 'createBalancesIfNotExist').resolves()
           sandbox.stub(wrapper.vm, 'loadAssetsPairsByQuote').resolves([])
 
