@@ -1,10 +1,17 @@
 import { Former } from './Former'
 // import config from '@/config'
-// import { base } from '@tokend/js-sdk'
-// import { reqId, doc, str, num } from './op-build-helpers'
+import { base, BLOB_TYPES } from '@tokend/js-sdk'
+import { doc, str, reqId } from './op-build-helpers'
 // import { AssetRequest } from '@/js/records/requests/asset-request.record'
 // import { AssetRecord } from '@/js/records/entities/asset.record'
 import { uploadDocumentsDeep } from '@/js/helpers/upload-documents'
+import { toRFC3339 } from '@/js/helpers/date-helpers'
+// import { str, doc } from './op-build-helpers'
+import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
+import { createPrivateBlob } from '@/js/helpers/blob-helpers'
+import { store, vuexTypes } from '@/vuex'
+import { isUSResidence } from '@/js/helpers/is-us-residence'
+import { keyValues } from '@/key-values'
 // import { keyValues } from '@/key-values'
 
 /**
@@ -14,6 +21,7 @@ import { uploadDocumentsDeep } from '@/js/helpers/upload-documents'
  */
 export class KycGeneralFormer extends Former {
   _defaultAttrs = {
+    requestId: '0',
     firstName: '',
     lastName: '',
     dateOfBirth: '',
@@ -48,7 +56,8 @@ export class KycGeneralFormer extends Former {
 
   async buildOps () {
     await uploadDocumentsDeep(this.attrs)
-    return [this._opBuilder()]
+    const blob = await this._createBlob()
+    return [this._opBuilder(blob)]
   }
 
   // /** @param {AssetRequest|AssetRecord} source */
@@ -114,31 +123,62 @@ export class KycGeneralFormer extends Former {
   //   this.attrs.erc20Integration.address = source.erc20Address
   // }
 
-  // _buildOpCreate () {
-  //   const attrs = this.attrs
+  _buildOpCreate (blob) {
+    const attrs = this.attrs
 
-  //   const defaultAssetType = keyValues.assetTypeDefault
-  //   const nullSigner = config.NULL_ASSET_SIGNER
-  //   const maxIssuance = attrs.maxIssuanceAmount || config.MAX_AMOUNT
+    const opts = {
+      requestID: reqId(attrs.requestId),
+      destinationAccount: store[vuexTypes.accountId], // TODO: get rid of store
+      accountRoleToSet: this._getAccountRoleToSet(),
+      creatorDetails: { blob_id: blob.id },
+    }
 
-  //   const opts = {
-  //     requestID: reqId(attrs.requestId),
-  //     code: str(attrs.code),
-  //     policies: num(attrs.policies),
-  //     trailingDigitsCount: num(config.DECIMAL_POINTS),
-  //     assetType: str(attrs.assetType || defaultAssetType),
-  //     maxIssuanceAmount: str(maxIssuance),
-  //     preissuedAssetSigner: str(attrs.preIssuanceAssetSigner || nullSigner),
-  //     initialPreissuedAmount:
-  //       str(attrs.initialPreissuedAmount || maxIssuance),
-  //     creatorDetails: {
-  //       name: str(attrs.name),
-  //       logo: doc(attrs.logo),
-  //       terms: doc(attrs.terms),
-  //       stellar: this._getStellarOpts(),
-  //       erc20: this._getErc20Opts(),
-  //     },
-  //   }
+    console.log(blob)
+
+    return base.CreateChangeRoleRequestBuilder.createChangeRoleRequest(opts)
+  }
+
+  async _createBlob () {
+    const attrs = this.attrs
+
+    const blobValue = JSON.stringify({
+      first_name: str(attrs.firstName),
+      last_name: str(attrs.lastName),
+      date_of_birth: toRFC3339(attrs.dateOfBirth),
+      address: {
+        line_1: str(attrs.address.line1),
+        line_2: str(attrs.address.line2),
+        city: str(attrs.address.city),
+        country: str(attrs.address.country),
+        state: str(attrs.address.state),
+        postal_code: str(attrs.address.postalCode),
+      },
+      documents: {
+        [DOCUMENT_TYPES.kycIdDocument]: {
+          type: str(attrs.idDocType),
+          face: doc(attrs.idDocFace),
+          back: doc(attrs.idDocBack),
+        },
+        [DOCUMENT_TYPES.kycProofOfInvestor]: doc(attrs.kycProofOfInvestor),
+        [DOCUMENT_TYPES.kycSelfie]: doc(attrs.selfie),
+        [DOCUMENT_TYPES.kycAvatar]: doc(attrs.avatar),
+      },
+    })
+    return createPrivateBlob(BLOB_TYPES.kycGeneral, blobValue)
+  }
+
+  _getAccountRoleToSet () {
+    const isUsaResident = isUSResidence(this.attrs.address.country)
+    const isAccredited = Boolean(this.attrs.proofOfInvestor)
+    switch (true) {
+      case isUsaResident && isAccredited:
+        return keyValues.usAccreditedRoleId
+      case isUsaResident && !isAccredited:
+        return keyValues.usVerifiedRoleId
+      default:
+        return keyValues.generalRoleId
+    }
+  }
 
   //   return base.ManageAssetBuilder.assetCreationRequest(opts)
   // }
