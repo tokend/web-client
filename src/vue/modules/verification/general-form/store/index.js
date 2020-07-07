@@ -1,13 +1,12 @@
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { ID_DOCUMENT_TYPES } from '../id-document-types'
-import { BLOB_TYPES } from '@tokend/js-sdk'
+import { BLOB_TYPES, base } from '@tokend/js-sdk'
 import { types } from './types'
 import { api } from '@/api'
 
 import { wrapDocument } from './wrap-document'
 
 import { toRFC3339, fromRFC3339 } from '../format-date'
-import { uploadDocument } from '@/js/helpers/upload-documents'
 
 const state = {
   isAccredited: false,
@@ -149,13 +148,12 @@ const actions = {
   },
 
   async [types.UPLOAD_DOCUMENTS] ({ state }) {
-    await Promise.all([
-      // it modifies the state intentionally
-      uploadDocument(state.documents.avatar),
-      uploadDocument(state.documents.selfie),
-      uploadDocument(state.documents.idDocumentFace),
-      uploadDocument(state.documents.idDocumentBack),
-      uploadDocument(state.documents.proofOfInvestor),
+    await base.uploadDocuments([
+      state.documents.avatar,
+      state.documents.selfie,
+      state.documents.isDocumentFace,
+      state.documents.isDocumentBack,
+      state.documents.proofOfInvestor,
     ])
   },
 

@@ -4,7 +4,6 @@ import { base, SALE_TYPES } from '@tokend/js-sdk'
 
 import { api } from '@/api'
 
-import { uploadDocument } from '@/js/helpers/upload-documents'
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
 import { DateUtil, MathUtil } from '@/js/utils'
 
@@ -69,7 +68,7 @@ export default {
     },
 
     async submitCreateSaleRequest (accountId) {
-      await uploadDocument(this.shortBlurbStepForm.saleLogo)
+      await base.uploadDocuments([this.shortBlurbStepForm.saleLogo])
       this.saleDescriptionBlobId = await this.createSaleDescriptionBlob(
         this.fullDescriptionStepForm.description,
         accountId
