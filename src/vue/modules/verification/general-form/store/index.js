@@ -229,36 +229,36 @@ const getters = {
     if (state.isAccredited) {
       if (state.kycProofOfInvestor) {
         blobData.documents[DOCUMENT_TYPES.kycProofOfInvestor] =
-          state.documents.proofOfInvestor.getDetailsForSave()
+          state.documents.proofOfInvestor.toJSON()
       }
     }
 
     if (state.documents.idDocumentFace) {
       blobData.documents[DOCUMENT_TYPES.kycIdDocument].face =
-        state.documents.idDocumentFace.getDetailsForSave()
+        state.documents.idDocumentFace.toJSON()
     }
 
     if (state.documents.selfie) {
       blobData.documents[DOCUMENT_TYPES.kycSelfie] =
-        state.documents.selfie.getDetailsForSave()
+        state.documents.selfie.toJSON()
     }
 
     // avatar is not required, or it may not exist in old kyc data
     if (state.documents.avatar) {
       blobData.documents[DOCUMENT_TYPES.kycAvatar] =
-        state.documents.avatar.getDetailsForSave()
+        state.documents.avatar.toJSON()
     }
 
     // back side of documents is needed only for specific document types
     if (state.documents.idDocumentBack) {
       blobData.documents[DOCUMENT_TYPES.kycIdDocument].back =
-        state.documents.idDocumentBack.getDetailsForSave()
+        state.documents.idDocumentBack.toJSON()
     }
 
     // is required only when applying for accredited investor role
     if (state.documents.proofOfInvestor) { // TODO
       blobData.documents[DOCUMENT_TYPES.kycProofOfInvestor] =
-        state.documents.proofOfInvestor.getDetailsForSave()
+        state.documents.proofOfInvestor.toJSON()
     }
 
     return blobData

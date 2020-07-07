@@ -305,7 +305,7 @@ export default {
         homepage: this.form.website,
         documents: {
           [DOCUMENT_TYPES.kycAvatar]: this.form.avatar
-            ? this.form.avatar.getDetailsForSave()
+            ? this.form.avatar.toJSON()
             : EMPTY_DOCUMENT,
         },
       }

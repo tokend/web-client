@@ -45,7 +45,7 @@ export default {
           name: this.informationStepForm.name,
           short_description: this.shortBlurbStepForm.shortDescription,
           description: this.saleDescriptionBlobId,
-          logo: saleLogo ? saleLogo.getDetailsForSave() : EMPTY_DOCUMENT,
+          logo: saleLogo ? saleLogo.toJSON() : EMPTY_DOCUMENT,
           youtube_video_id: this.fullDescriptionStepForm.youtubeId,
         },
         saleRules: [{
