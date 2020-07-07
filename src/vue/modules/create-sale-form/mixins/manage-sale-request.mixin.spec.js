@@ -176,7 +176,6 @@ describe('Manage sale request mixin', () => {
             fullDescriptionStepForm: { description: 'Sale description' },
           })
 
-          sandbox.stub(base, 'uploadDocuments').resolves()
           sandbox.stub(wrapper.vm, 'createBalancesIfNotExist').resolves()
           sandbox.stub(wrapper.vm, 'loadAssetsPairsByQuote').resolves([])
 
@@ -187,8 +186,6 @@ describe('Manage sale request mixin', () => {
 
           await wrapper.vm.submitCreateSaleRequest('SOME_ACCOUNT_ID')
 
-          expect(base.uploadDocuments)
-            .to.have.been.calledOnceWithExactly([saleLogo])
           expect(wrapper.vm.createBalancesIfNotExist)
             .to.have.been.calledOnceWithExactly({
               balanceAssets: ['BTC', 'ETH'],

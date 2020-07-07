@@ -26,12 +26,11 @@ export class AssetRecord {
     this.isCoinpayments = get(record, 'details.isCoinpayments')
 
     const logo = get(record, 'details.logo') || {}
-    // if (logo.key) console.log(logo, 'logo from asset record')
-    this.logo = base.Document.fromObj(logo)
+    this.logo = new base.Document(logo)
     this.logoKey = logo.key
 
     const terms = get(record, 'details.terms') || {}
-    this.terms = base.Document.fromObj(terms)
+    this.terms = new base.Document(terms)
     this.termsKey = terms.key
 
     this.maturityDate = get(record, 'details.maturityDate')

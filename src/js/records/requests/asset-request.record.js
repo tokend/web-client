@@ -16,11 +16,11 @@ export class AssetRequest extends RequestRecord {
     this.policy = dts.policies
 
     const logo = get(dts, 'creatorDetails.logo') || {}
-    this.logo = base.Document.fromObj(logo)
+    this.logo = new base.Document(logo)
     this.logoKey = logo.key
 
     const terms = get(dts, 'creatorDetails.terms') || {}
-    this.terms = base.Document.fromObj(terms)
+    this.terms = new base.Document(terms)
     this.termsKey = terms.key
 
     this.stellarAssetCode = get(dts, 'creatorDetails.stellar.assetCode') || ''
