@@ -42,7 +42,7 @@ describe('kyc.module', () => {
       })
     })
 
-    it('SET_KYC_LATEST_DATA should properly modify state', () => {
+    it('SET_KYC_BLOB should properly modify state', () => {
       const state = {
         latestData: '{}',
       }
@@ -50,7 +50,7 @@ describe('kyc.module', () => {
         first_name: 'Jonh',
         last_name: 'Doe',
       })
-      mutations[vuexTypes.SET_KYC_LATEST_DATA](state, latestData)
+      mutations[vuexTypes.SET_KYC_BLOB](state, latestData)
 
       expect(state).to.deep.equal({
         latestData,
@@ -91,7 +91,7 @@ describe('kyc.module', () => {
     it('LOAD_KYC should dispatch the proper set of actions', async () => {
       const expectedActions = [
         [vuexTypes.LOAD_KYC_LATEST_REQUEST],
-        [vuexTypes.LOAD_KYC_LATEST_DATA],
+        [vuexTypes.LOAD_KYC_BLOB],
       ]
 
       await actions[vuexTypes.LOAD_KYC](store)

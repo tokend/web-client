@@ -5,6 +5,9 @@ import { ChangeRoleRequestRecord } from '@/js/records/requests/change-role.recor
 
 import safeGet from 'lodash/get'
 import _isEmpty from 'lodash/isEmpty'
+import { getPrivateBlob } from '@/js/helpers/blob-helpers'
+import { createKycRecord } from '@/js/helpers/kyc-record-factory'
+import { BlobRecord } from '@/js/records/entities/blob.record'
 
 /**
  * @module
@@ -21,7 +24,7 @@ export const state = {
   isAccountRoleReseted: false,
   request: {},
   relatedRequest: {},
-  latestData: '{}', // JSON string
+  kycBlob: {},
   latestRequestData: '{}',
 }
 
@@ -34,8 +37,8 @@ export const mutations = {
     state.relatedRequest = request
   },
 
-  [vuexTypes.SET_KYC_LATEST_DATA] (state, data) {
-    state.latestData = data
+  [vuexTypes.SET_KYC_BLOB] (state, data) {
+    state.kycBlob = data
   },
 
   [vuexTypes.SET_KYC_LATEST_REQUEST_DATA] (state, data) {
@@ -52,7 +55,7 @@ export const actions = {
     dispatch,
   }) {
     await dispatch(vuexTypes.LOAD_KYC_LATEST_REQUEST)
-    await dispatch(vuexTypes.LOAD_KYC_LATEST_DATA)
+    await dispatch(vuexTypes.LOAD_KYC_BLOB)
   },
 
   async [vuexTypes.LOAD_KYC_LATEST_REQUEST] ({
@@ -119,21 +122,17 @@ export const actions = {
     commit(vuexTypes.SET_KYC_RELATED_REQUEST, request)
   },
 
-  async [vuexTypes.LOAD_KYC_LATEST_REQUEST_DATA] (
-    { getters, rootGetters, commit }
-  ) {
+  async [vuexTypes.LOAD_KYC_LATEST_REQUEST_DATA] ({ getters, commit }) {
     const latestBlobId = getters[vuexTypes.kycLatestRequestBlobId]
     if (!latestBlobId) {
       return
     }
 
-    const { data: blob } = await api.getWithSignature(
-      `/accounts/${rootGetters[vuexTypes.accountId]}/blobs/${latestBlobId}`
-    )
+    const blob = await getPrivateBlob(latestBlobId)
     commit(vuexTypes.SET_KYC_LATEST_REQUEST_DATA, blob.value)
   },
 
-  async [vuexTypes.LOAD_KYC_LATEST_DATA] ({ rootGetters, commit }) {
+  async [vuexTypes.LOAD_KYC_BLOB] ({ rootGetters, commit }) {
     const accountId = rootGetters[vuexTypes.accountId]
     const { data: account } = await api.getWithSignature(
       `/v3/accounts/${accountId}`,
@@ -145,12 +144,8 @@ export const actions = {
       return
     }
 
-    const latestBlobResponse = await api.getWithSignature(
-      `/accounts/${accountId}/blobs/${latestBlobId}`
-    )
-    const latestData = latestBlobResponse.data.value
-
-    commit(vuexTypes.SET_KYC_LATEST_DATA, latestData)
+    const blob = await getPrivateBlob(latestBlobId)
+    commit(vuexTypes.SET_KYC_BLOB, blob.raw)
   },
 }
 
@@ -174,14 +169,10 @@ export const getters = {
   [vuexTypes.kycRequestId]: state => state.request.id,
   [vuexTypes.kycLatestRequestBlobId]: state => state.request.blobId ||
     state.relatedRequest.blobId,
-  [vuexTypes.kycLatestData]: state => JSON.parse(state.latestData),
   [vuexTypes.kycLatestRequestData]: state => JSON.parse(
     state.latestRequestData
   ),
-  [vuexTypes.kycAvatarKey]: state => safeGet(
-    JSON.parse(state.latestData),
-    'documents.kyc_avatar.key'
-  ),
+  [vuexTypes.kyc]: state => createKycRecord(new BlobRecord(state.kycBlob)),
 }
 
 export default {

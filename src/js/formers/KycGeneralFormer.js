@@ -8,7 +8,7 @@ import { uploadDocumentsDeep } from '@/js/helpers/upload-documents'
 // import { keyValues } from '@/key-values'
 
 /**
- * Collects the attributes for asset-related operations
+ * Collects the attributes for kyc-general operations
  * @class
  * @implements {Former}
  */
@@ -30,6 +30,7 @@ export class KycGeneralFormer extends Former {
     idDocFace: null, // DocumentContainer
     proofOfInvestor: null, // DocumentContainer
     selfie: null, // DocumentContainer
+    avatar: null, // DocumentContainer
   }
 
   attrs = this.attrs || this._defaultAttrs

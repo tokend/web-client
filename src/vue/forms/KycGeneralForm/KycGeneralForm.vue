@@ -91,10 +91,11 @@ export default {
 
   mixins: [formMixin],
 
-  data () {
-    return {
-      former: new KycGeneralFormer(),
-    }
+  props: {
+    former: {
+      type: KycGeneralFormer,
+      default: () => new KycGeneralFormer(),
+    },
   },
 
   methods: {

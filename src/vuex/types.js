@@ -17,7 +17,7 @@ const mutations = {
   // kyc
   SET_KYC_LATEST_REQUEST: 'SET_KYC_LATEST_REQUEST',
   SET_KYC_RELATED_REQUEST: 'SET_KYC_RELATED_REQUEST',
-  SET_KYC_LATEST_DATA: 'SET_KYC_LATEST_DATA',
+  SET_KYC_BLOB: 'SET_KYC_BLOB',
   SET_ACCOUNT_ROLE_RESETED: 'SET_ACCOUNT_ROLE_RESETED',
   SET_KYC_LATEST_REQUEST_DATA: 'SET_KYC_LATEST_REQUEST_DATA',
 
@@ -61,7 +61,7 @@ const actions = {
   LOAD_KYC_LATEST_REQUEST: 'LOAD_KYC_LATEST_REQUEST',
   LOAD_KYC_LATEST_REQUEST_DATA: 'LOAD_KYC_LATEST_REQUEST_DATA',
   LOAD_KYC_RELATED_REQUEST: 'LOAD_KYC_RELATED_REQUEST',
-  LOAD_KYC_LATEST_DATA: 'LOAD_KYC_LATEST_DATA',
+  LOAD_KYC_BLOB: 'LOAD_KYC_BLOB',
 
   // kyc recovery
   LOAD_KYC_RECOVERY_LATEST_REQUEST: 'LOAD_KYC_RECOVERY_LATEST_REQUEST',
@@ -134,8 +134,8 @@ const getters = {
   kycLatestData: 'kycLatestData',
   kycLatestRequestBlobId: 'kycLatestRequestBlobId',
   kycLatestRequestData: 'kycLatestRequestData',
-  kycAvatarKey: 'kycAvatarKey',
   isAccountRoleReseted: 'isAccountRoleReseted',
+  kyc: 'kyc',
 
   // kyc recovery
   kycRecoveryRequestId: 'kycRecoveryRequestId',
