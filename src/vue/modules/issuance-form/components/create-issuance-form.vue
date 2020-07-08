@@ -254,7 +254,9 @@ export default {
 
     availableForIssuance () {
       const nums = new BigNumber(this.form.asset.availableForIssuance).c
-      return nums[0] || nums[1] || false
+      if (nums) {
+        return nums[0] || nums[1]
+      } else return false
     },
   },
 
