@@ -145,6 +145,7 @@ import { api } from '@/api'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
+import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
 
 import { BLOB_TYPES, base } from '@tokend/js-sdk'
 
@@ -312,11 +313,12 @@ export default {
     },
 
     parseKycData (kycData) {
+      const avatarDoc = kycData.documents[DOCUMENT_TYPES.kycAvatar]
       return {
         name: kycData.name,
         company: kycData.company,
         avatar: _get(kycData, `documents.${DOCUMENT_TYPES.kycAvatar}.key`)
-          ? new base.Document(kycData.documents[DOCUMENT_TYPES.kycAvatar])
+          ? new base.Document(avatarDoc, DOCUMENT_POLICIES[avatarDoc.type])
           : null,
         headquarters: kycData.headquarters,
         industry: kycData.industry,

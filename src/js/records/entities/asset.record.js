@@ -1,4 +1,5 @@
 import { ASSET_POLICIES, base } from '@tokend/js-sdk'
+import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
 
 import get from 'lodash/get'
 
@@ -26,11 +27,11 @@ export class AssetRecord {
     this.isCoinpayments = get(record, 'details.isCoinpayments')
 
     const logo = get(record, 'details.logo') || {}
-    this.logo = new base.Document(logo)
+    this.logo = new base.Document(logo, DOCUMENT_POLICIES[logo.type])
     this.logoKey = logo.key
 
     const terms = get(record, 'details.terms') || {}
-    this.terms = new base.Document(terms)
+    this.terms = new base.Document(terms, DOCUMENT_POLICIES[terms.type])
     this.termsKey = terms.key
 
     this.maturityDate = get(record, 'details.maturityDate')

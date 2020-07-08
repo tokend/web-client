@@ -1,4 +1,5 @@
 import { base } from '@tokend/js-sdk'
+import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
 
 export function doc (doc) {
   if (doc instanceof base.Document) {
@@ -6,7 +7,7 @@ export function doc (doc) {
   }
 
   if (base.Document.isDoc(doc)) {
-    return new base.Document(doc).toJSON()
+    return new base.Document(doc, DOCUMENT_POLICIES[doc.type]).toJSON()
   }
 
   return new base.Document().toJSON()
