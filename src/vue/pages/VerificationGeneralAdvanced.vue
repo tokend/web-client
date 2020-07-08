@@ -12,7 +12,10 @@
         {{ 'general-form.account-information-lbl' | globalize }}
       </h5>
 
-      <kyc-general-form class="form-todo" />
+      <kyc-general-form
+        class="form-todo"
+        @submitted="onFormSubmit"
+      />
     </div>
   </div>
 </template>
@@ -21,12 +24,12 @@
 import VerificationGeneralFormModule from '@/vue/modules/verification/general-form'
 import KycGeneralForm from '@/vue/forms/KycGeneralForm'
 
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
-import { Bus } from '@/js/helpers/event-bus'
 import { keyValues } from '@/key-values'
+import { scrollToTop } from '@/js/helpers/scroll-helpers'
 
 export default {
   name: 'verification-general-2',
@@ -64,36 +67,9 @@ export default {
     },
   },
   methods: {
-    ...mapActions({
-      loadKyc: vuexTypes.LOAD_KYC,
-    }),
     async onFormSubmit () {
-      const formRef = this.$refs['form-module-importer'].$refs['component']
-      formRef.disableForm()
-
-      // HACK: to reduce the probability of
-      // request being not ingested by API
-      await this.delay(3000)
-      await this.loadKyc()
-
-      Bus.success('general-form.request-submitted-msg')
-      this.scrollTop()
-      formRef.enableForm()
+      scrollToTop()
     },
-    scrollTop () {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'smooth',
-      })
-    },
-    delay (ms) { // TODO: should not be here
-      /* eslint-disable-next-line promise/avoid-new */
-      return new Promise((resolve) => {
-        setTimeout(resolve, ms)
-      })
-    },
-
   },
 }
 </script>

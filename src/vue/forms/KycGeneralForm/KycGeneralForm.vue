@@ -54,12 +54,12 @@
         class="app__button-raised"
         :disabled="formMixin.isDisabled"
       >
-        <template v-if="former.isCreateOpBuilder">
-          {{ 'verification-form.create-btn' | globalize }}
+        <template v-if="former.willUpdateRequest">
+          {{ 'verification-form.update-btn' | globalize }}
         </template>
 
         <template v-else>
-          {{ 'verification-form.update-btn' | globalize }}
+          {{ 'verification-form.create-btn' | globalize }}
         </template>
       </button>
     </div>
@@ -68,8 +68,13 @@
 
 <script>
 import { KycGeneralFormer } from '@/js/formers/KycGeneralFormer'
-import formMixin from '@/vue/mixins/form.mixin'
+import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { Bus } from '@/js/helpers/event-bus'
+import { mapActions } from 'vuex'
+import { vuexTypes } from '@/vuex'
+import { delay } from '@/js/helpers/delay'
+import formMixin from '@/vue/mixins/form.mixin'
 import CountrySection from './components/CountrySection'
 import PersonalSection from './components/PersonalSection'
 import AddressSection from './components/AddressSection'
@@ -99,18 +104,30 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      loadKyc: vuexTypes.LOAD_KYC,
+    }),
+
     async submit () {
       this.disableForm()
       try {
         // TODO: kycRecoveryPage
+        const ops = await this.former.buildOps()
+        await api.postOperations(...ops)
+
+        await delay(3000) // w8 for the horizon ingest
+        await this.loadKyc() // update the current kyc state
+
+        Bus.success('general-form.request-submitted-msg')
+        this.$emit('submitted')
       } catch (e) {
         this.enableForm()
         ErrorHandler.process(e)
       }
     },
 
-    confirm () {
-      // TODO: console.dir(this.former.attrs)
+    async confirm () {
+      this.former.buildOps()
       if (!this.isFormValid()) return
       this.showConfirmation()
     },

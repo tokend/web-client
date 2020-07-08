@@ -127,7 +127,7 @@ const actions = {
       idDocument.face, DOCUMENT_TYPES.kycIdDocument
     ))
 
-    if (idDocument.back) {
+    if (idDocument.back && idDocument.back.key) {
       commit(types.SET_ID_DOCUMENT_BACK, wrapDocument(
         idDocument.back, DOCUMENT_TYPES.kycIdDocument
       ))
@@ -139,7 +139,10 @@ const actions = {
       ))
     }
 
-    if (blobData.documents[DOCUMENT_TYPES.kycProofOfInvestor]) {
+    if (
+      blobData.documents[DOCUMENT_TYPES.kycProofOfInvestor] &&
+      blobData.documents[DOCUMENT_TYPES.kycProofOfInvestor].key
+    ) {
       commit(types.SET_IS_ACCREDITED, true)
       commit(types.SET_PROOF_OF_INVESTOR, wrapDocument(
         blobData.documents[DOCUMENT_TYPES.kycProofOfInvestor],

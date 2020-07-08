@@ -13,6 +13,7 @@ import { store, vuexTypes } from '@/vuex'
 import { isUSResidence } from '@/js/helpers/is-us-residence'
 import { keyValues } from '@/key-values'
 // import { keyValues } from '@/key-values'
+import get from 'lodash/get'
 
 /**
  * Collects the attributes for kyc-general operations
@@ -46,8 +47,22 @@ export class KycGeneralFormer extends Former {
   _opBuilder = this._opBuilder || this._buildOpCreate
   get isCreateOpBuilder () { return this._opBuilder === this._buildOpCreate }
   get isUpdateOpBuilder () { return this._opBuilder === this._buildOpUpdate }
+  get isCreateRecoveryOpBuilder () {
+    return this._opBuilder === this._buildOpCreateRecovery
+  }
+  get isUpdateRecoveryOpBuilder () {
+    return this._opBuilder === this._buildOpUpdateRecovery
+  }
   useCreateOpBuilder () { this._opBuilder = this._buildOpCreate; return this }
   useUpdateOpBuilder () { this._opBuilder = this._buildOpUpdate; return this }
+  useCreateRecoveryOpBuilder () {
+    this._opBuilder = this._buildOpCreateRecovery
+    return this
+  }
+  useUpdateRecoveryOpBuilder () {
+    this._opBuilder = this._buildOpUpdateRecovery
+    return this
+  }
 
   get willUpdateRequest () {
     const id = this.attrs.requestId
@@ -56,8 +71,8 @@ export class KycGeneralFormer extends Former {
 
   async buildOps () {
     await uploadDocumentsDeep(this.attrs)
-    const blob = await this._createBlob()
-    return [this._opBuilder(blob)]
+    const op = await this._opBuilder()
+    return [op]
   }
 
   // /** @param {AssetRequest|AssetRecord} source */
@@ -123,35 +138,51 @@ export class KycGeneralFormer extends Former {
   //   this.attrs.erc20Integration.address = source.erc20Address
   // }
 
-  _buildOpCreate (blob) {
+  async _buildOpCreate () {
     const attrs = this.attrs
+
+    const blob = await this._createBlob()
+    const accountId = this._getAccountId()
+    const roleToSet = this._getAccountRoleToSet()
 
     const opts = {
       requestID: reqId(attrs.requestId),
-      destinationAccount: store[vuexTypes.accountId], // TODO: get rid of store
-      accountRoleToSet: this._getAccountRoleToSet(),
+      destinationAccount: str(accountId),
+      accountRoleToSet: str(roleToSet),
       creatorDetails: { blob_id: blob.id },
     }
 
-    console.log(blob)
+    console.log(blob.valueAsObject)
 
     return base.CreateChangeRoleRequestBuilder.createChangeRoleRequest(opts)
   }
 
+  async _buildOpCreateRecovery () {
+    const opts = await this._createRecoveryOpts()
+    return base.CreateKYCRecoveryRequestBuilder.create(opts)
+  }
+
+  async _buildOpUpdateRecovery () {
+    const opts = await this._createRecoveryOpts()
+    const requestId = reqId(this.attrs.requestId)
+    return base.CreateKYCRecoveryRequestBuilder.update(opts, requestId)
+  }
+
   async _createBlob () {
     const attrs = this.attrs
+    const address = attrs.address || {}
 
     const blobValue = JSON.stringify({
       first_name: str(attrs.firstName),
       last_name: str(attrs.lastName),
       date_of_birth: toRFC3339(attrs.dateOfBirth),
       address: {
-        line_1: str(attrs.address.line1),
-        line_2: str(attrs.address.line2),
-        city: str(attrs.address.city),
-        country: str(attrs.address.country),
-        state: str(attrs.address.state),
-        postal_code: str(attrs.address.postalCode),
+        line_1: str(address.line1),
+        line_2: str(address.line2),
+        city: str(address.city),
+        country: str(address.country),
+        state: str(address.state),
+        postal_code: str(address.postalCode),
       },
       documents: {
         [DOCUMENT_TYPES.kycIdDocument]: {
@@ -167,17 +198,49 @@ export class KycGeneralFormer extends Former {
     return createPrivateBlob(BLOB_TYPES.kycGeneral, blobValue)
   }
 
+  async _createRecoveryOpts () {
+    const blob = await this._createBlob()
+    const accountId = this._getAccountId()
+    const walletPublicKey = this._getWalletPublicKey()
+    const defaultSignerOpts = {
+      publicKey: str(walletPublicKey),
+      roleID: str(keyValues.defaultSignerRoleId),
+      weight: '1000',
+      identity: '1',
+      details: {},
+    }
+
+    const opts = {
+      targetAccount: str(accountId),
+      signers: [
+        defaultSignerOpts,
+        // TODO: issuance signer?
+        // TODO: recovery signer?
+      ],
+      creatorDetails: { blob_id: blob.id },
+    }
+    return opts
+  }
+
   _getAccountRoleToSet () {
-    const isUsaResident = isUSResidence(this.attrs.address.country)
+    const isUsResident = isUSResidence(get, this.attrs, 'address.country')
     const isAccredited = Boolean(this.attrs.proofOfInvestor)
     switch (true) {
-      case isUsaResident && isAccredited:
+      case isUsResident && isAccredited:
         return keyValues.usAccreditedRoleId
-      case isUsaResident && !isAccredited:
+      case isUsResident && !isAccredited:
         return keyValues.usVerifiedRoleId
       default:
         return keyValues.generalRoleId
     }
+  }
+
+  _getAccountId () {
+    return store.getters[vuexTypes.accountId] // TODO: get rid of store
+  }
+
+  _getWalletPublicKey () {
+    return store.getters[vuexTypes.walletPublicKey] // TODO: get rid of store
   }
 
   //   return base.ManageAssetBuilder.assetCreationRequest(opts)

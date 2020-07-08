@@ -11,7 +11,7 @@
           name="address-country"
           :label="'general-form.address-country-lbl' | globalize"
           @input="touchField('countryCode');
-                  former.setAttr('countryCode', countryCode)"
+                  former.setAttr('address.country', countryCode)"
           :error-message="getFieldErrorMessage('countryCode')"
           :disabled="isDisabled"
         >
