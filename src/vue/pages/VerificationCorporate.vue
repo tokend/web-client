@@ -211,7 +211,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
+      isAccountRoleReset: vuexTypes.isAccountRoleReset,
       accountRoleToSet: vuexTypes.kycAccountRoleToSet,
       previousAccountRole: vuexTypes.kycPreviousRequestAccountRoleToSet,
       kycRecoveryState: vuexTypes.kycRecoveryState,
@@ -221,7 +221,7 @@ export default {
     }),
 
     isFormPopulatable () {
-      return this.isAccountRoleReseted
+      return this.isAccountRoleReset
         ? this.previousAccountRole === keyValues.corporateRoleId
         : this.accountRoleToSet === keyValues.corporateRoleId
     },

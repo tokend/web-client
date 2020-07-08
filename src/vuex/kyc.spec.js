@@ -1,8 +1,5 @@
-import {
-  REQUEST_STATES,
-  REQUEST_STATES_STR,
-} from '../js/const/request-states.const'
-import { ChangeRoleRequestRecord } from '@/js/records/requests/change-role.record'
+import { REQUEST_STATES_STR } from '../js/const/request-states.const'
+import { KycRequestRecord } from '@/js/records/requests/change-role.record'
 import { MockWrapper } from '../test'
 import { api } from '@/api'
 import { mutations, actions, getters } from './kyc.module'
@@ -16,7 +13,7 @@ describe('kyc.module', () => {
   })
 
   describe('mutations', () => {
-    it('SET_KYC_LATEST_REQUEST should properly modify state', () => {
+    it('SET_KYC_REQUEST should properly modify state', () => {
       const state = {
         request: {},
       }
@@ -24,21 +21,21 @@ describe('kyc.module', () => {
         id: '2255625342224',
         details: {},
       }
-      mutations[vuexTypes.SET_KYC_LATEST_REQUEST](state, request)
+      mutations[vuexTypes.SET_KYC_REQUEST](state, request)
 
       expect(state).to.deep.equal({
         request,
       })
     })
 
-    it('SET_ACCOUNT_ROLE_RESETED should properly modify state', () => {
+    it('SET_IS_ACCOUNT_ROLE_RESET should properly modify state', () => {
       const state = {
-        isAccountRoleReseted: false,
+        isAccountRoleReset: false,
       }
-      mutations[vuexTypes.SET_ACCOUNT_ROLE_RESETED](state, true)
+      mutations[vuexTypes.SET_IS_ACCOUNT_ROLE_RESET](state, true)
 
       expect(state).to.deep.equal({
-        isAccountRoleReseted: true,
+        isAccountRoleReset: true,
       })
     })
 
@@ -57,12 +54,12 @@ describe('kyc.module', () => {
       })
     })
 
-    it('SET_KYC_LATEST_REQUEST_DATA should properly modify state', () => {
+    it('SET_KYC_REQUEST_BLOB should properly modify state', () => {
       const state = {
         latestRequestData: '{}',
       }
 
-      mutations[vuexTypes.SET_KYC_LATEST_REQUEST_DATA](
+      mutations[vuexTypes.SET_KYC_REQUEST_BLOB](
         state,
         JSON.stringify({
           first_name: 'John',
@@ -90,7 +87,7 @@ describe('kyc.module', () => {
 
     it('LOAD_KYC should dispatch the proper set of actions', async () => {
       const expectedActions = [
-        [vuexTypes.LOAD_KYC_LATEST_REQUEST],
+        [vuexTypes.LOAD_KYC_REQUEST],
         [vuexTypes.LOAD_KYC_BLOB],
       ]
 
@@ -99,24 +96,24 @@ describe('kyc.module', () => {
       expect(store.dispatch.args).to.deep.equal(expectedActions)
     })
 
-    it('LOAD_KYC_LATEST_REQUEST commits the proper set of mutations', async () => {
+    it('LOAD_KYC_REQUEST commits the proper set of mutations', async () => {
       sinon.stub(api, 'getWithSignature')
         .resolves(MockWrapper.makeJsonapiResponse(responseJSON))
 
       const expectedRequest = MockWrapper
         .makeJsonapiResponseData(responseJSON)[0]
-      const expectedPayload = new ChangeRoleRequestRecord(expectedRequest)
+      const expectedPayload = new KycRequestRecord(expectedRequest)
       const expectedMutations = {
-        [vuexTypes.SET_KYC_LATEST_REQUEST]: expectedPayload,
-        [vuexTypes.SET_ACCOUNT_ROLE_RESETED]: false,
-        [vuexTypes.SET_KYC_RELATED_REQUEST]: {},
+        [vuexTypes.SET_KYC_REQUEST]: expectedPayload,
+        [vuexTypes.SET_IS_ACCOUNT_ROLE_RESET]: false,
+        [vuexTypes.SET_PREV_APPROVED_KYC_REQUEST]: {},
       }
 
       store.rootGetters = {
         [vuexTypes.accountId]: 'GA3LMODDZGFASADC4NOSPBQRAAEJWZH76PHZAVUY2V3PHE7OAX52DXQH',
       }
 
-      await actions[vuexTypes.LOAD_KYC_LATEST_REQUEST](store)
+      await actions[vuexTypes.LOAD_KYC_REQUEST](store)
 
       expect(store.commit.args).to.deep.equal(Object.entries(expectedMutations))
     })
@@ -131,16 +128,6 @@ describe('kyc.module', () => {
       expect(getters[vuexTypes.kycState](state))
         .to
         .equal(REQUEST_STATES_STR.approved)
-    })
-
-    it('kycStateI', () => {
-      const state = {
-        request: { stateI: REQUEST_STATES.approved },
-      }
-
-      expect(getters[vuexTypes.kycStateI](state))
-        .to
-        .equal(REQUEST_STATES.approved)
     })
 
     it('kycLatestData', () => {

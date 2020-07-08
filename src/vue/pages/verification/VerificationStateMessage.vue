@@ -73,7 +73,7 @@ export default {
       kycBlockReason: vuexTypes.kycRequestBlockReason,
       kycRequestExternalDetails: vuexTypes.kycRequestExternalDetails,
 
-      isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
+      isAccountRoleReset: vuexTypes.isAccountRoleReset,
       isAccountBlocked: vuexTypes.isAccountBlocked,
     }),
 
@@ -82,7 +82,7 @@ export default {
 
       if (this.isAccountBlocked) {
         state = VERIFICATION_STATES.blocked
-      } else if (this.isAccountRoleReseted) {
+      } else if (this.isAccountRoleReset) {
         state = VERIFICATION_STATES.reset
       } else if (this.kycState === REQUEST_STATES_STR.approved) {
         state = VERIFICATION_STATES.approved

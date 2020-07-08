@@ -43,7 +43,7 @@ export default {
       kycRequestId: vuexTypes.kycRequestId,
       kycLatestRequestBlobId: vuexTypes.kycLatestRequestBlobId,
 
-      isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
+      isAccountRoleReset: vuexTypes.isAccountRoleReset,
       accountRoleToSet: vuexTypes.kycAccountRoleToSet,
       previousAccountRole: vuexTypes.kycPreviousRequestAccountRoleToSet,
     }),
@@ -57,7 +57,7 @@ export default {
       )
     },
     isFormPopulatable () {
-      return this.isAccountRoleReseted
+      return this.isAccountRoleReset
         ? this.previousAccountRole === keyValues.generalRoleId
         : (
           this.accountRoleToSet === keyValues.generalRoleId ||

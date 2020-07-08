@@ -18,7 +18,6 @@ describe('kyc.module end-to-end test', () => {
 
     const latestKycData = { first_name: 'Bob', last_name: 'Smith' }
     const kycState = 'approved'
-    const kycStateI = 3
 
     beforeEach(async () => {
       store = new Vuex.Store({
@@ -55,11 +54,6 @@ describe('kyc.module end-to-end test', () => {
     it('kycState', () => {
       expect(store.getters[vuexTypes.kycState])
         .to.equal(kycState)
-    })
-
-    it('kycStateI', () => {
-      expect(store.getters[vuexTypes.kycStateI])
-        .to.equal(kycStateI)
     })
 
     it('kycLatestData', () => {

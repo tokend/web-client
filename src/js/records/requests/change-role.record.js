@@ -1,47 +1,31 @@
-import _get from 'lodash/get'
+import { RequestRecord } from '@/js/records/entities/request-record'
+import { BlobRecord } from '@/js/records/entities/blob.record'
+import get from 'lodash/get'
 
-export class ChangeRoleRequestRecord {
-  constructor (record) {
-    this._record = record
+export class KycRequestRecord extends RequestRecord {
+  constructor (record = {}, kycBlob) {
+    super(record)
+    this.setKyc(kycBlob)
 
-    this.id = record.id || '0'
-    this.requestor = _get(record, 'requestor.id')
-    this.reviewer = _get(record, 'reviewer.id')
-    this.reference = record.reference
-    this.rejectReason = record.rejectReason
-    this.resetReason = _get(
-      record, 'requestDetails.creatorDetails.resetReason'
-    )
-    this.blockReason = _get(
-      record, 'requestDetails.creatorDetails.blockReason'
-    )
+    const requestDetails = record.requestDetails || {}
+    const creatorDetails = requestDetails.creatorDetails || {}
 
-    this.relatedRequestId = _get(
-      record, 'requestDetails.creatorDetails.latestApprovedRequestId'
-    )
+    this.blobId = creatorDetails.blobId
+    this.resetReason = creatorDetails.resetReason
+    this.blockReason = creatorDetails.blockReason
+    this.prevApprovedReqId = creatorDetails.latestApprovedRequestId
 
-    this.creatorDetails = _get(record, 'requestDetails.creatorDetails')
+    // TODO: investigate
+    this.externalDetails = (get(record, 'externalDetails.data') || []).pop()
 
-    this.hash = record.hash
-    this.createdAt = record.createdAt
-    this.updatedAt = record.updatedAt
-    this.state = record.state
-    this.stateI = record.stateI
+    // TODO: remove
+    this.creatorDetails = creatorDetails
+    this.accountRoleToSet = requestDetails.accountRoleToSet
+  }
 
-    this.requestType = _get(record, 'requestDetails.type')
-
-    this.allTasks = record.allTasks
-    this.pendingTasks = record.pendingTasks
-    this.externalDetails = record.externalDetails
-
-    this.accountToUpdateRole = _get(
-      record, 'requestDetails.accountToUpdateRole.id'
-    )
-
-    this.accountRoleToSet = _get(record, 'requestDetails.accountRoleToSet')
-    this.blobId = _get(record, 'requestDetails.creatorDetails.blobId')
-    this.externalDetails = (_get(record, 'externalDetails.data') || [])
-      .slice() // to avoid modifying record itself
-      .pop() // because only the last object in external details is actual
+  setKyc (kyc) {
+    if (!(kyc instanceof BlobRecord)) return
+    this.kyc = kyc.valueAsObject
+    return this
   }
 }

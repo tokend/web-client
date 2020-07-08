@@ -15,11 +15,11 @@ const mutations = {
   SET_FACTORS: 'SET_FACTORS',
 
   // kyc
-  SET_KYC_LATEST_REQUEST: 'SET_KYC_LATEST_REQUEST',
-  SET_KYC_RELATED_REQUEST: 'SET_KYC_RELATED_REQUEST',
+  SET_KYC_REQUEST: 'SET_KYC_REQUEST',
+  SET_PREV_APPROVED_KYC_REQUEST: 'SET_PREV_APPROVED_KYC_REQUEST',
   SET_KYC_BLOB: 'SET_KYC_BLOB',
-  SET_ACCOUNT_ROLE_RESETED: 'SET_ACCOUNT_ROLE_RESETED',
-  SET_KYC_LATEST_REQUEST_DATA: 'SET_KYC_LATEST_REQUEST_DATA',
+  SET_IS_ACCOUNT_ROLE_RESET: 'SET_IS_ACCOUNT_ROLE_RESET',
+  SET_KYC_REQUEST_BLOB: 'SET_KYC_REQUEST_BLOB',
 
   // kyc recovery
   SET_KYC_RECOVERY_LATEST_REQUEST: 'SET_KYC_RECOVERY_LATEST_REQUEST',
@@ -58,8 +58,8 @@ const actions = {
 
   // kyc
   LOAD_KYC: 'LOAD_KYC',
-  LOAD_KYC_LATEST_REQUEST: 'LOAD_KYC_LATEST_REQUEST',
-  LOAD_KYC_LATEST_REQUEST_DATA: 'LOAD_KYC_LATEST_REQUEST_DATA',
+  LOAD_KYC_REQUEST: 'LOAD_KYC_REQUEST',
+  LOAD_KYC_REQUEST_BLOB: 'LOAD_KYC_REQUEST_BLOB',
   LOAD_KYC_RELATED_REQUEST: 'LOAD_KYC_RELATED_REQUEST',
   LOAD_KYC_BLOB: 'LOAD_KYC_BLOB',
 
@@ -123,7 +123,6 @@ const getters = {
 
   // kyc
   kycState: 'kycState',
-  kycStateI: 'kycStateI',
   kycRequestId: 'kycRequestId',
   kycRequestRejectReason: 'kycRequestRejectReason',
   kycRequestResetReason: 'kycRequestResetReason',
@@ -134,8 +133,9 @@ const getters = {
   kycLatestData: 'kycLatestData',
   kycLatestRequestBlobId: 'kycLatestRequestBlobId',
   kycLatestRequestData: 'kycLatestRequestData',
-  isAccountRoleReseted: 'isAccountRoleReseted',
+  isAccountRoleReset: 'isAccountRoleReset',
   kyc: 'kyc',
+  kycRequest: 'kycRequest',
 
   // kyc recovery
   kycRecoveryRequestId: 'kycRecoveryRequestId',

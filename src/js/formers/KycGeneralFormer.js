@@ -7,7 +7,6 @@ import { doc, str, reqId } from './op-build-helpers'
 import { uploadDocumentsDeep } from '@/js/helpers/upload-documents'
 import { toRFC3339 } from '@/js/helpers/date-helpers'
 // import { str, doc } from './op-build-helpers'
-import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { createPrivateBlob } from '@/js/helpers/blob-helpers'
 import { store, vuexTypes } from '@/vuex'
 import { isUSResidence } from '@/js/helpers/is-us-residence'
@@ -152,7 +151,7 @@ export class KycGeneralFormer extends Former {
       creatorDetails: { blob_id: blob.id },
     }
 
-    console.log(blob.valueAsObject)
+    // console.log(blob.valueAsObject)
 
     return base.CreateChangeRoleRequestBuilder.createChangeRoleRequest(opts)
   }
@@ -185,14 +184,14 @@ export class KycGeneralFormer extends Former {
         postal_code: str(address.postalCode),
       },
       documents: {
-        [DOCUMENT_TYPES.kycIdDocument]: {
+        kyc_id_document: {
           type: str(attrs.idDocType),
           face: doc(attrs.idDocFace),
           back: doc(attrs.idDocBack),
         },
-        [DOCUMENT_TYPES.kycProofOfInvestor]: doc(attrs.kycProofOfInvestor),
-        [DOCUMENT_TYPES.kycSelfie]: doc(attrs.selfie),
-        [DOCUMENT_TYPES.kycAvatar]: doc(attrs.avatar),
+        kyc_proof_investor: doc(attrs.kycProofOfInvestor),
+        kyc_selfie: doc(attrs.selfie),
+        kyc_avatar: doc(attrs.avatar),
       },
     })
     return createPrivateBlob(BLOB_TYPES.kycGeneral, blobValue)
