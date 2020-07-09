@@ -10,7 +10,7 @@ export function doc (doc) {
     return new base.Document(doc, DOCUMENT_POLICIES[doc.type]).toJSON()
   }
 
-  return new base.Document().toJSON()
+  return base.Document.toEmptyJSON()
 }
 
 export function reqId (val) {

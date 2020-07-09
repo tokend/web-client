@@ -249,7 +249,7 @@ export default {
 
       try {
         if (!this.isKycRecoveryPage) {
-          await base.uploadDocuments(this.form.avatar)
+          await base.uploadDocuments([this.form.avatar])
         }
 
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycCorporate)
