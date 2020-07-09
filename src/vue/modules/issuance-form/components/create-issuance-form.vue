@@ -253,10 +253,8 @@ export default {
     },
 
     availableForIssuance () {
-      const nums = new BigNumber(this.form.asset.availableForIssuance).c
-      if (nums[0] || nums[1]) {
-        return nums[0] || nums[1]
-      } else return false
+      const nums = new BigNumber(this.form.asset.availableForIssuance).c || []
+      return nums[0] || nums[1] || false
     },
   },
 
