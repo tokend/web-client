@@ -6,7 +6,7 @@ export function doc (doc) {
     return doc.toJSON()
   }
 
-  if (base.Document.isDoc(doc)) {
+  if (doc && typeof doc === 'object' && Boolean(doc.file || doc.key)) {
     return new base.Document(doc, DOCUMENT_POLICIES[doc.type]).toJSON()
   }
 
