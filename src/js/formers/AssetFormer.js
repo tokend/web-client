@@ -32,7 +32,7 @@ import { keyValues } from '@/key-values'
 
 /**
 * @typedef Document
-* @type {base.Document}
+* @type {Document}
 */
 
 /**

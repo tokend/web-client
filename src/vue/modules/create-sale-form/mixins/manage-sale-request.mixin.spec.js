@@ -1,6 +1,6 @@
 import ManageSaleRequestMixin from './manage-sale-request.mixin'
 
-import { base } from '@tokend/js-sdk'
+import { base, Document } from '@tokend/js-sdk'
 
 import { mount, createLocalVue } from '@vue/test-utils'
 
@@ -167,7 +167,7 @@ describe('Manage sale request mixin', () => {
     describe('submitCreateSaleRequest', () => {
       it('calls proper methods with passed params',
         async () => {
-          const saleLogo = new base.Document({ key: 'logo-key' })
+          const saleLogo = new Document({ key: 'logo-key' })
 
           wrapper.setData({
             assets: [{ code: 'BTC' }, { code: 'ETH' }],

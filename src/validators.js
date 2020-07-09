@@ -4,7 +4,7 @@ import iban from 'iban'
 import cardValidator from 'card-validator'
 import _isString from 'lodash/isString'
 
-import { base } from '@tokend/js-sdk'
+import { base, Document } from '@tokend/js-sdk'
 
 import { MathUtil } from '@/js/utils'
 
@@ -56,7 +56,7 @@ export const emailOrAccountId = value => {
 export const accountId = value => {
   return base.Keypair.isValidPublicKey(value)
 }
-export const documentContainer = value => value instanceof base.Document
+export const documentContainer = value => value instanceof Document
 export const softCapMoreThanHardCap = (min, hardCap) => value => {
   return amountRange(min, hardCap)(value)
 }

@@ -1,7 +1,7 @@
-import { base } from '@tokend/js-sdk'
+import { Document } from '@tokend/js-sdk'
 
 export function wrapDocument (document, type) {
-  return new base.Document({
+  return new Document({
     ...document,
   }, type)
 }

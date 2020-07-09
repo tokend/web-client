@@ -1,16 +1,21 @@
-import { base } from '@tokend/js-sdk'
-import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
+import { Document } from '@tokend/js-sdk'
+import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
+const EMPTY_DOCUMENT = {
+  mime_type: '',
+  name: '',
+  key: '',
+}
 export function doc (doc) {
-  if (doc instanceof base.Document) {
+  if (doc instanceof Document) {
     return doc.toJSON()
   }
 
   if (doc && typeof doc === 'object' && Boolean(doc.file || doc.key)) {
-    return new base.Document(doc, DOCUMENT_POLICIES[doc.type]).toJSON()
+    return new Document(doc, DOCUMENT_TYPES[doc.type]).toJSON()
   }
 
-  return base.Document.toEmptyJSON()
+  return EMPTY_DOCUMENT
 }
 
 export function reqId (val) {

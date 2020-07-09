@@ -50,8 +50,7 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
-import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
-import { base } from '@tokend/js-sdk'
+import { Document } from '@tokend/js-sdk'
 
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
 
@@ -102,9 +101,9 @@ export default {
     populateForm () {
       this.form = {
         saleLogo: this.request.logoKey
-          ? new base.Document(
+          ? new Document(
             this.request.logo,
-            DOCUMENT_POLICIES[this.request.logo.type]
+            DOCUMENT_TYPES.saleLogo,
           )
           : null,
         shortDescription: this.request.shortDescription,
