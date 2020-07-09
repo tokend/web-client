@@ -35,8 +35,14 @@ describe('Create issuance form', () => {
     let wrapper
 
     beforeEach(() => {
-      sandbox.stub(CreateIssuanceForm, 'created')
-      wrapper = mount(CreateIssuanceForm, { localVue, store })
+      sandbox.stub(CreateIssuanceForm.methods, 'loadFees').resolves()
+      wrapper = mount(CreateIssuanceForm, {
+        localVue,
+        store,
+        propsData: {
+          ownedAssets: [{ availableForIssuance: 1 }],
+        },
+      })
     })
 
     const expectedResults = {
@@ -80,12 +86,15 @@ describe('Create issuance form', () => {
           localVue,
           store,
           propsData: {
-            ownedAssets: ['USD', 'BTC'],
+            ownedAssets: [
+              { code: 'USD', availableForIssuance: 1 },
+              { code: 'BTC', availableForIssuance: 1 },
+            ],
           },
         })
 
         expect(CreateIssuanceForm.methods.loadFees).to.have.been.calledOnce
-        expect(wrapper.vm.form.asset).to.equal('USD')
+        expect(wrapper.vm.form.asset.code).to.equal('USD')
       }
     )
   })
@@ -95,7 +104,16 @@ describe('Create issuance form', () => {
 
     beforeEach(() => {
       sandbox.stub(CreateIssuanceForm, 'created')
-      wrapper = shallowMount(CreateIssuanceForm, { localVue, store })
+      wrapper = shallowMount(CreateIssuanceForm, {
+        localVue,
+        store,
+        propsData: {
+          ownedAssets: [
+            { code: 'USD', availableForIssuance: 1 },
+            { code: 'BTC', availableForIssuance: 1 },
+          ],
+        },
+      })
     })
 
     describe('method', () => {

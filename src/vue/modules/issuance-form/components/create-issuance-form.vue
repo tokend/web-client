@@ -196,7 +196,9 @@ export default {
 
   data: _ => ({
     form: {
-      asset: {},
+      asset: {
+        availableForIssuance: 0
+      },
       amount: '0',
       receiver: '',
       reference: '',
@@ -254,7 +256,7 @@ export default {
 
     availableForIssuance () {
       const nums = new BigNumber(this.form.asset.availableForIssuance).c
-      return nums[0] || nums[1] || false
+      return nums[0] || nums[1] || 0
     },
   },
 
