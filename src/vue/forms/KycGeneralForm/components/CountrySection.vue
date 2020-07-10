@@ -13,7 +13,7 @@
           @input="touchField('countryCode');
                   former.setAttr('address.country', countryCode)"
           :error-message="getFieldErrorMessage('countryCode')"
-          :disabled="isDisabled"
+          :disabled="isDisabled || isDisabledCountryChange"
         >
           <option
             v-for="item in COUNTRIES"
@@ -74,9 +74,12 @@
 import formMixin from '@/vue/mixins/form.mixin'
 import { required, requiredIf } from '@validators'
 import { KycGeneralFormer } from '@/js/formers/KycGeneralFormer'
-import { isUSResidence } from '@/js/helpers/is-us-residence'
+import { isUSResidence, isRoleUnset } from '@/js/helpers/kyc-helpers'
 
 import { COUNTRIES } from '@/js/const/countries'
+import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 // TODO: disable country change
 
@@ -97,10 +100,16 @@ export default {
   },
 
   data () {
+    const attrs = this.former.attrs || {}
+    const country = (attrs.address || {}).country || ''
+    const isAccredited =
+      attrs.proofOfInvestor instanceof DocumentContainer &&
+      attrs.proofOfInvestor.isUploaded
     return {
-      countryCode: this.former.attrs.countryCode || '',
-      proofOfInvestor: this.former.attrs.proofOfInvestor || null,
-      isAccredited: false,
+      countryCode: country,
+      isDisabledCountryChange: Boolean(country),
+      proofOfInvestor: attrs.proofOfInvestor || null,
+      isAccredited: isAccredited || false,
       COUNTRIES,
     }
   },
@@ -113,6 +122,10 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      kycRequest: vuexTypes.kycRequest,
+    }),
+
     isUSResident () {
       return isUSResidence(this.countryCode)
     },
@@ -131,6 +144,17 @@ export default {
           this.former.setAttr('proofOfInvestor', this.proofOfInvestor)
         }
       })
+    this.$watch(
+      'kycRequest',
+      () => {
+        if (isRoleUnset(this.kycRequest)) {
+          this.isDisabledCountryChange = false
+        } else if (this.kycRequest.isExists && this.countryCode) {
+          this.isDisabledCountryChange = true
+        }
+      },
+      { immediate: true },
+    )
   },
 }
 </script>
