@@ -20,6 +20,9 @@ export class RequestRecord {
     this.pendingTasks = record.pendingTasks
   }
 
+  get isExists () { // TODO: rethink
+    return this.id && this.id !== '0'
+  }
   get isPending () {
     return this.stateI === REQUEST_STATES.pending
   }
