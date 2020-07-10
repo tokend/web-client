@@ -1,5 +1,5 @@
 export class BlobRecord {
-  constructor (raw) {
+  constructor (raw = {}) {
     this._raw = raw
 
     this.id = raw.id || ''
@@ -12,6 +12,6 @@ export class BlobRecord {
   }
 
   get valueAsObject () {
-    return JSON.parse(this.value)
+    return JSON.parse(this.value || '{}')
   }
 }
