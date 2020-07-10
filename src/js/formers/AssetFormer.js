@@ -1,7 +1,7 @@
 import { Former } from './Former'
 import config from '@/config'
-import { base } from '@tokend/js-sdk'
-import { reqId, doc, str, num } from './op-build-helpers'
+import { base, uploadDocumentsDeep } from '@tokend/js-sdk'
+import { reqId, str, num } from './op-build-helpers'
 import { AssetRequest } from '@/js/records/requests/asset-request.record'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { keyValues } from '@/key-values'
@@ -32,7 +32,7 @@ import { keyValues } from '@/key-values'
 
 /**
 * @typedef Document
-* @type {Document}
+* @type {import('@tokend/js-sdk').Document}
 */
 
 /**
@@ -56,7 +56,7 @@ export class AssetFormer extends Former {
   }
 
   async buildOps () {
-    await base.uploadDocumentsDeep(this.attrs)
+    await uploadDocumentsDeep(this.attrs)
     return [this._opBuilder()]
   }
 
@@ -141,8 +141,8 @@ export class AssetFormer extends Former {
       initialPreissuedAmount: str(attrs.initialPreissuedAmount || maxIssuance),
       creatorDetails: {
         name: str(attrs.name),
-        logo: doc(attrs.logo),
-        terms: doc(attrs.terms),
+        logo: attrs.logo,
+        terms: attrs.terms,
         stellar: this._getStellarOpts(),
         erc20: this._getErc20Opts(),
       },
@@ -160,8 +160,8 @@ export class AssetFormer extends Former {
       policies: num(attrs.policies),
       creatorDetails: {
         name: str(attrs.name),
-        logo: doc(attrs.logo),
-        terms: doc(attrs.terms),
+        logo: attrs.logo,
+        terms: attrs.terms,
         stellar: this._getStellarOpts(),
         erc20: this._getErc20Opts(),
       },

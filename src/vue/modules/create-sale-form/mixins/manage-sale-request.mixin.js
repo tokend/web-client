@@ -1,6 +1,6 @@
 import ManageSaleDescriptionMixin from './manage-sale-description.mixin'
 import LoadAssetPairsMixin from './load-asset-pairs.mixin'
-import { base, SALE_TYPES } from '@tokend/js-sdk'
+import { base, SALE_TYPES, uploadDocuments } from '@tokend/js-sdk'
 
 import { api } from '@/api'
 
@@ -68,7 +68,7 @@ export default {
     },
 
     async submitCreateSaleRequest (accountId) {
-      await base.uploadDocuments([this.shortBlurbStepForm.saleLogo])
+      await uploadDocuments([this.shortBlurbStepForm.saleLogo])
       this.saleDescriptionBlobId = await this.createSaleDescriptionBlob(
         this.fullDescriptionStepForm.description,
         accountId

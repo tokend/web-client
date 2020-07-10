@@ -1,6 +1,6 @@
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { ID_DOCUMENT_TYPES } from '../id-document-types'
-import { BLOB_TYPES, base } from '@tokend/js-sdk'
+import { BLOB_TYPES, uploadDocuments } from '@tokend/js-sdk'
 import { types } from './types'
 import { api } from '@/api'
 
@@ -148,7 +148,7 @@ const actions = {
   },
 
   async [types.UPLOAD_DOCUMENTS] ({ state }) {
-    await base.uploadDocuments([
+    await uploadDocuments([
       state.documents.avatar,
       state.documents.selfie,
       state.documents.isDocumentFace,
