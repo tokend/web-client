@@ -1,11 +1,12 @@
 import { vuexTypes } from './types'
 
 import { api } from '@/api'
-import { KycRequestRecord } from '@/js/records/requests/change-role.record'
+import { KycRequestRecord } from '@/js/records/requests/kyc-request.record'
 
-import safeGet from 'lodash/get'
-import { getPrivateBlob } from '@/js/helpers/blob-helpers'
-import { createKycRecord } from '@/js/helpers/kyc-record-factory'
+import get from 'lodash/get'
+import set from 'lodash/set'
+import { getPrivateBlob, getLatestRequest, getRequest } from '@/js/helpers/api-helpers'
+import { createKycRecord } from '@/js/helpers/kyc-helpers'
 import { BlobRecord } from '@/js/records/entities/blob.record'
 
 /**
@@ -33,6 +34,10 @@ export const mutations = {
     state.request = request
   },
 
+  [vuexTypes.SET_KYC_REQUEST_BLOB] (state, data) {
+    state.requestBlob = data
+  },
+
   [vuexTypes.SET_PREV_APPROVED_KYC_REQUEST] (state, request) {
     state.prevApprovedRequest = request
   },
@@ -42,10 +47,6 @@ export const mutations = {
   },
 
   // TODO: remove
-  [vuexTypes.SET_KYC_REQUEST_BLOB] (state, data) {
-    state.latestRequestData = data
-  },
-
   [vuexTypes.SET_IS_ACCOUNT_ROLE_RESET] (state, value) {
     state.isAccountRoleReset = value
   },
@@ -56,64 +57,31 @@ export const actions = {
     dispatch,
   }) {
     await dispatch(vuexTypes.LOAD_KYC_REQUEST)
+    await dispatch(vuexTypes.LOAD_KYC_REQUEST_BLOB)
     await dispatch(vuexTypes.LOAD_KYC_BLOB)
   },
 
-  async [vuexTypes.LOAD_KYC_REQUEST] ({
-    rootGetters,
-    commit,
-    dispatch,
-  }) {
-    const { data: [request] } = await api.getWithSignature(
-      '/v3/change_role_requests',
-      {
-        filter: { requestor: rootGetters[vuexTypes.accountId] },
-        page: { limit: 1, order: 'desc' },
-        include: ['request_details'],
-      },
-    )
+  async [vuexTypes.LOAD_KYC_REQUEST] ({ rootGetters, commit }) {
+    const rawRequest = await getLatestRequest('/v3/change_role_requests')
 
-    commit(vuexTypes.SET_KYC_REQUEST, request)
-
-    if (request.prevApprovedReqId) {
-      await dispatch(
-        vuexTypes.LOAD_KYC_RELATED_REQUEST,
-        request.prevApprovedReqId
-      )
+    const request = new KycRequestRecord(rawRequest)
+    if (request.isReset) {
+      const prevReqId = request.prevApprovedReqId
+      const rawPrevRequest = await getRequest('/v3/change_role_requests', prevReqId)
+      set(rawPrevRequest, 'requestDetails.creatorDetails.resetReason',
+        request.resetReason)
+      commit(vuexTypes.SET_KYC_REQUEST, rawPrevRequest)
     } else {
-      commit(vuexTypes.SET_IS_ACCOUNT_ROLE_RESET, false)
-      commit(vuexTypes.SET_PREV_APPROVED_KYC_REQUEST, {})
+      commit(vuexTypes.SET_KYC_REQUEST, rawRequest)
     }
-
-    await dispatch(vuexTypes.LOAD_KYC_REQUEST_BLOB)
   },
 
-  async [vuexTypes.LOAD_KYC_RELATED_REQUEST] (
-    { state, commit, rootGetters },
-    requestId
-  ) {
-    const { data } = await api.getWithSignature(
-      `/v3/change_role_requests/${requestId}`,
-      {
-        filter: { requestor: rootGetters[vuexTypes.accountId] },
-        include: ['request_details'],
-      }
-    )
-
-    const request = new KycRequestRecord(data)
-    const resetReason = request.resetReason || state.request.resetReason
-
-    commit(vuexTypes.SET_IS_ACCOUNT_ROLE_RESET, Boolean(resetReason))
-    commit(vuexTypes.SET_PREV_APPROVED_KYC_REQUEST, request)
-  },
-
-  // TODO: merge with LOAD_KYC_REQUEST
   async [vuexTypes.LOAD_KYC_REQUEST_BLOB] ({ getters, commit }) {
     const blobId = getters[vuexTypes.kycRequest].blobId
     if (!blobId) return
 
     const blob = await getPrivateBlob(blobId)
-    commit(vuexTypes.SET_KYC_REQUEST_BLOB, blob.value)
+    commit(vuexTypes.SET_KYC_REQUEST_BLOB, blob)
   },
 
   async [vuexTypes.LOAD_KYC_BLOB] ({ rootGetters, commit }) {
@@ -123,23 +91,21 @@ export const actions = {
       { include: ['kyc_data'] }
     )
 
-    const blobId = safeGet(account, 'kycData.kycData.blobId')
+    const blobId = get(account, 'kycData.kycData.blobId')
     if (!blobId) return
 
     const blob = await getPrivateBlob(blobId)
-    commit(vuexTypes.SET_KYC_BLOB, blob.raw)
+    commit(vuexTypes.SET_KYC_BLOB, blob)
   },
 }
 
 export const getters = {
   [vuexTypes.kyc]: state => createKycRecord(new BlobRecord(state.kycBlob)),
-  [vuexTypes.kycRequest]: state => new KycRequestRecord(state.request)
-    .setKyc(new BlobRecord(state.requestBlob)),
-
-  [vuexTypes.kycState]: (_, getters) =>
-    getters[vuexTypes.kycRequest].state,
+  [vuexTypes.kycRequest]: state =>
+    new KycRequestRecord(state.request, new BlobRecord(state.requestBlob)),
 
   // TODO: remove
+  [vuexTypes.kycState]: (_, getters) => getters[vuexTypes.kycRequest].state,
   [vuexTypes.isAccountRoleReset]: state => state.isAccountRoleReset,
   [vuexTypes.kycAccountRoleToSet]: (state, getters) => state.isAccountRoleReset
     ? undefined
