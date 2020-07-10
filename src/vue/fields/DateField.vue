@@ -302,6 +302,10 @@ export default {
   .date-field-flatpickr--error > & {
     @include material-border($field-color-error, $field-color-error);
   }
+
+  .date-field-flatpickr--disabled > & {
+    border-bottom-style: dashed;
+  }
 }
 
 .date-field-flatpickr__input.active {

@@ -426,6 +426,10 @@ $z-reset-btn: 1;
   opacity: 0;
   height: 100%;
   width: 100%;
+
+  .file-field__content--disabled > & {
+    cursor: default;
+  }
 }
 
 .file-field__err-mes {
