@@ -12,9 +12,7 @@
             tag="button"
             :to="vueRoutes.verificationGeneral"
             class="account-type-selector__item"
-            :disabled="kycState && kycAccountRole &&
-              !isKycTypeGeneral &&
-              kycState !== REQUEST_STATES_STR.permanentlyRejected"
+            :disabled="!isRoleChangeable && !kycRequest.isGeneralKycRecord"
           >
             <p class="account-type-selector__item-title">
               {{ 'verification-page.account-type-general-title' | globalize }}
@@ -33,9 +31,7 @@
             tag="button"
             :to="vueRoutes.verificationCorporate"
             class="account-type-selector__item"
-            :disabled="kycState && kycAccountRole &&
-              kycAccountRole !== $kv.corporateRoleId &&
-              kycState !== REQUEST_STATES_STR.permanentlyRejected"
+            :disabled="!isRoleChangeable && !kycRequest.isCorporateKycRecord"
           >
             <p class="account-type-selector__item-title">
               {{ 'verification-page.account-type-corporate-title' | globalize }}
@@ -80,6 +76,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import config from '@/config'
 import { keyValues } from '@/key-values'
+import { isRoleUnset } from '@/js/helpers/kyc-helpers'
 
 // The guard doesn't allow the user to visit a verification page
 // if he/she has already sent the verification request, and the admin
@@ -91,29 +88,26 @@ import { keyValues } from '@/key-values'
 // the guard when routing from the child's path to the parent's one.
 // Details: https://forum.vuejs.org/t/vue-router-beforeenter-doesnt-work-properly-for-children-path/20019
 function verificationGuard (to, from, next) {
-  const kycState = store.getters[vuexTypes.kycState]
-  const kycAccountRole = store.getters[vuexTypes.kycAccountRoleToSet]
+  const kycRequest = store.getters[vuexTypes.kycRequest]
+  const isToGeneralRoute = to.name === vueRoutes.verificationGeneral.name
+  const isToCorporateRoute = to.name === vueRoutes.verificationCorporate.name
 
-  if (!kycState || kycState === REQUEST_STATES_STR.permanentlyRejected) {
-    next()
-  } else {
-    switch (kycAccountRole) {
-      case keyValues.corporateRoleId:
-        to.name === vueRoutes.verificationCorporate.name
-          ? next()
-          : next(vueRoutes.verificationCorporate)
-        break
-      case keyValues.generalRoleId:
-      case keyValues.usVerifiedRoleId:
-      case keyValues.usAccreditedRoleId:
-        to.name === vueRoutes.verificationGeneral.name
-          ? next()
-          : next(vueRoutes.verificationGeneral)
-        break
-      default:
-        next()
-        break
-    }
+  switch (true) {
+    case isRoleUnset(kycRequest):
+      next()
+      break
+
+    case kycRequest.isGeneralKycRecord && !isToGeneralRoute:
+      next(vueRoutes.verificationGeneral)
+      break
+
+    case kycRequest.isCorporateKycRecord && !isToCorporateRoute:
+      next(vueRoutes.verificationCorporate)
+      break
+
+    default:
+      next()
+      break
   }
 }
 
@@ -137,6 +131,7 @@ export default {
       accountId: vuexTypes.accountId,
       isAccountBlocked: vuexTypes.isAccountBlocked,
 
+      kycRequest: vuexTypes.kycRequest,
       kycState: vuexTypes.kycState,
       kycAccountRole: vuexTypes.kycAccountRoleToSet,
     }),
@@ -149,6 +144,10 @@ export default {
       ]
 
       return generalTypeRoles.includes(this.kycAccountRole)
+    },
+
+    isRoleChangeable () {
+      return isRoleUnset(this.kycRequest)
     },
   },
 
