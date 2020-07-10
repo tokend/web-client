@@ -2,17 +2,18 @@ import { Former } from './Former'
 // import config from '@/config'
 import { base, BLOB_TYPES } from '@tokend/js-sdk'
 import { doc, str, reqId } from './op-build-helpers'
-// import { AssetRequest } from '@/js/records/requests/asset-request.record'
-// import { AssetRecord } from '@/js/records/entities/asset.record'
+import { KycGeneralRecord } from '@/js/records/entities/kyc-general.record'
+import { KycRequestRecord } from '@/js/records/requests/kyc-request.record'
 import { uploadDocumentsDeep } from '@/js/helpers/upload-documents'
 import { toRFC3339 } from '@/js/helpers/date-helpers'
-// import { str, doc } from './op-build-helpers'
-import { createPrivateBlob } from '@/js/helpers/blob-helpers'
+import { createPrivateBlob } from '@/js/helpers/api-helpers'
 import { store, vuexTypes } from '@/vuex'
-import { isUSResidence } from '@/js/helpers/is-us-residence'
+import { isUSResidence } from '@/js/helpers/kyc-helpers'
 import { keyValues } from '@/key-values'
 // import { keyValues } from '@/key-values'
 import get from 'lodash/get'
+import { DocumentContainer } from '../helpers/DocumentContainer'
+import { BlobRecord } from '@/js/records/entities/blob.record'
 
 /**
  * Collects the attributes for kyc-general operations
@@ -25,6 +26,12 @@ export class KycGeneralFormer extends Former {
     firstName: '',
     lastName: '',
     dateOfBirth: '',
+    idDocType: '',
+    idDocFace: DocumentContainer.fromObj(),
+    idDocBack: DocumentContainer.fromObj(),
+    proofOfInvestor: DocumentContainer.fromObj(),
+    selfie: DocumentContainer.fromObj(),
+    avatar: DocumentContainer.fromObj(),
     address: {
       line1: '',
       line2: '',
@@ -33,35 +40,20 @@ export class KycGeneralFormer extends Former {
       postalCode: '',
       country: '',
     },
-    idDocType: '',
-    idDocBack: null, // DocumentContainer
-    idDocFace: null, // DocumentContainer
-    proofOfInvestor: null, // DocumentContainer
-    selfie: null, // DocumentContainer
-    avatar: null, // DocumentContainer
   }
 
   attrs = this.attrs || this._defaultAttrs
 
-  _opBuilder = this._opBuilder || this._buildOpCreate
-  get isCreateOpBuilder () { return this._opBuilder === this._buildOpCreate }
+  /* eslint-disable max-len */
+  _opBuilder = this._opBuilder || this._buildOpUpdate
   get isUpdateOpBuilder () { return this._opBuilder === this._buildOpUpdate }
-  get isCreateRecoveryOpBuilder () {
-    return this._opBuilder === this._buildOpCreateRecovery
-  }
-  get isUpdateRecoveryOpBuilder () {
-    return this._opBuilder === this._buildOpUpdateRecovery
-  }
-  useCreateOpBuilder () { this._opBuilder = this._buildOpCreate; return this }
+  get isCreateRecoveryOpBuilder () { return this._opBuilder === this._buildOpCreateRecovery }
+  get isUpdateRecoveryOpBuilder () { return this._opBuilder === this._buildOpUpdateRecovery }
+  get isRecoveryOpBuilder () { return this.isCreateRecoveryOpBuilder || this.isUpdateRecoveryOpBuilder }
   useUpdateOpBuilder () { this._opBuilder = this._buildOpUpdate; return this }
-  useCreateRecoveryOpBuilder () {
-    this._opBuilder = this._buildOpCreateRecovery
-    return this
-  }
-  useUpdateRecoveryOpBuilder () {
-    this._opBuilder = this._buildOpUpdateRecovery
-    return this
-  }
+  useCreateRecoveryOpBuilder () { this._opBuilder = this._buildOpCreateRecovery; return this }
+  useUpdateRecoveryOpBuilder () { this._opBuilder = this._buildOpUpdateRecovery; return this }
+  /* eslint-enable max-len */
 
   get willUpdateRequest () {
     const id = this.attrs.requestId
@@ -74,70 +66,59 @@ export class KycGeneralFormer extends Former {
     return [op]
   }
 
-  // /** @param {AssetRequest|AssetRecord} source */
-  // populate (source) {
-  //   switch (source.constructor) {
-  //     case AssetRequest: this._populateFromRequest(source); break
-  //     case AssetRecord: this._populateFromRecord(source); break
-  //     default: throw ReferenceError('Unknown source type')
-  //   }
-  //   return this
-  // }
+  /** @param {KycGeneralRecord|KycRequestRecord} source */
+  populate (source) {
+    switch (source.constructor) {
+      case KycGeneralRecord:
+        this._populateFromRecord(source)
+        break
 
-  // /** @param {AssetRequest} source */
-  // _populateFromRequest (source) {
-  //   if (source.isCreateAssetRequest) this.useCreateOpBuilder()
-  //   if (source.isUpdateAssetRequest) this.useUpdateOpBuilder()
-  //   this.attrs.requestId = source.id
-  //   this.attrs.code = source.assetCode
-  //   this.attrs.name = source.assetName
-  //   this.attrs.logo = source.logo
-  //   this.attrs.terms = source.terms
-  //   this.attrs.policies = source.policy
-  //   this.attrs.assetType = source.assetType
-  //   this.attrs.maxIssuanceAmount = source.maxIssuanceAmount
-  //   this.attrs.preIssuanceAssetSigner = source.preIssuanceAssetSigner
-  //   this.attrs.initialPreissuedAmount = source.initialPreissuedAmount
+      case KycRequestRecord:
+        if (!source.isGeneralKycRecord) {
+          throw new TypeError('Unknown source.kyc type')
+        }
+        this._populateFromRequest(source)
+        break
 
-  //   this.attrs.stellarIntegration = {}
-  //   this.attrs.stellarIntegration.isWithdrawable = source.stellarWithdraw
-  //   this.attrs.stellarIntegration.isDepositable = source.stellarDeposit
-  //   this.attrs.stellarIntegration.assetCode = source.stellarAssetCode
-  //   this.attrs.stellarIntegration.assetType = source.stellarAssetType
+      default:
+        throw new TypeError('Unknown source type')
+    }
+    return this
+  }
 
-  //   this.attrs.erc20Integration = {}
-  //   this.attrs.erc20Integration.isWithdrawable = source.erc20Withdraw
-  //   this.attrs.erc20Integration.isDepositable = source.erc20Deposit
-  //   this.attrs.erc20Integration.address = source.erc20Address
-  // }
+  /** @param {KycGeneralRecord} source */
+  _populateFromRecord (source) {
+    this.useUpdateOpBuilder()
+    this.attrs = this.attrs || {}
+    this.attrs.requestId = '0'
+    this.attrs.firstName = source.firstName
+    this.attrs.lastName = source.lastName
+    this.attrs.dateOfBirth = source.dateOfBirth
+    this.attrs.idDocType = source.idDocType
+    this.attrs.idDocFace = source.idDocFace
+    this.attrs.idDocBack = source.idDocBack
+    this.attrs.proofOfInvestor = source.proofOfInvestor
+    this.attrs.selfie = source.selfie
+    this.attrs.avatar = source.avatar
 
-  // /** @param {AssetRecord} source */
-  // _populateFromRecord (source) {
-  //   this.useUpdateOpBuilder()
-  //   this.attrs.requestId = '0'
-  //   this.attrs.code = source.code
-  //   this.attrs.name = source.name
-  //   this.attrs.logo = source.logo
-  //   this.attrs.terms = source.terms
-  //   this.attrs.policies = source.policy
-  //   this.attrs.assetType = source.assetType
-  //   this.attrs.maxIssuanceAmount = source.maxIssuanceAmount
-  //   this.attrs.preIssuanceAssetSigner = source.preissuedAssetSigner
-  //   this.attrs.initialPreissuedAmount = source.initialPreissuedAmount
+    this.attrs.address = this.attrs.address || {}
+    this.attrs.address.line1 = source.address.line1
+    this.attrs.address.line2 = source.address.line2
+    this.attrs.address.city = source.address.city
+    this.attrs.address.state = source.address.state
+    this.attrs.address.postalCode = source.address.postalCode
+    this.attrs.address.country = source.address.country
+  }
 
-  //   this.attrs.stellarIntegration = {}
-  //   this.attrs.stellarIntegration.isWithdrawable = source.stellarWithdraw
-  //   this.attrs.stellarIntegration.isDepositable = source.stellarDeposit
-  //   this.attrs.stellarIntegration.assetCode = source.stellarAssetCode
-  //   this.attrs.stellarIntegration.assetType = source.stellarAssetType
+  /** @param {KycRequestRecord} source */
+  _populateFromRequest (source) {
+    this._populateFromRecord(source.kyc)
+    this.attrs.requestId = source.isPending || source.isRejected
+      ? source.id
+      : '0'
+  }
 
-  //   this.attrs.erc20Integration = {}
-  //   this.attrs.erc20Integration.isWithdrawable = source.erc20Withdraw
-  //   this.attrs.erc20Integration.isDepositable = source.erc20Deposit
-  //   this.attrs.erc20Integration.address = source.erc20Address
-  // }
-
-  async _buildOpCreate () {
+  async _buildOpUpdate () {
     const attrs = this.attrs
 
     const blob = await this._createBlob()
@@ -189,12 +170,12 @@ export class KycGeneralFormer extends Former {
           face: doc(attrs.idDocFace),
           back: doc(attrs.idDocBack),
         },
-        kyc_proof_investor: doc(attrs.kycProofOfInvestor),
+        kyc_proof_investor: doc(attrs.proofOfInvestor),
         kyc_selfie: doc(attrs.selfie),
         kyc_avatar: doc(attrs.avatar),
       },
     })
-    return createPrivateBlob(BLOB_TYPES.kycGeneral, blobValue)
+    return new BlobRecord(createPrivateBlob(BLOB_TYPES.kycGeneral, blobValue))
   }
 
   async _createRecoveryOpts () {
@@ -241,26 +222,4 @@ export class KycGeneralFormer extends Former {
   _getWalletPublicKey () {
     return store.getters[vuexTypes.walletPublicKey] // TODO: get rid of store
   }
-
-  //   return base.ManageAssetBuilder.assetCreationRequest(opts)
-  // }
-
-  // _buildOpUpdate () {
-  //   const attrs = this.attrs
-
-  //   const opts = {
-  //     requestID: reqId(attrs.requestId),
-  //     code: str(attrs.code),
-  //     policies: num(attrs.policies),
-  //     creatorDetails: {
-  //       name: str(attrs.name),
-  //       logo: doc(attrs.logo),
-  //       terms: doc(attrs.terms),
-  //       stellar: this._getStellarOpts(),
-  //       erc20: this._getErc20Opts(),
-  //     },
-  //   }
-
-  //   return base.ManageAssetBuilder.assetUpdateRequest(opts)
-  // }
 }

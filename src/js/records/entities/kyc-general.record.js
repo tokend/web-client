@@ -1,13 +1,30 @@
 import { KycRecord } from './kyc.record'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
-import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
 export class KycGeneralRecord extends KycRecord {
   constructor (blob) {
     super(blob)
-    const obj = this._blob.valueAsObject
-    const docs = obj.documents || {}
+    const kyc = this._blob.valueAsObject
+    const kycAddr = kyc.address || {}
+    const kycDocs = kyc.documents || {}
+    const kycIdDoc = kycDocs.kyc_id_document || {}
 
-    this.avatar = DocumentContainer.fromObj(docs[DOCUMENT_TYPES.kycAvatar])
+    this.firstName = kyc.first_name
+    this.lastName = kyc.last_name
+    this.dateOfBirth = kyc.date_of_birth
+    this.address = {
+      line1: kycAddr.line_1,
+      line2: kycAddr.line_2,
+      city: kycAddr.city,
+      country: kycAddr.country,
+      state: kycAddr.state,
+      postalCode: kycAddr.postal_code,
+    }
+    this.idDocType = kycIdDoc.type
+    this.idDocFace = DocumentContainer.fromObj(kycIdDoc.face)
+    this.idDocBack = DocumentContainer.fromObj(kycIdDoc.back)
+    this.avatar = DocumentContainer.fromObj(kycDocs.kyc_avatar)
+    this.proofOfInvestor = DocumentContainer.fromObj(kycDocs.kyc_proof_investor)
+    this.selfie = DocumentContainer.fromObj(kycDocs.kyc_selfie)
   }
 }
