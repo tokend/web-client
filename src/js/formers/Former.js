@@ -27,9 +27,10 @@ export class Former {
     /**
      * The collected attributes
      * @type {object}
+     * @abstract
      * @public
      */
-    this.attrs = {}
+    this.attrs = undefined
 
     if (populateSource) {
       this.populate(populateSource)
