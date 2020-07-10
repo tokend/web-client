@@ -71,7 +71,7 @@ export default {
   data () {
     return {
       isCodeShown: false,
-      selfie: null,
+      selfie: this.former.attrs.selfie || null,
     }
   },
 
