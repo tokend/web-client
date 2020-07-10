@@ -43,7 +43,7 @@ export default {
 
   data () {
     return {
-      avatar: null,
+      avatar: this.former.attrs.avatar || null,
     }
   },
 }
