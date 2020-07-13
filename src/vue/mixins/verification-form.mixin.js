@@ -10,6 +10,8 @@ import { vueRoutes } from '@/vue-router/routes'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 
+// TODO: remove
+
 const KYC_CREATION_REQUEST_ID = '0'
 
 export default {
