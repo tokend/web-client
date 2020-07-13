@@ -21,7 +21,7 @@ export class RequestRecord {
   }
 
   get isExists () { // TODO: rethink
-    return this.id && this.id !== '0'
+    return this.id && typeof this.id === 'string' && this.id !== '0'
   }
   get isPending () {
     return this.stateI === REQUEST_STATES.pending
