@@ -40,7 +40,8 @@ export const rootModule = {
       await dispatch(vuexTypes.LOAD_WALLET, { email, password })
       await dispatch(vuexTypes.LOAD_ACCOUNT, getters[vuexTypes.walletAccountId])
 
-      const isKycRecoveryInProgress = getters[vuexTypes.isKycRecoveryInProgress]
+      const isKycRecoveryInProgress =
+        getters[vuexTypes.isAccountKycRecoveryInProgress]
       if (!isKycRecoveryInProgress) {
         await dispatch(vuexTypes.LOAD_KYC)
       }

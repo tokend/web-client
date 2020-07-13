@@ -22,8 +22,8 @@ const mutations = {
   SET_KYC_REQUEST_BLOB: 'SET_KYC_REQUEST_BLOB',
 
   // kyc recovery
-  SET_KYC_RECOVERY_LATEST_REQUEST: 'SET_KYC_RECOVERY_LATEST_REQUEST',
-  SET_KYC_RECOVERY_LATEST_REQUEST_BLOB: 'SET_KYC_RECOVERY_LATEST_REQUEST_BLOB',
+  SET_KYC_RECOVERY_REQUEST: 'SET_KYC_RECOVERY_REQUEST',
+  SET_KYC_RECOVERY_REQUEST_BLOB: 'SET_KYC_RECOVERY_REQUEST_BLOB',
 
   // assets
   SET_ASSETS: 'SET_ASSETS',
@@ -60,14 +60,12 @@ const actions = {
   LOAD_KYC: 'LOAD_KYC',
   LOAD_KYC_REQUEST: 'LOAD_KYC_REQUEST',
   LOAD_KYC_REQUEST_BLOB: 'LOAD_KYC_REQUEST_BLOB',
-  LOAD_KYC_RELATED_REQUEST: 'LOAD_KYC_RELATED_REQUEST',
   LOAD_KYC_BLOB: 'LOAD_KYC_BLOB',
 
   // kyc recovery
-  LOAD_KYC_RECOVERY_LATEST_REQUEST: 'LOAD_KYC_RECOVERY_LATEST_REQUEST',
   LOAD_KYC_RECOVERY: 'LOAD_KYC_RECOVERY',
-  LOAD_KYC_RECOVERY_LATEST_REQUEST_BLOB:
-    'LOAD_KYC_RECOVERY_LATEST_REQUEST_BLOB',
+  LOAD_KYC_RECOVERY_REQUEST: 'LOAD_KYC_RECOVERY_REQUEST',
+  LOAD_KYC_RECOVERY_REQUEST_BLOB: 'LOAD_KYC_RECOVERY_REQUEST_BLOB',
   SEND_KYC_RECOVERY_REQUEST: 'SEND_KYC_RECOVERY_REQUEST',
 
   // assets
@@ -97,6 +95,8 @@ const getters = {
   accountRoleId: 'accountRoleId',
   accountDepositAddresses: 'accountDepositAddresses',
   accountKycRecoveryStatus: 'accountKycRecoveryStatus',
+  isAccountKycRecoveryInProgress: 'isAccountKycRecoveryInProgress',
+  isAccountKycRecoveryInitiated: 'isAccountKycRecoveryInitiated',
 
   isAccountGeneral: 'isAccountGeneral',
   isAccountCorporate: 'isAccountCorporate',
@@ -138,19 +138,11 @@ const getters = {
   kycRequest: 'kycRequest',
 
   // kyc recovery
+  kycRecoveryRequest: 'kycRecoveryRequest',
   kycRecoveryRequestId: 'kycRecoveryRequestId',
   kycRecoveryState: 'kycRecoveryState',
-  kycRecoveryStateI: 'kycRecoveryStateI',
   kycRecoveryRequestBlob: 'kycRecoveryRequestBlob',
-  kycRecoveryRejectReason: 'kycRecoveryRejectReason',
   kycRecoveryBlobId: 'kycRecoveryBlobId',
-  isNoKycRecoveryInProgress: 'isNoKycRecoveryInProgress',
-  isKycRecoveryInProgress: 'isKycRecoveryInProgress',
-  isKycRecoveryInited: 'isKycRecoveryInited',
-  isKycRecoveryApproved: 'isKycRecoveryApproved',
-  isKycRecoveryPending: 'isKycRecoveryPending',
-  isKycRecoveryRejected: 'isKycRecoveryRejected',
-  isKycRecoveryPermanentlyRejected: 'isKycRecoveryPermanentlyRejected',
 
   // assets
   assets: 'assets',

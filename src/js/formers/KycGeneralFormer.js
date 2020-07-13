@@ -1,5 +1,4 @@
 import { Former } from './Former'
-// import config from '@/config'
 import { base, BLOB_TYPES } from '@tokend/js-sdk'
 import { doc, str, reqId } from './op-build-helpers'
 import { KycGeneralRecord } from '@/js/records/entities/kyc-general.record'
@@ -7,10 +6,8 @@ import { KycRequestRecord } from '@/js/records/requests/kyc-request.record'
 import { uploadDocumentsDeep } from '@/js/helpers/upload-documents'
 import { toRFC3339 } from '@/js/helpers/date-helpers'
 import { createPrivateBlob, getCurrentAccId, getCurrentWalletPublicKey } from '@/js/helpers/api-helpers'
-import { store, vuexTypes } from '@/vuex'
 import { isUSResidence } from '@/js/helpers/kyc-helpers'
 import { keyValues } from '@/key-values'
-// import { keyValues } from '@/key-values'
 import get from 'lodash/get'
 import { DocumentContainer } from '../helpers/DocumentContainer'
 import { BlobRecord } from '@/js/records/entities/blob.record'
@@ -75,16 +72,10 @@ export class KycGeneralFormer extends Former {
         break
 
       case KycRequestRecord:
-        if (!source.isGeneralKycRecord) {
-          throw new TypeError('Unknown source.kyc type')
-        }
         this._populateFromRequest(source)
         break
 
       case KycRecoveryRequestRecord:
-        if (!source.isGeneralKycRecord) {
-          throw new TypeError('Unknown source.kyc type')
-        }
         this._populateFromRecoveryRequest(source)
         break
 
@@ -120,13 +111,21 @@ export class KycGeneralFormer extends Former {
 
   /** @param {KycRequestRecord} source */
   _populateFromRequest (source) {
+    if (!source.isGeneralKycRecord) return
+
     this._populateFromRecord(source.kyc)
+
     const isUpdatable = source.isPending || source.isRejected
     this.attrs.requestId = isUpdatable ? source.id : '0'
   }
 
   /** @param {KycRecoveryRequestRecord} source */
   _populateFromRecoveryRequest (source) {
+    if (!source.isGeneralKycRecord) {
+      this.useCreateRecoveryOpBuilder()
+      return
+    }
+
     this._populateFromRecord(source.kyc)
 
     const isUpdatable = source.isPending || source.isRejected

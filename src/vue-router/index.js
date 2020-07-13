@@ -428,8 +428,8 @@ export default router
 // is not initialized
 function kycRecoveryGuard (to, from, next) {
   const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
-  const isKycRecoveryInProgress = store
-    .getters[vuexTypes.accountKycRecoveryStatus]
+  const isKycRecoveryInProgress =
+    store.getters[vuexTypes.isAccountKycRecoveryInProgress]
   isLoggedIn && isKycRecoveryInProgress
     ? next()
     : next(vueRoutes.app)
@@ -444,8 +444,8 @@ function redirectRouteGuard (to, from, next) {
   const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
 
   if (isLoggedIn) {
-    const isKycRecoveryInProgress = store
-      .getters[vuexTypes.isKycRecoveryInProgress]
+    const isKycRecoveryInProgress =
+      store.getters[vuexTypes.isAccountKycRecoveryInProgress]
 
     if (isKycRecoveryInProgress) {
       next(vueRoutes.kycRecoveryManagement)

@@ -1,27 +1,25 @@
 <template>
   <div class="kyc-recovery-unverified">
-    <template v-if="kycRecoveryState">
-      <i
-        class="mdi
-              kyc-recovery-unverified__icon"
-        :class="{
-          'mdi-restart-off': isRejected,
-          'mdi-restart': !isRejected
-        }"
-      />
+    <i
+      class="mdi kyc-recovery-unverified__icon"
+      :class="{
+        'mdi-restart-off': isRejected,
+        'mdi-restart': !isRejected,
+      }"
+    />
+    <template v-if="kycRecoveryRequest.isExists">
       <h2 class="kyc-recovery-unverified__msg">
         {{ kycRecoveryMessageTranslationId | globalize }}
       </h2>
-      <button
-        v-if="isRejected"
-        @click="sendRequest"
-        class="app__button-raised
-               kyc-recovery-unverified__button"
-        :disabled="isSubmtting"
-      >
-        {{ 'kyc-recovery.submit-again-lbl' | globalize }}
-      </button>
     </template>
+    <button
+      v-if="isRejected"
+      @click="sendRequest"
+      class="app__button-raised kyc-recovery-unverified__button"
+      :disabled="isSubmitting"
+    >
+      {{ 'kyc-recovery.submit-again-lbl' | globalize }}
+    </button>
   </div>
 </template>
 
@@ -29,52 +27,45 @@
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
-
-const EVENTS = {
-  kycRecoverySubmit: 'kyc-recovery-submit',
-}
 
 export default {
   name: 'kyc-recovery-unverified',
   data: _ => ({
-    isSubmtting: false,
+    isSubmitting: false,
   }),
 
   computed: {
-    ...mapGetters([
-      vuexTypes.kycRecoveryState,
-      vuexTypes.isKycRecoveryInited,
-      vuexTypes.isKycRecoveryRejected,
-      vuexTypes.isKycRecoveryPermanentlyRejected,
-    ]),
+    ...mapGetters({
+      kycRecoveryRequest: vuexTypes.kycRecoveryRequest,
+      isAccountKycRecoveryInitiated: vuexTypes.isAccountKycRecoveryInitiated,
+    }),
 
     isRejected () {
-      return this.isKycRecoveryRejected || this.isKycRecoveryPermanentlyRejected
+      const request = this.kycRecoveryRequest
+      return request.isRejected || request.isPermanentlyRejected
     },
 
     kycRecoveryMessageTranslationId () {
-      switch (this.kycRecoveryState) {
-        case REQUEST_STATES_STR.permanentlyRejected:
+      const request = this.kycRecoveryRequest
+      switch (true) {
+        case request.isPermanentlyRejected:
           return 'kyc-recovery-state-message.permanently-rejected-title'
-        case REQUEST_STATES_STR.pending:
+        case request.isPending:
           return 'kyc-recovery-state-message.pending-title'
-        case REQUEST_STATES_STR.approved:
+        case request.isApproved:
           return 'kyc-recovery-state-message.approved-title'
-        case REQUEST_STATES_STR.rejected:
+        case request.isRejected:
           return 'kyc-recovery-state-message.rejected-title'
         default:
-          ErrorHandler.processWithoutFeedback(new Error(
-            'Unknown kyc recovery state. kycRecoveryState = ' +
-            this.kycRecoveryState)
-          )
+          const errMsg = `Unknown kyc recovery state. got: ${request.stateI}`
+          ErrorHandler.processWithoutFeedback(new Error(errMsg))
           return ''
       }
     },
   },
 
   created () {
-    if (this.isKycRecoveryInited) {
+    if (this.isAccountKycRecoveryInitiated) {
       this.sendRequest()
     }
   },
@@ -86,14 +77,14 @@ export default {
     }),
 
     async sendRequest () {
-      this.isSubmtting = true
+      this.isSubmitting = true
       try {
         await this.sendKycRecoveryRequest()
-        this.$emit(EVENTS.kycRecoverySubmit)
+        this.$emit('submitted')
       } catch (e) {
         ErrorHandler.process(e)
       }
-      this.isSubmtting = false
+      this.isSubmitting = false
     },
   },
 }
