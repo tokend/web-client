@@ -68,11 +68,11 @@ export const actions = {
   async [vuexTypes.DECRYPT_SECRET_SEED] ({ commit, getters, dispatch }) {
     const encryptedSecretSeed = getters[vuexTypes.encryptedSecretSeed]
     const session = await dispatch(vuexTypes.GET_SESSION)
-    const decreptedSecretSeed = decryptSecretSeed(
+    const decryptedSecretSeed = decryptSecretSeed(
       encryptedSecretSeed,
       session.encryptionKey
     )
-    return decreptedSecretSeed
+    return decryptedSecretSeed
   },
 
   async [vuexTypes.GET_SESSION] ({ commit, getters }) {
