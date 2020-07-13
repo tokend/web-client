@@ -10,15 +10,11 @@ export function createKycRecord (blob) {
     throw new TypeError(`Expected blob to be a BlobRecord, got ${typeof blob}`)
   }
 
-  if (blob.type === BLOB_TYPES.kycGeneral) {
-    return new KycGeneralRecord(blob)
+  switch (blob.type) {
+    case BLOB_TYPES.kycGeneral: return new KycGeneralRecord(blob)
+    case BLOB_TYPES.kycCorporate: return new KycCorporateRecord(blob)
+    default: return new KycRecord(blob)
   }
-
-  if (blob.type === BLOB_TYPES.kycCorporate) {
-    return new KycCorporateRecord(blob)
-  }
-
-  return new KycRecord(blob)
 }
 
 export function isRoleUnset (kycRequest) {
