@@ -46,6 +46,10 @@ export async function getRequest (endpoint, reqId, requestorId = '') {
   return request
 }
 
-function getCurrentAccId () {
+export function getCurrentAccId () {
   return api.wallet.accountId
+}
+
+export function getCurrentWalletPublicKey () {
+  return api.wallet.keypair.accountId()
 }

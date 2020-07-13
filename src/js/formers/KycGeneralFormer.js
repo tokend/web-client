@@ -6,7 +6,7 @@ import { KycGeneralRecord } from '@/js/records/entities/kyc-general.record'
 import { KycRequestRecord } from '@/js/records/requests/kyc-request.record'
 import { uploadDocumentsDeep } from '@/js/helpers/upload-documents'
 import { toRFC3339 } from '@/js/helpers/date-helpers'
-import { createPrivateBlob } from '@/js/helpers/api-helpers'
+import { createPrivateBlob, getCurrentAccId, getCurrentWalletPublicKey } from '@/js/helpers/api-helpers'
 import { store, vuexTypes } from '@/vuex'
 import { isUSResidence } from '@/js/helpers/kyc-helpers'
 import { keyValues } from '@/key-values'
@@ -143,7 +143,7 @@ export class KycGeneralFormer extends Former {
     const attrs = this.attrs
 
     const blob = await this._createBlob()
-    const accountId = this._getAccountId()
+    const accountId = getCurrentAccId()
     const roleToSet = this._getAccountRoleToSet()
 
     const opts = {
@@ -200,8 +200,8 @@ export class KycGeneralFormer extends Former {
 
   async _createRecoveryOpts () {
     const blob = await this._createBlob()
-    const accountId = this._getAccountId()
-    const walletPublicKey = this._getWalletPublicKey()
+    const accountId = getCurrentAccId()
+    const walletPublicKey = getCurrentWalletPublicKey()
     const defaultSignerOpts = {
       publicKey: str(walletPublicKey),
       roleID: str(keyValues.defaultSignerRoleId),
@@ -233,13 +233,5 @@ export class KycGeneralFormer extends Former {
       default:
         return keyValues.generalRoleId
     }
-  }
-
-  _getAccountId () {
-    return store.getters[vuexTypes.accountId] // TODO: get rid of store
-  }
-
-  _getWalletPublicKey () {
-    return store.getters[vuexTypes.walletPublicKey] // TODO: get rid of store
   }
 }
