@@ -1,6 +1,4 @@
 import { api } from '@/api'
-import { store } from '@/vuex'
-import { vuexTypes } from '@/vuex/types'
 
 export async function createPrivateBlob (type, value, blobOwnerId = '') {
   blobOwnerId = blobOwnerId || getCurrentAccId()
@@ -49,5 +47,5 @@ export async function getRequest (endpoint, reqId, requestorId = '') {
 }
 
 function getCurrentAccId () {
-  return store.getters[vuexTypes.accountId]
+  return api.wallet.accountId
 }
