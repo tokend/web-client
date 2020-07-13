@@ -14,6 +14,7 @@ import { keyValues } from '@/key-values'
 import get from 'lodash/get'
 import { DocumentContainer } from '../helpers/DocumentContainer'
 import { BlobRecord } from '@/js/records/entities/blob.record'
+import { KycRecoveryRequestRecord } from '@/js/records/requests/kyc-recovery-request.record'
 
 /**
  * Collects the attributes for kyc-general operations
@@ -80,6 +81,13 @@ export class KycGeneralFormer extends Former {
         this._populateFromRequest(source)
         break
 
+      case KycRecoveryRequestRecord:
+        if (!source.isGeneralKycRecord) {
+          throw new TypeError('Unknown source.kyc type')
+        }
+        this._populateFromRecoveryRequest(source)
+        break
+
       default:
         throw new TypeError('Unknown source type')
     }
@@ -113,9 +121,22 @@ export class KycGeneralFormer extends Former {
   /** @param {KycRequestRecord} source */
   _populateFromRequest (source) {
     this._populateFromRecord(source.kyc)
-    this.attrs.requestId = source.isPending || source.isRejected
-      ? source.id
-      : '0'
+    const isUpdatable = source.isPending || source.isRejected
+    this.attrs.requestId = isUpdatable ? source.id : '0'
+  }
+
+  /** @param {KycRecoveryRequestRecord} source */
+  _populateFromRecoveryRequest (source) {
+    this._populateFromRecord(source.kyc)
+
+    const isUpdatable = source.isPending || source.isRejected
+    if (isUpdatable) {
+      this.attrs.requestId = source.id
+      this.useUpdateRecoveryOpBuilder()
+    } else {
+      this.attrs.requestId = '0'
+      this.useCreateRecoveryOpBuilder()
+    }
   }
 
   async _buildOpUpdate () {
@@ -131,8 +152,6 @@ export class KycGeneralFormer extends Former {
       accountRoleToSet: str(roleToSet),
       creatorDetails: { blob_id: blob.id },
     }
-
-    // console.log(blob.valueAsObject)
 
     return base.CreateChangeRoleRequestBuilder.createChangeRoleRequest(opts)
   }
@@ -175,7 +194,8 @@ export class KycGeneralFormer extends Former {
         kyc_avatar: doc(attrs.avatar),
       },
     })
-    return new BlobRecord(createPrivateBlob(BLOB_TYPES.kycGeneral, blobValue))
+    const blob = await createPrivateBlob(BLOB_TYPES.kycGeneral, blobValue)
+    return new BlobRecord(blob)
   }
 
   async _createRecoveryOpts () {

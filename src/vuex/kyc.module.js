@@ -101,8 +101,10 @@ export const actions = {
 
 export const getters = {
   [vuexTypes.kyc]: state => createKycRecord(new BlobRecord(state.kycBlob)),
-  [vuexTypes.kycRequest]: state =>
-    new KycRequestRecord(state.request, new BlobRecord(state.requestBlob)),
+  [vuexTypes.kycRequest]: state => {
+    const kyc = createKycRecord(new BlobRecord(state.requestBlob))
+    return new KycRequestRecord(state.request, kyc)
+  },
 
   // TODO: remove
   [vuexTypes.kycState]: (_, getters) => getters[vuexTypes.kycRequest].state,

@@ -34,11 +34,13 @@
         :former="former"
       />
 
-      <avatar-section
-        class="kyc-general-form__section"
-        :is-disabled="formMixin.isDisabled"
-        :former="former"
-      />
+      <template v-if="!former.isRecoveryOpBuilder">
+        <avatar-section
+          class="kyc-general-form__section"
+          :is-disabled="formMixin.isDisabled"
+          :former="former"
+        />
+      </template>
     </div>
 
     <div class="app__form-actions">
@@ -71,7 +73,7 @@ import { KycGeneralFormer } from '@/js/formers/KycGeneralFormer'
 import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { delay } from '@/js/helpers/delay'
 import formMixin from '@/vue/mixins/form.mixin'
@@ -81,6 +83,7 @@ import AddressSection from './components/AddressSection'
 import IdDocsSection from './components/IdDocsSection'
 import SelfieSection from './components/SelfieSection'
 import AvatarSection from './components/AvatarSection'
+import config from '@/config'
 
 export default {
   name: 'kyc-general-form',
@@ -103,9 +106,17 @@ export default {
     },
   },
 
+  computed: {
+    ...mapGetters({
+      walletAccountId: vuexTypes.walletAccountId,
+    }),
+  },
+
   methods: {
     ...mapActions({
       loadKyc: vuexTypes.LOAD_KYC,
+      loadAccount: vuexTypes.LOAD_ACCOUNT,
+      loadKycRecovery: vuexTypes.LOAD_KYC_RECOVERY,
     }),
 
     async submit () {
@@ -115,18 +126,34 @@ export default {
         const ops = await this.former.buildOps()
         await api.postOperations(...ops)
 
-        await delay(3000) // w8 for the horizon ingest
-        await this.loadKyc() // update the current kyc state
-
-        Bus.success('general-form.request-submitted-msg')
+        // TODO: after actions should not be here
+        if (this.former.isUpdateOpBuilder) {
+          await this.afterKycSubmit()
+        } else if (this.former.isRecoveryOpBuilder) {
+          await this.afterKycRecoverySubmit()
+        }
         this.$emit('submitted')
       } catch (e) {
-        this.enableForm()
         ErrorHandler.process(e)
       }
+      this.enableForm()
+    },
+
+    async afterKycSubmit () {
+      await delay(config.RELOAD_TIMEOUT) // w8 for the horizon ingest
+      await this.loadKyc() // update the current kyc state
+      Bus.success('general-form.request-submitted-msg')
+    },
+
+    async afterKycRecoverySubmit () {
+      await delay(config.RELOAD_TIMEOUT)
+      await this.loadAccount(this.walletAccountId)
+      await this.loadKycRecovery()
+      Bus.success('kyc-recovery.request-submitted-msg')
     },
 
     async confirm () {
+      // TODO: remove
       this.former.buildOps()
       if (!this.isFormValid()) return
       this.showConfirmation()

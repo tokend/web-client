@@ -1,17 +1,21 @@
 import { RequestRecord } from '@/js/records/request-record'
-import { BlobRecord } from '@/js/records/entities/blob.record'
-import { createKycRecord } from '@/js/helpers/kyc-helpers'
 import { KycGeneralRecord } from '@/js/records/entities/kyc-general.record'
+import { KycCorporateRecord } from '@/js/records/entities/kyc-corporate.record'
 import get from 'lodash/get'
 
 export class KycRequestRecord extends RequestRecord {
-  constructor (record = {}, kycBlob = {}) {
+  /**
+   * @constructor
+   * @param {object} [record]
+   * @param {KycGeneralRecord|KycCorporateRecord} [kycRecord]
+   */
+  constructor (record = {}, kycRecord = {}) {
     super(record)
-    this.setKyc(kycBlob)
 
     const requestDetails = record.requestDetails || {}
     const creatorDetails = requestDetails.creatorDetails || {}
 
+    this.kyc = kycRecord
     this.blobId = creatorDetails.blobId
     this.resetReason = creatorDetails.resetReason
     this.blockReason = creatorDetails.blockReason
@@ -25,18 +29,12 @@ export class KycRequestRecord extends RequestRecord {
     this.accountRoleToSet = requestDetails.accountRoleToSet
   }
 
-  setKyc (kycBlob) {
-    if (!(kycBlob instanceof BlobRecord)) return
-    this.kyc = createKycRecord(kycBlob)
-    return this
-  }
-
   get isGeneralKycRecord () {
     return this.kyc instanceof KycGeneralRecord
   }
 
   get isCorporateKycRecord () {
-    return false // TODO
+    return this.kyc instanceof KycCorporateRecord
   }
 
   get isReset () {

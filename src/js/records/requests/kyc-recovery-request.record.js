@@ -1,18 +1,18 @@
 import { RequestRecord } from '@/js/records/request-record'
-import { BlobRecord } from '@/js/records/entities/blob.record'
-import { createKycRecord } from '@/js/helpers/kyc-helpers'
 import { KycGeneralRecord } from '@/js/records/entities/kyc-general.record'
+import { KycCorporateRecord } from '@/js/records/entities/kyc-corporate.record'
+import get from 'lodash/get'
 
 export class KycRecoveryRequestRecord extends RequestRecord {
-  constructor (record = {}, kycBlob = {}) {
+  /**
+   * @constructor
+   * @param {object} [record]
+   * @param {KycGeneralRecord|KycCorporateRecord} [kycRecord]
+   */
+  constructor (record = {}, kycRecord = {}) {
     super(record)
-    this.setKyc(kycBlob)
-  }
-
-  setKyc (kycBlob) {
-    if (!(kycBlob instanceof BlobRecord)) return
-    this.kyc = createKycRecord(kycBlob)
-    return this
+    this.kyc = kycRecord
+    this.blobId = get(record, 'requestDetails.creatorDetails.blobId')
   }
 
   get isGeneralKycRecord () {
@@ -20,37 +20,6 @@ export class KycRecoveryRequestRecord extends RequestRecord {
   }
 
   get isCorporateKycRecord () {
-    return false // TODO
-  }
-
-  get isInProgress () {
-    return Boolean(this.stateI)
-  }
-
-  get isInitiated () {
-    return this.stateI === KycRecoveryRequestRecord.statesEnum.initiated
-  }
-
-  get isPending () {
-    return this.stateI === KycRecoveryRequestRecord.statesEnum.pending
-  }
-
-  get isRejected () {
-    return this.stateI === KycRecoveryRequestRecord.statesEnum.rejected
-  }
-
-  get isPermanentlyRejected () {
-    return this.stateI ===
-      KycRecoveryRequestRecord.statesEnum.permanentlyRejected
-  }
-
-  static get statesEnum () {
-    return {
-      none: 0,
-      initiated: 1,
-      pending: 2,
-      rejected: 3,
-      permanentlyRejected: 4,
-    }
+    return this.kyc instanceof KycCorporateRecord
   }
 }
