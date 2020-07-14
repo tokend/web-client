@@ -50,6 +50,7 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
+import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
 import { Document } from '@tokend/js-sdk'
 
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
@@ -103,7 +104,7 @@ export default {
         saleLogo: this.request.logoKey
           ? new Document(
             this.request.logo,
-            DOCUMENT_TYPES.saleLogo,
+            DOCUMENT_POLICIES[this.request.logo.type],
           )
           : null,
         shortDescription: this.request.shortDescription,

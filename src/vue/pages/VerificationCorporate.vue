@@ -144,6 +144,7 @@ import _get from 'lodash/get'
 import { api } from '@/api'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
+import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 
 import { BLOB_TYPES, Document } from '@tokend/js-sdk'
@@ -317,7 +318,7 @@ export default {
         name: kycData.name,
         company: kycData.company,
         avatar: _get(kycData, `documents.${DOCUMENT_TYPES.kycAvatar}.key`)
-          ? new Document(avatarDoc, DOCUMENT_TYPES.kycAvatar)
+          ? new Document(avatarDoc, DOCUMENT_POLICIES[avatarDoc.type])
           : null,
         headquarters: kycData.headquarters,
         industry: kycData.industry,

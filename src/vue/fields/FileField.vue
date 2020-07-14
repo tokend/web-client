@@ -125,6 +125,8 @@ import { Document } from '@tokend/js-sdk'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
+import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
+
 const MAX_FILE_MEGABYTES = 32
 const IMAGE_FILE_EXTENSIONS = ['jpg', 'png']
 
@@ -201,7 +203,7 @@ export default {
             mimeType: file.type,
             name: file.name,
             file: file,
-          }, this.documentType)
+          }, DOCUMENT_POLICIES[this.documentType])
           this.$emit('input', this.document)
         }
       } catch (e) {

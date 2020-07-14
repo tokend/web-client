@@ -1,7 +1,7 @@
 import { ASSET_POLICIES, Document } from '@tokend/js-sdk'
 
 import get from 'lodash/get'
-import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
+import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
 
 // TODO: cleanup from unused keys
 
@@ -27,11 +27,11 @@ export class AssetRecord {
     this.isCoinpayments = get(record, 'details.isCoinpayments')
 
     const logo = get(record, 'details.logo') || {}
-    this.logo = new Document(logo, DOCUMENT_TYPES.assetLogo)
+    this.logo = new Document(logo, DOCUMENT_POLICIES[logo.type])
     this.logoKey = logo.key
 
     const terms = get(record, 'details.terms') || {}
-    this.terms = new Document(terms, DOCUMENT_TYPES.assetTerms)
+    this.terms = new Document(terms, DOCUMENT_POLICIES[terms.type])
     this.termsKey = terms.key
 
     this.maturityDate = get(record, 'details.maturityDate')

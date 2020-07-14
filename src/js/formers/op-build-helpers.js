@@ -1,5 +1,5 @@
 import { Document } from '@tokend/js-sdk'
-import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
+import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
 
 const EMPTY_DOCUMENT = {
   mime_type: '',
@@ -12,7 +12,7 @@ export function doc (doc) {
   }
 
   if (doc && typeof doc === 'object' && Boolean(doc.file || doc.key)) {
-    return new Document(doc, DOCUMENT_TYPES[doc.type]).toJSON()
+    return new Document(doc, DOCUMENT_POLICIES[doc.type]).toJSON()
   }
 
   return EMPTY_DOCUMENT
