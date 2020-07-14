@@ -146,7 +146,7 @@ import { api } from '@/api'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 
-import { BLOB_TYPES, uploadDocuments, Document } from '@tokend/js-sdk'
+import { BLOB_TYPES, Document } from '@tokend/js-sdk'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -248,7 +248,7 @@ export default {
 
       try {
         if (!this.isKycRecoveryPage) {
-          await uploadDocuments([this.form.avatar])
+          await Document.uploadDocuments([this.form.avatar])
         }
 
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycCorporate)

@@ -1,6 +1,6 @@
 import { Former } from './Former'
 import config from '@/config'
-import { base, uploadDocumentsDeep } from '@tokend/js-sdk'
+import { base, Document } from '@tokend/js-sdk'
 import { reqId, doc, str, num } from './op-build-helpers'
 import { AssetRequest } from '@/js/records/requests/asset-request.record'
 import { AssetRecord } from '@/js/records/entities/asset.record'
@@ -56,7 +56,7 @@ export class AssetFormer extends Former {
   }
 
   async buildOps () {
-    await uploadDocumentsDeep(this.attrs)
+    await Document.uploadDocumentsDeep(this.attrs)
     return [this._opBuilder()]
   }
 
