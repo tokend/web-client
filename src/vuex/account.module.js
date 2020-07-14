@@ -3,6 +3,7 @@ import { vuexTypes } from './types'
 import { api } from '../api'
 import { BalanceRecord } from '@/js/records/entities/balance.record'
 import { keyValues } from '@/key-values'
+import { getCurrentAccId } from '@/js/helpers/api-helpers'
 
 const ACCOUNT_KYC_RECOVERY_STATES = {
   none: 0,
@@ -30,6 +31,7 @@ export const mutations = {
 
 export const actions = {
   async [vuexTypes.LOAD_ACCOUNT] ({ commit }, accountId) {
+    accountId = accountId || getCurrentAccId()
     const response = await api.getWithSignature(`/v3/accounts/${accountId}`, {
       include: ['external_system_ids', 'balances', 'balances.state', 'balances.asset'],
     })
