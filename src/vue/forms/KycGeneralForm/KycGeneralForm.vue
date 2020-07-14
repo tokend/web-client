@@ -73,17 +73,17 @@ import { KycGeneralFormer } from '@/js/formers/KycGeneralFormer'
 import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
-import { mapActions, mapGetters } from 'vuex'
-import { vuexTypes } from '@/vuex'
 import { delay } from '@/js/helpers/delay'
+import { mapActions } from 'vuex'
+import { vuexTypes } from '@/vuex'
 import formMixin from '@/vue/mixins/form.mixin'
+import config from '@/config'
 import CountrySection from './components/CountrySection'
 import PersonalSection from './components/PersonalSection'
 import AddressSection from './components/AddressSection'
 import IdDocsSection from './components/IdDocsSection'
 import SelfieSection from './components/SelfieSection'
 import AvatarSection from './components/AvatarSection'
-import config from '@/config'
 
 export default {
   name: 'kyc-general-form',
@@ -104,12 +104,6 @@ export default {
       type: KycGeneralFormer,
       default: () => new KycGeneralFormer(),
     },
-  },
-
-  computed: {
-    ...mapGetters({
-      walletAccountId: vuexTypes.walletAccountId,
-    }),
   },
 
   methods: {
@@ -147,7 +141,7 @@ export default {
 
     async afterKycRecoverySubmit () {
       await delay(config.RELOAD_TIMEOUT)
-      await this.loadAccount(this.walletAccountId)
+      await this.loadAccount()
       await this.loadKycRecovery()
       Bus.success('kyc-recovery.request-submitted-msg')
     },
