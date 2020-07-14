@@ -30,9 +30,7 @@ import AtomicSwaps from '@/vue/pages/AtomicSwaps'
 import AtomicSwapsExplore from '@/vue/pages/atomic-swaps/AtomicSwapsExplore'
 import Settings from '@/vue/pages/Settings'
 import Verification from '@/vue/pages/Verification'
-import VerificationGeneralAdvanced
-  from '@/vue/pages/VerificationGeneralAdvanced'
-import VerificationCorporate from '@/vue/pages/VerificationCorporate'
+import VerificationFormContainer from '@/vue/pages/VerificationFormContainer'
 import Security from '@/vue/pages/Security'
 import AssetExplorerModule from '@modules/assets/asset-explorer'
 import BalanceExplorerModule from '@modules/assets/balance-explorer'
@@ -398,13 +396,13 @@ const router = new Router({
                 {
                   path: '/settings/verification/general',
                   name: vueRoutes.verificationGeneral.name,
-                  component: VerificationGeneralAdvanced,
+                  component: VerificationFormContainer,
                   beforeEnter: inAppRouteGuard,
                 },
                 {
                   path: '/settings/verification/corporate',
                   name: vueRoutes.verificationCorporate.name,
-                  component: VerificationCorporate,
+                  component: VerificationFormContainer,
                   beforeEnter: inAppRouteGuard,
                 },
               ],
