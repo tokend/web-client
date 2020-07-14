@@ -57,6 +57,6 @@ export function getCurrentAccId () {
 }
 
 /** @returns {string} */
-export function getCurrentWalletPublicKey () {
+export function getCurrentWalletPubKey () {
   return api.wallet.keypair.accountId()
 }

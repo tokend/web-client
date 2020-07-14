@@ -1,5 +1,5 @@
 import { keyValues } from '@/key-values'
-import { getCurrentWalletPublicKey, getMasterAccId } from '@/js/helpers/api-helpers'
+import { getCurrentWalletPubKey, getMasterAccId } from '@/js/helpers/api-helpers'
 import { Signer } from '@tokend/js-sdk'
 
 export function createNewAccountSigners () {
@@ -23,7 +23,7 @@ export function createKycRecoverySigners () {
   const signers = []
 
   const defaultSignerOpts = {
-    publicKey: getCurrentWalletPublicKey(),
+    publicKey: getCurrentWalletPubKey(),
     roleID: String(keyValues.defaultSignerRoleId),
     weight: '1000',
     identity: '1',

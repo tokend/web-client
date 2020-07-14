@@ -24,14 +24,14 @@
             <kyc-recovery-unverified @submitted="onSubmit" />
           </template>
           <template v-else-if="isAccountGeneral">
-            <verification-general-form
+            <kyc-general-form
               class="kyc-recovery-management__form"
               :former="createGeneralFormer()"
               @submitted="onSubmit"
             />
           </template>
           <template v-else-if="isAccountCorporate">
-            <verification-corporate-form
+            <kyc-corporate-form
               class="kyc-recovery-management__form"
               :former="createCorporateFormer()"
               @submitted="onSubmit"
@@ -48,8 +48,8 @@ import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import KycRecoveryUnverified from '@/vue/pages/KycRecovery/KycRecoveryUnverified'
-import VerificationGeneralForm from '@/vue/forms/KycGeneralForm'
-import VerificationCorporateForm from '@/vue/pages/VerificationCorporate'
+import KycGeneralForm from '@/vue/forms/KycGeneralForm'
+import KycCorporateForm from '@/vue/pages/VerificationCorporate'
 import KycRecoveryStateMessage from '@/vue/pages/KycRecovery/KycRecoveryStateMessage'
 import { scrollToTop } from '@/js/helpers/scroll-helpers'
 import { KycGeneralFormer } from '@/js/formers/KycGeneralFormer'
@@ -61,8 +61,8 @@ export default {
   components: {
     KycRecoveryUnverified,
     KycRecoveryStateMessage,
-    VerificationGeneralForm,
-    VerificationCorporateForm,
+    KycGeneralForm,
+    KycCorporateForm,
   },
 
   data: _ => ({
