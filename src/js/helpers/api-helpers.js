@@ -46,10 +46,17 @@ export async function getRequest (endpoint, reqId, requestorId = '') {
   return request
 }
 
+/** @returns {string} */
+export function getMasterAccId () {
+  return api.networkDetails.masterAccountId
+}
+
+/** @returns {string} */
 export function getCurrentAccId () {
   return api.wallet.accountId
 }
 
+/** @returns {string} */
 export function getCurrentWalletPublicKey () {
   return api.wallet.keypair.accountId()
 }

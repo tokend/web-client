@@ -4,11 +4,11 @@ import { api } from '@/api'
 import { base } from '@tokend/js-sdk'
 
 import get from 'lodash/get'
-import { keyValues } from '@/key-values'
 import { BlobRecord } from '@/js/records/entities/blob.record'
 import { KycRecoveryRequestRecord } from '@/js/records/requests/kyc-recovery-request.record'
-import { getLatestRequest, getPrivateBlob } from '@/js/helpers/api-helpers'
+import { getLatestRequest, getPrivateBlob, getCurrentAccId } from '@/js/helpers/api-helpers'
 import { createKycRecord } from '@/js/helpers/kyc-helpers'
+import { createKycRecoverySigners } from '@/js/helpers/signers-helpers'
 
 export const state = {
   request: {},
@@ -57,16 +57,8 @@ export const actions = {
     { getters, rootGetters, dispatch },
   ) {
     const opts = {
-      targetAccount: rootGetters[vuexTypes.accountId],
-      signers: [
-        {
-          publicKey: rootGetters[vuexTypes.walletPublicKey],
-          roleID: String(keyValues.defaultSignerRoleId),
-          weight: '1000',
-          identity: '1',
-          details: {},
-        },
-      ],
+      targetAccount: getCurrentAccId(),
+      signers: createKycRecoverySigners(),
       creatorDetails: {},
     }
     const request = getters[vuexTypes.kycRecoveryRequest]

@@ -3,15 +3,16 @@ import { base, BLOB_TYPES } from '@tokend/js-sdk'
 import { doc, str, reqId } from './op-build-helpers'
 import { KycGeneralRecord } from '@/js/records/entities/kyc-general.record'
 import { KycRequestRecord } from '@/js/records/requests/kyc-request.record'
+import { KycRecoveryRequestRecord } from '@/js/records/requests/kyc-recovery-request.record'
+import { BlobRecord } from '@/js/records/entities/blob.record'
 import { uploadDocumentsDeep } from '@/js/helpers/upload-documents'
 import { toRFC3339 } from '@/js/helpers/date-helpers'
-import { createPrivateBlob, getCurrentAccId, getCurrentWalletPublicKey } from '@/js/helpers/api-helpers'
+import { createPrivateBlob, getCurrentAccId } from '@/js/helpers/api-helpers'
 import { isUSResidence } from '@/js/helpers/kyc-helpers'
+import { createKycRecoverySigners } from '@/js/helpers/signers-helpers'
+import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { keyValues } from '@/key-values'
 import get from 'lodash/get'
-import { DocumentContainer } from '../helpers/DocumentContainer'
-import { BlobRecord } from '@/js/records/entities/blob.record'
-import { KycRecoveryRequestRecord } from '@/js/records/requests/kyc-recovery-request.record'
 
 /**
  * Collects the attributes for kyc-general operations
@@ -139,15 +140,12 @@ export class KycGeneralFormer extends Former {
   }
 
   async _buildOpUpdate () {
-    const attrs = this.attrs
-
     const blob = await this._createBlob()
-    const accountId = getCurrentAccId()
     const roleToSet = this._getAccountRoleToSet()
 
     const opts = {
-      requestID: reqId(attrs.requestId),
-      destinationAccount: str(accountId),
+      requestID: reqId(this.attrs.requestId),
+      destinationAccount: getCurrentAccId(),
       accountRoleToSet: str(roleToSet),
       creatorDetails: { blob_id: blob.id },
     }
@@ -164,6 +162,16 @@ export class KycGeneralFormer extends Former {
     const opts = await this._createRecoveryOpts()
     const requestId = reqId(this.attrs.requestId)
     return base.CreateKYCRecoveryRequestBuilder.update(opts, requestId)
+  }
+
+  async _createRecoveryOpts () {
+    const blob = await this._createBlob()
+
+    return {
+      targetAccount: getCurrentAccId(),
+      signers: createKycRecoverySigners(),
+      creatorDetails: { blob_id: blob.id },
+    }
   }
 
   async _createBlob () {
@@ -195,30 +203,6 @@ export class KycGeneralFormer extends Former {
     })
     const blob = await createPrivateBlob(BLOB_TYPES.kycGeneral, blobValue)
     return new BlobRecord(blob)
-  }
-
-  async _createRecoveryOpts () {
-    const blob = await this._createBlob()
-    const accountId = getCurrentAccId()
-    const walletPublicKey = getCurrentWalletPublicKey()
-    const defaultSignerOpts = {
-      publicKey: str(walletPublicKey),
-      roleID: str(keyValues.defaultSignerRoleId),
-      weight: '1000',
-      identity: '1',
-      details: {},
-    }
-
-    const opts = {
-      targetAccount: str(accountId),
-      signers: [
-        defaultSignerOpts,
-        // TODO: issuance signer?
-        // TODO: recovery signer?
-      ],
-      creatorDetails: { blob_id: blob.id },
-    }
-    return opts
   }
 
   _getAccountRoleToSet () {
