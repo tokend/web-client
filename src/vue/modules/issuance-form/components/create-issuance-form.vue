@@ -157,6 +157,7 @@ import FeesMixin from '@/vue/common/fees/fees.mixin'
 import config from '@/config'
 import { FEE_TYPES } from '@tokend/js-sdk'
 import { MathUtil } from '@/js/utils'
+import { BigNumber } from 'bignumber.js'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -195,7 +196,9 @@ export default {
 
   data: _ => ({
     form: {
-      asset: {},
+      asset: {
+        availableForIssuance: 0
+      },
       amount: '0',
       receiver: '',
       reference: '',
@@ -218,7 +221,7 @@ export default {
           required,
           amountRange: amountRange(
             config.MIN_AMOUNT,
-            this.availableForIssuance
+            this.form.asset.availableForIssuance
           ),
           maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
         },
@@ -252,7 +255,8 @@ export default {
     },
 
     availableForIssuance () {
-      return +this.form.asset.availableForIssuance
+      const nums = new BigNumber(this.form.asset.availableForIssuance).c
+      return nums[0] || nums[1] || 0
     },
   },
 
