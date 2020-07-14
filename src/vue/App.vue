@@ -128,6 +128,7 @@ export default {
       popState: vuexTypes.POP_STATE,
     }),
     async initApp () {
+      // TODO: should be done before the app rendered
       if (this[vuexTypes.isLoggedIn]) {
         await this.restoreSession()
         await this.loadAccount(this.walletAccountId)
