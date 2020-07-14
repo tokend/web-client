@@ -65,7 +65,8 @@ export class KycGeneralFormer extends Former {
     return [op]
   }
 
-  /** @param {KycGeneralRecord|KycRequestRecord} source */
+  // eslint-disable-next-line max-len
+  /** @param {KycGeneralRecord|KycRequestRecord|KycRecoveryRequestRecord} source */
   populate (source) {
     switch (source.constructor) {
       case KycGeneralRecord:
