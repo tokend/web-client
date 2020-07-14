@@ -81,8 +81,6 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
-// TODO: disable country change
-
 export default {
   name: 'country-section',
 

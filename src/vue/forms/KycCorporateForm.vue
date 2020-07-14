@@ -149,13 +149,13 @@ import { delay } from '@/js/helpers/delay'
 import { mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { required, validateUrl, integer, minValue } from '@validators'
-import verificationFormMixin from '@/vue/mixins/verification-form.mixin'
+import formMixin from '@/vue/mixins/form.mixin'
 import config from '@/config'
 
 export default {
   name: 'kyc-corporate-form',
 
-  mixins: [verificationFormMixin],
+  mixins: [formMixin],
 
   props: {
     former: {

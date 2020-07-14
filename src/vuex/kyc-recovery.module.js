@@ -1,14 +1,8 @@
 import { vuexTypes } from './types'
-
-import { api } from '@/api'
-import { base } from '@tokend/js-sdk'
-
-import get from 'lodash/get'
 import { BlobRecord } from '@/js/records/entities/blob.record'
 import { KycRecoveryRequestRecord } from '@/js/records/requests/kyc-recovery-request.record'
-import { getLatestRequest, getPrivateBlob, getCurrentAccId } from '@/js/helpers/api-helpers'
+import { getLatestRequest, getPrivateBlob } from '@/js/helpers/api-helpers'
 import { createKycRecord } from '@/js/helpers/kyc-helpers'
-import { createKycRecoverySigners } from '@/js/helpers/signers-helpers'
 
 export const state = {
   request: {},
@@ -49,32 +43,6 @@ export const actions = {
     const blob = await getPrivateBlob(blobId)
     commit(vuexTypes.SET_KYC_RECOVERY_REQUEST_BLOB, blob)
   },
-
-  // TODO: remove
-  // If blobId is empty, account request will be defined as a request
-  // for unverified user
-  async [vuexTypes.SEND_KYC_RECOVERY_REQUEST] (
-    { getters, rootGetters, dispatch },
-  ) {
-    const opts = {
-      targetAccount: getCurrentAccId(),
-      signers: createKycRecoverySigners(),
-      creatorDetails: {},
-    }
-    const request = getters[vuexTypes.kycRecoveryRequest]
-    const isInitiated = getters[vuexTypes.isAccountKycRecoveryInitiated]
-    let operation
-    if (isInitiated || request.isPermanentlyRejected) {
-      operation = base.CreateKYCRecoveryRequestBuilder.create(opts)
-    } else {
-      operation = base.CreateKYCRecoveryRequestBuilder.update(
-        opts,
-        getters[vuexTypes.kycRecoveryRequestId]
-      )
-    }
-    await api.postOperations(operation)
-    await dispatch(vuexTypes.LOAD_KYC_RECOVERY)
-  },
 }
 
 export const getters = {
@@ -82,12 +50,6 @@ export const getters = {
     const kyc = createKycRecord(new BlobRecord(state.requestBlob))
     return new KycRecoveryRequestRecord(state.request, kyc)
   },
-
-  // TODO: remove
-  [vuexTypes.kycRecoveryRequestId]: state => get(state, 'request.id'),
-  [vuexTypes.kycRecoveryState]: state => get(state, 'request.stateI'),
-  [vuexTypes.kycRecoveryRequestBlob]: state => JSON.parse(state.requestBlob),
-  [vuexTypes.kycRecoveryBlobId]: state => get(state, 'request.requestDetails.creatorDetails.blobId'),
 }
 
 export default {

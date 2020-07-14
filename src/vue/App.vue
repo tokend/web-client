@@ -7,7 +7,7 @@
       <warning-banner
         v-if="isAccountBlocked"
         :message="'warning-banner.blocked-desc' | globalize({
-          reason: kycRequestBlockReason
+          reason: kycRequest.blockReason
         })"
         message-type="danger"
       />
@@ -87,7 +87,7 @@ export default {
       vuexTypes.walletId,
       vuexTypes.isLoggedIn,
       vuexTypes.isAccountBlocked,
-      vuexTypes.kycRequestBlockReason,
+      vuexTypes.kycRequest,
     ]),
     isNavigationRendered () {
       return this.$route.matched.some(m => m.meta.isNavigationRendered)

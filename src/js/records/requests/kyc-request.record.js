@@ -21,12 +21,7 @@ export class KycRequestRecord extends RequestRecord {
     this.blockReason = creatorDetails.blockReason
     this.prevApprovedReqId = creatorDetails.latestApprovedRequestId
 
-    // TODO: investigate
     this.externalDetails = (get(record, 'externalDetails.data') || []).pop()
-
-    // TODO: remove
-    this.creatorDetails = creatorDetails
-    this.accountRoleToSet = requestDetails.accountRoleToSet
   }
 
   get isGeneralKycRecord () {

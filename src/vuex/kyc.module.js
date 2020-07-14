@@ -9,24 +9,10 @@ import { getPrivateBlob, getLatestRequest, getRequest } from '@/js/helpers/api-h
 import { createKycRecord } from '@/js/helpers/kyc-helpers'
 import { BlobRecord } from '@/js/records/entities/blob.record'
 
-/**
- * @module
- *
- * The module is needed to encapsulate all kyc-related stuff that is quite
- * complex now. PLEASE DO NOT expose
- * the request itself because this is kind of logic that may take some new
- * changes later. If the higher-lvl client
- * will need more kyc-related data, all logic should be written on that lvl
- * without linking to this module.
- */
-
 export const state = {
-  isAccountRoleReset: false,
   request: {},
   requestBlob: {},
-  prevApprovedRequest: {},
   kycBlob: {},
-  latestRequestData: '{}',
 }
 
 export const mutations = {
@@ -38,17 +24,8 @@ export const mutations = {
     state.requestBlob = data
   },
 
-  [vuexTypes.SET_PREV_APPROVED_KYC_REQUEST] (state, request) {
-    state.prevApprovedRequest = request
-  },
-
   [vuexTypes.SET_KYC_BLOB] (state, data) {
     state.kycBlob = data
-  },
-
-  // TODO: remove
-  [vuexTypes.SET_IS_ACCOUNT_ROLE_RESET] (state, value) {
-    state.isAccountRoleReset = value
   },
 }
 
@@ -105,35 +82,6 @@ export const getters = {
     const kyc = createKycRecord(new BlobRecord(state.requestBlob))
     return new KycRequestRecord(state.request, kyc)
   },
-
-  // TODO: remove
-  [vuexTypes.kycState]: (_, getters) => getters[vuexTypes.kycRequest].state,
-  [vuexTypes.isAccountRoleReset]: state => state.isAccountRoleReset,
-  [vuexTypes.kycAccountRoleToSet]: (state, getters) => state.isAccountRoleReset
-    ? undefined
-    : state.prevApprovedRequest.accountRoleToSet ||
-    getters[vuexTypes.kycRequest].accountRoleToSet,
-  [vuexTypes.kycPreviousRequestAccountRoleToSet]:
-    state => state.prevApprovedRequest.accountRoleToSet,
-  [vuexTypes.kycLatestRequestData]:
-    state => JSON.parse(state.latestRequestData),
-  [vuexTypes.kycLatestRequestBlobId]: state => state.request.blobId ||
-    state.prevApprovedRequest.blobId,
-
-  [vuexTypes.kycRequestId]: (_, getters) =>
-    getters[vuexTypes.kycRequest].id,
-
-  [vuexTypes.kycRequestRejectReason]: (_, getters) =>
-    getters[vuexTypes.kycRequest].rejectReason,
-
-  [vuexTypes.kycRequestResetReason]: (_, getters) =>
-    getters[vuexTypes.kycRequest].resetReason,
-
-  [vuexTypes.kycRequestBlockReason]: (_, getters) =>
-    getters[vuexTypes.kycRequest].blockReason,
-
-  [vuexTypes.kycRequestExternalDetails]: (_, getters) =>
-    getters[vuexTypes.kycRequest].externalDetails,
 }
 
 export default {

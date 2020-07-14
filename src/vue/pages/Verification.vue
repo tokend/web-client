@@ -131,8 +131,6 @@ export default {
       isAccountBlocked: vuexTypes.isAccountBlocked,
 
       kycRequest: vuexTypes.kycRequest,
-      kycState: vuexTypes.kycState,
-      kycAccountRole: vuexTypes.kycAccountRoleToSet,
     }),
 
     isRoleChangeable () {

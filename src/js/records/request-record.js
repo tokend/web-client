@@ -26,7 +26,7 @@ export class RequestRecord {
     return isUpdatable ? String(this.id) : '0'
   }
 
-  get isExists () { // TODO: rethink
+  get isExists () {
     return this.id && typeof this.id === 'string' && this.id !== '0'
   }
 
