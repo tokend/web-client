@@ -1,13 +1,18 @@
 import { KycRecord } from './kyc.record'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
-import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
 export class KycCorporateRecord extends KycRecord {
   constructor (blob) {
     super(blob)
-    const obj = this._blob.valueAsObject
-    const docs = obj.documents || {}
+    const kyc = this._blob.valueAsObject
+    const docs = kyc.documents || {}
 
-    this.avatar = DocumentContainer.fromObj(docs[DOCUMENT_TYPES.kycAvatar])
+    this.name = kyc.name
+    this.company = kyc.company
+    this.headquarters = kyc.headquarters
+    this.industry = kyc.industry
+    this.teamSize = kyc.team_size
+    this.website = kyc.homepage
+    this.avatar = DocumentContainer.fromObj(docs.kyc_avatar)
   }
 }

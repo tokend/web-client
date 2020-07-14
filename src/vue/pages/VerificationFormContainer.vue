@@ -30,7 +30,7 @@ import { KycGeneralFormer } from '@/js/formers/KycGeneralFormer'
 import { KycCorporateFormer } from '@/js/formers/KycCorporateFormer'
 import { vueRoutes } from '@/vue-router/routes'
 import KycGeneralForm from '@/vue/forms/KycGeneralForm'
-import KycCorporateForm from './VerificationCorporate'
+import KycCorporateForm from '@/vue/forms/KycCorporateForm'
 
 export default {
   name: 'verification-form-container',
