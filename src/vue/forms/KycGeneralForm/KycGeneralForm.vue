@@ -136,7 +136,7 @@ export default {
     async afterKycSubmit () {
       await delay(config.RELOAD_TIMEOUT) // w8 for the horizon ingest
       await this.loadKyc() // update the current kyc state
-      Bus.success('general-form.request-submitted-msg')
+      Bus.success('verification-form.request-submitted-msg')
     },
 
     async afterKycRecoverySubmit () {
@@ -147,8 +147,6 @@ export default {
     },
 
     async confirm () {
-      // TODO: remove
-      this.former.buildOps()
       if (!this.isFormValid()) return
       this.showConfirmation()
     },
