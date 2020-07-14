@@ -135,7 +135,7 @@ export default {
   props: {
     value: { type: Document, default: null },
     label: { type: String, default: '' },
-    documentType: { type: String, default: 'default' },
+    documentType: { type: String, default: '' },
     fileExtensions: { type: Array, default: _ => IMAGE_FILE_EXTENSIONS },
     maxSize: { type: Number, default: MAX_FILE_MEGABYTES },
     note: { type: String, default: 'All files' },

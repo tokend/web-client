@@ -151,8 +151,8 @@ const actions = {
     await Document.uploadDocuments([
       state.documents.avatar,
       state.documents.selfie,
-      state.documents.isDocumentFace,
-      state.documents.isDocumentBack,
+      state.documents.idDocumentFace,
+      state.documents.idDocumentBack,
       state.documents.proofOfInvestor,
     ])
   },
