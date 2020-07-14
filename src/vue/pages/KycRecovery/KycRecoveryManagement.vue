@@ -26,14 +26,17 @@
           <template v-else-if="isAccountGeneral">
             <verification-general-form
               class="kyc-recovery-management__form"
-              :former="former"
+              :former="createGeneralFormer()"
               @submitted="onSubmit"
             />
           </template>
-          <verification-corporate-form
-            v-else-if="isAccountCorporate"
-            @kyc-recovery-submit="onSubmit"
-          />
+          <template v-else-if="isAccountCorporate">
+            <verification-corporate-form
+              class="kyc-recovery-management__form"
+              :former="createCorporateFormer()"
+              @submitted="onSubmit"
+            />
+          </template>
         </template>
       </template>
     </div>
@@ -54,15 +57,18 @@ import { KycCorporateFormer } from '@/js/formers/KycCorporateFormer'
 
 export default {
   name: 'kyc-recovery-management',
+
   components: {
     KycRecoveryUnverified,
     KycRecoveryStateMessage,
     VerificationGeneralForm,
     VerificationCorporateForm,
   },
+
   data: _ => ({
     isLoaded: false,
   }),
+
   computed: {
     ...mapGetters([
       vuexTypes.kycRecoveryRequest,
@@ -72,15 +78,6 @@ export default {
       vuexTypes.isAccountCorporate,
       vuexTypes.isAccountUnverified,
     ]),
-
-    former () {
-      const request = this.kycRecoveryRequest
-      switch (true) {
-        case this.isAccountGeneral: return new KycGeneralFormer(request)
-        case this.isAccountCorporate: return new KycCorporateFormer(request)
-        default: return null
-      }
-    },
   },
 
   async created () {
@@ -102,6 +99,14 @@ export default {
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)
       }
+    },
+
+    createGeneralFormer () {
+      return new KycGeneralFormer(this.kycRecoveryRequest)
+    },
+
+    createCorporateFormer () {
+      return new KycCorporateFormer(this.kycRecoveryRequest)
     },
 
     onSubmit () {
