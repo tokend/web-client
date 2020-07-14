@@ -1,9 +1,12 @@
-import { BlobRecord } from '@/js/records//entities/blob.record'
-import { BLOB_TYPES } from '@tokend/js-sdk'
+import { BlobRecord } from '@/js/records/entities/blob.record'
+import { base, BLOB_TYPES } from '@tokend/js-sdk'
 import { KycGeneralRecord } from '@/js/records/entities/kyc-general.record'
 import { KycCorporateRecord } from '@/js/records/entities/kyc-corporate.record'
 import { KycRecord } from '@/js/records/entities/kyc.record'
 import { KycRequestRecord } from '@/js/records/requests/kyc-request.record'
+import { KycRecoveryRequestRecord } from '@/js/records/requests/kyc-recovery-request.record'
+import { getCurrentAccId } from '@/js/helpers/api-helpers'
+import { createKycRecoverySigners } from '@/js/helpers/signers-helpers'
 
 export function createKycRecord (blob) {
   if (!(blob instanceof BlobRecord)) {
@@ -28,4 +31,21 @@ export function isRoleUnset (kycRequest) {
 const US_RESIDENCES = ['UM', 'US', 'VI']
 export function isUSResidence (countryCode) {
   return US_RESIDENCES.includes(countryCode)
+}
+
+/** @param {KycRecoveryRequestRecord} [request] */
+export function buildUnverifiedKycRecoveryOp (request) {
+  const opts = {
+    targetAccount: getCurrentAccId(),
+    signers: createKycRecoverySigners(),
+    creatorDetails: {},
+  }
+  const shouldUpdate = request instanceof KycRecoveryRequestRecord &&
+    request.isExists &&
+    !request.isPermanentlyRejected
+  if (shouldUpdate) {
+    return base.CreateKYCRecoveryRequestBuilder.update(opts, request.id)
+  } else {
+    return base.CreateKYCRecoveryRequestBuilder.create(opts)
+  }
 }

@@ -27,6 +27,11 @@
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { delay } from '@/js/helpers/delay'
+import { buildUnverifiedKycRecoveryOp } from '@/js/helpers/kyc-helpers'
+import { Bus } from '@/js/helpers/event-bus'
+import { api } from '@/api'
+import config from '@/config'
 
 export default {
   name: 'kyc-recovery-unverified',
@@ -72,14 +77,20 @@ export default {
 
   methods: {
     ...mapActions({
-      sendKycRecoveryRequest: vuexTypes.SEND_KYC_RECOVERY_REQUEST,
+      loadAccount: vuexTypes.LOAD_ACCOUNT,
       loadKycRecovery: vuexTypes.LOAD_KYC_RECOVERY,
     }),
 
     async sendRequest () {
       this.isSubmitting = true
       try {
-        await this.sendKycRecoveryRequest()
+        const op = buildUnverifiedKycRecoveryOp(this.kycRecoveryRequest)
+        await api.postOperations(op)
+
+        await delay(config.RELOAD_TIMEOUT)
+        await this.loadAccount()
+        await this.loadKycRecovery()
+        Bus.success('kyc-recovery.request-submitted-msg')
         this.$emit('submitted')
       } catch (e) {
         ErrorHandler.process(e)
