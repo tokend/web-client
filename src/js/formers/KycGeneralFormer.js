@@ -8,8 +8,7 @@ import { BlobRecord } from '@/js/records/entities/blob.record'
 import { uploadDocumentsDeep } from '@/js/helpers/upload-documents'
 import { toRFC3339 } from '@/js/helpers/date-helpers'
 import { createPrivateBlob, getCurrentAccId } from '@/js/helpers/api-helpers'
-import { isUSResidence } from '@/js/helpers/kyc-helpers'
-import { createKycRecoverySigners } from '@/js/helpers/signers-helpers'
+import { isUSResidence, buildKycRecoveryOp } from '@/js/helpers/kyc-helpers'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { keyValues } from '@/key-values'
 import get from 'lodash/get'
@@ -46,12 +45,9 @@ export class KycGeneralFormer extends Former {
   /* eslint-disable max-len */
   _opBuilder = this._opBuilder || this._buildOpUpdate
   get isUpdateOpBuilder () { return this._opBuilder === this._buildOpUpdate }
-  get isCreateRecoveryOpBuilder () { return this._opBuilder === this._buildOpCreateRecovery }
-  get isUpdateRecoveryOpBuilder () { return this._opBuilder === this._buildOpUpdateRecovery }
-  get isRecoveryOpBuilder () { return this.isCreateRecoveryOpBuilder || this.isUpdateRecoveryOpBuilder }
+  get isRecoveryOpBuilder () { return this._opBuilder === this._buildOpRecovery }
   useUpdateOpBuilder () { this._opBuilder = this._buildOpUpdate; return this }
-  useCreateRecoveryOpBuilder () { this._opBuilder = this._buildOpCreateRecovery; return this }
-  useUpdateRecoveryOpBuilder () { this._opBuilder = this._buildOpUpdateRecovery; return this }
+  useRecoveryOpBuilder () { this._opBuilder = this._buildOpRecovery; return this }
   /* eslint-enable max-len */
 
   get willUpdateRequest () {
@@ -111,33 +107,20 @@ export class KycGeneralFormer extends Former {
     this.attrs.address.country = source.address.country
   }
 
-  /** @param {KycRequestRecord} source */
+  /** @param {KycRequestRecord|KycRecoveryRequestRecord} source */
   _populateFromRequest (source) {
-    if (!source.isGeneralKycRecord) return
+    if (source.isGeneralKycRecord) {
+      this._populateFromRecord(source.kyc)
+    }
 
-    this._populateFromRecord(source.kyc)
-
-    const isUpdatable = source.isPending || source.isRejected
-    this.attrs.requestId = isUpdatable ? source.id : '0'
+    this.attrs = this.attrs || {}
+    this.attrs.requestId = source.updatableId
   }
 
   /** @param {KycRecoveryRequestRecord} source */
   _populateFromRecoveryRequest (source) {
-    if (!source.isGeneralKycRecord) {
-      this.useCreateRecoveryOpBuilder()
-      return
-    }
-
-    this._populateFromRecord(source.kyc)
-
-    const isUpdatable = source.isPending || source.isRejected
-    if (isUpdatable) {
-      this.attrs.requestId = source.id
-      this.useUpdateRecoveryOpBuilder()
-    } else {
-      this.attrs.requestId = '0'
-      this.useCreateRecoveryOpBuilder()
-    }
+    this._populateFromRequest(source)
+    this.useRecoveryOpBuilder()
   }
 
   async _buildOpUpdate () {
@@ -154,25 +137,10 @@ export class KycGeneralFormer extends Former {
     return base.CreateChangeRoleRequestBuilder.createChangeRoleRequest(opts)
   }
 
-  async _buildOpCreateRecovery () {
-    const opts = await this._createRecoveryOpts()
-    return base.CreateKYCRecoveryRequestBuilder.create(opts)
-  }
-
-  async _buildOpUpdateRecovery () {
-    const opts = await this._createRecoveryOpts()
-    const requestId = reqId(this.attrs.requestId)
-    return base.CreateKYCRecoveryRequestBuilder.update(opts, requestId)
-  }
-
-  async _createRecoveryOpts () {
+  async _buildOpRecovery () {
     const blob = await this._createBlob()
-
-    return {
-      targetAccount: getCurrentAccId(),
-      signers: createKycRecoverySigners(),
-      creatorDetails: { blob_id: blob.id },
-    }
+    const requestId = this.attrs.requestId
+    return buildKycRecoveryOp({ requestId, blobId: blob.id })
   }
 
   async _createBlob () {

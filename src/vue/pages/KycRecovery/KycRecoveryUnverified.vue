@@ -28,7 +28,7 @@ import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { delay } from '@/js/helpers/delay'
-import { buildUnverifiedKycRecoveryOp } from '@/js/helpers/kyc-helpers'
+import { buildKycRecoveryOp } from '@/js/helpers/kyc-helpers'
 import { Bus } from '@/js/helpers/event-bus'
 import { api } from '@/api'
 import config from '@/config'
@@ -84,7 +84,8 @@ export default {
     async sendRequest () {
       this.isSubmitting = true
       try {
-        const op = buildUnverifiedKycRecoveryOp(this.kycRecoveryRequest)
+        const requestId = this.kycRecoveryRequest.updatableId
+        const op = buildKycRecoveryOp({ requestId })
         await api.postOperations(op)
 
         await delay(config.RELOAD_TIMEOUT)

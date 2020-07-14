@@ -20,21 +20,32 @@ export class RequestRecord {
     this.pendingTasks = record.pendingTasks
   }
 
+  // Returns id to update. If the request is not updatable, '0' returned.
+  get updatableId () {
+    const isUpdatable = this.isPending || this.isRejected
+    return isUpdatable ? String(this.id) : '0'
+  }
+
   get isExists () { // TODO: rethink
     return this.id && typeof this.id === 'string' && this.id !== '0'
   }
+
   get isPending () {
     return this.stateI === REQUEST_STATES.pending
   }
+
   get isApproved () {
     return this.stateI === REQUEST_STATES.approved
   }
+
   get isCanceled () {
     return this.stateI === REQUEST_STATES.canceled
   }
+
   get isRejected () {
     return this.stateI === REQUEST_STATES.rejected
   }
+
   get isPermanentlyRejected () {
     return this.stateI === REQUEST_STATES.permanentlyRejected
   }

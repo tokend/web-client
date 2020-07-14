@@ -4,7 +4,6 @@ import { KycGeneralRecord } from '@/js/records/entities/kyc-general.record'
 import { KycCorporateRecord } from '@/js/records/entities/kyc-corporate.record'
 import { KycRecord } from '@/js/records/entities/kyc.record'
 import { KycRequestRecord } from '@/js/records/requests/kyc-request.record'
-import { KycRecoveryRequestRecord } from '@/js/records/requests/kyc-recovery-request.record'
 import { getCurrentAccId } from '@/js/helpers/api-helpers'
 import { createKycRecoverySigners } from '@/js/helpers/signers-helpers'
 
@@ -33,19 +32,30 @@ export function isUSResidence (countryCode) {
   return US_RESIDENCES.includes(countryCode)
 }
 
-/** @param {KycRecoveryRequestRecord} [request] */
-export function buildUnverifiedKycRecoveryOp (request) {
-  const opts = {
+/**
+ * @param {object} [opts]
+ * @param {string} [opts.requestId]
+ * @param {string} [opts.blobId]
+ */
+export function buildKycRecoveryOp ({ requestId, blobId } = {}) {
+  const opts = buildKycRecoveryOpOpts(blobId)
+
+  return requestId && requestId !== '0'
+    ? base.CreateKYCRecoveryRequestBuilder.update(opts, requestId)
+    : base.CreateKYCRecoveryRequestBuilder.create(opts)
+}
+
+/** @param {string} [blobId] */
+function buildKycRecoveryOpOpts (blobId) {
+  if (blobId && typeof blobId !== 'string') {
+    throw TypeError('blobId should be a string')
+  }
+
+  const creatorDetails = blobId ? { blob_id: blobId } : {}
+
+  return {
     targetAccount: getCurrentAccId(),
     signers: createKycRecoverySigners(),
-    creatorDetails: {},
-  }
-  const shouldUpdate = request instanceof KycRecoveryRequestRecord &&
-    request.isExists &&
-    !request.isPermanentlyRejected
-  if (shouldUpdate) {
-    return base.CreateKYCRecoveryRequestBuilder.update(opts, request.id)
-  } else {
-    return base.CreateKYCRecoveryRequestBuilder.create(opts)
+    creatorDetails,
   }
 }
