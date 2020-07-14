@@ -33,14 +33,15 @@ import { vueRoutes } from './vue-router/routes'
 import { useBrowserUpdateBanner } from './browser-update'
 import { keyValues } from '@/key-values'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
+import { initApi } from './api'
 
 async function init () {
   useBrowserUpdateBanner(Vue)
 
-  i18n.onLanguageChanged(lang => {
-    moment.locale(lang)
-  })
+  await initApi()
+  await keyValues.load()
 
+  i18n.onLanguageChanged(lang => moment.locale(lang))
   await i18n.init()
 
   log.setDefaultLevel(config.LOG_LEVEL)
