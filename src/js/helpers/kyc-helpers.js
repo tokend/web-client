@@ -21,10 +21,9 @@ export function createKycRecord (blob) {
 
 export function isRoleUnset (kycRequest) {
   if (!(kycRequest instanceof KycRequestRecord)) return true
-  return !kycRequest.isExists ||
-    kycRequest.isReset ||
-    (!kycRequest.prevApprovedReqId && kycRequest.isPermanentlyRejected) ||
-    (!kycRequest.prevApprovedReqId && kycRequest.isCanceled)
+  return !kycRequest.isExists || kycRequest.isReset
+  // TODO: return true if no approved requests and the last one was
+  // permanentlyRejected or canceled
 }
 
 const US_RESIDENCES = ['UM', 'US', 'VI']

@@ -116,7 +116,6 @@ export default {
     async submit () {
       this.disableForm()
       try {
-        // TODO: kycRecoveryPage
         const ops = await this.former.buildOps()
         await api.postOperations(...ops)
 
