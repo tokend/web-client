@@ -9,6 +9,7 @@
         <tick-field
           class="issuance-section__pre-issuance-tick-field"
           v-model="form.isMaxAmountRestricted"
+          @input="onMaxAmountToggle"
           :disabled="isDisabled"
         >
           {{ 'asset-form.restrict-max-amount-check' | globalize }}
@@ -27,6 +28,9 @@
             :step="$config.MIN_AMOUNT"
             v-model="form.maxIssuanceAmount"
             @blur="touchField('form.maxIssuanceAmount')"
+            @change="former
+              .setAttr('maxIssuanceAmount', form.maxIssuanceAmount)
+            "
             name="create-asset-max-issuance-amount"
             :label="'asset-form.max-issuance-amount-lbl' | globalize"
             :error-message="getFieldErrorMessage('form.maxIssuanceAmount', {
@@ -43,6 +47,7 @@
           <tick-field
             class="issuance-section__pre-issuance-tick-field"
             v-model="form.isPreIssuanceEnabled"
+            @input="onPreIssuanceToggle"
             :disabled="isDisabled"
           >
             {{ 'asset-form.additional-issuance-check' | globalize }}
@@ -51,7 +56,7 @@
       </div>
     </template>
 
-    <template v-if="form.isPreIssuanceEnabled">
+    <template v-if="form.isMaxAmountRestricted && form.isPreIssuanceEnabled">
       <div class="app__form-row">
         <div class="app__form-field">
           <div class="issuance-section__buttoned-field-wrp">
@@ -59,6 +64,9 @@
               white-autofill
               v-model="form.preIssuanceAssetSigner"
               @blur="touchField('form.preIssuanceAssetSigner')"
+              @change="former
+                .setAttr('preIssuanceAssetSigner', form.preIssuanceAssetSigner)
+              "
               name="create-asset-pre-issuance-asset-signer"
               :label="'asset-form.pre-issuance-signer-lbl' | globalize"
               :error-message="getFieldErrorMessage(
@@ -72,7 +80,7 @@
               type="button"
               class="app__button-flat"
               :disabled="isDisabled"
-              @click="form.preIssuanceAssetSigner = accountId"
+              @click="populatePreIssuanceSigner"
             >
               {{ 'asset-form.use-my-account-id-btn' | globalize }}
             </button>
@@ -96,6 +104,9 @@
             :step="$config.MIN_AMOUNT"
             v-model="form.initialPreissuedAmount"
             @blur="touchField('form.initialPreissuedAmount')"
+            @change="former
+              .setAttr('initialPreissuedAmount', form.initialPreissuedAmount)
+            "
             name="create-asset-initial-preissued-amount"
             :label="'asset-form.preissued-amount-lbl' | globalize"
             :error-message="getFieldErrorMessage(
@@ -137,7 +148,6 @@ export default {
 
   props: {
     former: { type: AssetFormer, required: true },
-    onCollect: { type: Function, required: true },
     isDisabled: { type: Boolean, default: false },
   },
 
@@ -150,7 +160,6 @@ export default {
         preIssuanceAssetSigner: '',
         initialPreissuedAmount: '',
       },
-      onCollectUnsubscriber: () => { },
     }
   },
 
@@ -179,12 +188,7 @@ export default {
   },
 
   created () {
-    this.onCollect(() => { this.collect() })
     this.populateForm()
-  },
-
-  beforeDestroy () {
-    this.onCollectUnsubscriber()
   },
 
   methods: {
@@ -216,28 +220,31 @@ export default {
           : attrs.initialPreissuedAmount || ''
     },
 
-    collect () {
-      if (!this.form.isMaxAmountRestricted) {
-        this.former
-          .unsetAttr('maxIssuanceAmount')
-          .unsetAttr('preIssuanceAssetSigner')
-          .unsetAttr('initialPreissuedAmount')
-        return
+    onMaxAmountToggle (isEnabled) {
+      if (isEnabled) {
+        this.former.setAttr('maxIssuanceAmount', this.form.maxIssuanceAmount)
+      } else {
+        this.former.unsetAttr('maxIssuanceAmount')
       }
 
-      if (!this.form.isPreIssuanceEnabled) {
+      this.onPreIssuanceToggle(this.form.isPreIssuanceEnabled && isEnabled)
+    },
+
+    onPreIssuanceToggle (isEnabled) {
+      if (isEnabled) {
         this.former
-          .setAttr('maxIssuanceAmount', this.form.maxIssuanceAmount)
+          .setAttr('preIssuanceAssetSigner', this.form.preIssuanceAssetSigner)
+          .setAttr('initialPreissuedAmount', this.form.initialPreissuedAmount)
+      } else {
+        this.former
           .unsetAttr('preIssuanceAssetSigner')
           .unsetAttr('initialPreissuedAmount')
-        return
       }
+    },
 
-      this.former.mergeAttrs({
-        maxIssuanceAmount: this.form.maxIssuanceAmount,
-        preIssuanceAssetSigner: this.form.preIssuanceAssetSigner,
-        initialPreissuedAmount: this.form.initialPreissuedAmount,
-      })
+    populatePreIssuanceSigner () {
+      this.form.preIssuanceAssetSigner = this.accountId
+      this.former.setAttr('preIssuanceAssetSigner', this.accountId)
     },
   },
 }

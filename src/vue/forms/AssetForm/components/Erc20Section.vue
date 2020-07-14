@@ -9,21 +9,23 @@
         <tick-field
           class="advanced-step__stellar-integration-tick-field"
           v-model="form.isIntegrated"
-          :disabled="isDisabled || isOtherIntegration"
-          :cb-value="true"
+          :disabled="isDisabled"
+          @input="onIntegrationToggle"
         >
           {{ 'asset-form.integration-with-erc20' | globalize }}
         </tick-field>
       </div>
     </div>
 
-    <template v-if="form.isIntegrated && !isOtherIntegration">
+    <template v-if="form.isIntegrated">
       <div class="app__form-row">
         <div class="app__form-field">
           <tick-field
             v-model="form.isDepositable"
             :disabled="isDisabled"
-            :cb-value="true"
+            @input="former
+              .setAttr('erc20Integration.isDepositable', form.isDepositable)
+            "
           >
             {{ 'asset-form.deposit-lbl' | globalize }}
           </tick-field>
@@ -34,7 +36,9 @@
           <tick-field
             v-model="form.isWithdrawable"
             :disabled="isDisabled"
-            :cb-value="true"
+            @input="former
+              .setAttr('erc20Integration.isWithdrawable', form.isWithdrawable)
+            "
           >
             {{ 'asset-form.withdraw-lbl' | globalize }}
           </tick-field>
@@ -50,6 +54,9 @@
             :error-message="getFieldErrorMessage('form.erc20Address')"
             :disabled="isDisabled"
             @blur="touchField('form.erc20Address')"
+            @change="former
+              .setAttr('erc20Integration.address', form.erc20Address)
+            "
           />
         </div>
       </div>
@@ -69,9 +76,7 @@ export default {
 
   props: {
     former: { type: AssetFormer, required: true },
-    onCollect: { type: Function, required: true },
     isDisabled: { type: Boolean, default: false },
-    isOtherIntegration: { type: Boolean, default: false },
   },
 
   data () {
@@ -82,7 +87,6 @@ export default {
         isDepositable: false,
         erc20Address: '',
       },
-      onCollectUnsubscriber: () => {},
     }
   },
 
@@ -91,7 +95,7 @@ export default {
       form: {
         erc20Address: {
           required: requiredIf(function () {
-            return this.form.isIntegrated && !this.isOtherIntegration
+            return this.form.isIntegrated
           }),
         },
       },
@@ -107,11 +111,6 @@ export default {
 
   created () {
     this.populateForm()
-    this.onCollectUnsubscriber = this.onCollect(() => { this.collect() })
-  },
-
-  beforeDestroy () {
-    this.onCollectUnsubscriber()
   },
 
   methods: {
@@ -129,19 +128,18 @@ export default {
       this.form.erc20Address = attrs.address || ''
     },
 
-    collect () {
-      if (!this.form.isIntegrated || this.isOtherIntegration) {
+    onIntegrationToggle (value) {
+      if (value) {
+        this.former.mergeAttrs({
+          erc20Integration: {
+            isWithdrawable: this.form.isWithdrawable,
+            isDepositable: this.form.isDepositable,
+            address: this.form.erc20Address,
+          },
+        })
+      } else {
         this.former.unsetAttr('erc20Integration')
-        return
       }
-
-      this.former.mergeAttrs({
-        erc20Integration: {
-          isWithdrawable: this.form.isWithdrawable,
-          isDepositable: this.form.isDepositable,
-          address: this.form.erc20Address,
-        },
-      })
     },
   },
 }

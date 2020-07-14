@@ -9,7 +9,7 @@
         <tick-field
           v-model="form.isUsageRestricted"
           :disabled="isDisabled"
-          :cb-value="true"
+          @input="onUsageRestrictedToggle"
         >
           {{ 'asset-form.restrict-who-can-use' | globalize }}
         </tick-field>
@@ -21,7 +21,8 @@
         <div class="app__form-field">
           <select-field
             v-model="form.assetType"
-            @input="touchField('form.assetType')"
+            @input="touchField('form.assetType');
+                    former.setAttr('assetType', form.assetType)"
             name="create-asset-type"
             :label="'asset-form.asset-type-lbl' | globalize"
             :error-message="getFieldErrorMessage('form.assetType')"
@@ -56,7 +57,6 @@ export default {
 
   props: {
     former: { type: AssetFormer, required: true },
-    onCollect: { type: Function, required: true },
     isDisabled: { type: Boolean, default: false },
   },
 
@@ -66,7 +66,6 @@ export default {
         isUsageRestricted: false,
         assetType: '',
       },
-      onCollectUnsubscriber: () => {},
     }
   },
 
@@ -82,12 +81,7 @@ export default {
   },
 
   created () {
-    this.onCollect(() => { this.collect() })
     this.populateForm()
-  },
-
-  beforeDestroy () {
-    this.onCollectUnsubscriber()
   },
 
   methods: {
@@ -104,15 +98,12 @@ export default {
       this.form.assetType = attrs.assetType || defaultAssetType
     },
 
-    collect () {
-      if (!this.form.isUsageRestricted) {
+    onUsageRestrictedToggle (isEnabled) {
+      if (isEnabled) {
+        this.former.setAttr('assetType', this.form.assetType)
+      } else {
         this.former.unsetAttr('assetType')
-        return
       }
-
-      this.former.mergeAttrs({
-        assetType: this.form.assetType,
-      })
     },
   },
 }
