@@ -75,7 +75,6 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import config from '@/config'
-import { keyValues } from '@/key-values'
 import { isRoleUnset } from '@/js/helpers/kyc-helpers'
 
 // The guard doesn't allow the user to visit a verification page
@@ -135,16 +134,6 @@ export default {
       kycState: vuexTypes.kycState,
       kycAccountRole: vuexTypes.kycAccountRoleToSet,
     }),
-
-    isKycTypeGeneral () {
-      const generalTypeRoles = [
-        keyValues.generalRoleId,
-        keyValues.usVerifiedRoleId,
-        keyValues.usAccreditedRoleId,
-      ]
-
-      return generalTypeRoles.includes(this.kycAccountRole)
-    },
 
     isRoleChangeable () {
       return isRoleUnset(this.kycRequest)
