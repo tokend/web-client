@@ -60,3 +60,12 @@ export function getCurrentAccId () {
 export function getCurrentWalletPubKey () {
   return api.wallet.keypair.accountId()
 }
+
+export async function loadAllResponsePages (response) {
+  let data = response.data
+  while (response.data.length) {
+    response = await response.fetchNext()
+    data = [...data, ...response.data]
+  }
+  return data
+}

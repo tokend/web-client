@@ -1,9 +1,10 @@
-import { api, loadingDataViaLoop } from '@/api'
+import { api } from '@/api'
+import { loadAllResponsePages } from '@/js/helpers/api-helpers'
 
 class KeyValues {
   async load () {
     const response = await api.get(`/v3/key_values`)
-    const kvArray = await loadingDataViaLoop(response)
+    const kvArray = await loadAllResponsePages(response)
     const kvGet = this._makeGetter(kvArray)
 
     this.generalRoleId = kvGet('account_role:general')

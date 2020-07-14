@@ -31,13 +31,3 @@ export function useWallet (newWallet) {
   factorsManager.useApi(api)
   walletsManager.useApi(api)
 }
-
-// TODO: to api-helpers
-export async function loadingDataViaLoop (response) {
-  let data = response.data
-  while (response.data.length) {
-    response = await response.fetchNext()
-    data = [...data, ...response.data]
-  }
-  return data
-}
