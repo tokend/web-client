@@ -119,7 +119,6 @@ const getters = {
   isTotpEnabled: 'isTotpEnabled',
 
   // kyc
-  kycLatestData: 'kycLatestData',
   kyc: 'kyc',
   kycRequest: 'kycRequest',
 
