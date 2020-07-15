@@ -197,7 +197,7 @@ export default {
   data: _ => ({
     form: {
       asset: {
-        availableForIssuance: 0
+        availableForIssuance: 0,
       },
       amount: '0',
       receiver: '',
