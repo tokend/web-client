@@ -14,16 +14,16 @@
           :label="'general-form.id-document-type-lbl' | globalize"
           :error-message="getFieldErrorMessage('idType')"
         >
-          <option :value="ID_DOC_TYPES.passport">
+          <option value="passport">
             {{ 'general-form.passport-lbl' | globalize }}
           </option>
-          <option :value="ID_DOC_TYPES.identityCard">
+          <option value="identity_card">
             {{ 'general-form.identity-card-lbl' | globalize }}
           </option>
-          <option :value="ID_DOC_TYPES.drivingLicense">
+          <option value="driving_license">
             {{ 'general-form.driving-license-lbl' | globalize }}
           </option>
-          <option :value="ID_DOC_TYPES.residencePermit">
+          <option value="residence_permit">
             {{ 'general-form.residence-permit-lbl' | globalize }}
           </option>
         </select-field>
@@ -71,7 +71,6 @@
 import formMixin from '@/vue/mixins/form.mixin'
 import { required, requiredIf, documentContainer } from '@validators'
 import { KycGeneralFormer } from '@/js/formers/KycGeneralFormer'
-import { ID_DOC_TYPES } from '@/js/const/id-doc-types'
 
 export default {
   name: 'id-docs-section',
@@ -94,7 +93,6 @@ export default {
       idType: this.former.attrs.idDocType || '',
       idFace: this.former.attrs.idDocFace || null,
       idBack: this.former.attrs.idDocBack || null,
-      ID_DOC_TYPES,
     }
   },
 
