@@ -1,5 +1,5 @@
 export const DOCUMENT_TYPES = Object.freeze({
-  aleLogo: 'sale_logo',
+  saleLogo: 'sale_logo',
   saleDocument: 'sale_document',
   kycIdDocument: 'kyc_id_document',
   kycProofOfAddress: 'kyc_poa',
