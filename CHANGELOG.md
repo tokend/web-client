@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
+
 ## [Unreleased]
 #### Added
 - Smart App Banner
@@ -20,6 +21,22 @@ for further information about branching and tagging conventions.
   for easier access from the templates
 - Browser update banner — notify the user about outdated browser
 - New `KeyValues` singleton to store key value
+- New helpers:
+  - `signers-helpers.js` - Includes logic for creating signers set
+  - `api-helpers.js` - Includes reusable actions with the API
+  - `kyc-helpers` - Includes kyc-related helpers
+  - `scroll-helpers.js` - At the moment only `scrollToTop()` action
+  - `delay.js` - Promise version of the setTimeout
+  - `date-helpers.js` - Includes reusable actions over dates
+- Records:
+  - New `BlobRecord`
+  - New `KycRecord`
+  - New `KycCorporateRecord`
+  - New `KycGeneralRecord`
+  - New `KycRequestRecord`
+  - New `KycRequestRecord`
+  - New `KycRecoveryRequestRecord`
+  - New `RequestRecord` getters: `isExists`, `updatableId`
 
 #### Changed
 - `DocumentContainer`:
@@ -31,15 +48,44 @@ for further information about branching and tagging conventions.
 - Split advanced step of the asset form into small sections
 - Hide 'Atomic swaps'
 - Clearer asset former collecting on advanced step
+- Eslint warns about some non-critical rules (instead of breaking the build):
+  "no-tabs", "singleline", "no-unused-vars"
+- Extract `initApi()`, call it from the main.js, instead of App.vue
+  (the api should be initialized before the App rendered)
+- `loadingDataViaLoop()` => `loadAllResponsePages()`, moved to `api-helpers.js`
+- Formers:
+  - New `KycGeneralFormer` and `KycCorporateFormer`
+  - Migrated `attrs` description from the JSDoc to predefined default values
+  - Now the populating functions treat `attrs` as `undefined`
+- Done migration to the `KycGeneralFormer` and `KycCorporateFormer`:
+  - The general kyc form and corporate kyc form are integrated with the
+    new formers
+  - The kyc-recovery feature is adjusted to the new approach
+  - The kyc and the kyc-recovery vuex stores were thinned
+  - Getters of the kyc recovery states of the account moved to the
+    account module from the kyc-recovery module to avoid confusing with
+    state of the kyc recovery request
+- Proxied `DOCUMENT_TYPES` via Vue prototype as `$DOCUMENT_TYPES`
+- Automatic lint fixes
+- `Passport.vue` uses public url of the document instead of building the own one
+- Signup now uses the `signers-helpers.js` to create the signers
+- `vuexTypes.LOAD_ACCOUNT`’s `accountId` arg is optional now
 
 #### Fixed
 - Stretching mobile sidebar
 - Logo outside section
 - Input field number validation
 - availableForIssuance to number bug
+- Fixed disabled and error states of the following fields:
+  - `DateField`
+  - `FileField`
+  - `SelectField`
 
 #### Removed
 - Old key-value module
+- Old `ChangeRoleRecord`
+- Old `verification-form.mixin.js`
+- Old verification forms and their vuex stores
 
 ## [1.12.0-rc.6] - 2020-06-09
 #### Fixed
