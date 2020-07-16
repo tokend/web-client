@@ -20,6 +20,7 @@ for further information about branching and tagging conventions.
   for easier access from the templates
 - Browser update banner — notify the user about outdated browser
 - New `KeyValues` singleton to store key value
+- New i18n-component for easier nodes interpolation
 
 #### Changed
 - `DocumentContainer`:
