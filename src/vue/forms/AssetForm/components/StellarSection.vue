@@ -8,21 +8,23 @@
       <div class="app__form-field">
         <tick-field
           v-model="form.isIntegrated"
-          :disabled="isDisabled || isOtherIntegration"
-          :cb-value="true"
+          :disabled="isDisabled"
+          @input="onIntegrationToggle"
         >
           {{ 'asset-form.integration-with-stellar' | globalize }}
         </tick-field>
       </div>
     </div>
 
-    <template v-if="form.isIntegrated && !isOtherIntegration">
+    <template v-if="form.isIntegrated">
       <div class="app__form-row">
         <div class="app__form-field">
           <tick-field
             v-model="form.isDepositable"
             :disabled="isDisabled"
-            :cb-value="true"
+            @input="former
+              .setAttr('stellarIntegration.isDepositable', form.isDepositable)
+            "
           >
             {{ 'asset-form.deposit-lbl' | globalize }}
           </tick-field>
@@ -33,7 +35,9 @@
           <tick-field
             v-model="form.isWithdrawable"
             :disabled="isDisabled"
-            :cb-value="true"
+            @input="former
+              .setAttr('stellarIntegration.isWithdrawable', form.isWithdrawable)
+            "
           >
             {{ 'asset-form.withdraw-lbl' | globalize }}
           </tick-field>
@@ -47,7 +51,9 @@
             :label="'asset-form.stellar-type-lbl' | globalize"
             :error-message="getFieldErrorMessage('form.stellarAssetType')"
             :disabled="isDisabled"
-            @input="touchField('form.stellarAssetType')"
+            @input="touchField('form.stellarAssetType');
+                    // eslint-disable-next-line max-len
+                    former.setAttr('stellarIntegration.assetType', form.stellarAssetType)"
           >
             <option :value="STELLAR_TYPES.creditAlphanum4">
               {{ 'asset-form.alphanumeric-4-lbl' | globalize }}
@@ -67,6 +73,9 @@
             white-autofill
             v-model="form.stellarAssetCode"
             @blur="touchField('form.stellarAssetCode')"
+            @change="former
+              .setAttr('stellarIntegration.assetCode', form.stellarAssetCode)
+            "
             name="create-asset-stellar-code"
             :label="'asset-form.code-lbl' | globalize"
             :error-message="getFieldErrorMessage(
@@ -112,9 +121,7 @@ export default {
 
   props: {
     former: { type: AssetFormer, required: true },
-    onCollect: { type: Function, required: true },
     isDisabled: { type: Boolean, default: false },
-    isOtherIntegration: { type: Boolean, default: false },
   },
 
   data () {
@@ -126,7 +133,6 @@ export default {
         stellarAssetType: '',
         stellarAssetCode: '',
       },
-      onCollectUnsubscriber: () => {},
       STELLAR_TYPES,
       CODE_MIN_LEN_MAP,
       CODE_MAX_LEN_MAP,
@@ -138,12 +144,12 @@ export default {
       form: {
         stellarAssetType: {
           required: requiredIf(function () {
-            return this.form.isIntegrated && !this.isOtherIntegration
+            return this.form.isIntegrated
           }),
         },
         stellarAssetCode: {
           required: requiredIf(function () {
-            return this.form.isIntegrated && !this.isOtherIntegration
+            return this.form.isIntegrated
           }),
           minLength: minLength(CODE_MIN_LEN_MAP[this.form.stellarAssetType]),
           maxLength: maxLength(CODE_MAX_LEN_MAP[this.form.stellarAssetType]),
@@ -162,18 +168,14 @@ export default {
       handler (v) {
         if (v === STELLAR_TYPES.native) {
           this.form.stellarAssetCode = STELLAR_NATIVE_ASSET_CODE
+          this.former.setAttr('stellarIntegration.assetCode', STELLAR_NATIVE_ASSET_CODE)
         }
       },
     },
   },
 
   created () {
-    this.onCollect(() => { this.collect() })
     this.populateForm()
-  },
-
-  beforeDestroy () {
-    this.onCollectUnsubscriber()
   },
 
   methods: {
@@ -193,20 +195,19 @@ export default {
       this.form.stellarAssetCode = attrs.assetCode || ''
     },
 
-    collect () {
-      if (!this.form.isIntegrated || this.isOtherIntegration) {
+    onIntegrationToggle (value) {
+      if (value) {
+        this.former.mergeAttrs({
+          stellarIntegration: {
+            isWithdrawable: this.form.isWithdrawable,
+            isDepositable: this.form.isDepositable,
+            assetCode: this.form.stellarAssetCode,
+            assetType: this.form.stellarAssetType,
+          },
+        })
+      } else {
         this.former.unsetAttr('stellarIntegration')
-        return
       }
-
-      this.former.mergeAttrs({
-        stellarIntegration: {
-          isWithdrawable: this.form.isWithdrawable,
-          isDepositable: this.form.isDepositable,
-          assetCode: this.form.stellarAssetCode,
-          assetType: this.form.stellarAssetType,
-        },
-      })
     },
   },
 }

@@ -8,14 +8,12 @@
         <issuance-section
           class="app__form advanced-step__section"
           :former="former"
-          :on-collect="onCollect"
           :is-disabled="isDisabled"
         />
 
         <permissions-section
           class="app__form advanced-step__section"
           :former="former"
-          :on-collect="onCollect"
           :is-disabled="isDisabled"
         />
       </template>
@@ -24,9 +22,7 @@
         <stellar-section
           class="app__form advanced-step__section"
           :former="former"
-          :on-collect="onCollect"
-          :is-disabled="isDisabled"
-          :is-other-integration="isOtherIntegration(INTEGRATIONS.stellar)"
+          :is-disabled="isDisabled || isOtherIntegration(INTEGRATIONS.stellar)"
           @enabled="setIntegration(INTEGRATIONS.stellar)"
           @disabled="unsetIntegration(INTEGRATIONS.stellar)"
         />
@@ -34,9 +30,7 @@
         <erc20-section
           class="app__form advanced-step__section"
           :former="former"
-          :on-collect="onCollect"
-          :is-disabled="isDisabled"
-          :is-other-integration="isOtherIntegration(INTEGRATIONS.erc20)"
+          :is-disabled="isDisabled || isOtherIntegration(INTEGRATIONS.erc20)"
           @enabled="setIntegration(INTEGRATIONS.erc20)"
           @disabled="unsetIntegration(INTEGRATIONS.erc20)"
         />
@@ -45,7 +39,6 @@
       <terms-section
         class="app__form advanced-step__section"
         :former="former"
-        :on-collect="onCollect"
         :is-disabled="isDisabled"
       />
     </div>
@@ -111,21 +104,11 @@ export default {
   data () {
     return {
       integration: '',
-      collectCallbacks: [],
       INTEGRATIONS,
     }
   },
 
   methods: {
-    onCollect (callback) {
-      this.collectCallbacks.push(callback)
-      const unsubscribe = () => {
-        this.collectCallbacks = this.collectCallbacks
-          .filter(el => el !== callback)
-      }
-      return unsubscribe
-    },
-
     confirm () {
       if (!this.isFormValid()) return
       this.showConfirmation()
@@ -134,7 +117,6 @@ export default {
 
     next () {
       if (!this.isFormValid()) return
-      this.collectCallbacks.forEach(cb => cb())
       this.$emit('next')
     },
 

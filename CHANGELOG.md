@@ -21,7 +21,7 @@ for further information about branching and tagging conventions.
 - Browser update banner — notify the user about outdated browser
 - New `KeyValues` singleton to store key value
 
-#### Change
+#### Changed
 - `DocumentContainer`:
   - Add `isDoc()` method that checks whether the provided value looks like a doc
   - Add `fromObj()` method that creates a new `DocumentContainer` from an
@@ -29,16 +29,20 @@ for further information about branching and tagging conventions.
 - Enabled vue-devtools for 'development' env
 - Used common `STELLAR_TYPES` instead of the duplicated one
 - Split advanced step of the asset form into small sections
-
-#### Changed
 - Hide 'Atomic swaps'
+- Clearer asset former collecting on advanced step
 
 #### Fixed
 - Stretching mobile sidebar
+- Logo outside section
+- Input field number validation
+- availableForIssuance to number bug
 
 #### Removed
 - removed `DocumentContainer` and `upload-documents.js`, (using SDK instead)
 - Old key-value module
+
+## [1.12.0] - 2020-07-16
 
 ## [1.12.0-rc.6] - 2020-06-09
 #### Fixed
@@ -1171,7 +1175,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.12.0-rc.6...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.12.0...HEAD
+[1.12.0]: https://github.com/tokend/web-client/compare/1.12.0-rc.6...1.12.0
 [1.12.0-rc.6]: https://github.com/tokend/web-client/compare/1.12.0-rc.5...1.12.0-rc.6
 [1.12.0-rc.5]: https://github.com/tokend/web-client/compare/1.12.0-rc.4...1.12.0-rc.5
 [1.12.0-rc.4]: https://github.com/tokend/web-client/compare/1.12.0-rc.3...1.12.0-rc.4
