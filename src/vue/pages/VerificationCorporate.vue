@@ -144,12 +144,10 @@ import _get from 'lodash/get'
 import { api } from '@/api'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
+import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 
-import { BLOB_TYPES } from '@tokend/js-sdk'
-
-import { uploadDocument } from '@/js/helpers/upload-documents'
-import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+import { BLOB_TYPES, Document } from '@tokend/js-sdk'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -250,7 +248,9 @@ export default {
       this.isFormSubmitting = true
 
       try {
-        if (!this.isKycRecoveryPage) await uploadDocument(this.form.avatar)
+        if (!this.isKycRecoveryPage) {
+          await Document.uploadDocuments([this.form.avatar])
+        }
 
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycCorporate)
 
@@ -306,18 +306,19 @@ export default {
         homepage: this.form.website,
         documents: {
           [DOCUMENT_TYPES.kycAvatar]: this.form.avatar
-            ? this.form.avatar.getDetailsForSave()
+            ? this.form.avatar.toJSON()
             : EMPTY_DOCUMENT,
         },
       }
     },
 
     parseKycData (kycData) {
+      const avatarDoc = kycData.documents[DOCUMENT_TYPES.kycAvatar]
       return {
         name: kycData.name,
         company: kycData.company,
         avatar: _get(kycData, `documents.${DOCUMENT_TYPES.kycAvatar}.key`)
-          ? new DocumentContainer(kycData.documents[DOCUMENT_TYPES.kycAvatar])
+          ? new Document(avatarDoc, DOCUMENT_POLICIES[avatarDoc.type])
           : null,
         headquarters: kycData.headquarters,
         industry: kycData.industry,

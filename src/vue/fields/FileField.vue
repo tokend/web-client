@@ -120,10 +120,12 @@
 
 <script>
 import { FileUtil, FileNotPresentInEventError } from '@/js/utils/file.util'
-import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+import { Document } from '@tokend/js-sdk'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+
+import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
 
 const MAX_FILE_MEGABYTES = 32
 const IMAGE_FILE_EXTENSIONS = ['jpg', 'png']
@@ -131,9 +133,9 @@ const IMAGE_FILE_EXTENSIONS = ['jpg', 'png']
 export default {
   name: 'file-field',
   props: {
-    value: { type: DocumentContainer, default: null },
+    value: { type: Document, default: null },
     label: { type: String, default: '' },
-    documentType: { type: String, default: 'default' },
+    documentType: { type: String, default: '' },
     fileExtensions: { type: Array, default: _ => IMAGE_FILE_EXTENSIONS },
     maxSize: { type: Number, default: MAX_FILE_MEGABYTES },
     note: { type: String, default: 'All files' },
@@ -197,12 +199,11 @@ export default {
 
         if (await this.validateFile(file)) {
           this.documentUrl = await FileUtil.getDataUrl(file)
-          this.document = new DocumentContainer({
+          this.document = new Document({
             mimeType: file.type,
-            type: this.documentType,
             name: file.name,
             file: file,
-          })
+          }, DOCUMENT_POLICIES[this.documentType])
           this.$emit('input', this.document)
         }
       } catch (e) {

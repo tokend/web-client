@@ -66,11 +66,10 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import { DOCUMENT_TYPES_TRANSLATION_IDS } from '@/js/const/document-types.const'
-import { uploadDocuments } from '@/js/helpers/upload-documents'
 import { required, documentContainer } from '@validators'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { base, errors } from '@tokend/js-sdk'
+import { base, errors, Document } from '@tokend/js-sdk'
 import { api } from '@/api'
 import { LIMITS_REQUEST_TYPE } from '@/js/const/limits.const'
 import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes.const'
@@ -123,7 +122,7 @@ export default {
       this.disableForm()
       this.isRequestCreating = true
       try {
-        await uploadDocuments(Object.values(this.form.documents))
+        await Document.uploadDocuments(Object.values(this.form.documents))
         await this.createLimitsUpdateRequest()
         Bus.success('limits-documents-uploader-form.documents-upload-success')
         this.$emit(EVENTS.requestUploaded)

@@ -1,7 +1,7 @@
 import get from 'lodash/get'
-import { ASSET_POLICIES, REQUEST_TYPES } from '@tokend/js-sdk'
+import { ASSET_POLICIES, REQUEST_TYPES, Document } from '@tokend/js-sdk'
 import { RequestRecord } from '@/js/records/request-record'
-import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
 
 export class AssetRequest extends RequestRecord {
   constructor (record = {}) {
@@ -17,11 +17,11 @@ export class AssetRequest extends RequestRecord {
     this.policy = dts.policies
 
     const logo = get(dts, 'creatorDetails.logo') || {}
-    this.logo = DocumentContainer.fromObj(logo)
+    this.logo = new Document(logo, DOCUMENT_POLICIES[logo.type])
     this.logoKey = logo.key
 
     const terms = get(dts, 'creatorDetails.terms') || {}
-    this.terms = DocumentContainer.fromObj(terms)
+    this.terms = new Document(terms, DOCUMENT_POLICIES[terms.type])
     this.termsKey = terms.key
 
     this.stellarAssetCode = get(dts, 'creatorDetails.stellar.assetCode') || ''

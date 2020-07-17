@@ -1,8 +1,8 @@
-import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+import { Document } from '@tokend/js-sdk'
+import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
 
 export function wrapDocument (document, type) {
-  return new DocumentContainer({
+  return new Document({
     ...document,
-    type,
-  })
+  }, DOCUMENT_POLICIES[type])
 }

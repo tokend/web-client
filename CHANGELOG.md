@@ -39,6 +39,7 @@ for further information about branching and tagging conventions.
 - availableForIssuance to number bug
 
 #### Removed
+- removed `DocumentContainer` and `upload-documents.js`, (using SDK instead)
 - Old key-value module
 
 ## [1.12.0] - 2020-07-16

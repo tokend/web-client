@@ -1,15 +1,21 @@
-import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+import { Document } from '@tokend/js-sdk'
+import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
 
+const EMPTY_DOCUMENT = {
+  mime_type: '',
+  name: '',
+  key: '',
+}
 export function doc (doc) {
-  if (doc instanceof DocumentContainer) {
-    return doc.getDetailsForSave()
+  if (doc instanceof Document) {
+    return doc.toJSON()
   }
 
-  if (DocumentContainer.isDoc(doc)) {
-    return new DocumentContainer(doc).getDetailsForSave()
+  if (doc && typeof doc === 'object' && Boolean(doc.file || doc.key)) {
+    return new Document(doc, DOCUMENT_POLICIES[doc.type]).toJSON()
   }
 
-  return DocumentContainer.getEmptyDetailsForSave()
+  return EMPTY_DOCUMENT
 }
 
 export function reqId (val) {

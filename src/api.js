@@ -3,6 +3,7 @@ import {
   DocumentsManager,
   FactorsManager,
   WalletsManager,
+  Document,
 } from '@tokend/js-sdk'
 
 export const api = new ApiCaller()
@@ -10,6 +11,8 @@ export const api = new ApiCaller()
 export const documentsManager = new DocumentsManager()
 export const walletsManager = new WalletsManager()
 export const factorsManager = new FactorsManager()
+
+Document.useDocumentsManager(documentsManager)
 
 export function useWallet (newWallet) {
   api.useWallet(newWallet)
