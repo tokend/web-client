@@ -59,8 +59,9 @@ import ManagePreIssuanceMixin from '../mixins/manage-pre-issuance.mixin'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetNotOwnedError } from '../_errors'
+import { Document } from '@tokend/js-sdk'
 
-import { documentContainer } from '@validators'
+import { nonEmptyDocument } from '@validators'
 import { vueRoutes } from '@/vue-router/routes'
 
 const EVENTS = {
@@ -77,24 +78,18 @@ export default {
   },
 
   data: _ => ({
-    preIssuanceDocument: null,
+    preIssuanceDocument: new Document(),
     isFormSubmitting: false,
     vueRoutes,
   }),
 
   validations: {
-    preIssuanceDocument: { documentContainer },
+    preIssuanceDocument: { nonEmptyDocument },
   },
 
   watch: {
-    'preIssuanceDocument': async function (value) {
-      if (value && value.file) {
-        try {
-          await this.extractPreIssuance(value.file)
-        } catch (e) {
-          ErrorHandler.process(e, 'pre-issuance-form.file-corrupted-err')
-        }
-      }
+    preIssuanceDocument (value) {
+      this.onPreIssuanceDocumentChange(value)
     },
   },
 
@@ -115,6 +110,16 @@ export default {
 
       this.isFormSubmitting = false
       this.hideConfirmation()
+    },
+
+    async onPreIssuanceDocumentChange (newDoc) {
+      if (!(newDoc instanceof Document) || newDoc.isEmpty) return
+
+      try {
+        await this.extractPreIssuance(newDoc.file)
+      } catch (e) {
+        ErrorHandler.process(e, 'pre-issuance-form.file-corrupted-err')
+      }
     },
   },
 }

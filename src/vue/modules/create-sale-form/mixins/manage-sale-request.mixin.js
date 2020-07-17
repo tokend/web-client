@@ -1,10 +1,9 @@
 import ManageSaleDescriptionMixin from './manage-sale-description.mixin'
 import LoadAssetPairsMixin from './load-asset-pairs.mixin'
-import { base, SALE_TYPES } from '@tokend/js-sdk'
+import { base, SALE_TYPES, Document } from '@tokend/js-sdk'
 
 import { api } from '@/api'
 
-import { uploadDocument } from '@/js/helpers/upload-documents'
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
 import { DateUtil, MathUtil } from '@/js/utils'
 
@@ -45,7 +44,7 @@ export default {
           name: this.informationStepForm.name,
           short_description: this.shortBlurbStepForm.shortDescription,
           description: this.saleDescriptionBlobId,
-          logo: saleLogo ? saleLogo.getDetailsForSave() : EMPTY_DOCUMENT,
+          logo: saleLogo ? saleLogo.toJSON() : EMPTY_DOCUMENT,
           youtube_video_id: this.fullDescriptionStepForm.youtubeId,
         },
         saleRules: [{
@@ -69,7 +68,7 @@ export default {
     },
 
     async submitCreateSaleRequest (accountId) {
-      await uploadDocument(this.shortBlurbStepForm.saleLogo)
+      await Document.uploadDocuments([this.shortBlurbStepForm.saleLogo])
       this.saleDescriptionBlobId = await this.createSaleDescriptionBlob(
         this.fullDescriptionStepForm.description,
         accountId

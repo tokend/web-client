@@ -1,14 +1,12 @@
 import { Former } from './Former'
-import { base, BLOB_TYPES } from '@tokend/js-sdk'
+import { base, BLOB_TYPES, Document } from '@tokend/js-sdk'
 import { doc, str, reqId } from './op-build-helpers'
 import { KycCorporateRecord } from '@/js/records/entities/kyc-corporate.record'
 import { KycRequestRecord } from '@/js/records/requests/kyc-request.record'
 import { KycRecoveryRequestRecord } from '@/js/records/requests/kyc-recovery-request.record'
 import { BlobRecord } from '@/js/records/entities/blob.record'
-import { uploadDocumentsDeep } from '@/js/helpers/upload-documents'
 import { createPrivateBlob, getCurrentAccId } from '@/js/helpers/api-helpers'
 import { buildKycRecoveryOp } from '@/js/helpers/kyc-helpers'
-import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { keyValues } from '@/key-values'
 
 /**
@@ -25,7 +23,7 @@ export class KycCorporateFormer extends Former {
     industry: '',
     teamSize: 0,
     website: '',
-    avatar: DocumentContainer.fromObj(),
+    avatar: new Document(),
   }
 
   attrs = this.attrs || this._defaultAttrs
@@ -44,7 +42,7 @@ export class KycCorporateFormer extends Former {
   }
 
   async buildOps () {
-    await uploadDocumentsDeep(this.attrs)
+    await Document.uploadDocumentsDeep(this.attrs)
     const op = await this._opBuilder()
     return [op]
   }

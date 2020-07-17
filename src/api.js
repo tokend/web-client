@@ -3,6 +3,7 @@ import {
   DocumentsManager,
   FactorsManager,
   WalletsManager,
+  Document,
 } from '@tokend/js-sdk'
 import config from '@/config'
 
@@ -22,12 +23,14 @@ export async function initApi () {
   walletsManager.useApi(api)
   factorsManager.useApi(api)
   documentsManager.useApi(api)
+  Document.useDocumentsManager(documentsManager)
 }
 
 export function useWallet (newWallet) {
   api.useWallet(newWallet)
 
-  documentsManager.useApi(api)
   factorsManager.useApi(api)
   walletsManager.useApi(api)
+  documentsManager.useApi(api)
+  Document.useDocumentsManager(documentsManager)
 }

@@ -50,7 +50,7 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
-import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+import { Document } from '@tokend/js-sdk'
 
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
 
@@ -70,7 +70,7 @@ export default {
 
   data: _ => ({
     form: {
-      saleLogo: null,
+      saleLogo: new Document(),
       shortDescription: '',
     },
     DOCUMENT_TYPES,
@@ -100,9 +100,7 @@ export default {
   methods: {
     populateForm () {
       this.form = {
-        saleLogo: this.request.logoKey
-          ? new DocumentContainer(this.request.logo)
-          : null,
+        saleLogo: new Document(this.request.logo),
         shortDescription: this.request.shortDescription,
       }
     },

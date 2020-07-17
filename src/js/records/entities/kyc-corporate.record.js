@@ -1,5 +1,5 @@
+import { Document } from '@tokend/js-sdk'
 import { KycRecord } from './kyc.record'
-import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 export class KycCorporateRecord extends KycRecord {
   constructor (blob) {
@@ -13,6 +13,6 @@ export class KycCorporateRecord extends KycRecord {
     this.industry = kyc.industry
     this.teamSize = kyc.team_size
     this.website = kyc.homepage
-    this.avatar = DocumentContainer.fromObj(docs.kyc_avatar)
+    this.avatar = new Document(docs.kyc_avatar)
   }
 }

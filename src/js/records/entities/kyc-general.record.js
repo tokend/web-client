@@ -1,5 +1,4 @@
 import { KycRecord } from './kyc.record'
-import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 export class KycGeneralRecord extends KycRecord {
   constructor (blob) {
@@ -21,10 +20,10 @@ export class KycGeneralRecord extends KycRecord {
       postalCode: kycAddr.postal_code,
     }
     this.idDocType = kycIdDoc.type
-    this.idDocFace = DocumentContainer.fromObj(kycIdDoc.face)
-    this.idDocBack = DocumentContainer.fromObj(kycIdDoc.back)
-    this.avatar = DocumentContainer.fromObj(kycDocs.kyc_avatar)
-    this.proofOfInvestor = DocumentContainer.fromObj(kycDocs.kyc_proof_investor)
-    this.selfie = DocumentContainer.fromObj(kycDocs.kyc_selfie)
+    this.idDocFace = new Document(kycIdDoc.face)
+    this.idDocBack = new Document(kycIdDoc.back)
+    this.avatar = new Document(kycDocs.kyc_avatar)
+    this.proofOfInvestor = new Document(kycDocs.kyc_proof_investor)
+    this.selfie = new Document(kycDocs.kyc_selfie)
   }
 }

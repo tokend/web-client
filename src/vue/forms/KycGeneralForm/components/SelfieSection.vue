@@ -47,7 +47,7 @@
 
 <script>
 import formMixin from '@/vue/mixins/form.mixin'
-import { documentContainer } from '@validators'
+import { nonEmptyDocument } from '@validators'
 import { KycGeneralFormer } from '@/js/formers/KycGeneralFormer'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -86,7 +86,7 @@ export default {
   },
 
   validations: {
-    selfie: { documentContainer },
+    selfie: { nonEmptyDocument },
   },
 }
 </script>

@@ -1,14 +1,12 @@
 import ManageSaleRequestMixin from './manage-sale-request.mixin'
 
-import { base } from '@tokend/js-sdk'
+import { base, Document } from '@tokend/js-sdk'
 
 import { mount, createLocalVue } from '@vue/test-utils'
 
 import { api } from '@/api'
-import * as DocumentUploader from '@/js/helpers/upload-documents'
 
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
-import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import Vuex from 'vuex'
 
 const localVue = createLocalVue()
@@ -169,7 +167,7 @@ describe('Manage sale request mixin', () => {
     describe('submitCreateSaleRequest', () => {
       it('calls proper methods with passed params',
         async () => {
-          const saleLogo = new DocumentContainer({ key: 'logo-key' })
+          const saleLogo = new Document({ key: 'logo-key' })
 
           wrapper.setData({
             assets: [{ code: 'BTC' }, { code: 'ETH' }],
@@ -178,7 +176,6 @@ describe('Manage sale request mixin', () => {
             fullDescriptionStepForm: { description: 'Sale description' },
           })
 
-          sandbox.stub(DocumentUploader, 'uploadDocument').resolves()
           sandbox.stub(wrapper.vm, 'createBalancesIfNotExist').resolves()
           sandbox.stub(wrapper.vm, 'loadAssetsPairsByQuote').resolves([])
 
@@ -189,8 +186,6 @@ describe('Manage sale request mixin', () => {
 
           await wrapper.vm.submitCreateSaleRequest('SOME_ACCOUNT_ID')
 
-          expect(DocumentUploader.uploadDocument)
-            .to.have.been.calledOnceWithExactly(saleLogo)
           expect(wrapper.vm.createBalancesIfNotExist)
             .to.have.been.calledOnceWithExactly({
               balanceAssets: ['BTC', 'ETH'],

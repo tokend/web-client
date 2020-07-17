@@ -69,7 +69,7 @@
 
 <script>
 import formMixin from '@/vue/mixins/form.mixin'
-import { required, requiredIf, documentContainer } from '@validators'
+import { required, requiredIf, nonEmptyDocument } from '@validators'
 import { KycGeneralFormer } from '@/js/formers/KycGeneralFormer'
 
 export default {
@@ -117,7 +117,7 @@ export default {
 
   validations: {
     idType: { required },
-    idFace: { documentContainer },
+    idFace: { nonEmptyDocument },
     idBack: {
       required: requiredIf(function () { return this.isBackRequired }),
     },

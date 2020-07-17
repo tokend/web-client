@@ -1,15 +1,13 @@
 import { Former } from './Former'
-import { base, BLOB_TYPES } from '@tokend/js-sdk'
+import { base, BLOB_TYPES, Document } from '@tokend/js-sdk'
 import { doc, str, reqId } from './op-build-helpers'
 import { KycGeneralRecord } from '@/js/records/entities/kyc-general.record'
 import { KycRequestRecord } from '@/js/records/requests/kyc-request.record'
 import { KycRecoveryRequestRecord } from '@/js/records/requests/kyc-recovery-request.record'
 import { BlobRecord } from '@/js/records/entities/blob.record'
-import { uploadDocumentsDeep } from '@/js/helpers/upload-documents'
 import { toRFC3339 } from '@/js/helpers/date-helpers'
 import { createPrivateBlob, getCurrentAccId } from '@/js/helpers/api-helpers'
 import { isUSResidence, buildKycRecoveryOp } from '@/js/helpers/kyc-helpers'
-import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { keyValues } from '@/key-values'
 import get from 'lodash/get'
 
@@ -25,11 +23,11 @@ export class KycGeneralFormer extends Former {
     lastName: '',
     dateOfBirth: '',
     idDocType: '',
-    idDocFace: DocumentContainer.fromObj(),
-    idDocBack: DocumentContainer.fromObj(),
-    proofOfInvestor: DocumentContainer.fromObj(),
-    selfie: DocumentContainer.fromObj(),
-    avatar: DocumentContainer.fromObj(),
+    idDocFace: new Document(),
+    idDocBack: new Document(),
+    proofOfInvestor: new Document(),
+    selfie: new Document(),
+    avatar: new Document(),
     address: {
       line1: '',
       line2: '',
@@ -56,7 +54,7 @@ export class KycGeneralFormer extends Former {
   }
 
   async buildOps () {
-    await uploadDocumentsDeep(this.attrs)
+    await Document.uploadDocumentsDeep(this.attrs)
     const op = await this._opBuilder()
     return [op]
   }

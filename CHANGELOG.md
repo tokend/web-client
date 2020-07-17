@@ -82,10 +82,13 @@ for further information about branching and tagging conventions.
   - `SelectField`
 
 #### Removed
+- removed `DocumentContainer` and `upload-documents.js`, (using SDK instead)
 - Old key-value module
 - Old `ChangeRoleRecord`
 - Old `verification-form.mixin.js`
 - Old verification forms and their vuex stores
+
+## [1.12.0] - 2020-07-16
 
 ## [1.12.0-rc.6] - 2020-06-09
 #### Fixed
@@ -1218,7 +1221,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.12.0-rc.6...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.12.0...HEAD
+[1.12.0]: https://github.com/tokend/web-client/compare/1.12.0-rc.6...1.12.0
 [1.12.0-rc.6]: https://github.com/tokend/web-client/compare/1.12.0-rc.5...1.12.0-rc.6
 [1.12.0-rc.5]: https://github.com/tokend/web-client/compare/1.12.0-rc.4...1.12.0-rc.5
 [1.12.0-rc.4]: https://github.com/tokend/web-client/compare/1.12.0-rc.3...1.12.0-rc.4

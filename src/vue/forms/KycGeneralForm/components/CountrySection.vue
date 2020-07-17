@@ -77,7 +77,7 @@ import { KycGeneralFormer } from '@/js/formers/KycGeneralFormer'
 import { isUSResidence, isRoleUnset } from '@/js/helpers/kyc-helpers'
 
 import { COUNTRIES } from '@/js/const/countries'
-import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+import { Document } from '@tokend/js-sdk'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
@@ -101,7 +101,7 @@ export default {
     const attrs = this.former.attrs || {}
     const country = (attrs.address || {}).country || ''
     const isAccredited =
-      attrs.proofOfInvestor instanceof DocumentContainer &&
+      attrs.proofOfInvestor instanceof Document &&
       attrs.proofOfInvestor.isUploaded
     return {
       countryCode: country,

@@ -1,12 +1,10 @@
 import { Former } from './Former'
 import config from '@/config'
-import { base } from '@tokend/js-sdk'
+import { base, Document } from '@tokend/js-sdk'
 import { reqId, doc, str, num } from './op-build-helpers'
 import { AssetRequest } from '@/js/records/requests/asset-request.record'
 import { AssetRecord } from '@/js/records/entities/asset.record'
-import { uploadDocumentsDeep } from '@/js/helpers/upload-documents'
 import { keyValues } from '@/key-values'
-import { DocumentContainer } from '../helpers/DocumentContainer'
 
 /**
  * Collects the attributes for asset-related operations
@@ -18,8 +16,8 @@ export class AssetFormer extends Former {
     requestId: '0',
     code: '',
     name: '',
-    logo: DocumentContainer.fromObj(),
-    terms: DocumentContainer.fromObj(),
+    logo: new Document(),
+    terms: new Document(),
     policies: 0,
     assetType: '',
     maxIssuanceAmount: '',
@@ -52,7 +50,7 @@ export class AssetFormer extends Former {
   }
 
   async buildOps () {
-    await uploadDocumentsDeep(this.attrs)
+    await Document.uploadDocumentsDeep(this.attrs)
     return [this._opBuilder()]
   }
 

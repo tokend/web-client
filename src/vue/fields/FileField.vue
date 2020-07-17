@@ -18,7 +18,7 @@
         'file-field__content--highlighted': isFileDragged
       }"
     >
-      <template v-if="document">
+      <template v-if="!value.isEmpty">
         <button
           v-if="!$attrs.disabled"
           :title="'file-field.reset-btn-hint' | globalize"
@@ -35,39 +35,38 @@
         >
           <img
             class="file-field__img-preview"
-            :src="documentUrl">
+            :src="documentUrl"
+          >
         </div>
 
         <div
           v-else
-          class="file-field__icon-preview-wrp">
+          class="file-field__icon-preview-wrp"
+        >
           <i class="mdi mdi-file file-field__icon-preview" />
         </div>
 
         <div class="file-field__selected-file">
-          {{ 'file-field.selected-file' | globalize({ name: document.name }) }}
+          {{ 'file-field.selected-file' | globalize({ name: value.name }) }}
         </div>
       </template>
 
       <div class="file-field__inner">
         <template v-if="!$attrs.disabled">
           <i
-            v-if="!document"
+            v-if="value.isEmpty"
             class="mdi file-field__icon"
             :class="isFileDragged ? 'mdi-file-plus' : 'mdi-upload'"
           />
 
           <div class="file-field__text">
-            <p
-              :class="document
-                ? 'file-field__subtitle'
-                : 'file-field__title'"
-            >
+            <!-- eslint-disable-next-line max-len -->
+            <p :class="!value.isEmpty ? 'file-field__subtitle' : 'file-field__title'">
               <template v-if="isFileDragged">
                 {{ 'file-field.drop-file-title' | globalize }}
               </template>
 
-              <template v-else-if="document">
+              <template v-else-if="!value.isEmpty">
                 {{ 'file-field.upload-another-file-title' | globalize }}
               </template>
 
@@ -82,7 +81,7 @@
           </div>
         </template>
 
-        <template v-else-if="!document">
+        <template v-else-if="value.isEmpty">
           <i class="mdi mdi-file-hidden file-field__icon" />
 
           <div class="file-field__text">
@@ -96,7 +95,7 @@
       <!--
         title is set to empty string to avoid ambiguity concerning
         the selected file. When we set document programmatically
-        (e.g. when dispaying files uploaded before), file input title
+        (e.g. when displaying files uploaded before), file input title
         will be `No file chosen`, cause JavaScript doesn't allow to
         select the file from the code.
       -->
@@ -124,10 +123,11 @@
 
 <script>
 import { FileUtil, FileNotPresentInEventError } from '@/js/utils/file.util'
-import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+import { Document } from '@tokend/js-sdk'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { DOCUMENT_POLICIES } from '../../js/const/document-policies.const'
 
 const MAX_FILE_MEGABYTES = 32
 const IMAGE_FILE_EXTENSIONS = ['jpg', 'png']
@@ -135,9 +135,9 @@ const IMAGE_FILE_EXTENSIONS = ['jpg', 'png']
 export default {
   name: 'file-field',
   props: {
-    value: { type: DocumentContainer, default: null },
+    value: { type: Document, default: () => new Document() },
     label: { type: String, default: '' },
-    documentType: { type: String, default: 'default' },
+    documentType: { type: String, default: '' },
     fileExtensions: { type: Array, default: _ => IMAGE_FILE_EXTENSIONS },
     maxSize: { type: Number, default: MAX_FILE_MEGABYTES },
     note: { type: String, default: 'All files' },
@@ -147,7 +147,6 @@ export default {
   },
 
   data: _ => ({
-    document: null,
     isFileDragged: false,
     documentUrl: '',
   }),
@@ -158,7 +157,7 @@ export default {
     },
 
     isImageSelected () {
-      const mimeType = this.document.mimeType
+      const mimeType = this.value.mimeType
       return mimeType && mimeType.includes('image')
     },
 
@@ -169,18 +168,9 @@ export default {
     },
   },
 
-  watch: {
-    'value': function (value) {
-      this.document = value
-    },
-  },
-
   async created () {
     try {
-      if (this.value) {
-        this.document = this.value
-        await this.loadDocumentUrl(this.value)
-      }
+      await this.loadDocumentUrl(this.value)
     } catch (e) {
       ErrorHandler.processWithoutFeedback(e)
     }
@@ -190,7 +180,10 @@ export default {
     async loadDocumentUrl (document) {
       if (document.key) {
         this.documentUrl = await document.getPrivateUrl()
-      } else {
+        return
+      }
+
+      if (document.file) {
         this.documentUrl = await FileUtil.getDataUrl(document.file)
       }
     },
@@ -201,13 +194,15 @@ export default {
 
         if (await this.validateFile(file)) {
           this.documentUrl = await FileUtil.getDataUrl(file)
-          this.document = new DocumentContainer({
+          const newDocType =
+            this.value.type ||
+            DOCUMENT_POLICIES[this.documentType]
+          const newDoc = new Document({
             mimeType: file.type,
-            type: this.documentType,
             name: file.name,
             file: file,
-          })
-          this.$emit('input', this.document)
+          }, newDocType)
+          this.$emit('input', newDoc)
         }
       } catch (e) {
         if (e instanceof FileNotPresentInEventError) {
@@ -254,9 +249,8 @@ export default {
 
     reset () {
       this.$el.querySelector('input').value = ''
-      this.document = null
       this.documentUrl = ''
-      this.$emit('input', this.document)
+      this.$emit('input', new Document())
     },
 
     isValidFileSize (file) {
