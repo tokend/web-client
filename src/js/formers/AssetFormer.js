@@ -12,31 +12,33 @@ import { keyValues } from '@/key-values'
  * @implements {Former}
  */
 export class AssetFormer extends Former {
-  _defaultAttrs = {
-    requestId: '0',
-    code: '',
-    name: '',
-    logo: new Document(),
-    terms: new Document(),
-    policies: 0,
-    assetType: '',
-    maxIssuanceAmount: '',
-    maxIssuanceAssetSigner: '',
-    initialPreissuedAmount: '',
-    stellarIntegration: {
-      isWithdrawable: false,
-      isDepositable: false,
-      assetType: '',
-      assetCode: '',
-    },
-    erc20Integration: {
-      isWithdrawable: false,
-      isDepositable: false,
-      address: '',
-    },
-  }
-
   attrs = this.attrs || this._defaultAttrs
+
+  get _defaultAttrs () {
+    return {
+      requestId: '0',
+      code: '',
+      name: '',
+      logo: new Document(),
+      terms: new Document(),
+      policies: 0,
+      assetType: '',
+      maxIssuanceAmount: '',
+      maxIssuanceAssetSigner: '',
+      initialPreissuedAmount: '',
+      stellarIntegration: {
+        isWithdrawable: false,
+        isDepositable: false,
+        assetType: '',
+        assetCode: '',
+      },
+      erc20Integration: {
+        isWithdrawable: false,
+        isDepositable: false,
+        address: '',
+      },
+    }
+  }
 
   _opBuilder = this._opBuilder || this._buildOpCreate
   get isCreateOpBuilder () { return this._opBuilder === this._buildOpCreate }
@@ -68,7 +70,7 @@ export class AssetFormer extends Former {
   _populateFromRequest (source) {
     if (source.isCreateAssetRequest) this.useCreateOpBuilder()
     if (source.isUpdateAssetRequest) this.useUpdateOpBuilder()
-    this.attrs = this.attrs || {}
+    this.attrs = this.attrs || this._defaultAttrs
     this.attrs.requestId = source.id
     this.attrs.code = source.assetCode
     this.attrs.name = source.assetName
@@ -95,7 +97,7 @@ export class AssetFormer extends Former {
   /** @param {AssetRecord} source */
   _populateFromRecord (source) {
     this.useUpdateOpBuilder()
-    this.attrs = this.attrs || {}
+    this.attrs = this.attrs || this._defaultAttrs
     this.attrs.requestId = '0'
     this.attrs.code = source.code
     this.attrs.name = source.name

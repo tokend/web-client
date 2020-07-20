@@ -15,18 +15,20 @@ import { keyValues } from '@/key-values'
  * @implements {Former}
  */
 export class KycCorporateFormer extends Former {
-  _defaultAttrs = {
-    requestId: '0',
-    name: '',
-    company: '',
-    headquarters: '',
-    industry: '',
-    teamSize: 0,
-    website: '',
-    avatar: new Document(),
-  }
-
   attrs = this.attrs || this._defaultAttrs
+
+  get _defaultAttrs () {
+    return {
+      requestId: '0',
+      name: '',
+      company: '',
+      headquarters: '',
+      industry: '',
+      teamSize: 0,
+      website: '',
+      avatar: new Document(),
+    }
+  }
 
   /* eslint-disable max-len */
   _opBuilder = this._opBuilder || this._buildOpUpdate
@@ -72,7 +74,7 @@ export class KycCorporateFormer extends Former {
   /** @param {KycCorporateRecord} source */
   _populateFromRecord (source) {
     this.useUpdateOpBuilder()
-    this.attrs = this.attrs || {}
+    this.attrs = this.attrs || this._defaultAttrs
     this.attrs.requestId = '0'
     this.attrs.name = source.name
     this.attrs.company = source.company
@@ -89,7 +91,7 @@ export class KycCorporateFormer extends Former {
       this._populateFromRecord(source.kyc)
     }
 
-    this.attrs = this.attrs || {}
+    this.attrs = this.attrs || this._defaultAttrs
     this.attrs.requestId = source.updatableId
   }
 

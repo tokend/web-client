@@ -1,4 +1,5 @@
 import { KycRecord } from './kyc.record'
+import { Document } from '@tokend/js-sdk'
 
 export class KycGeneralRecord extends KycRecord {
   constructor (blob) {

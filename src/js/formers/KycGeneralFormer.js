@@ -17,28 +17,30 @@ import get from 'lodash/get'
  * @implements {Former}
  */
 export class KycGeneralFormer extends Former {
-  _defaultAttrs = {
-    requestId: '0',
-    firstName: '',
-    lastName: '',
-    dateOfBirth: '',
-    idDocType: '',
-    idDocFace: new Document(),
-    idDocBack: new Document(),
-    proofOfInvestor: new Document(),
-    selfie: new Document(),
-    avatar: new Document(),
-    address: {
-      line1: '',
-      line2: '',
-      city: '',
-      state: '',
-      postalCode: '',
-      country: '',
-    },
-  }
-
   attrs = this.attrs || this._defaultAttrs
+
+  get _defaultAttrs () {
+    return {
+      requestId: '0',
+      firstName: '',
+      lastName: '',
+      dateOfBirth: '',
+      idDocType: '',
+      idDocFace: new Document(),
+      idDocBack: new Document(),
+      proofOfInvestor: new Document(),
+      selfie: new Document(),
+      avatar: new Document(),
+      address: {
+        line1: '',
+        line2: '',
+        city: '',
+        state: '',
+        postalCode: '',
+        country: '',
+      },
+    }
+  }
 
   /* eslint-disable max-len */
   _opBuilder = this._opBuilder || this._buildOpUpdate
@@ -84,7 +86,7 @@ export class KycGeneralFormer extends Former {
   /** @param {KycGeneralRecord} source */
   _populateFromRecord (source) {
     this.useUpdateOpBuilder()
-    this.attrs = this.attrs || {}
+    this.attrs = this.attrs || this._defaultAttrs
     this.attrs.requestId = '0'
     this.attrs.firstName = source.firstName
     this.attrs.lastName = source.lastName
@@ -111,7 +113,7 @@ export class KycGeneralFormer extends Former {
       this._populateFromRecord(source.kyc)
     }
 
-    this.attrs = this.attrs || {}
+    this.attrs = this.attrs || this._defaultAttrs
     this.attrs.requestId = source.updatableId
   }
 
