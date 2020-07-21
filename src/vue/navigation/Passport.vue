@@ -3,9 +3,9 @@
     <button
       @click="toggleDropdown">
       <img
-        v-if="avatarLogoUrl"
+        v-if="kyc.avatar && kyc.avatar.publicUrl"
         class="passport__avatar passport__avatar-image"
-        :src="avatarLogoUrl"
+        :src="kyc.avatar.publicUrl"
       >
       <p
         v-else
@@ -87,7 +87,6 @@ import { mapGetters, mapActions } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
 import { handleClickOutside } from '@/js/helpers/handle-click-outside'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import config from '@/config'
 import PassportBalances from './Passport.Balances'
 
 export default {
@@ -107,7 +106,7 @@ export default {
   computed: {
     ...mapGetters({
       email: vuexTypes.walletEmail,
-      kycAvatarKey: vuexTypes.kycAvatarKey,
+      kyc: vuexTypes.kyc,
 
       isAccountUnverified: vuexTypes.isAccountUnverified,
       isAccountUsAccredited: vuexTypes.isAccountUsAccredited,
@@ -131,12 +130,6 @@ export default {
       } else {
         return 'passport.account-unverified'
       }
-    },
-
-    avatarLogoUrl () {
-      return this.kycAvatarKey
-        ? `${config.FILE_STORAGE}/${this.kycAvatarKey}`
-        : ''
     },
   },
 

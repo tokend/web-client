@@ -26,15 +26,14 @@
         </p>
 
         <div
-          v-if="kycRequestExternalDetails &&
-            Object.keys(kycRequestExternalDetails).length > 0"
+          v-if="Object.keys(kycRequest.externalDetails || {}).length > 0"
           class="verification-state-message__external-details"
         >
           <h4 class="verification-state-message__external-details-title">
             {{ 'verification-state-message.additional-info-title' | globalize }}
           </h4>
           <p
-            v-for="(value, key) in kycRequestExternalDetails"
+            v-for="(value, key) in kycRequest.externalDetails"
             class="verification-state-message__external-detail-msg"
             :key="key"
           >
@@ -50,8 +49,6 @@
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
-import { REQUEST_STATES_STR } from '@tokend/js-sdk/lib/const'
-
 const VERIFICATION_STATES = {
   blocked: 'blocked',
   reset: 'reset',
@@ -66,46 +63,32 @@ export default {
 
   computed: {
     ...mapGetters({
-      kycState: vuexTypes.kycState,
-
-      kycRejectReason: vuexTypes.kycRequestRejectReason,
-      kycResetReason: vuexTypes.kycRequestResetReason,
-      kycBlockReason: vuexTypes.kycRequestBlockReason,
-      kycRequestExternalDetails: vuexTypes.kycRequestExternalDetails,
-
-      isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
+      kycRequest: vuexTypes.kycRequest,
       isAccountBlocked: vuexTypes.isAccountBlocked,
     }),
 
     verificationState () {
-      let state
-
-      if (this.isAccountBlocked) {
-        state = VERIFICATION_STATES.blocked
-      } else if (this.isAccountRoleReseted) {
-        state = VERIFICATION_STATES.reset
-      } else if (this.kycState === REQUEST_STATES_STR.approved) {
-        state = VERIFICATION_STATES.approved
-      } else if (this.kycState === REQUEST_STATES_STR.pending) {
-        return VERIFICATION_STATES.pending
-      } else if (this.kycState === REQUEST_STATES_STR.rejected) {
-        state = VERIFICATION_STATES.rejected
-      } else if (this.kycState === REQUEST_STATES_STR.permanentlyRejected) {
-        state = VERIFICATION_STATES.permanentlyRejected
+      switch (true) {
+        case this.isAccountBlocked: return VERIFICATION_STATES.blocked
+        case this.kycRequest.isReset: return VERIFICATION_STATES.reset
+        case this.kycRequest.isApproved: return VERIFICATION_STATES.approved
+        case this.kycRequest.isPending: return VERIFICATION_STATES.pending
+        case this.kycRequest.isRejected: return VERIFICATION_STATES.rejected
+        case this.kycRequest.isPermanentlyRejected:
+          return VERIFICATION_STATES.permanentlyRejected
+        default: return ''
       }
-
-      return state
     },
 
     verificationReason () {
       switch (this.verificationState) {
         case VERIFICATION_STATES.blocked:
-          return this.kycBlockReason
+          return this.kycRequest.blockReason
         case VERIFICATION_STATES.reset:
-          return this.kycResetReason
+          return this.kycRequest.resetReason
         case VERIFICATION_STATES.rejected:
         case VERIFICATION_STATES.permanentlyRejected:
-          return this.kycRejectReason
+          return this.kycRequest.rejectReason
         default:
           return ''
       }
@@ -130,8 +113,13 @@ export default {
 @import '~@scss/variables';
 
 .verification-state-message {
-  &--approved { background-color: $col-request-approved; }
-  &--pending { background-color: $col-request-pending; }
+  &--approved {
+    background-color: $col-request-approved;
+  }
+
+  &--pending {
+    background-color: $col-request-pending;
+  }
 
   &--rejected,
   &--blocked,

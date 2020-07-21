@@ -1,4 +1,5 @@
 import UploadPreIssuanceForm from './upload-pre-issuance-form'
+import { Document } from '@tokend/js-sdk'
 
 import Vuelidate from 'vuelidate'
 
@@ -9,6 +10,9 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const localVue = createLocalVue()
 localVue.use(Vuelidate)
+localVue.filter('globalize', sinon.stub())
+localVue.directive('ripple', sinon.stub())
+localVue.component('router-link', sinon.stub())
 
 describe('Upload pre-issuance form', () => {
   let sandbox
@@ -25,12 +29,17 @@ describe('Upload pre-issuance form', () => {
     let wrapper
 
     beforeEach(() => {
-      wrapper = mount(UploadPreIssuanceForm, { localVue })
+      wrapper = mount(UploadPreIssuanceForm, {
+        localVue,
+        propsData: {
+          ownedAssets: [],
+        },
+      })
     })
 
     it(`preIssuanceDocument model is validating by proper set of rules`, () => {
       expect(Object.keys(wrapper.vm.$v.preIssuanceDocument.$params))
-        .to.deep.equal(['documentContainer'])
+        .to.deep.equal(['nonEmptyDocument'])
     })
   })
 
@@ -38,25 +47,11 @@ describe('Upload pre-issuance form', () => {
     let wrapper
 
     beforeEach(() => {
-      wrapper = shallowMount(UploadPreIssuanceForm, { localVue })
-    })
-
-    describe('watcher', () => {
-      describe('preIssuanceDocument', () => {
-        it('calls extractPreIssuance method if changed value contains file',
-          async () => {
-            sandbox.stub(wrapper.vm, 'extractPreIssuance').resolves()
-
-            wrapper.setData({ preIssuanceDocument: {} })
-            await wrapper.vm.$nextTick()
-            expect(wrapper.vm.extractPreIssuance).to.have.not.been.called
-
-            wrapper.setData({ preIssuanceDocument: { file: 'SOME_FILE' } })
-            await wrapper.vm.$nextTick()
-            expect(wrapper.vm.extractPreIssuance)
-              .to.have.been.calledOnceWithExactly('SOME_FILE')
-          }
-        )
+      wrapper = shallowMount(UploadPreIssuanceForm, {
+        localVue,
+        propsData: {
+          ownedAssets: [],
+        },
       })
     })
 
@@ -85,6 +80,22 @@ describe('Upload pre-issuance form', () => {
           expect(ErrorHandler.process).to.have.been.calledOnce
         })
       })
+    })
+
+    describe('onPreIssuanceDocumentChange', () => {
+      it('calls extractPreIssuance method if changed value contains file',
+        async () => {
+          sandbox.stub(wrapper.vm, 'extractPreIssuance').resolves()
+
+          wrapper.vm.onPreIssuanceDocumentChange(new Document())
+          expect(wrapper.vm.extractPreIssuance).to.have.not.been.called
+
+          const nonEmptyDoc = new Document({ file: 'SOME_FILE' })
+          wrapper.vm.onPreIssuanceDocumentChange(nonEmptyDoc)
+          expect(wrapper.vm.extractPreIssuance)
+            .to.have.been.calledOnceWithExactly('SOME_FILE')
+        }
+      )
     })
   })
 })

@@ -35,12 +35,11 @@ import isEmpty from 'lodash/isEmpty'
 import get from 'lodash/get'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { base, Signer } from '@tokend/js-sdk'
-import { walletsManager, api } from '@/api'
+import { createNewAccountSigners } from '@/js/helpers/signers-helpers'
+import { walletsManager } from '@/api'
 import { vueRoutes } from '@/vue-router/routes'
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { keyValues } from '@/key-values'
 
 export default {
   name: 'signup',
@@ -49,7 +48,6 @@ export default {
   },
   mixins: [FormMixin],
   data: _ => ({
-    recoveryKeypair: null,
     password: null,
     email: '',
     vueRoutes,
@@ -84,9 +82,6 @@ export default {
     handleChildFormSubmit (form) {
       this.email = form.email
       this.password = form.password
-      this.recoveryKeypair = base
-        .Keypair
-        .random()
 
       this.submit()
     },
@@ -139,36 +134,14 @@ export default {
     },
 
     async createWallet () {
-      const signers = []
-      const recoverySigner = new Signer({
-        id: this.recoveryKeypair.accountId(),
-        roleId: 1,
-        weight: 1000,
-        identity: 1,
-      })
-      signers.push(recoverySigner)
-
-      if (keyValues.bridgesEnabled > 0) {
-        const issuanceSigner = new Signer({
-          id: api.networkDetails.masterAccountId,
-          roleId: keyValues.issuanceSignerRoleId,
-          weight: 1000,
-          identity: 1,
-        })
-        signers.push(issuanceSigner)
-      }
-
       const { response, wallet } = await walletsManager.createWithSigners(
         this.email.toLowerCase(),
         this.password,
-        signers,
+        createNewAccountSigners(),
       )
 
       const isVerified = Boolean(get(response, 'data.verified'))
-      return {
-        isVerified,
-        wallet,
-      }
+      return { isVerified, wallet }
     },
   },
 }

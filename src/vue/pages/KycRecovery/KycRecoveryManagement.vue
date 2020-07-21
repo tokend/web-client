@@ -9,7 +9,7 @@
         </div>
         <button
           class="app__button-flat"
-          @click="logOut"
+          @click="onLogOutClick"
         >
           {{ 'kyc-recovery-state-message.sign-out-btn' | globalize }}
         </button>
@@ -19,15 +19,25 @@
       </h3>
       <template v-if="isLoaded">
         <kyc-recovery-state-message />
-        <kyc-recovery-unverified
-          v-if="isAccountUnverified"
-          @kyc-recovery-submit="onSubmit" />
-        <verification-general-form
-          v-else-if="isAccountGeneral"
-          @kyc-recovery-submit="onSubmit" />
-        <verification-corporate-form
-          v-else-if="isAccountCorporate"
-          @kyc-recovery-submit="onSubmit" />
+        <template v-if="isAccountKycRecoveryInProgress">
+          <template v-if="isAccountUnverified">
+            <kyc-recovery-unverified @submitted="onSubmit" />
+          </template>
+          <template v-else-if="isAccountGeneral">
+            <kyc-general-form
+              class="kyc-recovery-management__form"
+              :former="createGeneralFormer()"
+              @submitted="onSubmit"
+            />
+          </template>
+          <template v-else-if="isAccountCorporate">
+            <kyc-corporate-form
+              class="kyc-recovery-management__form"
+              :former="createCorporateFormer()"
+              @submitted="onSubmit"
+            />
+          </template>
+        </template>
       </template>
     </div>
   </div>
@@ -37,71 +47,74 @@
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { Bus } from '@/js/helpers/event-bus'
 import KycRecoveryUnverified from '@/vue/pages/KycRecovery/KycRecoveryUnverified'
-import VerificationGeneralForm from '@/vue/modules/verification/general-form/index'
-import VerificationCorporateForm from '@/vue/pages/VerificationCorporate'
+import KycGeneralForm from '@/vue/forms/KycGeneralForm'
+import KycCorporateForm from '@/vue/forms/KycCorporateForm'
 import KycRecoveryStateMessage from '@/vue/pages/KycRecovery/KycRecoveryStateMessage'
-import config from '@/config'
+import { scrollToTop } from '@/js/helpers/scroll-helpers'
+import { KycGeneralFormer } from '@/js/formers/KycGeneralFormer'
+import { KycCorporateFormer } from '@/js/formers/KycCorporateFormer'
 
 export default {
   name: 'kyc-recovery-management',
+
   components: {
     KycRecoveryUnverified,
     KycRecoveryStateMessage,
-    VerificationGeneralForm,
-    VerificationCorporateForm,
+    KycGeneralForm,
+    KycCorporateForm,
   },
+
   data: _ => ({
     isLoaded: false,
   }),
+
   computed: {
     ...mapGetters([
+      vuexTypes.kycRecoveryRequest,
+      vuexTypes.isAccountKycRecoveryInitiated,
+      vuexTypes.isAccountKycRecoveryInProgress,
       vuexTypes.isAccountGeneral,
       vuexTypes.isAccountCorporate,
       vuexTypes.isAccountUnverified,
-      vuexTypes.isKycRecoveryInited,
-      vuexTypes.walletEmail,
-      vuexTypes.walletAccountId,
-      vuexTypes.accountKycRecoveryStatus,
     ]),
   },
 
   async created () {
-    if (!this.isKycRecoveryInited) {
-      try {
-        await this.loadKycRecovery()
-      } catch (e) {
-        ErrorHandler.processWithoutFeedback(e)
-      }
-    }
+    await this.ensureKycRecoveryRequestExists()
     this.isLoaded = true
   },
 
   methods: {
     ...mapActions({
       loadKycRecovery: vuexTypes.LOAD_KYC_RECOVERY,
-      loadAccount: vuexTypes.LOAD_ACCOUNT,
-      logOutAccount: vuexTypes.LOG_OUT,
+      logOut: vuexTypes.LOG_OUT,
     }),
 
-    async onSubmit () {
-      await this.delay(config.RELOAD_TIMEOUT)
-      // eslint-disable-next-line
-      const updatedAccount = await this.loadAccount(this.walletAccountId)
-      // eslint-disable-next-line
-      const updatedKycRecoveryRequest = await this.loadKycRecovery()
-      Bus.success('kyc-recovery.request-submitted-msg')
+    async ensureKycRecoveryRequestExists () {
+      if (this.kycRecoveryRequest.isExists) return
+      if (!this.isAccountKycRecoveryInProgress) return
+      try {
+        await this.loadKycRecovery()
+      } catch (e) {
+        ErrorHandler.processWithoutFeedback(e)
+      }
     },
 
-    delay (ms) {
-      /* eslint-disable-next-line promise/avoid-new */
-      return new Promise((resolve, reject) => {
-        resolve(setTimeout(resolve, ms))
-      })
+    createGeneralFormer () {
+      return new KycGeneralFormer(this.kycRecoveryRequest)
     },
-    logOut () {
-      this.logOutAccount()
+
+    createCorporateFormer () {
+      return new KycCorporateFormer(this.kycRecoveryRequest)
+    },
+
+    onSubmit () {
+      scrollToTop()
+    },
+
+    onLogOutClick () {
+      this.logOut()
       location.reload()
     },
   },
@@ -132,5 +145,13 @@ export default {
   @include respond-to-custom($sidebar-hide-bp) {
     font-size: 3.2rem;
   }
+}
+
+.kyc-recovery-management__form {
+  margin-top: 1rem;
+  background-color: $col-block-bg;
+  padding: 2.4rem;
+
+  @include box-shadow();
 }
 </style>

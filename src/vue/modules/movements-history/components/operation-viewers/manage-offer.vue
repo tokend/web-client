@@ -1,6 +1,8 @@
 <template>
   <tbody>
-    <tr class="attributes-viewer__table-row" v-if="operationDetails.offerId">
+    <tr
+      class="attributes-viewer__table-row"
+      v-if="operationDetails.offerId">
       <td class="attributes-viewer__table-cell">
         {{ 'movements-history.offer-id-lbl' | globalize }}
       </td>

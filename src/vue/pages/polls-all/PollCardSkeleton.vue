@@ -1,16 +1,24 @@
 <template>
   <div class="poll-card">
     <p class="poll-card__title">
-      <skeleton-loader width="100%" template="bigString" />
-      <skeleton-loader width="80%" template="bigString" />
+      <skeleton-loader
+        width="100%"
+        template="bigString" />
+      <skeleton-loader
+        width="80%"
+        template="bigString" />
     </p>
 
     <div class="poll-card__status">
-      <skeleton-loader width="45%" template="smallString" />
+      <skeleton-loader
+        width="45%"
+        template="smallString" />
     </div>
 
     <p class="poll-card__author">
-      <skeleton-loader width="60%" template="smallString" />
+      <skeleton-loader
+        width="60%"
+        template="smallString" />
     </p>
   </div>
 </template>

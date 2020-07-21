@@ -1,21 +1,13 @@
 import { Document } from '@tokend/js-sdk'
-import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
 
-const EMPTY_DOCUMENT = {
-  mime_type: '',
-  name: '',
-  key: '',
-}
+/** @returns {Document} */
 export function doc (doc) {
   if (doc instanceof Document) {
-    return doc.toJSON()
+    return doc
   }
 
-  if (doc && typeof doc === 'object' && Boolean(doc.file || doc.key)) {
-    return new Document(doc, DOCUMENT_POLICIES[doc.type]).toJSON()
-  }
-
-  return EMPTY_DOCUMENT
+  const newDoc = new Document(doc)
+  return newDoc.isUploaded ? newDoc : new Document()
 }
 
 export function reqId (val) {

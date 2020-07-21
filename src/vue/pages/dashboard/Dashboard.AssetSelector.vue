@@ -11,7 +11,9 @@
             template="bigIcon"
             class="asset-selector__select-picture"
           />
-          <div v-else class="asset-selector__select-picture">
+          <div
+            v-else
+            class="asset-selector__select-picture">
             <img
               v-if="imgUrl"
               class="asset-selector__select-picture-tag"

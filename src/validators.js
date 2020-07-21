@@ -56,7 +56,9 @@ export const emailOrAccountId = value => {
 export const accountId = value => {
   return base.Keypair.isValidPublicKey(value)
 }
-export const documentContainer = value => value instanceof Document
+export const nonEmptyDocument = value => {
+  return (value instanceof Document) && !value.isEmpty
+}
 export const softCapMoreThanHardCap = (min, hardCap) => value => {
   return amountRange(min, hardCap)(value)
 }

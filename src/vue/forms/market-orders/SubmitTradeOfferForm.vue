@@ -132,7 +132,9 @@
     </template>
   </form>
 
-  <loader v-else message-id="submit-trade-offer-form.loading-msg" />
+  <loader
+    v-else
+    message-id="submit-trade-offer-form.loading-msg" />
 </template>
 
 <script>

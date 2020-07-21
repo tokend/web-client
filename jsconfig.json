@@ -10,6 +10,7 @@
       "@test": ["src/test/index.js"],
       "@test/*": ["src/test/*"],
       "@/js/utils": ["src/js/utils/index.js"],
+      "@/vuex": ["src/vuex/index.js"],
       "@/*": ["src/*"],
       "@static/*": ["static/*"],
       "@tokend/js-sdk": ["node_modules/@tokend/js-sdk/lib/index.js"],

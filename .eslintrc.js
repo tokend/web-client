@@ -24,7 +24,7 @@ module.exports = {
     'no-console': [1, {
       allow: ['warn', 'error'],
     }],
-    'no-tabs': 2,
+    'no-tabs': 1,
     'max-len': [1, {
       'code': 80,
       'comments': 80,
@@ -34,12 +34,13 @@ module.exports = {
       'ignoreRegExpLiterals': true,
     }],
     'vue/max-attributes-per-line': [1, {
-      'singleline': 2,
+      'singleline': 1,
       'multiline': {
         'max': 1,
         'allowFirstLine': false,
       },
     }],
+    'no-unused-vars': 1,
     'comma-dangle': [1, 'always-multiline'],
     'linebreak-style': ['error', 'unix'],
   },

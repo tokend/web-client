@@ -47,10 +47,14 @@
     </div>
 
     <drawer :is-shown.sync="isDrawerShown">
-      <template v-if="atomicSwapToBrowse.ownerId === accountId" slot="heading">
+      <template
+        v-if="atomicSwapToBrowse.ownerId === accountId"
+        slot="heading">
         {{ 'atomic-swaps-explore.atomic-swap-drawer-title' | globalize }}
       </template>
-      <template v-else slot="heading">
+      <template
+        v-else
+        slot="heading">
         {{ 'atomic-swaps-explore.buying' |
           globalize({asset: atomicSwapToBrowse.baseAsset}) }}
       </template>

@@ -66,7 +66,7 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import { DOCUMENT_TYPES_TRANSLATION_IDS } from '@/js/const/document-types.const'
-import { required, documentContainer } from '@validators'
+import { required, nonEmptyDocument } from '@validators'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base, errors, Document } from '@tokend/js-sdk'
@@ -104,7 +104,7 @@ export default {
 
     for (const doc of this.request.requestedDocs) {
       documents[doc.label] = {
-        documentContainer,
+        nonEmptyDocument,
         required,
       }
     }

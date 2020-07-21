@@ -18,7 +18,6 @@ import incomingWithdrawalRequests from '@/vue/modules/requests/incoming-withdraw
 import pollRequests from '@/vue/modules/requests/poll-requests/store'
 import preIssuanceRequests from '@/vue/modules/requests/pre-issuance-requests/store'
 import updateAssetRequests from '@/vue/modules/requests/update-asset-requests/store'
-import verificationGeneralForm from '@/vue/modules/verification/general-form/store'
 import idleHandler from './idle-handler.module'
 import { vuexTypes } from '@/vuex/types'
 import { sessionStoragePlugin } from './plugins/session-storage'
@@ -40,7 +39,8 @@ export const rootModule = {
       await dispatch(vuexTypes.LOAD_WALLET, { email, password })
       await dispatch(vuexTypes.LOAD_ACCOUNT, getters[vuexTypes.walletAccountId])
 
-      const isKycRecoveryInProgress = getters[vuexTypes.isKycRecoveryInProgress]
+      const isKycRecoveryInProgress =
+        getters[vuexTypes.isAccountKycRecoveryInProgress]
       if (!isKycRecoveryInProgress) {
         await dispatch(vuexTypes.LOAD_KYC)
       }
@@ -101,7 +101,6 @@ function buildStore () {
       'poll-requests': pollRequests,
       'pre-issuance-requests': preIssuanceRequests,
       'update-asset-requests': updateAssetRequests,
-      'verification-general-form': verificationGeneralForm,
     },
     plugins: [sessionStoragePlugin],
   })
