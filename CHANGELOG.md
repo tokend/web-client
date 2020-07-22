@@ -70,6 +70,7 @@ for further information about branching and tagging conventions.
 - `Passport.vue` uses public url of the document instead of building the own one
 - Signup now uses the `signers-helpers.js` to create the signers
 - `vuexTypes.LOAD_ACCOUNT`’s `accountId` arg is optional now
+- Use @tokend/js-sdk@1.14.0-rc.0
 
 #### Fixed
 - Stretching mobile sidebar
