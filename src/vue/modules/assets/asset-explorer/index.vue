@@ -1,28 +1,45 @@
 <template>
   <div class="asset-explorer">
-    <template>
-      <assets-renderer
-        :is-account-unverified="isAccountUnverified"
-        :is-account-us-accredited="isAccountUsAccredited"
-        :is-account-us-verified="isAccountUsVerified"
-        :is-account-general="isAccountGeneral"
-        :is-account-corporate="isAccountCorporate"
-      />
+    <template v-if="isLoaded">
+      <template v-if="isLoadFailed">
+        <p class="asset-explorer__error-msg">
+          {{ 'assets.loading-error-msg' | globalize }}
+        </p>
+      </template>
+      <template v-else>
+        <template v-if="assets.length">
+          <card-list
+            v-slot="{ item }"
+            :list="assets"
+          >
+            <asset-card
+              :asset="item"
+            />
+          </card-list>
+        </template>
+        <template v-else>
+          <no-data-message
+            icon-name="trending-up"
+            :title="'assets.no-assets-title' | globalize"
+            :message="'assets.no-assets-msg' | globalize"
+          />
+        </template>
+      </template>
     </template>
-
-    <template v-if="isLoadFailed">
-      <p class="asset-explorer__error-msg">
-        {{ 'assets.loading-error-msg' | globalize }}
-      </p>
+    <template v-else>
+      <skeleton-cards-loader />
     </template>
   </div>
 </template>
 
 <script>
-import AssetsRenderer from './components/assets-renderer'
+import CardList from '@/vue/common/CardList'
+import NoDataMessage from '@/vue/common/NoDataMessage'
+import AssetCard from './components/asset-card'
+import UpdateList from '@/vue/mixins/update-list.mixin'
+import SkeletonCardsLoader from '@/vue/common/skeleton-loader/SkeletonCardsLoader'
 
 import { mapGetters, mapActions } from 'vuex'
-import { types } from './store/types'
 import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -30,8 +47,13 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 export default {
   name: 'asset-explorer',
   components: {
-    AssetsRenderer,
+    CardList,
+    NoDataMessage,
+    SkeletonCardsLoader,
+    AssetCard,
   },
+
+  mixins: [UpdateList],
 
   data: _ => ({
     isLoaded: false,
@@ -40,11 +62,10 @@ export default {
 
   computed: {
     ...mapGetters([
-      vuexTypes.isAccountUnverified,
-      vuexTypes.isAccountGeneral,
-      vuexTypes.isAccountUsVerified,
-      vuexTypes.isAccountUsAccredited,
-      vuexTypes.isAccountCorporate,
+      vuexTypes.assets,
+      vuexTypes.assetsByOwner,
+      vuexTypes.accountBalances,
+      vuexTypes.accountBalanceByCode,
     ]),
   },
 
@@ -52,25 +73,26 @@ export default {
     await this.load()
   },
 
+  beforeDestroy () {
+    this.resetUpdateListEvent('assets:updateList')
+  },
+
   methods: {
     ...mapActions({
       loadAccountBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
-    }),
-    ...mapActions('asset-explorer', {
-      loadKycRequiredAssetType: types.LOAD_KYC_REQUIRED_ASSET_TYPE,
-      loadSecurityAssetType: types.LOAD_SECURITY_ASSET_TYPE,
+      loadAssets: vuexTypes.LOAD_ASSETS,
     }),
 
     async load () {
       try {
         await this.loadAccountBalances()
-        await this.loadKycRequiredAssetType()
-        await this.loadSecurityAssetType()
+        await this.loadAssets()
         this.isLoaded = true
       } catch (e) {
         this.isLoadFailed = true
         ErrorHandler.processWithoutFeedback()
       }
+      this.listenUpdateList('assets:updateList', this.loadAssets)
     },
   },
 }

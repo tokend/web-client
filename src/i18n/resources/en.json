@@ -1396,6 +1396,9 @@
       "closed": "Closed",
       "canceled": "Canceled"
     },
+    "asset-card": {
+      "details-lbl": "Details"
+    },
     "trade-history": {
       "title": "Trade history",
       "table-amount-lbl": "Amount ({{asset}})",
