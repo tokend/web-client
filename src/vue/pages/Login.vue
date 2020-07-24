@@ -15,26 +15,35 @@
       <template v-else>
         <login-form />
 
-        <div class="auth-page__tips">
-          <div class="auth-page__tip">
-            {{ 'auth-pages.no-account-question' | globalize }}
+        <i18n
+          path="auth-pages.no-account"
+          class="auth-page__tip"
+          tag="p"
+        >
+          <template #registerLink>
             <router-link
               class="auth-page__tip-link"
               :to="vueRoutes.signup"
             >
-              {{ 'auth-pages.no-account-answer' | globalize }}
+              {{ 'auth-pages.register-link' | globalize }}
             </router-link>
-          </div>
-          <div class="auth-page__tip">
-            {{ 'auth-pages.forgot-pwd-question' | globalize }}
+          </template>
+        </i18n>
+
+        <i18n
+          path="auth-pages.forgot-pwd"
+          class="auth-page-tip"
+          tag="p"
+        >
+          <template #recoveryLink>
             <router-link
               class="auth-page__tip-link"
               :to="vueRoutes.kycRecoveryInit"
             >
-              {{ 'auth-pages.forgot-pwd-answer' | globalize }}
+              {{ 'auth-pages.recovery-link' | globalize }}
             </router-link>
-          </div>
-        </div>
+          </template>
+        </i18n>
       </template>
     </div>
   </div>
@@ -80,7 +89,7 @@ export default {
 <style lang="scss" scoped>
 @import './auth-page';
 
-.auth-page__verification-loader {
+.auth-page__tip {
   margin-top: 5rem;
 }
 </style>
