@@ -80,8 +80,8 @@
 <script>
 import Card from '@/vue/common/Card'
 import CardLogo from '@/vue/common/CardLogo'
-import AssetAttributesViewer from '../../shared/components/asset-attributes-viewer'
-import AssetActions from './asset-actions'
+import AssetAttributesViewer from '@/vue/modules/assets/shared/components/asset-attributes-viewer'
+import AssetActions from '@/vue/modules/assets/shared/components/asset-actions'
 import Drawer from '@/vue/common/Drawer'
 import AssetForm from '@/vue/forms/AssetForm'
 
@@ -89,7 +89,7 @@ import { AssetRecord } from '@/js/records/entities/asset.record'
 import { AssetFormer } from '@/js/formers/AssetFormer'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { types } from '../store/types'
+import { types } from '@/vue/modules/assets/shared/store/types'
 
 export default {
   name: 'asset-card',
@@ -101,6 +101,7 @@ export default {
     AssetForm,
     Drawer,
   },
+
   props: {
     asset: { type: AssetRecord, required: true },
   },
@@ -110,6 +111,7 @@ export default {
     isDrawerShown: false,
     isAssetFormShown: false,
   }),
+
   computed: {
     ...mapGetters([
       vuexTypes.accountBalances,
@@ -119,7 +121,8 @@ export default {
       vuexTypes.isAccountUsAccredited,
       vuexTypes.isAccountCorporate,
     ]),
-    ...mapGetters('asset-explorer', {
+
+    ...mapGetters('assets-module', {
       kycRequiredAssetType: types.kycRequiredAssetType,
       securityAssetType: types.securityAssetType,
     }),
@@ -143,7 +146,7 @@ export default {
     ...mapActions({
       loadAssets: vuexTypes.LOAD_ASSETS,
     }),
-    ...mapActions('asset-explorer', {
+    ...mapActions('assets-module', {
       loadKycRequiredAssetType: types.LOAD_KYC_REQUIRED_ASSET_TYPE,
       loadSecurityAssetType: types.LOAD_SECURITY_ASSET_TYPE,
     }),
@@ -155,7 +158,7 @@ export default {
 
     onAssetUpdate () {
       this.isDrawerShown = false
-      this.emitUpdateList('assets:updateList')
+      this.$emit('update-list')
     },
 
     showDetails () {

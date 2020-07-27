@@ -14,6 +14,7 @@
           >
             <asset-card
               :asset="item"
+              @update-list="updateAssetsList"
             />
           </card-list>
         </template>
@@ -35,7 +36,7 @@
 <script>
 import CardList from '@/vue/common/CardList'
 import NoDataMessage from '@/vue/common/NoDataMessage'
-import AssetCard from './components/asset-card'
+import AssetCard from '@/vue/modules/assets/shared/components/asset-card'
 import UpdateList from '@/vue/mixins/update-list.mixin'
 import SkeletonCardsLoader from '@/vue/common/skeleton-loader/SkeletonCardsLoader'
 
@@ -93,6 +94,10 @@ export default {
         ErrorHandler.processWithoutFeedback()
       }
       this.listenUpdateList('assets:updateList', this.loadAssets)
+    },
+
+    updateAssetsList () {
+      this.emitUpdateList('assets:updateList')
     },
   },
 }
