@@ -1,6 +1,10 @@
 <template>
-  <card-list :list="numberOfCards">
-    <div class="skeleton-cards-loader">
+  <div class="skeleton-cards-loader__wrapper">
+    <div
+      class="skeleton-cards-loader"
+      v-for="(item, index) in numberOfCards"
+      :key="index"
+    >
       <div class="skeleton-cards-loader__media">
         <skeleton-loader template="bigIcon" />
       </div>
@@ -34,19 +38,17 @@
         <skeleton-loader template="smallButton" />
       </div>
     </div>
-  </card-list>
+  </div>
 </template>
 
 <script>
 import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
-import CardList from '@/vue/common/CardList'
 
 export default {
   name: 'skeleton-cards-loader',
 
   components: {
     SkeletonLoader,
-    CardList,
   },
 
   data: _ => ({
@@ -62,6 +64,12 @@ export default {
   $content-line-height: 1.8rem;
   $content-number-text-lien: 2;
   $content-height: $content-line-height * $content-number-text-lien;
+
+  .skeleton-cards-loader__wrapper {
+    display: grid;
+    grid-gap: $card-list-grid-gap;
+    grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+  }
 
   .skeleton-cards-loader {
     width: 100%;

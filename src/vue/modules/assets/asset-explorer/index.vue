@@ -8,15 +8,15 @@
       </template>
       <template v-else>
         <template v-if="assets.length">
-          <card-list
-            v-slot="{ item }"
-            :list="assets"
-          >
-            <asset-card
-              :asset="item"
-              @update-list="updateAssetsList"
-            />
-          </card-list>
+          <div class="asset-explorer__card-list">
+            <template v-for="item in assets">
+              <asset-card
+                :asset="item"
+                @update-list="updateAssetsList"
+                :key="item.id"
+              />
+            </template>
+          </div>
         </template>
         <template v-else>
           <no-data-message
@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import CardList from '@/vue/common/CardList'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import AssetCard from '@/vue/modules/assets/shared/components/asset-card'
 import UpdateList from '@/vue/mixins/update-list.mixin'
@@ -48,7 +47,6 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 export default {
   name: 'asset-explorer',
   components: {
-    CardList,
     NoDataMessage,
     SkeletonCardsLoader,
     AssetCard,
@@ -88,12 +86,12 @@ export default {
       try {
         await this.loadAccountBalances()
         await this.loadAssets()
-        this.isLoaded = true
       } catch (e) {
         this.isLoadFailed = true
         ErrorHandler.processWithoutFeedback()
       }
       this.listenUpdateList('assets:updateList', this.loadAssets)
+      this.isLoaded = true
     },
 
     updateAssetsList () {
@@ -102,3 +100,13 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+@import '~@/scss/variables';
+
+.asset-explorer__card-list {
+  display: grid;
+  grid-gap: $card-list-grid-gap;
+  grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+}
+</style>

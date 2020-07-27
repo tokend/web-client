@@ -8,15 +8,15 @@
       </template>
       <template v-else>
         <template v-if="accountOwnedAssetsBalances.length">
-          <card-list
-            v-slot="{ item }"
-            :list="accountOwnedAssetsBalances"
-          >
-            <asset-card
-              :asset="item.asset"
-              @update-asset="updateAssetsList"
-            />
-          </card-list>
+          <div class="my-assets-explorer__card-list">
+            <template v-for="item in accountOwnedAssetsBalances">
+              <asset-card
+                :asset="item.asset"
+                @update-asset="updateAssetsList"
+                :key="item.id"
+              />
+            </template>
+          </div>
         </template>
         <template v-else>
           <no-data-message
@@ -36,7 +36,6 @@
 <script>
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import SkeletonCardsLoader from '@/vue/common/skeleton-loader/SkeletonCardsLoader'
-import CardList from '@/vue/common/CardList'
 import AssetCard from '@/vue/modules/assets/shared/components/asset-card'
 
 import { mapActions, mapGetters } from 'vuex'
@@ -49,7 +48,6 @@ export default {
   components: {
     NoDataMessage,
     SkeletonCardsLoader,
-    CardList,
     AssetCard,
   },
   mixins: [UpdateList],
@@ -65,6 +63,7 @@ export default {
       vuexTypes.defaultQuoteAsset,
       vuexTypes.accountOwnedAssetsBalances,
       vuexTypes.accountBalances,
+      vuexTypes.assets,
     ]),
   },
 
@@ -85,11 +84,11 @@ export default {
     async load () {
       try {
         await this.loadAccountBalances(this.defaultQuoteAsset)
-        this.isLoaded = true
       } catch (e) {
         this.isLoadFailed = true
         ErrorHandler.processWithoutFeedback(e)
       }
+      this.isLoaded = true
     },
 
     updateAssetsList () {
@@ -98,3 +97,13 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+@import '~@/scss/variables';
+
+.my-assets-explorer__card-list {
+  display: grid;
+  grid-gap: $card-list-grid-gap;
+  grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+}
+</style>

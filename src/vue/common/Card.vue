@@ -1,33 +1,33 @@
 <template>
   <div class="card">
     <div
-      v-if="isSlotDisplayed(SLOT_NAMES.media)"
+      v-if="hasSlot(SLOT_NAMES.media)"
       class="card__media"
     >
       <slot :name="SLOT_NAMES.media" />
     </div>
     <div class="card__body">
       <div
-        v-if="isSlotDisplayed(SLOT_NAMES.header)"
+        v-if="hasSlot(SLOT_NAMES.header)"
         class="card__header"
       >
         <slot :name="SLOT_NAMES.header" />
       </div>
       <div
-        v-if="isSlotDisplayed(SLOT_NAMES.subhead)"
+        v-if="hasSlot(SLOT_NAMES.subhead)"
         class="card__subhead"
       >
         <slot :name="SLOT_NAMES.subhead" />
       </div>
       <div
-        v-if="isSlotDisplayed(SLOT_NAMES.accentTitle)"
+        v-if="hasSlot(SLOT_NAMES.accentTitle)"
         class="card__accent-title"
       >
         <slot :name="SLOT_NAMES.accentTitle" />
       </div>
       <div
         class="card__content"
-        v-if="isSlotDisplayed(SLOT_NAMES.content)"
+        v-if="hasSlot(SLOT_NAMES.content)"
       >
         <p class="card__content-text">
           <slot :name="SLOT_NAMES.content" />
@@ -35,7 +35,7 @@
       </div>
     </div>
     <div
-      v-if="isSlotDisplayed(SLOT_NAMES.actions)"
+      v-if="hasSlot(SLOT_NAMES.actions)"
       class="card__actions"
     >
       <slot :name="SLOT_NAMES.actions" />
@@ -58,7 +58,7 @@ export default {
     SLOT_NAMES,
   }),
   methods: {
-    isSlotDisplayed (slotName) {
+    hasSlot (slotName) {
       return Boolean(this.$slots[slotName])
     },
   },
