@@ -171,6 +171,7 @@ import {
   required,
   emailOrAccountId,
 } from '@validators'
+import { TransferFormer } from '@/js/formers/TransferFormer'
 
 const VIEW_MODES = {
   submit: 'submit',
@@ -193,6 +194,7 @@ export default {
   ],
   props: {
     assetToTransfer: { type: String, default: '' },
+    // former: { type: TransferFormer, default: () => new TransferFormer() },
   },
   data: () => ({
     form: {
@@ -304,25 +306,11 @@ export default {
         return recipient
       }
     },
-    buildPaymentOperation () {
-      return base.PaymentBuilder.payment({
-        sourceBalanceId: this.view.opts.sourceBalanceId,
-        destination: this.view.opts.destinationAccountId,
-        amount: this.view.opts.amount,
-        feeData: {
-          sourceFee: {
-            percent: this.view.opts.sourcePercentFee,
-            fixed: this.view.opts.sourceFixedFee,
-          },
-          destinationFee: {
-            percent: this.view.opts.destinationPercentFee,
-            fixed: this.view.opts.destinationFixedFee,
-          },
-          sourcePaysForDest: this.form.isPaidForRecipient,
-        },
-        subject: this.view.opts.subject,
-        asset: this.form.asset.code,
-      })
+    async buildPaymentOperation () {
+      const former = new TransferFormer(this.form, this.view)
+      const [operation] = await former.buildOps()
+      // console.log(operation)
+      return operation
     },
     updateView (mode, opts = {}, clear = false) {
       this.view.mode = mode
