@@ -1,4 +1,4 @@
-import { FEE_TYPES, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
+import { FEE_TYPES, PAYMENT_FEE_SUBTYPES, base } from '@tokend/js-sdk'
 import { api } from '@/api'
 
 import { Fee } from '@/vue/common/fees/fee'
@@ -62,4 +62,10 @@ async function calculateFee ({ accountId, type, subtype, assetCode, amount }) {
   })
 }
 
-
+export async function getCounterparty (recipient) {
+  if (!base.Keypair.isValidPublicKey(recipient)) {
+    return this.getAccountIdByIdentifier(recipient)
+  } else {
+    return recipient
+  }
+}

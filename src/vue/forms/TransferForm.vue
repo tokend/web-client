@@ -159,10 +159,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import FeesMixin from '@/vue/common/fees/fees.mixin'
-import {
-  base,
-  FEE_TYPES,
-} from '@tokend/js-sdk'
+import { FEE_TYPES } from '@tokend/js-sdk'
 import config from '@/config'
 import { api } from '@/api'
 import { Bus } from '@/js/helpers/event-bus'
@@ -268,19 +265,19 @@ export default {
       if (!await this.isFormValid()) return
       this.disableForm()
       try {
-        const recipientAccountId =
-          await this.getCounterparty(this.form.recipient)
-
         this.former = new TransferFormer(this.form,
           {
             opts:
             {
               sourceBalanceId:
                 this.accountBalanceByCode(this.form.asset.code).id,
-              destinationAccountId: recipientAccountId,
+              // destinationAccountId: recipientAccountId,
             },
           }
         )
+
+        const recipientAccountId =
+          await this.former.getCounterparty(this.form.recipient)
 
         this.fees = await this.former.calculateFees(this.accountId,
           recipientAccountId,)
@@ -304,13 +301,13 @@ export default {
       }
       this.enableForm()
     },
-    async getCounterparty (recipient) {
-      if (!base.Keypair.isValidPublicKey(recipient)) {
-        return this.getAccountIdByIdentifier(recipient)
-      } else {
-        return recipient
-      }
-    },
+    // async getCounterparty (recipient) {
+    //   if (!base.Keypair.isValidPublicKey(recipient)) {
+    //     return this.getAccountIdByIdentifier(recipient)
+    //   } else {
+    //     return recipient
+    //   }
+    // },
     async buildPaymentOperation () {
       const [operation] = await this.former.buildOps()
       return operation
