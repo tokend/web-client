@@ -194,7 +194,6 @@ export default {
   ],
   props: {
     assetToTransfer: { type: String, default: '' },
-    // former: { type: TransferFormer, default: () => new TransferFormer() },
   },
   data: () => ({
     form: {
@@ -203,6 +202,7 @@ export default {
       recipient: '',
       subject: '',
       isPaidForRecipient: false,
+      former: '',
     },
     fees: {},
     view: {
@@ -253,8 +253,7 @@ export default {
       this.updateView(VIEW_MODES.submit, this.view.opts)
       this.disableForm()
       try {
-        await api.postOperations(this.buildPaymentOperation())
-
+        await api.postOperations(await this.buildPaymentOperation())
         Bus.success('transfer-form.payment-successful')
         this.$emit(EVENTS.operationSubmitted)
 
@@ -272,13 +271,19 @@ export default {
         const recipientAccountId =
           await this.getCounterparty(this.form.recipient)
 
-        this.fees = await this.calculateFees({
-          assetCode: this.form.asset.code,
-          amount: this.form.amount,
-          recipientAccountId: recipientAccountId,
-          senderAccountId: this.accountId,
-          type: FEE_TYPES.paymentFee,
-        })
+        this.former = new TransferFormer(this.form,
+          {
+            opts:
+            {
+              sourceBalanceId:
+                this.accountBalanceByCode(this.form.asset.code).id,
+              destinationAccountId: recipientAccountId,
+            },
+          }
+        )
+
+        this.fees = await this.former.calculateFees(this.accountId,
+          recipientAccountId,)
         this.isFeesLoaded = true
 
         const opts = {
@@ -307,9 +312,7 @@ export default {
       }
     },
     async buildPaymentOperation () {
-      const former = new TransferFormer(this.form, this.view)
-      const [operation] = await former.buildOps()
-      // console.log(operation)
+      const [operation] = await this.former.buildOps()
       return operation
     },
     updateView (mode, opts = {}, clear = false) {

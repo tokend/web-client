@@ -1,5 +1,8 @@
 import { Former } from './Former'
-import { Document, base } from '@tokend/js-sdk'
+import { Document, base, FEE_TYPES } from '@tokend/js-sdk'
+import { calculateFees } from '@/js/helpers/transfer-helper'
+import { str } from './op-build-helpers'
+
 
 /**
  * Collects the attributes for asset-related operations
@@ -38,18 +41,38 @@ export class TransferFormer extends Former {
       return [this._buildOp()]
     }
 
+    async calculateFees (recipientAccountId, senderAccountId) {
+      const response = await calculateFees({
+        assetCode: this.attrs.asset,
+        amount: this.attrs.amount,
+        type: FEE_TYPES.paymentFee,
+        recipientAccountId: recipientAccountId,
+        senderAccountId: senderAccountId,
+      })
+
+      this.attrs.feeData.sourceFee.percent =
+        response.sourceFee.calculatedPercent
+      this.attrs.feeData.sourceFee.fixed = response.sourceFee.fixed
+      this.attrs.feeData.destinationFee.percent =
+        response.destinationFee.calculatedPercent
+      this.attrs.feeData.destinationFee.fixed = response.destinationFee.fixed
+      this.attrs.feeData.sourcePaysForDest = response.isPaidForRecipient
+
+      return response
+    }
+
     populate ({ form, view }) {
       this.attrs = this.attrs || this._defaultAttrs
       this.attrs.sourceBalanceId = view.opts.sourceBalanceId
       this.attrs.destination = view.opts.destinationAccountId
-      this.attrs.amount = view.opts.amount
-      this.attrs.feeData.sourceFee.percent = view.opts.sourcePercentFee
-      this.attrs.feeData.sourceFee.fixed = view.opts.sourceFixedFee
-      this.attrs.feeData.destinationFee.percent = view.opts
-        .destinationPercentFee
-      this.attrs.feeData.destinationFee.fixed = view.opts.destinationFixedFee
-      this.attrs.feeData.sourcePaysForDest = form.isPaidForRecipient
-      this.attrs.subject = view.opts.subject
+      this.attrs.amount = form.amount
+      // this.attrs.feeData.sourceFee.percent = view.opts.sourcePercentFee
+      // this.attrs.feeData.sourceFee.fixed = view.opts.sourceFixedFee
+      // this.attrs.feeData.destinationFee.percent = view.opts
+      // .destinationPercentFee
+      // this.attrs.feeData.destinationFee.fixed = view.opts.destinationFixedFee
+      // this.attrs.feeData.sourcePaysForDest = form.isPaidForRecipient
+      this.attrs.subject = form.subject
       this.attrs.asset = form.asset.code
     }
 
@@ -62,12 +85,12 @@ export class TransferFormer extends Former {
         amount: attrs.amount,
         feeData: {
           sourceFee: {
-            percent: attrs.feeData.sourceFee.percent,
-            fixed: attrs.feeData.sourceFee.fixed,
+            percent: str(attrs.feeData.sourceFee.percent),
+            fixed: str(attrs.feeData.sourceFee.fixed),
           },
           destinationFee: {
-            percent: attrs.feeData.destinationFee.percent,
-            fixed: attrs.feeData.destinationFee.fixed,
+            percent: str(attrs.feeData.destinationFee.percent),
+            fixed: str(attrs.feeData.destinationFee.fixed),
           },
           sourcePaysForDest: attrs.feeData.sourcePaysForDest,
         },
