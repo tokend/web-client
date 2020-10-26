@@ -9,8 +9,8 @@ import { str } from './op-build-helpers'
  * @implements {Former}
  */
 export class TransferFormer extends Former {
-  constructor (form, view) {
-    super({ form, view })
+  constructor (form, viewOpts) {
+    super({ form, viewOpts })
   }
     attr = this.attrs || this._defaultAttrs
     get _defaultAttrs () {
@@ -41,12 +41,13 @@ export class TransferFormer extends Former {
       return [this._buildOp()]
     }
 
-    async calculateFees (recipientAccountId, senderAccountId) {
+    async calculateFees (senderAccountId) {
+      await this._getCounterparty(this.attrs.recipient)
       const response = await calculateFees({
         assetCode: this.attrs.asset,
         amount: this.attrs.amount,
         type: FEE_TYPES.paymentFee,
-        recipientAccountId: recipientAccountId,
+        recipientAccountId: this.attrs.recipientAccountId,
         senderAccountId: senderAccountId,
       })
 
@@ -61,22 +62,24 @@ export class TransferFormer extends Former {
       return response
     }
 
-    async getCounterparty (recipient) {
+    async _getCounterparty (recipient) {
       const response = await getCounterparty(recipient)
       this.attrs.recipientAccountId = response
       return response
     }
 
-    populate ({ form, view }) {
+    populate ({ form, viewOpts }) {
       this.attrs = this.attrs || this._defaultAttrs
-      this.attrs.sourceBalanceId = view.opts.sourceBalanceId
-      this.attrs.destination = view.opts.recipientAccountId
+      this.attrs.sourceBalanceId = viewOpts.opts.sourceBalanceId
+
+      this.attrs.destination = viewOpts.recipientAccountId
       this.attrs.amount = form.amount
-      // this.attrs.feeData.sourceFee.percent = view.opts.sourcePercentFee
-      // this.attrs.feeData.sourceFee.fixed = view.opts.sourceFixedFee
-      // this.attrs.feeData.destinationFee.percent = view.opts
+      this.attrs.recipient = form.recipient
+      // this.attrs.feeData.sourceFee.percent = viewOpts.sourcePercentFee
+      // this.attrs.feeData.sourceFee.fixed = viewOpts.sourceFixedFee
+      // this.attrs.feeData.destinationFee.percent = viewOpts
       // .destinationPercentFee
-      // this.attrs.feeData.destinationFee.fixed = view.opts.destinationFixedFee
+      // this.attrs.feeData.destinationFee.fixed = viewOpts.destinationFixedFee
       // this.attrs.feeData.sourcePaysForDest = form.isPaidForRecipient
       this.attrs.subject = form.subject
       this.attrs.asset = form.asset.code
