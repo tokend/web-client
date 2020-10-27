@@ -21,7 +21,7 @@
         v-else-if="isConfirmMode || !isConfirmMode">
         <form
           id="transfer-form"
-          @submit.prevent="processTransfer"
+          @submit.prevent="loadFees"
         >
           <div class="app__form-row">
             <div class="app__form-field">
@@ -29,6 +29,7 @@
                 name="transfer-asset"
                 :value="form.asset.code"
                 @input="setAsset"
+                @change="former.setAttr('asset', form.asset.code)"
                 :label="'transfer-form.asset-lbl' | globalize"
                 :readonly="isConfirmMode"
               >
@@ -63,6 +64,7 @@
                 v-model="form.amount"
                 name="transfer-amount"
                 validation-type="outgoing"
+                @change="former.setAttr('amount', form.amount)"
                 :label="'transfer-form.amount-lbl' | globalize"
                 :asset="form.asset"
                 is-max-button-shown
@@ -77,6 +79,7 @@
               <input-field
                 name="transfer-recipient"
                 v-model.trim="form.recipient"
+                @change="former.setAttr('recipient', form.recipient)"
                 :label="'transfer-form.recipient-lbl' | globalize"
                 :error-message="getFieldErrorMessage('form.recipient')"
                 @blur="touchField('form.recipient')"
@@ -90,6 +93,7 @@
               <textarea-field
                 name="transfer-description"
                 v-model="form.subject"
+                @change="former.setAttr('subject', form.subject)"
                 :label="'transfer-form.subject-lbl' | globalize({
                   length: 250
                 })"
@@ -198,8 +202,8 @@ export default {
       recipient: '',
       subject: '',
       isPaidForRecipient: false,
-      former: '',
     },
+    former: new TransferFormer(),
     fees: {},
     isConfirmMode: false,
     isLoaded: false,
@@ -257,24 +261,21 @@ export default {
       }
       this.enableForm()
     },
-    async processTransfer () {
+    async loadFees () {
       if (!await this.isFormValid()) return
       this.disableForm()
       try {
-        this.former = new TransferFormer(this.form,
-          {
-            opts:
-            {
-              sourceBalanceId:
-                this.accountBalanceByCode(this.form.asset.code).id,
-              // destinationAccountId: recipientAccountId,
-            },
-          }
-        )
+        this.former.mergeAttrs({
+          amount: this.form.amount,
+          recipient: this.form.recipient,
+          subject: this.form.subject,
+          asset: this.form.asset.code,
+          sourceBalanceId:
+            this.accountBalanceByCode(this.form.asset.code).id,
+        })
 
         this.fees = await this.former.calculateFees(this.accountId)
         this.isFeesLoaded = true
-
         this.isConfirmMode = true
       } catch (error) {
         ErrorHandler.process(error)

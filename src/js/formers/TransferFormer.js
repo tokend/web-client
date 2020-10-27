@@ -9,10 +9,7 @@ import { str } from './op-build-helpers'
  * @implements {Former}
  */
 export class TransferFormer extends Former {
-  constructor (form, viewOpts) {
-    super({ form, viewOpts })
-  }
-    attr = this.attrs || this._defaultAttrs
+    attrs = this.attrs || this._defaultAttrs
     get _defaultAttrs () {
       return {
         sourceBalanceId: '',
@@ -22,6 +19,7 @@ export class TransferFormer extends Former {
         subject: '',
         isPaidForRecipient: false,
         recipientAccountId: '',
+        assetCode: '',
         feeData: {
           sourceFee: {
             percent: '',
@@ -65,29 +63,12 @@ export class TransferFormer extends Former {
     async _getCounterparty (recipient) {
       const response = await getCounterparty(recipient)
       this.attrs.recipientAccountId = response
+      this.attrs.destination = this.attrs.recipientAccountId
       return response
-    }
-
-    populate ({ form, viewOpts }) {
-      this.attrs = this.attrs || this._defaultAttrs
-      this.attrs.sourceBalanceId = viewOpts.opts.sourceBalanceId
-
-      this.attrs.destination = viewOpts.recipientAccountId
-      this.attrs.amount = form.amount
-      this.attrs.recipient = form.recipient
-      // this.attrs.feeData.sourceFee.percent = viewOpts.sourcePercentFee
-      // this.attrs.feeData.sourceFee.fixed = viewOpts.sourceFixedFee
-      // this.attrs.feeData.destinationFee.percent = viewOpts
-      // .destinationPercentFee
-      // this.attrs.feeData.destinationFee.fixed = viewOpts.destinationFixedFee
-      // this.attrs.feeData.sourcePaysForDest = form.isPaidForRecipient
-      this.attrs.subject = form.subject
-      this.attrs.asset = form.asset.code
     }
 
     _buildOp () {
       const attrs = this.attrs
-
       return base.PaymentBuilder.payment({
         sourceBalanceId: attrs.sourceBalanceId,
         destination: attrs.recipientAccountId,
