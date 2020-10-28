@@ -194,6 +194,7 @@ export default {
   ],
   props: {
     assetToTransfer: { type: String, default: '' },
+    former: { type: TransferFormer, default: new TransferFormer() },
   },
   data: () => ({
     form: {
@@ -203,7 +204,6 @@ export default {
       subject: '',
       isPaidForRecipient: false,
     },
-    former: new TransferFormer(),
     fees: {},
     isConfirmMode: false,
     isLoaded: false,
