@@ -7,6 +7,7 @@
           v-model="selectedOpType"
           :label="'limits-form.operation-type' | globalize"
           :key="`limits-asset-selector-${selectedOpType}`"
+          @change="former.setAttr('statsOpType', selectedOpType)"
           class="limits__assets-select app__select-with-label--no-border"
         >
           <option
@@ -85,6 +86,7 @@
           type="number"
           :min="minValidDailyOutValue"
           :max="config.MAX_AMOUNT"
+          @change="former.setAttr('dailyOut', form.dailyOut)"
           :label="'limits-form.daily-limit-lbl' | globalize"
           :readonly="formMixin.isDisabled"
           @blur="touchField('form.dailyOut')"
@@ -105,6 +107,7 @@
           type="number"
           :min="minValidWeeklyOutValue"
           :max="config.MAX_AMOUNT"
+          @change="former.setAttr('weeklyOut', form.weeklyOut)"
           :label="'limits-form.weekly-limit-lbl' | globalize"
           :readonly="formMixin.isDisabled"
           @blur="touchField('form.weeklyOut')"
@@ -127,6 +130,7 @@
           type="number"
           :min="minValidMonthlyOutValue"
           :max="config.MAX_AMOUNT"
+          @change="former.setAttr('monthlyOut', form.monthlyOut)"
           :label="'limits-form.monthly-limit-lbl' | globalize"
           :readonly="formMixin.isDisabled"
           @blur="touchField('form.monthlyOut')"
@@ -147,6 +151,7 @@
           type="number"
           :min="minValidAnnualOutValue"
           :max="config.MAX_AMOUNT"
+          @change="former.setAttr('annualOut', form.annualOut)"
           :label="'limits-form.annual-limit-lbl' | globalize"
           :readonly="formMixin.isDisabled"
           @blur="touchField('form.annualOut')"
@@ -169,6 +174,7 @@
           :label="'limits-form.note-lbl' | globalize"
           :maxlength="formNoteMaxLength"
           :readonly="formMixin.isDisabled"
+          @input="former.setAttr('note', form.note)"
           @blur="touchField('form.note')"
           :error-message="getFieldErrorMessage('form.note')"
         />
@@ -210,9 +216,10 @@ import {
   required,
 } from '@validators'
 import { Bus } from '@/js/helpers/event-bus'
-import { api } from '@/api'
+import { LimitsFormer } from '@/js/formers/LimitsFormer'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { base, errors, STATS_OPERATION_TYPES } from '@tokend/js-sdk'
+import { api } from '@/api'
+import { errors, STATS_OPERATION_TYPES } from '@tokend/js-sdk'
 import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes.const'
 import config from '@/config'
 
@@ -266,14 +273,12 @@ export default {
       annualOut: '',
       note: '',
     },
+    former: null,
     selectedOpType: '',
-    opts: [],
-    FORMATTED_STATS_OPERATION_TYPES,
-    STATS_OPERATION_TYPES_KEY_NAMES,
-    formattedOpTypes: [],
-    isLimitsChanged: false,
     isRequestCreating: false,
     formNoteMaxLength: 250,
+    FORMATTED_STATS_OPERATION_TYPES,
+    STATS_OPERATION_TYPES_KEY_NAMES,
     config,
   }),
   validations () {
@@ -345,14 +350,26 @@ export default {
   },
   watch: {
     selectedLimitsByOpType () {
-      this.form.dailyOut = this.selectedLimitsByOpType.dailyOut || ''
-      this.form.weeklyOut = this.selectedLimitsByOpType.weeklyOut || ''
-      this.form.monthlyOut = this.selectedLimitsByOpType.monthlyOut || ''
-      this.form.annualOut = this.selectedLimitsByOpType.annualOut || ''
+      this.former = new LimitsFormer({
+        dailyOut: this.selectedLimitsByOpType.dailyOut,
+        weeklyOut: this.selectedLimitsByOpType.weeklyOut,
+        monthlyOut: this.selectedLimitsByOpType.monthlyOut,
+        annualOut: this.selectedLimitsByOpType.annualOut,
+      })
+      this.form.dailyOut = this.former.dailyOut || ''
+      this.form.weeklyOut = this.former.weeklyOut || ''
+      this.form.monthlyOut = this.former.monthlyOut || ''
+      this.form.annualOut = this.former.annualOut || ''
     },
   },
   created () {
     this.selectedOpType = this.FORMATTED_STATS_OPERATION_TYPES[0].value
+    this.former = new LimitsFormer({
+      dailyOut: this.selectedLimitsByOpType.dailyOut,
+      weeklyOut: this.selectedLimitsByOpType.weeklyOut,
+      monthlyOut: this.selectedLimitsByOpType.monthlyOut,
+      annualOut: this.selectedLimitsByOpType.annualOut,
+    })
   },
   methods: {
     tryToSubmit () {
@@ -393,8 +410,8 @@ export default {
       } catch (error) {
         if (
           error instanceof errors.TransactionError &&
-          // eslint-disable-next-line
-          error.includesOpCode(OPERATION_ERROR_CODES.opManageLimitsRequestReferenceDuplication)
+          error.includesOpCode(OPERATION_ERROR_CODES
+            .opManageLimitsRequestReferenceDuplication)
         ) {
           Bus.error('limits-form.error-duplicate-request')
         } else {
@@ -407,31 +424,13 @@ export default {
       this.$emit(EVENTS.limitsChanged)
     },
     async createRequest () {
-      const asset = this.selectedLimitsByOpType.assetCode
-      const limits = {
-        annualOut: this.form.annualOut,
-        dailyOut: this.form.dailyOut,
-        monthlyOut: this.form.monthlyOut,
-        weeklyOut: this.form.weeklyOut,
-      }
-      const note = this.form.note
-      const requestType = LIMITS_REQUEST_TYPE.initial
-      const statsOpType = +this.selectedOpType
-      const operationType = STATS_OPERATION_TYPES_KEY_NAMES[statsOpType]
+      this.former.setAttr('asset', this.selectedLimitsByOpType.assetCode)
+      this.former.setAttr('requestType', LIMITS_REQUEST_TYPE.initial)
+      const statsOpType = this.selectedOpType
+      this.former.setAttr('statsOpType', +statsOpType)
+      this.former.setAttr('operationType', STATS_OPERATION_TYPES_KEY_NAMES[+statsOpType])
 
-      const operation = base
-        .CreateManageLimitsRequestBuilder
-        .createManageLimitsRequest({
-          requestID: '0',
-          creatorDetails: {
-            operationType,
-            statsOpType,
-            asset,
-            limits,
-            requestType,
-            note,
-          },
-        })
+      const [operation] = await this.former.buildOps()
       await api.postOperations(operation)
     },
   },
