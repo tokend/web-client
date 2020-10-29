@@ -296,8 +296,8 @@ export default {
       }
       this.isRequestCreating = false
       this.enableForm()
-      this.hideConfirmation()
       this.$emit(EVENTS.limitsChanged)
+      this.hideConfirmation()
     },
   },
 }

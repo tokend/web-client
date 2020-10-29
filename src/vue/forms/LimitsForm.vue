@@ -75,7 +75,7 @@
         </tbody>
       </table>
     </div>
-    <limits-update-form :former="former" />
+    <limits-update-form :former="former" @limits-changed="limitsChanged" />
   </div>
 </template>
 
@@ -111,6 +111,10 @@ const FORMATTED_STATS_OPERATION_TYPES = [
     label: 'limits-form.op-type-payment-out',
   },
 ]
+
+const EVENTS = {
+  limitsChanged: 'limits-changed',
+}
 
 const MAX_VALID_LIMIT_VALUE = config.MAX_AMOUNT
 
@@ -194,6 +198,10 @@ export default {
           }
           return limitByType.annualOut
       }
+    },
+
+    limitsChanged () {
+      this.$emit(EVENTS.limitsChanged)
     },
   },
 }
