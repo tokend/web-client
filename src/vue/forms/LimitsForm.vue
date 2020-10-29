@@ -75,29 +75,17 @@
         </tbody>
       </table>
     </div>
-    <limits-update-form />
+    <limits-update-form :former="former" />
   </div>
 </template>
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import { LIMITS_REQUEST_TYPE } from '@/js/const/limits.const'
-// import {
-//   maxLength,
-//   maxValue,
-//   decimal,
-//   minValue,
-//   maxDecimalPoints,
-//   required,
-// } from '@validators'
-import { Bus } from '@/js/helpers/event-bus'
 import { LimitsFormer } from '@/js/formers/LimitsFormer'
-import { ErrorHandler } from '@/js/helpers/error-handler'
-import { api } from '@/api'
-import { errors, STATS_OPERATION_TYPES } from '@tokend/js-sdk'
-import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes.const'
+import { STATS_OPERATION_TYPES } from '@tokend/js-sdk'
 import config from '@/config'
-import { LimitsUpdateForm } from '../forms/LimitsUpdateForm.vue'
+import LimitsUpdateForm from './LimitsUpdateForm.vue'
 
 const STATS_OPERATION_TYPES_KEY_NAMES = {
   [STATS_OPERATION_TYPES.deposit]: 'deposit',
@@ -124,11 +112,6 @@ const FORMATTED_STATS_OPERATION_TYPES = [
   },
 ]
 
-const EVENTS = {
-  limitsChanged: 'limits-changed',
-}
-
-// const MIN_VALID_LIMIT_VALUE = 0
 const MAX_VALID_LIMIT_VALUE = config.MAX_AMOUNT
 
 export default {
@@ -145,13 +128,13 @@ export default {
     },
   },
   data: () => ({
-    // form: {
-    //   dailyOut: '',
-    //   weeklyOut: '',
-    //   monthlyOut: '',
-    //   annualOut: '',
-    //   note: '',
-    // },
+    form: {
+      dailyOut: '',
+      weeklyOut: '',
+      monthlyOut: '',
+      annualOut: '',
+      note: '',
+    },
     former: null,
     selectedOpType: '',
     isRequestCreating: false,
@@ -162,38 +145,31 @@ export default {
   }),
   computed: {
     selectedLimitsByOpType () {
-      // eslint-disable-next-line
       return this.limits[STATS_OPERATION_TYPES_KEY_NAMES[this.selectedOpType]]
     },
   },
   watch: {
-    selectedLimitsByOpType () {
-      this.former = new LimitsFormer({
-        dailyOut: this.selectedLimitsByOpType.dailyOut,
-        weeklyOut: this.selectedLimitsByOpType.weeklyOut,
-        monthlyOut: this.selectedLimitsByOpType.monthlyOut,
-        annualOut: this.selectedLimitsByOpType.annualOut,
-      })
-      this.form.dailyOut = this.former.dailyOut || ''
-      this.form.weeklyOut = this.former.weeklyOut || ''
-      this.form.monthlyOut = this.former.monthlyOut || ''
-      this.form.annualOut = this.former.annualOut || ''
+    selectedLimitsByOpType: {
+      handler () {
+        if (!this.selectedOpType) {
+          this.selectedOpType = this.FORMATTED_STATS_OPERATION_TYPES[0].value
+        }
+
+        this.former = new LimitsFormer({
+          dailyOut: this.selectedLimitsByOpType.dailyOut,
+          weeklyOut: this.selectedLimitsByOpType.weeklyOut,
+          monthlyOut: this.selectedLimitsByOpType.monthlyOut,
+          annualOut: this.selectedLimitsByOpType.annualOut,
+          asset: this.selectedLimitsByOpType.assetCode,
+          requestType: LIMITS_REQUEST_TYPE.initial,
+          statsOpType: this.selectedOpType,
+          operationType: STATS_OPERATION_TYPES_KEY_NAMES[this.selectedOpType],
+        })
+      },
+      immediate: true,
     },
   },
-  // created () {
-  //   this.selectedOpType = this.FORMATTED_STATS_OPERATION_TYPES[0].value
-  //   this.former = new LimitsFormer({
-  //     dailyOut: this.selectedLimitsByOpType.dailyOut,
-  //     weeklyOut: this.selectedLimitsByOpType.weeklyOut,
-  //     monthlyOut: this.selectedLimitsByOpType.monthlyOut,
-  //     annualOut: this.selectedLimitsByOpType.annualOut,
-  //   })
-  // },
   methods: {
-    tryToSubmit () {
-      if (!this.isFormValid()) return
-      this.showConfirmation()
-    },
     getLimitByScope (period) {
       const limitByType = this.selectedLimitsByOpType
       switch (period) {
@@ -218,38 +194,6 @@ export default {
           }
           return limitByType.annualOut
       }
-    },
-    async submit () {
-      this.disableForm()
-      this.isRequestCreating = true
-      try {
-        await this.createRequest()
-        Bus.success('limits-form.request-successfully-created')
-      } catch (error) {
-        if (
-          error instanceof errors.TransactionError &&
-          error.includesOpCode(OPERATION_ERROR_CODES
-            .opManageLimitsRequestReferenceDuplication)
-        ) {
-          Bus.error('limits-form.error-duplicate-request')
-        } else {
-          ErrorHandler.process(error)
-        }
-      }
-      this.isRequestCreating = false
-      this.enableForm()
-      this.hideConfirmation()
-      this.$emit(EVENTS.limitsChanged)
-    },
-    async createRequest () {
-      this.former.setAttr('asset', this.selectedLimitsByOpType.assetCode)
-      this.former.setAttr('requestType', LIMITS_REQUEST_TYPE.initial)
-      const statsOpType = this.selectedOpType
-      this.former.setAttr('statsOpType', +statsOpType)
-      this.former.setAttr('operationType', STATS_OPERATION_TYPES_KEY_NAMES[+statsOpType])
-
-      const [operation] = await this.former.buildOps()
-      await api.postOperations(operation)
     },
   },
 }

@@ -29,10 +29,17 @@ export class LimitsFormer extends Former {
     }
 
     populate (limits) {
-      this.dailyOut = limits.dailyOut
-      this.weeklyOut = limits.weeklyOut
-      this.monthlyOut = limits.monthlyOut
-      this.annualOut = limits.annualOut
+      this.attrs = {}
+      const attrs = this.attrs
+
+      attrs.dailyOut = limits.dailyOut
+      attrs.weeklyOut = limits.weeklyOut
+      attrs.monthlyOut = limits.monthlyOut
+      attrs.annualOut = limits.annualOut
+      attrs.asset = limits.asset
+      attrs.requestType = limits.requestType
+      attrs.statsOpType = limits.statsOpType
+      attrs.operationType = limits.operationType
     }
 
     _buildOp () {
