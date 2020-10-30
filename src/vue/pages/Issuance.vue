@@ -45,9 +45,7 @@
       </template>
 
       <issuance-form
-        @issuance-created="console.log(1)
-          && closeDrawerAndUpdateList()
-          && console.log(2)"
+        @issuance-created="closeDrawerAndUpdateList()"
       />
     </drawer>
 
