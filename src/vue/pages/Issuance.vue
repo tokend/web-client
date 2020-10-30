@@ -44,8 +44,10 @@
         {{ 'issuance-page.create-issuance-title' | globalize }}
       </template>
 
-      <issuance-form-module
-        @issuance-created="closeDrawerAndUpdateList()"
+      <issuance-form
+        @issuance-created="console.log(1)
+          && closeDrawerAndUpdateList()
+          && console.log(2)"
       />
     </drawer>
 
@@ -63,7 +65,7 @@ import { vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
 
 import IssuanceExplorerModule from '@/vue/modules/issuance-explorer'
-import IssuanceFormModule from '@/vue/modules/issuance-form'
+import IssuanceForm from '@/vue/forms/IssuanceForm/IssuanceForm'
 import PreIssuanceFormModule from '@modules/pre-issuance-form'
 import UpdateList from '@/vue/mixins/update-list.mixin'
 
@@ -72,7 +74,7 @@ export default {
   components: {
     Drawer,
     TopBar,
-    IssuanceFormModule,
+    IssuanceForm,
     PreIssuanceFormModule,
     IssuanceExplorerModule,
   },

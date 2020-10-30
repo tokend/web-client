@@ -25,7 +25,6 @@ export default {
       const asset = await this.getAssetByCode(opts.assetCode)
       const masterAccountId = api.networkDetails.adminAccountId
       let fees = []
-
       const sourceFee = await this.calculateFee({
         accountId: opts.senderAccountId,
         type: opts.type,
