@@ -14,6 +14,7 @@
               @input="setAssetByCode"
               name="create-issuance-asset"
               :label="'issuance-form.asset-lbl' | globalize"
+              @change="former.setAttr('asset', form.asset.code)"
               @blur="touchField('form.asset')"
               :disabled="formMixin.isDisabled"
             >
@@ -39,6 +40,7 @@
                 :step="MIN_AMOUNT"
                 v-model="form.amount"
                 @blur="touchField('form.amount')"
+                @change="former.setAttr('amount', form.amount)"
                 name="create-issuance-amount"
                 :label="'issuance-form.amount-lbl' | globalize"
                 :error-message="getFieldErrorMessage(
@@ -84,6 +86,7 @@
               white-autofill
               v-model="form.receiver"
               @blur="touchField('form.receiver')"
+              @change="former.setAttr('receiver', form.receiver)"
               name="create-issuance-receiver"
               :label="'issuance-form.receiver-lbl' | globalize"
               :error-message="getFieldErrorMessage('form.receiver')"
@@ -98,6 +101,7 @@
               white-autofill
               v-model="form.reference"
               @blur="touchField('form.reference')"
+              @change="former.setAttr('reference', form.reference)"
               name="create-issuance-reference"
               :error-message="getFieldErrorMessage(
                 'form.reference',
@@ -165,7 +169,6 @@
 </template>
 
 <script>
-import LoadOwnedAssetsMixin from './mixins/load-owned-assets.mixin'
 import IssuanceFormSkeletonLoader from './IssuanceFormSceletonLoader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -176,10 +179,9 @@ import Loader from '@/vue/common/Loader'
 import FeesRenderer from '@/vue/common/fees/FeesRenderer'
 import ReadonlyField from '@/vue/fields/ReadonlyField'
 import FormMixin from '@/vue/mixins/form.mixin'
-import ManageIssuanceMixin from './mixins/manage-issuance.mixin'
 import FeesMixin from '@/vue/common/fees/fees.mixin'
 import config from '@/config'
-import { FEE_TYPES } from '@tokend/js-sdk'
+import { api } from '@/api'
 import { MathUtil } from '@/js/utils'
 import { BigNumber } from 'bignumber.js'
 import { Bus } from '@/js/helpers/event-bus'
@@ -191,6 +193,7 @@ import {
   maxLength,
   maxDecimalDigitsCount,
 } from '@validators'
+import { IssuanceFormer } from '@/js/formers/IssuanceFormer'
 
 const REFERENCE_MAX_LENGTH = 64
 const EVENTS = {
@@ -207,10 +210,14 @@ export default {
     FeesRenderer,
     ReadonlyField,
   },
-  mixins: [LoadOwnedAssetsMixin, FormMixin, ManageIssuanceMixin, FeesMixin],
+  mixins: [FormMixin, FeesMixin],
+  // props: {
+  //   former: { type: IssuanceFormer, default: () => new IssuanceFormer() },
+  // },
   data: _ => ({
     isLoaded: false,
     isLoadFailed: false,
+    former: new IssuanceFormer(),
     EVENTS,
     form: {
       asset: {
@@ -220,6 +227,7 @@ export default {
       receiver: '',
       reference: '',
     },
+    ownedAssets: [],
     fees: {},
     feesDebouncedRequest: null,
     isFeesLoaded: false,
@@ -281,7 +289,7 @@ export default {
   },
   async created () {
     try {
-      await this.loadOwnedAssets(this.accountId)
+      this.ownedAssets = await this.former.loadOwnedAssets(this.accountId)
       this.isLoaded = true
 
       if ((this.ownedAssets || []).length) {
@@ -312,12 +320,12 @@ export default {
     },
     async loadFees () {
       try {
-        this.fees = await this.calculateFees({
-          assetCode: this.form.asset.code,
-          amount: this.form.amount || 0,
-          senderAccountId: this.accountId,
-          type: FEE_TYPES.issuanceFee,
-        })
+        this.former.attrs.asset = this.form.asset.code || ''
+        this.former.attrs.amount = this.form.amount || '0'
+        this.former.attrs.receiver = this.form.receiver || ''
+        this.former.attrs.reference = this.form.reference || ''
+
+        this.fees = await this.former.calculateFees(this.accountId)
         this.isFeesLoaded = true
       } catch (e) {
         this.isFeesLoadFailed = true
@@ -327,13 +335,14 @@ export default {
     async submit () {
       this.isFormSubmitting = true
       try {
-        await this.createIssuance()
+        const [operation] = await this.former.buildOps()
         Bus.success('issuance-form.assets-issued-msg')
+        await api.postOperations(operation)
       } catch (e) {
         ErrorHandler.process(e)
       }
-      this.isFormSubmitting = false
-      this.hideConfirmation()
+      // this.isFormSubmitting = false
+      // this.hideConfirmation()
     },
   },
 }
