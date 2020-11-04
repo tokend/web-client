@@ -22,7 +22,7 @@
               :label="'invest-form.asset-lbl' | globalize"
               name="invest-asset"
               @blur="touchField('form.asset')"
-              :disabled="view.mode === VIEW_MODES.confirm ||
+              :disabled="isModeConfirm ||
                 !canUpdateOffer || formMixin.isDisabled"
             >
               <option
@@ -68,7 +68,7 @@
                   }
                 }
               )"
-              :disabled="view.mode === VIEW_MODES.confirm ||
+              :disabled="isModeConfirm ||
                 !canUpdateOffer || formMixin.isDisabled || isZeroBalance"
             />
 
@@ -117,17 +117,17 @@
 
         <div class="app__form-actions">
           <form-confirmation
-            v-if="view.mode === VIEW_MODES.confirm"
+            v-if="isModeConfirm"
             :message="'invest-form.recheck-form-msg' | globalize"
             :ok-button="'invest-form.invest-btn' | globalize"
             :is-pending="isSubmitting"
-            @cancel="updateView(VIEW_MODES.submit)"
+            @cancel="!isModeConfirm"
             @ok="submit"
           />
 
           <template
             v-if="currentInvestment.id &&
-              view.mode === VIEW_MODES.submit">
+              !isModeConfirm">
             <button
               v-ripple
               type="button"
@@ -150,7 +150,7 @@
           <template v-else>
             <button
               v-ripple
-              v-if="view.mode === VIEW_MODES.submit"
+              v-if="!isModeConfirm"
               click="submit"
               class="app__button-raised"
               :disabled="formMixin.isDisabled || !canSubmit"
@@ -227,11 +227,6 @@ const EVENTS = {
   canceled: 'canceled',
 }
 
-const VIEW_MODES = {
-  submit: 'submit',
-  confirm: 'confirm',
-}
-
 const OFFER_CREATE_ID = '0'
 const CANCEL_OFFER_FEE = '0'
 const DEFAULT_QUOTE_PRICE = '1'
@@ -258,14 +253,12 @@ export default {
     },
     assetPairPrice: '',
     currentInvestment: {},
-    view: {
-      mode: VIEW_MODES.submit,
-    },
     fees: {
       fixed: '',
       percent: '',
     },
     saleBaseAsset: null,
+    isModeConfirm: false,
     isLoaded: false,
     isLoadingFailed: false,
     MIN_AMOUNT: config.MIN_AMOUNT,
@@ -273,7 +266,6 @@ export default {
     isPriceLoadFailed: false,
     isFeesLoaded: false,
     isSubmitting: false,
-    VIEW_MODES,
     vueRoutes,
   }),
 
@@ -476,6 +468,7 @@ export default {
     },
 
     async loadCurrentInvestment () {
+
       const { data: offers } = await api.getWithSignature('/v3/offers', {
         filter: {
           order_book: this.sale.id,
@@ -490,6 +483,7 @@ export default {
     },
 
     async loadAssetPairPrice () {
+
       this.isPriceLoadFailed = false
       this.isAssetPairPriceLoaded = false
 
@@ -509,6 +503,7 @@ export default {
     },
 
     async submit () {
+
       if (!this.isFormValid()) return
       this.disableForm()
       this.isSubmitting = true
@@ -538,11 +533,12 @@ export default {
       }
       this.isSubmitting = false
       this.enableForm()
-      this.updateView(VIEW_MODES.submit)
+      this.isModeConfirm = false
       this.hideConfirmation()
     },
 
     async createBalance (assetCode) {
+
       const operation = base.Operation.manageBalance({
         destination: this.accountId,
         asset: assetCode,
@@ -577,6 +573,7 @@ export default {
     },
 
     getOfferOpts (id, offerFee) {
+
       return {
         offerID: id,
         baseBalance: this.balances
@@ -600,6 +597,7 @@ export default {
     },
 
     async cancelOffer () {
+
       this.disableForm()
 
       try {
@@ -623,6 +621,7 @@ export default {
     },
 
     async processInvestment () {
+
       if (!await this.isFormValid()) return
       this.disableForm()
       try {
@@ -634,16 +633,12 @@ export default {
         })
 
         this.isFeesLoaded = true
-        this.updateView(VIEW_MODES.confirm)
+        this.isModeConfirm = true
       } catch (error) {
         ErrorHandler.process(error)
         this.isFeesLoaded = false
       }
       this.enableForm()
-    },
-
-    updateView (mode) {
-      this.view.mode = mode
     },
   },
 }
