@@ -6,18 +6,18 @@ import { Fee } from '@/vue/common/fees/fee'
 import { FeesCollection } from '@/vue/common/fees/fees-collection'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { Asset } from './asset-helper'
-// import safeGet from 'lodash/get'
 
-export async function createIssuance (receiver, assetCode) {
-  const receiverAccountId = await getReceiverAccountId(receiver)
+export async function createIssuance (attrs) {
+  const receiverAccountId = await getReceiverAccountId(attrs.receiver)
   const receiverBalanceId = await getReceiverBalanceId(
-    receiverAccountId, assetCode)
-
+    receiverAccountId, attrs.asset)
   if (receiverBalanceId) {
-    await this.postIssuanceOperation(receiverBalanceId)
+    await postIssuanceOperation(receiverBalanceId, attrs)
   } else {
     throw new errors.BalanceNotFoundError()
   }
+
+  return receiverBalanceId
 }
 
 async function getReceiverBalanceId (receiverAccountId, assetCode) {
@@ -32,17 +32,15 @@ async function getReceiverBalanceId (receiverAccountId, assetCode) {
   return balance ? balance.id : ''
 }
 
-export async function postIssuanceOperation (receiverBalanceId) {
-  const operation = base.CreateIssuanceRequestBuilder
+async function postIssuanceOperation (receiverBalanceId, attrs) {
+  base.CreateIssuanceRequestBuilder
     .createIssuanceRequest({
-      asset: this.form.asset.code,
-      amount: this.form.amount.toString(),
+      asset: attrs.asset,
+      amount: attrs.amount.toString(),
       receiver: receiverBalanceId,
-      reference: this.form.reference,
+      reference: attrs.reference,
       creatorDetails: {},
     })
-
-  await api.postOperations(operation)
 }
 
 async function getReceiverAccountId (receiver) {
@@ -95,8 +93,8 @@ export async function calculateFees (opts) {
     senderAccountId: opts.senderAccountId,
     type: opts.type,
   })
-
   fees.push(sourceFee)
+
   if (opts.accountId) {
     const destinationFee = await calculateFee({
       assetCode: opts.assetCode,

@@ -23,21 +23,22 @@ export class IssuanceFormer extends Former {
 
   async buildOps () {
     await Document.uploadDocumentsDeep(this.attrs)
-    return [this._buildOp()]
+    const result = await this._buildOp()
+    return result
   }
 
-  _buildOp () {
+  async _buildOp () {
     const attrs = this.attrs
-    createIssuance(this.attrs.receiver, this.attrs.asset)
-
+    const receiverBalanceId = await createIssuance(this.attrs)
+    const a = {
+      asset: attrs.asset,
+      amount: str(attrs.amount),
+      receiver: receiverBalanceId,
+      reference: attrs.reference,
+      creatorDetails: {},
+    }
     return base.CreateIssuanceRequestBuilder
-      .createIssuanceRequest({
-        asset: attrs.asset,
-        amount: str(attrs.amount),
-        receiver: attrs.receiver,
-        reference: attrs.reference,
-        creatorDetails: {},
-      })
+      .createIssuanceRequest(a)
   }
 
   async calculateFees (accountId) {

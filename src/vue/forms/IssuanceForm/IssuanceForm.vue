@@ -4,7 +4,7 @@
       <form
         novalidate
         class="app__form create-issuance-form"
-        @submit="$emit(EVENTS.issuanceCreated)"
+        @submit.prevent="isFormValid() && showConfirmation()"
         v-if="ownedAssets.length"
       >
         <div class="app__form-row">
@@ -211,13 +211,12 @@ export default {
     ReadonlyField,
   },
   mixins: [FormMixin, FeesMixin],
-  // props: {
-  //   former: { type: IssuanceFormer, default: () => new IssuanceFormer() },
-  // },
+  props: {
+    former: { type: IssuanceFormer, default: () => new IssuanceFormer() },
+  },
   data: _ => ({
     isLoaded: false,
     isLoadFailed: false,
-    former: new IssuanceFormer(),
     EVENTS,
     form: {
       asset: {
@@ -335,14 +334,15 @@ export default {
     async submit () {
       this.isFormSubmitting = true
       try {
-        const [operation] = await this.former.buildOps()
-        Bus.success('issuance-form.assets-issued-msg')
+        const operation = await this.former.buildOps()
         await api.postOperations(operation)
+        Bus.success('issuance-form.assets-issued-msg')
+        this.$emit(EVENTS.issuanceCreated)
       } catch (e) {
         ErrorHandler.process(e)
       }
-      // this.isFormSubmitting = false
-      // this.hideConfirmation()
+      this.isFormSubmitting = false
+      this.hideConfirmation()
     },
   },
 }
@@ -372,3 +372,5 @@ export default {
   color: $col-text;
 }
 </style>
+
+// $emit(EVENTS.issuanceCreated)
