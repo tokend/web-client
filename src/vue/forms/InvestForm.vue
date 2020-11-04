@@ -468,7 +468,6 @@ export default {
     },
 
     async loadCurrentInvestment () {
-
       const { data: offers } = await api.getWithSignature('/v3/offers', {
         filter: {
           order_book: this.sale.id,
@@ -483,7 +482,6 @@ export default {
     },
 
     async loadAssetPairPrice () {
-
       this.isPriceLoadFailed = false
       this.isAssetPairPriceLoaded = false
 
@@ -503,7 +501,6 @@ export default {
     },
 
     async submit () {
-
       if (!this.isFormValid()) return
       this.disableForm()
       this.isSubmitting = true
@@ -538,7 +535,6 @@ export default {
     },
 
     async createBalance (assetCode) {
-
       const operation = base.Operation.manageBalance({
         destination: this.accountId,
         asset: assetCode,
@@ -573,7 +569,6 @@ export default {
     },
 
     getOfferOpts (id, offerFee) {
-
       return {
         offerID: id,
         baseBalance: this.balances
@@ -597,7 +592,6 @@ export default {
     },
 
     async cancelOffer () {
-
       this.disableForm()
 
       try {
@@ -621,7 +615,6 @@ export default {
     },
 
     async processInvestment () {
-
       if (!await this.isFormValid()) return
       this.disableForm()
       try {
