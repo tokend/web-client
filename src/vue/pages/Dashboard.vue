@@ -87,7 +87,7 @@
 <script>
 import AssetSelector from '@/vue/pages/dashboard/Dashboard.AssetSelector.vue'
 import Transfer from '@/vue/forms/TransferForm'
-import IssuanceForm from '@/vue/forms/IssuanceForm/IssuanceForm'
+import IssuanceForm from '@/vue/forms/IssuanceForm'
 import Drawer from '@/vue/common/Drawer'
 import Chart from '@/vue/common/chart/Chart'
 import MovementsHistoryModule from '@/vue/modules/movements-history'

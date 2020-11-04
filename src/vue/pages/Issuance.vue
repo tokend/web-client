@@ -63,7 +63,7 @@ import { vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
 
 import IssuanceExplorerModule from '@/vue/modules/issuance-explorer'
-import IssuanceForm from '@/vue/forms/IssuanceForm/IssuanceForm'
+import IssuanceForm from '@/vue/forms/IssuanceForm'
 import PreIssuanceFormModule from '@modules/pre-issuance-form'
 import UpdateList from '@/vue/mixins/update-list.mixin'
 
