@@ -1,10 +1,11 @@
 <template>
   <div class="markdown-field">
-    <markdown-editor
+    <vue-simplemde
+      ref="markdownEditor"
+      v-on="$listeners"
       @input="onInput"
       :value="value"
       :sanitize="true"
-      ref="markdownEditor"
       :configs="configs"
     />
     <div
@@ -17,7 +18,7 @@
 </template>
 
 <script>
-import MarkdownEditor from 'vue-simplemde/src/markdown-editor'
+import VueSimplemde from 'vue-simplemde'
 
 const EVENT = {
   input: 'input',
@@ -25,7 +26,7 @@ const EVENT = {
 
 export default {
   name: 'markdown-field',
-  components: { MarkdownEditor },
+  components: { VueSimplemde },
   props: {
     value: { type: [String, Number], default: '' },
     errorMessage: { type: String, default: undefined },

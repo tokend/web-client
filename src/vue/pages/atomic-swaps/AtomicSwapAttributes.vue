@@ -80,7 +80,9 @@
     <template
       v-for="(quoteAsset, index) in atomicSwap.quoteAssets"
     >
-      <div class="app__table app__table--last-td-to-right" :key="quoteAsset.id">
+      <div
+        class="app__table app__table--last-td-to-right"
+        :key="quoteAsset.id">
         <h4 class="atomic-swap-attributes__quote-asset-header">
           {{ 'atomic-swap-attributes.quote-assets-subheading'
             | globalize({ number: index + 1 })

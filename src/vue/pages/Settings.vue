@@ -22,8 +22,6 @@ import { vueRoutes } from '@/vue-router/routes'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 
-import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
-
 export default {
   name: 'settings',
   components: {
@@ -34,10 +32,10 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      kycState: vuexTypes.kycState,
+      kycRequest: vuexTypes.kycRequest,
     }),
     verificationTabId () {
-      if (this.kycState === REQUEST_STATES_STR.approved) {
+      if (this.kycRequest.isApproved) {
         return 'settings-page.my-account-tab'
       } else {
         return 'settings-page.verification-tab'

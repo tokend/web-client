@@ -1,14 +1,15 @@
 <template>
-  <div class="verification-general-form__section">
-    <p class="verification-general-form__section-label">
+  <div class="personal-section">
+    <h4 class="personal-section__title">
       {{ 'general-form.personal-details-lbl' | globalize }}
-    </p>
+    </h4>
 
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
           white-autofill
           v-model="firstName"
+          @change="former.setAttr('firstName', firstName)"
           @blur="touchField('firstName')"
           name="verification-general-first-name"
           :label="'general-form.first-name-lbl' | globalize"
@@ -20,6 +21,7 @@
         <input-field
           white-autofill
           v-model="lastName"
+          @change="former.setAttr('lastName', lastName)"
           @blur="touchField('lastName')"
           name="verification-general-last-name"
           :label="'general-form.last-name-lbl' | globalize"
@@ -33,13 +35,13 @@
       <div class="app__form-field">
         <date-field
           v-model="dateOfBirth"
+          @input="touchField('dateOfBirth');
+                  former.setAttr('dateOfBirth', dateOfBirth)"
           name="verification-general-date-of-birth"
           :enable-time="false"
           allow-input
           :placeholder="'general-form.date-of-birth-placeholder' | globalize"
-          :disable-after="moment().toString()"
-          @input="touchField('dateOfBirth')"
-          @blur="touchField('dateOfBirth')"
+          :disable-after="new Date().toISOString()"
           :label="'general-form.date-of-birth-lbl' | globalize"
           :error-message="getFieldErrorMessage('dateOfBirth')"
           :disabled="isDisabled"
@@ -50,50 +52,44 @@
 </template>
 
 <script>
-import FormMixin from '@/vue/mixins/form.mixin'
-import SectionMixin from './section.mixin'
-
-import { mapMutations } from 'vuex'
-import { types } from '../store/types'
+import formMixin from '@/vue/mixins/form.mixin'
 import { required } from '@validators'
-
-import moment from 'moment'
+import { KycGeneralFormer } from '@/js/formers/KycGeneralFormer'
 
 export default {
-  name: 'section-personal',
-  mixins: [FormMixin, SectionMixin],
-  data: _ => ({
-    moment,
-  }),
-  computed: {
-    firstName: {
-      get () { return this.callGetter(types.firstName) },
-      set (v) { this.setFirstName(v) },
+  name: 'personal-section',
+
+  mixins: [formMixin],
+
+  props: {
+    former: {
+      type: KycGeneralFormer,
+      required: true,
     },
-    lastName: {
-      get () { return this.callGetter(types.lastName) },
-      set (v) { this.setLastName(v) },
-    },
-    dateOfBirth: {
-      get () { return this.callGetter(types.dateOfBirth) },
-      set (v) { this.setDateOfBirth(v) },
+    isDisabled: {
+      type: Boolean,
+      default: true,
     },
   },
-  validations: {
-    firstName: { required },
-    lastName: { required },
-    dateOfBirth: { required },
+
+  data () {
+    return {
+      firstName: this.former.attrs.firstName || '',
+      lastName: this.former.attrs.lastName || '',
+      dateOfBirth: this.former.attrs.dateOfBirth || '',
+    }
   },
-  methods: {
-    ...mapMutations('verification-general-form', {
-      setLastName: types.SET_LAST_NAME,
-      setFirstName: types.SET_FIRST_NAME,
-      setDateOfBirth: types.SET_DATE_OF_BIRTH,
-    }),
+
+  validations () {
+    return {
+      firstName: { required },
+      lastName: { required },
+      dateOfBirth: { required },
+    }
   },
 }
 </script>
 
 <style lang="scss" scoped>
-@import '../scss/styles';
+@import '~@/vue/forms/_app-form';
 </style>

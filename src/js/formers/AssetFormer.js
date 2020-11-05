@@ -1,40 +1,10 @@
 import { Former } from './Former'
 import config from '@/config'
-import { base } from '@tokend/js-sdk'
+import { base, Document } from '@tokend/js-sdk'
 import { reqId, doc, str, num } from './op-build-helpers'
 import { AssetRequest } from '@/js/records/requests/asset-request.record'
 import { AssetRecord } from '@/js/records/entities/asset.record'
-import { uploadDocumentsDeep } from '@/js/helpers/upload-documents'
 import { keyValues } from '@/key-values'
-
-/**
- * @typedef AssetFormerAttrs
- * @type {object}
- * @property {string} requestId
- * @property {string} code
- * @property {string} name
- * @property {DocumentContainer} logo
- * @property {DocumentContainer} terms
- * @property {number} policies
- * @property {string} assetType
- * @property {string} maxIssuanceAmount
- * @property {string} preIssuanceAssetSigner
- * @property {string} initialPreissuedAmount
- * @property {object} stellarIntegration
- * @property {boolean} stellarIntegration.isWithdrawable
- * @property {boolean} stellarIntegration.isDepositable
- * @property {string} stellarIntegration.assetType
- * @property {string} stellarIntegration.assetCode
- * @property {object} erc20Integration
- * @property {boolean} erc20Integration.isWithdrawable
- * @property {boolean} erc20Integration.isDepositable
- * @property {string} erc20Integration.address
- */
-
-/**
-* @typedef DocumentContainer
-* @type {import('@/js/helpers/DocumentContainer').DocumentContainer}
-*/
 
 /**
  * Collects the attributes for asset-related operations
@@ -42,8 +12,33 @@ import { keyValues } from '@/key-values'
  * @implements {Former}
  */
 export class AssetFormer extends Former {
-  /** @type {AssetFormerAttrs} */
-  attrs = this.attrs || {}
+  attrs = this.attrs || this._defaultAttrs
+
+  get _defaultAttrs () {
+    return {
+      requestId: '0',
+      code: '',
+      name: '',
+      logo: new Document(),
+      terms: new Document(),
+      policies: 0,
+      assetType: '',
+      maxIssuanceAmount: '',
+      maxIssuanceAssetSigner: '',
+      initialPreissuedAmount: '',
+      stellarIntegration: {
+        isWithdrawable: false,
+        isDepositable: false,
+        assetType: '',
+        assetCode: '',
+      },
+      erc20Integration: {
+        isWithdrawable: false,
+        isDepositable: false,
+        address: '',
+      },
+    }
+  }
 
   _opBuilder = this._opBuilder || this._buildOpCreate
   get isCreateOpBuilder () { return this._opBuilder === this._buildOpCreate }
@@ -57,7 +52,7 @@ export class AssetFormer extends Former {
   }
 
   async buildOps () {
-    await uploadDocumentsDeep(this.attrs)
+    await Document.uploadDocumentsDeep(this.attrs)
     return [this._opBuilder()]
   }
 
@@ -66,7 +61,7 @@ export class AssetFormer extends Former {
     switch (source.constructor) {
       case AssetRequest: this._populateFromRequest(source); break
       case AssetRecord: this._populateFromRecord(source); break
-      default: throw ReferenceError('Unknown source type')
+      default: throw TypeError('Unknown source type')
     }
     return this
   }
@@ -75,6 +70,7 @@ export class AssetFormer extends Former {
   _populateFromRequest (source) {
     if (source.isCreateAssetRequest) this.useCreateOpBuilder()
     if (source.isUpdateAssetRequest) this.useUpdateOpBuilder()
+    this.attrs = this.attrs || this._defaultAttrs
     this.attrs.requestId = source.id
     this.attrs.code = source.assetCode
     this.attrs.name = source.assetName
@@ -86,13 +82,13 @@ export class AssetFormer extends Former {
     this.attrs.preIssuanceAssetSigner = source.preIssuanceAssetSigner
     this.attrs.initialPreissuedAmount = source.initialPreissuedAmount
 
-    this.attrs.stellarIntegration = {}
+    this.attrs.stellarIntegration = this.attrs.stellarIntegration || {}
     this.attrs.stellarIntegration.isWithdrawable = source.stellarWithdraw
     this.attrs.stellarIntegration.isDepositable = source.stellarDeposit
     this.attrs.stellarIntegration.assetCode = source.stellarAssetCode
     this.attrs.stellarIntegration.assetType = source.stellarAssetType
 
-    this.attrs.erc20Integration = {}
+    this.attrs.erc20Integration = this.attrs.erc20Integration || {}
     this.attrs.erc20Integration.isWithdrawable = source.erc20Withdraw
     this.attrs.erc20Integration.isDepositable = source.erc20Deposit
     this.attrs.erc20Integration.address = source.erc20Address
@@ -101,6 +97,7 @@ export class AssetFormer extends Former {
   /** @param {AssetRecord} source */
   _populateFromRecord (source) {
     this.useUpdateOpBuilder()
+    this.attrs = this.attrs || this._defaultAttrs
     this.attrs.requestId = '0'
     this.attrs.code = source.code
     this.attrs.name = source.name
@@ -112,13 +109,13 @@ export class AssetFormer extends Former {
     this.attrs.preIssuanceAssetSigner = source.preissuedAssetSigner
     this.attrs.initialPreissuedAmount = source.initialPreissuedAmount
 
-    this.attrs.stellarIntegration = {}
+    this.attrs.stellarIntegration = this.attrs.stellarIntegration || {}
     this.attrs.stellarIntegration.isWithdrawable = source.stellarWithdraw
     this.attrs.stellarIntegration.isDepositable = source.stellarDeposit
     this.attrs.stellarIntegration.assetCode = source.stellarAssetCode
     this.attrs.stellarIntegration.assetType = source.stellarAssetType
 
-    this.attrs.erc20Integration = {}
+    this.attrs.erc20Integration = this.attrs.erc20Integration || {}
     this.attrs.erc20Integration.isWithdrawable = source.erc20Withdraw
     this.attrs.erc20Integration.isDepositable = source.erc20Deposit
     this.attrs.erc20Integration.address = source.erc20Address

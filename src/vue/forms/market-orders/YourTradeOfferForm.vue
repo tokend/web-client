@@ -135,7 +135,9 @@
     </template>
   </form>
 
-  <loader v-else message-id="your-trade-offer-form.loading-msg" />
+  <loader
+    v-else
+    message-id="your-trade-offer-form.loading-msg" />
 </template>
 
 <script>

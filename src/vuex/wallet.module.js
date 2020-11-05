@@ -68,11 +68,11 @@ export const actions = {
   async [vuexTypes.DECRYPT_SECRET_SEED] ({ commit, getters, dispatch }) {
     const encryptedSecretSeed = getters[vuexTypes.encryptedSecretSeed]
     const session = await dispatch(vuexTypes.GET_SESSION)
-    const decreptedSecretSeed = decryptSecretSeed(
+    const decryptedSecretSeed = decryptSecretSeed(
       encryptedSecretSeed,
       session.encryptionKey
     )
-    return decreptedSecretSeed
+    return decryptedSecretSeed
   },
 
   async [vuexTypes.GET_SESSION] ({ commit, getters }) {
@@ -89,16 +89,12 @@ export const actions = {
 }
 
 export const getters = {
-  [vuexTypes.walletId]: (state, getters) => state.wallet.id,
-  [vuexTypes.walletAccountId]: (state, getters) => state.wallet.accountId,
-  [vuexTypes.walletEmail]: (state, getters) => {
-    return state.wallet.email
-  },
+  [vuexTypes.walletId]: state => state.wallet.id,
+  [vuexTypes.walletAccountId]: state => state.wallet.accountId,
+  [vuexTypes.walletEmail]: state => state.wallet.email,
   [vuexTypes.sessionId]: state => state.wallet.sessionId,
-  [vuexTypes.encryptedSecretSeed]: (state, getters) => {
-    return state.wallet.encryptedSecretSeed
-  },
-  [vuexTypes.walletPublicKey]: (state, getters) => state.wallet.publicKey,
+  [vuexTypes.encryptedSecretSeed]: state => state.wallet.encryptedSecretSeed,
+  [vuexTypes.walletPublicKey]: state => state.wallet.publicKey,
 }
 
 export default {

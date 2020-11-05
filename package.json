@@ -1,6 +1,6 @@
 {
   "name": "tokend-web-client",
-  "version": "1.12.0-rc.6",
+  "version": "1.13.0-rc.0",
   "description": "TokenD web-client",
   "author": "Distributed Lab <contact@distributedlab.com>",
   "private": true,
@@ -25,7 +25,7 @@
     "@mdi/font": "3.6.95",
     "@sentry/browser": "^5.12.4",
     "@sentry/integrations": "^5.12.4",
-    "@tokend/js-sdk": "1.13.1-rc.0",
+    "@tokend/js-sdk": "1.14.0-rc.0",
     "babel-runtime": "^6.26.0",
     "bignumber.js": "^9.0.0",
     "card-validator": "^6.2.0",
@@ -62,7 +62,7 @@
     "vue-markdown": "^2.2.4",
     "vue-resource": "^1.5.1",
     "vue-router": "3.2.0",
-    "vue-simplemde": "0.5.2",
+    "vue-simplemde": "1.1.2",
     "vuelidate": "^0.7.5",
     "vuex": "^3.1.2",
     "wallet-address-validator": "^0.2.4"

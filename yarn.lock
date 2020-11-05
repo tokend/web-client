@@ -894,10 +894,10 @@
     error-stack-parser "^2.0.0"
     string-width "^2.0.0"
 
-"@tokend/js-sdk@1.13.1-rc.0":
-  version "1.13.1-rc.0"
-  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.13.1-rc.0.tgz#4fcaca3f9d269cc3302373975c27251489e9b2a2"
-  integrity sha512-QA4pmB+q1YcQ6UK0+cJ0ke9js04K3d+rFgKNtp7pKjy50/FTXOeWzYhaJJpTTi/QYK5+HgwjulopPyqndZmr5g==
+"@tokend/js-sdk@1.14.0-rc.0":
+  version "1.14.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.14.0-rc.0.tgz#af19a0159024c4e9ad97387d18e93456e5620329"
+  integrity sha512-xTaLtpTHMc7YHxAltZZLr0CxoDaWqvTgYdxXZ59ZFWSoPwM7ED5Dl7Yc4GE9UOcYQnHNYhhlPLihx6McWRCeJQ==
   dependencies:
     axios "0.19.0"
     base32.js "0.1.0"
@@ -906,7 +906,7 @@
     form-data "2.3.3"
     js-xdr "1.1.2"
     jsona "1.5.0"
-    lodash "4.17.13"
+    lodash "4.17.19"
     loglevel "1.6.2"
     loglevel-plugin-prefix "0.8.4"
     moment "2.24.0"
@@ -6826,10 +6826,10 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
-lodash@4.17.13:
-  version "4.17.13"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.13.tgz#0bdc3a6adc873d2f4e0c4bac285df91b64fc7b93"
-  integrity sha512-vm3/XWXfWtRua0FkUyEHBZy8kCPjErNBT9fJx8Zvs+U6zjqPbTUOpkaoum3O5uiA8sm+yNMHXfYkTUHFoMxFNA==
+lodash@4.17.19:
+  version "4.17.19"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
+  integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
 
 lodash@^4.0.0, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.3.0, lodash@~4.17.12:
   version "4.17.15"
@@ -11464,10 +11464,10 @@ vue-router@3.2.0:
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.2.0.tgz#da35195ffe37fdf0bec9f5f8f72781d2a7718815"
   integrity sha512-khkrcUIzMcI1rDcNtqkvLwfRFzB97GmJEsPAQdj7t/VvpGhmXLOkUfhc+Ah8CvpSXGXwuWuQO+x8Sy/xDhXZIA==
 
-vue-simplemde@0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/vue-simplemde/-/vue-simplemde-0.5.2.tgz#11d6a2297346aa1563a6e04c29168c8dcd527ea0"
-  integrity sha512-JccYiU/DCk2+q0+jwV/gru+2XUA8V/jHPN4R/I7C4yKqEfk/TnxtbM5n7NQ+DrGZmt6YfkliH0nnyd9PD8u45A==
+vue-simplemde@1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/vue-simplemde/-/vue-simplemde-1.1.2.tgz#8324b3fceb8a40e5df58d1207367269535978499"
+  integrity sha512-PuiReBtdMUzBnmkcoybMEHgTQ2DxRqWTSJR+UItMVH3WUDjlCKTgENuq6krE//UU7C62lWrUOOfOmD5xIK4TSA==
   dependencies:
     marked "*"
     simplemde "*"

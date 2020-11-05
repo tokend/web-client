@@ -1,6 +1,8 @@
 <template>
   <transition name="drawer-transition">
-    <div class="drawer" v-if="isShown">
+    <div
+      class="drawer"
+      v-if="isShown">
       <div
         class="drawer__backdrop"
         @click="closeByClickOutside ? closeSelf : ''"
@@ -10,7 +12,9 @@
           <h2 class="drawer__heading">
             <slot name="heading" />
           </h2>
-          <button class="app__button-icon drawer__close-btn" @click="closeSelf">
+          <button
+            class="app__button-icon drawer__close-btn"
+            @click="closeSelf">
             <i class="mdi mdi-close drawer__close-icon" />
           </button>
         </div>

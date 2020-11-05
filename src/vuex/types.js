@@ -15,15 +15,13 @@ const mutations = {
   SET_FACTORS: 'SET_FACTORS',
 
   // kyc
-  SET_KYC_LATEST_REQUEST: 'SET_KYC_LATEST_REQUEST',
-  SET_KYC_RELATED_REQUEST: 'SET_KYC_RELATED_REQUEST',
-  SET_KYC_LATEST_DATA: 'SET_KYC_LATEST_DATA',
-  SET_ACCOUNT_ROLE_RESETED: 'SET_ACCOUNT_ROLE_RESETED',
-  SET_KYC_LATEST_REQUEST_DATA: 'SET_KYC_LATEST_REQUEST_DATA',
+  SET_KYC_REQUEST: 'SET_KYC_REQUEST',
+  SET_KYC_BLOB: 'SET_KYC_BLOB',
+  SET_KYC_REQUEST_BLOB: 'SET_KYC_REQUEST_BLOB',
 
   // kyc recovery
-  SET_KYC_RECOVERY_LATEST_REQUEST: 'SET_KYC_RECOVERY_LATEST_REQUEST',
-  SET_KYC_RECOVERY_LATEST_REQUEST_BLOB: 'SET_KYC_RECOVERY_LATEST_REQUEST_BLOB',
+  SET_KYC_RECOVERY_REQUEST: 'SET_KYC_RECOVERY_REQUEST',
+  SET_KYC_RECOVERY_REQUEST_BLOB: 'SET_KYC_RECOVERY_REQUEST_BLOB',
 
   // assets
   SET_ASSETS: 'SET_ASSETS',
@@ -58,17 +56,14 @@ const actions = {
 
   // kyc
   LOAD_KYC: 'LOAD_KYC',
-  LOAD_KYC_LATEST_REQUEST: 'LOAD_KYC_LATEST_REQUEST',
-  LOAD_KYC_LATEST_REQUEST_DATA: 'LOAD_KYC_LATEST_REQUEST_DATA',
-  LOAD_KYC_RELATED_REQUEST: 'LOAD_KYC_RELATED_REQUEST',
-  LOAD_KYC_LATEST_DATA: 'LOAD_KYC_LATEST_DATA',
+  LOAD_KYC_REQUEST: 'LOAD_KYC_REQUEST',
+  LOAD_KYC_REQUEST_BLOB: 'LOAD_KYC_REQUEST_BLOB',
+  LOAD_KYC_BLOB: 'LOAD_KYC_BLOB',
 
   // kyc recovery
-  LOAD_KYC_RECOVERY_LATEST_REQUEST: 'LOAD_KYC_RECOVERY_LATEST_REQUEST',
   LOAD_KYC_RECOVERY: 'LOAD_KYC_RECOVERY',
-  LOAD_KYC_RECOVERY_LATEST_REQUEST_BLOB:
-    'LOAD_KYC_RECOVERY_LATEST_REQUEST_BLOB',
-  SEND_KYC_RECOVERY_REQUEST: 'SEND_KYC_RECOVERY_REQUEST',
+  LOAD_KYC_RECOVERY_REQUEST: 'LOAD_KYC_RECOVERY_REQUEST',
+  LOAD_KYC_RECOVERY_REQUEST_BLOB: 'LOAD_KYC_RECOVERY_REQUEST_BLOB',
 
   // assets
   LOAD_ASSETS: 'LOAD_ASSETS',
@@ -97,6 +92,8 @@ const getters = {
   accountRoleId: 'accountRoleId',
   accountDepositAddresses: 'accountDepositAddresses',
   accountKycRecoveryStatus: 'accountKycRecoveryStatus',
+  isAccountKycRecoveryInProgress: 'isAccountKycRecoveryInProgress',
+  isAccountKycRecoveryInitiated: 'isAccountKycRecoveryInitiated',
 
   isAccountGeneral: 'isAccountGeneral',
   isAccountCorporate: 'isAccountCorporate',
@@ -122,35 +119,11 @@ const getters = {
   isTotpEnabled: 'isTotpEnabled',
 
   // kyc
-  kycState: 'kycState',
-  kycStateI: 'kycStateI',
-  kycRequestId: 'kycRequestId',
-  kycRequestRejectReason: 'kycRequestRejectReason',
-  kycRequestResetReason: 'kycRequestResetReason',
-  kycRequestExternalDetails: 'kycRequestExternalDetails',
-  kycRequestBlockReason: 'kycRequestBlockReason',
-  kycAccountRoleToSet: 'kycAccountRoleToSet',
-  kycPreviousRequestAccountRoleToSet: 'kycPreviousRequestAccountRoleToSet',
-  kycLatestData: 'kycLatestData',
-  kycLatestRequestBlobId: 'kycLatestRequestBlobId',
-  kycLatestRequestData: 'kycLatestRequestData',
-  kycAvatarKey: 'kycAvatarKey',
-  isAccountRoleReseted: 'isAccountRoleReseted',
+  kyc: 'kyc',
+  kycRequest: 'kycRequest',
 
   // kyc recovery
-  kycRecoveryRequestId: 'kycRecoveryRequestId',
-  kycRecoveryState: 'kycRecoveryState',
-  kycRecoveryStateI: 'kycRecoveryStateI',
-  kycRecoveryRequestBlob: 'kycRecoveryRequestBlob',
-  kycRecoveryRejectReason: 'kycRecoveryRejectReason',
-  kycRecoveryBlobId: 'kycRecoveryBlobId',
-  isNoKycRecoveryInProgress: 'isNoKycRecoveryInProgress',
-  isKycRecoveryInProgress: 'isKycRecoveryInProgress',
-  isKycRecoveryInited: 'isKycRecoveryInited',
-  isKycRecoveryApproved: 'isKycRecoveryApproved',
-  isKycRecoveryPending: 'isKycRecoveryPending',
-  isKycRecoveryRejected: 'isKycRecoveryRejected',
-  isKycRecoveryPermanentlyRejected: 'isKycRecoveryPermanentlyRejected',
+  kycRecoveryRequest: 'kycRecoveryRequest',
 
   // assets
   assets: 'assets',

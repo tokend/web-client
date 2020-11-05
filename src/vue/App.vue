@@ -7,7 +7,7 @@
       <warning-banner
         v-if="isAccountBlocked"
         :message="'warning-banner.blocked-desc' | globalize({
-          reason: kycRequestBlockReason
+          reason: kycRequest.blockReason
         })"
         message-type="danger"
       />
@@ -56,18 +56,11 @@ import {
   mapActions,
   mapMutations,
 } from 'vuex'
-import {
-  api,
-  documentsManager,
-  walletsManager,
-  factorsManager,
-} from '@/api'
 import { vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
 
 import config from '@/config'
 import { i18n } from '@/i18n'
-import { keyValues } from '@/key-values'
 
 export default {
   name: 'app',
@@ -94,7 +87,7 @@ export default {
       vuexTypes.walletId,
       vuexTypes.isLoggedIn,
       vuexTypes.isAccountBlocked,
-      vuexTypes.kycRequestBlockReason,
+      vuexTypes.kycRequest,
     ]),
     isNavigationRendered () {
       return this.$route.matched.some(m => m.meta.isNavigationRendered)
@@ -135,21 +128,11 @@ export default {
       popState: vuexTypes.POP_STATE,
     }),
     async initApp () {
-      api.useBaseURL(config.HORIZON_SERVER)
-      documentsManager.useStorageURL(config.FILE_STORAGE)
-
-      const { data: networkDetails } = await api.getRaw('/')
-      api.useNetworkDetails(networkDetails)
-
-      await keyValues.load()
-
+      // TODO: should be done before the app rendered
       if (this[vuexTypes.isLoggedIn]) {
         await this.restoreSession()
         await this.loadAccount(this.walletAccountId)
       }
-      walletsManager.useApi(api)
-      factorsManager.useApi(api)
-      documentsManager.useApi(api)
       await this.loadAssets()
     },
 

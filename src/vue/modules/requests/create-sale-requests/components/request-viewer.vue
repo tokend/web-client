@@ -29,7 +29,9 @@
       {{ 'create-sale-requests.loading-error-msg' | globalize }}
     </p>
 
-    <load-spinner v-else message-id="create-sale-requests.loading-msg" />
+    <load-spinner
+      v-else
+      message-id="create-sale-requests.loading-msg" />
   </div>
 </template>
 

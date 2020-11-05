@@ -30,8 +30,7 @@ import AtomicSwaps from '@/vue/pages/AtomicSwaps'
 import AtomicSwapsExplore from '@/vue/pages/atomic-swaps/AtomicSwapsExplore'
 import Settings from '@/vue/pages/Settings'
 import Verification from '@/vue/pages/Verification'
-import VerificationGeneralAdvanced
-  from '@/vue/pages/VerificationGeneralAdvanced'
+import VerificationGeneral from '@/vue/pages/VerificationGeneral'
 import VerificationCorporate from '@/vue/pages/VerificationCorporate'
 import Security from '@/vue/pages/Security'
 import AssetExplorerModule from '@modules/assets/asset-explorer'
@@ -398,7 +397,7 @@ const router = new Router({
                 {
                   path: '/settings/verification/general',
                   name: vueRoutes.verificationGeneral.name,
-                  component: VerificationGeneralAdvanced,
+                  component: VerificationGeneral,
                   beforeEnter: inAppRouteGuard,
                 },
                 {
@@ -428,8 +427,8 @@ export default router
 // is not initialized
 function kycRecoveryGuard (to, from, next) {
   const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
-  const isKycRecoveryInProgress = store
-    .getters[vuexTypes.accountKycRecoveryStatus]
+  const isKycRecoveryInProgress =
+    store.getters[vuexTypes.isAccountKycRecoveryInProgress]
   isLoggedIn && isKycRecoveryInProgress
     ? next()
     : next(vueRoutes.app)
@@ -444,8 +443,8 @@ function redirectRouteGuard (to, from, next) {
   const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
 
   if (isLoggedIn) {
-    const isKycRecoveryInProgress = store
-      .getters[vuexTypes.isKycRecoveryInProgress]
+    const isKycRecoveryInProgress =
+      store.getters[vuexTypes.isAccountKycRecoveryInProgress]
 
     if (isKycRecoveryInProgress) {
       next(vueRoutes.kycRecoveryManagement)

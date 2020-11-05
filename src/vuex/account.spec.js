@@ -66,7 +66,7 @@ describe('account.module', () => {
           MockWrapper.makeJsonapiResponseData(accountJSON),
       }
 
-      await actions[vuexTypes.LOAD_ACCOUNT](store)
+      await actions[vuexTypes.LOAD_ACCOUNT](store, 'ACCOUNT_ID_STUB')
 
       expect(store.commit.args).to.deep.equal(Object.entries(expectedMutations))
     })

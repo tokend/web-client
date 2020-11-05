@@ -1,7 +1,10 @@
 <template>
   <div
     class="date-field-flatpickr"
-    :class="{ 'date-field-flatpickr__input--disabled': disabled }"
+    :class="{
+      'date-field-flatpickr--error': errorMessage,
+      'date-field-flatpickr--disabled': disabled,
+    }"
   >
     <label
       class="date-field-flatpickr__label"
@@ -12,17 +15,15 @@
       {{ label }}
     </label>
 
-    <div class="date-field-flatpickr__field">
-      <input
-        type="text"
-        ref="dateField"
-        class="date-field-flatpickr__input"
-        @input="dateFieldUpdated"
-        :disabled="disabled"
-        v-model="flatpickrDate"
-        :placeholder="placeholder"
-      >
-    </div>
+    <input
+      type="text"
+      ref="dateField"
+      class="date-field-flatpickr__input"
+      @input="dateFieldUpdated"
+      :disabled="disabled"
+      v-model="flatpickrDate"
+      :placeholder="placeholder"
+    >
 
     <div
       class="date-field-flatpickr__err-mes"
@@ -250,6 +251,13 @@ export default {
   flex: 1;
 }
 
+.date-field-flatpickr--disabled {
+  cursor: default;
+  filter: grayscale(100%);
+  -webkit-text-fill-color: $field-color-unfocused;
+  color: $field-color-unfocused;
+}
+
 .date-field-flatpickr__input {
   width: 100%;
   background-color: transparent;
@@ -290,6 +298,14 @@ export default {
     @include placeholder;
     opacity: 0;
   }
+
+  .date-field-flatpickr--error > & {
+    @include material-border($field-color-error, $field-color-error);
+  }
+
+  .date-field-flatpickr--disabled > & {
+    border-bottom-style: dashed;
+  }
 }
 
 .date-field-flatpickr__input.active {
@@ -314,13 +330,6 @@ export default {
   }
 }
 
-.date-field-flatpickr__input--disabled {
-  cursor: default;
-  filter: grayscale(100%);
-  -webkit-text-fill-color: $field-color-unfocused;
-  color: $field-color-unfocused;
-}
-
 .date-field-flatpickr__label {
   position: absolute;
   left: 0;
@@ -330,6 +339,11 @@ export default {
   color: $field-color-unfocused;
 
   @include text-font-sizes;
+
+  .date-field-flatpickr--error > &,
+  .date-field-flatpickr--error > .date-field-flatpickr__input:focus ~ & {
+    color: $field-color-error;
+  }
 }
 
 .date-field-flatpickr__label--focus {

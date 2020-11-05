@@ -1,6 +1,8 @@
 <template>
   <div class="app-tabs">
-    <ul role="tablist" class="app-tabs__tabs">
+    <ul
+      role="tablist"
+      class="app-tabs__tabs">
       <li
         v-for="(tab, i) in tabs"
         :key="`app-tab-${_uid}-${i}`"

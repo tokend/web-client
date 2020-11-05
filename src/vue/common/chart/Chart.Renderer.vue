@@ -1,16 +1,22 @@
 <template>
   <div class="chart-renderer">
-    <div v-if="isLoading" class="chart-renderer__wrapper">
+    <div
+      v-if="isLoading"
+      class="chart-renderer__wrapper">
       <div class="chart-renderer__wrapper-message">
         {{ 'chart.fetching-the-price-history' | globalize }}
       </div>
     </div>
-    <div v-else-if="!hasValue" class="chart-renderer__wrapper">
+    <div
+      v-else-if="!hasValue"
+      class="chart-renderer__wrapper">
       <div class="chart-renderer__wrapper-message">
         {{ 'chart.no-price-history-of-selected-asset' | globalize }}
       </div>
     </div>
-    <div class="chart-renderer__chart" ref="chart" />
+    <div
+      class="chart-renderer__chart"
+      ref="chart" />
   </div>
 </template>
 

@@ -32,14 +32,16 @@ import { ErrorTracker } from '@/js/helpers/error-tracker'
 import { vueRoutes } from './vue-router/routes'
 import { useBrowserUpdateBanner } from './browser-update'
 import { keyValues } from '@/key-values'
+import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
+import { initApi } from './api'
 
 async function init () {
   useBrowserUpdateBanner(Vue)
 
-  i18n.onLanguageChanged(lang => {
-    moment.locale(lang)
-  })
+  await initApi()
+  await keyValues.load()
 
+  i18n.onLanguageChanged(lang => moment.locale(lang))
   await i18n.init()
 
   log.setDefaultLevel(config.LOG_LEVEL)
@@ -68,6 +70,7 @@ async function init () {
   Vue.prototype.$config = config
   Vue.prototype.$routes = vueRoutes
   Vue.prototype.$kv = keyValues
+  Vue.prototype.$DOCUMENT_TYPES = DOCUMENT_TYPES
 
   const store = buildStore()
 

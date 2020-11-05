@@ -195,6 +195,14 @@ export default {
 
     @include readonly-material-border($field-color-unfocused);
   }
+
+  .select-field--error > .select-field__wrp > & {
+    @include material-border(
+      $field-color-error,
+      $field-color-error,
+      '&.select-field__option--focused'
+    );
+  }
 }
 
 .select-field__opener span {

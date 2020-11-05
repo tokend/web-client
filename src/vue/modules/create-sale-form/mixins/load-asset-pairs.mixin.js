@@ -1,4 +1,5 @@
-import { api, loadingDataViaLoop } from '@/api'
+import { api } from '@/api'
+import { loadAllResponsePages } from '@/js/helpers/api-helpers'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { vuexTypes } from '@/vuex'
 import { AssetPairRecord } from '@/js/records/entities/asset-pair.record'
@@ -32,7 +33,7 @@ export default {
         filter: { quote_asset: quoteAssetCode },
         page: { limit: MAX_PAGE_LIMIT },
       })
-      result = await loadingDataViaLoop(result)
+      result = await loadAllResponsePages(result)
       return result.map(item => new AssetPairRecord(item))
     },
   },
