@@ -20,6 +20,7 @@
               :value="form.asset.code"
               @input="setAssetByCode"
               :label="'invest-form.asset-lbl' | globalize"
+              @change="former.setAttr('assetCode', form.asset.code)"
               name="invest-asset"
               @blur="touchField('form.asset')"
               :disabled="isModeConfirm ||
@@ -52,6 +53,7 @@
               :max="availableBalance.value"
               :step="MIN_AMOUNT"
               v-model="form.amount"
+              @change="former.setAttr('amount', form.amount)"
               @input="touchField('form.amount')"
               name="invest-amount"
               :label="'invest-form.amount-lbl' | globalize({
@@ -210,7 +212,7 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { api } from '@/api'
-import { base, FEE_TYPES } from '@tokend/js-sdk'
+// import { base } from '@tokend/js-sdk'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
@@ -221,15 +223,16 @@ import { vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
 import { MathUtil } from '@/js/utils'
 import { keyValues } from '@/key-values'
+import { InvestFormer } from '@/js/formers/InvestFormer'
 
 const EVENTS = {
   submitted: 'submitted',
   canceled: 'canceled',
 }
 
-const OFFER_CREATE_ID = '0'
-const CANCEL_OFFER_FEE = '0'
-const DEFAULT_QUOTE_PRICE = '1'
+// const OFFER_CREATE_ID = '0'
+// const CANCEL_OFFER_FEE = '0'
+// const DEFAULT_QUOTE_PRICE = '1'
 
 export default {
   name: 'invest-form',
@@ -244,6 +247,7 @@ export default {
 
   props: {
     sale: { type: SaleRecord, required: true },
+    // former: { type: InvestFormer, default: new InvestFormer() }
   },
 
   data: _ => ({
@@ -257,6 +261,7 @@ export default {
       fixed: '',
       percent: '',
     },
+    former: new InvestFormer(),
     saleBaseAsset: null,
     isModeConfirm: false,
     isLoaded: false,
@@ -442,13 +447,14 @@ export default {
       await this.loadAssets()
       this.saleBaseAsset = this.assets
         .find(item => item.code === this.sale.baseAsset)
+
       await this.loadBalances()
       if (this.quoteAssetListValues.length) {
         this.form.asset = this.quoteAssetListValues[0]
+        this.former.attrs.assetCode = this.form.asset.code
       }
 
       await this.loadCurrentInvestment()
-
       this.isLoaded = true
     } catch (e) {
       this.isLoadingFailed = true
@@ -509,11 +515,18 @@ export default {
         const baseBalance = this.balances
           .find(balance => balance.asset.code === this.sale.baseAsset)
         if (!baseBalance) {
-          await this.createBalance(this.sale.baseAsset)
+          // eslint-disable-next-line max-len
+          const operation = this.former.createBalance(this.sale.baseAsset, this.accountId)
+          await api.postOperations(operation)
+          await this.loadBalances()
         }
 
-        const operations = await this.getOfferOperations()
+        const operations = await this.former.buildOps(this.currentInvestment.id,
+          this.balances,
+          this.sale,
+          this.fees.totalFee.calculatedPercent)
         await api.postOperations(...operations)
+
         // eslint-disable-next-line
         await new Promise(resolve => setTimeout(resolve, config.RELOAD_TIMEOUT))
         await this.loadBalances()
@@ -534,74 +547,64 @@ export default {
       this.hideConfirmation()
     },
 
-    async createBalance (assetCode) {
-      const operation = base.Operation.manageBalance({
-        destination: this.accountId,
-        asset: assetCode,
-        action: base.xdr.ManageBalanceAction.createUnique(),
-      })
+    // async getOfferOperations () {
+    //   console.log('getOfferOperations')
+    //   console.log(this.currentInvestment.id)
+    //   let operations = []
 
-      await api.postOperations(operation)
-      await this.loadBalances()
-    },
+    //   if (this.currentInvestment.id) {
+    //     operations.push(base.ManageOfferBuilder.cancelOffer(
+    //       this.getOfferOpts(
+    //         String(this.currentInvestment.id),
+    //         CANCEL_OFFER_FEE
+    //       )
+    //     ))
+    //   }
 
-    async getOfferOperations () {
-      let operations = []
+    //   operations.push(
+    //     this.former.buildOps(this.getOfferOpts(
+    //       OFFER_CREATE_ID,
+    //       this.fees.totalFee.calculatedPercent
+    //     ))
+    //   )
+    //   console.log('operation', operations)
+    //   return operations
+    // },
 
-      if (this.currentInvestment.id) {
-        operations.push(base.ManageOfferBuilder.cancelOffer(
-          this.getOfferOpts(
-            String(this.currentInvestment.id),
-            CANCEL_OFFER_FEE
-          )
-        ))
-      }
-      operations.push(
-        base.ManageOfferBuilder.manageOffer(
-          this.getOfferOpts(
-            OFFER_CREATE_ID,
-            this.fees.totalFee.calculatedPercent
-          )
-        ),
-      )
+    // getOfferOpts (id, offerFee) {
+    // console.log('getOfferOpts')
 
-      return operations
-    },
-
-    getOfferOpts (id, offerFee) {
-      return {
-        offerID: id,
-        baseBalance: this.balances
-          .find(balance => balance.asset.code === this.sale.baseAsset).id,
-        quoteBalance: this.balances
-          .find(balance => balance.asset.code === this.form.asset.code).id,
-        isBuy: true,
-        amount: MathUtil.divide(
-          this.form.amount,
-          // TODO: remove DEFAULT_QUOTE_PRICE
-          this.sale.quoteAssetPrices[this.form.asset.code] ||
-          DEFAULT_QUOTE_PRICE,
-          1
-        ),
-        // TODO: remove DEFAULT_QUOTE_PRICE
-        price: this.sale.quoteAssetPrices[this.form.asset.code] ||
-          DEFAULT_QUOTE_PRICE,
-        fee: offerFee,
-        orderBookID: this.sale.id,
-      }
-    },
+    //   return {
+    //     offerID: id,
+    //     baseBalance: this.balances
+    //       .find(balance => balance.asset.code === this.sale.baseAsset).id,
+    //     quoteBalance: this.balances
+    //       .find(balance => balance.asset.code === this.form.asset.code).id,
+    //     isBuy: true,
+    //     amount: MathUtil.divide(
+    //       this.form.amount,
+    //       // TODO: remove DEFAULT_QUOTE_PRICE
+    //       this.sale.quoteAssetPrices[this.form.asset.code] ||
+    //       DEFAULT_QUOTE_PRICE,
+    //       1
+    //     ),
+    //     // TODO: remove DEFAULT_QUOTE_PRICE
+    //     price: this.sale.quoteAssetPrices[this.form.asset.code] ||
+    //       DEFAULT_QUOTE_PRICE,
+    //     fee: offerFee,
+    //     orderBookID: this.sale.id,
+    //   }
+    // },
 
     async cancelOffer () {
       this.disableForm()
 
       try {
-        const operation = base.ManageOfferBuilder.cancelOffer(
-          this.getOfferOpts(
-            String(this.currentInvestment.id),
-            CANCEL_OFFER_FEE
-          )
-        )
+        const operation = this.former.cancelOffer(this.currentInvestment.id,
+          this.balances,
+          this.sale)
         await api.postOperations(operation)
+
         // eslint-disable-next-line
         await new Promise(resolve => setTimeout(resolve, config.RELOAD_TIMEOUT))
         await this.loadBalances()
@@ -618,12 +621,7 @@ export default {
       if (!await this.isFormValid()) return
       this.disableForm()
       try {
-        this.fees = await this.calculateFees({
-          assetCode: this.form.asset.code,
-          amount: this.form.amount || 0,
-          senderAccountId: this.accountId,
-          type: FEE_TYPES.investFee,
-        })
+        this.fees = await this.former.calculateFees(this.accountId)
 
         this.isFeesLoaded = true
         this.isModeConfirm = true
