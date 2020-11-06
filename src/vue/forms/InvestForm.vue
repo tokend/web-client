@@ -123,7 +123,7 @@
             :message="'invest-form.recheck-form-msg' | globalize"
             :ok-button="'invest-form.invest-btn' | globalize"
             :is-pending="isSubmitting"
-            @cancel="!isModeConfirm"
+            @cancel="isModeConfirm = false"
             @ok="submit"
           />
 
@@ -212,7 +212,6 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { api } from '@/api'
-// import { base } from '@tokend/js-sdk'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
@@ -243,7 +242,7 @@ export default {
 
   props: {
     sale: { type: SaleRecord, required: true },
-    // former: { type: InvestFormer, default: new InvestFormer() }
+    former: { type: InvestFormer, default: () => new InvestFormer() },
   },
 
   data: _ => ({
@@ -257,7 +256,6 @@ export default {
       fixed: '',
       percent: '',
     },
-    former: new InvestFormer(),
     saleBaseAsset: null,
     isModeConfirm: false,
     isLoaded: false,
@@ -447,8 +445,10 @@ export default {
       await this.loadBalances()
       if (this.quoteAssetListValues.length) {
         this.form.asset = this.quoteAssetListValues[0]
-        this.former.attrs.assetCode = this.form.asset.code
       }
+
+      this.former.attrs.amount = this.form.amount || '0'
+      this.former.attrs.assetCode = this.form.asset.code || ''
 
       await this.loadCurrentInvestment()
       this.isLoaded = true

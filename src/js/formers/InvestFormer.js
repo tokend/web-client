@@ -16,7 +16,7 @@ export class InvestFormer extends Former {
         assetCode: '',
         amount: '0',
         fees: {},
-        balance: [],
+        balance: {},
         sale: {},
         currentInvestmentId: '',
         OFFER_CREATE_ID: '0',
@@ -30,6 +30,7 @@ export class InvestFormer extends Former {
       if (this.attrs.currentInvestmentId) {
         operations.push(this.buildOpCancelOffer())
       }
+
       operations.push(base.ManageOfferBuilder.manageOffer(
         this._getOfferOpts(
           this.attrs.OFFER_CREATE_ID,
@@ -41,44 +42,35 @@ export class InvestFormer extends Former {
     buildOpCancelOffer () {
       const op = base.ManageOfferBuilder.cancelOffer(
         this._getOfferOpts(
-          String(this.attrs.currentInvestmentId),
+          this.attrs.currentInvestmentId,
           this.attrs.CANCEL_OFFER_FEE
         )
       )
       return op
     }
 
-    populate (source) {
-      this.attrs = this.attrs || this._defaultAttrs
-
-      this.attrs.assetCode = source.asset.code
-      this.attrs.amount = source.amount
-    }
-
     _getOfferOpts (id, offerFee) {
       const balance = this.attrs.balance
+      const attrs = this.attrs
 
-      const obj = {
+      return {
         offerID: id,
         baseBalance: balance
-        // eslint-disable-next-line max-len
-          .find(balance => balance.asset.code === this.attrs.sale.baseAsset).id,
+          .find(balance => balance.asset.code === attrs.sale.baseAsset).id,
         quoteBalance: balance
-        // eslint-disable-next-line max-len
-          .find(balance => balance.asset.code === this.attrs.assetCode).id,
+          .find(balance => balance.asset.code === attrs.assetCode).id,
         isBuy: true,
         amount: MathUtil.divide(
-          this.attrs.amount,
-          this.attrs.sale.quoteAssetPrices[this.attrs.assetCode] ||
-          this.attrs.DEFAULT_QUOTE_PRICE,
+          attrs.amount,
+          attrs.sale.quoteAssetPrices[attrs.assetCode] ||
+          attrs.DEFAULT_QUOTE_PRICE,
           1
         ),
-        price: this.attrs.sale.quoteAssetPrices[this.attrs.assetCode] ||
-          this.attrs.DEFAULT_QUOTE_PRICE,
+        price: attrs.sale.quoteAssetPrices[attrs.assetCode] ||
+          attrs.DEFAULT_QUOTE_PRICE,
         fee: offerFee,
-        orderBookID: this.attrs.sale.id,
+        orderBookID: attrs.sale.id,
       }
-      return obj
     }
 
     async calculateFees (accountId) {
