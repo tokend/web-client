@@ -230,10 +230,6 @@ const EVENTS = {
   canceled: 'canceled',
 }
 
-// const OFFER_CREATE_ID = '0'
-// const CANCEL_OFFER_FEE = '0'
-// const DEFAULT_QUOTE_PRICE = '1'
-
 export default {
   name: 'invest-form',
   components: {
@@ -514,17 +510,18 @@ export default {
       try {
         const baseBalance = this.balances
           .find(balance => balance.asset.code === this.sale.baseAsset)
+
         if (!baseBalance) {
           // eslint-disable-next-line max-len
-          const operation = this.former.createBalance(this.sale.baseAsset, this.accountId)
+          const operation = this.former.buildOpCreateBalance(this.sale.baseAsset, this.accountId)
           await api.postOperations(operation)
           await this.loadBalances()
         }
-
-        const operations = await this.former.buildOps(this.currentInvestment.id,
-          this.balances,
-          this.sale,
-          this.fees.totalFee.calculatedPercent)
+        this.former.attrs.assetCode = this.form.asset.code
+        this.former.attrs.balance = this.balances
+        this.former.attrs.sale = this.sale
+        this.former.attrs.currentInvestmentId = this.currentInvestment.id
+        const operations = await this.former.buildOps()
         await api.postOperations(...operations)
 
         // eslint-disable-next-line
@@ -547,62 +544,15 @@ export default {
       this.hideConfirmation()
     },
 
-    // async getOfferOperations () {
-    //   console.log('getOfferOperations')
-    //   console.log(this.currentInvestment.id)
-    //   let operations = []
-
-    //   if (this.currentInvestment.id) {
-    //     operations.push(base.ManageOfferBuilder.cancelOffer(
-    //       this.getOfferOpts(
-    //         String(this.currentInvestment.id),
-    //         CANCEL_OFFER_FEE
-    //       )
-    //     ))
-    //   }
-
-    //   operations.push(
-    //     this.former.buildOps(this.getOfferOpts(
-    //       OFFER_CREATE_ID,
-    //       this.fees.totalFee.calculatedPercent
-    //     ))
-    //   )
-    //   console.log('operation', operations)
-    //   return operations
-    // },
-
-    // getOfferOpts (id, offerFee) {
-    // console.log('getOfferOpts')
-
-    //   return {
-    //     offerID: id,
-    //     baseBalance: this.balances
-    //       .find(balance => balance.asset.code === this.sale.baseAsset).id,
-    //     quoteBalance: this.balances
-    //       .find(balance => balance.asset.code === this.form.asset.code).id,
-    //     isBuy: true,
-    //     amount: MathUtil.divide(
-    //       this.form.amount,
-    //       // TODO: remove DEFAULT_QUOTE_PRICE
-    //       this.sale.quoteAssetPrices[this.form.asset.code] ||
-    //       DEFAULT_QUOTE_PRICE,
-    //       1
-    //     ),
-    //     // TODO: remove DEFAULT_QUOTE_PRICE
-    //     price: this.sale.quoteAssetPrices[this.form.asset.code] ||
-    //       DEFAULT_QUOTE_PRICE,
-    //     fee: offerFee,
-    //     orderBookID: this.sale.id,
-    //   }
-    // },
-
     async cancelOffer () {
       this.disableForm()
 
       try {
-        const operation = this.former.cancelOffer(this.currentInvestment.id,
-          this.balances,
-          this.sale)
+        this.former.attrs.balance = this.balances
+        this.former.attrs.sale = this.sale
+        this.former.attrs.currentInvestmentId = this.currentInvestment.id
+
+        const operation = this.former.buildOpCancelOffer()
         await api.postOperations(operation)
 
         // eslint-disable-next-line
@@ -622,6 +572,8 @@ export default {
       this.disableForm()
       try {
         this.fees = await this.former.calculateFees(this.accountId)
+        this.former.attrs.fees = this.fees.totalFee.calculatedPercent
+        this.former.attrs.sale = this.sale
 
         this.isFeesLoaded = true
         this.isModeConfirm = true

@@ -15,47 +15,36 @@ export class InvestFormer extends Former {
       return {
         assetCode: '',
         amount: '0',
+        fees: {},
+        balance: [],
+        sale: {},
+        currentInvestmentId: '',
         OFFER_CREATE_ID: '0',
         CANCEL_OFFER_FEE: '0',
         DEFAULT_QUOTE_PRICE: '1',
       }
     }
 
-    buildOps (currentInvestmentId, balance, sale, fees) {
+    buildOps () {
       let operations = []
-      if (currentInvestmentId) {
-        operations.push(this._cancelOffer(currentInvestmentId, balance, sale))
+      if (this.attrs.currentInvestmentId) {
+        operations.push(this.buildOpCancelOffer())
       }
-
-      operations.push(this._manageOffer(fees, balance, sale))
+      operations.push(base.ManageOfferBuilder.manageOffer(
+        this._getOfferOpts(
+          this.attrs.OFFER_CREATE_ID,
+          this.attrs.fees)
+      ))
       return operations
     }
 
-    _manageOffer (fees, balance, sale) {
-      const op = base.ManageOfferBuilder.manageOffer(
-        this._getOfferOpts(
-          this.attrs.OFFER_CREATE_ID,
-          fees,
-          balance,
-          sale)
-      )
-      return op
-    }
-
-    _cancelOffer (currentInvestmentId, balance, sale) {
+    buildOpCancelOffer () {
       const op = base.ManageOfferBuilder.cancelOffer(
         this._getOfferOpts(
-          String(currentInvestmentId),
-          this.attrs.CANCEL_OFFER_FEE,
-          balance,
-          sale
+          String(this.attrs.currentInvestmentId),
+          this.attrs.CANCEL_OFFER_FEE
         )
       )
-      return op
-    }
-
-    cancelOffer (currentInvestmentId, balance, sale) {
-      const op = this._cancelOffer(currentInvestmentId, balance, sale)
       return op
     }
 
@@ -66,26 +55,30 @@ export class InvestFormer extends Former {
       this.attrs.amount = source.amount
     }
 
-    _getOfferOpts (id, offerFee, balances, sale) {
-      const a = {
+    _getOfferOpts (id, offerFee) {
+      const balance = this.attrs.balance
+
+      const obj = {
         offerID: id,
-        baseBalance: balances
-          .find(balance => balance.asset.code === sale.baseAsset).id,
-        quoteBalance: balances
+        baseBalance: balance
+        // eslint-disable-next-line max-len
+          .find(balance => balance.asset.code === this.attrs.sale.baseAsset).id,
+        quoteBalance: balance
+        // eslint-disable-next-line max-len
           .find(balance => balance.asset.code === this.attrs.assetCode).id,
         isBuy: true,
         amount: MathUtil.divide(
           this.attrs.amount,
-          sale.quoteAssetPrices[this.attrs.assetCode] ||
+          this.attrs.sale.quoteAssetPrices[this.attrs.assetCode] ||
           this.attrs.DEFAULT_QUOTE_PRICE,
           1
         ),
-        price: sale.quoteAssetPrices[this.attrs.assetCode] ||
+        price: this.attrs.sale.quoteAssetPrices[this.attrs.assetCode] ||
           this.attrs.DEFAULT_QUOTE_PRICE,
         fee: offerFee,
-        orderBookID: sale.id,
+        orderBookID: this.attrs.sale.id,
       }
-      return a
+      return obj
     }
 
     async calculateFees (accountId) {
@@ -99,7 +92,7 @@ export class InvestFormer extends Former {
       return response
     }
 
-    createBalance (assetCode, accountId) {
+    buildOpCreateBalance (assetCode, accountId) {
       const operation = base.Operation.manageBalance({
         destination: accountId,
         asset: assetCode,
