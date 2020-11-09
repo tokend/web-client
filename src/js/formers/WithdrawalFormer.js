@@ -15,7 +15,6 @@ export class WithdrawalFormer extends Former {
       return {
         assetCode: '',
         amount: '0',
-        addressL: '',
         fees: {
           sourceFee: {
             fixed: '',
@@ -54,10 +53,10 @@ export class WithdrawalFormer extends Former {
     async calculateFees () {
       const attrs = this.attrs
       const response = await calculateFees({
-        assetCode: attrs.asset,
-        amount: attrs.amount,
+        assetCode: attrs.assetCode,
+        amount: attrs.amount || 0,
         senderAccountId: attrs.accountId,
-        type: FEE_TYPES.issuanceFee,
+        type: FEE_TYPES.withdrawalFee,
       })
       return response
     }

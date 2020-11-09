@@ -251,6 +251,7 @@ export default {
       await this.loadBalances()
       await this.initAssetSelector()
       await this.loadFees()
+
       this.isLoaded = true
     } catch (error) {
       this.isFailed = true
@@ -307,14 +308,14 @@ export default {
     },
     async loadFees () {
       try {
-        // this.former.attrs.accountId = this.accountId
-        // this.fees = await this.former.calculateFees()
-        this.fees = await this.calculateFees({
+        this.former.mergeAttrs({
           assetCode: this.form.asset.code,
           amount: this.form.amount || 0,
-          senderAccountId: this.accountId,
-          type: FEE_TYPES.withdrawalFee,
+          address: this.form.subject,
+          comment: this.form.asset.code,
+          accountId: this.accountId,
         })
+        this.fees = await this.former.calculateFees()
 
         this.isFeesLoaded = true
       } catch (e) {
