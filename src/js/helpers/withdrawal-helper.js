@@ -1,4 +1,4 @@
-// import { FEE_TYPES, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
+import { FEE_TYPES, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
 import { api } from '@/api'
 
 import { Fee } from '@/vue/common/fees/fee'
@@ -13,6 +13,7 @@ export async function calculateFees (opts) {
   const sourceFee = await calculateFee({
     accountId: opts.senderAccountId,
     type: opts.type,
+    subtype: PAYMENT_FEE_SUBTYPES.outgoing,
     assetCode: opts.assetCode,
     amount: opts.amount,
   })
@@ -22,6 +23,7 @@ export async function calculateFees (opts) {
     const destinationFee = await calculateFee({
       accountId: opts.recipientAccountId,
       type: opts.type,
+      subtype: PAYMENT_FEE_SUBTYPES.incoming,
       assetCode: opts.assetCode,
       amount: opts.amount,
     })
@@ -36,7 +38,7 @@ async function getAssetByCode (assetCode) {
   return new AssetRecord(asset)
 }
 
-async function calculateFee ({ accountId, type, assetCode, amount }) {
+async function calculateFee ({ accountId, type, subtype, assetCode, amount }) {
   const endpoint = `/v3/accounts/${accountId}/calculated_fees`
   const params = {
     fee_type: type,
@@ -44,10 +46,15 @@ async function calculateFee ({ accountId, type, assetCode, amount }) {
     amount,
   }
 
+  if (type === FEE_TYPES.paymentFee) {
+    params.subtype = subtype
+  }
+
   const { data: fee } = await api.get(endpoint, params)
 
   return new Fee({
     type,
+    subtype,
     assetCode,
     amount,
     fixed: fee.fixed,

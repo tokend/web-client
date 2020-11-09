@@ -156,6 +156,7 @@
 import config from '@/config'
 import debounce from 'lodash/debounce'
 import FormMixin from '@/vue/mixins/form.mixin'
+import FeesMixin from '@/vue/common/fees/fees.mixin'
 import Loader from '@/vue/common/Loader'
 import EmailGetter from '@/vue/common/EmailGetter'
 
@@ -186,7 +187,7 @@ export default {
     Loader,
     EmailGetter,
   },
-  mixins: [FormMixin, IdentityGetterMixin],
+  mixins: [FormMixin, FeesMixin, IdentityGetterMixin],
   props: {
     assetCode: { type: String, default: '' },
   },
@@ -306,8 +307,14 @@ export default {
     },
     async loadFees () {
       try {
-        this.former.attrs.accountId = this.accountId
-        this.fees = await this.former.calculateFees()
+        // this.former.attrs.accountId = this.accountId
+        // this.fees = await this.former.calculateFees()
+        this.fees = await this.calculateFees({
+          assetCode: this.form.asset.code,
+          amount: this.form.amount || 0,
+          senderAccountId: this.accountId,
+          type: FEE_TYPES.withdrawalFee,
+        })
 
         this.isFeesLoaded = true
       } catch (e) {
