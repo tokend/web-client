@@ -11,6 +11,7 @@
               <select-field
                 name="withdrawal-asset"
                 :value="form.asset.code"
+                @change="former.setAttr('assetCode', form.asset.code)"
                 @input="setAssetByCode"
                 :disabled="formMixin.isDisabled"
                 :label="'withdrawal-form.asset' | globalize"
@@ -54,6 +55,7 @@
               class="app__form-field"
               v-model="form.amount"
               name="withdrawal-amount"
+              @change="former.setAttr('amount', form.amount)"
               validation-type="outgoing"
               :label="'withdrawal-form.amount' | globalize({
                 asset: form.asset.code
@@ -72,6 +74,7 @@
                 class="app__form-field"
                 v-model.trim="form.address"
                 name="withdrawal-address"
+                @change="former.setAttr('creatorDetails.address', form.address)"
                 @blur="touchField('form.address')"
                 :error-message="getFieldErrorMessage('form.address')"
                 :label="'withdrawal-form.destination-address' | globalize({
@@ -86,6 +89,7 @@
                 white-autofill
                 class="app__form-field"
                 v-model.trim="form.comment"
+                @change="former.setAttr('creatorDetails.comment', form.comment)"
                 name="withdrawal-address"
                 @blur="touchField('form.address')"
                 :error-message="getFieldErrorMessage('form.address')"
@@ -152,16 +156,16 @@
 import config from '@/config'
 import debounce from 'lodash/debounce'
 import FormMixin from '@/vue/mixins/form.mixin'
-import FeesMixin from '@/vue/common/fees/fees.mixin'
 import Loader from '@/vue/common/Loader'
 import EmailGetter from '@/vue/common/EmailGetter'
 
 import IdentityGetterMixin from '@/vue/mixins/identity-getter'
-import { FEE_TYPES, base } from '@tokend/js-sdk'
+import { FEE_TYPES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { vueRoutes } from '@/vue-router/routes'
 import { api } from '@/api'
+import { WithdrawalFormer } from '@/js/formers/WithdrawalFormer'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -182,13 +186,14 @@ export default {
     Loader,
     EmailGetter,
   },
-  mixins: [FormMixin, FeesMixin, IdentityGetterMixin],
+  mixins: [FormMixin, IdentityGetterMixin],
   props: {
     assetCode: { type: String, default: '' },
   },
   data: () => ({
     isLoaded: false,
     isFailed: false,
+    former: new WithdrawalFormer(),
     form: {
       asset: {},
       amount: '',
@@ -267,8 +272,20 @@ export default {
           Bus.error('withdrawal-form.failed-load-fees')
           return false
         }
-        const operation = base.CreateWithdrawRequestBuilder
-          .createWithdrawWithAutoConversion(this.composeOptions())
+
+        if (this.isMasterAssetOwner) {
+          this.former.attrs.creatorDetails.address = this.form.address
+        } else {
+          this.former.attrs.creatorDetails.comment = this.form.comment
+        }
+
+        this.former.attrs.fees.sourceFee.fixed = this.fees.sourceFee.fixed
+        // eslint-disable-next-line max-len
+        this.former.attrs.fees.sourceFee.calculatedPercent = this.fees.sourceFee.calculatedPercent
+        // eslint-disable-next-line max-len
+        this.former.attrs.selectedAssetBalanceId = this.selectedAssetBalance.id
+
+        const operation = this.former.buildOps()
         await api.postOperations(operation)
         await this.reinitAssetSelector()
         Bus.success('withdrawal-form.withdraw-success')
@@ -289,38 +306,13 @@ export default {
     },
     async loadFees () {
       try {
-        this.fees = await this.calculateFees({
-          assetCode: this.form.asset.code,
-          amount: this.form.amount || 0,
-          senderAccountId: this.accountId,
-          type: FEE_TYPES.withdrawalFee,
-        })
+        this.former.attrs.accountId = this.accountId
+        this.fees = await this.former.calculateFees()
 
         this.isFeesLoaded = true
       } catch (e) {
         this.isFeesLoadFailed = true
         ErrorHandler.processWithoutFeedback(e)
-      }
-    },
-    composeOptions () {
-      const creatorDetails = {}
-
-      if (this.isMasterAssetOwner) {
-        creatorDetails.address = this.form.address
-      } else {
-        creatorDetails.comment = this.form.comment
-      }
-
-      return {
-        balance: this.selectedAssetBalance.id,
-        amount: this.form.amount,
-        creatorDetails: creatorDetails,
-        destAsset: this.form.asset.code,
-        expectedDestAssetAmount: this.form.amount,
-        fee: {
-          fixed: this.fees.sourceFee.fixed,
-          percent: this.fees.sourceFee.calculatedPercent,
-        },
       }
     },
     async initAssetSelector () {
