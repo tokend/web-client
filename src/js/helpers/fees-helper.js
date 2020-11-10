@@ -1,10 +1,22 @@
 import { FEE_TYPES, PAYMENT_FEE_SUBTYPES, base } from '@tokend/js-sdk'
 import { api } from '@/api'
+import { getAccountIdByIdentifier } from '@/js/helpers/main-helper'
 
 import { Fee } from '@/vue/common/fees/fee'
 import { FeesCollection } from '@/vue/common/fees/fees-collection'
 import { AssetRecord } from '@/js/records/entities/asset.record'
+// import mixin from '@/vue/mixins/identity-getter'
 
+/**
+   * @param {object} opts
+   * @param {string} opts.assetCode - Fee asset code.
+   * @param {string} opts.amount - Amount of asset to calculate fees.
+   * @param {FeeType} opts.type - Fee XDR enum type.
+   * @param {string} opts.senderAccountId - Sender account ID.
+   * @param {string} [opts.recipientAccountId] - Recipient account ID
+   *                                             (only for payment type).
+   * @returns {FeesCollection} - Fees collection.
+   */
 export async function calculateFees (opts) {
   const asset = await getAssetByCode(opts.assetCode)
   const masterAccountId = api.networkDetails.adminAccountId
@@ -64,7 +76,7 @@ async function calculateFee ({ accountId, type, subtype, assetCode, amount }) {
 
 export async function getCounterparty (recipient) {
   if (!base.Keypair.isValidPublicKey(recipient)) {
-    return this.getAccountIdByIdentifier(recipient)
+    return getAccountIdByIdentifier(recipient)
   } else {
     return recipient
   }

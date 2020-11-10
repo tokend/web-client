@@ -79,6 +79,9 @@ export default {
     vueRoutes,
   }),
 
+  computed: {
+  },
+
   methods: {
     updatePaidForDestination (value) {
       this.feesCollection.isPaidForDestination = value

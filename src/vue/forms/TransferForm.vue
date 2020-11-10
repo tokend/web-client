@@ -18,7 +18,7 @@
       </template>
 
       <template
-        v-else-if="isConfirmMode || !isConfirmMode">
+        v-else>
         <form
           id="transfer-form"
           @submit.prevent="loadFees"
@@ -29,9 +29,9 @@
                 name="transfer-asset"
                 :value="form.asset.code"
                 @input="setAsset"
-                @change="former.setAttr('asset', form.asset.code)"
+                @change="former.setAttr('assetCode', form.asset.code)"
                 :label="'transfer-form.asset-lbl' | globalize"
-                :readonly="isConfirmMode"
+                :readonly="formMixin.isDisabled"
               >
                 <option
                   v-for="asset in transferableBalancesAssets"
@@ -68,7 +68,7 @@
                 :label="'transfer-form.amount-lbl' | globalize"
                 :asset="form.asset"
                 is-max-button-shown
-                :readonly="isConfirmMode"
+                :readonly="formMixin.isDisabled"
                 :disabled="!balance"
               />
             </div>
@@ -83,7 +83,7 @@
                 :label="'transfer-form.recipient-lbl' | globalize"
                 :error-message="getFieldErrorMessage('form.recipient')"
                 @blur="touchField('form.recipient')"
-                :disabled="isConfirmMode || !balance"
+                :disabled="formMixin.isDisabled || !balance"
               />
             </div>
           </div>
@@ -93,12 +93,12 @@
               <textarea-field
                 name="transfer-description"
                 v-model="form.subject"
-                @change="former.setAttr('subject', form.subject)"
+                @input="former.setAttr('subject', form.subject)"
                 :label="'transfer-form.subject-lbl' | globalize({
                   length: 250
                 })"
                 :maxlength="250"
-                :readonly="isConfirmMode"
+                :readonly="formMixin.isDisabled"
                 :disabled="!balance"
               />
             </div>
@@ -106,7 +106,7 @@
 
           <div
             class="transfer__fee-box"
-            v-if="isFeesLoaded && isConfirmMode &&
+            v-if="isFeesLoaded && formMixin.isConfirmationShown &&
               fees.isAny
             "
           >
@@ -119,7 +119,7 @@
           <div class="app__form-actions">
             <button
               v-ripple
-              v-if="!isConfirmMode"
+              v-if="!formMixin.isConfirmationShown"
               type="submit"
               class="app__form-submit-btn app__button-raised"
               :disabled="formMixin.isDisabled || !balance"
@@ -129,10 +129,10 @@
             </button>
 
             <form-confirmation
-              v-if="isConfirmMode"
+              v-else
               :message="'transfer-form.recheck-form' | globalize"
               :ok-button="'transfer-form.submit-btn' | globalize"
-              @cancel="isConfirmMode = false"
+              @cancel="!formMixin.isConfirmationShown"
               @ok="submit(form.isPaidForRecipient)"
             />
           </div>
@@ -173,11 +173,6 @@ import {
 } from '@validators'
 import { TransferFormer } from '@/js/formers/TransferFormer'
 
-const VIEW_MODES = {
-  submit: 'submit',
-  confirm: 'confirm',
-}
-
 const EVENTS = {
   operationSubmitted: 'operation-submitted',
 }
@@ -194,7 +189,7 @@ export default {
   ],
   props: {
     assetToTransfer: { type: String, default: '' },
-    former: { type: TransferFormer, default: new TransferFormer() },
+    former: { type: TransferFormer, default: () => new TransferFormer() },
   },
   data: () => ({
     form: {
@@ -205,11 +200,9 @@ export default {
       isPaidForRecipient: false,
     },
     fees: {},
-    isConfirmMode: false,
     isLoaded: false,
     isLoadingFailed: false,
     isFeesLoaded: false,
-    VIEW_MODES,
     vueRoutes,
     config,
     FEE_TYPES,
@@ -247,10 +240,10 @@ export default {
       loadCurrentBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async submit () {
-      this.isConfirmMode = false
+      this.formMixin.isDisabled = false
       this.disableForm()
       try {
-        await api.postOperations(await this.buildPaymentOperation())
+        await api.postOperations(await this.former.buildOps())
         Bus.success('transfer-form.payment-successful')
         this.$emit(EVENTS.operationSubmitted)
 
@@ -265,18 +258,12 @@ export default {
       if (!await this.isFormValid()) return
       this.disableForm()
       try {
-        this.former.mergeAttrs({
-          amount: this.form.amount,
-          recipient: this.form.recipient,
-          subject: this.form.subject,
-          asset: this.form.asset.code,
-          sourceBalanceId:
-            this.accountBalanceByCode(this.form.asset.code).id,
-        })
+        this.former.attrs.sourceBalanceId =
+          this.accountBalanceByCode(this.form.asset.code).id
 
         this.fees = await this.former.calculateFees(this.accountId)
         this.isFeesLoaded = true
-        this.isConfirmMode = true
+        this.formMixin.isDisabled = true
       } catch (error) {
         ErrorHandler.process(error)
       }
@@ -296,6 +283,7 @@ export default {
         .find(asset => asset.code === assetCode) ||
         this.transferableBalancesAssets[0] ||
         {}
+      this.former.attrs.assetCode = this.form.asset.code
     },
   },
 }

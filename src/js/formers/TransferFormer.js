@@ -1,10 +1,10 @@
 import { Former } from './Former'
 import { Document, base, FEE_TYPES } from '@tokend/js-sdk'
-import { calculateFees, getCounterparty } from '@/js/helpers/transfer-helper'
+import { calculateFees, getCounterparty } from '@/js/helpers/fees-helper'
 import { str } from './op-build-helpers'
 
 /**
- * Collects the attributes for asset-related operations
+ * Collects the attributes for transfer-related operations
  * @class
  * @implements {Former}
  */
@@ -19,7 +19,7 @@ export class TransferFormer extends Former {
         subject: '',
         isPaidForRecipient: false,
         recipientAccountId: '',
-        assetCode: '',
+        accountBalanceByCode: '',
         feeData: {
           sourceFee: {
             percent: '',
@@ -42,7 +42,7 @@ export class TransferFormer extends Former {
     async calculateFees (senderAccountId) {
       await this._getCounterparty(this.attrs.recipient)
       const response = await calculateFees({
-        assetCode: this.attrs.asset,
+        assetCode: this.attrs.assetCode,
         amount: this.attrs.amount,
         type: FEE_TYPES.paymentFee,
         recipientAccountId: this.attrs.recipientAccountId,
@@ -85,7 +85,7 @@ export class TransferFormer extends Former {
           sourcePaysForDest: attrs.feeData.sourcePaysForDest,
         },
         subject: attrs.subject,
-        asset: attrs.asset,
+        asset: attrs.assetCode,
       })
     }
 }
