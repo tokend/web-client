@@ -7,14 +7,14 @@ const EMPTY_FEE = {
 }
 
 export class FeesCollection {
-  constructor ({ fees, asset, masterAccountId }) {
+  constructor ({ fees, assetCode, masterAccountId }) {
     if (!fees.every(f => f instanceof Fee)) {
       throw new Error('opts.fees must be array of Fee instances')
     }
 
     this._isPaidForDestination = false
     this._fees = fees
-    this._asset = asset
+    this.assetCode = assetCode
     this._masterAccountId = masterAccountId
   }
 
@@ -32,16 +32,8 @@ export class FeesCollection {
     }
   }
 
-  get isExternalFeePresent () {
-    return Boolean(
-      this._asset.externalSystemType &&
-      this._asset.owner === this._masterAccountId &&
-      this._fees.find(fee => fee.isWithdrawal)
-    )
-  }
-
-  get assetCode () {
-    return this._asset.code
+  get isHaveWithdrawalFee () {
+    return this._fees.find(fee => fee.isWithdrawal)
   }
 
   get fees () {

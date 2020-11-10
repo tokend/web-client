@@ -4,8 +4,6 @@ import { getAccountIdByIdentifier } from '@/js/helpers/main-helper'
 
 import { Fee } from '@/vue/common/fees/fee'
 import { FeesCollection } from '@/vue/common/fees/fees-collection'
-import { AssetRecord } from '@/js/records/entities/asset.record'
-// import mixin from '@/vue/mixins/identity-getter'
 
 /**
    * @param {object} opts
@@ -18,7 +16,6 @@ import { AssetRecord } from '@/js/records/entities/asset.record'
    * @returns {FeesCollection} - Fees collection.
    */
 export async function calculateFees (opts) {
-  const asset = await getAssetByCode(opts.assetCode)
   const masterAccountId = api.networkDetails.adminAccountId
   let fees = []
 
@@ -42,12 +39,11 @@ export async function calculateFees (opts) {
     fees.push(destinationFee)
   }
 
-  return new FeesCollection({ fees, asset, masterAccountId })
-}
-
-async function getAssetByCode (assetCode) {
-  const { data: asset } = await api.get(`/v3/assets/${assetCode}`)
-  return new AssetRecord(asset)
+  return new FeesCollection({
+    fees,
+    assetCode: opts.assetCode,
+    masterAccountId,
+  })
 }
 
 async function calculateFee ({ accountId, type, subtype, assetCode, amount }) {
