@@ -1,5 +1,5 @@
 import { Former } from './Former'
-import { Document, base, FEE_TYPES } from '@tokend/js-sdk'
+import { base, FEE_TYPES } from '@tokend/js-sdk'
 import { calculateFees, getCounterparty } from '@/js/helpers/fees-helper'
 import { str } from './op-build-helpers'
 
@@ -35,8 +35,26 @@ export class TransferFormer extends Former {
     }
 
     async buildOps () {
-      await Document.uploadDocumentsDeep(this.attrs)
-      return [this._buildOp()]
+      const attrs = this.attrs
+
+      return base.PaymentBuilder.payment({
+        sourceBalanceId: attrs.sourceBalanceId,
+        destination: attrs.recipientAccountId,
+        amount: attrs.amount,
+        feeData: {
+          sourceFee: {
+            percent: str(attrs.feeData.sourceFee.percent),
+            fixed: str(attrs.feeData.sourceFee.fixed),
+          },
+          destinationFee: {
+            percent: str(attrs.feeData.destinationFee.percent),
+            fixed: str(attrs.feeData.destinationFee.fixed),
+          },
+          sourcePaysForDest: attrs.feeData.sourcePaysForDest,
+        },
+        subject: attrs.subject,
+        asset: attrs.assetCode,
+      })
     }
 
     async calculateFees (senderAccountId) {
@@ -65,27 +83,5 @@ export class TransferFormer extends Former {
       this.attrs.recipientAccountId = response
       this.attrs.destination = this.attrs.recipientAccountId
       return response
-    }
-
-    _buildOp () {
-      const attrs = this.attrs
-      return base.PaymentBuilder.payment({
-        sourceBalanceId: attrs.sourceBalanceId,
-        destination: attrs.recipientAccountId,
-        amount: attrs.amount,
-        feeData: {
-          sourceFee: {
-            percent: str(attrs.feeData.sourceFee.percent),
-            fixed: str(attrs.feeData.sourceFee.fixed),
-          },
-          destinationFee: {
-            percent: str(attrs.feeData.destinationFee.percent),
-            fixed: str(attrs.feeData.destinationFee.fixed),
-          },
-          sourcePaysForDest: attrs.feeData.sourcePaysForDest,
-        },
-        subject: attrs.subject,
-        asset: attrs.assetCode,
-      })
     }
 }

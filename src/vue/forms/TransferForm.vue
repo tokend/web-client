@@ -112,6 +112,7 @@
           >
             <fees-renderer
               :fees-collection="fees"
+              :asset-code="form.asset.code"
               :paid-for-destination.sync="form.isPaidForRecipient"
             />
           </div>
@@ -132,7 +133,7 @@
               v-else
               :message="'transfer-form.recheck-form' | globalize"
               :ok-button="'transfer-form.submit-btn' | globalize"
-              @cancel="!formMixin.isConfirmationShown"
+              @cancel="hideConfirmation()"
               @ok="submit(form.isPaidForRecipient)"
             />
           </div>
@@ -241,9 +242,12 @@ export default {
     }),
     async submit () {
       this.formMixin.isDisabled = false
+      this.formMixin.isConfirmationShown = false
+
       this.disableForm()
       try {
-        await api.postOperations(await this.former.buildOps())
+        const operation = await this.former.buildOps()
+        await api.postOperations(operation)
         Bus.success('transfer-form.payment-successful')
         this.$emit(EVENTS.operationSubmitted)
 
@@ -263,15 +267,10 @@ export default {
 
         this.fees = await this.former.calculateFees(this.accountId)
         this.isFeesLoaded = true
-        this.formMixin.isDisabled = true
+        this.formMixin.isConfirmationShown = true
       } catch (error) {
         ErrorHandler.process(error)
       }
-      this.enableForm()
-    },
-    async buildPaymentOperation () {
-      const [operation] = await this.former.buildOps()
-      return operation
     },
     rerenderForm () {
       this.isFeesLoaded = false

@@ -56,7 +56,7 @@ import TickField from '@/vue/fields/TickField'
 import FeeViewer from './FeeViewer'
 
 import { FeesCollection } from './fees-collection'
-import { vuexTypes } from '@/vuex'
+import { vuexTypes } from '@/vuex/types'
 import { mapGetters } from 'vuex'
 
 import { vueRoutes } from '@/vue-router/routes'
@@ -83,13 +83,13 @@ export default {
 
   computed: {
     ...mapGetters([
-      vuexTypes.asset,
+      vuexTypes.assets,
     ]),
     isExternalFeePresent () {
       return Boolean(
-        this.asset.externalSystemType &&
-      this.asset.owner === this._masterAccountId &&
-      this.feesCollection.isHaveWithdrawalFee
+        this.assets.externalSystemType &&
+        this.assets.owner === this._masterAccountId &&
+        this.feesCollection.isHaveWithdrawalFee
       )
     },
   },
