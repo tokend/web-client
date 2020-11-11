@@ -246,7 +246,7 @@ export default {
 
       this.disableForm()
       try {
-        const operation = await this.former.buildOps()
+        const operation = this.former.buildOps()
         await api.postOperations(operation)
         Bus.success('transfer-form.payment-successful')
         this.$emit(EVENTS.operationSubmitted)

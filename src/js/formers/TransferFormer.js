@@ -34,7 +34,7 @@ export class TransferFormer extends Former {
       }
     }
 
-    async buildOps () {
+    buildOps () {
       const attrs = this.attrs
 
       return base.PaymentBuilder.payment({
