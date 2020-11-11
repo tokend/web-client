@@ -8,6 +8,9 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Added
+- New i18n-component for easier nodes interpolation
+
 #### Fixed
 - A bug with `MarkdownField` length
 
