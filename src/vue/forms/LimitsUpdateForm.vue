@@ -118,7 +118,7 @@
       </button>
 
       <form-confirmation
-        v-if="formMixin.isConfirmationShown"
+        v-else
         :is-pending="isRequestCreating"
         :message="'transfer-form.recheck-form' | globalize"
         :ok-button="'transfer-form.submit-btn' | globalize"
@@ -272,16 +272,12 @@ export default {
       this.showConfirmation()
     },
 
-    async createRequest () {
-      const [operation] = await this.former.buildOps()
-      await api.postOperations(operation)
-    },
-
     async submit () {
       this.disableForm()
       this.isRequestCreating = true
       try {
-        await this.createRequest()
+        const operation = await this.former.buildOps()
+        await api.postOperations(operation)
         Bus.success('limits-form.request-successfully-created')
       } catch (error) {
         if (

@@ -164,7 +164,7 @@ export default {
           weeklyOut: this.selectedLimitsByOpType.weeklyOut,
           monthlyOut: this.selectedLimitsByOpType.monthlyOut,
           annualOut: this.selectedLimitsByOpType.annualOut,
-          asset: this.selectedLimitsByOpType.assetCode,
+          assetCode: this.selectedLimitsByOpType.assetCode,
           requestType: LIMITS_REQUEST_TYPE.initial,
           statsOpType: this.selectedOpType,
           operationType: STATS_OPERATION_TYPES_KEY_NAMES[this.selectedOpType],
