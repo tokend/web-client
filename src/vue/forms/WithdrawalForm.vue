@@ -120,7 +120,7 @@
               {{ 'withdrawal-form.withdraw-btn' | globalize }}
             </button>
             <form-confirmation
-              v-if="formMixin.isConfirmationShown"
+              v-else
               @ok="hideConfirmation() || submit()"
               @cancel="hideConfirmation()"
             />
@@ -282,9 +282,8 @@ export default {
         }
 
         this.former.attrs.fees.sourceFee.fixed = this.fees.sourceFee.fixed
-        // eslint-disable-next-line max-len
-        this.former.attrs.fees.sourceFee.calculatedPercent = this.fees.sourceFee.calculatedPercent
-        // eslint-disable-next-line max-len
+        this.former.attrs.fees.sourceFee.calculatedPercent =
+          this.fees.sourceFee.calculatedPercent
         this.former.attrs.selectedAssetBalanceId = this.selectedAssetBalance.id
 
         const operation = this.former.buildOps()
