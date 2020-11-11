@@ -10,7 +10,8 @@ import { Asset } from './asset-helper'
 export async function createIssuance (attrs) {
   const receiverAccountId = await getReceiverAccountId(attrs.receiver)
   const receiverBalanceId = await getReceiverBalanceId(
-    receiverAccountId, attrs.asset)
+    receiverAccountId, attrs.assetCode)
+
   if (receiverBalanceId) {
     await postIssuanceOperation(receiverBalanceId, attrs)
   } else {
@@ -33,14 +34,13 @@ async function getReceiverBalanceId (receiverAccountId, assetCode) {
 }
 
 async function postIssuanceOperation (receiverBalanceId, attrs) {
-  base.CreateIssuanceRequestBuilder
-    .createIssuanceRequest({
-      asset: attrs.asset,
-      amount: attrs.amount.toString(),
-      receiver: receiverBalanceId,
-      reference: attrs.reference,
-      creatorDetails: {},
-    })
+  base.CreateIssuanceRequestBuilder.createIssuanceRequest({
+    asset: attrs.assetCode,
+    amount: attrs.amount.toString(),
+    receiver: receiverBalanceId,
+    reference: attrs.reference,
+    creatorDetails: {},
+  })
 }
 
 async function getReceiverAccountId (receiver) {

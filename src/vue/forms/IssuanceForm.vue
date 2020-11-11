@@ -14,7 +14,7 @@
               @input="setAssetByCode"
               name="create-issuance-asset"
               :label="'issuance-form.asset-lbl' | globalize"
-              @change="former.setAttr('asset', form.asset.code)"
+              @change="former.setAttr('assetCode', form.asset.code)"
               @blur="touchField('form.asset')"
               :disabled="formMixin.isDisabled"
             >
@@ -319,7 +319,7 @@ export default {
     },
     async loadFees () {
       try {
-        this.former.attrs.asset = this.form.asset.code || ''
+        this.former.attrs.assetCode = this.form.asset.code || ''
         this.former.attrs.amount = this.form.amount || '0'
         this.former.attrs.receiver = this.form.receiver || ''
         this.former.attrs.reference = this.form.reference || ''
