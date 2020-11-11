@@ -195,7 +195,7 @@ export default {
 
       if (this.isUserSales) {
         opts.filter.owner = this.accountId
-        endpoint = `/v3/sales`
+        // endpoint = `/v3/sales`
       } else {
         endpoint = `/v3/accounts/${this.accountId}/sales`
       }
