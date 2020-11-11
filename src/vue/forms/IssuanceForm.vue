@@ -372,5 +372,3 @@ export default {
   color: $col-text;
 }
 </style>
-
-// $emit(EVENTS.issuanceCreated)
