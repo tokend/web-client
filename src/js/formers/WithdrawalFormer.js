@@ -3,7 +3,7 @@ import { base, FEE_TYPES } from '@tokend/js-sdk'
 import { calculateFees } from '@/js/helpers/withdrawal-helper'
 
 /**
- * Collects the attributes for asset-related operations
+ * Collects the attributes for withdrawal operations
  * @class
  * @implements {Former}
  */
