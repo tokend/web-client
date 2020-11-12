@@ -447,6 +447,8 @@ export default {
         this.form.asset = this.quoteAssetListValues[0]
       }
 
+      this.former.attrs.balance = this.balances || ''
+      this.former.attrs.sale = this.sale || ''
       this.former.attrs.amount = this.form.amount || '0'
       this.former.attrs.assetCode = this.form.asset.code || ''
 
@@ -517,10 +519,7 @@ export default {
           await api.postOperations(operation)
           await this.loadBalances()
         }
-        this.former.attrs.assetCode = this.form.asset.code
-        this.former.attrs.balance = this.balances
-        this.former.attrs.sale = this.sale
-        this.former.attrs.currentInvestmentId = this.currentInvestment.id
+
         const operations = await this.former.buildOps()
         await api.postOperations(...operations)
 
@@ -548,8 +547,6 @@ export default {
       this.disableForm()
 
       try {
-        this.former.attrs.balance = this.balances
-        this.former.attrs.sale = this.sale
         this.former.attrs.currentInvestmentId = this.currentInvestment.id
 
         const operation = this.former.buildOpCancelOffer()
@@ -572,8 +569,6 @@ export default {
       this.disableForm()
       try {
         this.fees = await this.former.calculateFees(this.accountId)
-        this.former.attrs.fees = this.fees.totalFee.calculatedPercent
-        this.former.attrs.sale = this.sale
 
         this.isFeesLoaded = true
         this.isModeConfirm = true

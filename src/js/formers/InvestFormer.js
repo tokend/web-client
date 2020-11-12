@@ -80,6 +80,7 @@ export class InvestFormer extends Former {
         senderAccountId: accountId,
         type: FEE_TYPES.investFee,
       })
+      this.attrs.fees = response.totalFee.calculatedPercent
 
       return response
     }
