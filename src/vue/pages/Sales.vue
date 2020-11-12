@@ -37,7 +37,7 @@
         <template slot="heading">
           {{ 'sales.new-sale' | globalize }}
         </template>
-        <create-sale-form-module
+        <sale-form
           @submitted="closeCreateSaleDrawerAndUpdateList()"
         />
       </drawer>
@@ -52,7 +52,7 @@ import config from '@/config'
 
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
-import CreateSaleFormModule from '@modules/create-sale-form'
+import SaleForm from '@/vue/forms/SaleForm/SaleForm'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -66,7 +66,7 @@ export default {
   components: {
     TopBar,
     Drawer,
-    CreateSaleFormModule,
+    SaleForm,
   },
 
   mixins: [UpdateList],

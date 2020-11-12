@@ -2,7 +2,7 @@
   <form
     novalidate
     class="app__form"
-    @submit.prevent="submit"
+    @submit.prevent="next"
   >
     <div class="app__form-row">
       <div class="app__form-field">
@@ -266,6 +266,7 @@ import { CreateSaleRequest } from '../wrappers/create-sale-request'
 import { SALE_TYPES } from '@tokend/js-sdk'
 
 import { MathUtil } from '@/js/utils'
+import { SaleFormer } from '@/js/formers/SaleFormer'
 
 import {
   required,
@@ -293,29 +294,32 @@ export default {
     request: { type: CreateSaleRequest, default: null },
     ownedAssets: { type: Array, default: _ => [] },
     baseAssets: { type: Array, default: _ => [] },
+    former: { type: SaleFormer, required: true },
   },
 
-  data: _ => ({
-    form: {
-      type: '',
-      name: '',
-      baseAsset: {},
-      capAsset: {},
-      startTime: '',
-      endTime: '',
-      softCap: '',
-      hardCap: '',
-      assetsToSell: '',
-      quoteAssets: [],
-      isWhitelisted: false,
-    },
-    isQuoteAssetsLoaded: false,
-    availableQuoteAssets: [],
-    MIN_AMOUNT: config.MIN_AMOUNT,
-    MAX_AMOUNT: config.MAX_AMOUNT,
-    CODE_MAX_LENGTH,
-    NAME_MAX_LENGTH,
-  }),
+  data () {
+    return {
+      form: {
+        type: this.former.attrs.type || '',
+        name: this.former.attrs.name || '',
+        baseAsset: this.former.attrs.baseCode || {},
+        capAsset: this.former.attrs.capAsset || {},
+        startTime: this.former.attrs.startTime || '',
+        endTime: this.former.attrs.endTime || '',
+        softCap: this.former.attrs.softCap || '',
+        hardCap: this.former.attrs.hardCap || '',
+        assetsToSell: this.former.attrs.assetsToSell || '',
+        quoteAssets: this.former.attrs.quoteAssets || [],
+        isWhitelisted: this.former.attrs.isWhiteListed || false,
+      },
+      isQuoteAssetsLoaded: false,
+      availableQuoteAssets: [],
+      MIN_AMOUNT: config.MIN_AMOUNT,
+      MAX_AMOUNT: config.MAX_AMOUNT,
+      CODE_MAX_LENGTH,
+      NAME_MAX_LENGTH,
+    }
+  },
 
   validations () {
     return {
@@ -410,17 +414,34 @@ export default {
     },
   },
 
-  created () {
-    if (this.request) {
-      this.populateForm()
-    } else {
-      this.form.type = this.localizedSaleTypes[0].value
-      this.form.baseAsset = this.ownedAssets[0] || {}
-      this.form.capAsset = this.baseAssets[0] || {}
-    }
-  },
+  // created () {
+  //   if (this.request) {
+  //     this.populateForm()
+  //   } else {
+  //     this.form.type = this.localizedSaleTypes[0].value
+  //     this.form.baseAsset = this.ownedAssets[0] || {}
+  //     this.form.capAsset = this.baseAssets[0] || {}
+  //   }
+  // },
 
   methods: {
+    next () {
+      if (!this.isFormValid()) return
+      this.former.mergeAttrs({
+        type: this.former.attrs.type,
+        name: this.former.attrs.name,
+        baseAsset: this.former.attrs.baseCode,
+        capAsset: this.former.attrs.capAsset,
+        startTime: this.former.attrs.startTime,
+        endTime: this.former.attrs.endTime,
+        softCap: this.former.attrs.softCap,
+        hardCap: this.former.attrs.hardCap,
+        assetsToSell: this.former.attrs.assetsToSell,
+        quoteAssets: this.former.attrs.quoteAssets,
+        isWhitelisted: this.former.attrs.isWhiteListed,
+      })
+      this.$emit('next')
+    },
     setBaseAssetByCode (code) {
       this.form.baseAsset = this.ownedAssets.find(item => item.code === code)
     },

@@ -10,20 +10,23 @@
           <information-step-form
             v-if="currentStep === STEPS.information.number"
             :request="request"
+            :former="former"
             :base-assets="baseAssets"
             :owned-assets="ownedAssets"
-            @submit="setInformationStepForm($event) || moveToNextStep()"
+            @next="setInformationStepForm($event) || moveToNextStep()"
           />
 
           <short-blurb-step-form
             v-if="currentStep === STEPS.shortBlurb.number"
             :request="request"
+            :former="former"
             @submit="setShortBlurbStepForm($event) || moveToNextStep()"
           />
 
           <full-description-step-form
             v-if="currentStep === STEPS.fullDescription.number"
             :request="request"
+            :former="former"
             :sale-description="saleDescription"
             :is-disabled.sync="isDisabled"
             @submit="setFullDescriptionStepForm($event) || submit()"
@@ -56,10 +59,10 @@
 import LoadAssetsMixin from './mixins/load-assets.mixin'
 import ManageSaleRequestMixin from './mixins/manage-sale-request.mixin'
 
-import InformationStepForm from './components/information-step-form'
-import ShortBlurbStepForm from './components/short-blurb-step-form'
-import FullDescriptionStepForm from './components/full-description-step-form'
-import SkeletonLoaderStepForm from './components/skeleton-loader-step-form'
+import InformationStepForm from './components/InformationStepForm'
+import ShortBlurbStepForm from './components/ShortBlurbStepForm'
+import FullDescriptionStepForm from './components/FullDescriptionStepForm'
+import SkeletonLoaderStepForm from './components/SkeletonLoaderStepForm'
 
 import FormStepper from '@/vue/common/FormStepper'
 import NoDataMessage from '@/vue/common/NoDataMessage'
@@ -69,6 +72,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { SaleFormer } from '@/js/formers/SaleFormer'
 
 const STEPS = {
   information: {
@@ -90,7 +94,7 @@ const EVENTS = {
 }
 
 export default {
-  name: 'create-sale-form-module',
+  name: 'create-sale-form',
   components: {
     FormStepper,
     NoDataMessage,
@@ -105,6 +109,7 @@ export default {
       type: String,
       default: '',
     },
+    former: { type: SaleFormer, default: () => new SaleFormer() },
   },
 
   data: _ => ({

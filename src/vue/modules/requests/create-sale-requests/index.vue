@@ -6,7 +6,7 @@
           <template slot="heading">
             {{ 'create-sale-requests.update-sale-title' | globalize }}
           </template>
-          <create-sale-form-module
+          <sale-form
             :request-id="selectedRequest.id"
             @submitted="isDrawerShown = false"
             @request-updated="emitUpdateList('createSaleRequests:updateList')"
@@ -53,7 +53,7 @@ import CollectionLoader from '@/vue/common/CollectionLoader'
 import RequestsTable from './components/requests-table'
 import RequestViewer from './components/request-viewer'
 
-import CreateSaleFormModule from '@modules/create-sale-form'
+import SaleForm from '@/vue/forms/SaleForm/SaleForm'
 
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { types } from './store/types'
@@ -68,7 +68,7 @@ export default {
     CollectionLoader,
     RequestsTable,
     RequestViewer,
-    CreateSaleFormModule,
+    SaleForm,
   },
 
   mixins: [UpdateList],
