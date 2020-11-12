@@ -54,6 +54,7 @@
               class="app__form-field"
               v-model="form.amount"
               name="withdrawal-amount"
+              @change="former.setAttr('amount', form.amount)"
               validation-type="outgoing"
               :label="'withdrawal-form.amount' | globalize({
                 asset: form.asset.code
@@ -72,6 +73,7 @@
                 class="app__form-field"
                 v-model.trim="form.address"
                 name="withdrawal-address"
+                @change="former.setAttr('creatorDetails.address', form.address)"
                 @blur="touchField('form.address')"
                 :error-message="getFieldErrorMessage('form.address')"
                 :label="'withdrawal-form.destination-address' | globalize({
@@ -87,6 +89,7 @@
                 class="app__form-field"
                 v-model.trim="form.comment"
                 name="withdrawal-address"
+                @change="former.setAttr('creatorDetails.comment', form.comment)"
                 @blur="touchField('form.address')"
                 :error-message="getFieldErrorMessage('form.address')"
                 :label="'withdrawal-form.comment' | globalize"
@@ -157,7 +160,7 @@ import Loader from '@/vue/common/Loader'
 import EmailGetter from '@/vue/common/EmailGetter'
 
 import IdentityGetterMixin from '@/vue/mixins/identity-getter'
-import { FEE_TYPES, base } from '@tokend/js-sdk'
+import { FEE_TYPES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { vueRoutes } from '@/vue-router/routes'
@@ -169,6 +172,7 @@ import {
   required,
   address,
 } from '@validators'
+import { WithdrawalFormer } from '@/js/formers/WithdrawalFormer'
 
 const EVENTS = {
   operationSubmitted: 'operation-submitted',
@@ -185,6 +189,7 @@ export default {
   mixins: [FormMixin, FeesMixin, IdentityGetterMixin],
   props: {
     assetCode: { type: String, default: '' },
+    former: { type: WithdrawalFormer, default: () => new WithdrawalFormer() },
   },
   data: () => ({
     isLoaded: false,
@@ -244,7 +249,7 @@ export default {
     try {
       await this.loadBalances()
       await this.initAssetSelector()
-      await this.loadFees()
+
       this.isLoaded = true
     } catch (error) {
       this.isFailed = true
@@ -258,6 +263,7 @@ export default {
     setAssetByCode (code) {
       this.form.asset = this.withdrawableBalancesAssets
         .find(item => item.code === code)
+      this.former.attrs.assetCode = this.form.asset.code
     },
     async submit () {
       if (!this.isFormValid()) return
@@ -267,8 +273,20 @@ export default {
           Bus.error('withdrawal-form.failed-load-fees')
           return false
         }
-        const operation = base.CreateWithdrawRequestBuilder
-          .createWithdrawWithAutoConversion(this.composeOptions())
+
+        if (this.isMasterAssetOwner) {
+          this.former.attrs.creatorDetails.address = this.form.address
+        } else {
+          this.former.attrs.creatorDetails.comment = this.form.comment
+        }
+
+        this.former.attrs.fees.sourceFee.fixed = this.fees.sourceFee.fixed
+        this.former.attrs.fees.sourceFee.calculatedPercent =
+          this.fees.sourceFee.calculatedPercent
+        this.former.attrs.selectedAssetBalanceId = this.selectedAssetBalance.id
+
+        const operation = this.former.buildOps()
+
         await api.postOperations(operation)
         await this.reinitAssetSelector()
         Bus.success('withdrawal-form.withdraw-success')
@@ -289,12 +307,8 @@ export default {
     },
     async loadFees () {
       try {
-        this.fees = await this.calculateFees({
-          assetCode: this.form.asset.code,
-          amount: this.form.amount || 0,
-          senderAccountId: this.accountId,
-          type: FEE_TYPES.withdrawalFee,
-        })
+        this.former.attrs.accountId = this.accountId
+        this.fees = await this.former.calculateFees()
 
         this.isFeesLoaded = true
       } catch (e) {
@@ -302,32 +316,12 @@ export default {
         ErrorHandler.processWithoutFeedback(e)
       }
     },
-    composeOptions () {
-      const creatorDetails = {}
-
-      if (this.isMasterAssetOwner) {
-        creatorDetails.address = this.form.address
-      } else {
-        creatorDetails.comment = this.form.comment
-      }
-
-      return {
-        balance: this.selectedAssetBalance.id,
-        amount: this.form.amount,
-        creatorDetails: creatorDetails,
-        destAsset: this.form.asset.code,
-        expectedDestAssetAmount: this.form.amount,
-        fee: {
-          fixed: this.fees.sourceFee.fixed,
-          percent: this.fees.sourceFee.calculatedPercent,
-        },
-      }
-    },
     async initAssetSelector () {
       if (this.withdrawableBalancesAssets.length) {
         const selectedAsset = this.withdrawableBalancesAssets
           .find(a => a.code === this.assetCode)
         this.form.asset = selectedAsset || this.withdrawableBalancesAssets[0]
+        this.former.attrs.assetCode = this.form.asset.code
       }
     },
     async reinitAssetSelector () {
@@ -336,6 +330,7 @@ export default {
         const updatedAsset = this.withdrawableBalancesAssets
           .find(item => item.code === this.form.asset.code)
         this.form.asset = updatedAsset || this.withdrawableBalancesAssets[0]
+        this.former.attrs.assetCode = this.form.asset.code
       }
     },
   },
