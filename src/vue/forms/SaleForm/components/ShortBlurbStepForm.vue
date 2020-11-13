@@ -2,17 +2,19 @@
   <form
     novalidate
     class="app__form"
-    @submit.prevent="submit"
+    @submit.prevent="next"
   >
     <div class="app__form-row">
       <div class="app__form-field">
         <file-field
+          white-autofill
+          v-model="form.saleLogo"
+          @blur="touchField('form.saleLogo')"
+          name="create-sale-logo"
           :label="'create-sale-form.sale-logo-lbl' | globalize"
           :note="'create-sale-form.sale-logo-note' | globalize"
-          name="create-sale-logo"
           :file-extensions="['jpg', 'png']"
           :document-type="DOCUMENT_TYPES.saleLogo"
-          v-model="form.saleLogo"
           :error-message="getFieldErrorMessage('form.saleLogo')"
         />
       </div>
@@ -21,6 +23,7 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <textarea-field
+          white-autofill
           v-model="form.shortDescription"
           @blur="touchField('form.shortDescription')"
           name="create-sale-short-description"
@@ -50,15 +53,15 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
-import { Document } from '@tokend/js-sdk'
-
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
 
-import { required, maxLength } from '@validators'
+import { required, maxLength, nonEmptyDocument } from '@validators'
+import { SaleFormer } from '@/js/formers/SaleFormer'
+import { Document } from '@tokend/js-sdk'
 
-const EVENTS = {
-  submit: 'submit',
-}
+// const EVENTS = {
+//   submit: 'submit',
+// }
 const DESCRIPTION_MAX_LENGTH = 255
 
 export default {
@@ -66,22 +69,26 @@ export default {
   mixins: [FormMixin],
   props: {
     request: { type: CreateSaleRequest, default: null },
+    former: { type: SaleFormer, required: true },
   },
 
-  data: _ => ({
-    form: {
-      saleLogo: new Document(),
-      shortDescription: '',
-    },
-    DOCUMENT_TYPES,
-    DESCRIPTION_MAX_LENGTH,
-  }),
+  data () {
+    return {
+      form: {
+        saleLogo: this.former.attrs.saleLogo || new Document(),
+        shortDescription: this.former.attrs.shortDescription || '',
+      },
+      DOCUMENT_TYPES,
+      DESCRIPTION_MAX_LENGTH,
+    }
+  },
 
   validations () {
     return {
       form: {
         saleLogo: {
           required,
+          nonEmptyDocument,
         },
         shortDescription: {
           required,
@@ -92,24 +99,33 @@ export default {
   },
 
   created () {
-    if (this.request) {
-      this.populateForm()
-    }
+    // if (this.request) {
+    //   this.populateForm()
+    // }
   },
 
   methods: {
-    populateForm () {
-      this.form = {
-        saleLogo: new Document(this.request.logo),
-        shortDescription: this.request.shortDescription,
-      }
+    // populateForm () {
+    //   this.form = {
+    //     saleLogo: new Document(this.request.logo),
+    //     shortDescription: this.request.shortDescription,
+    //   }
+    // },
+
+    next () {
+      if (!this.isFormValid()) return
+      this.former.mergeAttrs({
+        saleLogo: this.form.saleLogo,
+        shortDescription: this.form.shortDescription,
+      })
+      this.$emit('next', this.former.attrs)
     },
 
-    submit () {
-      if (this.isFormValid()) {
-        this.$emit(EVENTS.submit, this.form)
-      }
-    },
+    // submit () {
+    //   if (this.isFormValid()) {
+    //     this.$emit(EVENTS.submit, this.form)
+    //   }
+    // },
   },
 }
 </script>

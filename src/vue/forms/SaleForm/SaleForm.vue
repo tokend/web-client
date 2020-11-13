@@ -20,7 +20,7 @@
             v-if="currentStep === STEPS.shortBlurb.number"
             :request="request"
             :former="former"
-            @submit="setShortBlurbStepForm($event) || moveToNextStep()"
+            @next="setShortBlurbStepForm($event) || moveToNextStep()"
           />
 
           <full-description-step-form

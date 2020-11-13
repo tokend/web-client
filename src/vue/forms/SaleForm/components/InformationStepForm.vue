@@ -280,9 +280,9 @@ import {
 
 import config from '@/config'
 
-const EVENTS = {
-  submit: 'submit',
-}
+// const EVENTS = {
+//   submit: 'submit',
+// }
 
 const CODE_MAX_LENGTH = 16
 const NAME_MAX_LENGTH = 255
@@ -414,33 +414,33 @@ export default {
     },
   },
 
-  // created () {
-  //   if (this.request) {
-  //     this.populateForm()
-  //   } else {
-  //     this.form.type = this.localizedSaleTypes[0].value
-  //     this.form.baseAsset = this.ownedAssets[0] || {}
-  //     this.form.capAsset = this.baseAssets[0] || {}
-  //   }
-  // },
+  created () {
+    if (this.request) {
+      // this.populateForm()
+    } else {
+      this.form.type = this.localizedSaleTypes[0].value
+      this.form.baseAsset = this.ownedAssets[0] || {}
+      this.form.capAsset = this.baseAssets[0] || {}
+    }
+  },
 
   methods: {
     next () {
       if (!this.isFormValid()) return
       this.former.mergeAttrs({
-        type: this.former.attrs.type,
-        name: this.former.attrs.name,
-        baseAsset: this.former.attrs.baseCode,
-        capAsset: this.former.attrs.capAsset,
-        startTime: this.former.attrs.startTime,
-        endTime: this.former.attrs.endTime,
-        softCap: this.former.attrs.softCap,
-        hardCap: this.former.attrs.hardCap,
-        assetsToSell: this.former.attrs.assetsToSell,
-        quoteAssets: this.former.attrs.quoteAssets,
-        isWhitelisted: this.former.attrs.isWhiteListed,
+        type: this.form.type,
+        name: this.form.name,
+        baseAsset: this.form.baseAsset,
+        capAsset: this.form.capAsset,
+        startTime: this.form.startTime,
+        endTime: this.form.endTime,
+        softCap: this.form.softCap,
+        hardCap: this.form.hardCap,
+        assetsToSell: this.form.assetsToSell,
+        quoteAssets: this.form.quoteAssets,
+        isWhitelisted: this.form.isWhitelisted,
       })
-      this.$emit('next')
+      this.$emit('next', this.former.attrs)
     },
     setBaseAssetByCode (code) {
       this.form.baseAsset = this.ownedAssets.find(item => item.code === code)
@@ -458,27 +458,27 @@ export default {
       return moment().toISOString()
     },
 
-    populateForm () {
-      this.form.name = this.request.name
-      this.form.type = +this.request.saleType
-      this.form.baseAsset = this.ownedAssets
-        .find(item => item.code === this.request.baseAsset)
-      this.form.capAsset = this.baseAssets
-        .find(item => item.code === this.request.defaultQuoteAsset)
-      this.form.startTime = this.request.startTime
-      this.form.endTime = this.request.endTime
-      this.form.softCap = this.request.softCap
-      this.form.hardCap = this.request.hardCap
-      this.form.assetsToSell = this.request.assetsToSell
-      this.form.quoteAssets = this.request.quoteAssets
-      this.form.isWhitelisted = this.request.isWhitelisted
-    },
+    // populateForm () {
+    //   this.form.name = this.request.name
+    //   this.form.type = +this.request.saleType
+    //   this.form.baseAsset = this.ownedAssets
+    //     .find(item => item.code === this.request.baseAsset)
+    //   this.form.capAsset = this.baseAssets
+    //     .find(item => item.code === this.request.defaultQuoteAsset)
+    //   this.form.startTime = this.request.startTime
+    //   this.form.endTime = this.request.endTime
+    //   this.form.softCap = this.request.softCap
+    //   this.form.hardCap = this.request.hardCap
+    //   this.form.assetsToSell = this.request.assetsToSell
+    //   this.form.quoteAssets = this.request.quoteAssets
+    //   this.form.isWhitelisted = this.request.isWhitelisted
+    // },
 
-    submit () {
-      if (this.isFormValid()) {
-        this.$emit(EVENTS.submit, this.form)
-      }
-    },
+    // submit () {
+    //   if (this.isFormValid()) {
+    //     this.$emit(EVENTS.submit, this.form)
+    //   }
+    // },
   },
 }
 </script>

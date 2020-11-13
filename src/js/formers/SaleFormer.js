@@ -1,4 +1,5 @@
 import { Former } from './Former'
+import { Document } from '@tokend/js-sdk'
 
 /**
  * Collects the attributes for sale operations
@@ -21,6 +22,10 @@ export class SaleFormer extends Former {
       assetsToSell: '',
       quoteAssets: [],
       isWhitelisted: false,
+      saleLogo: new Document(),
+      shortDescription: '',
+      youtubeVideo: '',
+      description: '',
     }
   }
 
@@ -41,5 +46,9 @@ export class SaleFormer extends Former {
     this.attrs.assetsToSell = source.assetsToSell
     this.attrs.quoteAssets = source.quoteAssets
     this.attrs.isWhitelisted = source.isWhitelisted
+    this.attrs.saleLogo = source.saleLogo
+    this.attrs.shortDescription = source.shortDescription
+    this.attrs.youtubeVideo = source.youtubeVideo
+    this.attrs.description = source.description
   }
 }

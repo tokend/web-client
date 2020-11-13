@@ -79,6 +79,7 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
+import { SaleFormer } from '@/js/formers/SaleFormer'
 
 import {
   maxLength,
@@ -97,15 +98,18 @@ export default {
     request: { type: CreateSaleRequest, default: null },
     saleDescription: { type: String, default: '' },
     isDisabled: { type: Boolean, default: false },
+    former: { type: SaleFormer, required: true },
   },
 
-  data: _ => ({
-    form: {
-      youtubeVideo: '',
-      description: '',
-    },
-    DESCRIPTION_MAX_LENGTH,
-  }),
+  data () {
+    return {
+      form: {
+        youtubeVideo: this.former.attrs.youtubeVideo || '',
+        description: this.former.attrs.description || '',
+      },
+      DESCRIPTION_MAX_LENGTH,
+    }
+  },
 
   computed: {
     youtubeId () {
@@ -118,7 +122,7 @@ export default {
 
   created () {
     if (this.request) {
-      this.populateForm()
+      // this.populateForm()
     }
   },
 
@@ -133,18 +137,19 @@ export default {
   },
 
   methods: {
-    populateForm () {
-      this.form = {
-        youtubeVideo: this.request.youtubeVideoId,
-        description: this.saleDescription,
-      }
-    },
+    // populateForm () {
+    //   this.form = {
+    //     youtubeVideo: this.youtubeVideoId,
+    //     description: this.saleDescription,
+    //   }
+    // },
 
     submit () {
-      this.$emit(EVENTS.submit, {
-        youtubeId: this.youtubeId,
+      this.former.mergeAttrs({
+        youtubeVideo: this.form.youtubeVideo,
         description: this.form.description,
       })
+      this.$emit(EVENTS.submit, this.former.attrs)
     },
 
     setConfirmationState () {
