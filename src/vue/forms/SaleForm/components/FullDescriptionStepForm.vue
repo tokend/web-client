@@ -122,7 +122,7 @@ export default {
 
   created () {
     if (this.request) {
-      // this.populateForm()
+      this.populateForm()
     }
   },
 
@@ -137,12 +137,10 @@ export default {
   },
 
   methods: {
-    // populateForm () {
-    //   this.form = {
-    //     youtubeVideo: this.youtubeVideoId,
-    //     description: this.saleDescription,
-    //   }
-    // },
+    populateForm () {
+      this.form.youtubeVideo = this.former.attrs.syoutubeVideoId
+      this.form.description = this.former.attrs.saleDescription
+    },
 
     submit () {
       this.former.mergeAttrs({

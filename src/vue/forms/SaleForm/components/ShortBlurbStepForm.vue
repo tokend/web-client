@@ -99,18 +99,16 @@ export default {
   },
 
   created () {
-    // if (this.request) {
-    //   this.populateForm()
-    // }
+    if (this.request) {
+      this.populateForm()
+    }
   },
 
   methods: {
-    // populateForm () {
-    //   this.form = {
-    //     saleLogo: new Document(this.request.logo),
-    //     shortDescription: this.request.shortDescription,
-    //   }
-    // },
+    populateForm () {
+      this.form.saleLogo = new Document(this.former.attrs.saleLogo)
+      this.form.shortDescription = this.former.attrs.shortDescription
+    },
 
     next () {
       if (!this.isFormValid()) return
@@ -120,12 +118,6 @@ export default {
       })
       this.$emit('next', this.former.attrs)
     },
-
-    // submit () {
-    //   if (this.isFormValid()) {
-    //     this.$emit(EVENTS.submit, this.form)
-    //   }
-    // },
   },
 }
 </script>

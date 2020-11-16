@@ -57,7 +57,6 @@
 
 <script>
 import LoadAssetsMixin from './mixins/load-assets.mixin'
-import ManageSaleRequestMixin from './mixins/manage-sale-request.mixin'
 
 import InformationStepForm from './components/InformationStepForm'
 import ShortBlurbStepForm from './components/ShortBlurbStepForm'
@@ -73,6 +72,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { SaleFormer } from '@/js/formers/SaleFormer'
+import { api } from '@/api'
 
 const STEPS = {
   information: {
@@ -103,7 +103,7 @@ export default {
     FullDescriptionStepForm,
     SkeletonLoaderStepForm,
   },
-  mixins: [LoadAssetsMixin, ManageSaleRequestMixin],
+  mixins: [LoadAssetsMixin],
   props: {
     requestId: {
       type: String,
@@ -133,12 +133,15 @@ export default {
 
   async created () {
     await this.init()
+    this.former.attrs.accountId = this.accountId
+    this.former.attrs.assets = this.assets
+    this.former.attrs.requestId = this.requestId
   },
 
   methods: {
     async init () {
       try {
-        await this.loadAssets(this.accountId)
+        await this.former.loadAssets(this.accountId)
         await this.tryLoadRequest()
 
         this.isLoaded = true
@@ -150,11 +153,11 @@ export default {
 
     async tryLoadRequest () {
       if (this.requestId) {
-        this.request = await this.getCreateSaleRequestById(
+        this.request = await this.former.getCreateSaleRequestById(
           this.requestId,
           this.accountId
         )
-        this.saleDescription = await this.getSaleDescription(
+        this.saleDescription = await this.former.getSaleDescription(
           this.request.descriptionBlobId,
           this.accountId
         )
@@ -184,6 +187,8 @@ export default {
       this.isDisabled = true
       try {
         await this.submitCreateSaleRequest(this.accountId)
+        const operation = await this.former.buildOps()
+        await api.postOperations(operation)
         Bus.success('create-sale-form.request-submitted-msg')
         this.emitSubmitEvents()
       } catch (e) {

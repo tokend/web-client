@@ -258,7 +258,6 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-import LoadAssetPairsMixin from '../mixins/load-asset-pairs.mixin'
 
 import moment from 'moment'
 
@@ -289,7 +288,7 @@ const NAME_MAX_LENGTH = 255
 
 export default {
   name: 'information-step-form',
-  mixins: [FormMixin, LoadAssetPairsMixin],
+  mixins: [FormMixin],
   props: {
     request: { type: CreateSaleRequest, default: null },
     ownedAssets: { type: Array, default: _ => [] },
@@ -405,9 +404,10 @@ export default {
       if (this.isQuoteAssetsLoaded) {
         this.isQuoteAssetsLoaded = false
         this.form.quoteAssets = []
+        this.former.attrs.quoteAssets = this.form.quoteAssets
       }
 
-      const quoteAssets = await this.loadBaseAssetsByQuote(value)
+      const quoteAssets = await this.former.loadBaseAssetsByQuote(value)
 
       this.availableQuoteAssets = [this.form.capAsset, ...quoteAssets]
       this.isQuoteAssetsLoaded = true
@@ -416,7 +416,7 @@ export default {
 
   created () {
     if (this.request) {
-      // this.populateForm()
+      this.populateForm()
     } else {
       this.form.type = this.localizedSaleTypes[0].value
       this.form.baseAsset = this.ownedAssets[0] || {}
@@ -458,27 +458,22 @@ export default {
       return moment().toISOString()
     },
 
-    // populateForm () {
-    //   this.form.name = this.request.name
-    //   this.form.type = +this.request.saleType
-    //   this.form.baseAsset = this.ownedAssets
-    //     .find(item => item.code === this.request.baseAsset)
-    //   this.form.capAsset = this.baseAssets
-    //     .find(item => item.code === this.request.defaultQuoteAsset)
-    //   this.form.startTime = this.request.startTime
-    //   this.form.endTime = this.request.endTime
-    //   this.form.softCap = this.request.softCap
-    //   this.form.hardCap = this.request.hardCap
-    //   this.form.assetsToSell = this.request.assetsToSell
-    //   this.form.quoteAssets = this.request.quoteAssets
-    //   this.form.isWhitelisted = this.request.isWhitelisted
-    // },
-
-    // submit () {
-    //   if (this.isFormValid()) {
-    //     this.$emit(EVENTS.submit, this.form)
-    //   }
-    // },
+    populateForm () {
+      this.former.populate(this.request)
+      this.form.name = this.former.attrs.name
+      this.form.type = +this.former.attrs.type
+      this.form.baseAsset = this.ownedAssets
+        .find(item => item.code === this.request.baseAsset)
+      this.form.capAsset = this.baseAssets
+        .find(item => item.code === this.request.defaultQuoteAsset)
+      this.form.startTime = this.former.attrs.startTime
+      this.form.endTime = this.former.attrs.endTime
+      this.form.softCap = this.former.attrs.softCap
+      this.form.hardCap = this.former.attrs.hardCap
+      this.form.assetsToSell = this.former.attrs.assetsToSell
+      this.form.quoteAssets = this.former.attrs.quoteAssets
+      this.form.isWhitelisted = this.former.attrs.isWhitelisted
+    },
   },
 }
 </script>
