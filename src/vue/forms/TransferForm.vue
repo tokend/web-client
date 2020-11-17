@@ -113,7 +113,7 @@
             <fees-renderer
               :fees-collection="fees"
               :asset-code="form.asset.code"
-              :paid-for-destination.sync="form.isPaidForRecipient"
+              :paid-for-destination.sync="form.isPaidFeeForRecipient"
             />
           </div>
 
@@ -134,7 +134,7 @@
               :message="'transfer-form.recheck-form' | globalize"
               :ok-button="'transfer-form.submit-btn' | globalize"
               @cancel="hideConfirmation()"
-              @ok="submit(form.isPaidForRecipient)"
+              @ok="submit(form.isPaidFeeForRecipient)"
             />
           </div>
         </form>
@@ -198,7 +198,7 @@ export default {
       amount: '',
       recipient: '',
       subject: '',
-      isPaidForRecipient: false,
+      isPaidFeeForRecipient: false,
     },
     fees: {},
     isLoaded: false,
@@ -241,11 +241,11 @@ export default {
       loadCurrentBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async submit () {
-      this.formMixin.isDisabled = false
-      this.formMixin.isConfirmationShown = false
-
+      this.hideConfirmation()
       this.disableForm()
       try {
+        this.former.attrs.isPaidFeeForRecipient =
+          this.form.isPaidFeeForRecipient
         const operation = this.former.buildOps()
         await api.postOperations(operation)
         Bus.success('transfer-form.payment-successful')
@@ -267,9 +267,10 @@ export default {
 
         this.fees = await this.former.calculateFees(this.accountId)
         this.isFeesLoaded = true
-        this.formMixin.isConfirmationShown = true
+        this.showConfirmation()
       } catch (error) {
         ErrorHandler.process(error)
+        this.enableForm()
       }
     },
     rerenderForm () {

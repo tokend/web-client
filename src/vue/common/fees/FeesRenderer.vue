@@ -86,9 +86,12 @@ export default {
       vuexTypes.assets,
     ]),
     isExternalFeePresent () {
+      let asset = this.assets
+        .find(item => item.code === this.feesCollection.assetCode)
+
       return Boolean(
-        this.assets.externalSystemType &&
-        this.assets.owner === this._masterAccountId &&
+        asset.externalSystemType &&
+        asset.owner === this.feesCollection.masterAccountId &&
         this.feesCollection.isHaveWithdrawalFee
       )
     },

@@ -15,7 +15,7 @@ export class FeesCollection {
     this._isPaidForDestination = false
     this._fees = fees
     this.assetCode = assetCode
-    this._masterAccountId = masterAccountId
+    this.masterAccountId = masterAccountId
   }
 
   get isPaidForDestination () {
