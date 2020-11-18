@@ -143,30 +143,9 @@ import { Bus } from '@/js/helpers/event-bus'
 import { LimitsFormer } from '@/js/formers/LimitsFormer'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { api } from '@/api'
-import { errors, STATS_OPERATION_TYPES } from '@tokend/js-sdk'
+import { errors } from '@tokend/js-sdk'
 import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes.const'
 import config from '@/config'
-
-const STATS_OPERATION_TYPES_KEY_NAMES = {
-  [STATS_OPERATION_TYPES.deposit]: 'deposit',
-  [STATS_OPERATION_TYPES.withdraw]: 'withdraw',
-  [STATS_OPERATION_TYPES.paymentOut]: 'payment',
-}
-
-const FORMATTED_STATS_OPERATION_TYPES = [
-  {
-    value: STATS_OPERATION_TYPES.deposit,
-    label: 'limits-form.op-type-deposit',
-  },
-  {
-    value: STATS_OPERATION_TYPES.withdraw,
-    label: 'limits-form.op-type-withdraw',
-  },
-  {
-    value: STATS_OPERATION_TYPES.paymentOut,
-    label: 'limits-form.op-type-payment-out',
-  },
-]
 
 const EVENTS = {
   limitsChanged: 'limits-changed',
@@ -188,11 +167,8 @@ export default {
       annualOut: '',
       note: '',
     },
-    selectedOpType: '',
     isRequestCreating: false,
     formNoteMaxLength: 250,
-    FORMATTED_STATS_OPERATION_TYPES,
-    STATS_OPERATION_TYPES_KEY_NAMES,
     config,
   }),
   validations () {

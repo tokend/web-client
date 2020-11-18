@@ -132,17 +132,8 @@ export default {
     },
   },
   data: () => ({
-    form: {
-      dailyOut: '',
-      weeklyOut: '',
-      monthlyOut: '',
-      annualOut: '',
-      note: '',
-    },
     former: null,
     selectedOpType: '',
-    isRequestCreating: false,
-    formNoteMaxLength: 250,
     FORMATTED_STATS_OPERATION_TYPES,
     STATS_OPERATION_TYPES_KEY_NAMES,
     config,
