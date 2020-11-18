@@ -17,8 +17,7 @@
         </router-link>
       </template>
 
-      <template
-        v-else>
+      <template v-else>
         <form
           id="transfer-form"
           @submit.prevent="loadFees"
@@ -112,7 +111,6 @@
           >
             <fees-renderer
               :fees-collection="fees"
-              :asset-code="form.asset.code"
               :paid-for-destination.sync="form.isPaidFeeForRecipient"
             />
           </div>
@@ -244,8 +242,7 @@ export default {
       this.hideConfirmation()
       this.disableForm()
       try {
-        this.former.attrs.isPaidFeeForRecipient =
-          this.form.isPaidFeeForRecipient
+        this.former.setAttr('isPaidFeeForRecipient', this.form.isPaidFeeForRecipient)
         const operation = this.former.buildOps()
         await api.postOperations(operation)
         Bus.success('transfer-form.payment-successful')

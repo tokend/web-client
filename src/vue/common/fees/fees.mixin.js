@@ -22,7 +22,6 @@ export default {
      */
     async calculateFees (opts) {
       const assetCode = opts.assetCode
-      const masterAccountId = api.networkDetails.adminAccountId
       let fees = []
 
       const sourceFee = await this.calculateFee({
@@ -45,7 +44,7 @@ export default {
         fees.push(destinationFee)
       }
 
-      return new FeesCollection({ fees, assetCode, masterAccountId })
+      return new FeesCollection({ fees, assetCode })
     },
 
     async calculateFee ({ accountId, type, subtype, assetCode, amount }) {

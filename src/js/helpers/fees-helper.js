@@ -16,7 +16,6 @@ import { FeesCollection } from '@/vue/common/fees/fees-collection'
    * @returns {FeesCollection} - Fees collection.
    */
 export async function calculateFees (opts) {
-  const masterAccountId = api.networkDetails.adminAccountId
   let fees = []
 
   const sourceFee = await calculateFee({
@@ -39,11 +38,7 @@ export async function calculateFees (opts) {
     fees.push(destinationFee)
   }
 
-  return new FeesCollection({
-    fees,
-    assetCode: opts.assetCode,
-    masterAccountId,
-  })
+  return new FeesCollection({ fees, assetCode: opts.assetCode })
 }
 
 async function calculateFee ({ accountId, type, subtype, assetCode, amount }) {

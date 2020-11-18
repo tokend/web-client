@@ -58,6 +58,7 @@ import FeeViewer from './FeeViewer'
 import { FeesCollection } from './fees-collection'
 import { vuexTypes } from '@/vuex/types'
 import { mapGetters } from 'vuex'
+import { api } from '@/api'
 
 import { vueRoutes } from '@/vue-router/routes'
 
@@ -91,7 +92,7 @@ export default {
 
       return Boolean(
         asset.externalSystemType &&
-        asset.owner === this.feesCollection.masterAccountId &&
+        asset.owner === api.networkDetails.adminAccountId &&
         this.feesCollection.isHaveWithdrawalFee
       )
     },

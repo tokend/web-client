@@ -7,7 +7,7 @@ const EMPTY_FEE = {
 }
 
 export class FeesCollection {
-  constructor ({ fees, assetCode, masterAccountId }) {
+  constructor ({ fees, assetCode }) {
     if (!fees.every(f => f instanceof Fee)) {
       throw new Error('opts.fees must be array of Fee instances')
     }
@@ -15,7 +15,6 @@ export class FeesCollection {
     this._isPaidForDestination = false
     this._fees = fees
     this.assetCode = assetCode
-    this.masterAccountId = masterAccountId
   }
 
   get isPaidForDestination () {
