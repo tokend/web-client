@@ -1,6 +1,6 @@
 import { FEE_TYPES, PAYMENT_FEE_SUBTYPES, base } from '@tokend/js-sdk'
 import { api } from '@/api'
-import { getAccountIdByIdentifier } from '@/js/helpers/main-helper'
+import { getAccountIdByIdentifier } from '@/js/helpers/identity-helper'
 
 import { Fee } from '@/vue/common/fees/fee'
 import { FeesCollection } from '@/vue/common/fees/fees-collection'

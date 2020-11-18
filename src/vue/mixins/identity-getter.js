@@ -1,7 +1,6 @@
-import { api } from '@/api'
-import { errors } from '@/js/errors'
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { getAccountIdByIdentifier } from '@/js/helpers/identity-helper'
 
 import AccountGetterMixin from './account-getter'
 
@@ -18,32 +17,6 @@ export default {
       vuexTypes.LOAD_IDENTITIES_BY_ACCOUNT_ID,
     ]),
     /**
-     * Fetches an account id by email
-     *
-     * @param {string} identifier
-     * @param {*} [defaultValue] Value returned if no email found. If not set an
-     * instance of `UserDoesntExistError` thrown
-     */
-    async getAccountIdByIdentifier (identifier, defaultValue) {
-      if (typeof identifier !== 'string') {
-        throw new TypeError(`getAccountIdByIdentifier(): 'email' arg should be a string, got ${identifier}`)
-      }
-
-      const { data } = await api.get('/identities', {
-        filter: { identifier: identifier.toLowerCase() },
-        page: { limit: 1 },
-      })
-
-      if (data && data[0]) {
-        return data[0].address
-      } else if (defaultValue !== undefined) {
-        return defaultValue
-      } else {
-        throw new errors.UserDoesntExistError()
-      }
-    },
-
-    /**
      * Fetches an array of account IDs. If no account ID found for a provided
      * email, the result will not contain this entry.
      *
@@ -57,7 +30,6 @@ export default {
       const accountIds = await Promise.all(
         emails.map(email => this.getAccountIdByIdentifier(email, null))
       )
-
       return accountIds.filter(item => item)
     },
 
@@ -98,5 +70,7 @@ export default {
         return this.emailByAccountId(accountId)
       }
     },
+
+    getAccountIdByIdentifier,
   },
 }

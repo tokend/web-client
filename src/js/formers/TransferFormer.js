@@ -12,6 +12,7 @@ export class TransferFormer extends Former {
     attrs = this.attrs || this._defaultAttrs
     get _defaultAttrs () {
       return {
+        assetCode: '',
         sourceBalanceId: '',
         destination: '',
         amount: '',
