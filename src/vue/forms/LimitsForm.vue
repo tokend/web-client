@@ -7,7 +7,7 @@
           v-model="selectedOpType"
           :label="'limits-form.operation-type' | globalize"
           :key="`limits-asset-selector-${selectedOpType}`"
-          @change="former.setAttr('statsOpType', selectedOpType)"
+          @change="former.setAttr('selectedOpType', selectedOpType)"
           class="limits__assets-select app__select-with-label--no-border"
         >
           <option
@@ -166,7 +166,7 @@ export default {
           annualOut: this.selectedLimitsByOpType.annualOut,
           assetCode: this.selectedLimitsByOpType.assetCode,
           requestType: LIMITS_REQUEST_TYPE.initial,
-          statsOpType: this.selectedOpType,
+          selectedOpType: this.selectedOpType,
           operationType: STATS_OPERATION_TYPES_KEY_NAMES[this.selectedOpType],
         })
       },

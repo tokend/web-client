@@ -18,7 +18,7 @@ export class LimitsFormer extends Former {
         annualOut: '',
         note: '',
         requestType: '',
-        statsOpType: '',
+        selectedOpType: '',
         operationType: '',
       }
     }
@@ -30,7 +30,7 @@ export class LimitsFormer extends Former {
         requestID: '0',
         creatorDetails: {
           operationType: attrs.operationType,
-          statsOpType: +attrs.statsOpType,
+          statsOpType: +attrs.selectedOpType,
           asset: attrs.assetCode,
           limits: {
             annualOut: attrs.annualOut,
@@ -54,7 +54,7 @@ export class LimitsFormer extends Former {
       attrs.annualOut = limits.annualOut
       attrs.assetCode = limits.assetCode
       attrs.requestType = limits.requestType
-      attrs.statsOpType = limits.statsOpType
+      attrs.selectedOpType = limits.selectedOpType
       attrs.operationType = limits.operationType
     }
 }
