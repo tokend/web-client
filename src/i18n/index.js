@@ -216,3 +216,4 @@ class I18n {
 }
 
 export const i18n = new I18n()
+export { default as i18nComponent } from './i18n-component'
