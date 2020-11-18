@@ -259,9 +259,6 @@ export default {
       if (!await this.isFormValid()) return
       this.disableForm()
       try {
-        this.former.attrs.sourceBalanceId =
-          this.accountBalanceByCode(this.form.asset.code).id
-
         this.fees = await this.former.calculateFees(this.accountId)
         this.isFeesLoaded = true
         this.showConfirmation()
@@ -280,7 +277,8 @@ export default {
         .find(asset => asset.code === assetCode) ||
         this.transferableBalancesAssets[0] ||
         {}
-      this.former.attrs.assetCode = this.form.asset.code
+      this.former.setAttr('assetCode', this.form.asset.code)
+      this.former.setAttr('sourceBalanceId', this.accountBalanceByCode(this.form.asset.code).id)
     },
   },
 }
