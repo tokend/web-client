@@ -1,6 +1,6 @@
 import { Former } from './Former'
 import { FEE_TYPES, base } from '@tokend/js-sdk'
-import { calculateFees } from '@/js/helpers/invest-helper'
+import { calculateFees } from '@/js/helpers/fees-helper'
 import { MathUtil } from '@/js/utils'
 
 /**
@@ -39,14 +39,23 @@ export class InvestFormer extends Former {
       return operations
     }
 
+    buildOpCreateBalance (assetCode, accountId) {
+      const operation = base.Operation.manageBalance({
+        destination: accountId,
+        asset: assetCode,
+        action: base.xdr.ManageBalanceAction.createUnique(),
+      })
+      return operation
+    }
+
     buildOpCancelOffer () {
-      const op = base.ManageOfferBuilder.cancelOffer(
+      const operation = base.ManageOfferBuilder.cancelOffer(
         this._getOfferOpts(
           this.attrs.currentInvestmentId,
           this.attrs.CANCEL_OFFER_FEE
         )
       )
-      return op
+      return operation
     }
 
     _getOfferOpts (id, offerFee) {
@@ -83,14 +92,5 @@ export class InvestFormer extends Former {
       this.attrs.fees = response.totalFee.calculatedPercent
 
       return response
-    }
-
-    buildOpCreateBalance (assetCode, accountId) {
-      const operation = base.Operation.manageBalance({
-        destination: accountId,
-        asset: assetCode,
-        action: base.xdr.ManageBalanceAction.createUnique(),
-      })
-      return operation
     }
 }
