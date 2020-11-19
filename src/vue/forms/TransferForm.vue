@@ -17,12 +17,10 @@
         </router-link>
       </template>
 
-      <template
-        v-else-if="view.mode === VIEW_MODES.submit ||
-          view.mode === VIEW_MODES.confirm">
+      <template v-else>
         <form
           id="transfer-form"
-          @submit.prevent="processTransfer"
+          @submit.prevent="loadFees"
         >
           <div class="app__form-row">
             <div class="app__form-field">
@@ -30,8 +28,9 @@
                 name="transfer-asset"
                 :value="form.asset.code"
                 @input="setAsset"
+                @change="former.setAttr('assetCode', form.asset.code)"
                 :label="'transfer-form.asset-lbl' | globalize"
-                :readonly="view.mode === VIEW_MODES.confirm"
+                :readonly="formMixin.isDisabled"
               >
                 <option
                   v-for="asset in transferableBalancesAssets"
@@ -64,10 +63,11 @@
                 v-model="form.amount"
                 name="transfer-amount"
                 validation-type="outgoing"
+                @change="former.setAttr('amount', form.amount)"
                 :label="'transfer-form.amount-lbl' | globalize"
                 :asset="form.asset"
                 is-max-button-shown
-                :readonly="view.mode === VIEW_MODES.confirm"
+                :readonly="formMixin.isDisabled"
                 :disabled="!balance"
               />
             </div>
@@ -78,10 +78,11 @@
               <input-field
                 name="transfer-recipient"
                 v-model.trim="form.recipient"
+                @change="former.setAttr('recipient', form.recipient)"
                 :label="'transfer-form.recipient-lbl' | globalize"
                 :error-message="getFieldErrorMessage('form.recipient')"
                 @blur="touchField('form.recipient')"
-                :disabled="view.mode === VIEW_MODES.confirm || !balance"
+                :disabled="formMixin.isDisabled || !balance"
               />
             </div>
           </div>
@@ -91,11 +92,12 @@
               <textarea-field
                 name="transfer-description"
                 v-model="form.subject"
+                @input="former.setAttr('subject', form.subject)"
                 :label="'transfer-form.subject-lbl' | globalize({
                   length: 250
                 })"
                 :maxlength="250"
-                :readonly="view.mode === VIEW_MODES.confirm"
+                :readonly="formMixin.isDisabled"
                 :disabled="!balance"
               />
             </div>
@@ -103,20 +105,20 @@
 
           <div
             class="transfer__fee-box"
-            v-if="isFeesLoaded && view.mode === VIEW_MODES.confirm &&
+            v-if="isFeesLoaded && formMixin.isConfirmationShown &&
               fees.isAny
             "
           >
             <fees-renderer
               :fees-collection="fees"
-              :paid-for-destination.sync="form.isPaidForRecipient"
+              :paid-for-destination.sync="form.isPaidFeeForRecipient"
             />
           </div>
 
           <div class="app__form-actions">
             <button
               v-ripple
-              v-if="view.mode === VIEW_MODES.submit"
+              v-if="!formMixin.isConfirmationShown"
               type="submit"
               class="app__form-submit-btn app__button-raised"
               :disabled="formMixin.isDisabled || !balance"
@@ -126,11 +128,11 @@
             </button>
 
             <form-confirmation
-              v-if="view.mode === VIEW_MODES.confirm"
+              v-else
               :message="'transfer-form.recheck-form' | globalize"
               :ok-button="'transfer-form.submit-btn' | globalize"
-              @cancel="updateView(VIEW_MODES.submit)"
-              @ok="submit(form.isPaidForRecipient)"
+              @cancel="hideConfirmation()"
+              @ok="submit(form.isPaidFeeForRecipient)"
             />
           </div>
         </form>
@@ -159,10 +161,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import FeesMixin from '@/vue/common/fees/fees.mixin'
-import {
-  base,
-  FEE_TYPES,
-} from '@tokend/js-sdk'
+import { FEE_TYPES } from '@tokend/js-sdk'
 import config from '@/config'
 import { api } from '@/api'
 import { Bus } from '@/js/helpers/event-bus'
@@ -171,11 +170,7 @@ import {
   required,
   emailOrAccountId,
 } from '@validators'
-
-const VIEW_MODES = {
-  submit: 'submit',
-  confirm: 'confirm',
-}
+import { TransferFormer } from '@/js/formers/TransferFormer'
 
 const EVENTS = {
   operationSubmitted: 'operation-submitted',
@@ -193,6 +188,7 @@ export default {
   ],
   props: {
     assetToTransfer: { type: String, default: '' },
+    former: { type: TransferFormer, default: () => new TransferFormer() },
   },
   data: () => ({
     form: {
@@ -200,17 +196,12 @@ export default {
       amount: '',
       recipient: '',
       subject: '',
-      isPaidForRecipient: false,
+      isPaidFeeForRecipient: false,
     },
     fees: {},
-    view: {
-      mode: VIEW_MODES.submit,
-      opts: {},
-    },
     isLoaded: false,
     isLoadingFailed: false,
     isFeesLoaded: false,
-    VIEW_MODES,
     vueRoutes,
     config,
     FEE_TYPES,
@@ -248,11 +239,12 @@ export default {
       loadCurrentBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async submit () {
-      this.updateView(VIEW_MODES.submit, this.view.opts)
+      this.hideConfirmation()
       this.disableForm()
       try {
-        await api.postOperations(this.buildPaymentOperation())
-
+        this.former.setAttr('isPaidFeeForRecipient', this.form.isPaidFeeForRecipient)
+        const operation = this.former.buildOps()
+        await api.postOperations(operation)
         Bus.success('transfer-form.payment-successful')
         this.$emit(EVENTS.operationSubmitted)
 
@@ -263,79 +255,21 @@ export default {
       }
       this.enableForm()
     },
-    async processTransfer () {
+    async loadFees () {
       if (!await this.isFormValid()) return
       this.disableForm()
       try {
-        const recipientAccountId =
-          await this.getCounterparty(this.form.recipient)
-
-        this.fees = await this.calculateFees({
-          assetCode: this.form.asset.code,
-          amount: this.form.amount,
-          recipientAccountId: recipientAccountId,
-          senderAccountId: this.accountId,
-          type: FEE_TYPES.paymentFee,
-        })
+        this.fees = await this.former.calculateFees(this.accountId)
         this.isFeesLoaded = true
-
-        const opts = {
-          amount: this.form.amount,
-          destinationAccountId: recipientAccountId,
-          destinationFixedFee: this.fees.destinationFee.fixed,
-          destinationPercentFee: this.fees.destinationFee.calculatedPercent,
-          destinationFeeAsset: this.form.asset,
-          sourceBalanceId: this.accountBalanceByCode(this.form.asset.code).id,
-          sourceFixedFee: this.fees.sourceFee.fixed,
-          sourcePercentFee: this.fees.sourceFee.calculatedPercent,
-          sourceFeeAsset: this.form.asset,
-          subject: this.form.subject,
-        }
-        this.updateView(VIEW_MODES.confirm, opts)
+        this.showConfirmation()
       } catch (error) {
         ErrorHandler.process(error)
-      }
-      this.enableForm()
-    },
-    async getCounterparty (recipient) {
-      if (!base.Keypair.isValidPublicKey(recipient)) {
-        return this.getAccountIdByIdentifier(recipient)
-      } else {
-        return recipient
-      }
-    },
-    buildPaymentOperation () {
-      return base.PaymentBuilder.payment({
-        sourceBalanceId: this.view.opts.sourceBalanceId,
-        destination: this.view.opts.destinationAccountId,
-        amount: this.view.opts.amount,
-        feeData: {
-          sourceFee: {
-            percent: this.view.opts.sourcePercentFee,
-            fixed: this.view.opts.sourceFixedFee,
-          },
-          destinationFee: {
-            percent: this.view.opts.destinationPercentFee,
-            fixed: this.view.opts.destinationFixedFee,
-          },
-          sourcePaysForDest: this.form.isPaidForRecipient,
-        },
-        subject: this.view.opts.subject,
-        asset: this.form.asset.code,
-      })
-    },
-    updateView (mode, opts = {}, clear = false) {
-      this.view.mode = mode
-      this.view.opts = opts
-      if (clear) {
-        this.clearFields()
-        this.setAsset()
+        this.enableForm()
       }
     },
     rerenderForm () {
-      this.updateView(null)
       this.isFeesLoaded = false
-      setTimeout(() => this.updateView(VIEW_MODES.submit, {}, true), 1)
+      setTimeout(() => { this.clearFields(); this.setAsset() }, 1)
     },
     setAsset (payload) {
       const assetCode = payload || this.assetToTransfer
@@ -343,6 +277,8 @@ export default {
         .find(asset => asset.code === assetCode) ||
         this.transferableBalancesAssets[0] ||
         {}
+      this.former.setAttr('assetCode', this.form.asset.code)
+      this.former.setAttr('sourceBalanceId', this.accountBalanceByCode(this.form.asset.code).id)
     },
   },
 }
