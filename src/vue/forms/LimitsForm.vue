@@ -4,10 +4,10 @@
       <div class="app__form-field">
         <select-field
           name="limits-op-type"
-          v-model="selectedOpType"
+          v-model="statsOpType"
           :label="'limits-form.operation-type' | globalize"
-          :key="`limits-asset-selector-${selectedOpType}`"
-          @change="former.setAttr('selectedOpType', selectedOpType)"
+          :key="`limits-asset-selector-${statsOpType}`"
+          @change="former.setAttr('statsOpType', statsOpType)"
           class="limits__assets-select app__select-with-label--no-border"
         >
           <option
@@ -75,7 +75,10 @@
         </tbody>
       </table>
     </div>
-    <limits-update-form :former="former" @limits-changed="limitsChanged" />
+    <limits-update-form
+      :former="former"
+      @limits-changed="limitsChanged"
+      :key="statsOpType" />
   </div>
 </template>
 
@@ -133,40 +136,39 @@ export default {
   },
   data: () => ({
     former: null,
-    selectedOpType: '',
+    statsOpType: '',
     FORMATTED_STATS_OPERATION_TYPES,
     STATS_OPERATION_TYPES_KEY_NAMES,
     config,
   }),
   computed: {
-    selectedLimitsByOpType () {
-      return this.limits[STATS_OPERATION_TYPES_KEY_NAMES[this.selectedOpType]]
+    selectedOpType () {
+      return this.limits[STATS_OPERATION_TYPES_KEY_NAMES[this.statsOpType]]
     },
   },
   watch: {
-    selectedLimitsByOpType: {
+    selectedOpType: {
       handler () {
-        if (!this.selectedOpType) {
-          this.selectedOpType = this.FORMATTED_STATS_OPERATION_TYPES[0].value
+        if (!this.statsOpType) {
+          this.statsOpType = this.FORMATTED_STATS_OPERATION_TYPES[0].value
         }
 
         this.former = new LimitsFormer({
-          dailyOut: this.selectedLimitsByOpType.dailyOut,
-          weeklyOut: this.selectedLimitsByOpType.weeklyOut,
-          monthlyOut: this.selectedLimitsByOpType.monthlyOut,
-          annualOut: this.selectedLimitsByOpType.annualOut,
-          assetCode: this.selectedLimitsByOpType.assetCode,
+          dailyOut: this.selectedOpType.dailyOut,
+          weeklyOut: this.selectedOpType.weeklyOut,
+          monthlyOut: this.selectedOpType.monthlyOut,
+          annualOut: this.selectedOpType.annualOut,
+          assetCode: this.selectedOpType.assetCode,
           requestType: LIMITS_REQUEST_TYPE.initial,
-          selectedOpType: this.selectedOpType,
-          operationType: STATS_OPERATION_TYPES_KEY_NAMES[this.selectedOpType],
+          statsOpType: this.statsOpType,
+          operationType: STATS_OPERATION_TYPES_KEY_NAMES[this.statsOpType],
         })
       },
-      immediate: true,
     },
   },
   methods: {
     getLimitByScope (period) {
-      const limitByType = this.selectedLimitsByOpType
+      const limitByType = this.selectedOpType
       switch (period) {
         case 'dailyOut':
           if (limitByType.dailyOut === MAX_VALID_LIMIT_VALUE) {

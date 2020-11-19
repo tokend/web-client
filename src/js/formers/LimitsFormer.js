@@ -18,7 +18,7 @@ export class LimitsFormer extends Former {
         annualOut: '',
         note: '',
         requestType: '',
-        selectedOpType: '',
+        statsOpType: '',
         operationType: '',
       }
     }
@@ -30,7 +30,7 @@ export class LimitsFormer extends Former {
         requestID: '0',
         creatorDetails: {
           operationType: attrs.operationType,
-          statsOpType: +attrs.selectedOpType,
+          statsOpType: +attrs.statsOpType,
           asset: attrs.assetCode,
           limits: {
             annualOut: attrs.annualOut,
@@ -45,16 +45,15 @@ export class LimitsFormer extends Former {
     }
 
     populate (limits) {
-      this.attrs = {}
-      const attrs = this.attrs
+      this.attrs = this.attrs || this._defaultAttrs
 
-      attrs.dailyOut = limits.dailyOut
-      attrs.weeklyOut = limits.weeklyOut
-      attrs.monthlyOut = limits.monthlyOut
-      attrs.annualOut = limits.annualOut
-      attrs.assetCode = limits.assetCode
-      attrs.requestType = limits.requestType
-      attrs.selectedOpType = limits.selectedOpType
-      attrs.operationType = limits.operationType
+      this.attrs.dailyOut = limits.dailyOut
+      this.attrs.weeklyOut = limits.weeklyOut
+      this.attrs.monthlyOut = limits.monthlyOut
+      this.attrs.annualOut = limits.annualOut
+      this.attrs.assetCode = limits.assetCode
+      this.attrs.requestType = limits.requestType
+      this.attrs.statsOpType = limits.statsOpType
+      this.attrs.operationType = limits.operationType
     }
 }
