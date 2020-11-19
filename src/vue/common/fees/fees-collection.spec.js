@@ -1,34 +1,10 @@
 import { Fee } from './fee'
 import { FeesCollection } from './fees-collection'
 
-import { FEE_TYPES, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
+import { PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
 
 describe('FeesCollection', () => {
   describe('getters', () => {
-    describe('isExternalFeePresent', () => {
-      it('returns true only if withdrawal fee is present', () => {
-        const validFeesCollection = new FeesCollection({
-          fees: [new Fee({ type: FEE_TYPES.withdrawalFee })],
-          masterAccountId: 'MASTER_ACCOUNT_ID',
-          asset: {
-            owner: 'MASTER_ACCOUNT_ID',
-            externalSystemType: 1,
-          },
-        })
-        expect(validFeesCollection.isExternalFeePresent).to.be.true
-
-        const invalidFeesCollection = new FeesCollection({
-          fees: [new Fee({ type: FEE_TYPES.paymentFee })],
-          masterAccountId: 'MASTER_ACCOUNT_ID',
-          asset: {
-            owner: 'MASTER_ACCOUNT_ID',
-            externalSystemType: 1,
-          },
-        })
-        expect(invalidFeesCollection.isExternalFeePresent).to.be.false
-      })
-    })
-
     describe('total', () => {
       it('calculates a sum of all present fees', () => {
         const feesCollection = new FeesCollection({
