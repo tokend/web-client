@@ -1,5 +1,6 @@
 import { errors } from '@/js/errors'
 import { api } from '@/api'
+import { email } from '@validators'
 
 /**
  * Fetches an account id by email
@@ -25,4 +26,41 @@ export async function getAccountIdByIdentifier (identifier, defaultValue) {
   } else {
     throw new errors.UserDoesntExistError()
   }
+}
+
+async function getAccountIdByEmail (email) {
+  const { data } = await api.get('/identities', {
+    filter: { email },
+    page: { limit: 1 },
+  })
+
+  if (data && data[0]) {
+    return data[0].address
+  } else {
+    throw new errors.UserDoesntExistError()
+  }
+}
+
+export async function getReceiverAccountId (receiver) {
+  let accountId
+
+  if (email(receiver)) {
+    accountId = await getAccountIdByEmail(receiver)
+  } else {
+    accountId = receiver
+  }
+
+  return accountId
+}
+
+export async function getReceiverBalanceId (receiverAccountId, assetCode) {
+  const endpoint = `/v3/accounts/${receiverAccountId}`
+  const { data: account } = await api.get(endpoint, {
+    include: ['balances.asset'],
+  })
+
+  const balance = account.balances
+    .find(item => item.asset.id === assetCode)
+
+  return balance ? balance.id : ''
 }

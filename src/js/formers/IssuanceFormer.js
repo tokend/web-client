@@ -1,7 +1,9 @@
 import { Former } from './Former'
 import { str } from './op-build-helpers'
 import { base, FEE_TYPES } from '@tokend/js-sdk'
-import { createIssuance, calculateFees, loadOwnedAssets } from '@/js/helpers/issuance-helper'
+import { createIssuance } from '@/js/helpers/issuance-helper'
+import { calculateFees } from '@/js/helpers/fees-helper'
+import { loadOwnedAssets } from '@/js/helpers/load-owned-assets-helper'
 
 /**
  * Collects the attributes for issuance-related operations
@@ -46,6 +48,7 @@ export class IssuanceFormer extends Former {
   }
 
   loadOwnedAssets (accountId) {
-    return loadOwnedAssets(accountId)
+    const result = loadOwnedAssets(accountId)
+    return result
   }
 }

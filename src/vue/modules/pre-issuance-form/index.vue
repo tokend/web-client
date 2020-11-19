@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import LoadOwnedAssetsMixin from './mixins/load-owned-assets.mixin'
+import { loadOwnedAssets } from '@/js/helpers/load-owned-assets-helper'
 
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import SkeletonLoaderPreIssuanceForm from './components/skeleton-loader-pre-issuance-form'
@@ -48,7 +48,6 @@ export default {
     UploadPreIssuanceForm,
     SkeletonLoaderPreIssuanceForm,
   },
-  mixins: [LoadOwnedAssetsMixin],
 
   data: _ => ({
     isLoaded: false,
@@ -76,5 +75,6 @@ export default {
       }
     },
   },
+  loadOwnedAssets,
 }
 </script>
