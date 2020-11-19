@@ -1,6 +1,11 @@
 import { api } from '@/api'
 import { Asset } from './asset-helper'
 
+/**
+ * Fetches an owned assets
+ *
+ * @param {string} ownerAccountId: owner account id
+ */
 export async function loadOwnedAssets (ownerAccountId) {
   const endpoint = `/v3/accounts/${ownerAccountId}`
   const { data: account } = await api.get(endpoint, {

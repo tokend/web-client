@@ -194,6 +194,7 @@ import {
   maxDecimalDigitsCount,
 } from '@validators'
 import { IssuanceFormer } from '@/js/formers/IssuanceFormer'
+import { loadOwnedAssets } from '@/js/helpers/load-owned-assets-helper'
 
 const REFERENCE_MAX_LENGTH = 64
 const EVENTS = {
@@ -280,19 +281,23 @@ export default {
   },
   watch: {
     'form.amount' (value) {
+      this.former.setAttr('amount', this.form.amount || '0')
       this.tryLoadFees()
     },
     'form.asset.code' () {
+      this.former.setAttr('assetCode', this.form.asset.code)
       this.tryLoadFees()
     },
   },
   async created () {
     try {
-      this.ownedAssets = await this.former.loadOwnedAssets(this.accountId)
+      this.ownedAssets = await this.loadOwnedAssets(this.accountId)
       this.isLoaded = true
 
       if ((this.ownedAssets || []).length) {
         this.form.asset = this.ownedAssets[0]
+        this.former.setAttr('assetCode', this.form.asset.code)
+        this.former.setAttr('amount', this.form.amount || '0')
       }
 
       await this.loadFees()
@@ -302,6 +307,7 @@ export default {
     }
   },
   methods: {
+    loadOwnedAssets,
     setAssetByCode (code) {
       this.form.asset = this.ownedAssets
         .find(item => item.code === code)
@@ -319,11 +325,6 @@ export default {
     },
     async loadFees () {
       try {
-        this.former.attrs.assetCode = this.form.asset.code || ''
-        this.former.attrs.amount = this.form.amount || '0'
-        this.former.attrs.receiver = this.form.receiver || ''
-        this.former.attrs.reference = this.form.reference || ''
-
         this.fees = await this.former.calculateFees(this.accountId)
         this.isFeesLoaded = true
       } catch (e) {

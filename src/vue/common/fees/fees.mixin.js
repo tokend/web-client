@@ -23,6 +23,7 @@ export default {
     async calculateFees (opts) {
       const assetCode = opts.assetCode
       let fees = []
+
       const sourceFee = await this.calculateFee({
         accountId: opts.senderAccountId,
         type: opts.type,

@@ -32,6 +32,7 @@
 <script>
 import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
 import SkeletonLoaderField from '@/vue/common/skeleton-loader/SkeletonLoaderField'
+
 export default {
   name: 'issuance-form-skeleton-loader',
   components: {

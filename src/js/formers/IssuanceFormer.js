@@ -1,9 +1,8 @@
 import { Former } from './Former'
 import { str } from './op-build-helpers'
 import { base, FEE_TYPES } from '@tokend/js-sdk'
-import { createIssuance } from '@/js/helpers/issuance-helper'
+import { getReceiverAccountId, getReceiverBalanceId } from '@/js/helpers/identity-helper'
 import { calculateFees } from '@/js/helpers/fees-helper'
-import { loadOwnedAssets } from '@/js/helpers/load-owned-assets-helper'
 
 /**
  * Collects the attributes for issuance-related operations
@@ -19,13 +18,15 @@ export class IssuanceFormer extends Former {
       amount: '',
       receiver: '',
       reference: '',
-      creatorDetails: {},
     }
   }
 
   async buildOps () {
     const attrs = this.attrs
-    const receiverBalanceId = await createIssuance(this.attrs)
+    const receiverAccountId = await getReceiverAccountId(attrs.receiver)
+    const receiverBalanceId = await getReceiverBalanceId(
+      receiverAccountId, attrs.assetCode)
+
     const result = {
       asset: attrs.assetCode,
       amount: str(attrs.amount),
@@ -45,10 +46,5 @@ export class IssuanceFormer extends Former {
       type: FEE_TYPES.issuanceFee,
     })
     return response
-  }
-
-  loadOwnedAssets (accountId) {
-    const result = loadOwnedAssets(accountId)
-    return result
   }
 }
