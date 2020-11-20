@@ -397,14 +397,6 @@ export default {
       return +this.availableBalance.value === 0
     },
 
-    totalAmount () {
-      const fees = MathUtil.add(
-        this.fees.totalFee.fixed,
-        this.fees.totalFee.calculatedPercent
-      )
-      return MathUtil.add(fees, this.form.amount)
-    },
-
     investmentDisabledMessageId () {
       let messageId
 
@@ -425,6 +417,7 @@ export default {
   watch: {
     'form.asset': async function () {
       try {
+        this.former.setAttr('assetCode', this.form.asset.code || '')
         if (this.form.asset.code !== this.sale.defaultQuoteAsset) {
           await this.loadAssetPairPrice()
         }
@@ -447,10 +440,9 @@ export default {
         this.form.asset = this.quoteAssetListValues[0]
       }
 
-      this.former.attrs.balance = this.balances || ''
-      this.former.attrs.sale = this.sale || ''
-      this.former.attrs.amount = this.form.amount || '0'
-      this.former.attrs.assetCode = this.form.asset.code || ''
+      this.former.setAttr('balances', this.balances || {})
+      this.former.setAttr('sale', this.sale || {})
+      this.former.setAttr('accountId', this.accountId || '')
 
       await this.loadCurrentInvestment()
       this.isLoaded = true
@@ -508,6 +500,7 @@ export default {
       if (!this.isFormValid()) return
       this.disableForm()
       this.isSubmitting = true
+      this.former.setAttr('currentInvestmentId', this.currentInvestment.id)
 
       try {
         const baseBalance = this.balances
@@ -515,7 +508,7 @@ export default {
 
         if (!baseBalance) {
           // eslint-disable-next-line max-len
-          const operation = this.former.buildOpCreateBalance(this.sale.baseAsset, this.accountId)
+          const operation = this.former.buildOpCreateBalance()
           await api.postOperations(operation)
           await this.loadBalances()
         }
@@ -538,16 +531,14 @@ export default {
         ErrorHandler.process(e)
       }
       this.isSubmitting = false
-      this.enableForm()
       this.isModeConfirm = false
       this.hideConfirmation()
     },
 
     async cancelOffer () {
       this.disableForm()
-
       try {
-        this.former.attrs.currentInvestmentId = this.currentInvestment.id
+        this.former.setAttr('currentInvestmentId', this.currentInvestment.id)
 
         const operation = this.former.buildOpCancelOffer()
         await api.postOperations(operation)
@@ -568,7 +559,7 @@ export default {
       if (!await this.isFormValid()) return
       this.disableForm()
       try {
-        this.fees = await this.former.calculateFees(this.accountId)
+        this.fees = await this.former.calculateFees()
 
         this.isFeesLoaded = true
         this.isModeConfirm = true
