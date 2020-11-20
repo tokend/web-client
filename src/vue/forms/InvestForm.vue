@@ -23,7 +23,7 @@
               @change="former.setAttr('assetCode', form.asset.code)"
               name="invest-asset"
               @blur="touchField('form.asset')"
-              :disabled="isModeConfirm ||
+              :disabled="formMixin.isConfirmationShown ||
                 !canUpdateOffer || formMixin.isDisabled"
             >
               <option
@@ -70,7 +70,7 @@
                   }
                 }
               )"
-              :disabled="isModeConfirm ||
+              :disabled="formMixin.isConfirmationShown ||
                 !canUpdateOffer || formMixin.isDisabled || isZeroBalance"
             />
 
@@ -119,17 +119,17 @@
 
         <div class="app__form-actions">
           <form-confirmation
-            v-if="isModeConfirm"
+            v-if="formMixin.isConfirmationShown"
             :message="'invest-form.recheck-form-msg' | globalize"
             :ok-button="'invest-form.invest-btn' | globalize"
             :is-pending="isSubmitting"
-            @cancel="isModeConfirm = false"
+            @cancel="hideConfirmation()"
             @ok="submit"
           />
 
           <template
             v-if="currentInvestment.id &&
-              !isModeConfirm">
+              !formMixin.isConfirmationShown">
             <button
               v-ripple
               type="button"
@@ -152,7 +152,7 @@
           <template v-else>
             <button
               v-ripple
-              v-if="!isModeConfirm"
+              v-if="!formMixin.isConfirmationShown"
               click="submit"
               class="app__button-raised"
               :disabled="formMixin.isDisabled || !canSubmit"
@@ -257,7 +257,6 @@ export default {
       percent: '',
     },
     saleBaseAsset: null,
-    isModeConfirm: false,
     isLoaded: false,
     isLoadingFailed: false,
     MIN_AMOUNT: config.MIN_AMOUNT,
@@ -507,7 +506,6 @@ export default {
           .find(balance => balance.asset.code === this.sale.baseAsset)
 
         if (!baseBalance) {
-          // eslint-disable-next-line max-len
           const operation = this.former.buildOpCreateBalance()
           await api.postOperations(operation)
           await this.loadBalances()
@@ -531,7 +529,6 @@ export default {
         ErrorHandler.process(e)
       }
       this.isSubmitting = false
-      this.isModeConfirm = false
       this.hideConfirmation()
     },
 
@@ -562,7 +559,7 @@ export default {
         this.fees = await this.former.calculateFees()
 
         this.isFeesLoaded = true
-        this.isModeConfirm = true
+        this.showConfirmation()
       } catch (error) {
         ErrorHandler.process(error)
         this.isFeesLoaded = false
