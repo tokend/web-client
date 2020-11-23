@@ -304,7 +304,6 @@ export default {
           senderAccountId: this.accountId,
           type: FEE_TYPES.issuanceFee,
         })
-
         this.isFeesLoaded = true
       } catch (e) {
         this.isFeesLoadFailed = true
