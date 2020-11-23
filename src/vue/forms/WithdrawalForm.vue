@@ -152,7 +152,6 @@
 </template>
 
 <script>
-import config from '@/config'
 import debounce from 'lodash/debounce'
 import FormMixin from '@/vue/mixins/form.mixin'
 import FeesMixin from '@/vue/common/fees/fees.mixin'
@@ -160,7 +159,6 @@ import Loader from '@/vue/common/Loader'
 import EmailGetter from '@/vue/common/EmailGetter'
 
 import IdentityGetterMixin from '@/vue/mixins/identity-getter'
-import { FEE_TYPES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { vueRoutes } from '@/vue-router/routes'
@@ -200,13 +198,10 @@ export default {
       address: '',
     },
     fees: {},
-    MIN_AMOUNT: config.MIN_AMOUNT,
     feesDebouncedRequest: null,
     isFeesLoaded: false,
     isFeesLoadFailed: false,
-    DECIMAL_POINTS: config.DECIMAL_POINTS,
     vueRoutes,
-    FEE_TYPES,
     ADDRESS_MAX_LENGTH,
   }),
   validations () {
@@ -239,9 +234,11 @@ export default {
   },
   watch: {
     'form.amount' (value) {
+      this.former.setAttr('amount', this.form.amount)
       this.tryLoadFees()
     },
     'form.asset.code' () {
+      this.former.setAttr('assetCode', this.form.asset.code)
       this.tryLoadFees()
     },
   },
@@ -249,6 +246,7 @@ export default {
     try {
       await this.loadBalances()
       await this.initAssetSelector()
+      this.former.setAttr('accountId', this.accountId)
 
       this.isLoaded = true
     } catch (error) {
@@ -263,7 +261,6 @@ export default {
     setAssetByCode (code) {
       this.form.asset = this.withdrawableBalancesAssets
         .find(item => item.code === code)
-      this.former.attrs.assetCode = this.form.asset.code
     },
     async submit () {
       if (!this.isFormValid()) return
@@ -279,14 +276,9 @@ export default {
         } else {
           this.former.attrs.creatorDetails.comment = this.form.comment
         }
-
-        this.former.attrs.fees.sourceFee.fixed = this.fees.sourceFee.fixed
-        this.former.attrs.fees.sourceFee.calculatedPercent =
-          this.fees.sourceFee.calculatedPercent
         this.former.attrs.selectedAssetBalanceId = this.selectedAssetBalance.id
 
         const operation = this.former.buildOps()
-
         await api.postOperations(operation)
         await this.reinitAssetSelector()
         Bus.success('withdrawal-form.withdraw-success')
@@ -307,9 +299,8 @@ export default {
     },
     async loadFees () {
       try {
-        this.former.attrs.accountId = this.accountId
         this.fees = await this.former.calculateFees()
-
+        this.former.setAttr('fees', this.fees)
         this.isFeesLoaded = true
       } catch (e) {
         this.isFeesLoadFailed = true
@@ -321,7 +312,6 @@ export default {
         const selectedAsset = this.withdrawableBalancesAssets
           .find(a => a.code === this.assetCode)
         this.form.asset = selectedAsset || this.withdrawableBalancesAssets[0]
-        this.former.attrs.assetCode = this.form.asset.code
       }
     },
     async reinitAssetSelector () {
@@ -330,7 +320,6 @@ export default {
         const updatedAsset = this.withdrawableBalancesAssets
           .find(item => item.code === this.form.asset.code)
         this.form.asset = updatedAsset || this.withdrawableBalancesAssets[0]
-        this.former.attrs.assetCode = this.form.asset.code
       }
     },
   },

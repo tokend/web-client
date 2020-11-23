@@ -1,13 +1,12 @@
 import { Former } from './Former'
 import { base, FEE_TYPES } from '@tokend/js-sdk'
-import { calculateFees } from '@/js/helpers/withdrawal-helper'
+import { calculateFees } from '@/js/helpers/fees-helper'
 
 /**
  * Collects the attributes for withdrawal operations
  * @class
  * @implements {Former}
  */
-
 export class WithdrawalFormer extends Former {
     attrs = this.attrs || this._defaultAttrs
 
@@ -31,23 +30,23 @@ export class WithdrawalFormer extends Former {
     }
 
     buildOps () {
-      const operation = base.CreateWithdrawRequestBuilder
-        .createWithdrawWithAutoConversion(this._createOptions())
-      return operation
-    }
+      this.attrs.fees.sourceFee.fixed = this.attrs.fees.sourceFee.fixed
+      this.attrs.fees.sourceFee.calculatedPercent =
+        this.attrs.fees.sourceFee.calculatedPercent
 
-    _createOptions () {
-      return {
-        balance: this.attrs.selectedAssetBalanceId,
-        amount: this.attrs.amount,
-        creatorDetails: this.attrs.creatorDetails,
-        destAsset: this.attrs.assetCode,
-        expectedDestAssetAmount: this.attrs.amount,
-        fee: {
-          fixed: this.attrs.fees.sourceFee.fixed,
-          percent: this.attrs.fees.sourceFee.calculatedPercent,
-        },
-      }
+      const operation = base.CreateWithdrawRequestBuilder
+        .createWithdrawWithAutoConversion({
+          balance: this.attrs.selectedAssetBalanceId,
+          amount: this.attrs.amount,
+          creatorDetails: this.attrs.creatorDetails,
+          destAsset: this.attrs.assetCode,
+          expectedDestAssetAmount: this.attrs.amount,
+          fee: {
+            fixed: this.attrs.fees.sourceFee.fixed,
+            percent: this.attrs.fees.sourceFee.calculatedPercent,
+          },
+        })
+      return operation
     }
 
     async calculateFees () {
