@@ -2,12 +2,13 @@ import { Former } from './Former'
 import { Document } from '@tokend/js-sdk'
 import { api, base } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+// import { CreateSaleRequest } from '../wrappers/create-sale-request'
 
 import { DateUtil, MathUtil, SALE_TYPES } from '@/js/utils'
 
 import { createSaleDescriptionBlob,
   createBalancesIfNotExist,
-  loadAssetsPairsByQuote } from '@/js/helpers/helper'
+  loadAssetsPairsByQuote } from '@/js/helpers/sale-helper'
 
 import { store } from '@/vuex'
 
@@ -99,7 +100,7 @@ export class SaleFormer extends Former {
         this.attrs.capAsset.code
       )
     // eslint-disable-next-line max-len
-    return base.SaleRequestBuilder.createSaleCreationRequest(this._saleRequestOpts)
+    return base.SaleRequestBuilder.createSaleCreationRequest(this._createSaleRequestOpts)
   }
 
   _createSaleRequestOpts () {
@@ -146,7 +147,7 @@ export class SaleFormer extends Former {
     const DEFAULT_QUOTE_ASSET_PRICE = '1'
     let result
 
-    const capAsset = this.informationStepForm.capAsset.code
+    const capAsset = this.attrs.capAsset.code
     if (capAsset !== assetCode) {
       if (this.attrs.type === SALE_TYPES.immediate) {
         let assetPair = this.attrs.assetPairs.filter(item =>
@@ -166,7 +167,7 @@ export class SaleFormer extends Former {
     let result
 
     try {
-      let assetPairs = await this.loadAssetsPairsByQuote(quoteAssetCode)
+      let assetPairs = await loadAssetsPairsByQuote(quoteAssetCode)
       result = assetPairs.map(a => a.baseAssetCode)
         .map(item => store.getters.assetByCode(item))
         .filter(item => item.isBaseAsset)
@@ -187,5 +188,17 @@ export class SaleFormer extends Former {
     } catch {
       return ''
     }
+  }
+
+  async getCreateSaleRequestById (id, accountId) {
+    const endpoint = `/v3/create_sale_requests/${id}`
+    const { data: record } = await api.getWithSignature(endpoint, {
+      filter: {
+        requestor: accountId,
+      },
+      include: ['request_details', 'request_details.default_quote_asset'],
+    })
+    // return new CreateSaleRequest(record)
+    return record
   }
 }

@@ -8,6 +8,7 @@
         <input-field
           white-autofill
           v-model="form.youtubeVideo"
+          @change="former.setAttr('youtubeVideo', form.youtubeVideo)"
           name="create-sale-youtube-id"
           :label="'create-sale-form.youtube-video-lbl' | globalize"
           :disabled="formMixin.isDisabled"
@@ -41,6 +42,7 @@
         <markdown-field
           v-model="form.description"
           @blur="touchField('form.description')"
+          @change="former.setAttr('description', form.description)"
           :error-message="getFieldErrorMessage(
             'form.description',
             { length: DESCRIPTION_MAX_LENGTH }

@@ -141,7 +141,7 @@ export default {
   methods: {
     async init () {
       try {
-        await this.former.loadAssets(this.accountId)
+        await this.loadAssets(this.accountId)
         await this.tryLoadRequest()
 
         this.isLoaded = true
@@ -186,7 +186,7 @@ export default {
     async submit () {
       this.isDisabled = true
       try {
-        await this.submitCreateSaleRequest(this.accountId)
+        // await this.submitCreateSaleRequest(this.accountId)
         const operation = await this.former.buildOps()
         await api.postOperations(operation)
         Bus.success('create-sale-form.request-submitted-msg')
