@@ -1,7 +1,7 @@
 <template>
   <div class="fees-renderer">
     <p
-      v-if="feesCollection.isExternalFeePresent"
+      v-if="isExternalFeePresent"
       class="fees-renderer__network-fee"
     >
       <span class="fees-renderer__network-fee-text">
@@ -56,6 +56,9 @@ import TickField from '@/vue/fields/TickField'
 import FeeViewer from './FeeViewer'
 
 import { FeesCollection } from './fees-collection'
+import { vuexTypes } from '@/vuex/types'
+import { mapGetters } from 'vuex'
+import { api } from '@/api'
 
 import { vueRoutes } from '@/vue-router/routes'
 
@@ -78,6 +81,22 @@ export default {
   data: _ => ({
     vueRoutes,
   }),
+
+  computed: {
+    ...mapGetters([
+      vuexTypes.assets,
+    ]),
+    isExternalFeePresent () {
+      let asset = this.assets
+        .find(item => item.code === this.feesCollection.assetCode)
+
+      return Boolean(
+        asset.externalSystemType &&
+        asset.owner === api.networkDetails.adminAccountId &&
+        this.feesCollection.isHaveWithdrawalFee
+      )
+    },
+  },
 
   methods: {
     updatePaidForDestination (value) {
