@@ -234,13 +234,11 @@ export default {
       )
     },
   },
-  watch: {
-    former () {
-      this.form.dailyOut = this.former.attrs.dailyOut || ''
-      this.form.weeklyOut = this.former.attrs.weeklyOut || ''
-      this.form.monthlyOut = this.former.attrs.monthlyOut || ''
-      this.form.annualOut = this.former.attrs.annualOut || ''
-    },
+  created () {
+    this.form.dailyOut = this.former.attrs.dailyOut || ''
+    this.form.weeklyOut = this.former.attrs.weeklyOut || ''
+    this.form.monthlyOut = this.former.attrs.monthlyOut || ''
+    this.form.annualOut = this.former.attrs.annualOut || ''
   },
   methods: {
     tryToSubmit () {

@@ -135,8 +135,7 @@ export default {
     },
   },
   data: () => ({
-    former: null,
-    statsOpType: '',
+    statsOpType: FORMATTED_STATS_OPERATION_TYPES[0].value,
     FORMATTED_STATS_OPERATION_TYPES,
     STATS_OPERATION_TYPES_KEY_NAMES,
     config,
@@ -145,14 +144,8 @@ export default {
     selectedOpType () {
       return this.limits[STATS_OPERATION_TYPES_KEY_NAMES[this.statsOpType]]
     },
-  },
-  watch: {
-    selectedOpType () {
-      if (!this.statsOpType) {
-        this.statsOpType = this.FORMATTED_STATS_OPERATION_TYPES[0].value
-      }
-
-      this.former = new LimitsFormer({
+    former () {
+      return new LimitsFormer({
         dailyOut: this.selectedOpType.dailyOut,
         weeklyOut: this.selectedOpType.weeklyOut,
         monthlyOut: this.selectedOpType.monthlyOut,
