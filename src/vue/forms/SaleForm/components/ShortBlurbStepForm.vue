@@ -99,16 +99,12 @@ export default {
 
   created () {
     if (this.request) {
-      this.populateForm()
+      this.form.saleLogo = new Document(this.former.attrs.saleLogo)
+      this.form.shortDescription = this.former.attrs.shortDescription
     }
   },
 
   methods: {
-    populateForm () {
-      this.form.saleLogo = new Document(this.former.attrs.saleLogo)
-      this.form.shortDescription = this.former.attrs.shortDescription
-    },
-
     next () {
       if (!this.isFormValid()) return
       this.former.mergeAttrs({

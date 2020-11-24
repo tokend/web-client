@@ -1,7 +1,6 @@
 import { BLOB_TYPES } from '@tokend/js-sdk'
 import { api, base } from '@/api'
-import { loadAllResponsePages } from '@/js/helpers/api-helpers'
-import { AssetPairRecord } from '@/js/records/entities/asset-pair.record'
+import { CreateSaleRequest } from '@/js/helpers/create-sale-request-helper'
 
 export async function createSaleDescriptionBlob (description, accountId) {
   const { data: blob } = await api.postWithSignature('/blobs', {
@@ -42,12 +41,24 @@ export async function createBalancesIfNotExist ({ balanceAssets, quoteAssets, ac
   }
 }
 
-export async function loadAssetsPairsByQuote (quoteAssetCode) {
-  const MAX_PAGE_LIMIT = 100
-  let result = await api.get('/v3/asset_pairs', {
-    filter: { quote_asset: quoteAssetCode },
-    page: { limit: MAX_PAGE_LIMIT },
+export async function getCreateSaleRequestById (id, accountId) {
+  const endpoint = `/v3/create_sale_requests/${id}`
+  const { data: record } = await api.getWithSignature(endpoint, {
+    filter: {
+      requestor: accountId,
+    },
+    include: ['request_details', 'request_details.default_quote_asset'],
   })
-  result = await loadAllResponsePages(result)
-  return result.map(item => new AssetPairRecord(item))
+  return new CreateSaleRequest(record)
+}
+
+export async function getSaleDescription (blobId, accountId) {
+  try {
+    const endpoint = `/accounts/${accountId}/blobs/${blobId}`
+    const { data: blob } = await api.getWithSignature(endpoint)
+
+    return JSON.parse(blob.value)
+  } catch {
+    return ''
+  }
 }

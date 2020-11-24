@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import LoadAssetsMixin from './mixins/load-assets.mixin'
+// import LoadAssetsMixin from './mixins/load-assets.mixin'
 
 import InformationStepForm from './components/InformationStepForm'
 import ShortBlurbStepForm from './components/ShortBlurbStepForm'
@@ -68,10 +68,12 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { SaleFormer } from '@/js/formers/SaleFormer'
+import { getCreateSaleRequestById,
+  getSaleDescription } from '@/js/helpers/sale-helper'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { SaleFormer } from '@/js/formers/SaleFormer'
 import { api } from '@/api'
 
 const STEPS = {
@@ -103,7 +105,7 @@ export default {
     FullDescriptionStepForm,
     SkeletonLoaderStepForm,
   },
-  mixins: [LoadAssetsMixin],
+  // mixins: [LoadAssetsMixin],
   props: {
     requestId: {
       type: String,
@@ -153,11 +155,11 @@ export default {
 
     async tryLoadRequest () {
       if (this.requestId) {
-        this.request = await this.former.getCreateSaleRequestById(
+        this.request = await getCreateSaleRequestById(
           this.requestId,
           this.accountId
         )
-        this.saleDescription = await this.former.getSaleDescription(
+        this.saleDescription = await getSaleDescription(
           this.request.descriptionBlobId,
           this.accountId
         )

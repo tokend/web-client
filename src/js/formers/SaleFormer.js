@@ -1,16 +1,12 @@
 import { Former } from './Former'
 import { Document } from '@tokend/js-sdk'
-import { api, base } from '@/api'
-import { ErrorHandler } from '@/js/helpers/error-handler'
-import { CreateSaleRequest } from '@/js/helpers/create-sale-request-helper'
+import { base } from '@/api'
 
 import { DateUtil, MathUtil, SALE_TYPES } from '@/js/utils'
 
 import { createSaleDescriptionBlob,
-  createBalancesIfNotExist,
-  loadAssetsPairsByQuote } from '@/js/helpers/sale-helper'
-
-import { store } from '@/vuex'
+  createBalancesIfNotExist } from '@/js/helpers/sale-helper'
+import { loadAssetsPairsByQuote } from '@/js/helpers/load-asset-pairs-helper'
 
 const NEW_CREATE_SALE_REQUEST_ID = '0'
 const DEFAULT_SALE_TYPE = '0'
@@ -161,43 +157,5 @@ export class SaleFormer extends Former {
       result = basePrise
     }
     return result
-  }
-
-  async loadBaseAssetsByQuote (quoteAssetCode) {
-    let result
-
-    try {
-      let assetPairs = await loadAssetsPairsByQuote(quoteAssetCode)
-      result = assetPairs.map(a => a.baseAssetCode)
-        .map(item => store.getters.assetByCode(item))
-        .filter(item => item.isBaseAsset)
-    } catch (e) {
-      result = []
-      ErrorHandler.processWithoutFeedback(e)
-    }
-
-    return result
-  }
-
-  async getSaleDescription (blobId, accountId) {
-    try {
-      const endpoint = `/accounts/${accountId}/blobs/${blobId}`
-      const { data: blob } = await api.getWithSignature(endpoint)
-
-      return JSON.parse(blob.value)
-    } catch {
-      return ''
-    }
-  }
-
-  async getCreateSaleRequestById (id, accountId) {
-    const endpoint = `/v3/create_sale_requests/${id}`
-    const { data: record } = await api.getWithSignature(endpoint, {
-      filter: {
-        requestor: accountId,
-      },
-      include: ['request_details', 'request_details.default_quote_asset'],
-    })
-    return new CreateSaleRequest(record)
   }
 }
