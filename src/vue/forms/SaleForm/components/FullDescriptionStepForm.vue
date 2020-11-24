@@ -80,7 +80,7 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { CreateSaleRequest } from '../wrappers/create-sale-request'
+import { CreateSaleRequest } from '@/js/helpers/create-sale-request-helper'
 import { SaleFormer } from '@/js/formers/SaleFormer'
 
 import {

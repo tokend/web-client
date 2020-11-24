@@ -55,7 +55,7 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
-import { CreateSaleRequest } from '../wrappers/create-sale-request'
+import { CreateSaleRequest } from '@/js/helpers/create-sale-request-helper'
 
 import { required, maxLength, nonEmptyDocument } from '@validators'
 import { SaleFormer } from '@/js/formers/SaleFormer'

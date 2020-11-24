@@ -2,7 +2,7 @@ import { Former } from './Former'
 import { Document } from '@tokend/js-sdk'
 import { api, base } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-// import { CreateSaleRequest } from '../wrappers/create-sale-request'
+import { CreateSaleRequest } from '@/js/helpers/create-sale-request-helper'
 
 import { DateUtil, MathUtil, SALE_TYPES } from '@/js/utils'
 
@@ -198,7 +198,6 @@ export class SaleFormer extends Former {
       },
       include: ['request_details', 'request_details.default_quote_asset'],
     })
-    // return new CreateSaleRequest(record)
-    return record
+    return new CreateSaleRequest(record)
   }
 }
