@@ -147,23 +147,21 @@ export default {
     },
   },
   watch: {
-    selectedOpType: {
-      handler () {
-        if (!this.statsOpType) {
-          this.statsOpType = this.FORMATTED_STATS_OPERATION_TYPES[0].value
-        }
+    selectedOpType () {
+      if (!this.statsOpType) {
+        this.statsOpType = this.FORMATTED_STATS_OPERATION_TYPES[0].value
+      }
 
-        this.former = new LimitsFormer({
-          dailyOut: this.selectedOpType.dailyOut,
-          weeklyOut: this.selectedOpType.weeklyOut,
-          monthlyOut: this.selectedOpType.monthlyOut,
-          annualOut: this.selectedOpType.annualOut,
-          assetCode: this.selectedOpType.assetCode,
-          requestType: LIMITS_REQUEST_TYPE.initial,
-          statsOpType: this.statsOpType,
-          operationType: STATS_OPERATION_TYPES_KEY_NAMES[this.statsOpType],
-        })
-      },
+      this.former = new LimitsFormer({
+        dailyOut: this.selectedOpType.dailyOut,
+        weeklyOut: this.selectedOpType.weeklyOut,
+        monthlyOut: this.selectedOpType.monthlyOut,
+        annualOut: this.selectedOpType.annualOut,
+        assetCode: this.selectedOpType.assetCode,
+        requestType: LIMITS_REQUEST_TYPE.initial,
+        statsOpType: this.statsOpType,
+        operationType: STATS_OPERATION_TYPES_KEY_NAMES[this.statsOpType],
+      })
     },
   },
   methods: {
