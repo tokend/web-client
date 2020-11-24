@@ -272,11 +272,11 @@ export default {
         }
 
         if (this.isMasterAssetOwner) {
-          this.former.attrs.creatorDetails.address = this.form.address
+          this.former.setAttr('creatorDetails.address', this.form.address)
         } else {
-          this.former.attrs.creatorDetails.comment = this.form.comment
+          this.former.setAttr('creatorDetails.comment', this.form.comment)
         }
-        this.former.attrs.selectedAssetBalanceId = this.selectedAssetBalance.id
+        this.former.setAttr('selectedAssetBalanceId', this.selectedAssetBalance.id)
 
         const operation = this.former.buildOps()
         await api.postOperations(operation)
