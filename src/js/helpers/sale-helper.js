@@ -16,14 +16,12 @@ export async function createSaleDescriptionBlob (description, accountId) {
       },
     },
   })
-
   return blob.id
 }
 
 // eslint-disable-next-line max-len
 export async function createBalancesIfNotExist ({ balanceAssets, quoteAssets, accountId }) {
   let operations = []
-
   for (const asset of quoteAssets) {
     if (!balanceAssets.includes(asset)) {
       operations.push(

@@ -16,7 +16,6 @@ export async function loadBaseAssetsByQuote (quoteAssetCode) {
     result = []
     ErrorHandler.processWithoutFeedback(e)
   }
-
   return result
 }
 

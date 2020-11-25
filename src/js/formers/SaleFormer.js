@@ -1,21 +1,11 @@
 import { Former } from './Former'
-import { Document } from '@tokend/js-sdk'
-import { base } from '@/api'
+import { Document, base, SALE_TYPES } from '@tokend/js-sdk'
 
-import { DateUtil, MathUtil, SALE_TYPES } from '@/js/utils'
+import { DateUtil, MathUtil } from '@/js/utils'
 
 import { createSaleDescriptionBlob,
   createBalancesIfNotExist } from '@/js/helpers/sale-helper'
 import { loadAssetsPairsByQuote } from '@/js/helpers/load-asset-pairs-helper'
-
-const NEW_CREATE_SALE_REQUEST_ID = '0'
-const DEFAULT_SALE_TYPE = '0'
-
-const EMPTY_DOCUMENT = {
-  mime_type: '',
-  name: '',
-  key: '',
-}
 
 /**
  * Collects the attributes for sale operations
@@ -76,7 +66,7 @@ export class SaleFormer extends Former {
 
   async buildOps () {
     await Document.uploadDocuments([this.attrs.saleLogo])
-    return [this._buildOp()]
+    return [await this._buildOp()]
   }
 
   async _buildOp () {
@@ -95,11 +85,19 @@ export class SaleFormer extends Former {
       await loadAssetsPairsByQuote(
         this.attrs.capAsset.code
       )
-    // eslint-disable-next-line max-len
-    return base.SaleRequestBuilder.createSaleCreationRequest(this._createSaleRequestOpts)
+
+    const opts = this._createSaleRequestOpts()
+    return base.SaleRequestBuilder.createSaleCreationRequest(opts)
   }
 
   _createSaleRequestOpts () {
+    const NEW_CREATE_SALE_REQUEST_ID = '0'
+    const DEFAULT_SALE_TYPE = '0'
+    const EMPTY_DOCUMENT = {
+      mime_type: '',
+      name: '',
+      key: '',
+    }
     const saleLogo = this.attrs.saleLogo
 
     return {
@@ -132,8 +130,7 @@ export class SaleFormer extends Former {
       this.attrs.hardCap,
       this.attrs.assetsToSell
     )
-    let quoteAssets = []
-    return quoteAssets.map((item) => ({
+    return this.attrs.quoteAssets.map((item) => ({
       asset: item,
       price: this._getPrice(item, basePrise),
     }))
@@ -156,6 +153,7 @@ export class SaleFormer extends Former {
     } else {
       result = basePrise
     }
+
     return result
   }
 }

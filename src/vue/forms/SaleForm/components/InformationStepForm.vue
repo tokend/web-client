@@ -301,6 +301,7 @@ export default {
     request: { type: CreateSaleRequest, default: null },
     ownedAssets: { type: Array, default: _ => [] },
     baseAssets: { type: Array, default: _ => [] },
+    defaultQuoteAsset: { type: String, default: _ => [] },
     former: { type: SaleFormer, required: true },
   },
 

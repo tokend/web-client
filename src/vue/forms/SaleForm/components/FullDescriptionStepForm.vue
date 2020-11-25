@@ -82,6 +82,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 
 import { CreateSaleRequest } from '@/js/helpers/create-sale-request-helper'
 import { SaleFormer } from '@/js/formers/SaleFormer'
+import { getSaleDescription } from '@/js/helpers/sale-helper'
 
 import {
   maxLength,
@@ -98,7 +99,6 @@ export default {
   mixins: [FormMixin],
   props: {
     request: { type: CreateSaleRequest, default: null },
-    saleDescription: { type: String, default: '' },
     isDisabled: { type: Boolean, default: false },
     former: { type: SaleFormer, required: true },
   },
@@ -122,10 +122,14 @@ export default {
     },
   },
 
-  created () {
+  async created () {
     if (this.request) {
-      this.form.youtubeVideo = this.former.attrs.syoutubeVideoId
-      this.form.description = this.former.attrs.saleDescription
+      this.form.youtubeVideo = this.former.attrs.youtubeVideo
+      this.form.description = await getSaleDescription(
+        this.request.descriptionBlobId,
+        this.accountId
+      )
+      this.former.attrs.description = this.form.description
     }
   },
 

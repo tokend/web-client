@@ -13,6 +13,7 @@
             :former="former"
             :base-assets="baseAssets"
             :owned-assets="ownedAssets"
+            :default-quote-asset="defaultQuoteAsset"
             @next="setInformationStepForm($event) || moveToNextStep()"
           />
 
@@ -27,7 +28,6 @@
             v-if="currentStep === STEPS.fullDescription.number"
             :request="request"
             :former="former"
-            :sale-description="saleDescription"
             :is-disabled.sync="isDisabled"
             @submit="setFullDescriptionStepForm($event) || submit()"
           />
@@ -56,8 +56,6 @@
 </template>
 
 <script>
-// import LoadAssetsMixin from './mixins/load-assets.mixin'
-
 import InformationStepForm from './components/InformationStepForm'
 import ShortBlurbStepForm from './components/ShortBlurbStepForm'
 import FullDescriptionStepForm from './components/FullDescriptionStepForm'
@@ -68,9 +66,12 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { loadAssets,
+  findBaseAssets,
+  findOwnedAssets,
+  findDefaultQuoteAsset } from '@/js/helpers/load-asset-helper'
 import { SaleFormer } from '@/js/formers/SaleFormer'
-import { getCreateSaleRequestById,
-  getSaleDescription } from '@/js/helpers/sale-helper'
+import { getCreateSaleRequestById } from '@/js/helpers/sale-helper'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -105,7 +106,6 @@ export default {
     FullDescriptionStepForm,
     SkeletonLoaderStepForm,
   },
-  // mixins: [LoadAssetsMixin],
   props: {
     requestId: {
       type: String,
@@ -115,8 +115,10 @@ export default {
   },
 
   data: _ => ({
+    ownedAssets: [],
+    baseAssets: [],
+    defaultQuoteAsset: '',
     request: null,
-    saleDescription: '',
     informationStepForm: {},
     shortBlurbStepForm: {},
     fullDescriptionStepForm: {},
@@ -134,33 +136,29 @@ export default {
   },
 
   async created () {
-    await this.init()
-    this.former.attrs.accountId = this.accountId
-    this.former.attrs.assets = this.assets
-    this.former.attrs.requestId = this.requestId
+    try {
+      let assets = await loadAssets(this.accountId)
+      this.ownedAssets = findOwnedAssets(assets, this.accountId)
+      this.baseAssets = findBaseAssets(assets)
+      this.defaultQuoteAsset = findDefaultQuoteAsset(assets)
+
+      this.former.attrs.assets = assets
+      this.former.attrs.accountId = this.accountId
+      this.former.attrs.requestId = this.requestId
+
+      await this.tryLoadRequest()
+      this.isLoaded = true
+    } catch (e) {
+      this.isLoadFailed = true
+      ErrorHandler.processWithoutFeedback(e)
+    }
   },
 
   methods: {
-    async init () {
-      try {
-        await this.loadAssets(this.accountId)
-        await this.tryLoadRequest()
-
-        this.isLoaded = true
-      } catch (e) {
-        this.isLoadFailed = true
-        ErrorHandler.processWithoutFeedback(e)
-      }
-    },
-
     async tryLoadRequest () {
       if (this.requestId) {
         this.request = await getCreateSaleRequestById(
           this.requestId,
-          this.accountId
-        )
-        this.saleDescription = await getSaleDescription(
-          this.request.descriptionBlobId,
           this.accountId
         )
       }
@@ -188,9 +186,8 @@ export default {
     async submit () {
       this.isDisabled = true
       try {
-        // await this.submitCreateSaleRequest(this.accountId)
         const operation = await this.former.buildOps()
-        await api.postOperations(operation)
+        await api.postOperations(...operation)
         Bus.success('create-sale-form.request-submitted-msg')
         this.emitSubmitEvents()
       } catch (e) {
