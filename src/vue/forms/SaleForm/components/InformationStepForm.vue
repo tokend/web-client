@@ -310,7 +310,7 @@ export default {
       form: {
         type: this.former.attrs.type || '',
         name: this.former.attrs.name || '',
-        baseAsset: this.former.attrs.baseCode || {},
+        baseAsset: this.former.attrs.baseAsset.code || {},
         capAsset: this.former.attrs.capAsset || {},
         startTime: this.former.attrs.startTime || '',
         endTime: this.former.attrs.endTime || '',
@@ -318,7 +318,7 @@ export default {
         hardCap: this.former.attrs.hardCap || '',
         assetsToSell: this.former.attrs.assetsToSell || '',
         quoteAssets: this.former.attrs.quoteAssets || [],
-        isWhitelisted: this.former.attrs.isWhiteListed || false,
+        isWhitelisted: this.former.attrs.isWhitelisted || false,
       },
       isQuoteAssetsLoaded: false,
       availableQuoteAssets: [],

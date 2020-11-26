@@ -142,9 +142,9 @@ export default {
       this.baseAssets = findBaseAssets(assets)
       this.defaultQuoteAsset = findDefaultQuoteAsset(assets)
 
-      this.former.attrs.assets = assets
-      this.former.attrs.accountId = this.accountId
-      this.former.attrs.requestId = this.requestId
+      this.former.setAttr('assets', assets)
+      this.former.setAttr('accountId', this.accountId)
+      this.former.setAttr('requestId', this.requestId)
 
       await this.tryLoadRequest()
       this.isLoaded = true

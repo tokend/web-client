@@ -19,8 +19,8 @@ export class SaleFormer extends Former {
     return {
       type: '',
       name: '',
-      baseAsset: {},
-      capAsset: {},
+      baseAsset: '',
+      capAsset: '',
       startTime: '',
       endTime: '',
       softCap: '',
@@ -43,7 +43,22 @@ export class SaleFormer extends Former {
   /**
  *
  * @param {Object} source
- * @param {}
+ * @param {String} saleType: number of sale type
+ * @param {String} name: sale name
+ * @param {String} baseAsset: base asset
+ * @param {String} defaultQuoteAsset: cap asset
+ * @param {String} startTime: start time
+ * @param {String} endTime: end time
+ * @param {String} softCap: soft cap
+ * @param {String} hardCap: hard cap
+ * @param {String} assetsToSell: assets to sell
+ * @param {Array} quoteAssets: assets accepted for investments
+ * @param {Boolean} isWhitelisted: is whitelisted
+ * @param {Object} logo: sale logo
+ * @param {String} logoKey: sale logo key
+ * @param {String} shortDescription: short sale description
+ * @param {String} youtubeVideoId: youTube video id
+ * @param {String} description: full sale description
  */
   populate (source) {
     this.attrs.type = +source.saleType

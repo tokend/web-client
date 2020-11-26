@@ -129,7 +129,7 @@ export default {
         this.request.descriptionBlobId,
         this.accountId
       )
-      this.former.attrs.description = this.form.description
+      this.former.setAttr('description', this.form.description)
     }
   },
 
