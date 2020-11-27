@@ -66,10 +66,12 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { loadAssets,
+import {
+  loadAssets,
   findBaseAssets,
   findOwnedAssets,
-  findDefaultQuoteAsset } from '@/js/helpers/load-asset-helper'
+  findDefaultQuoteAsset,
+} from '@/js/helpers/load-asset-helper'
 import { SaleFormer } from '@/js/formers/SaleFormer'
 import { getCreateSaleRequestById } from '@/js/helpers/sale-helper'
 
