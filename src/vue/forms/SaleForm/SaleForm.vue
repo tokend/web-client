@@ -66,12 +66,6 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import {
-  loadAssets,
-  findBaseAssets,
-  findOwnedAssets,
-  findDefaultQuoteAsset,
-} from '@/js/helpers/load-asset-helper'
 import { SaleFormer } from '@/js/formers/SaleFormer'
 import { getCreateSaleRequestById } from '@/js/helpers/sale-helper'
 
@@ -117,9 +111,6 @@ export default {
   },
 
   data: _ => ({
-    ownedAssets: [],
-    baseAssets: [],
-    defaultQuoteAsset: '',
     request: null,
     informationStepForm: {},
     shortBlurbStepForm: {},
@@ -135,14 +126,17 @@ export default {
     ...mapGetters([
       vuexTypes.accountId,
     ]),
+    ...mapGetters({
+      loadAssets: vuexTypes.balancesAssets,
+      ownedAssets: vuexTypes.ownedAssets,
+      defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
+      baseAssets: vuexTypes.fiatAssets,
+    }),
   },
 
   async created () {
     try {
-      let assets = await loadAssets(this.accountId)
-      this.ownedAssets = findOwnedAssets(assets, this.accountId)
-      this.baseAssets = findBaseAssets(assets)
-      this.defaultQuoteAsset = findDefaultQuoteAsset(assets)
+      let assets = await this.loadAssets
 
       this.former.setAttr('assets', assets)
       this.former.setAttr('accountId', this.accountId)

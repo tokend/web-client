@@ -5,7 +5,11 @@ import { DateUtil, MathUtil } from '@/js/utils'
 
 import { createSaleDescriptionBlob,
   createBalancesIfNotExist } from '@/js/helpers/sale-helper'
-import { loadAssetsPairsByQuote } from '@/js/helpers/load-asset-pairs-helper'
+import { api } from '@/api'
+import { AssetPairRecord } from '@/js/records/entities/asset-pair.record'
+import { loadAllResponsePages } from '@/js/helpers/api-helpers'
+import { ErrorHandler } from '@/js/helpers/error-handler'
+import { store } from '@/vuex'
 
 /**
  * Collects the attributes for sale operations
@@ -95,11 +99,10 @@ export class SaleFormer extends Former {
       quoteAssets: this.attrs.quoteAssets,
       accountId: this.attrs.accountId,
     })
-
-    this.attrs.assetPairs =
-      await loadAssetsPairsByQuote(
-        this.attrs.capAsset.code
-      )
+    this.attrs.assetPairs = await this._loadAssetsPairsByQuote(
+      this.attrs.capAsset.code
+    )
+    // console.log('this.attrs.assetPairs', this.attrs.assetPairs)
 
     const opts = this._createSaleRequestOpts()
     return base.SaleRequestBuilder.createSaleCreationRequest(opts)
@@ -169,6 +172,34 @@ export class SaleFormer extends Former {
       result = basePrise
     }
 
+    return result
+  }
+
+  async _loadAssetsPairsByQuote (quoteAssetCode) {
+    const MAX_PAGE_LIMIT = 100
+    let result = await api.get('/v3/asset_pairs', {
+      filter: { quote_asset: quoteAssetCode },
+      page: { limit: MAX_PAGE_LIMIT },
+    })
+    result = await loadAllResponsePages(result)
+    return result.map(item => new AssetPairRecord(item))
+  }
+
+  async loadBaseAssetsByQuote (quoteAssetCode) {
+    let result
+    try {
+      let assetPairs = await this._loadAssetsPairsByQuote(quoteAssetCode)
+      // console.log('assetPairs', assetPairs)
+      result = assetPairs.map(a => a.baseAssetCode)
+        .map(item => store.getters.assetByCode(item))
+      // eslint-disable-next-line max-len
+      // && console.log('store.getters.assetByCode(item)', store.getters.assetByCode(item)))
+        .filter(item => item.isBaseAsset)
+    } catch (e) {
+      result = []
+      ErrorHandler.processWithoutFeedback(e)
+    }
+    // console.log('result', result)
     return result
   }
 }

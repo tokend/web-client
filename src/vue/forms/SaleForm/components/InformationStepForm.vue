@@ -274,10 +274,12 @@ import moment from 'moment'
 
 import { CreateSaleRequest } from '@/js/helpers/create-sale-request-helper'
 import { SALE_TYPES } from '@tokend/js-sdk'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 import { MathUtil } from '@/js/utils'
 import { SaleFormer } from '@/js/formers/SaleFormer'
-import { loadBaseAssetsByQuote } from '@/js/helpers/load-asset-pairs-helper'
+// import { loadBaseAssetsByQuote } from '@/js/helpers/load-asset-pairs-helper'
 
 import {
   required,
@@ -406,6 +408,9 @@ export default {
         },
       ]
     },
+    ...mapGetters({
+      loadAssets: vuexTypes.balancesAssets,
+    }),
   },
 
   watch: {
@@ -415,10 +420,11 @@ export default {
         this.form.quoteAssets = []
         this.former.setAttr('quoteAssets', this.form.quoteAssets)
       }
-
-      const quoteAssets = await loadBaseAssetsByQuote(value)
-
+      // console.log('value', value)
+      const quoteAssets = await this.former.loadBaseAssetsByQuote(value)
+      // console.log('quoteAssets', quoteAssets)
       this.availableQuoteAssets = [this.form.capAsset, ...quoteAssets]
+      // console.log('this.availableQuoteAssets', this.availableQuoteAssetsv)
       this.isQuoteAssetsLoaded = true
     },
   },
