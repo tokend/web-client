@@ -80,7 +80,7 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { CreateSaleRequest } from '@/js/helpers/create-sale-request-helper'
+import { CreateSaleRequest } from '@/vue/modules/requests/create-sale-requests/wrappers/create-sale-request'
 import { SaleFormer } from '@/js/formers/SaleFormer'
 import { getSaleDescription } from '@/js/helpers/sale-helper'
 
@@ -126,7 +126,7 @@ export default {
     if (this.request) {
       this.form.youtubeVideo = this.former.attrs.youtubeVideo
       this.form.description = await getSaleDescription(
-        this.request.descriptionBlobId,
+        this.request.description,
         this.accountId
       )
       this.former.setAttr('description', this.form.description)

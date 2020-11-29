@@ -73,7 +73,7 @@ export class SaleFormer extends Former {
     this.attrs.endTime = source.endTime
     this.attrs.softCap = source.softCap
     this.attrs.hardCap = source.hardCap
-    this.attrs.assetsToSell = source.assetsToSell
+    this.attrs.assetsToSell = source.baseAssetForHardCap
     this.attrs.quoteAssets = source.quoteAssets
     this.attrs.isWhitelisted = source.isWhitelisted
     this.attrs.saleLogo = source.logo

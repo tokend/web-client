@@ -1,6 +1,6 @@
 import { BLOB_TYPES } from '@tokend/js-sdk'
 import { api, base } from '@/api'
-import { CreateSaleRequest } from '@/js/helpers/create-sale-request-helper'
+import { CreateSaleRequest } from '@/vue/modules/requests/create-sale-requests/wrappers/create-sale-request'
 
 export async function createSaleDescriptionBlob (description, accountId) {
   const { data: blob } = await api.postWithSignature('/blobs', {

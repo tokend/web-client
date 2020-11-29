@@ -272,7 +272,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 
 import moment from 'moment'
 
-import { CreateSaleRequest } from '@/js/helpers/create-sale-request-helper'
+import { CreateSaleRequest } from '@/vue/modules/requests/create-sale-requests/wrappers/create-sale-request'
 import { SALE_TYPES } from '@tokend/js-sdk'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
