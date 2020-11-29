@@ -82,7 +82,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 
 import { CreateSaleRequest } from '@/vue/modules/requests/create-sale-requests/wrappers/create-sale-request'
 import { SaleFormer } from '@/js/formers/SaleFormer'
-import { getSaleDescription } from '@/js/helpers/sale-helper'
+import { api } from '@/api'
 
 import {
   maxLength,
@@ -125,7 +125,7 @@ export default {
   async created () {
     if (this.request) {
       this.form.youtubeVideo = this.former.attrs.youtubeVideo
-      this.form.description = await getSaleDescription(
+      this.form.description = await this.getSaleDescription(
         this.request.description,
         this.accountId
       )
@@ -144,6 +144,17 @@ export default {
   },
 
   methods: {
+    async getSaleDescription (blobId, accountId) {
+      try {
+        const endpoint = `/accounts/${accountId}/blobs/${blobId}`
+        const { data: blob } = await api.getWithSignature(endpoint)
+
+        return JSON.parse(blob.value)
+      } catch {
+        return ''
+      }
+    },
+
     submit () {
       this.former.mergeAttrs({
         youtubeVideo: this.form.youtubeVideo,

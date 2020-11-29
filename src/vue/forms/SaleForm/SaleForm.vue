@@ -67,7 +67,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { SaleFormer } from '@/js/formers/SaleFormer'
-import { getCreateSaleRequestById } from '@/js/helpers/sale-helper'
+import { CreateSaleRequest } from '@/vue/modules/requests/create-sale-requests/wrappers/create-sale-request'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -153,11 +153,22 @@ export default {
   methods: {
     async tryLoadRequest () {
       if (this.requestId) {
-        this.request = await getCreateSaleRequestById(
+        this.request = await this.getCreateSaleRequestById(
           this.requestId,
           this.accountId
         )
       }
+    },
+
+    async getCreateSaleRequestById (id, accountId) {
+      const endpoint = `/v3/create_sale_requests/${id}`
+      const { data: record } = await api.getWithSignature(endpoint, {
+        filter: {
+          requestor: accountId,
+        },
+        include: ['request_details', 'request_details.default_quote_asset'],
+      })
+      return new CreateSaleRequest(record)
     },
 
     moveToNextStep () {

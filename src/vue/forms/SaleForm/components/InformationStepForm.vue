@@ -124,7 +124,7 @@
         <tick-field
           :name="`create-sale-whitelisted`"
           v-model="form.isWhitelisted"
-          @change="former.setAttr('isWhiteListed', form.capAsset)"
+          @input="former.setAttr('isWhiteListed', form.capAsset)"
         >
           {{ 'create-sale-form.whitelisted-lbl' | globalize }}
         </tick-field>
@@ -242,7 +242,7 @@
           <tick-field
             :name="`create-sale-tick-${item.code}`"
             v-model="form.quoteAssets"
-            @change="former.setAttr('quoteAssets', form.quoteAssets)"
+            @input="former.setAttr('quoteAssets', form.quoteAssets)"
             :cb-value="item.code"
           >
             {{ item.nameAndCode }}
@@ -279,7 +279,6 @@ import { vuexTypes } from '@/vuex'
 
 import { MathUtil } from '@/js/utils'
 import { SaleFormer } from '@/js/formers/SaleFormer'
-// import { loadBaseAssetsByQuote } from '@/js/helpers/load-asset-pairs-helper'
 
 import {
   required,
@@ -420,11 +419,8 @@ export default {
         this.form.quoteAssets = []
         this.former.setAttr('quoteAssets', this.form.quoteAssets)
       }
-      // console.log('value', value)
       const quoteAssets = await this.former.loadBaseAssetsByQuote(value)
-      // console.log('quoteAssets', quoteAssets)
       this.availableQuoteAssets = [this.form.capAsset, ...quoteAssets]
-      // console.log('this.availableQuoteAssets', this.availableQuoteAssetsv)
       this.isQuoteAssetsLoaded = true
     },
   },

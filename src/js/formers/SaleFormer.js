@@ -55,7 +55,7 @@ export class SaleFormer extends Former {
  * @param {String} endTime: end time
  * @param {String} softCap: soft cap
  * @param {String} hardCap: hard cap
- * @param {String} assetsToSell: assets to sell
+ * @param {String} baseAssetForHardCap: assets to sell
  * @param {Array} quoteAssets: assets accepted for investments
  * @param {Boolean} isWhitelisted: is whitelisted
  * @param {Object} logo: sale logo
@@ -102,7 +102,6 @@ export class SaleFormer extends Former {
     this.attrs.assetPairs = await this._loadAssetsPairsByQuote(
       this.attrs.capAsset.code
     )
-    // console.log('this.attrs.assetPairs', this.attrs.assetPairs)
 
     const opts = this._createSaleRequestOpts()
     return base.SaleRequestBuilder.createSaleCreationRequest(opts)
@@ -148,10 +147,12 @@ export class SaleFormer extends Former {
       this.attrs.hardCap,
       this.attrs.assetsToSell
     )
-    return this.attrs.quoteAssets.map((item) => ({
+
+    let a = this.attrs.quoteAssets.map((item) => ({
       asset: item,
       price: this._getPrice(item, basePrise),
     }))
+    return a
   }
 
   _getPrice (assetCode, basePrise) {
@@ -187,19 +188,17 @@ export class SaleFormer extends Former {
 
   async loadBaseAssetsByQuote (quoteAssetCode) {
     let result
+
     try {
       let assetPairs = await this._loadAssetsPairsByQuote(quoteAssetCode)
-      // console.log('assetPairs', assetPairs)
       result = assetPairs.map(a => a.baseAssetCode)
         .map(item => store.getters.assetByCode(item))
-      // eslint-disable-next-line max-len
-      // && console.log('store.getters.assetByCode(item)', store.getters.assetByCode(item)))
         .filter(item => item.isBaseAsset)
     } catch (e) {
       result = []
       ErrorHandler.processWithoutFeedback(e)
     }
-    // console.log('result', result)
+
     return result
   }
 }
