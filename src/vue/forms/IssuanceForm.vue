@@ -1,170 +1,176 @@
 <template>
   <div class="issuance-form">
     <template v-if="isLoaded">
-      <form
-        novalidate
-        class="app__form create-issuance-form"
-        @submit.prevent="isFormValid() && showConfirmation()"
-        v-if="ownedAssets.length"
-      >
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <select-field
-              :value="form.asset.code"
-              @input="setAssetByCode"
-              name="create-issuance-asset"
-              :label="'issuance-form.asset-lbl' | globalize"
-              @change="former.setAttr('assetCode', form.asset.code)"
-              @blur="touchField('form.asset')"
-              :disabled="formMixin.isDisabled"
-            >
-              <option
-                v-for="asset in ownedAssets"
-                :key="asset.code"
-                :value="asset.code"
-              >
-                {{ asset.nameAndCode }}
-              </option>
-            </select-field>
-          </div>
-        </div>
+      <template v-if="isLoadFailed">
+        <p>
+          {{ 'issuance-form.load-failed-msg' | globalize }}
+        </p>
+      </template>
 
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <div class="create-issuance-form__amount-wrapper">
-              <input-field
-                white-autofill
-                type="number"
-                :min="0"
-                :max="form.asset.availableForIssuance"
-                :step="MIN_AMOUNT"
-                v-model="form.amount"
-                @blur="touchField('form.amount')"
-                @change="former.setAttr('amount', form.amount)"
-                name="create-issuance-amount"
-                :label="'issuance-form.amount-lbl' | globalize"
-                :error-message="getFieldErrorMessage(
-                  'form.amount',
-                  {
-                    from: MIN_AMOUNT,
-                    to: form.asset.availableForIssuance,
-                    maxDecimalDigitsCount: DECIMAL_POINTS
-                  }
-                )"
-                :disabled="formMixin.isDisabled || !availableForIssuance"
-              />
-
-              <p
-                v-if="form.asset.code"
-                class="create-issuance-form__issuance-asset-code"
-              >
-                {{ form.asset.code }}
-              </p>
+      <template v-else>
+        <template v-if="ownedAssets.length">
+          <form
+            novalidate
+            class="app__form create-issuance-form"
+            @submit.prevent="isFormValid() && showConfirmation()"
+          >
+            <div class="app__form-row">
+              <div class="app__form-field">
+                <select-field
+                  :value="form.asset.code"
+                  @input="setAssetByCode"
+                  name="create-issuance-asset"
+                  :label="'issuance-form.asset-lbl' | globalize"
+                  @change="former.setAttr('assetCode', form.asset.code)"
+                  @blur="touchField('form.asset')"
+                  :disabled="formMixin.isDisabled"
+                >
+                  <option
+                    v-for="asset in ownedAssets"
+                    :key="asset.code"
+                    :value="asset.code"
+                  >
+                    {{ asset.nameAndCode }}
+                  </option>
+                </select-field>
+              </div>
             </div>
 
-            <p
-              v-if="form.asset.availableForIssuance"
-              class="app__form-field-description"
-              :class="{'app__form-field-description--error':
-                !availableForIssuance}"
-            >
-              {{
-                'issuance-form.available-for-issuance-hint' | globalize({
-                  amount: {
-                    value: form.asset.availableForIssuance,
-                    currency: form.asset.code
-                  }
-                })
-              }}
-            </p>
-          </div>
-        </div>
+            <div class="app__form-row">
+              <div class="app__form-field">
+                <div class="create-issuance-form__amount-wrapper">
+                  <input-field
+                    white-autofill
+                    type="number"
+                    :min="0"
+                    :max="form.asset.availableForIssuance"
+                    :step="MIN_AMOUNT"
+                    v-model="form.amount"
+                    @blur="touchField('form.amount')"
+                    @change="former.setAttr('amount', form.amount)"
+                    name="create-issuance-amount"
+                    :label="'issuance-form.amount-lbl' | globalize"
+                    :error-message="getFieldErrorMessage(
+                      'form.amount',
+                      {
+                        from: MIN_AMOUNT,
+                        to: form.asset.availableForIssuance,
+                        maxDecimalDigitsCount: DECIMAL_POINTS
+                      }
+                    )"
+                    :disabled="formMixin.isDisabled || !availableForIssuance"
+                  />
 
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <input-field
-              white-autofill
-              v-model="form.receiver"
-              @blur="touchField('form.receiver')"
-              @change="former.setAttr('receiver', form.receiver)"
-              name="create-issuance-receiver"
-              :label="'issuance-form.receiver-lbl' | globalize"
-              :error-message="getFieldErrorMessage('form.receiver')"
-              :disabled="formMixin.isDisabled || !availableForIssuance"
-            />
-          </div>
-        </div>
+                  <p
+                    v-if="form.asset.code"
+                    class="create-issuance-form__issuance-asset-code"
+                  >
+                    {{ form.asset.code }}
+                  </p>
+                </div>
 
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <input-field
-              white-autofill
-              v-model="form.reference"
-              @blur="touchField('form.reference')"
-              @change="former.setAttr('reference', form.reference)"
-              name="create-issuance-reference"
-              :error-message="getFieldErrorMessage(
-                'form.reference',
-                { length: REFERENCE_MAX_LENGTH }
-              )"
-              :label="'issuance-form.reference-lbl' | globalize"
-              :maxlength="REFERENCE_MAX_LENGTH"
-              :disabled="formMixin.isDisabled || !availableForIssuance"
-            />
-          </div>
-        </div>
+                <p
+                  v-if="form.asset.availableForIssuance"
+                  class="app__form-field-description"
+                  :class="{'app__form-field-description--error':
+                    !availableForIssuance}"
+                >
+                  {{
+                    'issuance-form.available-for-issuance-hint' | globalize({
+                      amount: {
+                        value: form.asset.availableForIssuance,
+                        currency: form.asset.code
+                      }
+                    })
+                  }}
+                </p>
+              </div>
+            </div>
 
-        <div class="app__form-row create-issuance-form__total">
-          <template v-if="isFeesLoaded">
-            <fees-renderer :fees-collection="fees" />
+            <div class="app__form-row">
+              <div class="app__form-field">
+                <input-field
+                  white-autofill
+                  v-model="form.receiver"
+                  @blur="touchField('form.receiver')"
+                  @change="former.setAttr('receiver', form.receiver)"
+                  name="create-issuance-receiver"
+                  :label="'issuance-form.receiver-lbl' | globalize"
+                  :error-message="getFieldErrorMessage('form.receiver')"
+                  :disabled="formMixin.isDisabled || !availableForIssuance"
+                />
+              </div>
+            </div>
 
-            <readonly-field
-              :label="'issuance-form.amount-to-receive-msg' | globalize"
-              :value="receivingAmount | formatMoney"
-              :error-message="getFieldErrorMessage('receivingAmount.value')"
-            />
-          </template>
+            <div class="app__form-row">
+              <div class="app__form-field">
+                <input-field
+                  white-autofill
+                  v-model="form.reference"
+                  @blur="touchField('form.reference')"
+                  @change="former.setAttr('reference', form.reference)"
+                  name="create-issuance-reference"
+                  :error-message="getFieldErrorMessage(
+                    'form.reference',
+                    { length: REFERENCE_MAX_LENGTH }
+                  )"
+                  :label="'issuance-form.reference-lbl' | globalize"
+                  :maxlength="REFERENCE_MAX_LENGTH"
+                  :disabled="formMixin.isDisabled || !availableForIssuance"
+                />
+              </div>
+            </div>
 
-          <template v-else>
-            <loader message-id="issuance-form.loading-msg" />
-          </template>
-        </div>
+            <div class="app__form-row create-issuance-form__total">
+              <template v-if="isFeesLoaded">
+                <fees-renderer :fees-collection="fees" />
 
-        <div class="app__form-actions">
-          <form-confirmation
-            v-if="formMixin.isConfirmationShown && isFeesLoaded"
-            :is-pending="isFormSubmitting"
-            @ok="submit"
-            @cancel="hideConfirmation"
+                <readonly-field
+                  :label="'issuance-form.amount-to-receive-msg' | globalize"
+                  :value="receivingAmount | formatMoney"
+                  :error-message="getFieldErrorMessage('receivingAmount.value')"
+                />
+              </template>
+
+              <template v-else>
+                <loader message-id="issuance-form.loading-msg" />
+              </template>
+            </div>
+
+            <div class="app__form-actions">
+              <form-confirmation
+                v-if="formMixin.isConfirmationShown && isFeesLoaded"
+                :is-pending="isFormSubmitting"
+                @ok="submit"
+                @cancel="hideConfirmation"
+              />
+
+              <button
+                v-else
+                v-ripple
+                class="create-issuance-form__submit-btn app__button-raised"
+                :disabled="formMixin.isDisabled || !isFeesLoaded ||
+                  !availableForIssuance"
+              >
+                {{ 'issuance-form.issue-btn' | globalize }}
+              </button>
+            </div>
+          </form>
+        </template>
+
+        <template v-else>
+          <no-data-message
+            icon-name="alert-circle"
+            :title="'issuance-form.no-owned-assets-title' | globalize"
+            :message="'issuance-form.no-owned-assets-msg' | globalize"
           />
-
-          <button
-            v-else
-            v-ripple
-            class="create-issuance-form__submit-btn app__button-raised"
-            :disabled="formMixin.isDisabled || !isFeesLoaded ||
-              !availableForIssuance"
-          >
-            {{ 'issuance-form.issue-btn' | globalize }}
-          </button>
-        </div>
-      </form>
-
-      <no-data-message
-        v-else
-        icon-name="alert-circle"
-        :title="'issuance-form.no-owned-assets-title' | globalize"
-        :message="'issuance-form.no-owned-assets-msg' | globalize"
-      />
+        </template>
+      </template>
     </template>
 
-    <p v-else-if="isLoadFailed">
-      {{ 'issuance-form.load-failed-msg' | globalize }}
-    </p>
-
-    <issuance-form-skeleton-loader
-      v-else
-    />
+    <template v-else>
+      <issuance-form-skeleton-loader />
+    </template>
   </div>
 </template>
 
@@ -229,7 +235,6 @@ export default {
     fees: {},
     feesDebouncedRequest: null,
     isFeesLoaded: false,
-    isFeesLoadFailed: false,
     isFormSubmitting: false,
     MIN_AMOUNT: config.MIN_AMOUNT,
     DECIMAL_POINTS: config.DECIMAL_POINTS,
@@ -279,7 +284,7 @@ export default {
     },
   },
   watch: {
-    'form.amount' (value) {
+    'form.amount' () {
       this.former.setAttr('amount', this.form.amount || '0')
       this.tryLoadFees()
     },
@@ -292,7 +297,7 @@ export default {
     try {
       this.isLoaded = true
 
-      if ((this.ownedAssets || []).length) {
+      if (this.ownedAssets.length) {
         this.form.asset = this.ownedAssets[0]
         this.former.setAttr('assetCode', this.form.asset.code)
         this.former.setAttr('amount', this.form.amount || '0')
@@ -311,7 +316,6 @@ export default {
     },
     tryLoadFees () {
       this.isFeesLoaded = false
-      this.isFeesLoadFailed = false
       if (!this.feesDebouncedRequest) {
         this.feesDebouncedRequest = debounce(
           () => this.loadFees(),
@@ -325,7 +329,6 @@ export default {
         this.fees = await this.former.calculateFees(this.accountId)
         this.isFeesLoaded = true
       } catch (e) {
-        this.isFeesLoadFailed = true
         ErrorHandler.processWithoutFeedback(e)
       }
     },

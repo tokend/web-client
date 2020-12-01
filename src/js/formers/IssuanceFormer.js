@@ -25,7 +25,9 @@ export class IssuanceFormer extends Former {
     const attrs = this.attrs
     const receiverAccountId = await getReceiverAccountId(attrs.receiver)
     const receiverBalanceId = await getReceiverBalanceId(
-      receiverAccountId, attrs.assetCode)
+      receiverAccountId,
+      attrs.assetCode
+    )
 
     const result = {
       asset: attrs.assetCode,
