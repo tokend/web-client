@@ -9,7 +9,6 @@
         <select-field
           :value="form.type"
           @input="setSaleType"
-          @change="former.setAttr('type', form.type)"
           name="create-sale-type"
           :label="'create-sale-form.type-lbl' | globalize"
         >
@@ -30,7 +29,6 @@
           white-autofill
           v-model="form.name"
           @blur="touchField('form.name')"
-          @change="former.setAttr('name', form.name)"
           name="create-sale-name"
           :label="'create-sale-form.sale-name-lbl' | globalize"
           :error-message="getFieldErrorMessage(
@@ -46,7 +44,6 @@
         <select-field
           :value="form.baseAsset.code"
           @input="setBaseAssetByCode"
-          @change="former.setAttr('baseAsset', form.baseAsset)"
           name="create-sale-base-asset"
           :label="'create-sale-form.base-asset-lbl' | globalize"
         >
@@ -66,7 +63,6 @@
         <select-field
           :value="form.capAsset.code"
           @input="setCapAssetByCode"
-          @change="former.setAttr('capAsset', form.capAsset)"
           name="create-sale-base-asset"
           :label="'create-sale-form.cap-asset-lbl' | globalize"
           :error-message="!isQuoteAssetsLoaded || availableQuoteAssets.length
@@ -90,7 +86,6 @@
           white-autofill
           v-model="form.assetsToSell"
           @blur="touchField('form.assetsToSell')"
-          @change="former.setAttr('assetsToSell', form.assetsToSell)"
           name="create-sale-assets-to-sell"
           type="number"
           :min="0"
@@ -124,7 +119,6 @@
         <tick-field
           :name="`create-sale-whitelisted`"
           v-model="form.isWhitelisted"
-          @input="former.setAttr('isWhiteListed', form.capAsset)"
         >
           {{ 'create-sale-form.whitelisted-lbl' | globalize }}
         </tick-field>
@@ -140,7 +134,6 @@
           :enable-time="true"
           @input="touchField('form.startTime')"
           @blur="touchField('form.startTime')"
-          @change="former.setAttr('startTime', form.startTime)"
           :label="'create-sale-form.start-time-lbl' | globalize"
           :error-message="getFieldErrorMessage('form.startTime')"
         />
@@ -155,7 +148,6 @@
           :disable-before="yesterday"
           @input="touchField('form.endTime')"
           @blur="touchField('form.endTime')"
-          @change="former.setAttr('endTime', form.endTime)"
           name="create-sale-end-time"
           :label="'create-sale-form.close-time-lbl' | globalize"
           :error-message="getFieldErrorMessage(
@@ -175,7 +167,6 @@
           :step="MIN_AMOUNT"
           v-model="form.softCap"
           @blur="touchField('form.softCap')"
-          @change="former.setAttr('softCap', form.softCap)"
           name="create-sale-soft-cap"
           :label="'create-sale-form.soft-cap-lbl' | globalize({
             asset: form.capAsset.code
@@ -198,7 +189,6 @@
           :step="MIN_AMOUNT"
           v-model="form.hardCap"
           @blur="touchField('form.hardCap')"
-          @change="former.setAttr('hardCap', form.hardCap)"
           name="create-sale-hard-cap"
           :label="'create-sale-form.hard-cap-lbl' | globalize({
             asset: form.capAsset.code
@@ -242,7 +232,6 @@
           <tick-field
             :name="`create-sale-tick-${item.code}`"
             v-model="form.quoteAssets"
-            @input="former.setAttr('quoteAssets', form.quoteAssets)"
             :cb-value="item.code"
           >
             {{ item.nameAndCode }}
