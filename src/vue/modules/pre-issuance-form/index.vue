@@ -26,8 +26,6 @@
 </template>
 
 <script>
-import { loadOwnedAssets } from '@/js/helpers/load-owned-assets-helper'
-
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import SkeletonLoaderPreIssuanceForm from './components/skeleton-loader-pre-issuance-form'
 import UploadPreIssuanceForm from './components/upload-pre-issuance-form'
@@ -58,23 +56,16 @@ export default {
   computed: {
     ...mapGetters([
       vuexTypes.accountId,
+      vuexTypes.ownedAssets,
     ]),
   },
   async created () {
-    await this.init()
+    try {
+      this.isLoaded = true
+    } catch (error) {
+      this.isLoadFailed = true
+      ErrorHandler.processWithoutFeedback(error)
+    }
   },
-
-  methods: {
-    async init () {
-      try {
-        await this.loadOwnedAssets(this.accountId)
-        this.isLoaded = true
-      } catch (error) {
-        this.isLoadFailed = true
-        ErrorHandler.processWithoutFeedback(error)
-      }
-    },
-  },
-  loadOwnedAssets,
 }
 </script>

@@ -194,7 +194,6 @@ import {
   maxDecimalDigitsCount,
 } from '@validators'
 import { IssuanceFormer } from '@/js/formers/IssuanceFormer'
-import { loadOwnedAssets } from '@/js/helpers/load-owned-assets-helper'
 
 const REFERENCE_MAX_LENGTH = 64
 const EVENTS = {
@@ -227,7 +226,6 @@ export default {
       receiver: '',
       reference: '',
     },
-    ownedAssets: [],
     fees: {},
     feesDebouncedRequest: null,
     isFeesLoaded: false,
@@ -263,6 +261,7 @@ export default {
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
+      ownedAssets: vuexTypes.ownedAssets,
     }),
     receivingAmount () {
       const fees = MathUtil.add(
@@ -291,7 +290,6 @@ export default {
   },
   async created () {
     try {
-      this.ownedAssets = await this.loadOwnedAssets(this.accountId)
       this.isLoaded = true
 
       if ((this.ownedAssets || []).length) {
@@ -307,7 +305,6 @@ export default {
     }
   },
   methods: {
-    loadOwnedAssets,
     setAssetByCode (code) {
       this.form.asset = this.ownedAssets
         .find(item => item.code === code)
