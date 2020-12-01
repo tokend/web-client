@@ -10,7 +10,6 @@
           white-autofill
           v-model="form.question"
           @blur="touchField('form.question')"
-          @input="former.setAttr('question', form.question)"
           name="create-poll-question"
           :label="'create-poll-form.question-lbl' | globalize"
           :disabled="formMixin.isDisabled"
@@ -80,7 +79,6 @@
           :enable-time="true"
           @input="touchField('form.startTime')"
           @blur="touchField('form.startTime')"
-          @change="former.setAttr('startTime', form.startTime)"
           :label="'create-poll-form.start-time-lbl' | globalize"
           :disabled="formMixin.isDisabled"
           :error-message="getFieldErrorMessage(
@@ -98,7 +96,6 @@
           :disable-before="yesterday"
           @input="touchField('form.endTime')"
           @blur="touchField('form.endTime')"
-          @change="former.setAttr('endTime', form.endTime)"
           name="create-poll-end-time"
           :label="'create-poll-form.end-time-lbl' | globalize"
           :disabled="formMixin.isDisabled"
@@ -113,7 +110,6 @@
       <div class="app__form-field">
         <select-field
           v-model="form.permissionType"
-          @change="former.setAttr('permissionType', form.permissionType)"
           @blur="touchField('form.permissionType')"
           name="create-poll-permission-type"
           :label="'create-poll-form.permission-type-lbl' | globalize"
