@@ -266,13 +266,13 @@ export default {
         this.disableForm()
         this.isSubmitting = true
         try {
-          this.former.setAttr('choices', this.form.choices)
-          this.former.setAttr('startTime', this.form.startTime)
-          this.former.setAttr('endTime', this.form.endTime)
-          this.former.setAttr('permissionType', this.form.permissionType)
-          // console.log('former submit', this.former.attrs)
-          // console.log('form submit', this.form)
-          const createPollOperation = this.buildCreatePollOperation()
+          this.former.mergeAttrs({
+            choices: this.form.choices,
+            startTime: this.form.startTime,
+            endTime: this.form.endTime,
+            permissionType: this.form.permissionType,
+          })
+          const createPollOperation = this.former.buildOps()
           await api.postOperations(createPollOperation)
           Bus.success('create-poll-form.request-submitted-msg')
           this.$emit(EVENTS.submitted)
@@ -284,9 +284,6 @@ export default {
         this.hideConfirmation()
         this.enableForm()
       }
-    },
-    buildCreatePollOperation () {
-
     },
     canDeleteChoice (index) {
       return index !== this.form.choices.length ||

@@ -157,9 +157,9 @@ export default {
     },
   },
 
-  created () {
-    this.listenUpdateList('polls:updateList', this.reloadList)
-  },
+  // created () {
+  //  this.listenUpdateList('polls:updateList', this.reloadList)
+  // },
 
   methods: {
     ...mapActions({

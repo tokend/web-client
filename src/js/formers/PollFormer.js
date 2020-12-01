@@ -20,7 +20,7 @@ export class PollFormer extends Former {
       }
     }
 
-    async buildOps () {
+    buildOps () {
       const operation = {
         permissionType: Number(this.attrs.permissionType),
         voteConfirmationRequired: false,
@@ -35,8 +35,5 @@ export class PollFormer extends Former {
         },
       }
       return base.ManageCreatePollRequestBuilder.createPollRequest(operation)
-    }
-
-    populate (poll) {
     }
 }
