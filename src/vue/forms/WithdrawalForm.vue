@@ -154,11 +154,10 @@
 <script>
 import debounce from 'lodash/debounce'
 import FormMixin from '@/vue/mixins/form.mixin'
-import FeesMixin from '@/vue/common/fees/fees.mixin'
+import FeesRenderer from '@/vue/common/fees/FeesRenderer.vue'
 import Loader from '@/vue/common/Loader'
 import EmailGetter from '@/vue/common/EmailGetter'
 
-import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { vueRoutes } from '@/vue-router/routes'
@@ -183,8 +182,9 @@ export default {
   components: {
     Loader,
     EmailGetter,
+    FeesRenderer,
   },
-  mixins: [FormMixin, FeesMixin, IdentityGetterMixin],
+  mixins: [FormMixin],
   props: {
     assetCode: { type: String, default: '' },
     former: { type: WithdrawalFormer, default: () => new WithdrawalFormer() },
