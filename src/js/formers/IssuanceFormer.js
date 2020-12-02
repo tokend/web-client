@@ -3,6 +3,7 @@ import { str } from './op-build-helpers'
 import { base, FEE_TYPES } from '@tokend/js-sdk'
 import { getReceiverAccountId, getReceiverBalanceId } from '@/js/helpers/identity-helper'
 import { calculateFees } from '@/js/helpers/fees-helper'
+import { errors } from '@/js/errors'
 
 /**
  * Collects the attributes for issuance-related operations
@@ -28,6 +29,9 @@ export class IssuanceFormer extends Former {
       receiverAccountId,
       attrs.assetCode
     )
+    if (!receiverBalanceId) {
+      throw new errors.BalanceNotFoundError()
+    }
 
     const result = {
       asset: attrs.assetCode,

@@ -44,7 +44,7 @@
                     type="number"
                     :min="0"
                     :max="form.asset.availableForIssuance"
-                    :step="MIN_AMOUNT"
+                    :step="config.MIN_AMOUNT"
                     v-model="form.amount"
                     @blur="touchField('form.amount')"
                     @change="former.setAttr('amount', form.amount)"
@@ -53,9 +53,9 @@
                     :error-message="getFieldErrorMessage(
                       'form.amount',
                       {
-                        from: MIN_AMOUNT,
+                        from: config.MIN_AMOUNT,
                         to: form.asset.availableForIssuance,
-                        maxDecimalDigitsCount: DECIMAL_POINTS
+                        maxDecimalDigitsCount: config.DECIMAL_POINTS
                       }
                     )"
                     :disabled="formMixin.isDisabled || !availableForIssuance"
@@ -236,9 +236,8 @@ export default {
     feesDebouncedRequest: null,
     isFeesLoaded: false,
     isFormSubmitting: false,
-    MIN_AMOUNT: config.MIN_AMOUNT,
-    DECIMAL_POINTS: config.DECIMAL_POINTS,
     REFERENCE_MAX_LENGTH,
+    config,
   }),
   validations () {
     return {
