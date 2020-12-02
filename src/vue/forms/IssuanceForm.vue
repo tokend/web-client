@@ -39,12 +39,12 @@
             <div class="app__form-row">
               <div class="app__form-field">
                 <div class="create-issuance-form__amount-wrapper">
-                  <input-field
+                  <amount-input-field
                     white-autofill
-                    type="number"
                     :min="0"
                     :max="form.asset.availableForIssuance"
                     :step="config.MIN_AMOUNT"
+                    :asset="form.asset"
                     v-model="form.amount"
                     @blur="touchField('form.amount')"
                     @change="former.setAttr('amount', form.amount)"
@@ -185,7 +185,6 @@ import Loader from '@/vue/common/Loader'
 import FeesRenderer from '@/vue/common/fees/FeesRenderer'
 import ReadonlyField from '@/vue/fields/ReadonlyField'
 import FormMixin from '@/vue/mixins/form.mixin'
-import FeesMixin from '@/vue/common/fees/fees.mixin'
 import config from '@/config'
 import { api } from '@/api'
 import { MathUtil } from '@/js/utils'
@@ -216,7 +215,7 @@ export default {
     FeesRenderer,
     ReadonlyField,
   },
-  mixins: [FormMixin, FeesMixin],
+  mixins: [FormMixin],
   props: {
     former: { type: IssuanceFormer, default: () => new IssuanceFormer() },
   },
@@ -370,5 +369,9 @@ export default {
 .create-issuance-form__total {
   flex-direction: column;
   color: $col-text;
+}
+
+.amount-input-field {
+  width: 100%;
 }
 </style>
