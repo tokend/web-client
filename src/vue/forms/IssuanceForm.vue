@@ -40,24 +40,13 @@
               <div class="app__form-field">
                 <div class="create-issuance-form__amount-wrapper">
                   <amount-input-field
-                    white-autofill
-                    :min="0"
-                    :max="form.asset.availableForIssuance"
-                    :step="config.MIN_AMOUNT"
-                    :asset="form.asset"
                     v-model="form.amount"
-                    @blur="touchField('form.amount')"
-                    @change="former.setAttr('amount', form.amount)"
                     name="create-issuance-amount"
+                    validation-type="issuance"
+                    @change="former.setAttr('amount', form.amount)"
                     :label="'issuance-form.amount-lbl' | globalize"
-                    :error-message="getFieldErrorMessage(
-                      'form.amount',
-                      {
-                        from: config.MIN_AMOUNT,
-                        to: form.asset.availableForIssuance,
-                        maxDecimalDigitsCount: config.DECIMAL_POINTS
-                      }
-                    )"
+                    :asset="form.asset"
+                    :readonly="formMixin.isDisabled"
                     :disabled="formMixin.isDisabled || !availableForIssuance"
                   />
 
@@ -236,7 +225,6 @@ export default {
     isFeesLoaded: false,
     isFormSubmitting: false,
     REFERENCE_MAX_LENGTH,
-    config,
   }),
   validations () {
     return {
