@@ -1,6 +1,6 @@
 import { Former } from './Former'
 import { calculateFees } from '@/js/helpers/fees-helper'
-// import { base, FEE_TYPES } from '@tokend/js-sdk'
+import { FEE_TYPES } from '@tokend/js-sdk'
 
 /**
  * Collects the attributes for transfer-related operations
@@ -10,12 +10,27 @@ import { calculateFees } from '@/js/helpers/fees-helper'
 export class TradeFormer extends Former {
     attrs = this.attrs || this._defaultAttrs
     get _defaultAttrs () {
+      return {
+        price: '',
+        amount: '',
+        assetCode: '',
+        isBuy: false,
+        assetPair: {},
+        quoteAmount: '',
+        accountId: '',
+      }
     }
 
     buildOps () {
     }
 
-    calculateFees () {
-      calculateFees()
+    async calculateFees () {
+      const response = await calculateFees({
+        assetCode: this.attrs.assetPair.quote,
+        amount: this.attrs.quoteAmount || 0,
+        senderAccountId: this.attrs.accountId,
+        type: FEE_TYPES.offerFee,
+      })
+      return response
     }
 }

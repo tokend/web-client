@@ -7,6 +7,7 @@
       <div class="app__form-field">
         <select-field
           v-model="form.asset"
+          @input="former.setAttr('assetCode', form.asset)"
           name="trade-offer-base-asset"
           :disabled="formMixin.isDisabled"
           :label="baseAssetLabelTranslationId | globalize"
@@ -26,6 +27,7 @@
       <div class="app__form-field">
         <input-field
           v-model.trim="form.price"
+          @input="former.setAttr('price', form.price)"
           name="trade-offer-price"
           type="number"
           :min="0"
@@ -54,6 +56,7 @@
       <div class="app__form-field">
         <input-field
           v-model.trim="form.amount"
+          @input="former.setAttr('amount', form.amount)"
           name="trade-offer-amount"
           type="number"
           :min="0"
@@ -150,12 +153,10 @@ import FeesRenderer from '@/vue/common/fees/FeesRenderer'
 
 import FormMixin from '@/vue/mixins/form.mixin'
 import OfferManagerMixin from '@/vue/mixins/offer-manager.mixin'
-import FeesMixin from '@/vue/common/fees/fees.mixin'
 
-import { FEE_TYPES } from '@tokend/js-sdk'
-
-import { Bus } from '@/js/helpers/event-bus'
+// import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { TradeFormer } from '@/js/formers/TradeFormer'
 
 import { MathUtil } from '@/js/utils/math.util'
 import config from '@/config'
@@ -169,9 +170,9 @@ import {
   decimal,
 } from '@validators'
 
-const EVENTS = {
-  offerCreated: 'offer-created',
-}
+// const EVENTS = {
+//   offerCreated: 'offer-created',
+// }
 
 const FEES_LOADING_DELAY_MS = 300
 
@@ -186,12 +187,12 @@ export default {
   mixins: [
     FormMixin,
     OfferManagerMixin,
-    FeesMixin,
   ],
 
   props: {
     assetPair: { type: Object, required: true },
     isBuy: { type: Boolean, default: false },
+    former: { type: TradeFormer, default: () => new TradeFormer() },
   },
 
   data: () => ({
@@ -301,7 +302,10 @@ export default {
     try {
       await this.loadBalances()
       this.setDefaultAsset()
-      await this.loadFees()
+      // await this.loadFees()
+      this.former.setAttr('isBuy', this.isBuy)
+      this.former.setAttr('assetPair', this.assetPair)
+      this.former.setAttr('accountId', this.accountId)
       this.isLoaded = true
     } catch (e) {
       ErrorHandler.processWithoutFeedback(e)
@@ -324,12 +328,8 @@ export default {
 
     async loadFees () {
       try {
-        this.fees = await this.calculateFees({
-          assetCode: this.assetPair.quote,
-          amount: this.quoteAmount || 0,
-          senderAccountId: this.accountId,
-          type: FEE_TYPES.offerFee,
-        })
+        this.former.setAttr('quoteAmount', this.quoteAmount)
+        this.fees = await this.former.calculateFees()
 
         this.isFeesLoaded = true
       } catch (e) {
@@ -340,14 +340,14 @@ export default {
 
     async submit () {
       this.isOfferCreating = true
-      try {
-        await this.createOffer(this.createOfferOpts)
+      // try {
+      //   await this.createOffer(this.createOfferOpts)
 
-        Bus.success('create-trade-offer-form.order-created-msg')
-        this.$emit(EVENTS.offerCreated)
-      } catch (e) {
-        ErrorHandler.process(e)
-      }
+      //   Bus.success('create-trade-offer-form.order-created-msg')
+      //   this.$emit(EVENTS.offerCreated)
+      // } catch (e) {
+      //   ErrorHandler.process(e)
+      // }
       this.isOfferCreating = false
       this.hideConfirmation()
     },
