@@ -1,4 +1,5 @@
 import { Former } from './Former'
+import { calculateFees } from '@/js/helpers/fees-helper'
 // import { base, FEE_TYPES } from '@tokend/js-sdk'
 
 /**
@@ -12,5 +13,9 @@ export class TradeFormer extends Former {
     }
 
     buildOps () {
+    }
+
+    calculateFees () {
+      calculateFees()
     }
 }
