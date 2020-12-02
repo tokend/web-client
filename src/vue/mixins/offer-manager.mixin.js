@@ -61,6 +61,7 @@ export default {
      */
 
     async createOpts (opts) {
+      // console.log('operation', opts)
       await this.createAssetPairBalances(opts.pair)
       return base.ManageOfferBuilder.manageOffer({
         amount: opts.baseAmount,

@@ -144,6 +144,7 @@
 import debounce from 'lodash/debounce'
 
 import ReadonlyField from '@/vue/fields/ReadonlyField'
+import Loader from '@/vue/common/Loader'
 import SkeletonLoaderOfferForm from './SkeletonLoaderOfferForm'
 import FeesRenderer from '@/vue/common/fees/FeesRenderer'
 
@@ -180,6 +181,7 @@ export default {
     ReadonlyField,
     SkeletonLoaderOfferForm,
     FeesRenderer,
+    Loader,
   },
   mixins: [
     FormMixin,
