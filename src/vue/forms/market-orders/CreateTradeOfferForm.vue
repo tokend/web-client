@@ -160,8 +160,11 @@ import { TradeFormer } from '@/js/formers/TradeFormer'
 
 import { MathUtil } from '@/js/utils/math.util'
 import config from '@/config'
+import { vuexTypes } from '@/vuex'
+import { mapGetters } from 'vuex'
 
 import _get from 'lodash/get'
+import { api } from '@/api'
 
 import {
   required,
@@ -198,7 +201,7 @@ export default {
   data: () => ({
     form: {
       price: '',
-      amount: '',
+      amount: '0',
       asset: '',
     },
     fees: {},
@@ -236,6 +239,11 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      accountBalances: vuexTypes.accountBalances,
+      accountId: vuexTypes.accountId,
+    }),
+
     baseAssetLabelTranslationId () {
       return this.isBuy
         ? 'create-trade-offer-form.asset-to-buy-lbl'
@@ -269,19 +277,19 @@ export default {
       }
     },
 
-    createOfferOpts () {
-      return {
-        pair: {
-          base: this.form.asset,
-          quote: this.assetPair.quote,
-        },
-        baseAmount: this.form.amount,
-        quoteAmount: this.quoteAmount,
-        price: this.form.price,
-        isBuy: this.isBuy,
-        fee: this.fees.totalFee,
-      }
-    },
+    // createOfferOpts () {
+    //   return {
+    //     pair: {
+    //       base: this.form.asset,
+    //       quote: this.assetPair.quote,
+    //     },
+    //     baseAmount: this.form.amount,
+    //     quoteAmount: this.quoteAmount,
+    //     price: this.form.price,
+    //     isBuy: this.isBuy,
+    //     fee: this.fees.totalFee,
+    //   }
+    // },
   },
 
   watch: {
@@ -306,6 +314,8 @@ export default {
       this.former.setAttr('isBuy', this.isBuy)
       this.former.setAttr('assetPair', this.assetPair)
       this.former.setAttr('accountId', this.accountId)
+      this.former.setAttr('accountBalances', this.accountBalances)
+      this.former.setAttr('assetCode', this.form.asset)
       this.isLoaded = true
     } catch (e) {
       ErrorHandler.processWithoutFeedback(e)
@@ -330,6 +340,7 @@ export default {
       try {
         this.former.setAttr('quoteAmount', this.quoteAmount)
         this.fees = await this.former.calculateFees()
+        this.former.setAttr('fees.totalFee', this.fees.totalFee)
 
         this.isFeesLoaded = true
       } catch (e) {
@@ -340,14 +351,18 @@ export default {
 
     async submit () {
       this.isOfferCreating = true
-      // try {
-      //   await this.createOffer(this.createOfferOpts)
+      // console.log('former', this.former.attrs)
+      try {
+        // await this.createOffer(this.createOfferOpts)
+        const operation = await this.former.buildOpsCreate()
+        await api.postOperations(operation)
+        // console.log('created')
 
-      //   Bus.success('create-trade-offer-form.order-created-msg')
-      //   this.$emit(EVENTS.offerCreated)
-      // } catch (e) {
-      //   ErrorHandler.process(e)
-      // }
+        // Bus.success('create-trade-offer-form.order-created-msg')
+        // this.$emit(EVENTS.offerCreated)
+      } catch (e) {
+        ErrorHandler.process(e)
+      }
       this.isOfferCreating = false
       this.hideConfirmation()
     },

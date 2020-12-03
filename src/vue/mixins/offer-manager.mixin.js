@@ -4,24 +4,24 @@ import { api } from '@/api'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 
 import { vuexTypes } from '@/vuex'
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
-  computed: {
-    ...mapGetters({
-      accountBalances: vuexTypes.accountBalances,
-      accountId: vuexTypes.accountId,
-    }),
-  },
+  // computed: {
+  //   ...mapGetters({
+  //     accountBalances: vuexTypes.accountBalances,
+  //     accountId: vuexTypes.accountId,
+  //   }),
+  // },
 
   methods: {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
 
-    getAssetDetails (assetCode) {
-      return this.accountBalances.find(i => i.asset.code === assetCode)
-    },
+    // getAssetDetails (assetCode) {
+    //   return this.accountBalances.find(i => i.asset.code === assetCode)
+    // },
 
     /**
      * @param {object} opts
@@ -60,26 +60,26 @@ export default {
      * @returns {Promise<void>}
      */
 
-    async createOpts (opts) {
-      await this.createAssetPairBalances(opts.pair)
-      return base.ManageOfferBuilder.manageOffer({
-        amount: opts.baseAmount,
-        price: opts.price,
-        orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
-        isBuy: opts.isBuy,
-        baseBalance: this.getAssetDetails(opts.pair.base).id,
-        quoteBalance: this.getAssetDetails(opts.pair.quote).id,
-        // For this operation, back-end creates a "calculated fee", that
-        // calculates as amount * percent fee. We can ignore the fixed fee
-        // because of this is a back-end business
-        fee: opts.fee.calculatedPercent,
-      })
-    },
+    // async createOpts (opts) {
+    //   await this.createAssetPairBalances(opts.pair)
+    //   return base.ManageOfferBuilder.manageOffer({
+    //     amount: opts.baseAmount,
+    //     price: opts.price,
+    //     orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
+    //     isBuy: opts.isBuy,
+    //     baseBalance: this.getAssetDetails(opts.pair.base).id,
+    //     quoteBalance: this.getAssetDetails(opts.pair.quote).id,
+    //     // For this operation, back-end creates a "calculated fee", that
+    //     // calculates as amount * percent fee. We can ignore the fixed fee
+    //     // because of this is a back-end business
+    //     fee: opts.fee.calculatedPercent,
+    //   })
+    // },
 
-    async createOffer (opts) {
-      const operation = await this.createOpts(opts)
-      await api.postOperations(operation)
-    },
+    // async createOffer (opts) {
+    //   const operation = await this.createOpts(opts)
+    //   await api.postOperations(operation)
+    // },
 
     async updateOffer (cancelOpts, createOpts) {
       const cancelOperation = this.cancelOpts(cancelOpts)
@@ -87,26 +87,26 @@ export default {
       await api.postOperations(cancelOperation, createOperation)
     },
 
-    async createAssetPairBalances (assetPair) {
-      if (!this.getAssetDetails(assetPair.base)) {
-        const operation = base.Operation.manageBalance({
-          destination: this.accountId,
-          asset: assetPair.base,
-          action: base.xdr.ManageBalanceAction.createUnique(),
-        })
-        await api.postOperations(operation)
-        await this.loadBalances()
-      }
+    // async createAssetPairBalances (assetPair) {
+    //   if (!this.getAssetDetails(assetPair.base)) {
+    //     const operation = base.Operation.manageBalance({
+    //       destination: this.accountId,
+    //       asset: assetPair.base,
+    //       action: base.xdr.ManageBalanceAction.createUnique(),
+    //     })
+    //     await api.postOperations(operation)
+    //     await this.loadBalances()
+    //   }
 
-      if (!this.getAssetDetails(assetPair.quote)) {
-        const operation = base.Operation.manageBalance({
-          destination: this.accountId,
-          asset: assetPair.quote,
-          action: base.xdr.ManageBalanceAction.createUnique(),
-        })
-        await api.postOperations(operation)
-        await this.loadBalances()
-      }
-    },
+    //   if (!this.getAssetDetails(assetPair.quote)) {
+    //     const operation = base.Operation.manageBalance({
+    //       destination: this.accountId,
+    //       asset: assetPair.quote,
+    //       action: base.xdr.ManageBalanceAction.createUnique(),
+    //     })
+    //     await api.postOperations(operation)
+    //     await this.loadBalances()
+    //   }
+    // },
   },
 }

@@ -149,15 +149,16 @@ import Loader from '@/vue/common/Loader'
 
 import FormMixin from '@/vue/mixins/form.mixin'
 import OfferManagerMixin from '@/vue/mixins/offer-manager.mixin'
-import FeesMixin from '@/vue/common/fees/fees.mixin'
-
-import { FEE_TYPES } from '@tokend/js-sdk'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { TradeFormer } from '@/js/formers/TradeFormer'
+import { vuexTypes } from '@/vuex'
+import { mapGetters } from 'vuex'
 
 import { MathUtil } from '@/js/utils/math.util'
 import config from '@/config'
+import { api } from '@/api'
 
 import {
   required,
@@ -188,12 +189,12 @@ export default {
   mixins: [
     FormMixin,
     OfferManagerMixin,
-    FeesMixin,
   ],
 
   props: {
     assetPair: { type: Object, required: true },
     offer: { type: Object, required: true },
+    former: { type: TradeFormer, default: () => new TradeFormer() },
   },
 
   data: () => ({
@@ -237,6 +238,11 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      accountBalances: vuexTypes.accountBalances,
+      accountId: vuexTypes.accountId,
+    }),
+
     baseAssetLabelTranslationId () {
       return this.offer.isBuy
         ? 'your-trade-offer-form.asset-to-buy-lbl'
@@ -319,9 +325,27 @@ export default {
 
   async created () {
     try {
+      // console.log('this.offer', this.offer)
+      this.former.mergeAttrs({
+        price: this.offer.price,
+        amount: this.offer.baseAmount,
+        assetCode: this.offer.baseAsset.id,
+        isBuy: this.offer.isBuy,
+        assetPair: this.assetPair,
+        quoteAmount: this.offer.quoteAmount,
+        accountId: this.offer.owner.id,
+        fees:
+        {
+          totalFee: this.offer.fee,
+        },
+        accountBalances: this.accountBalances,
+        offerId: this.offer.id,
+      })
+      // console.log('former', this.former.attrs)
       await this.loadBalances()
       this.populateForm()
-      await this.loadFees()
+      // await this.loadFees()
+
       this.isLoaded = true
     } catch (e) {
       ErrorHandler.processWithoutFeedback(e)
@@ -330,8 +354,8 @@ export default {
 
   methods: {
     populateForm () {
-      this.form.baseAmount = this.offer.baseAmount
-      this.form.price = this.offer.price
+      this.form.baseAmount = this.former.attrs.amount
+      this.form.price = this.former.attrs.price
     },
 
     tryLoadFees () {
@@ -349,12 +373,7 @@ export default {
 
     async loadFees () {
       try {
-        this.fees = await this.calculateFees({
-          assetCode: this.assetPair.quote,
-          amount: this.quoteAmount || 0,
-          senderAccountId: this.accountId,
-          type: FEE_TYPES.offerFee,
-        })
+        this.fees = await this.former.calculateFees()
 
         this.isFeesLoaded = true
       } catch (e) {
@@ -376,14 +395,19 @@ export default {
       try {
         switch (this.submitMode) {
           case SUBMIT_MODES.cancel:
-            await this.cancelOffer(this.cancelOfferOpts)
-
+            // await this.cancelOffer(this.cancelOfferOpts)
+            const opCancel = await this.cancelOffer(this.cancelOfferOpts)
+            await api.postOperations(opCancel)
             Bus.success('your-trade-offer-form.order-canceled-msg')
             this.$emit(EVENTS.offerCanceled)
 
             break
           case SUBMIT_MODES.update:
-            await this.updateOffer(this.cancelOfferOpts, this.createOfferOpts)
+            // eslint-disable-next-line max-len
+            // await this.updateOffer(this.cancelOfferOpts, this.createOfferOpts)
+            // eslint-disable-next-line max-len
+            const opUpdate = await this.updateOffer(this.cancelOfferOpts, this.createOfferOpts)
+            await api.postOperations(opUpdate)
 
             Bus.success('your-trade-offer-form.order-updated-msg')
             this.$emit(EVENTS.offerUpdated)
