@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import YourTradeOfferForm from '@/vue/forms/market-orders/YourTradeOfferForm'
+import YourTradeOfferForm from '@/vue/forms/TradeForms/YourTradeOfferForm'
 import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import { globalize } from '@/vue/filters/globalize'

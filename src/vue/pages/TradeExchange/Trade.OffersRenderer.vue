@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import SubmitTradeOfferForm from '@/vue/forms/market-orders/SubmitTradeOfferForm'
+import SubmitTradeOfferForm from '@/vue/forms/TradeForms/SubmitTradeOfferForm'
 
 import FormMixin from '@/vue/mixins/form.mixin'
 import Drawer from '@/vue/common/Drawer'

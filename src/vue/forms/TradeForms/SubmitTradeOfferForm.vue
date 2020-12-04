@@ -5,10 +5,12 @@
   >
     <div class="app__form-row">
       <div class="app__form-field">
-        <readonly-field
-          :label="baseAssetLabelTranslationId | globalize"
-          :value="offer.baseAsset.id"
-        />
+        <div class="app__form-field">
+          <readonly-field
+            :label="baseAssetLabelTranslationId | globalize"
+            :value="offer.baseAsset.id"
+          />
+        </div>
       </div>
     </div>
 
@@ -16,13 +18,13 @@
       <div class="app__form-field">
         <input-field
           v-model.trim="form.price"
-          name="your-trade-offer-price"
+          name="submit-trade-offer-price"
           type="number"
           :min="0"
           :max="config.MAX_AMOUNT"
           :step="config.MIN_AMOUNT"
           :label="
-            'your-trade-offer-form.price-lbl' | globalize({
+            'submit-trade-offer-form.price-lbl' | globalize({
               baseAsset: assetPair.base,
               quoteAsset: assetPair.quote,
             })
@@ -44,13 +46,13 @@
       <div class="app__form-field">
         <input-field
           v-model.trim="form.baseAmount"
-          name="your-trade-offer-base-amount"
           type="number"
           :min="0"
           :max="config.MAX_AMOUNT"
           :step="config.MIN_AMOUNT"
-          :label="'your-trade-offer-form.base-amount-lbl' | globalize({
-            asset: offer.baseAsset.id
+          name="submit-trade-offer-base-amount"
+          :label="'submit-trade-offer-form.base-amount-lbl' | globalize({
+            asset: assetPair.base
           })"
           :error-message="getFieldErrorMessage(
             'form.baseAmount',
@@ -60,7 +62,7 @@
               to: config.MAX_AMOUNT,
             }
           )"
-          @blur="touchField('form.amount')"
+          @blur="touchField('form.baseAmount')"
           :disabled="formMixin.isDisabled"
         />
       </div>
@@ -71,7 +73,7 @@
         <template v-if="isFeesLoaded">
           <readonly-field
             :label="
-              'your-trade-offer-form.total-amount-lbl' | globalize({
+              'submit-trade-offer-form.total-amount-lbl' | globalize({
                 asset: assetPair.quote
               })
             "
@@ -82,7 +84,7 @@
             :error-message="getFieldErrorMessage(
               'quoteAmount',
               {
-                available: quoteAssetBalance,
+                available: isBuy ? quoteAssetBalance : baseAssetBalance,
                 from: config.MIN_AMOUNT,
                 to: config.MAX_AMOUNT,
               }
@@ -90,13 +92,13 @@
           />
 
           <fees-renderer
-            class="your-trade-offer-form__fees"
+            class="submit-trade-offer-form__fees"
             :fees-collection="fees"
           />
         </template>
 
         <template v-else>
-          <loader message-id="your-trade-offer-form.loading-msg" />
+          <loader message-id="submit-trade-offer-form.loading-msg" />
         </template>
       </div>
     </div>
@@ -104,7 +106,7 @@
     <template v-if="formMixin.isConfirmationShown">
       <form-confirmation
         class="app__form-confirmation"
-        :is-pending="isFormSubmitting"
+        :is-pending="isOfferSubmitting"
         @ok="submit"
         @cancel="hideConfirmation"
       />
@@ -114,22 +116,17 @@
       <div class="app__form-actions">
         <button
           v-ripple
+          class="app__button-raised submit-trade-offer-form__btn"
           type="submit"
-          @click="setUpdateSubmitMode"
-          class="app__button-raised your-trade-offer-form__btn"
           :disabled="formMixin.isDisabled || !isFeesLoaded"
         >
-          {{ 'your-trade-offer-form.update-order-btn' | globalize }}
-        </button>
+          <template v-if="isBuy">
+            {{ 'submit-trade-offer-form.buy-btn' | globalize }}
+          </template>
 
-        <button
-          v-ripple
-          type="submit"
-          @click="setCancelSubmitMode"
-          class="app__button-flat your-trade-offer-form__btn"
-          :disabled="formMixin.isDisabled"
-        >
-          {{ 'your-trade-offer-form.cancel-order-btn' | globalize }}
+          <template v-else>
+            {{ 'submit-trade-offer-form.sell-btn' | globalize }}
+          </template>
         </button>
       </div>
     </template>
@@ -137,7 +134,7 @@
 
   <loader
     v-else
-    message-id="your-trade-offer-form.loading-msg" />
+    message-id="submit-trade-offer-form.loading-msg" />
 </template>
 
 <script>
@@ -148,17 +145,14 @@ import FeesRenderer from '@/vue/common/fees/FeesRenderer'
 import Loader from '@/vue/common/Loader'
 
 import FormMixin from '@/vue/mixins/form.mixin'
-import OfferManagerMixin from '@/vue/mixins/offer-manager.mixin'
+
+import { FEE_TYPES } from '@tokend/js-sdk'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { TradeFormer } from '@/js/formers/TradeFormer'
-import { vuexTypes } from '@/vuex'
-import { mapGetters } from 'vuex'
 
 import { MathUtil } from '@/js/utils/math.util'
 import config from '@/config'
-import { api } from '@/api'
 
 import {
   required,
@@ -168,19 +162,13 @@ import {
 } from '@validators'
 
 const EVENTS = {
-  offerCanceled: 'offer-canceled',
-  offerUpdated: 'offer-updated',
-}
-
-const SUBMIT_MODES = {
-  cancel: 'cancel',
-  update: 'update',
+  offerSubmitted: 'offer-submitted',
 }
 
 const FEES_LOADING_DELAY_MS = 300
 
 export default {
-  name: 'your-trade-offer-form',
+  name: 'submit-trade-offer-form',
   components: {
     ReadonlyField,
     FeesRenderer,
@@ -188,13 +176,12 @@ export default {
   },
   mixins: [
     FormMixin,
-    OfferManagerMixin,
   ],
 
   props: {
     assetPair: { type: Object, required: true },
+    isBuy: { type: Boolean, default: false },
     offer: { type: Object, required: true },
-    former: { type: TradeFormer, default: () => new TradeFormer() },
   },
 
   data: () => ({
@@ -207,8 +194,7 @@ export default {
     isFeesLoaded: false,
     isFeesLoadFailed: false,
     isLoaded: false,
-    submitMode: '',
-    isFormSubmitting: false,
+    isOfferSubmitting: false,
     config,
   }),
 
@@ -223,14 +209,14 @@ export default {
         baseAmount: {
           required,
           decimal,
-          noMoreThanAvailableOnBalance: this.offer.isBuy ||
+          noMoreThanAvailableOnBalance: this.isBuy ||
             maxValueBig(this.baseAssetBalance),
           amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
         },
       },
 
       quoteAmount: {
-        noMoreThanAvailableOnBalance: !this.offer.isBuy ||
+        noMoreThanAvailableOnBalance: !this.isBuy ||
           maxValueBig(this.quoteAssetBalance),
         amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
       },
@@ -238,47 +224,22 @@ export default {
   },
 
   computed: {
-    ...mapGetters({
-      accountBalances: vuexTypes.accountBalances,
-      accountId: vuexTypes.accountId,
-    }),
-
     baseAssetLabelTranslationId () {
-      return this.offer.isBuy
-        ? 'your-trade-offer-form.asset-to-buy-lbl'
-        : 'your-trade-offer-form.asset-to-sell-lbl'
-    },
-
-    accountAssets () {
-      return this.accountBalances
-        .map(balance => balance.asset.code)
-        .filter(asset => asset !== this.assetPair.quote)
+      return this.isBuy
+        ? 'submit-trade-offer-form.asset-to-buy-lbl'
+        : 'submit-trade-offer-form.asset-to-sell-lbl'
     },
 
     baseAssetBalance () {
       const balanceItem = this.accountBalances
-        .find(balance => balance.asset.code === this.offer.baseAsset.id)
-
-      if (balanceItem) {
-        return this.offer.isBuy
-          ? balanceItem.balance
-          : MathUtil.add(balanceItem.balance, this.offer.baseAmount)
-      } else {
-        return ''
-      }
+        .find(balance => balance.asset.code === this.assetPair.base)
+      return balanceItem ? balanceItem.balance : ''
     },
 
     quoteAssetBalance () {
       const balanceItem = this.accountBalances
         .find(balance => balance.asset.code === this.assetPair.quote)
-
-      if (balanceItem) {
-        return this.offer.isBuy
-          ? balanceItem.balance
-          : MathUtil.add(balanceItem.balance, this.offer.quoteAmount)
-      } else {
-        return ''
-      }
+      return balanceItem ? balanceItem.balance : ''
     },
 
     quoteAmount () {
@@ -292,23 +253,14 @@ export default {
     createOfferOpts () {
       return {
         pair: {
-          base: this.offer.baseAsset.id,
+          base: this.assetPair.base,
           quote: this.assetPair.quote,
         },
         baseAmount: this.form.baseAmount,
         quoteAmount: this.quoteAmount,
         price: this.form.price,
-        isBuy: this.offer.isBuy,
+        isBuy: this.isBuy,
         fee: this.fees.totalFee,
-      }
-    },
-
-    cancelOfferOpts () {
-      return {
-        offerId: this.offer.id,
-        baseBalance: this.offer.baseBalance.id,
-        quoteBalance: this.offer.quoteBalance.id,
-        price: this.offer.price,
       }
     },
   },
@@ -325,27 +277,9 @@ export default {
 
   async created () {
     try {
-      // console.log('this.offer', this.offer)
-      this.former.mergeAttrs({
-        price: this.offer.price,
-        amount: this.offer.baseAmount,
-        assetCode: this.offer.baseAsset.id,
-        isBuy: this.offer.isBuy,
-        assetPair: this.assetPair,
-        quoteAmount: this.offer.quoteAmount,
-        accountId: this.offer.owner.id,
-        fees:
-        {
-          totalFee: this.offer.fee,
-        },
-        accountBalances: this.accountBalances,
-        offerId: this.offer.id,
-      })
-      // console.log('former', this.former.attrs)
       await this.loadBalances()
       this.populateForm()
-      // await this.loadFees()
-
+      await this.loadFees()
       this.isLoaded = true
     } catch (e) {
       ErrorHandler.processWithoutFeedback(e)
@@ -354,8 +288,8 @@ export default {
 
   methods: {
     populateForm () {
-      this.form.baseAmount = this.former.attrs.amount
-      this.form.price = this.former.attrs.price
+      this.form.price = this.offer.price
+      this.form.baseAmount = this.offer.baseAmount
     },
 
     tryLoadFees () {
@@ -373,7 +307,12 @@ export default {
 
     async loadFees () {
       try {
-        this.fees = await this.former.calculateFees()
+        this.fees = await this.calculateFees({
+          assetCode: this.assetPair.quote,
+          amount: this.quoteAmount || 0,
+          senderAccountId: this.accountId,
+          type: FEE_TYPES.offerFee,
+        })
 
         this.isFeesLoaded = true
       } catch (e) {
@@ -382,43 +321,17 @@ export default {
       }
     },
 
-    setUpdateSubmitMode () {
-      this.submitMode = SUBMIT_MODES.update
-    },
-
-    setCancelSubmitMode () {
-      this.submitMode = SUBMIT_MODES.cancel
-    },
-
     async submit () {
-      this.isFormSubmitting = true
+      this.isOfferSubmitting = true
       try {
-        switch (this.submitMode) {
-          case SUBMIT_MODES.cancel:
-            // await this.cancelOffer(this.cancelOfferOpts)
-            const opCancel = await this.cancelOffer(this.cancelOfferOpts)
-            await api.postOperations(opCancel)
-            Bus.success('your-trade-offer-form.order-canceled-msg')
-            this.$emit(EVENTS.offerCanceled)
+        await this.createOffer(this.createOfferOpts)
 
-            break
-          case SUBMIT_MODES.update:
-            // eslint-disable-next-line max-len
-            // await this.updateOffer(this.cancelOfferOpts, this.createOfferOpts)
-            // eslint-disable-next-line max-len
-            const opUpdate = await this.updateOffer(this.cancelOfferOpts, this.createOfferOpts)
-            await api.postOperations(opUpdate)
-
-            Bus.success('your-trade-offer-form.order-updated-msg')
-            this.$emit(EVENTS.offerUpdated)
-
-            break
-        }
+        Bus.success('submit-trade-offer-form.order-submitted-msg')
+        this.$emit(EVENTS.offerSubmitted)
       } catch (e) {
         ErrorHandler.process(e)
       }
-
-      this.isFormSubmitting = false
+      this.isOfferSubmitting = false
       this.hideConfirmation()
     },
   },
@@ -428,12 +341,12 @@ export default {
 <style lang="scss" scoped>
 @import '../app-form';
 
-.your-trade-offer-form__btn {
-  max-width: 16rem;
+.submit-trade-offer-form__btn {
+  max-width: 14rem;
   width: 100%;
 }
 
-.your-trade-offer-form__fees {
+.submit-trade-offer-form__fees {
   margin-top: 1rem;
 }
 </style>

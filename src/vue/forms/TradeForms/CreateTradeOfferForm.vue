@@ -152,9 +152,8 @@ import SkeletonLoaderOfferForm from './SkeletonLoaderOfferForm'
 import FeesRenderer from '@/vue/common/fees/FeesRenderer'
 
 import FormMixin from '@/vue/mixins/form.mixin'
-import OfferManagerMixin from '@/vue/mixins/offer-manager.mixin'
 
-// import { Bus } from '@/js/helpers/event-bus'
+import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { TradeFormer } from '@/js/formers/TradeFormer'
 
@@ -173,9 +172,9 @@ import {
   decimal,
 } from '@validators'
 
-// const EVENTS = {
-//   offerCreated: 'offer-created',
-// }
+const EVENTS = {
+  offerCreated: 'offer-created',
+}
 
 const FEES_LOADING_DELAY_MS = 300
 
@@ -189,7 +188,6 @@ export default {
   },
   mixins: [
     FormMixin,
-    OfferManagerMixin,
   ],
 
   props: {
@@ -276,20 +274,6 @@ export default {
         return ''
       }
     },
-
-    // createOfferOpts () {
-    //   return {
-    //     pair: {
-    //       base: this.form.asset,
-    //       quote: this.assetPair.quote,
-    //     },
-    //     baseAmount: this.form.amount,
-    //     quoteAmount: this.quoteAmount,
-    //     price: this.form.price,
-    //     isBuy: this.isBuy,
-    //     fee: this.fees.totalFee,
-    //   }
-    // },
   },
 
   watch: {
@@ -310,7 +294,6 @@ export default {
     try {
       await this.loadBalances()
       this.setDefaultAsset()
-      // await this.loadFees()
       this.former.setAttr('isBuy', this.isBuy)
       this.former.setAttr('assetPair', this.assetPair)
       this.former.setAttr('accountId', this.accountId)
@@ -351,15 +334,11 @@ export default {
 
     async submit () {
       this.isOfferCreating = true
-      // console.log('former', this.former.attrs)
       try {
-        // await this.createOffer(this.createOfferOpts)
         const operation = await this.former.buildOpsCreate()
         await api.postOperations(operation)
-        // console.log('created')
-
-        // Bus.success('create-trade-offer-form.order-created-msg')
-        // this.$emit(EVENTS.offerCreated)
+        Bus.success('create-trade-offer-form.order-created-msg')
+        this.$emit(EVENTS.offerCreated)
       } catch (e) {
         ErrorHandler.process(e)
       }
