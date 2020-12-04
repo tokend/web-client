@@ -150,6 +150,8 @@ import { FEE_TYPES } from '@tokend/js-sdk'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { vuexTypes } from '@/vuex'
+import { mapActions } from 'vuex'
 
 import { MathUtil } from '@/js/utils/math.util'
 import config from '@/config'
@@ -287,6 +289,9 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+    }),
     populateForm () {
       this.form.price = this.offer.price
       this.form.baseAmount = this.offer.baseAmount

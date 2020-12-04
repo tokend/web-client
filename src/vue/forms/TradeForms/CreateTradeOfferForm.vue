@@ -160,7 +160,7 @@ import { TradeFormer } from '@/js/formers/TradeFormer'
 import { MathUtil } from '@/js/utils/math.util'
 import config from '@/config'
 import { vuexTypes } from '@/vuex'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 import _get from 'lodash/get'
 import { api } from '@/api'
@@ -306,6 +306,9 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+    }),
     tryLoadFees () {
       this.isFeesLoaded = false
       this.isFeesLoadFailed = false

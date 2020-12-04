@@ -155,7 +155,7 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { TradeFormer } from '@/js/formers/TradeFormer'
 import { vuexTypes } from '@/vuex'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 import { MathUtil } from '@/js/utils/math.util'
 import config from '@/config'
@@ -326,6 +326,9 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+    }),
     populateForm () {
       this.form.baseAmount = this.former.attrs.amount
       this.form.price = this.former.attrs.price
