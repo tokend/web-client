@@ -146,15 +146,15 @@ import Loader from '@/vue/common/Loader'
 
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { FEE_TYPES } from '@tokend/js-sdk'
-
+import { TradeFormer } from '@/js/formers/TradeFormer'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { vuexTypes } from '@/vuex'
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 import { MathUtil } from '@/js/utils/math.util'
 import config from '@/config'
+import { api } from '@/api'
 
 import {
   required,
@@ -184,6 +184,7 @@ export default {
     assetPair: { type: Object, required: true },
     isBuy: { type: Boolean, default: false },
     offer: { type: Object, required: true },
+    former: { type: TradeFormer, default: () => new TradeFormer() },
   },
 
   data: () => ({
@@ -226,6 +227,10 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      accountBalances: vuexTypes.accountBalances,
+      accountId: vuexTypes.accountId,
+    }),
     baseAssetLabelTranslationId () {
       return this.isBuy
         ? 'submit-trade-offer-form.asset-to-buy-lbl'
@@ -279,9 +284,23 @@ export default {
 
   async created () {
     try {
-      await this.loadBalances()
+      this.former.mergeAttrs({
+        price: this.offer.price,
+        amount: this.offer.baseAmount,
+        assetCode: this.offer.baseAsset.id,
+        isBuy: this.offer.isBuy,
+        assetPair: this.assetPair,
+        quoteAmount: this.offer.quoteAmount,
+        accountId: this.accountId,
+        accountBalances: this.accountBalances,
+        fees:
+        {
+          totalFee: this.offer.fee,
+        },
+      })
       this.populateForm()
-      await this.loadFees()
+      await this.loadBalances()
+      // await this.loadFees()
       this.isLoaded = true
     } catch (e) {
       ErrorHandler.processWithoutFeedback(e)
@@ -312,12 +331,9 @@ export default {
 
     async loadFees () {
       try {
-        this.fees = await this.calculateFees({
-          assetCode: this.assetPair.quote,
-          amount: this.quoteAmount || 0,
-          senderAccountId: this.accountId,
-          type: FEE_TYPES.offerFee,
-        })
+        this.former.setAttr('quoteAmount', this.quoteAmount)
+        this.fees = await this.former.calculateFees()
+        this.former.setAttr('fees.totalFee', this.fees.totalFee)
 
         this.isFeesLoaded = true
       } catch (e) {
@@ -329,8 +345,8 @@ export default {
     async submit () {
       this.isOfferSubmitting = true
       try {
-        await this.createOffer(this.createOfferOpts)
-
+        const operation = await this.former.buildOpsCreate()
+        await api.postOperations(operation)
         Bus.success('submit-trade-offer-form.order-submitted-msg')
         this.$emit(EVENTS.offerSubmitted)
       } catch (e) {
