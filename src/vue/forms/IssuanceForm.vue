@@ -67,7 +67,7 @@
                   {{
                     'issuance-form.available-for-issuance-hint' | globalize({
                       amount: {
-                        value: form.asset.availableForIssuance,
+                        value: availableForIssuance,
                         currency: form.asset.code
                       }
                     })
@@ -234,7 +234,7 @@ export default {
           required,
           amountRange: amountRange(
             config.MIN_AMOUNT,
-            this.form.asset.availableForIssuance
+            this.availableForIssuance
           ),
           maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
         },
