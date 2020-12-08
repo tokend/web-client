@@ -19,6 +19,7 @@
         <input-field
           v-model.trim="form.price"
           name="submit-trade-offer-price"
+          @input="former.setAttr('price', form.price)"
           type="number"
           :min="0"
           :max="config.MAX_AMOUNT"
@@ -46,6 +47,7 @@
       <div class="app__form-field">
         <input-field
           v-model.trim="form.baseAmount"
+          @input="former.setAttr('amount', form.baseAmount)"
           type="number"
           :min="0"
           :max="config.MAX_AMOUNT"
@@ -256,20 +258,6 @@ export default {
         return ''
       }
     },
-
-    createOfferOpts () {
-      return {
-        pair: {
-          base: this.assetPair.base,
-          quote: this.assetPair.quote,
-        },
-        baseAmount: this.form.baseAmount,
-        quoteAmount: this.quoteAmount,
-        price: this.form.price,
-        isBuy: this.isBuy,
-        fee: this.fees.totalFee,
-      }
-    },
   },
 
   watch: {
@@ -300,7 +288,6 @@ export default {
       })
       this.populateForm()
       await this.loadBalances()
-      // await this.loadFees()
       this.isLoaded = true
     } catch (e) {
       ErrorHandler.processWithoutFeedback(e)

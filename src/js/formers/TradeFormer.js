@@ -26,8 +26,6 @@ export class TradeFormer extends Former {
         accountBalances: [],
         baseBalance: '',
         quoteBalance: '',
-        newAmount: '0',
-        newPrice: '0',
       }
     }
 
@@ -66,6 +64,7 @@ export class TradeFormer extends Former {
         quoteBalance: this.getAssetDetails(this.attrs.assetPair.quote).id,
         fee: this.attrs.fees.totalFee.calculatedPercent,
       }
+      // console.log('ops', ops)
       return base.ManageOfferBuilder.manageOffer(ops)
     }
 
