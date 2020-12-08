@@ -326,4 +326,5 @@ export default {
 .transfer-form__discover-asset-btn {
   margin-top: 2.5rem;
 }
+
 </style>
