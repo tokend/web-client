@@ -48,12 +48,7 @@ export class TradeFormer extends Former {
     }
 
     async buildOpsCreate () {
-      await this.createAssetPairBalances({
-        pair: {
-          base: this.attrs.assetCode,
-          quote: this.attrs.assetPair.quote,
-        },
-      })
+      await this.createAssetPairBalances()
 
       const ops = {
         amount: this.attrs.amount,
