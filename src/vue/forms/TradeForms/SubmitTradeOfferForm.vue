@@ -16,27 +16,19 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <input-field
+        <amount-input-field
           v-model.trim="form.price"
           name="submit-trade-offer-price"
-          @input="former.setAttr('price', form.price)"
-          type="number"
-          :min="0"
-          :max="config.MAX_AMOUNT"
-          :step="config.MIN_AMOUNT"
+          validation-type="incoming"
+          @change="former.setAttr('price', form.price)"
           :label="
             'submit-trade-offer-form.price-lbl' | globalize({
               baseAsset: assetPair.base,
               quoteAsset: assetPair.quote,
             })
           "
-          :error-message="getFieldErrorMessage(
-            'form.price', {
-              from: config.MIN_AMOUNT,
-              to: config.MAX_AMOUNT,
-              available: quoteAssetBalance
-            }
-          )"
+          :asset="offer.baseAsset.id"
+          :readonly="formMixin.isDisabled"
           @blur="touchField('form.price')"
           :disabled="formMixin.isDisabled"
         />
@@ -45,25 +37,16 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <input-field
+        <amount-input-field
           v-model.trim="form.baseAmount"
-          @input="former.setAttr('baseAmount', form.baseAmount)"
-          type="number"
-          :min="0"
-          :max="config.MAX_AMOUNT"
-          :step="config.MIN_AMOUNT"
           name="submit-trade-offer-base-amount"
+          validation-type="incoming"
+          @change="former.setAttr('baseAmount', form.baseAmount)"
           :label="'submit-trade-offer-form.base-amount-lbl' | globalize({
             asset: assetPair.base
           })"
-          :error-message="getFieldErrorMessage(
-            'form.baseAmount',
-            {
-              available: baseAssetBalance,
-              from: config.MIN_AMOUNT,
-              to: config.MAX_AMOUNT,
-            }
-          )"
+          :asset="offer.baseAsset.id"
+          :readonly="formMixin.isDisabled"
           @blur="touchField('form.baseAmount')"
           :disabled="formMixin.isDisabled"
         />

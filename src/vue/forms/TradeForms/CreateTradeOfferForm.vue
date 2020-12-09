@@ -24,27 +24,19 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <input-field
+        <amount-input-field
           v-model.trim="form.price"
-          @input="former.setAttr('price', form.price)"
           name="trade-offer-price"
-          type="number"
-          :min="0"
-          :max="config.MAX_AMOUNT"
-          :step="config.MIN_AMOUNT"
+          validation-type="incoming"
+          @change="former.setAttr('price', form.price)"
           :label="
             'create-trade-offer-form.price-lbl' | globalize({
               baseAsset: form.asset,
               quoteAsset: assetPair.quote
             })
           "
-          :error-message="getFieldErrorMessage(
-            'form.price', {
-              from: config.MIN_AMOUNT,
-              to: config.MAX_AMOUNT,
-              available: quoteAssetBalance
-            }
-          )"
+          :asset="form.asset"
+          :readonly="formMixin.isDisabled"
           @blur="touchField('form.price')"
           :disabled="formMixin.isDisabled"
         />
@@ -53,25 +45,16 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <input-field
+        <amount-input-field
           v-model.trim="form.amount"
-          @input="former.setAttr('baseAmount', form.amount)"
           name="trade-offer-amount"
-          type="number"
-          :min="0"
-          :max="config.MAX_AMOUNT"
-          :step="config.MIN_AMOUNT"
+          validation-type="incoming"
+          @change="former.setAttr('baseAmount', form.amount)"
           :label="'create-trade-offer-form.amount-lbl' | globalize({
             asset: form.asset
           })"
-          :error-message="getFieldErrorMessage(
-            'form.amount',
-            {
-              available: baseAssetBalance,
-              from: config.MIN_AMOUNT,
-              to: config.MAX_AMOUNT,
-            }
-          )"
+          :asset="form.asset"
+          :readonly="formMixin.isDisabled"
           @blur="touchField('form.amount')"
           :disabled="formMixin.isDisabled"
         />

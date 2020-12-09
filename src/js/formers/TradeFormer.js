@@ -43,7 +43,6 @@ export class TradeFormer extends Former {
         price: offer.price,
         orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
       }
-
       return base.ManageOfferBuilder.cancelOffer(ops)
     }
 
