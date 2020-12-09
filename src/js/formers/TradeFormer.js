@@ -35,6 +35,14 @@ export class TradeFormer extends Former {
       await api.postOperations(cancelOperation, createOperation)
     }
 
+    /**
+     * @param {Object} offer
+     * @param {String} offer.id - offer id
+     * @param {Object} offer.baseBalance.id - balance id of the base asset
+     * @param {String} offer.quoteBalance.id - balance id of the quote asset
+     * @param {String} offer.price - offer price
+     * @returns {Object} operation cancel offer
+     */
     buildOpsCancel (offer) {
       const ops = {
         offerID: offer.id,
@@ -62,6 +70,11 @@ export class TradeFormer extends Former {
       return base.ManageOfferBuilder.manageOffer(ops)
     }
 
+    /**
+     *
+     * @param {String} assetCode - asset code
+     * @returns {Object} Balance record
+     */
     getAssetDetails (assetCode) {
       return this.attrs.accountBalances.find(i => i.asset.code === assetCode)
     }
