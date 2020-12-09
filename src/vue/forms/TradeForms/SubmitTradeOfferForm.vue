@@ -47,7 +47,7 @@
       <div class="app__form-field">
         <input-field
           v-model.trim="form.baseAmount"
-          @input="former.setAttr('amount', form.baseAmount)"
+          @input="former.setAttr('baseAmount', form.baseAmount)"
           type="number"
           :min="0"
           :max="config.MAX_AMOUNT"
@@ -274,11 +274,13 @@ export default {
     try {
       this.former.mergeAttrs({
         price: this.offer.price,
-        amount: this.offer.baseAmount,
-        assetCode: this.offer.baseAsset.id,
-        isBuy: this.offer.isBuy,
-        assetPair: this.assetPair,
+        baseAmount: this.offer.baseAmount,
         quoteAmount: this.offer.quoteAmount,
+        pair: {
+          base: this.offer.baseAsset.id,
+          quote: this.offer.quoteAsset.id,
+        },
+        isBuy: this.isBuy,
         accountId: this.accountId,
         accountBalances: this.accountBalances,
         fees:
@@ -299,8 +301,8 @@ export default {
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     populateForm () {
-      this.form.price = this.offer.price
-      this.form.baseAmount = this.offer.baseAmount
+      this.form.price = this.former.attrs.price
+      this.form.baseAmount = this.former.attrs.baseAmount
     },
 
     tryLoadFees () {

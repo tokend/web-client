@@ -14,18 +14,18 @@ export class TradeFormer extends Former {
     get _defaultAttrs () {
       return {
         price: '',
-        amount: '0',
-        assetCode: '',
         isBuy: false,
-        assetPair: {},
+        pair: {
+          base: '',
+          quote: '',
+        },
+        baseAmount: '',
         quoteAmount: '',
         accountId: '',
         fees: {
           totalFee: '',
         },
         accountBalances: [],
-        baseBalance: '',
-        quoteBalance: '',
       }
     }
 
@@ -51,15 +51,15 @@ export class TradeFormer extends Former {
       await this.createAssetPairBalances()
 
       const ops = {
-        amount: this.attrs.amount,
+        amount: this.attrs.baseAmount,
         price: this.attrs.price,
         orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
         isBuy: this.attrs.isBuy,
-        baseBalance: this.getAssetDetails(this.attrs.assetCode).id,
-        quoteBalance: this.getAssetDetails(this.attrs.assetPair.quote).id,
+        baseBalance: this.getAssetDetails(this.attrs.pair.base).id,
+        quoteBalance: this.getAssetDetails(this.attrs.pair.quote).id,
         fee: this.attrs.fees.totalFee.calculatedPercent,
       }
-      // console.log('ops', ops)
+
       return base.ManageOfferBuilder.manageOffer(ops)
     }
 
@@ -68,19 +68,19 @@ export class TradeFormer extends Former {
     }
 
     async createAssetPairBalances () {
-      if (!this.getAssetDetails(this.attrs.assetPair.base)) {
+      if (!this.getAssetDetails(this.attrs.pair.base)) {
         const operation = base.Operation.manageBalance({
           destination: this.attrs.accountId,
-          asset: this.attrs.assetPair.base,
+          asset: this.attrs.pair.base,
           action: base.xdr.ManageBalanceAction.createUnique(),
         })
         await api.postOperations(operation)
       }
 
-      if (!this.getAssetDetails(this.attrs.assetPair.quote)) {
+      if (!this.getAssetDetails(this.attrs.pair.quote)) {
         const operation = base.Operation.manageBalance({
           destination: this.attrs.accountId,
-          asset: this.attrs.assetPair.quote,
+          asset: this.attrs.pair.quote,
           action: base.xdr.ManageBalanceAction.createUnique(),
         })
         await api.postOperations(operation)
@@ -89,7 +89,7 @@ export class TradeFormer extends Former {
 
     async calculateFees () {
       const response = await calculateFees({
-        assetCode: this.attrs.assetPair.quote,
+        assetCode: this.attrs.pair.quote,
         amount: this.attrs.quoteAmount || 0,
         senderAccountId: this.attrs.accountId,
         type: FEE_TYPES.offerFee,

@@ -7,7 +7,6 @@
       <div class="app__form-field">
         <select-field
           v-model="form.asset"
-          @input="former.setAttr('assetCode', form.asset)"
           name="trade-offer-base-asset"
           :disabled="formMixin.isDisabled"
           :label="baseAssetLabelTranslationId | globalize"
@@ -56,7 +55,7 @@
       <div class="app__form-field">
         <input-field
           v-model.trim="form.amount"
-          @input="former.setAttr('amount', form.amount)"
+          @input="former.setAttr('baseAmount', form.amount)"
           name="trade-offer-amount"
           type="number"
           :min="0"
@@ -286,6 +285,7 @@ export default {
     },
 
     'form.asset' () {
+      this.former.setAttr('pair.base', this.form.asset)
       this.tryLoadFees()
     },
   },
@@ -295,10 +295,9 @@ export default {
       await this.loadBalances()
       this.setDefaultAsset()
       this.former.setAttr('isBuy', this.isBuy)
-      this.former.setAttr('assetPair', this.assetPair)
+      this.former.setAttr('pair.quote', this.assetPair.quote)
       this.former.setAttr('accountId', this.accountId)
       this.former.setAttr('accountBalances', this.accountBalances)
-      this.former.setAttr('assetCode', this.form.asset)
       this.isLoaded = true
     } catch (e) {
       ErrorHandler.processWithoutFeedback(e)
