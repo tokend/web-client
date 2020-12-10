@@ -10,6 +10,7 @@ import { AssetPairRecord } from '@/js/records/entities/asset-pair.record'
 import { loadAllResponsePages } from '@/js/helpers/api-helpers'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { store } from '@/vuex'
+import { SALE_CONST } from '@/js/const/sale.const'
 
 /**
  * Collects the attributes for sale operations
@@ -108,19 +109,12 @@ export class SaleFormer extends Former {
   }
 
   _createSaleRequestOpts () {
-    const NEW_CREATE_SALE_REQUEST_ID = '0'
-    const DEFAULT_SALE_TYPE = '0'
-    const EMPTY_DOCUMENT = {
-      mime_type: '',
-      name: '',
-      key: '',
-    }
     const saleLogo = this.attrs.saleLogo
 
     return {
-      requestID: this.attrs.requestId || NEW_CREATE_SALE_REQUEST_ID,
+      requestID: this.attrs.requestId || SALE_CONST.newCreateSaleRequestId,
       saleEnumType: this.attrs.type,
-      saleType: DEFAULT_SALE_TYPE,
+      saleType: SALE_CONST.defaultSaleType,
       startTime: DateUtil.toTimestamp(this.attrs.startTime),
       endTime: DateUtil.toTimestamp(this.attrs.endTime),
       baseAsset: this.attrs.baseAsset.code,
@@ -133,7 +127,7 @@ export class SaleFormer extends Former {
         name: this.attrs.name,
         short_description: this.attrs.shortDescription,
         description: this.attrs.saleDescriptionBlobId,
-        logo: saleLogo ? saleLogo.toJSON() : EMPTY_DOCUMENT,
+        logo: saleLogo ? saleLogo.toJSON() : SALE_CONST.emptyDocument,
         youtube_video_id: this.attrs.youtubeVideo,
       },
       saleRules: [{
@@ -156,7 +150,6 @@ export class SaleFormer extends Former {
   }
 
   _getPrice (assetCode, basePrise) {
-    const DEFAULT_QUOTE_ASSET_PRICE = '1'
     let result
 
     const capAsset = this.attrs.capAsset.code
@@ -167,7 +160,7 @@ export class SaleFormer extends Former {
         )
         result = MathUtil.divide(basePrise, assetPair[0].price)
       } else {
-        result = DEFAULT_QUOTE_ASSET_PRICE
+        result = SALE_CONST.defaultQuoteAssetPrice
       }
     } else {
       result = basePrise
@@ -177,10 +170,9 @@ export class SaleFormer extends Former {
   }
 
   async _loadAssetsPairsByQuote (quoteAssetCode) {
-    const MAX_PAGE_LIMIT = 100
     let result = await api.get('/v3/asset_pairs', {
       filter: { quote_asset: quoteAssetCode },
-      page: { limit: MAX_PAGE_LIMIT },
+      page: { limit: SALE_CONST.maxPageLimit },
     })
     result = await loadAllResponsePages(result)
     return result.map(item => new AssetPairRecord(item))
