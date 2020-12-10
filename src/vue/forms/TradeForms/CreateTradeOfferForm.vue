@@ -308,7 +308,6 @@ export default {
       try {
         this.former.setAttr('quoteAmount', this.quoteAmount)
         this.fees = await this.former.calculateFees()
-        this.former.setAttr('fees.totalFee', this.fees.totalFee)
 
         this.isFeesLoaded = true
       } catch (e) {

@@ -106,6 +106,8 @@ export class TradeFormer extends Former {
         senderAccountId: this.attrs.accountId,
         type: FEE_TYPES.offerFee,
       })
+      this.attrs.fees.totalFee = response.totalFee
+
       return response
     }
 }
