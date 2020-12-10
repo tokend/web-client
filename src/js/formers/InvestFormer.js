@@ -2,6 +2,7 @@ import { Former } from './Former'
 import { FEE_TYPES, base } from '@tokend/js-sdk'
 import { calculateFees } from '@/js/helpers/fees-helper'
 import { MathUtil } from '@/js/utils'
+import { INVEST_OFFERS } from '@/js/const/invest-offers'
 
 /**
  * Collects the attributes for invest operations
@@ -20,9 +21,6 @@ export class InvestFormer extends Former {
         balances: {},
         sale: {},
         currentInvestmentId: '',
-        OFFER_CREATE_ID: '0',
-        CANCEL_OFFER_FEE: '0',
-        DEFAULT_QUOTE_PRICE: '1',
       }
     }
 
@@ -35,7 +33,7 @@ export class InvestFormer extends Former {
 
       operations.push(base.ManageOfferBuilder.manageOffer(
         this._getOfferOpts(
-          this.attrs.OFFER_CREATE_ID,
+          INVEST_OFFERS.createId,
           this.attrs.fees)
       ))
 
@@ -55,7 +53,7 @@ export class InvestFormer extends Former {
       const operation = base.ManageOfferBuilder.cancelOffer(
         this._getOfferOpts(
           this.attrs.currentInvestmentId,
-          this.attrs.CANCEL_OFFER_FEE
+          INVEST_OFFERS.cancelFee
         )
       )
       return operation
@@ -74,11 +72,11 @@ export class InvestFormer extends Former {
         amount: MathUtil.divide(
           attrs.amount,
           attrs.sale.quoteAssetPrices[attrs.assetCode] ||
-          attrs.DEFAULT_QUOTE_PRICE,
+          INVEST_OFFERS.defaultQuotePrice,
           1
         ),
         price: attrs.sale.quoteAssetPrices[attrs.assetCode] ||
-          attrs.DEFAULT_QUOTE_PRICE,
+          INVEST_OFFERS.defaultQuotePrice,
         fee: offerFee,
         orderBookID: attrs.sale.id,
       }
