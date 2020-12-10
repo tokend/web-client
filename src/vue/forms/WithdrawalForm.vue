@@ -300,7 +300,6 @@ export default {
     async loadFees () {
       try {
         this.fees = await this.former.calculateFees()
-        this.former.setAttr('fees', this.fees)
         this.isFeesLoaded = true
       } catch (e) {
         this.isFeesLoadFailed = true

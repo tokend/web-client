@@ -57,6 +57,8 @@ export class WithdrawalFormer extends Former {
         senderAccountId: attrs.accountId,
         type: FEE_TYPES.withdrawalFee,
       })
+      this.attrs.fees = response
+
       return response
     }
 }
