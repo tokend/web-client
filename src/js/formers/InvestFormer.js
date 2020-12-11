@@ -14,12 +14,15 @@ export class InvestFormer extends Former {
 
     get _defaultAttrs () {
       return {
-        accountId: '',
-        assetCode: '',
+        senderAccountId: '',
+        investedAssetCode: '',
         amount: '0',
         fees: {},
-        balances: {},
-        sale: {},
+        baseBalanceId: '',
+        quoteBalanceId: '',
+        saleId: '',
+        saleBaseAsset: '',
+        saleQuoteAssetPrices: '',
         currentInvestmentId: '',
       }
     }
@@ -42,8 +45,8 @@ export class InvestFormer extends Former {
 
     buildOpCreateBalance () {
       const operation = base.Operation.manageBalance({
-        destination: this.attrs.accountId,
-        asset: this.attrs.sale.baseAsset,
+        destination: this.attrs.senderAccountId,
+        asset: this.attrs.saleBaseAsset,
         action: base.xdr.ManageBalanceAction.createUnique(),
       })
       return operation
@@ -60,34 +63,31 @@ export class InvestFormer extends Former {
     }
 
     _getOfferOpts (id, offerFee) {
-      const balances = this.attrs.balances
       const attrs = this.attrs
-      const operation = {
+      const opts = {
         offerID: id,
-        baseBalance: balances
-          .find(item => item.asset.code === attrs.sale.baseAsset).id,
-        quoteBalance: balances
-          .find(item => item.asset.code === attrs.assetCode).id,
+        baseBalance: attrs.baseBalanceId,
+        quoteBalance: attrs.quoteBalanceId,
         isBuy: true,
         amount: MathUtil.divide(
           attrs.amount,
-          attrs.sale.quoteAssetPrices[attrs.assetCode] ||
+          attrs.saleQuoteAssetPrices ||
           INVEST_OFFERS.defaultQuotePrice,
           1
         ),
-        price: attrs.sale.quoteAssetPrices[attrs.assetCode] ||
+        price: attrs.saleQuoteAssetPrices ||
           INVEST_OFFERS.defaultQuotePrice,
         fee: offerFee,
-        orderBookID: attrs.sale.id,
+        orderBookID: attrs.saleId,
       }
-      return operation
+      return opts
     }
 
     async calculateFees () {
       const response = await calculateFees({
-        assetCode: this.attrs.assetCode,
+        assetCode: this.attrs.investedAssetCode,
         amount: this.attrs.amount || 0,
-        senderAccountId: this.attrs.accountId,
+        senderAccountId: this.attrs.senderAccountId,
         type: FEE_TYPES.investFee,
       })
       this.attrs.fees = response.totalFee.calculatedPercent

@@ -20,7 +20,6 @@
               :value="form.asset.code"
               @input="setAssetByCode"
               :label="'invest-form.asset-lbl' | globalize"
-              @change="former.setAttr('assetCode', form.asset.code)"
               name="invest-asset"
               @blur="touchField('form.asset')"
               :disabled="formMixin.isConfirmationShown ||
@@ -46,30 +45,18 @@
 
         <div class="app__form-row">
           <div class="app__form-field">
-            <input-field
+            <amount-input-field
               white-autofill
-              type="number"
-              :min="0"
-              :max="availableBalance.value"
-              :step="MIN_AMOUNT"
               v-model="form.amount"
+              name="invest-amount"
+              validation-type="outgoing"
               @change="former.setAttr('amount', form.amount)"
               @input="touchField('form.amount')"
-              name="invest-amount"
               :label="'invest-form.amount-lbl' | globalize({
                 asset: form.asset.code
               })"
-              :error-message="getFieldErrorMessage(
-                'form.amount',
-                {
-                  from: MIN_AMOUNT,
-                  to: availableBalance.value,
-                  saleCap: {
-                    value: investedCap,
-                    currency: sale.defaultQuoteAsset
-                  }
-                }
-              )"
+              :asset="form.asset"
+              :readonly="formMixin.isDisabled"
               :disabled="formMixin.isConfirmationShown ||
                 !canUpdateOffer || formMixin.isDisabled || isZeroBalance"
             />
@@ -202,9 +189,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import MessageBox from '@/vue/common/MessageBox'
 import InvestFormSkeletonLoader from './InvestFormSkeletonLoader'
 import FeesRenderer from '@/vue/common/fees/FeesRenderer'
-
 import FormMixin from '@/vue/mixins/form.mixin'
-import FeesMixin from '@/vue/common/fees/fees.mixin'
 
 import config from '@/config'
 
@@ -238,7 +223,7 @@ export default {
     InvestFormSkeletonLoader,
     FeesRenderer,
   },
-  mixins: [FormMixin, FeesMixin],
+  mixins: [FormMixin],
 
   props: {
     sale: { type: SaleRecord, required: true },
@@ -416,7 +401,7 @@ export default {
   watch: {
     'form.asset': async function () {
       try {
-        this.former.setAttr('assetCode', this.form.asset.code || '')
+        this.former.setAttr('investedAssetCode', this.form.asset.code || '')
         if (this.form.asset.code !== this.sale.defaultQuoteAsset) {
           await this.loadAssetPairPrice()
         }
@@ -439,9 +424,12 @@ export default {
         this.form.asset = this.quoteAssetListValues[0]
       }
 
-      this.former.setAttr('balances', this.balances || {})
-      this.former.setAttr('sale', this.sale || {})
-      this.former.setAttr('accountId', this.accountId || '')
+      this.former.setAttr('baseBalanceId', this.balances.find(item => item.asset.code === this.sale.baseAsset).id || {})
+      this.former.setAttr('quoteBalanceId', this.balances.find(item => item.asset.code === this.form.asset.code).id || {})
+      this.former.setAttr('saleId', this.sale.id || '')
+      this.former.setAttr('saleBaseAsset', this.sale.baseAsset || {})
+      this.former.setAttr('saleQuoteAssetPrices', this.sale.quoteAssetPrices[this.form.asset.code] || {})
+      this.former.setAttr('senderAccountId', this.accountId || '')
 
       await this.loadCurrentInvestment()
       this.isLoaded = true
