@@ -54,6 +54,7 @@
               class="app__form-field"
               v-model="form.amount"
               name="withdrawal-amount"
+              @change="former.setAttr('amount', form.amount)"
               validation-type="outgoing"
               :label="'withdrawal-form.amount' | globalize({
                 asset: form.asset.code
@@ -72,6 +73,7 @@
                 class="app__form-field"
                 v-model.trim="form.address"
                 name="withdrawal-address"
+                @change="former.setAttr('creatorDetails.address', form.address)"
                 @blur="touchField('form.address')"
                 :error-message="getFieldErrorMessage('form.address')"
                 :label="'withdrawal-form.destination-address' | globalize({
@@ -87,6 +89,7 @@
                 class="app__form-field"
                 v-model.trim="form.comment"
                 name="withdrawal-address"
+                @change="former.setAttr('creatorDetails.comment', form.comment)"
                 @blur="touchField('form.address')"
                 :error-message="getFieldErrorMessage('form.address')"
                 :label="'withdrawal-form.comment' | globalize"
@@ -116,7 +119,7 @@
               {{ 'withdrawal-form.withdraw-btn' | globalize }}
             </button>
             <form-confirmation
-              v-if="formMixin.isConfirmationShown"
+              v-else
               @ok="hideConfirmation() || submit()"
               @cancel="hideConfirmation()"
             />
@@ -149,15 +152,12 @@
 </template>
 
 <script>
-import config from '@/config'
 import debounce from 'lodash/debounce'
 import FormMixin from '@/vue/mixins/form.mixin'
-import FeesMixin from '@/vue/common/fees/fees.mixin'
+import FeesRenderer from '@/vue/common/fees/FeesRenderer.vue'
 import Loader from '@/vue/common/Loader'
 import EmailGetter from '@/vue/common/EmailGetter'
 
-import IdentityGetterMixin from '@/vue/mixins/identity-getter'
-import { FEE_TYPES, base } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { vueRoutes } from '@/vue-router/routes'
@@ -169,6 +169,7 @@ import {
   required,
   address,
 } from '@validators'
+import { WithdrawalFormer } from '@/js/formers/WithdrawalFormer'
 
 const EVENTS = {
   operationSubmitted: 'operation-submitted',
@@ -181,10 +182,12 @@ export default {
   components: {
     Loader,
     EmailGetter,
+    FeesRenderer,
   },
-  mixins: [FormMixin, FeesMixin, IdentityGetterMixin],
+  mixins: [FormMixin],
   props: {
     assetCode: { type: String, default: '' },
+    former: { type: WithdrawalFormer, default: () => new WithdrawalFormer() },
   },
   data: () => ({
     isLoaded: false,
@@ -195,13 +198,10 @@ export default {
       address: '',
     },
     fees: {},
-    MIN_AMOUNT: config.MIN_AMOUNT,
     feesDebouncedRequest: null,
     isFeesLoaded: false,
     isFeesLoadFailed: false,
-    DECIMAL_POINTS: config.DECIMAL_POINTS,
     vueRoutes,
-    FEE_TYPES,
     ADDRESS_MAX_LENGTH,
   }),
   validations () {
@@ -234,9 +234,11 @@ export default {
   },
   watch: {
     'form.amount' (value) {
+      this.former.setAttr('amount', this.form.amount)
       this.tryLoadFees()
     },
     'form.asset.code' () {
+      this.former.setAttr('assetCodeForWithdrawal', this.form.asset.code)
       this.tryLoadFees()
     },
   },
@@ -244,7 +246,8 @@ export default {
     try {
       await this.loadBalances()
       await this.initAssetSelector()
-      await this.loadFees()
+      this.former.setAttr('senderAccountId', this.accountId)
+
       this.isLoaded = true
     } catch (error) {
       this.isFailed = true
@@ -267,8 +270,15 @@ export default {
           Bus.error('withdrawal-form.failed-load-fees')
           return false
         }
-        const operation = base.CreateWithdrawRequestBuilder
-          .createWithdrawWithAutoConversion(this.composeOptions())
+
+        if (this.isMasterAssetOwner) {
+          this.former.setAttr('creatorDetails.address', this.form.address)
+        } else {
+          this.former.setAttr('creatorDetails.comment', this.form.comment)
+        }
+        this.former.setAttr('selectedAssetBalanceId', this.selectedAssetBalance.id)
+
+        const operation = this.former.buildOps()
         await api.postOperations(operation)
         await this.reinitAssetSelector()
         Bus.success('withdrawal-form.withdraw-success')
@@ -289,38 +299,11 @@ export default {
     },
     async loadFees () {
       try {
-        this.fees = await this.calculateFees({
-          assetCode: this.form.asset.code,
-          amount: this.form.amount || 0,
-          senderAccountId: this.accountId,
-          type: FEE_TYPES.withdrawalFee,
-        })
-
+        this.fees = await this.former.calculateFees()
         this.isFeesLoaded = true
       } catch (e) {
         this.isFeesLoadFailed = true
         ErrorHandler.processWithoutFeedback(e)
-      }
-    },
-    composeOptions () {
-      const creatorDetails = {}
-
-      if (this.isMasterAssetOwner) {
-        creatorDetails.address = this.form.address
-      } else {
-        creatorDetails.comment = this.form.comment
-      }
-
-      return {
-        balance: this.selectedAssetBalance.id,
-        amount: this.form.amount,
-        creatorDetails: creatorDetails,
-        destAsset: this.form.asset.code,
-        expectedDestAssetAmount: this.form.amount,
-        fee: {
-          fixed: this.fees.sourceFee.fixed,
-          percent: this.fees.sourceFee.calculatedPercent,
-        },
       }
     },
     async initAssetSelector () {
