@@ -82,21 +82,16 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <input-field
+        <amount-input-field
           white-autofill
           v-model="form.assetsToSell"
-          @blur="touchField('form.assetsToSell')"
           name="create-sale-assets-to-sell"
-          type="number"
-          :min="0"
-          :max="availableForIssuance"
-          :step="MIN_AMOUNT"
+          validation-type="incoming"
           :label="'create-sale-form.assets-to-sell-lbl' |
             globalize({ asset: form.baseAsset.code })"
-          :error-message="getFieldErrorMessage(
-            'form.assetsToSell',
-            { available: availableForIssuance }
-          )"
+          @blur="touchField('form.assetsToSell')"
+          :asset="form.baseAsset.code"
+          :readonly="formMixin.isDisabled"
         />
 
         <template v-if="form.baseAsset">
@@ -163,11 +158,11 @@
           white-autofill
           type="number"
           :min="0"
-          :max="form.hardCap || MAX_AMOUNT"
-          :step="MIN_AMOUNT"
+          :max="form.hardCap || config.MAX_AMOUNT"
+          :step="config.MIN_AMOUNT"
           v-model="form.softCap"
-          @blur="touchField('form.softCap')"
           name="create-sale-soft-cap"
+          @blur="touchField('form.softCap')"
           :label="'create-sale-form.soft-cap-lbl' | globalize({
             asset: form.capAsset.code
           })"
@@ -175,6 +170,7 @@
             'form.softCap',
             { hardCap: form.hardCap || '0' }
           )"
+          :readonly="formMixin.isDisabled"
         />
       </div>
     </div>
@@ -185,11 +181,11 @@
           white-autofill
           type="number"
           :min="0"
-          :max="MAX_AMOUNT"
-          :step="MIN_AMOUNT"
+          :max="config.MAX_AMOUNT"
+          :step="config.MIN_AMOUNT"
           v-model="form.hardCap"
-          @blur="touchField('form.hardCap')"
           name="create-sale-hard-cap"
+          @blur="touchField('form.hardCap')"
           :label="'create-sale-form.hard-cap-lbl' | globalize({
             asset: form.capAsset.code
           })"
@@ -197,6 +193,7 @@
             'form.hardCap',
             { softCap: form.softCap || '0' }
           )"
+          :readonly="formMixin.isDisabled"
         />
       </div>
     </div>
@@ -281,7 +278,6 @@ import {
 
 import config from '@/config'
 
-const CODE_MAX_LENGTH = 16
 const NAME_MAX_LENGTH = 255
 
 export default {
@@ -298,8 +294,8 @@ export default {
   data () {
     return {
       form: {
-        type: this.former.attrs.type || '',
-        name: this.former.attrs.name || '',
+        type: this.former.attrs.saleType || '',
+        name: this.former.attrs.saleName || '',
         baseAsset: this.former.attrs.baseAsset.code || {},
         capAsset: this.former.attrs.capAsset || {},
         startTime: this.former.attrs.startTime || '',
@@ -312,10 +308,8 @@ export default {
       },
       isQuoteAssetsLoaded: false,
       availableQuoteAssets: [],
-      MIN_AMOUNT: config.MIN_AMOUNT,
-      MAX_AMOUNT: config.MAX_AMOUNT,
-      CODE_MAX_LENGTH,
       NAME_MAX_LENGTH,
+      config,
     }
   },
 
@@ -338,13 +332,13 @@ export default {
         softCap: {
           required,
           softCapMoreThanHardCap: softCapMoreThanHardCap(
-            this.MIN_AMOUNT, this.form.hardCap
+            config.MIN_AMOUNT, this.form.hardCap
           ),
         },
         hardCap: {
           required,
           hardCapLessThanSoftCap: hardCapLessThanSoftCap(
-            this.form.softCap, this.MAX_AMOUNT
+            this.form.softCap, config.MAX_AMOUNT
           ),
         },
         assetsToSell: {
@@ -417,8 +411,8 @@ export default {
   created () {
     if (this.request) {
       this.former.populate(this.request)
-      this.form.name = this.former.attrs.name
-      this.form.type = +this.former.attrs.type
+      this.form.name = this.former.attrs.saleName
+      this.form.type = +this.former.attrs.saleType
       this.form.baseAsset = this.ownedAssets
         .find(item => item.code === this.request.baseAsset)
       this.form.capAsset = this.baseAssets
@@ -441,8 +435,8 @@ export default {
     next () {
       if (!this.isFormValid()) return
       this.former.mergeAttrs({
-        type: this.form.type,
-        name: this.form.name,
+        saleType: this.form.type,
+        saleName: this.form.name,
         baseAsset: this.form.baseAsset,
         capAsset: this.form.capAsset,
         startTime: this.form.startTime,

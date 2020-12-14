@@ -105,7 +105,7 @@ export default {
     return {
       form: {
         youtubeVideo: this.former.attrs.youtubeVideo || '',
-        description: this.former.attrs.description || '',
+        description: this.former.attrs.fullDescription || '',
       },
       DESCRIPTION_MAX_LENGTH,
     }
@@ -127,7 +127,7 @@ export default {
         this.request.description,
         this.accountId
       )
-      this.former.setAttr('description', this.form.description)
+      this.former.setAttr('fullDescription', this.form.description)
     }
   },
 
@@ -156,7 +156,7 @@ export default {
     submit () {
       this.former.mergeAttrs({
         youtubeVideo: this.form.youtubeVideo,
-        description: this.form.description,
+        fullDescription: this.form.description,
       })
       this.$emit(EVENTS.submit, this.former.attrs)
     },

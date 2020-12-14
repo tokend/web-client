@@ -139,7 +139,7 @@ export default {
       let assets = await this.loadAssets
 
       this.former.setAttr('assets', assets)
-      this.former.setAttr('accountId', this.accountId)
+      this.former.setAttr('creatorAccountId', this.accountId)
       this.former.setAttr('requestId', this.requestId)
 
       await this.tryLoadRequest()

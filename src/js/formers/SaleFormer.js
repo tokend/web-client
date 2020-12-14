@@ -22,8 +22,8 @@ export class SaleFormer extends Former {
 
   get _defaultAttrs () {
     return {
-      type: '',
-      name: '',
+      saleType: '',
+      saleName: '',
       baseAsset: '',
       capAsset: '',
       startTime: '',
@@ -36,9 +36,9 @@ export class SaleFormer extends Former {
       saleLogo: new Document(),
       shortDescription: '',
       youtubeVideo: '',
-      description: '',
+      fullDescription: '',
       saleDescriptionBlobId: '',
-      accountId: '',
+      creatorAccountId: '',
       assets: [],
       assetPairs: '',
       requestId: '',
@@ -66,8 +66,8 @@ export class SaleFormer extends Former {
  * @param {String} description: full sale description
  */
   populate (source) {
-    this.attrs.type = +source.saleType
-    this.attrs.name = source.name
+    this.attrs.saleType = +source.saleType
+    this.attrs.saleName = source.name
     this.attrs.baseAsset = source.baseAsset
     this.attrs.capAsset = source.defaultQuoteAsset
     this.attrs.startTime = source.startTime
@@ -81,7 +81,7 @@ export class SaleFormer extends Former {
     this.attrs.saleLogo.key = source.logoKey
     this.attrs.shortDescription = source.shortDescription
     this.attrs.youtubeVideo = source.youtubeVideoId || ''
-    this.attrs.description = source.description || ''
+    this.attrs.fullDescription = source.description || ''
   }
 
   async buildOps () {
@@ -91,14 +91,14 @@ export class SaleFormer extends Former {
 
   async _buildOp () {
     this.attrs.saleDescriptionBlobId = await createSaleDescriptionBlob(
-      this.attrs.description,
-      this.attrs.accountId
+      this.attrs.fullDescription,
+      this.attrs.creatorAccountId
     )
 
     await createBalancesIfNotExist({
       balanceAssets: this.attrs.assets.map(asset => asset.code),
       quoteAssets: this.attrs.quoteAssets,
-      accountId: this.attrs.accountId,
+      accountId: this.attrs.creatorAccountId,
     })
     this.attrs.assetPairs = await this._loadAssetsPairsByQuote(
       this.attrs.capAsset.code
@@ -113,7 +113,7 @@ export class SaleFormer extends Former {
 
     return {
       requestID: this.attrs.requestId || SALE_CONST.newCreateSaleRequestId,
-      saleEnumType: this.attrs.type,
+      saleEnumType: this.attrs.saleType,
       saleType: SALE_CONST.defaultSaleType,
       startTime: DateUtil.toTimestamp(this.attrs.startTime),
       endTime: DateUtil.toTimestamp(this.attrs.endTime),
@@ -124,7 +124,7 @@ export class SaleFormer extends Former {
       requiredBaseAssetForHardCap: this.attrs.assetsToSell,
       quoteAssets: this._getQuoteAssets(),
       creatorDetails: {
-        name: this.attrs.name,
+        name: this.attrs.saleName,
         short_description: this.attrs.shortDescription,
         description: this.attrs.saleDescriptionBlobId,
         logo: saleLogo ? saleLogo.toJSON() : SALE_CONST.emptyDocument,
@@ -154,7 +154,7 @@ export class SaleFormer extends Former {
 
     const capAsset = this.attrs.capAsset.code
     if (capAsset !== assetCode) {
-      if (this.attrs.type === SALE_TYPES.immediate) {
+      if (this.attrs.saleType === SALE_TYPES.immediate) {
         let assetPair = this.attrs.assetPairs.filter(item =>
           item.baseAndQuote === `${assetCode}/${capAsset}`
         )
