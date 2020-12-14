@@ -28,7 +28,7 @@
           v-model.trim="form.price"
           name="trade-offer-price"
           validation-type="incoming"
-          @change="former.setAttr('price', form.price)"
+          @change="former.setAttr('pricePerOneItem', form.price)"
           :label="
             'create-trade-offer-form.price-lbl' | globalize({
               baseAsset: form.asset,
@@ -279,7 +279,7 @@ export default {
       this.setDefaultAsset()
       this.former.setAttr('isBuy', this.isBuy)
       this.former.setAttr('pair.quote', this.assetPair.quote)
-      this.former.setAttr('accountId', this.accountId)
+      this.former.setAttr('creatorAccountId', this.accountId)
       this.former.setAttr('accountBalances', this.accountBalances)
       this.isLoaded = true
     } catch (e) {

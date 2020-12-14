@@ -20,7 +20,7 @@
           v-model.trim="form.price"
           name="submit-trade-offer-price"
           validation-type="incoming"
-          @change="former.setAttr('price', form.price)"
+          @change="former.setAttr('pricePerOneItem', form.price)"
           :label="
             'submit-trade-offer-form.price-lbl' | globalize({
               baseAsset: assetPair.base,
@@ -256,7 +256,7 @@ export default {
   async created () {
     try {
       this.former.mergeAttrs({
-        price: this.offer.price,
+        pricePerOneItem: this.offer.price,
         baseAmount: this.offer.baseAmount,
         quoteAmount: this.offer.quoteAmount,
         pair: {
@@ -264,7 +264,7 @@ export default {
           quote: this.offer.quoteAsset.id,
         },
         isBuy: this.isBuy,
-        accountId: this.accountId,
+        creatorAccountId: this.accountId,
         accountBalances: this.accountBalances,
         fees:
         {
@@ -284,7 +284,7 @@ export default {
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     populateForm () {
-      this.form.price = this.former.attrs.price
+      this.form.price = this.former.attrs.pricePerOneItem
       this.form.baseAmount = this.former.attrs.baseAmount
     },
 

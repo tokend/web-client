@@ -18,7 +18,7 @@
           v-model.trim="form.price"
           name="your-trade-offer-price"
           validation-type="incoming"
-          @change="former.setAttr('price', form.price)"
+          @change="former.setAttr('pricePerOneItem', form.price)"
           :label="
             'your-trade-offer-form.price-lbl' | globalize({
               baseAsset: assetPair.base,
@@ -286,7 +286,7 @@ export default {
   async created () {
     try {
       this.former.mergeAttrs({
-        price: this.offer.price,
+        pricePerOneItem: this.offer.price,
         baseAmount: this.offer.baseAmount,
         quoteAmount: this.offer.quoteAmount,
         pair: {
@@ -294,7 +294,7 @@ export default {
           quote: this.offer.quoteAsset.id,
         },
         isBuy: this.offer.isBuy,
-        accountId: this.offer.owner.id,
+        creatorAccountId: this.offer.owner.id,
         accountBalances: this.accountBalances,
         fees:
         {
