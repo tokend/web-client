@@ -238,7 +238,7 @@ export default {
       this.tryLoadFees()
     },
     'form.asset.code' () {
-      this.former.setAttr('assetCode', this.form.asset.code)
+      this.former.setAttr('assetCodeForWithdrawal', this.form.asset.code)
       this.tryLoadFees()
     },
   },
@@ -246,7 +246,7 @@ export default {
     try {
       await this.loadBalances()
       await this.initAssetSelector()
-      this.former.setAttr('accountId', this.accountId)
+      this.former.setAttr('senderAccountId', this.accountId)
 
       this.isLoaded = true
     } catch (error) {

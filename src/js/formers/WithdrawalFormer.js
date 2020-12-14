@@ -12,7 +12,7 @@ export class WithdrawalFormer extends Former {
 
     get _defaultAttrs () {
       return {
-        assetCode: '',
+        assetCodeForWithdrawal: '',
         amount: '0',
         fees: {
           sourceFee: {
@@ -20,7 +20,7 @@ export class WithdrawalFormer extends Former {
             calculatedPercent: '',
           },
         },
-        accountId: '',
+        senderAccountId: '',
         selectedAssetBalanceId: '',
         creatorDetails: {
           address: '',
@@ -30,16 +30,12 @@ export class WithdrawalFormer extends Former {
     }
 
     buildOps () {
-      this.attrs.fees.sourceFee.fixed = this.attrs.fees.sourceFee.fixed
-      this.attrs.fees.sourceFee.calculatedPercent =
-        this.attrs.fees.sourceFee.calculatedPercent
-
       const operation = base.CreateWithdrawRequestBuilder
         .createWithdrawWithAutoConversion({
           balance: this.attrs.selectedAssetBalanceId,
           amount: this.attrs.amount,
           creatorDetails: this.attrs.creatorDetails,
-          destAsset: this.attrs.assetCode,
+          destAsset: this.attrs.assetCodeForWithdrawal,
           expectedDestAssetAmount: this.attrs.amount,
           fee: {
             fixed: this.attrs.fees.sourceFee.fixed,
@@ -52,12 +48,14 @@ export class WithdrawalFormer extends Former {
     async calculateFees () {
       const attrs = this.attrs
       const response = await calculateFees({
-        assetCode: attrs.assetCode,
+        assetCode: attrs.assetCodeForWithdrawal,
         amount: attrs.amount || 0,
-        senderAccountId: attrs.accountId,
+        senderAccountId: attrs.senderAccountId,
         type: FEE_TYPES.withdrawalFee,
       })
-      this.attrs.fees = response
+      this.attrs.fees.sourceFee.fixed = response.sourceFee.fixed
+      // eslint-disable-next-line max-len
+      this.attrs.fees.sourceFee.calculatedPercent = response.sourceFee.calculatedPercent
 
       return response
     }
