@@ -2,7 +2,6 @@ import { Former } from './Former'
 import { FEE_TYPES, base } from '@tokend/js-sdk'
 import { calculateFees } from '@/js/helpers/fees-helper'
 import { MathUtil } from '@/js/utils'
-import { INVEST_OFFERS } from '@/js/const/invest-offers'
 
 /**
  * Collects the attributes for invest operations
@@ -17,13 +16,13 @@ export class InvestFormer extends Former {
         senderAccountId: '',
         investedAssetCode: '',
         amount: '0',
-        fees: {},
+        fees: '0',
         baseBalanceId: '',
         quoteBalanceId: '',
         saleId: '',
         saleBaseAsset: '',
         saleQuoteAssetPrices: '',
-        currentInvestmentId: '',
+        currentInvestmentId: '0',
       }
     }
 
@@ -33,10 +32,10 @@ export class InvestFormer extends Former {
       if (this.attrs.currentInvestmentId) {
         operations.push(this.buildOpCancelOffer())
       }
-
+      this.attrs.currentInvestmentId = '0'
       operations.push(base.ManageOfferBuilder.manageOffer(
         this._getOfferOpts(
-          INVEST_OFFERS.createId,
+          this.attrs.currentInvestmentId,
           this.attrs.fees)
       ))
 
@@ -53,10 +52,11 @@ export class InvestFormer extends Former {
     }
 
     buildOpCancelOffer () {
+      this.attrs.fees = '0'
       const operation = base.ManageOfferBuilder.cancelOffer(
         this._getOfferOpts(
           this.attrs.currentInvestmentId,
-          INVEST_OFFERS.cancelFee
+          this.attrs.fees
         )
       )
       return operation
@@ -64,6 +64,7 @@ export class InvestFormer extends Former {
 
     _getOfferOpts (id, offerFee) {
       const attrs = this.attrs
+      const defaultQuotePrice = '1'
       const opts = {
         offerID: id,
         baseBalance: attrs.baseBalanceId,
@@ -72,11 +73,11 @@ export class InvestFormer extends Former {
         amount: MathUtil.divide(
           attrs.amount,
           attrs.saleQuoteAssetPrices ||
-          INVEST_OFFERS.defaultQuotePrice,
+          defaultQuotePrice,
           1
         ),
         price: attrs.saleQuoteAssetPrices ||
-          INVEST_OFFERS.defaultQuotePrice,
+        defaultQuotePrice,
         fee: offerFee,
         orderBookID: attrs.saleId,
       }

@@ -423,14 +423,9 @@ export default {
       if (this.quoteAssetListValues.length) {
         this.form.asset = this.quoteAssetListValues[0]
       }
-
-      this.former.setAttr('baseBalanceId', this.balances.find(item => item.asset.code === this.sale.baseAsset).id || {})
-      this.former.setAttr('quoteBalanceId', this.balances.find(item => item.asset.code === this.form.asset.code).id || {})
       this.former.setAttr('saleId', this.sale.id || '')
       this.former.setAttr('saleBaseAsset', this.sale.baseAsset || {})
-      this.former.setAttr('saleQuoteAssetPrices', this.sale.quoteAssetPrices[this.form.asset.code] || {})
       this.former.setAttr('senderAccountId', this.accountId || '')
-
       await this.loadCurrentInvestment()
       this.isLoaded = true
     } catch (e) {
@@ -488,6 +483,9 @@ export default {
       this.disableForm()
       this.isSubmitting = true
       this.former.setAttr('currentInvestmentId', this.currentInvestment.id)
+      this.former.setAttr('baseBalanceId', this.balances.find(item => item.asset.code === this.sale.baseAsset).id || {})
+      this.former.setAttr('quoteBalanceId', this.balances.find(item => item.asset.code === this.form.asset.code).id || {})
+      this.former.setAttr('saleQuoteAssetPrices', this.sale.quoteAssetPrices[this.form.asset.code] || {})
 
       try {
         const baseBalance = this.balances
@@ -524,6 +522,9 @@ export default {
       this.disableForm()
       try {
         this.former.setAttr('currentInvestmentId', this.currentInvestment.id)
+        this.former.setAttr('baseBalanceId', this.balances.find(item => item.asset.code === this.sale.baseAsset).id || {})
+        this.former.setAttr('quoteBalanceId', this.balances.find(item => item.asset.code === this.form.asset.code).id || {})
+        this.former.setAttr('saleQuoteAssetPrices', this.sale.quoteAssetPrices[this.form.asset.code] || {})
 
         const operation = this.former.buildOpCancelOffer()
         await api.postOperations(operation)
