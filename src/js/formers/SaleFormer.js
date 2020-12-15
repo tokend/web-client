@@ -3,14 +3,15 @@ import { Document, base, SALE_TYPES } from '@tokend/js-sdk'
 
 import { DateUtil, MathUtil } from '@/js/utils'
 
-import { createSaleDescriptionBlob,
-  createBalancesIfNotExist } from '@/js/helpers/sale-helper'
+import {
+  createSaleDescriptionBlob,
+  createBalancesIfNotExist,
+} from '@/js/helpers/sale-helper'
 import { api } from '@/api'
 import { AssetPairRecord } from '@/js/records/entities/asset-pair.record'
 import { loadAllResponsePages } from '@/js/helpers/api-helpers'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { store } from '@/vuex'
-import { SALE_CONST } from '@/js/const/sale.const'
 
 /**
  * Collects the attributes for sale operations
@@ -41,7 +42,7 @@ export class SaleFormer extends Former {
       creatorAccountId: '',
       assets: [],
       assetPairs: '',
-      requestId: '',
+      requestId: '0',
     }
   }
 
@@ -110,11 +111,12 @@ export class SaleFormer extends Former {
 
   _createSaleRequestOpts () {
     const saleLogo = this.attrs.saleLogo
+    const defaultSaleType = '0'
 
     return {
-      requestID: this.attrs.requestId || SALE_CONST.newCreateSaleRequestId,
+      requestID: this.attrs.requestId || '0',
       saleEnumType: this.attrs.saleType,
-      saleType: SALE_CONST.defaultSaleType,
+      saleType: defaultSaleType,
       startTime: DateUtil.toTimestamp(this.attrs.startTime),
       endTime: DateUtil.toTimestamp(this.attrs.endTime),
       baseAsset: this.attrs.baseAsset.code,
@@ -127,7 +129,7 @@ export class SaleFormer extends Former {
         name: this.attrs.saleName,
         short_description: this.attrs.shortDescription,
         description: this.attrs.saleDescriptionBlobId,
-        logo: saleLogo ? saleLogo.toJSON() : SALE_CONST.emptyDocument,
+        logo: saleLogo || new Document(),
         youtube_video_id: this.attrs.youtubeVideo,
       },
       saleRules: [{
@@ -160,7 +162,8 @@ export class SaleFormer extends Former {
         )
         result = MathUtil.divide(basePrise, assetPair[0].price)
       } else {
-        result = SALE_CONST.defaultQuoteAssetPrice
+        const defaultQuoteAssetPrice = '1'
+        result = defaultQuoteAssetPrice
       }
     } else {
       result = basePrise
@@ -172,7 +175,7 @@ export class SaleFormer extends Former {
   async _loadAssetsPairsByQuote (quoteAssetCode) {
     let result = await api.get('/v3/asset_pairs', {
       filter: { quote_asset: quoteAssetCode },
-      page: { limit: SALE_CONST.maxPageLimit },
+      page: { limit: 100 },
     })
     result = await loadAllResponsePages(result)
     return result.map(item => new AssetPairRecord(item))
