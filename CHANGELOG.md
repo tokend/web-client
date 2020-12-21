@@ -8,11 +8,26 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+## [1.13.0-rc.1] - 2020-12-21
 #### Added
 - New i18n-component for easier nodes interpolation
+- New helpers: 
+  - `identity-helper.js` - Includes reusable actions over identities
+  - `fees-helper.js` - Includes reusable actions over fees
+
+### Changed
+- New formers:
+  - New `TransferFormer`
+  - New `IssuanceFormer`
+  - New `LimitsFormer`
+  - New `WithdrawalFormer`
+  - New `PollFormer`
 
 #### Fixed
 - A bug with `MarkdownField` length
+
+### Removed
+- Removed `issuance-form` from modules
 
 ## [1.13.0-rc.0] - 2020-09-18
 #### Added
@@ -35,8 +50,6 @@ for further information about branching and tagging conventions.
   - `scroll-helpers.js` - At the moment only `scrollToTop()` action
   - `delay.js` - Promise version of the setTimeout
   - `date-helpers.js` - Includes reusable actions over dates
-  - `identity-helper.js` - Includes reusable actions over identities
-  - `fees-helper.js` - Includes reusable actions over fees
 - Records:
   - New `BlobRecord`
   - New `KycRecord`
@@ -64,11 +77,6 @@ for further information about branching and tagging conventions.
 - `loadingDataViaLoop()` => `loadAllResponsePages()`, moved to `api-helpers.js`
 - Formers:
   - New `KycGeneralFormer` and `KycCorporateFormer`
-  - New `TransferFormer`
-  - New `IssuanceFormer`
-  - New `LimitsFormer`
-  - New `WithdrawalFormer`
-  - New `PollFormer`
   - Migrated `attrs` description from the JSDoc to predefined default values
   - Now the populating functions treat `attrs` as `undefined`
 - Done migration to the `KycGeneralFormer` and `KycCorporateFormer`:
@@ -102,7 +110,6 @@ for further information about branching and tagging conventions.
 - Old `ChangeRoleRecord`
 - Old `verification-form.mixin.js`
 - Old verification forms and their vuex stores
-- Removed `issuance-form` from modules
 
 ## [1.12.0] - 2020-07-16
 
