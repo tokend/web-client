@@ -13,6 +13,7 @@ for further information about branching and tagging conventions.
 
 #### Fixed
 - A bug with `MarkdownField` length
+- A bug with cancel order
 
 ## [1.13.0-rc.0] - 2020-09-18
 #### Added
