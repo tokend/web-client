@@ -402,10 +402,11 @@ export default {
     'form.asset': async function () {
       try {
         this.former.setAttr('investedAssetCode', this.form.asset.code || '')
+        this.former.setAttr('quoteBalanceId', this.balances.find(item => item.asset.code === this.form.asset.code).id || '')
+        this.former.setAttr('saleQuoteAssetPrices', this.sale.quoteAssetPrices[this.form.asset.code] || '')
         if (this.form.asset.code !== this.sale.defaultQuoteAsset) {
           await this.loadAssetPairPrice()
         }
-
         await this.loadCurrentInvestment()
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)
@@ -423,9 +424,22 @@ export default {
       if (this.quoteAssetListValues.length) {
         this.form.asset = this.quoteAssetListValues[0]
       }
-      this.former.setAttr('saleId', this.sale.id || '')
-      this.former.setAttr('saleBaseAsset', this.sale.baseAsset || {})
+
       this.former.setAttr('senderAccountId', this.accountId || '')
+      this.former.setAttr('saleId', this.sale.id || '')
+      this.former.setAttr('saleBaseAssetCode', this.saleBaseAsset.code || '')
+
+      const baseBalance = this.balances
+        .find(balance => balance.asset.code === this.sale.baseAsset)
+
+      if (!baseBalance) {
+        const operation = this.former.buildOpCreateBalance()
+        await api.postOperations(operation)
+        await this.loadBalances()
+      }
+
+      this.former.setAttr('baseBalanceId', this.balances.find(item => item.asset.code === this.sale.baseAsset).id || '')
+
       await this.loadCurrentInvestment()
       this.isLoaded = true
     } catch (e) {
@@ -483,20 +497,8 @@ export default {
       this.disableForm()
       this.isSubmitting = true
       this.former.setAttr('currentInvestmentId', this.currentInvestment.id)
-      this.former.setAttr('baseBalanceId', this.balances.find(item => item.asset.code === this.sale.baseAsset).id || {})
-      this.former.setAttr('quoteBalanceId', this.balances.find(item => item.asset.code === this.form.asset.code).id || {})
-      this.former.setAttr('saleQuoteAssetPrices', this.sale.quoteAssetPrices[this.form.asset.code] || {})
 
       try {
-        const baseBalance = this.balances
-          .find(balance => balance.asset.code === this.sale.baseAsset)
-
-        if (!baseBalance) {
-          const operation = this.former.buildOpCreateBalance()
-          await api.postOperations(operation)
-          await this.loadBalances()
-        }
-
         const operations = await this.former.buildOps()
         await api.postOperations(...operations)
 
@@ -522,9 +524,6 @@ export default {
       this.disableForm()
       try {
         this.former.setAttr('currentInvestmentId', this.currentInvestment.id)
-        this.former.setAttr('baseBalanceId', this.balances.find(item => item.asset.code === this.sale.baseAsset).id || {})
-        this.former.setAttr('quoteBalanceId', this.balances.find(item => item.asset.code === this.form.asset.code).id || {})
-        this.former.setAttr('saleQuoteAssetPrices', this.sale.quoteAssetPrices[this.form.asset.code] || {})
 
         const operation = this.former.buildOpCancelOffer()
         await api.postOperations(operation)

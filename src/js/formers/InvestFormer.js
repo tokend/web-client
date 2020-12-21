@@ -20,7 +20,7 @@ export class InvestFormer extends Former {
         baseBalanceId: '',
         quoteBalanceId: '',
         saleId: '',
-        saleBaseAsset: '',
+        saleBaseAssetCode: '',
         saleQuoteAssetPrices: '',
         currentInvestmentId: '0',
       }
@@ -45,18 +45,18 @@ export class InvestFormer extends Former {
     buildOpCreateBalance () {
       const operation = base.Operation.manageBalance({
         destination: this.attrs.senderAccountId,
-        asset: this.attrs.saleBaseAsset,
+        asset: this.attrs.saleBaseAssetCode,
         action: base.xdr.ManageBalanceAction.createUnique(),
       })
       return operation
     }
 
     buildOpCancelOffer () {
-      this.attrs.fees = '0'
+      const fees = '0'
       const operation = base.ManageOfferBuilder.cancelOffer(
         this._getOfferOpts(
           this.attrs.currentInvestmentId,
-          this.attrs.fees
+          fees
         )
       )
       return operation
