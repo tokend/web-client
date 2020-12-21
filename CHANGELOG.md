@@ -35,6 +35,8 @@ for further information about branching and tagging conventions.
   - `scroll-helpers.js` - At the moment only `scrollToTop()` action
   - `delay.js` - Promise version of the setTimeout
   - `date-helpers.js` - Includes reusable actions over dates
+  - `identity-helper.js` - Includes reusable actions over identities
+  - `fees-helper.js` - Includes reusable actions over fees
 - Records:
   - New `BlobRecord`
   - New `KycRecord`
@@ -62,6 +64,11 @@ for further information about branching and tagging conventions.
 - `loadingDataViaLoop()` => `loadAllResponsePages()`, moved to `api-helpers.js`
 - Formers:
   - New `KycGeneralFormer` and `KycCorporateFormer`
+  - New `TransferFormer`
+  - New `IssuanceFormer`
+  - New `LimitsFormer`
+  - New `WithdrawalFormer`
+  - New `PollFormer`
   - Migrated `attrs` description from the JSDoc to predefined default values
   - Now the populating functions treat `attrs` as `undefined`
 - Done migration to the `KycGeneralFormer` and `KycCorporateFormer`:
@@ -95,6 +102,7 @@ for further information about branching and tagging conventions.
 - Old `ChangeRoleRecord`
 - Old `verification-form.mixin.js`
 - Old verification forms and their vuex stores
+- Removed `issuance-form` from modules
 
 ## [1.12.0] - 2020-07-16
 
