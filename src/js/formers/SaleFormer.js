@@ -52,7 +52,7 @@ export class SaleFormer extends Former {
  * @param {String} saleType: number of sale type
  * @param {String} name: sale name
  * @param {String} baseAsset: base asset code
- * @param {String} defaultQuoteAsset: cap asset
+ * @param {String} defaultQuoteAsset: cap asset code
  * @param {String} startTime: start time
  * @param {String} endTime: end time
  * @param {String} softCap: soft cap
