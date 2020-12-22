@@ -25,8 +25,8 @@ export class SaleFormer extends Former {
     return {
       saleType: '',
       saleName: '',
-      baseAsset: '',
-      capAsset: '',
+      baseAssetCode: '',
+      capAssetCode: '',
       startTime: '',
       endTime: '',
       softCap: '',
@@ -51,7 +51,7 @@ export class SaleFormer extends Former {
  * @param {Object} source
  * @param {String} saleType: number of sale type
  * @param {String} name: sale name
- * @param {String} baseAsset: base asset
+ * @param {String} baseAsset: base asset code
  * @param {String} defaultQuoteAsset: cap asset
  * @param {String} startTime: start time
  * @param {String} endTime: end time
@@ -69,8 +69,8 @@ export class SaleFormer extends Former {
   populate (source) {
     this.attrs.saleType = +source.saleType
     this.attrs.saleName = source.name
-    this.attrs.baseAsset = source.baseAsset
-    this.attrs.capAsset = source.defaultQuoteAsset
+    this.attrs.baseAssetCode = source.baseAsset
+    this.attrs.capAssetCode = source.defaultQuoteAsset
     this.attrs.startTime = source.startTime
     this.attrs.endTime = source.endTime
     this.attrs.softCap = source.softCap
@@ -102,7 +102,7 @@ export class SaleFormer extends Former {
       accountId: this.attrs.creatorAccountId,
     })
     this.attrs.assetPairs = await this._loadAssetsPairsByQuote(
-      this.attrs.capAsset.code
+      this.attrs.capAssetCode
     )
 
     const opts = this._createSaleRequestOpts()
@@ -119,8 +119,8 @@ export class SaleFormer extends Former {
       saleType: defaultSaleType,
       startTime: DateUtil.toTimestamp(this.attrs.startTime),
       endTime: DateUtil.toTimestamp(this.attrs.endTime),
-      baseAsset: this.attrs.baseAsset.code,
-      defaultQuoteAsset: this.attrs.capAsset.code,
+      baseAsset: this.attrs.baseAssetCode,
+      defaultQuoteAsset: this.attrs.capAssetCode,
       softCap: this.attrs.softCap,
       hardCap: this.attrs.hardCap,
       requiredBaseAssetForHardCap: this.attrs.assetsToSell,
@@ -154,7 +154,7 @@ export class SaleFormer extends Former {
   _getPrice (assetCode, basePrise) {
     let result
 
-    const capAsset = this.attrs.capAsset.code
+    const capAsset = this.attrs.capAssetCode
     if (capAsset !== assetCode) {
       if (this.attrs.saleType === SALE_TYPES.immediate) {
         let assetPair = this.attrs.assetPairs.filter(item =>

@@ -10,6 +10,7 @@
           white-autofill
           v-model="form.saleLogo"
           @blur="touchField('form.saleLogo')"
+          @input="former.setAttr('saleLogo', form.saleLogo)"
           name="create-sale-logo"
           :label="'create-sale-form.sale-logo-lbl' | globalize"
           :note="'create-sale-form.sale-logo-note' | globalize"
@@ -26,6 +27,7 @@
           white-autofill
           v-model="form.shortDescription"
           @blur="touchField('form.shortDescription')"
+          @input="former.setAttr('shortDescription', form.shortDescription)"
           name="create-sale-short-description"
           :label="'create-sale-form.short-description-lbl' | globalize"
           :maxlength="DESCRIPTION_MAX_LENGTH"
@@ -105,10 +107,6 @@ export default {
   methods: {
     next () {
       if (!this.isFormValid()) return
-      this.former.mergeAttrs({
-        saleLogo: this.form.saleLogo,
-        shortDescription: this.form.shortDescription,
-      })
       this.$emit('next', this.former.attrs)
     },
   },

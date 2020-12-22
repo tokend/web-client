@@ -29,6 +29,7 @@
           white-autofill
           v-model="form.name"
           @blur="touchField('form.name')"
+          @change="former.setAttr('saleName', form.name)"
           name="create-sale-name"
           :label="'create-sale-form.sale-name-lbl' | globalize"
           :error-message="getFieldErrorMessage(
@@ -85,6 +86,7 @@
         <amount-input-field
           white-autofill
           v-model="form.assetsToSell"
+          @change="former.setAttr('assetsToSell', form.assetsToSell)"
           name="create-sale-assets-to-sell"
           validation-type="incoming"
           :label="'create-sale-form.assets-to-sell-lbl' |
@@ -114,6 +116,7 @@
         <tick-field
           :name="`create-sale-whitelisted`"
           v-model="form.isWhitelisted"
+          @input="former.setAttr('isWhitelisted', form.isWhitelisted)"
         >
           {{ 'create-sale-form.whitelisted-lbl' | globalize }}
         </tick-field>
@@ -127,8 +130,8 @@
           name="create-sale-start-time"
           :disable-before="lastTwentyYear"
           :enable-time="true"
-          @input="touchField('form.startTime')"
           @blur="touchField('form.startTime')"
+          @input="former.setAttr('startTime', form.startTime)"
           :label="'create-sale-form.start-time-lbl' | globalize"
           :error-message="getFieldErrorMessage('form.startTime')"
         />
@@ -141,8 +144,8 @@
           v-model="form.endTime"
           :enable-time="true"
           :disable-before="yesterday"
-          @input="touchField('form.endTime')"
           @blur="touchField('form.endTime')"
+          @input="former.setAttr('endTime', form.endTime)"
           name="create-sale-end-time"
           :label="'create-sale-form.close-time-lbl' | globalize"
           :error-message="getFieldErrorMessage(
@@ -163,6 +166,7 @@
           v-model="form.softCap"
           name="create-sale-soft-cap"
           @blur="touchField('form.softCap')"
+          @change="former.setAttr('softCap', form.softCap)"
           :label="'create-sale-form.soft-cap-lbl' | globalize({
             asset: form.capAsset.code
           })"
@@ -186,6 +190,7 @@
           v-model="form.hardCap"
           name="create-sale-hard-cap"
           @blur="touchField('form.hardCap')"
+          @change="former.setAttr('hardCap', form.hardCap)"
           :label="'create-sale-form.hard-cap-lbl' | globalize({
             asset: form.capAsset.code
           })"
@@ -296,8 +301,8 @@ export default {
       form: {
         type: this.former.attrs.saleType || '',
         name: this.former.attrs.saleName || '',
-        baseAsset: this.former.attrs.baseAsset.code || {},
-        capAsset: this.former.attrs.capAsset || {},
+        baseAsset: this.former.attrs.baseAssetCode || {},
+        capAsset: this.former.attrs.capAssetCode || {},
         startTime: this.former.attrs.startTime || '',
         endTime: this.former.attrs.endTime || '',
         softCap: this.former.attrs.softCap || '',
@@ -400,7 +405,6 @@ export default {
       if (this.isQuoteAssetsLoaded) {
         this.isQuoteAssetsLoaded = false
         this.form.quoteAssets = []
-        this.former.setAttr('quoteAssets', this.form.quoteAssets)
       }
       const quoteAssets = await this.former.loadBaseAssetsByQuote(value)
       this.availableQuoteAssets = [this.form.capAsset, ...quoteAssets]
@@ -428,37 +432,32 @@ export default {
       this.form.type = this.localizedSaleTypes[0].value
       this.form.baseAsset = this.ownedAssets[0] || {}
       this.form.capAsset = this.baseAssets[0] || {}
+
+      this.former.setAttr('saleType', this.form.type)
+      this.former.setAttr('baseAssetCode', this.form.baseAsset.code)
+      this.former.setAttr('capAssetCode', this.form.capAsset.code)
     }
   },
 
   methods: {
     next () {
       if (!this.isFormValid()) return
-      this.former.mergeAttrs({
-        saleType: this.form.type,
-        saleName: this.form.name,
-        baseAsset: this.form.baseAsset,
-        capAsset: this.form.capAsset,
-        startTime: this.form.startTime,
-        endTime: this.form.endTime,
-        softCap: this.form.softCap,
-        hardCap: this.form.hardCap,
-        assetsToSell: this.form.assetsToSell,
-        quoteAssets: this.form.quoteAssets,
-        isWhitelisted: this.form.isWhitelisted,
-      })
+      this.former.setAttr('quoteAssets', this.form.quoteAssets)
       this.$emit('next', this.former.attrs)
     },
     setBaseAssetByCode (code) {
       this.form.baseAsset = this.ownedAssets.find(item => item.code === code)
+      this.former.setAttr('baseAssetCode', this.form.baseAsset.code)
     },
 
     setSaleType (type) {
       this.form.type = +type
+      this.former.setAttr('saleType', this.form.type)
     },
 
     setCapAssetByCode (code) {
       this.form.capAsset = this.baseAssets.find(item => item.code === code)
+      this.former.setAttr('capAssetCode', this.form.capAsset.code)
     },
 
     getCurrentDate () {
