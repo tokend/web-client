@@ -110,4 +110,16 @@ export class TradeFormer extends Former {
 
       return response
     }
+
+    populate (source) {
+      this.attrs = this.attrs || this._defaultAttrs
+
+      this.attrs.pricePerOneItem = source.price || ''
+      this.attrs.baseAmount = source.baseAmount || ''
+      this.attrs.quoteAmount = source.quoteAmount || ''
+      this.attrs.pair.base = source.baseAsset.id || ''
+      this.attrs.pair.quote = source.quoteAsset.id || ''
+      this.attrs.isBuy = source.isBuy || false
+      this.attrs.fees.totalFee = source.fee || ''
+    }
 }

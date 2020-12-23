@@ -22,12 +22,17 @@ for further information about branching and tagging conventions.
   - New `WithdrawalFormer`
   - New `PollFormer`
   - New `InvestFormer`
+  - New `TradeFormer`
 
 #### Fixed
 - A bug with `MarkdownField` length
+- A bug with cancel order in `YourTradeOfferForm`
 
 ### Removed
 - Removed `issuance-form` from modules
+- Removed `offer-manager.mixin` from mixins
+- Removed `fees.mixin` from fees
+- Removed `fees.mixin.spec` from fees
 
 ## [1.13.0-rc.0] - 2020-09-18
 #### Added

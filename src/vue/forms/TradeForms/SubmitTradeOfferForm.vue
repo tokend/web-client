@@ -16,10 +16,13 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <amount-input-field
+        <input-field
           v-model.trim="form.price"
           name="submit-trade-offer-price"
-          validation-type="incoming"
+          type="number"
+          :min="0"
+          :max="config.MAX_AMOUNT"
+          :step="config.MIN_AMOUNT"
           @change="former.setAttr('pricePerOneItem', form.price)"
           :label="
             'submit-trade-offer-form.price-lbl' | globalize({
@@ -27,8 +30,13 @@
               quoteAsset: assetPair.quote,
             })
           "
-          :asset="offer.baseAsset.id"
-          :readonly="formMixin.isDisabled"
+          :error-message="getFieldErrorMessage(
+            'form.price', {
+              from: config.MIN_AMOUNT,
+              to: config.MAX_AMOUNT,
+              available: quoteAssetBalance
+            }
+          )"
           @blur="touchField('form.price')"
           :disabled="formMixin.isDisabled"
         />
@@ -37,16 +45,25 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <amount-input-field
+        <input-field
           v-model.trim="form.baseAmount"
           name="submit-trade-offer-base-amount"
-          validation-type="incoming"
+          type="number"
+          :min="0"
+          :max="config.MAX_AMOUNT"
+          :step="config.MIN_AMOUNT"
           @change="former.setAttr('baseAmount', form.baseAmount)"
           :label="'submit-trade-offer-form.base-amount-lbl' | globalize({
             asset: assetPair.base
           })"
-          :asset="offer.baseAsset.id"
-          :readonly="formMixin.isDisabled"
+          :error-message="getFieldErrorMessage(
+            'form.baseAmount',
+            {
+              available: baseAssetBalance,
+              from: config.MIN_AMOUNT,
+              to: config.MAX_AMOUNT,
+            }
+          )"
           @blur="touchField('form.baseAmount')"
           :disabled="formMixin.isDisabled"
         />
@@ -255,22 +272,10 @@ export default {
 
   async created () {
     try {
-      this.former.mergeAttrs({
-        pricePerOneItem: this.offer.price,
-        baseAmount: this.offer.baseAmount,
-        quoteAmount: this.offer.quoteAmount,
-        pair: {
-          base: this.offer.baseAsset.id,
-          quote: this.offer.quoteAsset.id,
-        },
-        isBuy: this.isBuy,
-        creatorAccountId: this.accountId,
-        accountBalances: this.accountBalances,
-        fees:
-        {
-          totalFee: this.offer.fee,
-        },
-      })
+      this.former.populate(this.offer)
+      this.former.setAttr('creatorAccountId', this.accountId)
+      this.former.setAttr('accountBalances', this.accountBalances)
+
       this.populateForm()
       await this.loadBalances()
       this.isLoaded = true

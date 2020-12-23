@@ -1,7 +1,7 @@
 <template>
   <form
     v-if="isLoaded"
-    @submit.prevent="isFormValid() && showConfirmation()"
+    @submit.prevent="tryToSubmit"
   >
     <div class="app__form-row">
       <div class="app__form-field">
@@ -14,10 +14,13 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <amount-input-field
+        <input-field
           v-model.trim="form.price"
           name="your-trade-offer-price"
-          validation-type="incoming"
+          type="number"
+          :min="0"
+          :max="config.MAX_AMOUNT"
+          :step="config.MIN_AMOUNT"
           @change="former.setAttr('pricePerOneItem', form.price)"
           :label="
             'your-trade-offer-form.price-lbl' | globalize({
@@ -25,8 +28,13 @@
               quoteAsset: assetPair.quote,
             })
           "
-          :asset="offer.baseAsset.id"
-          :readonly="formMixin.isDisabled"
+          :error-message="getFieldErrorMessage(
+            'form.price', {
+              from: config.MIN_AMOUNT,
+              to: config.MAX_AMOUNT,
+              available: quoteAssetBalance
+            }
+          )"
           @blur="touchField('form.price')"
           :disabled="formMixin.isDisabled"
         />
@@ -35,16 +43,25 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <amount-input-field
+        <input-field
           v-model.trim="form.baseAmount"
           name="your-trade-offer-base-amount"
-          validation-type="incoming"
+          type="number"
+          :min="0"
+          :max="config.MAX_AMOUNT"
+          :step="config.MIN_AMOUNT"
           @change="former.setAttr('baseAmount', form.baseAmount)"
           :label="'your-trade-offer-form.base-amount-lbl' | globalize({
             asset: offer.baseAsset.id
           })"
-          :asset="offer.baseAsset.id"
-          :readonly="formMixin.isDisabled"
+          :error-message="getFieldErrorMessage(
+            'form.baseAmount',
+            {
+              available: baseAssetBalance,
+              from: config.MIN_AMOUNT,
+              to: config.MAX_AMOUNT,
+            }
+          )"
           @blur="touchField('form.amount')"
           :disabled="formMixin.isDisabled"
         />
@@ -285,22 +302,9 @@ export default {
 
   async created () {
     try {
-      this.former.mergeAttrs({
-        pricePerOneItem: this.offer.price,
-        baseAmount: this.offer.baseAmount,
-        quoteAmount: this.offer.quoteAmount,
-        pair: {
-          base: this.offer.baseAsset.id,
-          quote: this.offer.quoteAsset.id,
-        },
-        isBuy: this.offer.isBuy,
-        creatorAccountId: this.offer.owner.id,
-        accountBalances: this.accountBalances,
-        fees:
-        {
-          totalFee: this.offer.fee,
-        },
-      })
+      this.former.populate(this.offer)
+      this.former.setAttr('creatorAccountId', this.accountId)
+      this.former.setAttr('accountBalances', this.accountBalances)
       await this.loadBalances()
       this.populateForm()
 
@@ -316,7 +320,7 @@ export default {
     }),
     populateForm () {
       this.form.baseAmount = this.former.attrs.baseAmount
-      this.form.price = this.former.attrs.price
+      this.form.price = this.former.attrs.pricePerOneItem
     },
 
     tryLoadFees () {
@@ -376,6 +380,11 @@ export default {
 
       this.isFormSubmitting = false
       this.hideConfirmation()
+    },
+
+    tryToSubmit () {
+      if (this.submitMode === SUBMIT_MODES.update && !this.isFormValid()) return
+      this.showConfirmation()
     },
   },
 }

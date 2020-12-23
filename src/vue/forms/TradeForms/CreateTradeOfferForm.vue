@@ -24,10 +24,13 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <amount-input-field
+        <input-field
           v-model.trim="form.price"
           name="trade-offer-price"
-          validation-type="incoming"
+          type="number"
+          :min="0"
+          :max="config.MAX_AMOUNT"
+          :step="config.MIN_AMOUNT"
           @change="former.setAttr('pricePerOneItem', form.price)"
           :label="
             'create-trade-offer-form.price-lbl' | globalize({
@@ -35,8 +38,13 @@
               quoteAsset: assetPair.quote
             })
           "
-          :asset="form.asset"
-          :readonly="formMixin.isDisabled"
+          :error-message="getFieldErrorMessage(
+            'form.price', {
+              from: config.MIN_AMOUNT,
+              to: config.MAX_AMOUNT,
+              available: quoteAssetBalance
+            }
+          )"
           @blur="touchField('form.price')"
           :disabled="formMixin.isDisabled"
         />
@@ -45,16 +53,25 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <amount-input-field
+        <input-field
           v-model.trim="form.amount"
           name="trade-offer-amount"
-          validation-type="incoming"
+          type="number"
+          :min="0"
+          :max="config.MAX_AMOUNT"
+          :step="config.MIN_AMOUNT"
           @change="former.setAttr('baseAmount', form.amount)"
           :label="'create-trade-offer-form.amount-lbl' | globalize({
             asset: form.asset
           })"
-          :asset="form.asset"
-          :readonly="formMixin.isDisabled"
+          :error-message="getFieldErrorMessage(
+            'form.amount',
+            {
+              available: baseAssetBalance,
+              from: config.MIN_AMOUNT,
+              to: config.MAX_AMOUNT,
+            }
+          )"
           @blur="touchField('form.amount')"
           :disabled="formMixin.isDisabled"
         />
