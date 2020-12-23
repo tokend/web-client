@@ -21,6 +21,7 @@ for further information about branching and tagging conventions.
   - New `LimitsFormer`
   - New `WithdrawalFormer`
   - New `PollFormer`
+  - New `SaleFormer`
 
 #### Fixed
 - A bug with `MarkdownField` length
