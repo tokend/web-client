@@ -13,6 +13,7 @@ for further information about branching and tagging conventions.
 - New helpers: 
   - `identity-helper.js` - Includes reusable actions over identities
   - `fees-helper.js` - Includes reusable actions over fees
+- New error when saleLogo doesn`t added in the ShortBlurbStepForm
 
 ### Changed
 - New formers:
