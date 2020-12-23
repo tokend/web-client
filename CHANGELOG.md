@@ -8,7 +8,6 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
-## [1.13.0-rc.1] - 2020-12-21
 #### Added
 - New i18n-component for easier nodes interpolation
 - New helpers: 
