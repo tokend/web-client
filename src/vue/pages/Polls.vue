@@ -38,7 +38,7 @@
             {{ 'polls.new-poll' | globalize }}
           </template>
 
-          <create-poll-form-module
+          <create-poll-form
             @submitted="closeDrawerAndUpdateList"
           />
         </drawer>
@@ -51,7 +51,7 @@
 <script>
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
-import CreatePollFormModule from '@/vue/modules/create-poll-form'
+import CreatePollForm from '@/vue/forms/CreatePollForm'
 import UpdateList from '@/vue/mixins/update-list.mixin'
 
 import { vueRoutes } from '@/vue-router/routes'
@@ -64,7 +64,7 @@ export default {
   components: {
     TopBar,
     Drawer,
-    CreatePollFormModule,
+    CreatePollForm,
   },
 
   mixins: [UpdateList],
