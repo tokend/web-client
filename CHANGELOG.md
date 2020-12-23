@@ -21,6 +21,7 @@ for further information about branching and tagging conventions.
   - New `LimitsFormer`
   - New `WithdrawalFormer`
   - New `PollFormer`
+  - New `InvestFormer`
 
 #### Fixed
 - A bug with `MarkdownField` length
