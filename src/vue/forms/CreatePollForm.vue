@@ -10,6 +10,7 @@
           white-autofill
           v-model="form.question"
           @blur="touchField('form.question')"
+          @input="former.setAttr('question', form.question)"
           name="create-poll-question"
           :label="'create-poll-form.question-lbl' | globalize"
           :disabled="formMixin.isDisabled"
@@ -77,8 +78,8 @@
           v-model="form.startTime"
           name="create-poll-form-start-time"
           :enable-time="true"
-          @input="touchField('form.startTime')"
           @blur="touchField('form.startTime')"
+          @input="former.setAttr('startTime', form.startTime)"
           :label="'create-poll-form.start-time-lbl' | globalize"
           :disabled="formMixin.isDisabled"
           :error-message="getFieldErrorMessage(
@@ -94,8 +95,8 @@
           v-model="form.endTime"
           :enable-time="true"
           :disable-before="yesterday"
-          @input="touchField('form.endTime')"
           @blur="touchField('form.endTime')"
+          @input="former.setAttr('endTime', form.endTime)"
           name="create-poll-end-time"
           :label="'create-poll-form.end-time-lbl' | globalize"
           :disabled="formMixin.isDisabled"
@@ -111,6 +112,7 @@
         <select-field
           v-model="form.permissionType"
           @blur="touchField('form.permissionType')"
+          @input="former.setAttr('permissionType', form.permissionType)"
           name="create-poll-permission-type"
           :label="'create-poll-form.permission-type-lbl' | globalize"
           :disabled="formMixin.isDisabled"
@@ -157,13 +159,12 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import moment from 'moment'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { PollFormer } from '@/js/formers/PollFormer'
 import {
   required,
   maxLength,
   minDate,
 } from '@validators'
-import { base } from '@tokend/js-sdk'
-import { DateUtil } from '@/js/utils'
 import { api } from '@/api'
 import { keyValues } from '@/key-values'
 
@@ -176,6 +177,10 @@ export default {
   name: 'create-poll-form-module',
 
   mixins: [FormMixin],
+
+  props: {
+    former: { type: PollFormer, default: () => new PollFormer() },
+  },
 
   data: _ => ({
     form: {
@@ -238,6 +243,7 @@ export default {
   created () {
     if (!this.form.permissionType) {
       this.form.permissionType = keyValues.unrestrictedPollType
+      this.former.setAttr('permissionType', this.form.permissionType)
     }
   },
 
@@ -259,7 +265,8 @@ export default {
         this.disableForm()
         this.isSubmitting = true
         try {
-          const createPollOperation = this.buildCreatePollOperation()
+          this.former.setAttr('choices', this.form.choices)
+          const createPollOperation = this.former.buildOps()
           await api.postOperations(createPollOperation)
           Bus.success('create-poll-form.request-submitted-msg')
           this.$emit(EVENTS.submitted)
@@ -271,22 +278,6 @@ export default {
         this.hideConfirmation()
         this.enableForm()
       }
-    },
-    buildCreatePollOperation () {
-      const operation = {
-        permissionType: Number(this.form.permissionType),
-        voteConfirmationRequired: false,
-        resultProviderID: api.networkDetails.masterAccountId,
-        startTime: DateUtil.toTimestamp(this.form.startTime),
-        endTime: DateUtil.toTimestamp(this.form.endTime),
-        numberOfChoices: this.form.choices.length,
-        pollType: base.xdr.PollType.singleChoice().value,
-        creatorDetails: {
-          question: this.form.question,
-          choices: this.form.choices,
-        },
-      }
-      return base.ManageCreatePollRequestBuilder.createPollRequest(operation)
     },
     canDeleteChoice (index) {
       return index !== this.form.choices.length ||

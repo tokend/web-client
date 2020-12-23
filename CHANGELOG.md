@@ -10,9 +10,23 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - New i18n-component for easier nodes interpolation
+- New helpers: 
+  - `identity-helper.js` - Includes reusable actions over identities
+  - `fees-helper.js` - Includes reusable actions over fees
+
+### Changed
+- New formers:
+  - New `TransferFormer`
+  - New `IssuanceFormer`
+  - New `LimitsFormer`
+  - New `WithdrawalFormer`
+  - New `PollFormer`
 
 #### Fixed
 - A bug with `MarkdownField` length
+
+### Removed
+- Removed `issuance-form` from modules
 
 ## [1.13.0-rc.0] - 2020-09-18
 #### Added
