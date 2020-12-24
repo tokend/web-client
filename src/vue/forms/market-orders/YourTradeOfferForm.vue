@@ -1,7 +1,7 @@
 <template>
   <form
     v-if="isLoaded"
-    @submit.prevent="isFormValid() && showConfirmation()"
+    @submit.prevent="tryToSubmit"
   >
     <div class="app__form-row">
       <div class="app__form-field">
@@ -369,6 +369,11 @@ export default {
 
     setCancelSubmitMode () {
       this.submitMode = SUBMIT_MODES.cancel
+    },
+
+    tryToSubmit () {
+      if (this.submitMode === SUBMIT_MODES.update && !this.isFormValid()) return
+      this.showConfirmation()
     },
 
     async submit () {
