@@ -270,6 +270,7 @@ import { vuexTypes } from '@/vuex'
 
 import { MathUtil } from '@/js/utils'
 import { SaleFormer } from '@/js/formers/SaleFormer'
+import { loadBaseAssetsByQuote } from '@/js/helpers/sale-helper'
 
 import {
   required,
@@ -404,7 +405,7 @@ export default {
         this.isQuoteAssetsLoaded = false
         this.form.quoteAssets = []
       }
-      const quoteAssets = await this.former.loadBaseAssetsByQuote(value)
+      const quoteAssets = await loadBaseAssetsByQuote(value)
       this.availableQuoteAssets = [this.form.capAsset, ...quoteAssets]
       this.isQuoteAssetsLoaded = true
     },

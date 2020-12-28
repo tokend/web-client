@@ -1,17 +1,12 @@
 import { Former } from './Former'
 import { Document, base, SALE_TYPES } from '@tokend/js-sdk'
-
 import { DateUtil, MathUtil } from '@/js/utils'
 
 import {
   createSaleDescriptionBlobId,
   createBalancesIfNotExist,
+  loadAssetsPairsByQuote,
 } from '@/js/helpers/sale-helper'
-import { api } from '@/api'
-import { AssetPairRecord } from '@/js/records/entities/asset-pair.record'
-import { loadAllResponsePages } from '@/js/helpers/api-helpers'
-import { ErrorHandler } from '@/js/helpers/error-handler'
-import { store } from '@/vuex'
 
 /**
  * Collects the attributes for sale operations
@@ -40,7 +35,7 @@ export class SaleFormer extends Former {
       fullDescription: '',
       saleDescriptionBlobId: '',
       creatorAccountId: '',
-      assets: [],
+      balancesAssetsCodes: [],
       assetPairs: '',
       requestId: '0',
     }
@@ -79,10 +74,9 @@ export class SaleFormer extends Former {
     this.attrs.quoteAssetsCodes = source.quoteAssets
     this.attrs.isWhitelisted = source.isWhitelisted
     this.attrs.saleLogo = source.logo
-    this.attrs.saleLogo.key = source.logoKey
     this.attrs.shortDescription = source.shortDescription
-    this.attrs.youtubeVideo = source.youtubeVideoId || ''
-    this.attrs.fullDescription = source.description || ''
+    this.attrs.youtubeVideo = source.youtubeVideoId
+    this.attrs.fullDescription = source.description
   }
 
   async buildOps () {
@@ -97,11 +91,11 @@ export class SaleFormer extends Former {
     )
 
     await createBalancesIfNotExist({
-      balanceAssets: this.attrs.assets.map(asset => asset.code),
+      balanceAssets: this.attrs.balancesAssetsCodes,
       quoteAssets: this.attrs.quoteAssetsCodes,
       accountId: this.attrs.creatorAccountId,
     })
-    this.attrs.assetPairs = await this._loadAssetsPairsByQuote(
+    this.attrs.assetPairs = await loadAssetsPairsByQuote(
       this.attrs.capAssetCode
     )
 
@@ -168,31 +162,6 @@ export class SaleFormer extends Former {
       }
     } else {
       result = basePrice
-    }
-
-    return result
-  }
-
-  async _loadAssetsPairsByQuote (quoteAssetCode) {
-    let result = await api.get('/v3/asset_pairs', {
-      filter: { quote_asset: quoteAssetCode },
-      page: { limit: 100 },
-    })
-    result = await loadAllResponsePages(result)
-    return result.map(item => new AssetPairRecord(item))
-  }
-
-  async loadBaseAssetsByQuote (quoteAssetCode) {
-    let result
-
-    try {
-      let assetPairs = await this._loadAssetsPairsByQuote(quoteAssetCode)
-      result = assetPairs.map(a => a.baseAssetCode)
-        .map(item => store.getters.assetByCode(item))
-        .filter(item => item.isBaseAsset)
-    } catch (e) {
-      result = []
-      ErrorHandler.processWithoutFeedback(e)
     }
 
     return result

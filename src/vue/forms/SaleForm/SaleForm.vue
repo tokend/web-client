@@ -128,9 +128,9 @@ export default {
 
   async created () {
     try {
-      let assets = await this.balancesAssets
+      let balancesAssets = await this.balancesAssets
 
-      this.former.setAttr('assets', assets)
+      this.former.setAttr('balancesAssetsCodes', balancesAssets.map(asset => asset.code))
       this.former.setAttr('creatorAccountId', this.accountId)
       this.former.setAttr('requestId', this.requestId)
 
