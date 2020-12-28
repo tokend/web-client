@@ -11,17 +11,14 @@
             v-if="currentStep === STEPS.information.number"
             :request="request"
             :former="former"
-            :base-assets="baseAssets"
-            :owned-assets="ownedAssets"
-            :default-quote-asset="defaultQuoteAsset"
-            @next="setInformationStepForm($event) || moveToNextStep()"
+            @next="moveToNextStep()"
           />
 
           <short-blurb-step-form
             v-if="currentStep === STEPS.shortBlurb.number"
             :request="request"
             :former="former"
-            @next="setShortBlurbStepForm($event) || moveToNextStep()"
+            @next="moveToNextStep()"
           />
 
           <full-description-step-form
@@ -29,7 +26,7 @@
             :request="request"
             :former="former"
             :is-disabled.sync="isDisabled"
-            @submit="setFullDescriptionStepForm($event) || submit()"
+            @submit="submit()"
           />
         </keep-alive>
       </form-stepper>
@@ -112,9 +109,6 @@ export default {
 
   data: _ => ({
     request: null,
-    informationStepForm: {},
-    shortBlurbStepForm: {},
-    fullDescriptionStepForm: {},
     isLoaded: false,
     isLoadFailed: false,
     isDisabled: false,
@@ -129,8 +123,6 @@ export default {
     ...mapGetters({
       balancesAssets: vuexTypes.balancesAssets,
       ownedAssets: vuexTypes.ownedAssets,
-      defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
-      baseAssets: vuexTypes.fiatAssets,
     }),
   },
 
@@ -176,18 +168,6 @@ export default {
       if (this.$el.parentElement) {
         this.$el.parentElement.scrollTop = 0
       }
-    },
-
-    setInformationStepForm (value) {
-      this.informationStepForm = value
-    },
-
-    setShortBlurbStepForm (value) {
-      this.shortBlurbStepForm = value
-    },
-
-    setFullDescriptionStepForm (value) {
-      this.fullDescriptionStepForm = value
     },
 
     async submit () {

@@ -290,9 +290,6 @@ export default {
   mixins: [FormMixin],
   props: {
     request: { type: CreateSaleRequest, default: null },
-    ownedAssets: { type: Array, default: _ => [] },
-    baseAssets: { type: Array, default: _ => [] },
-    defaultQuoteAsset: { type: String, default: '' },
     former: { type: SaleFormer, required: true },
   },
 
@@ -396,7 +393,8 @@ export default {
       ]
     },
     ...mapGetters({
-      loadAssets: vuexTypes.balancesAssets,
+      ownedAssets: vuexTypes.ownedAssets,
+      baseAssets: vuexTypes.fiatAssets,
     }),
   },
 
