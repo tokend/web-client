@@ -106,8 +106,8 @@ export default {
   data () {
     return {
       form: {
-        youtubeVideo: this.former.attrs.youtubeVideo || '',
-        description: this.former.attrs.fullDescription || '',
+        youtubeVideo: this.former.attrs.youtubeVideo,
+        description: this.former.attrs.fullDescription,
       },
       DESCRIPTION_MAX_LENGTH,
     }

@@ -1,7 +1,7 @@
 import { BLOB_TYPES } from '@tokend/js-sdk'
 import { api, base } from '@/api'
 
-export async function createSaleDescriptionBlob (description, accountId) {
+export async function createSaleDescriptionBlobId (description, accountId) {
   const { data: blob } = await api.postWithSignature('/blobs', {
     data: {
       type: BLOB_TYPES.saleOverview,

@@ -127,7 +127,7 @@ export default {
       vuexTypes.accountId,
     ]),
     ...mapGetters({
-      loadAssets: vuexTypes.balancesAssets,
+      balancesAssets: vuexTypes.balancesAssets,
       ownedAssets: vuexTypes.ownedAssets,
       defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
       baseAssets: vuexTypes.fiatAssets,
@@ -136,7 +136,7 @@ export default {
 
   async created () {
     try {
-      let assets = await this.loadAssets
+      let assets = await this.balancesAssets
 
       this.former.setAttr('assets', assets)
       this.former.setAttr('creatorAccountId', this.accountId)

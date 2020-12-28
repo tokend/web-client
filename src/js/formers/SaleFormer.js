@@ -4,7 +4,7 @@ import { Document, base, SALE_TYPES } from '@tokend/js-sdk'
 import { DateUtil, MathUtil } from '@/js/utils'
 
 import {
-  createSaleDescriptionBlob,
+  createSaleDescriptionBlobId,
   createBalancesIfNotExist,
 } from '@/js/helpers/sale-helper'
 import { api } from '@/api'
@@ -32,7 +32,7 @@ export class SaleFormer extends Former {
       softCap: '',
       hardCap: '',
       assetsToSell: '',
-      quoteAssets: [],
+      quoteAssetsCodes: [],
       isWhitelisted: false,
       saleLogo: new Document(),
       shortDescription: '',
@@ -76,7 +76,7 @@ export class SaleFormer extends Former {
     this.attrs.softCap = source.softCap
     this.attrs.hardCap = source.hardCap
     this.attrs.assetsToSell = source.baseAssetForHardCap
-    this.attrs.quoteAssets = source.quoteAssets
+    this.attrs.quoteAssetsCodes = source.quoteAssets
     this.attrs.isWhitelisted = source.isWhitelisted
     this.attrs.saleLogo = source.logo
     this.attrs.saleLogo.key = source.logoKey
@@ -91,14 +91,14 @@ export class SaleFormer extends Former {
   }
 
   async _buildOp () {
-    this.attrs.saleDescriptionBlobId = await createSaleDescriptionBlob(
+    this.attrs.saleDescriptionBlobId = await createSaleDescriptionBlobId(
       this.attrs.fullDescription,
       this.attrs.creatorAccountId
     )
 
     await createBalancesIfNotExist({
       balanceAssets: this.attrs.assets.map(asset => asset.code),
-      quoteAssets: this.attrs.quoteAssets,
+      quoteAssets: this.attrs.quoteAssetsCodes,
       accountId: this.attrs.creatorAccountId,
     })
     this.attrs.assetPairs = await this._loadAssetsPairsByQuote(
@@ -139,34 +139,35 @@ export class SaleFormer extends Former {
   }
 
   _getQuoteAssets () {
-    const basePrise = MathUtil.divide(
+    const basePrice = MathUtil.divide(
       this.attrs.hardCap,
       this.attrs.assetsToSell
     )
 
-    let a = this.attrs.quoteAssets.map((item) => ({
+    let assetPairs = this.attrs.quoteAssetsCodes.map((item) => ({
       asset: item,
-      price: this._getPrice(item, basePrise),
+      price: this._getPrice(item, basePrice),
     }))
-    return a
+
+    return assetPairs
   }
 
-  _getPrice (assetCode, basePrise) {
+  _getPrice (assetCode, basePrice) {
     let result
 
-    const capAsset = this.attrs.capAssetCode
-    if (capAsset !== assetCode) {
+    const capAssetCode = this.attrs.capAssetCode
+    if (capAssetCode !== assetCode) {
       if (this.attrs.saleType === SALE_TYPES.immediate) {
         let assetPair = this.attrs.assetPairs.filter(item =>
-          item.baseAndQuote === `${assetCode}/${capAsset}`
+          item.baseAndQuote === `${assetCode}/${capAssetCode}`
         )
-        result = MathUtil.divide(basePrise, assetPair[0].price)
+        result = MathUtil.divide(basePrice, assetPair[0].price)
       } else {
         const defaultQuoteAssetPrice = '1'
         result = defaultQuoteAssetPrice
       }
     } else {
-      result = basePrise
+      result = basePrice
     }
 
     return result

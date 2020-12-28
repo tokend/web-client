@@ -74,8 +74,8 @@ export default {
   data () {
     return {
       form: {
-        saleLogo: this.former.attrs.saleLogo || new Document(),
-        shortDescription: this.former.attrs.shortDescription || '',
+        saleLogo: this.former.attrs.saleLogo,
+        shortDescription: this.former.attrs.shortDescription,
       },
       DOCUMENT_TYPES,
       DESCRIPTION_MAX_LENGTH,

@@ -292,24 +292,24 @@ export default {
     request: { type: CreateSaleRequest, default: null },
     ownedAssets: { type: Array, default: _ => [] },
     baseAssets: { type: Array, default: _ => [] },
-    defaultQuoteAsset: { type: String, default: _ => [] },
+    defaultQuoteAsset: { type: String, default: '' },
     former: { type: SaleFormer, required: true },
   },
 
   data () {
     return {
       form: {
-        type: this.former.attrs.saleType || '',
-        name: this.former.attrs.saleName || '',
-        baseAsset: this.former.attrs.baseAssetCode || {},
-        capAsset: this.former.attrs.capAssetCode || {},
-        startTime: this.former.attrs.startTime || '',
-        endTime: this.former.attrs.endTime || '',
-        softCap: this.former.attrs.softCap || '',
-        hardCap: this.former.attrs.hardCap || '',
-        assetsToSell: this.former.attrs.assetsToSell || '',
-        quoteAssets: this.former.attrs.quoteAssets || [],
-        isWhitelisted: this.former.attrs.isWhitelisted || false,
+        type: this.former.attrs.saleType,
+        name: this.former.attrs.saleName,
+        baseAsset: this.former.attrs.baseAssetCode,
+        capAsset: this.former.attrs.capAssetCode,
+        startTime: this.former.attrs.startTime,
+        endTime: this.former.attrs.endTime,
+        softCap: this.former.attrs.softCap,
+        hardCap: this.former.attrs.hardCap,
+        assetsToSell: this.former.attrs.assetsToSell,
+        quoteAssets: this.former.attrs.quoteAssetsCodes,
+        isWhitelisted: this.former.attrs.isWhitelisted,
       },
       isQuoteAssetsLoaded: false,
       availableQuoteAssets: [],
@@ -426,7 +426,7 @@ export default {
       this.form.softCap = this.former.attrs.softCap
       this.form.hardCap = this.former.attrs.hardCap
       this.form.assetsToSell = this.former.attrs.assetsToSell
-      this.form.quoteAssets = this.former.attrs.quoteAssets
+      this.form.quoteAssets = this.former.attrs.quoteAssetsCodes
       this.form.isWhitelisted = this.former.attrs.isWhitelisted
     } else {
       this.form.type = this.localizedSaleTypes[0].value
@@ -442,7 +442,7 @@ export default {
   methods: {
     next () {
       if (!this.isFormValid()) return
-      this.former.setAttr('quoteAssets', this.form.quoteAssets)
+      this.former.setAttr('quoteAssetsCodes', this.form.quoteAssets)
       this.$emit('next', this.former.attrs)
     },
     setBaseAssetByCode (code) {
