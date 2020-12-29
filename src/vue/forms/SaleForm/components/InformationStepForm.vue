@@ -269,8 +269,9 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import { MathUtil } from '@/js/utils'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 import { SaleFormer } from '@/js/formers/SaleFormer'
-import { loadBaseAssetsByQuote } from '@/js/helpers/sale-helper'
+import { loadAssetsPairsByQuote } from '@/js/helpers/sale-helper'
 
 import {
   required,
@@ -396,6 +397,7 @@ export default {
     ...mapGetters({
       ownedAssets: vuexTypes.ownedAssets,
       baseAssets: vuexTypes.fiatAssets,
+      assetByCode: vuexTypes.assetByCode,
     }),
   },
 
@@ -405,7 +407,7 @@ export default {
         this.isQuoteAssetsLoaded = false
         this.form.quoteAssets = []
       }
-      const quoteAssets = await loadBaseAssetsByQuote(value)
+      const quoteAssets = await this.loadBaseAssetsByQuote(value)
       this.availableQuoteAssets = [this.form.capAsset, ...quoteAssets]
       this.isQuoteAssetsLoaded = true
     },
@@ -461,6 +463,23 @@ export default {
 
     getCurrentDate () {
       return moment().toISOString()
+    },
+
+    async loadBaseAssetsByQuote (quoteAssetCode) {
+      let result
+
+      try {
+        let assetPairs = await loadAssetsPairsByQuote(quoteAssetCode)
+
+        result = assetPairs.map(a => a.baseAssetCode)
+          .map(item => this.assetByCode(item))
+          .filter(item => item.isBaseAsset)
+      } catch (e) {
+        result = []
+        ErrorHandler.processWithoutFeedback(e)
+      }
+
+      return result
     },
   },
 }
