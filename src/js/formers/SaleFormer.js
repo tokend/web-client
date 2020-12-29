@@ -56,7 +56,6 @@ export class SaleFormer extends Former {
  * @param {Array} quoteAssets: assets accepted for investments
  * @param {Boolean} isWhitelisted: is whitelisted
  * @param {Object} logo: sale logo
- * @param {String} logoKey: sale logo key
  * @param {String} shortDescription: short sale description
  * @param {String} youtubeVideoId: youTube video id
  * @param {String} description: full sale description

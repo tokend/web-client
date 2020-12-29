@@ -174,7 +174,6 @@
             'form.softCap',
             { hardCap: form.hardCap || '0' }
           )"
-          :readonly="formMixin.isDisabled"
         />
       </div>
     </div>
@@ -198,7 +197,6 @@
             'form.hardCap',
             { softCap: form.softCap || '0' }
           )"
-          :readonly="formMixin.isDisabled"
         />
       </div>
     </div>
@@ -415,7 +413,6 @@ export default {
 
   created () {
     if (this.request) {
-      this.former.populate(this.request)
       this.form.name = this.former.attrs.saleName
       this.form.type = +this.former.attrs.saleType
       this.form.baseAsset = this.ownedAssets
