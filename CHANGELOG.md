@@ -24,6 +24,9 @@ for further information about branching and tagging conventions.
   - New `PollFormer`
   - New `SaleFormer`
   - New `InvestFormer`
+- New versions of packages: 
+  - lodash: 4.17.20
+  - resolve-url-loader: 3.1.2
 
 #### Fixed
 - A bug with `MarkdownField` length
