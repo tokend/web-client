@@ -9,21 +9,18 @@
         <keep-alive>
           <information-step-form
             v-if="currentStep === STEPS.information.number"
-            :request="request"
             :former="former"
             @next="moveToNextStep()"
           />
 
           <short-blurb-step-form
             v-if="currentStep === STEPS.shortBlurb.number"
-            :request="request"
             :former="former"
             @next="moveToNextStep()"
           />
 
           <full-description-step-form
             v-if="currentStep === STEPS.fullDescription.number"
-            :request="request"
             :former="former"
             :is-disabled.sync="isDisabled"
             @submit="submit()"
@@ -104,7 +101,6 @@ export default {
   },
 
   data: _ => ({
-    request: null,
     isLoaded: false,
     isLoadFailed: false,
     isDisabled: false,
@@ -160,7 +156,7 @@ export default {
     },
 
     emitSubmitEvents () {
-      if (this.former.attrs.requestId) {
+      if (this.former.attrs.requestId !== '0') {
         this.$emit(EVENTS.requestUpdated)
       }
       this.$emit(EVENTS.submitted)

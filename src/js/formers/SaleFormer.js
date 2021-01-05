@@ -17,7 +17,7 @@ export class SaleFormer extends Former {
 
   get _defaultAttrs () {
     return {
-      saleType: '',
+      saleType: 0,
       saleName: '',
       baseAssetCode: '',
       capAssetCode: '',
@@ -59,7 +59,6 @@ export class SaleFormer extends Former {
  * @param {String} description: full sale description
  */
   populate (source) {
-    // console.log('source', source,)
     this.attrs = this._defaultAttrs
     this.attrs.requestId = source.id
     this.attrs.saleType = source.saleType
@@ -76,8 +75,7 @@ export class SaleFormer extends Former {
     this.attrs.saleLogo = source.logo
     this.attrs.shortDescription = source.shortDescription
     this.attrs.youtubeVideo = source.youtubeVideoId
-    this.attrs.fullDescription = source.description
-    // console.log('done')
+    this.attrs.saleDescriptionBlobId = source.description
   }
 
   async buildOps () {
@@ -104,7 +102,7 @@ export class SaleFormer extends Former {
 
     return {
       requestID: this.attrs.requestId || '0',
-      saleEnumType: this.attrs.saleType,
+      saleEnumType: +this.attrs.saleType,
       saleType: '0',
       startTime: DateUtil.toTimestamp(this.attrs.startTime),
       endTime: DateUtil.toTimestamp(this.attrs.endTime),

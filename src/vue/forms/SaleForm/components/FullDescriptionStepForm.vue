@@ -40,11 +40,11 @@
           {{ 'create-sale-form.full-description-lbl' | globalize }}
         </span>
         <markdown-field
-          v-model="form.description"
-          @blur="touchField('form.description')"
-          @input="former.setAttr('fullDescription', form.description)"
+          v-model="form.fullDescription"
+          @blur="touchField('form.fullDescription')"
+          @input="former.setAttr('fullDescription', form.fullDescription)"
           :error-message="getFieldErrorMessage(
-            'form.description',
+            'form.fullDescription',
             { length: DESCRIPTION_MAX_LENGTH }
           )"
         />
@@ -65,7 +65,7 @@
         class="app__button-raised full-description-step-form__btn"
         :disabled="isDisabled"
       >
-        <template v-if="request">
+        <template v-if="former.attrs.requestId !== '0'">
           {{ 'create-sale-form.update-request-btn' | globalize }}
         </template>
 
@@ -80,7 +80,6 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { CreateSaleRequest } from '@/vue/modules/requests/create-sale-requests/wrappers/create-sale-request'
 import { SaleFormer } from '@/js/formers/SaleFormer'
 import { api } from '@/api'
 
@@ -98,7 +97,6 @@ export default {
   name: 'full-description-step-form',
   mixins: [FormMixin],
   props: {
-    request: { type: CreateSaleRequest, default: null },
     isDisabled: { type: Boolean, default: false },
     former: { type: SaleFormer, required: true },
   },
@@ -107,7 +105,7 @@ export default {
     return {
       form: {
         youtubeVideo: this.former.attrs.youtubeVideo,
-        description: this.former.attrs.fullDescription,
+        fullDescription: this.former.attrs.fullDescription,
       },
       DESCRIPTION_MAX_LENGTH,
     }
@@ -123,20 +121,20 @@ export default {
   },
 
   async created () {
-    if (this.request) {
+    if (this.former.attrs.requestId !== '0') {
       this.form.youtubeVideo = this.former.attrs.youtubeVideo
-      this.form.description = await this.getSaleDescription(
-        this.request.description,
-        this.accountId
+      this.form.fullDescription = await this.getSaleFullDescription(
+        this.former.attrs.saleDescriptionBlobId,
+        this.former.attrs.accountId
       )
-      this.former.setAttr('fullDescription', this.form.description)
+      this.former.setAttr('fullDescription', this.form.fullDescription)
     }
   },
 
   validations () {
     return {
       form: {
-        description: {
+        fullDescription: {
           maxLength: maxLength(DESCRIPTION_MAX_LENGTH),
         },
       },
@@ -144,11 +142,10 @@ export default {
   },
 
   methods: {
-    async getSaleDescription (blobId, accountId) {
+    async getSaleFullDescription (blobId, accountId) {
       try {
         const endpoint = `/accounts/${accountId}/blobs/${blobId}`
         const { data: blob } = await api.getWithSignature(endpoint)
-
         return JSON.parse(blob.value)
       } catch {
         return ''

@@ -261,7 +261,6 @@ import FormMixin from '@/vue/mixins/form.mixin'
 
 import moment from 'moment'
 
-import { CreateSaleRequest } from '@/vue/modules/requests/create-sale-requests/wrappers/create-sale-request'
 import { SALE_TYPES } from '@tokend/js-sdk'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -289,7 +288,6 @@ export default {
   name: 'information-step-form',
   mixins: [FormMixin],
   props: {
-    request: { type: CreateSaleRequest, default: null },
     former: { type: SaleFormer, required: true },
   },
 
@@ -412,13 +410,13 @@ export default {
   },
 
   created () {
-    if (this.request) {
+    if (this.former.attrs.requestId !== '0') {
       this.form.name = this.former.attrs.saleName
       this.form.type = +this.former.attrs.saleType
       this.form.baseAsset = this.ownedAssets
-        .find(item => item.code === this.request.baseAsset)
+        .find(item => item.code === this.former.attrs.baseAssetCode)
       this.form.capAsset = this.baseAssets
-        .find(item => item.code === this.request.defaultQuoteAsset)
+        .find(item => item.code === this.former.attrs.capAssetCode)
       this.form.startTime = this.former.attrs.startTime
       this.form.endTime = this.former.attrs.endTime
       this.form.softCap = this.former.attrs.softCap
@@ -441,7 +439,7 @@ export default {
     next () {
       if (!this.isFormValid()) return
       this.former.setAttr('quoteAssetsCodes', this.form.quoteAssets)
-      this.$emit('next', this.former.attrs)
+      this.$emit('next')
     },
     setBaseAssetByCode (code) {
       this.form.baseAsset = this.ownedAssets.find(item => item.code === code)

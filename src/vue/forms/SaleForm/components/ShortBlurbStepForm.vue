@@ -55,7 +55,6 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
-import { CreateSaleRequest } from '@/vue/modules/requests/create-sale-requests/wrappers/create-sale-request'
 
 import { required, maxLength, nonEmptyDocument } from '@validators'
 import { SaleFormer } from '@/js/formers/SaleFormer'
@@ -67,7 +66,6 @@ export default {
   name: 'short-blurb-step-form',
   mixins: [FormMixin],
   props: {
-    request: { type: CreateSaleRequest, default: null },
     former: { type: SaleFormer, required: true },
   },
 
@@ -98,7 +96,7 @@ export default {
   },
 
   created () {
-    if (this.request) {
+    if (this.former.attrs.requestId !== '0') {
       this.form.saleLogo = new Document(this.former.attrs.saleLogo)
       this.form.shortDescription = this.former.attrs.shortDescription
     }
@@ -107,7 +105,7 @@ export default {
   methods: {
     next () {
       if (!this.isFormValid()) return
-      this.$emit('next', this.former.attrs)
+      this.$emit('next')
     },
   },
 }
