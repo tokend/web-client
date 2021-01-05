@@ -4,7 +4,6 @@ import { DateUtil, MathUtil } from '@/js/utils'
 
 import {
   createSaleDescriptionBlobId,
-  createBalancesIfNotExist,
   loadAssetsPairsByQuote,
 } from '@/js/helpers/sale-helper'
 
@@ -35,8 +34,6 @@ export class SaleFormer extends Former {
       fullDescription: '',
       saleDescriptionBlobId: '',
       creatorAccountId: '',
-      balancesAssetsCodes: [],
-      assetPairs: '',
       requestId: '0',
     }
   }
@@ -44,6 +41,7 @@ export class SaleFormer extends Former {
   /**
  *
  * @param {Object} source
+ * @param {String} saleId: number of sale
  * @param {String} saleType: number of sale type
  * @param {String} name: sale name
  * @param {String} baseAsset: base asset code
@@ -61,7 +59,10 @@ export class SaleFormer extends Former {
  * @param {String} description: full sale description
  */
   populate (source) {
-    this.attrs.saleType = +source.saleType
+    // console.log('source', source,)
+    this.attrs = this._defaultAttrs
+    this.attrs.requestId = source.id
+    this.attrs.saleType = source.saleType
     this.attrs.saleName = source.name
     this.attrs.baseAssetCode = source.baseAsset
     this.attrs.capAssetCode = source.defaultQuoteAsset
@@ -76,6 +77,7 @@ export class SaleFormer extends Former {
     this.attrs.shortDescription = source.shortDescription
     this.attrs.youtubeVideo = source.youtubeVideoId
     this.attrs.fullDescription = source.description
+    // console.log('done')
   }
 
   async buildOps () {
@@ -89,27 +91,21 @@ export class SaleFormer extends Former {
       this.attrs.creatorAccountId
     )
 
-    await createBalancesIfNotExist({
-      balanceAssets: this.attrs.balancesAssetsCodes,
-      quoteAssets: this.attrs.quoteAssetsCodes,
-      accountId: this.attrs.creatorAccountId,
-    })
-    this.attrs.assetPairs = await loadAssetsPairsByQuote(
+    let assetPairs = await loadAssetsPairsByQuote(
       this.attrs.capAssetCode
     )
 
-    const opts = this._createSaleRequestOpts()
+    const opts = this._createSaleRequestOpts(assetPairs)
     return base.SaleRequestBuilder.createSaleCreationRequest(opts)
   }
 
-  _createSaleRequestOpts () {
+  _createSaleRequestOpts (assetPairs) {
     const saleLogo = this.attrs.saleLogo
-    const defaultSaleType = '0'
 
     return {
       requestID: this.attrs.requestId || '0',
       saleEnumType: this.attrs.saleType,
-      saleType: defaultSaleType,
+      saleType: '0',
       startTime: DateUtil.toTimestamp(this.attrs.startTime),
       endTime: DateUtil.toTimestamp(this.attrs.endTime),
       baseAsset: this.attrs.baseAssetCode,
@@ -117,7 +113,7 @@ export class SaleFormer extends Former {
       softCap: this.attrs.softCap,
       hardCap: this.attrs.hardCap,
       requiredBaseAssetForHardCap: this.attrs.assetsToSell,
-      quoteAssets: this._getQuoteAssets(),
+      quoteAssets: this._getQuoteAssets(assetPairs),
       creatorDetails: {
         name: this.attrs.saleName,
         short_description: this.attrs.shortDescription,
@@ -131,33 +127,32 @@ export class SaleFormer extends Former {
     }
   }
 
-  _getQuoteAssets () {
+  _getQuoteAssets (assetPairs) {
     const basePrice = MathUtil.divide(
       this.attrs.hardCap,
       this.attrs.assetsToSell
     )
 
-    let assetPairs = this.attrs.quoteAssetsCodes.map((item) => ({
+    let quoteAssetsCodesAndPrices = this.attrs.quoteAssetsCodes.map((item) => ({
       asset: item,
-      price: this._getPrice(item, basePrice),
+      price: this._getPrice(item, basePrice, assetPairs),
     }))
 
-    return assetPairs
+    return quoteAssetsCodesAndPrices
   }
 
-  _getPrice (assetCode, basePrice) {
+  _getPrice (assetCode, basePrice, assetPairs) {
     let result
 
     const capAssetCode = this.attrs.capAssetCode
     if (capAssetCode !== assetCode) {
       if (this.attrs.saleType === SALE_TYPES.immediate) {
-        let assetPair = this.attrs.assetPairs.filter(item =>
+        let assetPair = assetPairs.filter(item =>
           item.baseAndQuote === `${assetCode}/${capAssetCode}`
         )
         result = MathUtil.divide(basePrice, assetPair[0].price)
       } else {
-        const defaultQuoteAssetPrice = '1'
-        result = defaultQuoteAssetPrice
+        result = '1'
       }
     } else {
       result = basePrice

@@ -467,7 +467,6 @@ export default {
 
       try {
         let assetPairs = await loadAssetsPairsByQuote(quoteAssetCode)
-
         result = assetPairs.map(a => a.baseAssetCode)
           .map(item => this.assetByCode(item))
           .filter(item => item.isBaseAsset)

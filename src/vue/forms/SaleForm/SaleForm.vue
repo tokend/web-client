@@ -64,7 +64,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { SaleFormer } from '@/js/formers/SaleFormer'
-import { CreateSaleRequest } from '@/vue/modules/requests/create-sale-requests/wrappers/create-sale-request'
+import { createBalancesIfNotExist } from '@/js/helpers/sale-helper'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -100,10 +100,6 @@ export default {
     SkeletonLoaderStepForm,
   },
   props: {
-    requestId: {
-      type: String,
-      default: '',
-    },
     former: { type: SaleFormer, default: () => new SaleFormer() },
   },
 
@@ -128,13 +124,7 @@ export default {
 
   async created () {
     try {
-      let balancesAssets = await this.balancesAssets
-
-      this.former.setAttr('balancesAssetsCodes', balancesAssets.map(asset => asset.code))
       this.former.setAttr('creatorAccountId', this.accountId)
-      this.former.setAttr('requestId', this.requestId)
-
-      await this.tryLoadRequest()
       this.isLoaded = true
     } catch (e) {
       this.isLoadFailed = true
@@ -143,27 +133,6 @@ export default {
   },
 
   methods: {
-    async tryLoadRequest () {
-      if (this.requestId) {
-        this.request = await this.getCreateSaleRequestById(
-          this.requestId,
-          this.accountId
-        )
-        this.former.populate(this.request)
-      }
-    },
-
-    async getCreateSaleRequestById (id, accountId) {
-      const endpoint = `/v3/create_sale_requests/${id}`
-      const { data: record } = await api.getWithSignature(endpoint, {
-        filter: {
-          requestor: accountId,
-        },
-        include: ['request_details', 'request_details.default_quote_asset'],
-      })
-      return new CreateSaleRequest(record)
-    },
-
     moveToNextStep () {
       this.currentStep++
       if (this.$el.parentElement) {
@@ -174,6 +143,12 @@ export default {
     async submit () {
       this.isDisabled = true
       try {
+        await createBalancesIfNotExist({
+          balanceAssets: this.balancesAssets.map(asset => asset.code),
+          quoteAssets: this.former.attrs.quoteAssetsCodes,
+          accountId: this.accountId,
+        })
+
         const operation = await this.former.buildOps()
         await api.postOperations(...operation)
         Bus.success('create-sale-form.request-submitted-msg')
@@ -185,7 +160,7 @@ export default {
     },
 
     emitSubmitEvents () {
-      if (this.requestId) {
+      if (this.former.attrs.requestId) {
         this.$emit(EVENTS.requestUpdated)
       }
       this.$emit(EVENTS.submitted)

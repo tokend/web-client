@@ -156,7 +156,7 @@ export default {
     },
 
     submit () {
-      this.$emit(EVENTS.submit, this.former.attrs)
+      this.$emit(EVENTS.submit)
     },
 
     setConfirmationState () {

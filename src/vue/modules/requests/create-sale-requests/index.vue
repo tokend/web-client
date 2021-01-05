@@ -7,7 +7,7 @@
             {{ 'create-sale-requests.update-sale-title' | globalize }}
           </template>
           <sale-form
-            :request-id="selectedRequest.id"
+            :former="new SaleFormer(selectedRequest)"
             @submitted="isDrawerShown = false"
             @request-updated="emitUpdateList('createSaleRequests:updateList')"
           />
@@ -54,6 +54,7 @@ import RequestsTable from './components/requests-table'
 import RequestViewer from './components/request-viewer'
 
 import SaleForm from '@/vue/forms/SaleForm/SaleForm'
+import { SaleFormer } from '@/js/formers/SaleFormer'
 
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { types } from './store/types'
@@ -98,6 +99,7 @@ export default {
   },
 
   methods: {
+    SaleFormer,
     ...mapMutations('create-sale-requests', {
       setRequests: types.SET_REQUESTS,
       concatRequests: types.CONCAT_REQUESTS,
