@@ -3,7 +3,6 @@ import { calculateFees } from '@/js/helpers/fees-helper'
 import { getAssetBalanceId } from '@/js/helpers/trade-helper'
 import { FEE_TYPES, base } from '@tokend/js-sdk'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
-import { api } from '@/api'
 
 /**
  * Collects the attributes for trade operations
@@ -30,12 +29,6 @@ export class TradeFormer extends Former {
       }
     }
 
-    async buildOpsUpdate (offer) {
-      const cancelOperation = this.buildOpsCancel(offer)
-      const createOperation = await this.buildOpsCreate()
-      await api.postOperations(cancelOperation, createOperation)
-    }
-
     /**
      * @param {Object} offer
      * @param {String} offer.id - offer id
@@ -55,7 +48,12 @@ export class TradeFormer extends Former {
       return base.ManageOfferBuilder.cancelOffer(ops)
     }
 
-    async buildOpsCreate () {
+    async buildOpsCreate (offer) {
+      let operations = []
+      if (offer) {
+        operations.push(this.buildOpsCancel(offer))
+      }
+
       const ops = {
         amount: this.attrs.baseAmount,
         price: this.attrs.pricePerOneItem,
@@ -71,7 +69,9 @@ export class TradeFormer extends Former {
         ).id,
         fee: this.attrs.fees.totalFee.calculatedPercent,
       }
-      return base.ManageOfferBuilder.manageOffer(ops)
+      operations.push(base.ManageOfferBuilder.manageOffer(ops))
+
+      return operations
     }
 
     async calculateFees () {

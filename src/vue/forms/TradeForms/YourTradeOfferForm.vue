@@ -368,7 +368,8 @@ export default {
 
             break
           case SUBMIT_MODES.update:
-            await this.former.buildOpsUpdate(this.offer)
+            const operations = await this.former.buildOpsCreate(this.offer)
+            await api.postOperations(...operations)
             Bus.success('your-trade-offer-form.order-updated-msg')
             this.$emit(EVENTS.offerUpdated)
 

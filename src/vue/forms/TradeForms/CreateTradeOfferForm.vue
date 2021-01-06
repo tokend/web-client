@@ -347,7 +347,7 @@ export default {
         this.former.setAttr('accountBalances', this.accountBalances)
 
         const operation = await this.former.buildOpsCreate()
-        await api.postOperations(operation)
+        await api.postOperations(...operation)
         Bus.success('create-trade-offer-form.order-created-msg')
         this.$emit(EVENTS.offerCreated)
       } catch (e) {
