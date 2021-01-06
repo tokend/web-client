@@ -109,10 +109,8 @@ export default {
   }),
 
   computed: {
-    ...mapGetters([
-      vuexTypes.accountId,
-    ]),
     ...mapGetters({
+      accountId: vuexTypes.accountId,
       balancesAssets: vuexTypes.balancesAssets,
       ownedAssets: vuexTypes.ownedAssets,
     }),
@@ -156,7 +154,7 @@ export default {
     },
 
     emitSubmitEvents () {
-      if (this.former.attrs.requestId !== '0') {
+      if (+this.former.attrs.requestId) {
         this.$emit(EVENTS.requestUpdated)
       }
       this.$emit(EVENTS.submitted)

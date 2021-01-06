@@ -353,6 +353,12 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      ownedAssets: vuexTypes.ownedAssets,
+      baseAssets: vuexTypes.fiatAssets,
+      assetByCode: vuexTypes.assetByCode,
+    }),
+
     priceForAsset () {
       let value = MathUtil.divide(
         this.form.hardCap,
@@ -390,11 +396,6 @@ export default {
         },
       ]
     },
-    ...mapGetters({
-      ownedAssets: vuexTypes.ownedAssets,
-      baseAssets: vuexTypes.fiatAssets,
-      assetByCode: vuexTypes.assetByCode,
-    }),
   },
 
   watch: {
@@ -405,12 +406,17 @@ export default {
       }
       const quoteAssets = await this.loadBaseAssetsByQuote(value)
       this.availableQuoteAssets = [this.form.capAsset, ...quoteAssets]
+
+      const availableQuoteAssetsCodes =
+        this.availableQuoteAssets.map(item => item.code)
+      this.former.setAttr('quoteAssetsCodes', availableQuoteAssetsCodes)
+
       this.isQuoteAssetsLoaded = true
     },
   },
 
   created () {
-    if (this.former.attrs.requestId !== '0') {
+    if (+this.former.attrs.requestId) {
       this.form.name = this.former.attrs.saleName
       this.form.type = +this.former.attrs.saleType
       this.form.baseAsset = this.ownedAssets
@@ -438,22 +444,21 @@ export default {
   methods: {
     next () {
       if (!this.isFormValid()) return
-      this.former.setAttr('quoteAssetsCodes', this.form.quoteAssets)
       this.$emit('next')
     },
     setBaseAssetByCode (code) {
       this.form.baseAsset = this.ownedAssets.find(item => item.code === code)
-      this.former.setAttr('baseAssetCode', this.form.baseAsset.code)
+      this.former.setAttr('baseAssetCode', code)
     },
 
     setSaleType (type) {
       this.form.type = +type
-      this.former.setAttr('saleType', this.form.type)
+      this.former.setAttr('saleType', +type)
     },
 
     setCapAssetByCode (code) {
       this.form.capAsset = this.baseAssets.find(item => item.code === code)
-      this.former.setAttr('capAssetCode', this.form.capAsset.code)
+      this.former.setAttr('capAssetCode', code)
     },
 
     getCurrentDate () {

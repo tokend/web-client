@@ -96,7 +96,7 @@ export default {
   },
 
   created () {
-    if (this.former.attrs.requestId !== '0') {
+    if (+this.former.attrs.requestId) {
       this.form.saleLogo = new Document(this.former.attrs.saleLogo)
       this.form.shortDescription = this.former.attrs.shortDescription
     }

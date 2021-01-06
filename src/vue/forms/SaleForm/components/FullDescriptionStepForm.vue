@@ -65,7 +65,7 @@
         class="app__button-raised full-description-step-form__btn"
         :disabled="isDisabled"
       >
-        <template v-if="former.attrs.requestId !== '0'">
+        <template v-if="+former.attrs.requestId">
           {{ 'create-sale-form.update-request-btn' | globalize }}
         </template>
 
@@ -121,7 +121,7 @@ export default {
   },
 
   async created () {
-    if (this.former.attrs.requestId !== '0') {
+    if (+this.former.attrs.requestId) {
       this.form.youtubeVideo = this.former.attrs.youtubeVideo
       this.form.fullDescription = await this.getSaleFullDescription(
         this.former.attrs.saleDescriptionBlobId,
