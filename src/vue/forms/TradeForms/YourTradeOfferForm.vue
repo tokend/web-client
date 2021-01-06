@@ -7,7 +7,7 @@
       <div class="app__form-field">
         <readonly-field
           :label="baseAssetLabelTranslationId | globalize"
-          :value="offer.baseAsset.id"
+          :value="former.attrs.pair.baseAsset.code"
         />
       </div>
     </div>
@@ -24,8 +24,8 @@
           @change="former.setAttr('pricePerOneItem', form.price)"
           :label="
             'your-trade-offer-form.price-lbl' | globalize({
-              baseAsset: assetPair.base,
-              quoteAsset: assetPair.quote,
+              baseAsset: former.attrs.pair.baseAsset.code,
+              quoteAsset: former.attrs.pair.quoteAsset.code,
             })
           "
           :error-message="getFieldErrorMessage(
@@ -52,7 +52,7 @@
           :step="config.MIN_AMOUNT"
           @change="former.setAttr('baseAmount', form.baseAmount)"
           :label="'your-trade-offer-form.base-amount-lbl' | globalize({
-            asset: offer.baseAsset.id
+            asset: former.attrs.pair.baseAsset.code
           })"
           :error-message="getFieldErrorMessage(
             'form.baseAmount',
@@ -74,12 +74,12 @@
           <readonly-field
             :label="
               'your-trade-offer-form.total-amount-lbl' | globalize({
-                asset: assetPair.quote
+                asset: former.attrs.pair.quoteAsset.code
               })
             "
             :value="{
               value: quoteAmount,
-              currency: assetPair.quote,
+              currency: former.attrs.pair.quoteAsset.code,
             } | formatMoney"
             :error-message="getFieldErrorMessage(
               'quoteAmount',
@@ -192,7 +192,6 @@ export default {
   ],
 
   props: {
-    assetPair: { type: Object, required: true },
     offer: { type: Object, required: true },
     former: { type: TradeFormer, default: () => new TradeFormer() },
   },
@@ -252,7 +251,7 @@ export default {
     accountAssets () {
       return this.accountBalances
         .map(balance => balance.asset.code)
-        .filter(asset => asset !== this.assetPair.quote)
+        .filter(asset => asset !== this.former.attrs.pair.quoteAsset.code)
     },
 
     baseAssetBalance () {
@@ -270,7 +269,8 @@ export default {
 
     quoteAssetBalance () {
       const balanceItem = this.accountBalances
-        .find(balance => balance.asset.code === this.assetPair.quote)
+        .find(balance =>
+          balance.asset.code === this.former.attrs.pair.quoteAsset.code)
 
       if (balanceItem) {
         return this.offer.isBuy

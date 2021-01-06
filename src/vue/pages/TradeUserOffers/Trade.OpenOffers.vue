@@ -75,7 +75,6 @@
           </template>
         </template>
         <your-trade-offer-form
-          :asset-pair="assetPair"
           :offer="selectedOffer"
           @offer-canceled="closeDrawer"
           @offer-updated="closeDrawer"

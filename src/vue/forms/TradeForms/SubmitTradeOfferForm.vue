@@ -8,7 +8,7 @@
         <div class="app__form-field">
           <readonly-field
             :label="baseAssetLabelTranslationId | globalize"
-            :value="offer.baseAsset.id"
+            :value="former.attrs.pair.baseAsset.code"
           />
         </div>
       </div>
@@ -26,8 +26,8 @@
           @change="former.setAttr('pricePerOneItem', form.price)"
           :label="
             'submit-trade-offer-form.price-lbl' | globalize({
-              baseAsset: assetPair.base,
-              quoteAsset: assetPair.quote,
+              baseAsset: former.attrs.pair.baseAsset.code,
+              quoteAsset: former.attrs.pair.quoteAsset.code,
             })
           "
           :error-message="getFieldErrorMessage(
@@ -54,7 +54,7 @@
           :step="config.MIN_AMOUNT"
           @change="former.setAttr('baseAmount', form.baseAmount)"
           :label="'submit-trade-offer-form.base-amount-lbl' | globalize({
-            asset: assetPair.base
+            asset: former.attrs.pair.baseAsset.code
           })"
           :error-message="getFieldErrorMessage(
             'form.baseAmount',
@@ -76,17 +76,18 @@
           <readonly-field
             :label="
               'submit-trade-offer-form.total-amount-lbl' | globalize({
-                asset: assetPair.quote
+                asset: former.attrs.pair.quoteAsset.code
               })
             "
             :value="{
               value: quoteAmount,
-              currency: assetPair.quote,
+              currency: former.attrs.pair.quoteAsset.code,
             } | formatMoney"
             :error-message="getFieldErrorMessage(
               'quoteAmount',
               {
-                available: isBuy ? quoteAssetBalance : baseAssetBalance,
+                available: former.attrs.isBuy ?
+                  quoteAssetBalance : baseAssetBalance,
                 from: config.MIN_AMOUNT,
                 to: config.MAX_AMOUNT,
               }
@@ -122,7 +123,7 @@
           type="submit"
           :disabled="formMixin.isDisabled || !isFeesLoaded"
         >
-          <template v-if="isBuy">
+          <template v-if="former.attrs.isBuy">
             {{ 'submit-trade-offer-form.buy-btn' | globalize }}
           </template>
 
@@ -151,6 +152,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import { TradeFormer } from '@/js/formers/TradeFormer'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { createAssetPairBalancesIfNotExists } from '@/js/helpers/trade-helper'
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
 
@@ -183,9 +185,6 @@ export default {
   ],
 
   props: {
-    assetPair: { type: Object, required: true },
-    isBuy: { type: Boolean, default: false },
-    offer: { type: Object, required: true },
     former: { type: TradeFormer, default: () => new TradeFormer() },
   },
 
@@ -214,14 +213,14 @@ export default {
         baseAmount: {
           required,
           decimal,
-          noMoreThanAvailableOnBalance: this.isBuy ||
+          noMoreThanAvailableOnBalance: this.former.attrs.isBuy ||
             maxValueBig(this.baseAssetBalance),
           amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
         },
       },
 
       quoteAmount: {
-        noMoreThanAvailableOnBalance: !this.isBuy ||
+        noMoreThanAvailableOnBalance: !this.former.attrs.isBuy ||
           maxValueBig(this.quoteAssetBalance),
         amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
       },
@@ -234,20 +233,22 @@ export default {
       accountId: vuexTypes.accountId,
     }),
     baseAssetLabelTranslationId () {
-      return this.isBuy
+      return this.former.attrs.isBuy
         ? 'submit-trade-offer-form.asset-to-buy-lbl'
         : 'submit-trade-offer-form.asset-to-sell-lbl'
     },
 
     baseAssetBalance () {
       const balanceItem = this.accountBalances
-        .find(balance => balance.asset.code === this.assetPair.base)
+        .find(balance =>
+          balance.asset.code === this.former.attrs.pair.baseAsset.code)
       return balanceItem ? balanceItem.balance : ''
     },
 
     quoteAssetBalance () {
       const balanceItem = this.accountBalances
-        .find(balance => balance.asset.code === this.assetPair.quote)
+        .find(balance =>
+          balance.asset.code === this.former.attrs.pair.quoteAsset.code)
       return balanceItem ? balanceItem.balance : ''
     },
 
@@ -272,11 +273,12 @@ export default {
 
   async created () {
     try {
-      this.former.populate(this.offer)
       this.former.setAttr('creatorAccountId', this.accountId)
       this.former.setAttr('accountBalances', this.accountBalances)
 
-      this.populateForm()
+      this.form.price = this.former.attrs.pricePerOneItem
+      this.form.baseAmount = this.former.attrs.baseAmount
+
       await this.loadBalances()
       this.isLoaded = true
     } catch (e) {
@@ -288,10 +290,6 @@ export default {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
-    populateForm () {
-      this.form.price = this.former.attrs.pricePerOneItem
-      this.form.baseAmount = this.former.attrs.baseAmount
-    },
 
     tryLoadFees () {
       this.isFeesLoaded = false
@@ -321,6 +319,14 @@ export default {
     async submit () {
       this.isOfferSubmitting = true
       try {
+        await createAssetPairBalancesIfNotExists(
+          this.former.attrs.pair,
+          this.former.attrs.creatorAccountId,
+          this.former.attrs.accountBalances
+        )
+        await this.loadBalances()
+        this.former.setAttr('accountBalances', this.accountBalances)
+
         const operation = await this.former.buildOpsCreate()
         await api.postOperations(operation)
         Bus.success('submit-trade-offer-form.order-submitted-msg')

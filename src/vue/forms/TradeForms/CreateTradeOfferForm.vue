@@ -154,6 +154,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { createAssetPairBalancesIfNotExists } from '@/js/helpers/trade-helper'
 import { TradeFormer } from '@/js/formers/TradeFormer'
 
 import { MathUtil } from '@/js/utils/math.util'
@@ -239,6 +240,7 @@ export default {
     ...mapGetters({
       accountBalances: vuexTypes.accountBalances,
       accountId: vuexTypes.accountId,
+      assetByCode: vuexTypes.assetByCode,
     }),
 
     baseAssetLabelTranslationId () {
@@ -285,7 +287,7 @@ export default {
     },
 
     'form.asset' () {
-      this.former.setAttr('pair.base', this.form.asset)
+      this.former.setAttr('pair.baseAsset', this.assetByCode(this.form.asset))
       this.tryLoadFees()
     },
   },
@@ -295,7 +297,7 @@ export default {
       await this.loadBalances()
       this.setDefaultAsset()
       this.former.setAttr('isBuy', this.isBuy)
-      this.former.setAttr('pair.quote', this.assetPair.quote)
+      this.former.setAttr('pair.quoteAsset', this.assetByCode(this.assetPair.quote))
       this.former.setAttr('creatorAccountId', this.accountId)
       this.former.setAttr('accountBalances', this.accountBalances)
       this.isLoaded = true
@@ -336,6 +338,14 @@ export default {
     async submit () {
       this.isOfferCreating = true
       try {
+        await createAssetPairBalancesIfNotExists(
+          this.former.attrs.pair,
+          this.former.attrs.creatorAccountId,
+          this.former.attrs.accountBalances
+        )
+        await this.loadBalances()
+        this.former.setAttr('accountBalances', this.accountBalances)
+
         const operation = await this.former.buildOpsCreate()
         await api.postOperations(operation)
         Bus.success('create-trade-offer-form.order-created-msg')

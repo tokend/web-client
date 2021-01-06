@@ -1,5 +1,6 @@
 import { Former } from './Former'
 import { calculateFees } from '@/js/helpers/fees-helper'
+import { getAssetBalanceId } from '@/js/helpers/trade-helper'
 import { FEE_TYPES, base } from '@tokend/js-sdk'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 import { api } from '@/api'
@@ -16,8 +17,8 @@ export class TradeFormer extends Former {
         pricePerOneItem: '',
         isBuy: false,
         pair: {
-          base: '',
-          quote: '',
+          baseAsset: {},
+          quoteAsset: {},
         },
         baseAmount: '',
         quoteAmount: '',
@@ -55,53 +56,27 @@ export class TradeFormer extends Former {
     }
 
     async buildOpsCreate () {
-      await this.createAssetPairBalances()
-
       const ops = {
         amount: this.attrs.baseAmount,
         price: this.attrs.pricePerOneItem,
         orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
         isBuy: this.attrs.isBuy,
-        baseBalance: this.getAssetDetails(this.attrs.pair.base).id,
-        quoteBalance: this.getAssetDetails(this.attrs.pair.quote).id,
+        baseBalance: getAssetBalanceId(
+          this.attrs.pair.baseAsset.code,
+          this.attrs.accountBalances
+        ).id,
+        quoteBalance: getAssetBalanceId(
+          this.attrs.pair.quoteAsset.code,
+          this.attrs.accountBalances
+        ).id,
         fee: this.attrs.fees.totalFee.calculatedPercent,
       }
-
       return base.ManageOfferBuilder.manageOffer(ops)
-    }
-
-    /**
-     *
-     * @param {String} assetCode - asset code
-     * @returns {Object} Balance record
-     */
-    getAssetDetails (assetCode) {
-      return this.attrs.accountBalances.find(i => i.asset.code === assetCode)
-    }
-
-    async createAssetPairBalances () {
-      if (!this.getAssetDetails(this.attrs.pair.base)) {
-        const operation = base.Operation.manageBalance({
-          destination: this.attrs.creatorAccountId,
-          asset: this.attrs.pair.base,
-          action: base.xdr.ManageBalanceAction.createUnique(),
-        })
-        await api.postOperations(operation)
-      }
-
-      if (!this.getAssetDetails(this.attrs.pair.quote)) {
-        const operation = base.Operation.manageBalance({
-          destination: this.attrs.creatorAccountId,
-          asset: this.attrs.pair.quote,
-          action: base.xdr.ManageBalanceAction.createUnique(),
-        })
-        await api.postOperations(operation)
-      }
     }
 
     async calculateFees () {
       const response = await calculateFees({
-        assetCode: this.attrs.pair.quote,
+        assetCode: this.attrs.pair.quoteAsset.code,
         amount: this.attrs.quoteAmount || 0,
         senderAccountId: this.attrs.creatorAccountId,
         type: FEE_TYPES.offerFee,
@@ -110,6 +85,7 @@ export class TradeFormer extends Former {
 
       return response
     }
+
     /**
      *
      * @param {Object} source
@@ -123,14 +99,14 @@ export class TradeFormer extends Former {
      * @param {String} fee: fees
      */
     populate (source) {
-      this.attrs = this.attrs || this._defaultAttrs
+      this.attrs = this._defaultAttrs
 
-      this.attrs.pricePerOneItem = source.price || ''
-      this.attrs.baseAmount = source.baseAmount || ''
-      this.attrs.quoteAmount = source.quoteAmount || ''
-      this.attrs.pair.base = source.baseAsset.id || ''
-      this.attrs.pair.quote = source.quoteAsset.id || ''
-      this.attrs.isBuy = source.isBuy || false
-      this.attrs.fees.totalFee = source.fee || ''
+      this.attrs.pricePerOneItem = source.price
+      this.attrs.baseAmount = source.baseAmount
+      this.attrs.quoteAmount = source.quoteAmount
+      this.attrs.pair.baseAsset.code = source.baseAsset.id
+      this.attrs.pair.quoteAsset.code = source.quoteAsset.id
+      this.attrs.isBuy = source.isBuy
+      this.attrs.fees.totalFee = source.fee
     }
 }

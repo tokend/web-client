@@ -70,9 +70,7 @@
         </template>
       </template>
       <submit-trade-offer-form
-        :is-buy="!isBuy"
-        :asset-pair="assetPair"
-        :offer="selectedOffer"
+        :former="former"
         @offer-submitted="closeDrawer"
       />
     </drawer>
@@ -81,6 +79,7 @@
 
 <script>
 import SubmitTradeOfferForm from '@/vue/forms/TradeForms/SubmitTradeOfferForm'
+import { TradeFormer } from '@/js/formers/TradeFormer'
 
 import FormMixin from '@/vue/mixins/form.mixin'
 import Drawer from '@/vue/common/Drawer'
@@ -128,7 +127,7 @@ export default {
   },
   data: () => ({
     isSubmitOfferDrawerShown: false,
-    selectedOffer: {},
+    former: null,
   }),
   computed: {
     ...mapGetters([
@@ -151,7 +150,8 @@ export default {
   methods: {
     selectOffer (offer) {
       this.isSubmitOfferDrawerShown = true
-      this.selectedOffer = offer
+      this.former = new TradeFormer(offer)
+      this.former.attrs.isBuy = !this.isBuy
     },
     closeDrawer () {
       this.isSubmitOfferDrawerShown = false
