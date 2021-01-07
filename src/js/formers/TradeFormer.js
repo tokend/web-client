@@ -92,7 +92,6 @@ export class TradeFormer extends Former {
      * @param {String} price: price per one item
      * @param {String} baseAmount: base amount
      * @param {String} quoteAmount: quote amount
-     * @param {String} defaultQuoteAsset: cap asset code
      * @param {String} baseAsset.id: baset asset id
      * @param {String} quoteAsset.id: quote asset id
      * @param {Boolean} isBuy: is buy or not

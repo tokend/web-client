@@ -21,7 +21,6 @@
           :min="0"
           :max="config.MAX_AMOUNT"
           :step="config.MIN_AMOUNT"
-          @change="former.setAttr('pricePerOneItem', form.price)"
           :label="
             'your-trade-offer-form.price-lbl' | globalize({
               baseAsset: former.attrs.pair.baseAsset.code,
@@ -50,7 +49,6 @@
           :min="0"
           :max="config.MAX_AMOUNT"
           :step="config.MIN_AMOUNT"
-          @change="former.setAttr('baseAmount', form.baseAmount)"
           :label="'your-trade-offer-form.base-amount-lbl' | globalize({
             asset: former.attrs.pair.baseAsset.code
           })"
@@ -283,7 +281,9 @@ export default {
 
     quoteAmount () {
       if (this.form.price && this.form.baseAmount) {
-        return MathUtil.multiply(this.form.price, this.form.baseAmount)
+        let amount = MathUtil.multiply(this.form.price, this.form.baseAmount)
+        this.former.setAttr('quoteAmount', amount)
+        return amount
       } else {
         return ''
       }
@@ -292,10 +292,12 @@ export default {
 
   watch: {
     'form.baseAmount' () {
+      this.former.setAttr('baseAmount', this.form.baseAmount)
       this.tryLoadFees()
     },
 
     'form.price' () {
+      this.former.setAttr('pricePerOneItem', this.form.price)
       this.tryLoadFees()
     },
   },
@@ -338,7 +340,6 @@ export default {
 
     async loadFees () {
       try {
-        this.former.setAttr('quoteAmount', this.quoteAmount)
         this.fees = await this.former.calculateFees()
 
         this.isFeesLoaded = true
