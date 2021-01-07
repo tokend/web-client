@@ -72,7 +72,7 @@ export class SaleFormer extends Former {
     this.attrs.assetsToSell = source.baseAssetForHardCap
     this.attrs.quoteAssetsCodes = source.quoteAssets
     this.attrs.isWhitelisted = source.isWhitelisted
-    this.attrs.saleLogo = source.logo
+    this.attrs.saleLogo = new Document(source.logo)
     this.attrs.shortDescription = source.shortDescription
     this.attrs.youtubeVideo = source.youtubeVideoId
     this.attrs.saleDescriptionBlobId = source.description
@@ -116,7 +116,7 @@ export class SaleFormer extends Former {
         name: this.attrs.saleName,
         short_description: this.attrs.shortDescription,
         description: this.attrs.saleDescriptionBlobId,
-        logo: saleLogo || new Document(),
+        logo: new Document(saleLogo) || new Document(),
         youtube_video_id: this.attrs.youtubeVideo,
       },
       saleRules: [{

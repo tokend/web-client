@@ -52,7 +52,7 @@ import config from '@/config'
 
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
-import SaleForm from '@/vue/forms/SaleForm/SaleForm'
+import SaleForm from '@/vue/forms/SaleForm'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'

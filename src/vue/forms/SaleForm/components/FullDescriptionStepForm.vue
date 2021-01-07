@@ -81,7 +81,6 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import { SaleFormer } from '@/js/formers/SaleFormer'
-import { api } from '@/api'
 
 import {
   maxLength,
@@ -89,7 +88,7 @@ import {
 
 const DESCRIPTION_MAX_LENGTH = 8000
 const EVENTS = {
-  submit: 'submit',
+  next: 'next',
   updateIsDisabled: 'update:isDisabled',
 }
 
@@ -120,17 +119,6 @@ export default {
     },
   },
 
-  async created () {
-    if (+this.former.attrs.requestId) {
-      this.form.youtubeVideo = this.former.attrs.youtubeVideo
-      this.form.fullDescription = await this.getSaleFullDescription(
-        this.former.attrs.saleDescriptionBlobId,
-        this.former.attrs.accountId
-      )
-      this.former.setAttr('fullDescription', this.form.fullDescription)
-    }
-  },
-
   validations () {
     return {
       form: {
@@ -142,18 +130,8 @@ export default {
   },
 
   methods: {
-    async getSaleFullDescription (blobId, accountId) {
-      try {
-        const endpoint = `/accounts/${accountId}/blobs/${blobId}`
-        const { data: blob } = await api.getWithSignature(endpoint)
-        return JSON.parse(blob.value)
-      } catch {
-        return ''
-      }
-    },
-
     submit () {
-      this.$emit(EVENTS.submit)
+      this.$emit(EVENTS.next)
     },
 
     setConfirmationState () {

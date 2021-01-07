@@ -296,8 +296,8 @@ export default {
       form: {
         type: this.former.attrs.saleType,
         name: this.former.attrs.saleName,
-        baseAsset: this.former.attrs.baseAssetCode,
-        capAsset: this.former.attrs.capAssetCode,
+        baseAsset: {},
+        capAsset: {},
         startTime: this.former.attrs.startTime,
         endTime: this.former.attrs.endTime,
         softCap: this.former.attrs.softCap,
@@ -407,30 +407,16 @@ export default {
       const quoteAssets = await this.loadBaseAssetsByQuote(value)
       this.availableQuoteAssets = [this.form.capAsset, ...quoteAssets]
 
-      const availableQuoteAssetsCodes =
-        this.availableQuoteAssets.map(item => item.code)
-      this.former.setAttr('quoteAssetsCodes', availableQuoteAssetsCodes)
-
       this.isQuoteAssetsLoaded = true
+    },
+
+    'form.quoteAssets': function (value) {
+      this.former.setAttr('quoteAssetsCodes', value)
     },
   },
 
   created () {
-    if (+this.former.attrs.requestId) {
-      this.form.name = this.former.attrs.saleName
-      this.form.type = +this.former.attrs.saleType
-      this.form.baseAsset = this.ownedAssets
-        .find(item => item.code === this.former.attrs.baseAssetCode)
-      this.form.capAsset = this.baseAssets
-        .find(item => item.code === this.former.attrs.capAssetCode)
-      this.form.startTime = this.former.attrs.startTime
-      this.form.endTime = this.former.attrs.endTime
-      this.form.softCap = this.former.attrs.softCap
-      this.form.hardCap = this.former.attrs.hardCap
-      this.form.assetsToSell = this.former.attrs.assetsToSell
-      this.form.quoteAssets = this.former.attrs.quoteAssetsCodes
-      this.form.isWhitelisted = this.former.attrs.isWhitelisted
-    } else {
+    if (!+this.former.attrs.requestId) {
       this.form.type = this.localizedSaleTypes[0].value
       this.form.baseAsset = this.ownedAssets[0] || {}
       this.form.capAsset = this.baseAssets[0] || {}
@@ -438,13 +424,17 @@ export default {
       this.former.setAttr('saleType', this.form.type)
       this.former.setAttr('baseAssetCode', this.form.baseAsset.code)
       this.former.setAttr('capAssetCode', this.form.capAsset.code)
+    } else {
+      this.form.baseAsset = this.ownedAssets
+        .find(item => item.code === this.former.attrs.baseAssetCode)
+      this.form.capAsset = this.baseAssets
+        .find(item => item.code === this.former.attrs.capAssetCode)
     }
   },
 
   methods: {
     next () {
-      if (!this.isFormValid()) return
-      this.$emit('next')
+      if (this.isFormValid()) this.$emit('next')
     },
     setBaseAssetByCode (code) {
       this.form.baseAsset = this.ownedAssets.find(item => item.code === code)

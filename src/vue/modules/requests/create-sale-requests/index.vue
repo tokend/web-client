@@ -53,7 +53,7 @@ import CollectionLoader from '@/vue/common/CollectionLoader'
 import RequestsTable from './components/requests-table'
 import RequestViewer from './components/request-viewer'
 
-import SaleForm from '@/vue/forms/SaleForm/SaleForm'
+import SaleForm from '@/vue/forms/SaleForm'
 import { SaleFormer } from '@/js/formers/SaleFormer'
 
 import { mapGetters, mapMutations, mapActions } from 'vuex'

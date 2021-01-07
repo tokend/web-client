@@ -58,7 +58,6 @@ import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
 import { required, maxLength, nonEmptyDocument } from '@validators'
 import { SaleFormer } from '@/js/formers/SaleFormer'
-import { Document } from '@tokend/js-sdk'
 
 const DESCRIPTION_MAX_LENGTH = 255
 
@@ -95,17 +94,9 @@ export default {
     }
   },
 
-  created () {
-    if (+this.former.attrs.requestId) {
-      this.form.saleLogo = new Document(this.former.attrs.saleLogo)
-      this.form.shortDescription = this.former.attrs.shortDescription
-    }
-  },
-
   methods: {
     next () {
-      if (!this.isFormValid()) return
-      this.$emit('next')
+      if (this.isFormValid()) this.$emit('next')
     },
   },
 }

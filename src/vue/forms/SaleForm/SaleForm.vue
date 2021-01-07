@@ -23,7 +23,7 @@
             v-if="currentStep === STEPS.fullDescription.number"
             :former="former"
             :is-disabled.sync="isDisabled"
-            @submit="submit()"
+            @next="submit()"
           />
         </keep-alive>
       </form-stepper>
@@ -63,7 +63,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { SaleFormer } from '@/js/formers/SaleFormer'
 import { createBalancesIfNotExist } from '@/js/helpers/sale-helper'
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { api } from '@/api'
 
@@ -96,6 +96,7 @@ export default {
     FullDescriptionStepForm,
     SkeletonLoaderStepForm,
   },
+
   props: {
     former: { type: SaleFormer, default: () => new SaleFormer() },
   },
@@ -119,6 +120,19 @@ export default {
   async created () {
     try {
       this.former.setAttr('creatorAccountId', this.accountId)
+      if (this.former.attrs.saleDescriptionBlobId !== '') {
+        this.former.setAttr('fullDescription',
+          await this.getSaleFullDescription(
+            this.former.attrs.saleDescriptionBlobId,
+            this.former.attrs.creatorAccountId
+          )
+        )
+      }
+
+      await Promise.all([
+        this.loadBalances(),
+        this.loadAssets(),
+      ])
       this.isLoaded = true
     } catch (e) {
       this.isLoadFailed = true
@@ -127,10 +141,25 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+      loadAssets: vuexTypes.LOAD_ASSETS,
+    }),
+
     moveToNextStep () {
       this.currentStep++
       if (this.$el.parentElement) {
         this.$el.parentElement.scrollTop = 0
+      }
+    },
+
+    async getSaleFullDescription (blobId, accountId) {
+      try {
+        const endpoint = `/accounts/${accountId}/blobs/${blobId}`
+        const { data: blob } = await api.getWithSignature(endpoint)
+        return JSON.parse(blob.value)
+      } catch {
+        return ''
       }
     },
 
