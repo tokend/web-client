@@ -402,8 +402,15 @@ export default {
     'form.asset': async function () {
       try {
         this.former.setAttr('investedAssetCode', this.form.asset.code || '')
-        this.former.setAttr('quoteBalanceId', this.balances.find(item => item.asset.code === this.form.asset.code).id || '')
-        this.former.setAttr('saleQuoteAssetPrices', this.sale.quoteAssetPrices[this.form.asset.code] || '')
+        this.former.setAttr(
+          'quoteBalanceId',
+          this.balances
+            .find(item => item.asset.code === this.form.asset.code).id || ''
+        )
+        this.former.setAttr(
+          'saleQuoteAssetPrices',
+          this.sale.quoteAssetPrices[this.form.asset.code] || ''
+        )
         if (this.form.asset.code !== this.sale.defaultQuoteAsset) {
           await this.loadAssetPairPrice()
         }
@@ -438,7 +445,11 @@ export default {
         await this.loadBalances()
       }
 
-      this.former.setAttr('baseBalanceId', this.balances.find(item => item.asset.code === this.sale.baseAsset).id || '')
+      this.former.setAttr(
+        'baseBalanceId',
+        this.balances
+          .find(item => item.asset.code === this.sale.baseAsset).id|| ''
+      )
 
       await this.loadCurrentInvestment()
       this.isLoaded = true
