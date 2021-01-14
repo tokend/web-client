@@ -27,6 +27,9 @@ for further information about branching and tagging conventions.
 - New versions of packages: 
   - lodash: 4.17.20
   - resolve-url-loader: 3.1.2
+- New positions of forms: 
+  - DepositForm
+  - SaleForm
 
 #### Fixed
 - A bug with `MarkdownField` length
