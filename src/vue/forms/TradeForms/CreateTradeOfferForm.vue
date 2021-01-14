@@ -238,7 +238,6 @@ export default {
     ...mapGetters({
       accountBalances: vuexTypes.accountBalances,
       accountId: vuexTypes.accountId,
-      assetByCode: vuexTypes.assetByCode,
     }),
 
     baseAssetLabelTranslationId () {
@@ -268,9 +267,9 @@ export default {
 
     quoteAmount () {
       if (this.form.price && this.form.amount) {
-        let amount = MathUtil.multiply(this.form.price, this.form.amount)
-        this.former.setAttr('quoteAmount', amount)
-        return amount
+        let quoteAmount = MathUtil.multiply(this.form.price, this.form.amount)
+        this.former.setAttr('quoteAmount', quoteAmount)
+        return quoteAmount
       } else {
         return ''
       }
@@ -289,7 +288,7 @@ export default {
     },
 
     'form.asset' () {
-      this.former.setAttr('pair.baseAsset', this.assetByCode(this.form.asset))
+      this.former.setAttr('pair.baseAssetCode', this.form.asset)
       this.tryLoadFees()
     },
   },
@@ -299,7 +298,7 @@ export default {
       await this.loadBalances()
       this.setDefaultAsset()
       this.former.setAttr('isBuy', this.isBuy)
-      this.former.setAttr('pair.quoteAsset', this.assetByCode(this.assetPair.quote))
+      this.former.setAttr('pair.quoteAssetCode', this.assetPair.quote)
       this.former.setAttr('creatorAccountId', this.accountId)
       this.former.setAttr('accountBalances', this.accountBalances)
       this.isLoaded = true
@@ -328,7 +327,6 @@ export default {
     async loadFees () {
       try {
         this.fees = await this.former.calculateFees()
-
         this.isFeesLoaded = true
       } catch (e) {
         this.isFeesLoadFailed = true

@@ -8,7 +8,7 @@
         <div class="app__form-field">
           <readonly-field
             :label="baseAssetLabelTranslationId | globalize"
-            :value="former.attrs.pair.baseAsset.code"
+            :value="former.attrs.pair.baseAssetCode"
           />
         </div>
       </div>
@@ -25,8 +25,8 @@
           :step="config.MIN_AMOUNT"
           :label="
             'submit-trade-offer-form.price-lbl' | globalize({
-              baseAsset: former.attrs.pair.baseAsset.code,
-              quoteAsset: former.attrs.pair.quoteAsset.code,
+              baseAsset: former.attrs.pair.baseAssetCode,
+              quoteAsset: former.attrs.pair.quoteAssetCode,
             })
           "
           :error-message="getFieldErrorMessage(
@@ -52,7 +52,7 @@
           :max="config.MAX_AMOUNT"
           :step="config.MIN_AMOUNT"
           :label="'submit-trade-offer-form.base-amount-lbl' | globalize({
-            asset: former.attrs.pair.baseAsset.code
+            asset: former.attrs.pair.baseAssetCode
           })"
           :error-message="getFieldErrorMessage(
             'form.baseAmount',
@@ -74,12 +74,12 @@
           <readonly-field
             :label="
               'submit-trade-offer-form.total-amount-lbl' | globalize({
-                asset: former.attrs.pair.quoteAsset.code
+                asset: former.attrs.pair.quoteAssetCode
               })
             "
             :value="{
               value: quoteAmount,
-              currency: former.attrs.pair.quoteAsset.code,
+              currency: former.attrs.pair.quoteAssetCode,
             } | formatMoney"
             :error-message="getFieldErrorMessage(
               'quoteAmount',
@@ -239,14 +239,14 @@ export default {
     baseAssetBalance () {
       const balanceItem = this.accountBalances
         .find(balance =>
-          balance.asset.code === this.former.attrs.pair.baseAsset.code)
+          balance.asset.code === this.former.attrs.pair.baseAssetCode)
       return balanceItem ? balanceItem.balance : ''
     },
 
     quoteAssetBalance () {
       const balanceItem = this.accountBalances
         .find(balance =>
-          balance.asset.code === this.former.attrs.pair.quoteAsset.code)
+          balance.asset.code === this.former.attrs.pair.quoteAssetCode)
       return balanceItem ? balanceItem.balance : ''
     },
 

@@ -3,19 +3,19 @@ import { base } from '@tokend/js-sdk'
 
 // eslint-disable-next-line max-len
 export async function createAssetPairBalancesIfNotExists (pair, creatorAccountId, accountBalances) {
-  if (!getAssetBalanceId(pair.baseAsset.code, accountBalances)) {
+  if (!getAssetBalanceId(pair.baseAssetCode, accountBalances)) {
     const operation = base.Operation.manageBalance({
       destination: creatorAccountId,
-      asset: pair.baseAsset.code,
+      asset: pair.baseAssetCode,
       action: base.xdr.ManageBalanceAction.createUnique(),
     })
     await api.postOperations(operation)
   }
 
-  if (!getAssetBalanceId(pair.quoteAsset.code, accountBalances)) {
+  if (!getAssetBalanceId(pair.quoteAssetCode, accountBalances)) {
     const operation = base.Operation.manageBalance({
       destination: creatorAccountId,
-      asset: pair.quoteAsset.code,
+      asset: pair.quoteAssetCode,
       action: base.xdr.ManageBalanceAction.createUnique(),
     })
     await api.postOperations(operation)

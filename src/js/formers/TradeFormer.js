@@ -16,14 +16,14 @@ export class TradeFormer extends Former {
         pricePerOneItem: '',
         isBuy: false,
         pair: {
-          baseAsset: {},
-          quoteAsset: {},
+          baseAssetCode: '',
+          quoteAssetCode: '',
         },
         baseAmount: '',
         quoteAmount: '',
         creatorAccountId: '',
         fees: {
-          totalFee: '',
+          totalFee: {},
         },
         accountBalances: [],
       }
@@ -60,11 +60,11 @@ export class TradeFormer extends Former {
         orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
         isBuy: this.attrs.isBuy,
         baseBalance: getAssetBalanceId(
-          this.attrs.pair.baseAsset.code,
+          this.attrs.pair.baseAssetCode,
           this.attrs.accountBalances
         ).id,
         quoteBalance: getAssetBalanceId(
-          this.attrs.pair.quoteAsset.code,
+          this.attrs.pair.quoteAssetCode,
           this.attrs.accountBalances
         ).id,
         fee: this.attrs.fees.totalFee.calculatedPercent,
@@ -76,7 +76,7 @@ export class TradeFormer extends Former {
 
     async calculateFees () {
       const response = await calculateFees({
-        assetCode: this.attrs.pair.quoteAsset.code,
+        assetCode: this.attrs.pair.quoteAssetCode,
         amount: this.attrs.quoteAmount || 0,
         senderAccountId: this.attrs.creatorAccountId,
         type: FEE_TYPES.offerFee,
@@ -103,8 +103,8 @@ export class TradeFormer extends Former {
       this.attrs.pricePerOneItem = source.price
       this.attrs.baseAmount = source.baseAmount
       this.attrs.quoteAmount = source.quoteAmount
-      this.attrs.pair.baseAsset.code = source.baseAsset.id
-      this.attrs.pair.quoteAsset.code = source.quoteAsset.id
+      this.attrs.pair.baseAssetCode = source.baseAsset.id
+      this.attrs.pair.quoteAssetCode = source.quoteAsset.id
       this.attrs.isBuy = source.isBuy
       this.attrs.fees.totalFee = source.fee
     }
