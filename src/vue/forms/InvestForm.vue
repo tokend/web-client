@@ -448,7 +448,7 @@ export default {
       this.former.setAttr(
         'baseBalanceId',
         this.balances
-          .find(item => item.asset.code === this.sale.baseAsset).id|| ''
+          .find(item => item.asset.code === this.sale.baseAsset).id || ''
       )
 
       await this.loadCurrentInvestment()
