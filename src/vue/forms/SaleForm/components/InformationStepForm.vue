@@ -294,7 +294,7 @@ export default {
   data () {
     return {
       form: {
-        type: this.former.attrs.saleType,
+        type: '0',
         name: this.former.attrs.saleName,
         baseAsset: {},
         capAsset: {},
@@ -416,20 +416,20 @@ export default {
   },
 
   created () {
-    if (!+this.former.attrs.requestId) {
-      this.form.type = this.localizedSaleTypes[0].value
-      this.form.baseAsset = this.ownedAssets[0] || {}
-      this.form.capAsset = this.baseAssets[0] || {}
+    this.form.type = this.former.attrs.saleType ||
+      this.localizedSaleTypes[0].value
+    this.form.baseAsset = this.ownedAssets
+      .find(item => item.code === this.former.attrs.baseAssetCode) ||
+      this.ownedAssets[0] ||
+      {}
+    this.form.capAsset = this.baseAssets
+      .find(item => item.code === this.former.attrs.capAssetCode) ||
+      this.baseAssets[0] ||
+      {}
 
-      this.former.setAttr('saleType', this.form.type)
-      this.former.setAttr('baseAssetCode', this.form.baseAsset.code)
-      this.former.setAttr('capAssetCode', this.form.capAsset.code)
-    } else {
-      this.form.baseAsset = this.ownedAssets
-        .find(item => item.code === this.former.attrs.baseAssetCode)
-      this.form.capAsset = this.baseAssets
-        .find(item => item.code === this.former.attrs.capAssetCode)
-    }
+    this.former.setAttr('saleType', this.form.type)
+    this.former.setAttr('baseAssetCode', this.form.baseAsset.code)
+    this.former.setAttr('capAssetCode', this.form.capAsset.code)
   },
 
   methods: {
