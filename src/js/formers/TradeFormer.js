@@ -1,6 +1,5 @@
 import { Former } from './Former'
 import { calculateFees } from '@/js/helpers/fees-helper'
-import { getAssetBalanceId } from '@/js/helpers/trade-helper'
 import { FEE_TYPES, base } from '@tokend/js-sdk'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 
@@ -21,11 +20,12 @@ export class TradeFormer extends Former {
         },
         baseAmount: '',
         quoteAmount: '',
+        baseBalanceId: '',
+        quoteBalanceId: '',
         creatorAccountId: '',
         fees: {
           totalFee: {},
         },
-        accountBalances: [],
       }
     }
 
@@ -59,14 +59,8 @@ export class TradeFormer extends Former {
         price: this.attrs.pricePerOneItem,
         orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
         isBuy: this.attrs.isBuy,
-        baseBalance: getAssetBalanceId(
-          this.attrs.pair.baseAssetCode,
-          this.attrs.accountBalances
-        ).id,
-        quoteBalance: getAssetBalanceId(
-          this.attrs.pair.quoteAssetCode,
-          this.attrs.accountBalances
-        ).id,
+        baseBalance: this.attrs.baseBalanceId,
+        quoteBalance: this.attrs.quoteBalanceId,
         fee: this.attrs.fees.totalFee.calculatedPercent,
       }
       operations.push(base.ManageOfferBuilder.manageOffer(ops))

@@ -76,6 +76,7 @@
         </template>
         <your-trade-offer-form
           :offer="selectedOffer"
+          :former="former"
           @offer-canceled="closeDrawer"
           @offer-updated="closeDrawer"
         />
@@ -93,6 +94,7 @@ import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import { globalize } from '@/vue/filters/globalize'
 import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
+import { TradeFormer } from '@/js/formers/TradeFormer'
 
 const EVENTS = {
   reloadOffers: 'reload-offers',
@@ -118,12 +120,16 @@ export default {
   data: () => ({
     isSubmitOfferDrawerShown: false,
     selectedOffer: {},
+    former: null,
   }),
   methods: {
     globalize,
     selectOffer (offer) {
       this.isSubmitOfferDrawerShown = true
       this.selectedOffer = offer
+      this.former = new TradeFormer(offer)
+      this.former.setAttr('baseBalanceId', offer.baseBalance.id)
+      this.former.setAttr('quoteBalanceId', offer.quoteBalance.id)
     },
     closeDrawer () {
       this.isSubmitOfferDrawerShown = false

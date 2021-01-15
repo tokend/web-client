@@ -307,9 +307,7 @@ export default {
 
   async created () {
     try {
-      this.former.populate(this.offer)
       this.former.setAttr('creatorAccountId', this.accountId)
-      this.former.setAttr('accountBalances', this.accountBalances)
 
       this.form.baseAmount = this.former.attrs.baseAmount
       this.form.price = this.former.attrs.pricePerOneItem

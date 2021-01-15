@@ -150,7 +150,10 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import { TradeFormer } from '@/js/formers/TradeFormer'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { createAssetBalanceIfNotExists } from '@/js/helpers/trade-helper'
+import {
+  createAssetBalanceIfNotExists,
+  getAssetBalanceId,
+} from '@/js/helpers/trade-helper'
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
 
@@ -327,13 +330,27 @@ export default {
         )
 
         await createAssetBalanceIfNotExists(
-          this.former.attrs.pair.qouteAssetCode,
+          this.former.attrs.pair.quoteAssetCode,
           this.former.attrs.creatorAccountId,
           this.former.attrs.accountBalances
         )
 
         await this.loadBalances()
-        this.former.setAttr('accountBalances', this.accountBalances)
+
+        this.former.setAttr(
+          'baseBalanceId',
+          getAssetBalanceId(
+            this.former.attrs.pair.baseAssetCode,
+            this.accountBalances
+          ).id
+        )
+        this.former.setAttr(
+          'quoteBalanceId',
+          getAssetBalanceId(
+            this.former.attrs.pair.quoteAssetCode,
+            this.accountBalances
+          ).id
+        )
 
         const operation = await this.former.buildOpsCreate()
         await api.postOperations(...operation)
