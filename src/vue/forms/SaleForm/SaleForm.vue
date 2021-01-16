@@ -61,7 +61,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { SaleFormer } from '@/js/formers/SaleFormer'
-import { createBalancesIfNotExist } from '@/js/helpers/sale-helper'
+import { createBalanceIfNotExist } from '@/js/helpers/sale-helper'
 
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -166,11 +166,9 @@ export default {
     async submit () {
       this.isDisabled = true
       try {
-        await createBalancesIfNotExist({
-          balanceAssets: this.balancesAssets.map(asset => asset.code),
-          quoteAssets: this.former.attrs.quoteAssetsCodes,
-          accountId: this.accountId,
-        })
+        for (let i = 0; i < this.former.attrs.quoteAssetsCodes.length; i++) {
+          await createBalanceIfNotExist(this.former.attrs.quoteAssetsCodes[i])
+        }
 
         const operation = await this.former.buildOps()
         await api.postOperations(...operation)

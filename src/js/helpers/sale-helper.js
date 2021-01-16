@@ -1,9 +1,10 @@
-import { BLOB_TYPES } from '@tokend/js-sdk'
-import { api, base } from '@/api'
+import { BLOB_TYPES, base } from '@tokend/js-sdk'
+import { api } from '@/api'
+import { store, vuexTypes } from '@/vuex'
 import { AssetPairRecord } from '@/js/records/entities/asset-pair.record'
 import { loadAllResponsePages } from '@/js/helpers/api-helpers'
 
-export async function createSaleDescriptionBlobId (description, accountId) {
+export async function createSaleDescriptionBlobId (description) {
   const { data: blob } = await api.postWithSignature('/blobs', {
     data: {
       type: BLOB_TYPES.saleOverview,
@@ -12,7 +13,7 @@ export async function createSaleDescriptionBlobId (description, accountId) {
       },
       relationships: {
         owner: {
-          data: { id: accountId },
+          data: { id: store.getters[vuexTypes.accountId] },
         },
       },
     },
@@ -20,23 +21,16 @@ export async function createSaleDescriptionBlobId (description, accountId) {
   return blob.id
 }
 
-// eslint-disable-next-line max-len
-export async function createBalancesIfNotExist ({ balanceAssets, quoteAssets, accountId }) {
-  let operations = []
-  for (const asset of quoteAssets) {
-    if (!balanceAssets.includes(asset)) {
-      operations.push(
-        base.Operation.manageBalance({
-          asset: asset,
-          destination: accountId,
-          action: base.xdr.ManageBalanceAction.createUnique(),
-        })
-      )
-    }
-  }
-
-  if (operations.length) {
-    await api.postOperations(...operations)
+export async function createBalanceIfNotExist (assetCode) {
+  let accountBalancesAssetsCodes =
+      store.getters[vuexTypes.accountBalances].map(i => i.asset.code)
+  if (!(accountBalancesAssetsCodes.includes(assetCode))) {
+    let operation = base.Operation.manageBalance({
+      asset: assetCode,
+      destination: store.getters[vuexTypes.accountId],
+      action: base.xdr.ManageBalanceAction.createUnique(),
+    })
+    await api.postOperations(operation)
   }
 }
 

@@ -85,8 +85,7 @@ export class SaleFormer extends Former {
 
   async _buildOp () {
     this.attrs.saleDescriptionBlobId = await createSaleDescriptionBlobId(
-      this.attrs.fullDescription,
-      this.attrs.creatorAccountId
+      this.attrs.fullDescription
     )
 
     let assetPairs = await loadAssetsPairsByQuote(
