@@ -166,8 +166,8 @@ export default {
     async submit () {
       this.isDisabled = true
       try {
-        for (let i = 0; i < this.former.attrs.quoteAssetsCodes.length; i++) {
-          await createBalanceIfNotExist(this.former.attrs.quoteAssetsCodes[i])
+        for (const assetCode of this.former.attrs.quoteAssetsCodes) {
+          await createBalanceIfNotExist(assetCode)
         }
 
         const operation = await this.former.buildOps()
