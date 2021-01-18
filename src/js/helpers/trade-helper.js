@@ -1,11 +1,11 @@
 import { api } from '@/api'
 import { base } from '@tokend/js-sdk'
+import { store, vuexTypes } from '@/vuex'
 
-// eslint-disable-next-line max-len
-export async function createAssetBalanceIfNotExists (assetCode, creatorAccountId, accountBalances) {
-  if (!getAssetBalanceId(assetCode, accountBalances)) {
+export async function createBalanceIfNotExists (assetCode) {
+  if (!getBalanceId(assetCode)) {
     const operation = base.Operation.manageBalance({
-      destination: creatorAccountId,
+      destination: store.getters[vuexTypes.accountId],
       asset: assetCode,
       action: base.xdr.ManageBalanceAction.createUnique(),
     })
@@ -13,6 +13,13 @@ export async function createAssetBalanceIfNotExists (assetCode, creatorAccountId
   }
 }
 
-export function getAssetBalanceId (assetCode, accountBalances) {
-  return accountBalances.find(i => i.asset.code === assetCode)
+export function getBalanceId (assetCode) {
+  let balance = store.getters[vuexTypes.accountBalances]
+    .find(i => i.asset.code === assetCode)
+
+  if (!balance) {
+    return
+  }
+
+  return balance.id
 }
