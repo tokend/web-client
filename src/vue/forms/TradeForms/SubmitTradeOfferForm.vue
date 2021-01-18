@@ -276,7 +276,6 @@ export default {
   async created () {
     try {
       this.former.setAttr('creatorAccountId', this.accountId)
-      this.former.setAttr('accountBalances', this.accountBalances)
 
       this.form.price = this.former.attrs.pricePerOneItem
       this.form.baseAmount = this.former.attrs.baseAmount
