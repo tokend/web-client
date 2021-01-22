@@ -1,10 +1,9 @@
 import { Former } from './Former'
-import { Document, base, SALE_TYPES } from '@tokend/js-sdk'
-import { DateUtil, MathUtil } from '@/js/utils'
+import { Document, base } from '@tokend/js-sdk'
+import { DateUtil } from '@/js/utils'
 
 import {
   createSaleDescriptionBlobId,
-  loadAssetsPairsByQuote,
 } from '@/js/helpers/sale-helper'
 
 /**
@@ -26,7 +25,6 @@ export class SaleFormer extends Former {
       softCap: '',
       hardCap: '',
       assetsToSell: '',
-      quoteAssetsCodes: [],
       isWhitelisted: false,
       saleLogo: new Document(),
       shortDescription: '',
@@ -35,6 +33,7 @@ export class SaleFormer extends Former {
       saleDescriptionBlobId: '',
       creatorAccountId: '',
       requestId: '0',
+      quoteAssetsAndPrices: [],
     }
   }
 
@@ -70,7 +69,7 @@ export class SaleFormer extends Former {
     this.attrs.softCap = source.softCap
     this.attrs.hardCap = source.hardCap
     this.attrs.assetsToSell = source.baseAssetForHardCap
-    this.attrs.quoteAssetsCodes = source.quoteAssets
+    this.attrs.quoteAssetsAndPrices = source.quoteAssets
     this.attrs.isWhitelisted = source.isWhitelisted
     this.attrs.saleLogo = new Document(source.logo)
     this.attrs.shortDescription = source.shortDescription
@@ -88,19 +87,15 @@ export class SaleFormer extends Former {
       this.attrs.fullDescription
     )
 
-    let assetPairs = await loadAssetsPairsByQuote(
-      this.attrs.capAssetCode
-    )
-
-    const opts = this._createSaleRequestOpts(assetPairs)
+    const opts = this._getOpts()
     return base.SaleRequestBuilder.createSaleCreationRequest(opts)
   }
 
-  _createSaleRequestOpts (assetPairs) {
+  _getOpts () {
     const saleLogo = this.attrs.saleLogo
 
     return {
-      requestID: this.attrs.requestId || '0',
+      requestID: this.attrs.requestId,
       saleEnumType: +this.attrs.saleType,
       saleType: '0',
       startTime: DateUtil.toTimestamp(this.attrs.startTime),
@@ -110,7 +105,7 @@ export class SaleFormer extends Former {
       softCap: this.attrs.softCap,
       hardCap: this.attrs.hardCap,
       requiredBaseAssetForHardCap: this.attrs.assetsToSell,
-      quoteAssets: this._getQuoteAssets(assetPairs),
+      quoteAssets: this.attrs.quoteAssetsAndPrices,
       creatorDetails: {
         name: this.attrs.saleName,
         short_description: this.attrs.shortDescription,
@@ -122,39 +117,5 @@ export class SaleFormer extends Former {
         forbids: this.attrs.isWhitelisted,
       }],
     }
-  }
-
-  _getQuoteAssets (assetPairs) {
-    const basePrice = MathUtil.divide(
-      this.attrs.hardCap,
-      this.attrs.assetsToSell
-    )
-
-    let quoteAssetsCodesAndPrices = this.attrs.quoteAssetsCodes.map((item) => ({
-      asset: item,
-      price: this._getPrice(item, basePrice, assetPairs),
-    }))
-
-    return quoteAssetsCodesAndPrices
-  }
-
-  _getPrice (assetCode, basePrice, assetPairs) {
-    let result
-
-    const capAssetCode = this.attrs.capAssetCode
-    if (capAssetCode !== assetCode) {
-      if (this.attrs.saleType === SALE_TYPES.immediate) {
-        let assetPair = assetPairs.filter(item =>
-          item.baseAndQuote === `${assetCode}/${capAssetCode}`
-        )
-        result = MathUtil.divide(basePrice, assetPair[0].price)
-      } else {
-        result = '1'
-      }
-    } else {
-      result = basePrice
-    }
-
-    return result
   }
 }

@@ -166,10 +166,10 @@ export default {
     async submit () {
       this.isDisabled = true
       try {
-        for (const assetCode of this.former.attrs.quoteAssetsCodes) {
-          await createBalanceIfNotExist(assetCode)
-        }
-
+        await Promise.all(
+          this.former.attrs.quoteAssetsAndPrices
+            .map(assetCode => createBalanceIfNotExist(assetCode.asset))
+        )
         const operation = await this.former.buildOps()
         await api.postOperations(...operation)
         Bus.success('create-sale-form.request-submitted-msg')

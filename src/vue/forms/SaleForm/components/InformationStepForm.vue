@@ -303,9 +303,10 @@ export default {
         softCap: this.former.attrs.softCap,
         hardCap: this.former.attrs.hardCap,
         assetsToSell: this.former.attrs.assetsToSell,
-        quoteAssets: this.former.attrs.quoteAssetsCodes,
+        quoteAssets: this.former.attrs.quoteAssetsAndPrices,
         isWhitelisted: this.former.attrs.isWhitelisted,
       },
+      assetPairs: {},
       isQuoteAssetsLoaded: false,
       availableQuoteAssets: [],
       NAME_MAX_LENGTH,
@@ -411,7 +412,8 @@ export default {
     },
 
     'form.quoteAssets': function (value) {
-      this.former.setAttr('quoteAssetsCodes', value)
+      this.former.setAttr('quoteAssetsAndPrices',
+        this.getQuoteAssetsAndPrices())
     },
   },
 
@@ -427,6 +429,8 @@ export default {
       this.baseAssets[0] ||
       {}
 
+    this.former.setAttr('quoteAssetsAndPrices',
+      this.getQuoteAssetsAndPrices())
     this.former.setAttr('saleType', this.form.type)
     this.former.setAttr('baseAssetCode', this.form.baseAsset.code)
     this.former.setAttr('capAssetCode', this.form.capAsset.code)
@@ -459,13 +463,47 @@ export default {
       let result
 
       try {
-        let assetPairs = await loadAssetsPairsByQuote(quoteAssetCode)
-        result = assetPairs.map(a => a.baseAssetCode)
+        this.assetPairs = await loadAssetsPairsByQuote(quoteAssetCode)
+        result = this.assetPairs.map(a => a.baseAssetCode)
           .map(item => this.assetByCode(item))
           .filter(item => item.isBaseAsset)
       } catch (e) {
         result = []
         ErrorHandler.processWithoutFeedback(e)
+      }
+
+      return result
+    },
+
+    getQuoteAssetsAndPrices () {
+      const basePrice = MathUtil.divide(
+        this.form.hardCap,
+        this.form.assetsToSell
+      )
+
+      let quoteAssetsCodesAndPrices =
+        this.form.quoteAssets.map((item) => ({
+          asset: item,
+          price: this.getQuoteAssetsPrices(item, basePrice),
+        }))
+
+      return quoteAssetsCodesAndPrices
+    },
+
+    getQuoteAssetsPrices (assetCode, basePrice) {
+      let result
+      const capAssetCode = this.form.capAsset.code
+      if (capAssetCode !== assetCode) {
+        if (this.form.type === SALE_TYPES.immediate) {
+          let assetPair = this.assetPairs.filter(item =>
+            item.baseAndQuote === `${assetCode}/${capAssetCode}`
+          )
+          result = MathUtil.divide(basePrice, assetPair[0].price)
+        } else {
+          result = '1'
+        }
+      } else {
+        result = basePrice
       }
 
       return result
