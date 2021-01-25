@@ -33,6 +33,7 @@ for further information about branching and tagging conventions.
 
 #### Fixed
 - A bug with `MarkdownField` length
+- A bug with cancel order
 
 ### Removed
 - Removed `issuance-form` from modules
