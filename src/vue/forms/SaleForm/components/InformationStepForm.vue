@@ -411,7 +411,7 @@ export default {
       this.isQuoteAssetsLoaded = true
     },
 
-    'form.quoteAssets': function (value) {
+    'form.quoteAssets' () {
       this.former.setAttr('quoteAssetsAndPrices',
         this.getQuoteAssetsAndPrices())
     },
