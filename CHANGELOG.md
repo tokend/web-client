@@ -13,6 +13,7 @@ for further information about branching and tagging conventions.
 - New helpers: 
   - `identity-helper.js` - Includes reusable actions over identities
   - `fees-helper.js` - Includes reusable actions over fees
+- New error-message when saleLogo doesn`t added in the ShortBlurbStepForm
 
 ### Changed
 - New formers:
@@ -21,7 +22,14 @@ for further information about branching and tagging conventions.
   - New `LimitsFormer`
   - New `WithdrawalFormer`
   - New `PollFormer`
+  - New `SaleFormer`
   - New `InvestFormer`
+- New versions of packages: 
+  - lodash: 4.17.20
+  - resolve-url-loader: 3.1.2
+- New positions of forms: 
+  - DepositForm
+  - SaleForm
 
 #### Fixed
 - A bug with `MarkdownField` length

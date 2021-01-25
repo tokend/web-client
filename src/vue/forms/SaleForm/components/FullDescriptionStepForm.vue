@@ -8,6 +8,7 @@
         <input-field
           white-autofill
           v-model="form.youtubeVideo"
+          @change="former.setAttr('youtubeVideo', form.youtubeVideo)"
           name="create-sale-youtube-id"
           :label="'create-sale-form.youtube-video-lbl' | globalize"
           :disabled="formMixin.isDisabled"
@@ -39,10 +40,11 @@
           {{ 'create-sale-form.full-description-lbl' | globalize }}
         </span>
         <markdown-field
-          v-model="form.description"
-          @blur="touchField('form.description')"
+          v-model="form.fullDescription"
+          @blur="touchField('form.fullDescription')"
+          @input="former.setAttr('fullDescription', form.fullDescription)"
           :error-message="getFieldErrorMessage(
-            'form.description',
+            'form.fullDescription',
             { length: DESCRIPTION_MAX_LENGTH }
           )"
         />
@@ -63,7 +65,7 @@
         class="app__button-raised full-description-step-form__btn"
         :disabled="isDisabled"
       >
-        <template v-if="request">
+        <template v-if="+former.attrs.requestId">
           {{ 'create-sale-form.update-request-btn' | globalize }}
         </template>
 
@@ -78,7 +80,7 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { CreateSaleRequest } from '../wrappers/create-sale-request'
+import { SaleFormer } from '@/js/formers/SaleFormer'
 
 import {
   maxLength,
@@ -86,7 +88,7 @@ import {
 
 const DESCRIPTION_MAX_LENGTH = 8000
 const EVENTS = {
-  submit: 'submit',
+  next: 'next',
   updateIsDisabled: 'update:isDisabled',
 }
 
@@ -94,18 +96,19 @@ export default {
   name: 'full-description-step-form',
   mixins: [FormMixin],
   props: {
-    request: { type: CreateSaleRequest, default: null },
-    saleDescription: { type: String, default: '' },
     isDisabled: { type: Boolean, default: false },
+    former: { type: SaleFormer, required: true },
   },
 
-  data: _ => ({
-    form: {
-      youtubeVideo: '',
-      description: '',
-    },
-    DESCRIPTION_MAX_LENGTH,
-  }),
+  data () {
+    return {
+      form: {
+        youtubeVideo: this.former.attrs.youtubeVideo,
+        fullDescription: this.former.attrs.fullDescription,
+      },
+      DESCRIPTION_MAX_LENGTH,
+    }
+  },
 
   computed: {
     youtubeId () {
@@ -116,16 +119,10 @@ export default {
     },
   },
 
-  created () {
-    if (this.request) {
-      this.populateForm()
-    }
-  },
-
   validations () {
     return {
       form: {
-        description: {
+        fullDescription: {
           maxLength: maxLength(DESCRIPTION_MAX_LENGTH),
         },
       },
@@ -133,18 +130,8 @@ export default {
   },
 
   methods: {
-    populateForm () {
-      this.form = {
-        youtubeVideo: this.request.youtubeVideoId,
-        description: this.saleDescription,
-      }
-    },
-
     submit () {
-      this.$emit(EVENTS.submit, {
-        youtubeId: this.youtubeId,
-        description: this.form.description,
-      })
+      this.$emit(EVENTS.next)
     },
 
     setConfirmationState () {

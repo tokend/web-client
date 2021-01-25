@@ -9,24 +9,21 @@
         <keep-alive>
           <information-step-form
             v-if="currentStep === STEPS.information.number"
-            :request="request"
-            :base-assets="baseAssets"
-            :owned-assets="ownedAssets"
-            @submit="setInformationStepForm($event) || moveToNextStep()"
+            :former="former"
+            @next="moveToNextStep()"
           />
 
           <short-blurb-step-form
             v-if="currentStep === STEPS.shortBlurb.number"
-            :request="request"
-            @submit="setShortBlurbStepForm($event) || moveToNextStep()"
+            :former="former"
+            @next="moveToNextStep()"
           />
 
           <full-description-step-form
             v-if="currentStep === STEPS.fullDescription.number"
-            :request="request"
-            :sale-description="saleDescription"
+            :former="former"
             :is-disabled.sync="isDisabled"
-            @submit="setFullDescriptionStepForm($event) || submit()"
+            @next="submit()"
           />
         </keep-alive>
       </form-stepper>
@@ -53,22 +50,22 @@
 </template>
 
 <script>
-import LoadAssetsMixin from './mixins/load-assets.mixin'
-import ManageSaleRequestMixin from './mixins/manage-sale-request.mixin'
-
-import InformationStepForm from './components/information-step-form'
-import ShortBlurbStepForm from './components/short-blurb-step-form'
-import FullDescriptionStepForm from './components/full-description-step-form'
-import SkeletonLoaderStepForm from './components/skeleton-loader-step-form'
+import InformationStepForm from './components/InformationStepForm'
+import ShortBlurbStepForm from './components/ShortBlurbStepForm'
+import FullDescriptionStepForm from './components/FullDescriptionStepForm'
+import SkeletonLoaderStepForm from './components/SkeletonLoaderStepForm'
 
 import FormStepper from '@/vue/common/FormStepper'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { SaleFormer } from '@/js/formers/SaleFormer'
+import { createBalanceIfNotExist } from '@/js/helpers/sale-helper'
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { api } from '@/api'
 
 const STEPS = {
   information: {
@@ -90,7 +87,7 @@ const EVENTS = {
 }
 
 export default {
-  name: 'create-sale-form-module',
+  name: 'create-sale-form',
   components: {
     FormStepper,
     NoDataMessage,
@@ -99,20 +96,12 @@ export default {
     FullDescriptionStepForm,
     SkeletonLoaderStepForm,
   },
-  mixins: [LoadAssetsMixin, ManageSaleRequestMixin],
+
   props: {
-    requestId: {
-      type: String,
-      default: '',
-    },
+    former: { type: SaleFormer, default: () => new SaleFormer() },
   },
 
   data: _ => ({
-    request: null,
-    saleDescription: '',
-    informationStepForm: {},
-    shortBlurbStepForm: {},
-    fullDescriptionStepForm: {},
     isLoaded: false,
     isLoadFailed: false,
     isDisabled: false,
@@ -121,40 +110,41 @@ export default {
   }),
 
   computed: {
-    ...mapGetters([
-      vuexTypes.accountId,
-    ]),
+    ...mapGetters({
+      accountId: vuexTypes.accountId,
+      balancesAssets: vuexTypes.balancesAssets,
+      ownedAssets: vuexTypes.ownedAssets,
+    }),
   },
 
   async created () {
-    await this.init()
+    try {
+      this.former.setAttr('creatorAccountId', this.accountId)
+      if (this.former.attrs.saleDescriptionBlobId !== '') {
+        this.former.setAttr('fullDescription',
+          await this.getSaleFullDescription(
+            this.former.attrs.saleDescriptionBlobId,
+            this.former.attrs.creatorAccountId
+          )
+        )
+      }
+
+      await Promise.all([
+        this.loadBalances(),
+        this.loadAssets(),
+      ])
+      this.isLoaded = true
+    } catch (e) {
+      this.isLoadFailed = true
+      ErrorHandler.processWithoutFeedback(e)
+    }
   },
 
   methods: {
-    async init () {
-      try {
-        await this.loadAssets(this.accountId)
-        await this.tryLoadRequest()
-
-        this.isLoaded = true
-      } catch (e) {
-        this.isLoadFailed = true
-        ErrorHandler.processWithoutFeedback(e)
-      }
-    },
-
-    async tryLoadRequest () {
-      if (this.requestId) {
-        this.request = await this.getCreateSaleRequestById(
-          this.requestId,
-          this.accountId
-        )
-        this.saleDescription = await this.getSaleDescription(
-          this.request.descriptionBlobId,
-          this.accountId
-        )
-      }
-    },
+    ...mapActions({
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+      loadAssets: vuexTypes.LOAD_ASSETS,
+    }),
 
     moveToNextStep () {
       this.currentStep++
@@ -163,22 +153,25 @@ export default {
       }
     },
 
-    setInformationStepForm (value) {
-      this.informationStepForm = value
-    },
-
-    setShortBlurbStepForm (value) {
-      this.shortBlurbStepForm = value
-    },
-
-    setFullDescriptionStepForm (value) {
-      this.fullDescriptionStepForm = value
+    async getSaleFullDescription (blobId, accountId) {
+      try {
+        const endpoint = `/accounts/${accountId}/blobs/${blobId}`
+        const { data: blob } = await api.getWithSignature(endpoint)
+        return JSON.parse(blob.value)
+      } catch {
+        return ''
+      }
     },
 
     async submit () {
       this.isDisabled = true
       try {
-        await this.submitCreateSaleRequest(this.accountId)
+        await Promise.all(
+          this.former.attrs.quoteAssetsAndPrices
+            .map(assetCode => createBalanceIfNotExist(assetCode.asset))
+        )
+        const operation = await this.former.buildOps()
+        await api.postOperations(...operation)
         Bus.success('create-sale-form.request-submitted-msg')
         this.emitSubmitEvents()
       } catch (e) {
@@ -188,7 +181,7 @@ export default {
     },
 
     emitSubmitEvents () {
-      if (this.requestId) {
+      if (+this.former.attrs.requestId) {
         this.$emit(EVENTS.requestUpdated)
       }
       this.$emit(EVENTS.submitted)

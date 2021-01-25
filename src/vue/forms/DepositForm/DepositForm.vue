@@ -76,7 +76,7 @@
 
 <script>
 import Loader from '@/vue/common/Loader'
-import AddressLoader from './DepositForm/AddressLoader'
+import AddressLoader from './components/AddressLoader'
 import CoinpaymentsDepositModule from '@/vue/modules/coinpayments-deposit'
 
 import FormMixin from '@/vue/mixins/form.mixin'
