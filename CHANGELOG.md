@@ -29,6 +29,12 @@ for further information about branching and tagging conventions.
 #### Fixed
 - A bug with `MarkdownField` length
 - A bug with cancel order in `YourTradeOfferForm`
+- New versions of packages: 
+  - lodash: 4.17.20
+  - resolve-url-loader: 3.1.2
+- New positions of forms: 
+  - DepositForm
+  - SaleForm
 
 ### Removed
 - Removed `issuance-form` from modules
