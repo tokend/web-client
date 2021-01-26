@@ -2,7 +2,7 @@
   <form
     novalidate
     class="app__form"
-    @submit.prevent="submit"
+    @submit.prevent="next"
   >
     <div class="app__form-row">
       <div class="app__form-field">
@@ -29,6 +29,7 @@
           white-autofill
           v-model="form.name"
           @blur="touchField('form.name')"
+          @change="former.setAttr('saleName', form.name)"
           name="create-sale-name"
           :label="'create-sale-form.sale-name-lbl' | globalize"
           :error-message="getFieldErrorMessage(
@@ -82,21 +83,17 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <input-field
+        <amount-input-field
           white-autofill
           v-model="form.assetsToSell"
-          @blur="touchField('form.assetsToSell')"
+          @change="former.setAttr('assetsToSell', form.assetsToSell)"
           name="create-sale-assets-to-sell"
-          type="number"
-          :min="0"
-          :max="availableForIssuance"
-          :step="MIN_AMOUNT"
+          validation-type="incoming"
           :label="'create-sale-form.assets-to-sell-lbl' |
             globalize({ asset: form.baseAsset.code })"
-          :error-message="getFieldErrorMessage(
-            'form.assetsToSell',
-            { available: availableForIssuance }
-          )"
+          @blur="touchField('form.assetsToSell')"
+          :asset="form.baseAsset.code"
+          :readonly="formMixin.isDisabled"
         />
 
         <template v-if="form.baseAsset">
@@ -119,6 +116,7 @@
         <tick-field
           :name="`create-sale-whitelisted`"
           v-model="form.isWhitelisted"
+          @input="former.setAttr('isWhitelisted', form.isWhitelisted)"
         >
           {{ 'create-sale-form.whitelisted-lbl' | globalize }}
         </tick-field>
@@ -132,8 +130,8 @@
           name="create-sale-start-time"
           :disable-before="lastTwentyYear"
           :enable-time="true"
-          @input="touchField('form.startTime')"
           @blur="touchField('form.startTime')"
+          @input="former.setAttr('startTime', form.startTime)"
           :label="'create-sale-form.start-time-lbl' | globalize"
           :error-message="getFieldErrorMessage('form.startTime')"
         />
@@ -146,8 +144,8 @@
           v-model="form.endTime"
           :enable-time="true"
           :disable-before="yesterday"
-          @input="touchField('form.endTime')"
           @blur="touchField('form.endTime')"
+          @input="former.setAttr('endTime', form.endTime)"
           name="create-sale-end-time"
           :label="'create-sale-form.close-time-lbl' | globalize"
           :error-message="getFieldErrorMessage(
@@ -163,11 +161,12 @@
           white-autofill
           type="number"
           :min="0"
-          :max="form.hardCap || MAX_AMOUNT"
-          :step="MIN_AMOUNT"
+          :max="form.hardCap || config.MAX_AMOUNT"
+          :step="config.MIN_AMOUNT"
           v-model="form.softCap"
-          @blur="touchField('form.softCap')"
           name="create-sale-soft-cap"
+          @blur="touchField('form.softCap')"
+          @change="former.setAttr('softCap', form.softCap)"
           :label="'create-sale-form.soft-cap-lbl' | globalize({
             asset: form.capAsset.code
           })"
@@ -185,11 +184,12 @@
           white-autofill
           type="number"
           :min="0"
-          :max="MAX_AMOUNT"
-          :step="MIN_AMOUNT"
+          :max="config.MAX_AMOUNT"
+          :step="config.MIN_AMOUNT"
           v-model="form.hardCap"
-          @blur="touchField('form.hardCap')"
           name="create-sale-hard-cap"
+          @blur="touchField('form.hardCap')"
+          @change="former.setAttr('hardCap', form.hardCap)"
           :label="'create-sale-form.hard-cap-lbl' | globalize({
             asset: form.capAsset.code
           })"
@@ -258,14 +258,17 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-import LoadAssetPairsMixin from '../mixins/load-asset-pairs.mixin'
 
 import moment from 'moment'
 
-import { CreateSaleRequest } from '../wrappers/create-sale-request'
 import { SALE_TYPES } from '@tokend/js-sdk'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 import { MathUtil } from '@/js/utils'
+import { ErrorHandler } from '@/js/helpers/error-handler'
+import { SaleFormer } from '@/js/formers/SaleFormer'
+import { loadAssetsPairsByQuote } from '@/js/helpers/sale-helper'
 
 import {
   required,
@@ -279,43 +282,37 @@ import {
 
 import config from '@/config'
 
-const EVENTS = {
-  submit: 'submit',
-}
-
-const CODE_MAX_LENGTH = 16
 const NAME_MAX_LENGTH = 255
 
 export default {
   name: 'information-step-form',
-  mixins: [FormMixin, LoadAssetPairsMixin],
+  mixins: [FormMixin],
   props: {
-    request: { type: CreateSaleRequest, default: null },
-    ownedAssets: { type: Array, default: _ => [] },
-    baseAssets: { type: Array, default: _ => [] },
+    former: { type: SaleFormer, required: true },
   },
 
-  data: _ => ({
-    form: {
-      type: '',
-      name: '',
-      baseAsset: {},
-      capAsset: {},
-      startTime: '',
-      endTime: '',
-      softCap: '',
-      hardCap: '',
-      assetsToSell: '',
-      quoteAssets: [],
-      isWhitelisted: false,
-    },
-    isQuoteAssetsLoaded: false,
-    availableQuoteAssets: [],
-    MIN_AMOUNT: config.MIN_AMOUNT,
-    MAX_AMOUNT: config.MAX_AMOUNT,
-    CODE_MAX_LENGTH,
-    NAME_MAX_LENGTH,
-  }),
+  data () {
+    return {
+      form: {
+        type: '0',
+        name: this.former.attrs.saleName,
+        baseAsset: {},
+        capAsset: {},
+        startTime: this.former.attrs.startTime,
+        endTime: this.former.attrs.endTime,
+        softCap: this.former.attrs.softCap,
+        hardCap: this.former.attrs.hardCap,
+        assetsToSell: this.former.attrs.assetsToSell,
+        quoteAssets: this.former.attrs.quoteAssetsAndPrices,
+        isWhitelisted: this.former.attrs.isWhitelisted,
+      },
+      assetPairs: {},
+      isQuoteAssetsLoaded: false,
+      availableQuoteAssets: [],
+      NAME_MAX_LENGTH,
+      config,
+    }
+  },
 
   validations () {
     return {
@@ -336,13 +333,13 @@ export default {
         softCap: {
           required,
           softCapMoreThanHardCap: softCapMoreThanHardCap(
-            this.MIN_AMOUNT, this.form.hardCap
+            config.MIN_AMOUNT, this.form.hardCap
           ),
         },
         hardCap: {
           required,
           hardCapLessThanSoftCap: hardCapLessThanSoftCap(
-            this.form.softCap, this.MAX_AMOUNT
+            this.form.softCap, config.MAX_AMOUNT
           ),
         },
         assetsToSell: {
@@ -357,6 +354,12 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      ownedAssets: vuexTypes.ownedAssets,
+      baseAssets: vuexTypes.fiatAssets,
+      assetByCode: vuexTypes.assetByCode,
+    }),
+
     priceForAsset () {
       let value = MathUtil.divide(
         this.form.hardCap,
@@ -402,61 +405,108 @@ export default {
         this.isQuoteAssetsLoaded = false
         this.form.quoteAssets = []
       }
-
       const quoteAssets = await this.loadBaseAssetsByQuote(value)
-
       this.availableQuoteAssets = [this.form.capAsset, ...quoteAssets]
+
       this.isQuoteAssetsLoaded = true
+    },
+
+    'form.quoteAssets' () {
+      this.former.setAttr('quoteAssetsAndPrices',
+        this.getQuoteAssetsAndPrices())
     },
   },
 
   created () {
-    if (this.request) {
-      this.populateForm()
-    } else {
-      this.form.type = this.localizedSaleTypes[0].value
-      this.form.baseAsset = this.ownedAssets[0] || {}
-      this.form.capAsset = this.baseAssets[0] || {}
-    }
+    this.form.type = this.former.attrs.saleType ||
+      this.localizedSaleTypes[0].value
+    this.form.baseAsset = this.ownedAssets
+      .find(item => item.code === this.former.attrs.baseAssetCode) ||
+      this.ownedAssets[0] ||
+      {}
+    this.form.capAsset = this.baseAssets
+      .find(item => item.code === this.former.attrs.capAssetCode) ||
+      this.baseAssets[0] ||
+      {}
+
+    this.former.setAttr('quoteAssetsAndPrices',
+      this.getQuoteAssetsAndPrices())
+    this.former.setAttr('saleType', this.form.type)
+    this.former.setAttr('baseAssetCode', this.form.baseAsset.code)
+    this.former.setAttr('capAssetCode', this.form.capAsset.code)
   },
 
   methods: {
+    next () {
+      if (this.isFormValid()) this.$emit('next')
+    },
     setBaseAssetByCode (code) {
       this.form.baseAsset = this.ownedAssets.find(item => item.code === code)
+      this.former.setAttr('baseAssetCode', code)
     },
 
     setSaleType (type) {
       this.form.type = +type
+      this.former.setAttr('saleType', +type)
     },
 
     setCapAssetByCode (code) {
       this.form.capAsset = this.baseAssets.find(item => item.code === code)
+      this.former.setAttr('capAssetCode', code)
     },
 
     getCurrentDate () {
       return moment().toISOString()
     },
 
-    populateForm () {
-      this.form.name = this.request.name
-      this.form.type = +this.request.saleType
-      this.form.baseAsset = this.ownedAssets
-        .find(item => item.code === this.request.baseAsset)
-      this.form.capAsset = this.baseAssets
-        .find(item => item.code === this.request.defaultQuoteAsset)
-      this.form.startTime = this.request.startTime
-      this.form.endTime = this.request.endTime
-      this.form.softCap = this.request.softCap
-      this.form.hardCap = this.request.hardCap
-      this.form.assetsToSell = this.request.assetsToSell
-      this.form.quoteAssets = this.request.quoteAssets
-      this.form.isWhitelisted = this.request.isWhitelisted
+    async loadBaseAssetsByQuote (quoteAssetCode) {
+      let result
+
+      try {
+        this.assetPairs = await loadAssetsPairsByQuote(quoteAssetCode)
+        result = this.assetPairs.map(a => a.baseAssetCode)
+          .map(item => this.assetByCode(item))
+          .filter(item => item.isBaseAsset)
+      } catch (e) {
+        result = []
+        ErrorHandler.processWithoutFeedback(e)
+      }
+
+      return result
     },
 
-    submit () {
-      if (this.isFormValid()) {
-        this.$emit(EVENTS.submit, this.form)
+    getQuoteAssetsAndPrices () {
+      const basePrice = MathUtil.divide(
+        this.form.hardCap,
+        this.form.assetsToSell
+      )
+
+      let quoteAssetsCodesAndPrices =
+        this.form.quoteAssets.map((item) => ({
+          asset: item,
+          price: this.getQuoteAssetsPrices(item, basePrice),
+        }))
+
+      return quoteAssetsCodesAndPrices
+    },
+
+    getQuoteAssetsPrices (assetCode, basePrice) {
+      let result
+      const capAssetCode = this.form.capAsset.code
+      if (capAssetCode !== assetCode) {
+        if (this.form.type === SALE_TYPES.immediate) {
+          let assetPair = this.assetPairs.filter(item =>
+            item.baseAndQuote === `${assetCode}/${capAssetCode}`
+          )
+          result = MathUtil.divide(basePrice, assetPair[0].price)
+        } else {
+          result = '1'
+        }
+      } else {
+        result = basePrice
       }
+
+      return result
     },
   },
 }

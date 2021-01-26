@@ -45,7 +45,6 @@ describe('Create sale request', () => {
       expect(result.shortDescription).to.equal('Some info')
 
       expect(result.logo).to.deep.equal({ key: 'logo-key' })
-      expect(result.logoKey).to.equal('logo-key')
 
       expect(result.youtubeVideoId).to.equal('YOUTUBE_VIDEO_ID')
       expect(result.definitionType).to.equal(SALE_DEFINITION_TYPES.whitelist)
