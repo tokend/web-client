@@ -6,7 +6,7 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <select-field
-          v-model="form.asset"
+          v-model="form.assetCode"
           name="trade-offer-base-asset"
           :disabled="formMixin.isDisabled"
           :label="baseAssetLabelTranslationId | globalize"
@@ -33,7 +33,7 @@
           :step="config.MIN_AMOUNT"
           :label="
             'create-trade-offer-form.price-lbl' | globalize({
-              baseAsset: form.asset,
+              baseAsset: form.assetCode,
               quoteAsset: assetPair.quote
             })
           "
@@ -60,7 +60,7 @@
           :max="config.MAX_AMOUNT"
           :step="config.MIN_AMOUNT"
           :label="'create-trade-offer-form.amount-lbl' | globalize({
-            asset: form.asset
+            asset: form.assetCode
           })"
           :error-message="getFieldErrorMessage(
             'form.amount',
@@ -152,7 +152,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { createBalanceIfNotExists } from '@/js/helpers/trade-helper'
+import { createBalanceIfNotExist } from '@/js/helpers/sale-helper'
 import { TradeFormer } from '@/js/formers/TradeFormer'
 
 import { MathUtil } from '@/js/utils/math.util'
@@ -198,7 +198,7 @@ export default {
     form: {
       price: '',
       amount: '0',
-      asset: '',
+      assetCode: '',
     },
     fees: {},
     feesDebouncedRequest: null,
@@ -238,6 +238,7 @@ export default {
     ...mapGetters({
       accountBalances: vuexTypes.accountBalances,
       accountId: vuexTypes.accountId,
+      accountBalanceByCode: vuexTypes.accountBalanceByCode,
     }),
 
     baseAssetLabelTranslationId () {
@@ -253,15 +254,18 @@ export default {
     },
 
     baseAssetBalance () {
-      const balanceItem = this.accountBalances
-        .find(balance => balance.asset.code === this.form.asset)
+      const balanceItem = this.accountBalanceByCode(this.form.assetCode)
 
       return balanceItem ? balanceItem.balance : ''
     },
 
     quoteAssetBalance () {
-      const balanceItem = this.accountBalances
-        .find(balance => balance.asset.code === this.assetPair.quote)
+      const balanceItem = this.accountBalanceByCode(this.assetPair.quote)
+
+      if (balanceItem) {
+        this.former.setAttr('quoteBalanceId', balanceItem.id)
+      }
+
       return balanceItem ? balanceItem.balance : ''
     },
 
@@ -286,8 +290,10 @@ export default {
       this.tryLoadFees()
     },
 
-    'form.asset' () {
-      this.former.setAttr('pair.baseAssetCode', this.form.asset)
+    'form.assetCode' () {
+      this.former.setAttr('baseAssetCode', this.form.assetCode)
+      this.former.setAttr('baseBalanceId',
+        this.accountBalanceByCode(this.form.assetCode).id)
       this.tryLoadFees()
     },
   },
@@ -297,7 +303,7 @@ export default {
       await this.loadBalances()
       this.setDefaultAsset()
       this.former.setAttr('isBuy', this.isBuy)
-      this.former.setAttr('pair.quoteAssetCode', this.assetPair.quote)
+      this.former.setAttr('quoteAssetCode', this.assetPair.quote)
       this.former.setAttr('creatorAccountId', this.accountId)
       this.isLoaded = true
     } catch (e) {
@@ -335,12 +341,12 @@ export default {
     async submit () {
       this.isOfferCreating = true
       try {
-        await createBalanceIfNotExists(this.former.attrs.pair.baseAssetCode)
-        await createBalanceIfNotExists(this.former.attrs.pair.quoteAssetCode)
+        await createBalanceIfNotExist(this.former.attrs.baseAssetCode)
+        await createBalanceIfNotExist(this.former.attrs.quoteAssetCode)
         await this.loadBalances()
 
-        const operation = await this.former.buildOpsCreate()
-        await api.postOperations(...operation)
+        const operation = await this.former.buildOpCreate()
+        await api.postOperations(operation)
         Bus.success('create-trade-offer-form.order-created-msg')
         this.$emit(EVENTS.offerCreated)
       } catch (e) {
@@ -351,9 +357,8 @@ export default {
     },
 
     setDefaultAsset () {
-      const accountBalances = this.accountBalances
-        .find(item => item === this.assetPair.base)
-      this.form.asset = _get(accountBalances, 'asset.code', this.accountAssets[0])
+      const accountBalances = this.accountBalanceByCode(this.assetPair.base)
+      this.form.assetCode = _get(accountBalances, 'asset.code', this.accountAssets[0])
     },
   },
 }

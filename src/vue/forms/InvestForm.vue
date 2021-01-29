@@ -276,8 +276,8 @@ export default {
       isAccountGeneral: vuexTypes.isAccountGeneral,
       isAccountUsAccredited: vuexTypes.isAccountUsAccredited,
       isAccountUsVerified: vuexTypes.isAccountUsVerified,
-      balances: vuexTypes.accountBalances,
       assets: vuexTypes.assets,
+      accountBalanceByCode: vuexTypes.accountBalanceByCode,
     }),
 
     convertedAmount () {
@@ -292,10 +292,7 @@ export default {
       let quoteAssetBalances = []
 
       this.sale.quoteAssets.forEach(quote => {
-        const balance = this.balances.find(balanceItem => {
-          return balanceItem.asset.code === quote.asset.id
-        })
-
+        const balance = this.accountBalanceByCode(quote.asset.id)
         if (balance) {
           quoteAssetBalances.push(balance)
         }
@@ -404,8 +401,7 @@ export default {
         this.former.setAttr('investedAssetCode', this.form.asset.code || '')
         this.former.setAttr(
           'quoteBalanceId',
-          this.balances
-            .find(item => item.asset.code === this.form.asset.code).id || ''
+          this.accountBalanceByCode(this.form.asset.code).id || ''
         )
         this.former.setAttr(
           'saleQuoteAssetPrices',
@@ -436,8 +432,7 @@ export default {
       this.former.setAttr('saleId', this.sale.id || '')
       this.former.setAttr('saleBaseAssetCode', this.saleBaseAsset.code || '')
 
-      const baseBalance = this.balances
-        .find(balance => balance.asset.code === this.sale.baseAsset)
+      const baseBalance = this.accountBalanceByCode(this.sale.baseAsset)
 
       if (!baseBalance) {
         const operation = this.former.buildOpCreateBalance()
@@ -445,11 +440,7 @@ export default {
         await this.loadBalances()
       }
 
-      this.former.setAttr(
-        'baseBalanceId',
-        this.balances
-          .find(item => item.asset.code === this.sale.baseAsset).id || ''
-      )
+      this.former.setAttr('baseBalanceId', baseBalance.id || '')
 
       await this.loadCurrentInvestment()
       this.isLoaded = true

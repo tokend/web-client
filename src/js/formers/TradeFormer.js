@@ -1,9 +1,5 @@
 import { Former } from './Former'
 import { calculateFees } from '@/js/helpers/fees-helper'
-import {
-  getBalanceId,
-  buildOpCancel,
-} from '@/js/helpers/trade-helper'
 import { FEE_TYPES, base } from '@tokend/js-sdk'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 
@@ -17,49 +13,39 @@ export class TradeFormer extends Former {
     get _defaultAttrs () {
       return {
         isBuy: false,
-        pair: {
-          baseAssetCode: '',
-          quoteAssetCode: '',
-        },
+        baseAssetCode: '',
+        quoteAssetCode: '',
         baseAmount: '',
         quoteAmount: '',
+        baseBalanceId: '',
+        quoteBalanceId: '',
         creatorAccountId: '',
-        fees: {
-          totalFee: {},
-        },
+        fees: {},
       }
     }
 
-    async buildOpsCreate (offer) {
-      let operations = []
-      if (offer) {
-        operations.push(buildOpCancel(offer))
-      }
-
-      const ops = {
+    async buildOpCreate () {
+      const operation = {
         amount: this.attrs.baseAmount,
         price: String(+this.attrs.quoteAmount / +this.attrs.baseAmount),
         orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
         isBuy: this.attrs.isBuy,
-        baseBalance: getBalanceId(this.attrs.pair.baseAssetCode),
-        quoteBalance: getBalanceId(this.attrs.pair.quoteAssetCode),
-        fee: this.attrs.fees.totalFee.calculatedPercent,
+        baseBalance: this.attrs.baseBalanceId,
+        quoteBalance: this.attrs.quoteBalanceId,
+        fee: this.attrs.fees.calculatedPercent,
       }
-      operations.push(base.ManageOfferBuilder.manageOffer(ops))
-
-      return operations
+      return base.ManageOfferBuilder.manageOffer(operation)
     }
 
     async calculateFees () {
-      const response = await calculateFees({
-        assetCode: this.attrs.pair.quoteAssetCode,
+      const fee = await calculateFees({
+        assetCode: this.attrs.quoteAssetCode,
         amount: this.attrs.quoteAmount || 0,
         senderAccountId: this.attrs.creatorAccountId,
         type: FEE_TYPES.offerFee,
       })
-      this.attrs.fees.totalFee = response.totalFee
-
-      return response
+      this.attrs.fees = fee.totalFee
+      return fee
     }
 
     /**
@@ -77,9 +63,9 @@ export class TradeFormer extends Former {
 
       this.attrs.baseAmount = source.baseAmount
       this.attrs.quoteAmount = source.quoteAmount
-      this.attrs.pair.baseAssetCode = source.baseAsset.id
-      this.attrs.pair.quoteAssetCode = source.quoteAsset.id
+      this.attrs.baseAssetCode = source.baseAsset.id
+      this.attrs.quoteAssetCode = source.quoteAsset.id
       this.attrs.isBuy = source.isBuy
-      this.attrs.fees.totalFee = source.fee
+      this.attrs.fees = source.fee
     }
 }

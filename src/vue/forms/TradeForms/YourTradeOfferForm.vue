@@ -7,7 +7,7 @@
       <div class="app__form-field">
         <readonly-field
           :label="baseAssetLabelTranslationId | globalize"
-          :value="former.attrs.pair.baseAssetCode"
+          :value="former.attrs.baseAssetCode"
         />
       </div>
     </div>
@@ -23,8 +23,8 @@
           :step="config.MIN_AMOUNT"
           :label="
             'your-trade-offer-form.price-lbl' | globalize({
-              baseAsset: former.attrs.pair.baseAssetCode,
-              quoteAsset: former.attrs.pair.quoteAssetCode,
+              baseAsset: former.attrs.baseAssetCode,
+              quoteAsset: former.attrs.quoteAssetCode,
             })
           "
           :error-message="getFieldErrorMessage(
@@ -50,7 +50,7 @@
           :max="config.MAX_AMOUNT"
           :step="config.MIN_AMOUNT"
           :label="'your-trade-offer-form.base-amount-lbl' | globalize({
-            asset: former.attrs.pair.baseAssetCode
+            asset: former.attrs.baseAssetCode
           })"
           :error-message="getFieldErrorMessage(
             'form.baseAmount',
@@ -72,12 +72,12 @@
           <readonly-field
             :label="
               'your-trade-offer-form.total-amount-lbl' | globalize({
-                asset: former.attrs.pair.quoteAssetCode
+                asset: former.attrs.quoteAssetCode
               })
             "
             :value="{
               value: quoteAmount,
-              currency: former.attrs.pair.quoteAssetCode,
+              currency: former.attrs.quoteAssetCode,
             } | formatMoney"
             :error-message="getFieldErrorMessage(
               'quoteAmount',
@@ -239,6 +239,7 @@ export default {
     ...mapGetters({
       accountBalances: vuexTypes.accountBalances,
       accountId: vuexTypes.accountId,
+      accountBalanceByCode: vuexTypes.accountBalanceByCode,
     }),
 
     baseAssetLabelTranslationId () {
@@ -250,31 +251,29 @@ export default {
     accountAssets () {
       return this.accountBalances
         .map(balance => balance.asset.code)
-        .filter(asset => asset !== this.former.attrs.pair.quoteAssetCode)
+        .filter(asset => asset !== this.former.attrs.quoteAssetCode)
     },
 
     baseAssetBalance () {
-      const balanceItem = this.accountBalances
-        .find(balance => balance.asset.code === this.offer.baseAsset.id)
-
+      const balanceItem =
+        this.accountBalanceByCode(this.former.attrs.baseAssetCode)
       if (balanceItem) {
         return this.offer.isBuy
           ? balanceItem.balance
-          : MathUtil.add(balanceItem.balance, this.offer.baseAmount)
+          : MathUtil.add(balanceItem.balance, this.former.attrs.baseAmount)
       } else {
         return ''
       }
     },
 
     quoteAssetBalance () {
-      const balanceItem = this.accountBalances
-        .find(balance =>
-          balance.asset.code === this.former.attrs.pair.quoteAssetCode)
+      const balanceItem =
+        this.accountBalanceByCode(this.former.attrs.quoteAssetCode)
 
       if (balanceItem) {
         return this.offer.isBuy
           ? balanceItem.balance
-          : MathUtil.add(balanceItem.balance, this.offer.quoteAmount)
+          : MathUtil.add(balanceItem.balance, this.former.attrs.quoteAmount)
       } else {
         return ''
       }
@@ -368,8 +367,9 @@ export default {
 
             break
           case SUBMIT_MODES.update:
-            const operations = await this.former.buildOpsCreate(this.offer)
-            await api.postOperations(...operations)
+            const opCancelOp = buildOpCancel(this.offer)
+            const opCreateOp = await this.former.buildOpCreate()
+            await api.postOperations(opCancelOp, opCreateOp)
             Bus.success('your-trade-offer-form.order-updated-msg')
             this.$emit(EVENTS.offerUpdated)
 

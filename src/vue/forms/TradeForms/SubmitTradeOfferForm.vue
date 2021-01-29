@@ -8,7 +8,7 @@
         <div class="app__form-field">
           <readonly-field
             :label="baseAssetLabelTranslationId | globalize"
-            :value="former.attrs.pair.baseAssetCode"
+            :value="former.attrs.baseAssetCode"
           />
         </div>
       </div>
@@ -25,8 +25,8 @@
           :step="config.MIN_AMOUNT"
           :label="
             'submit-trade-offer-form.price-lbl' | globalize({
-              baseAsset: former.attrs.pair.baseAssetCode,
-              quoteAsset: former.attrs.pair.quoteAssetCode,
+              baseAsset: former.attrs.baseAssetCode,
+              quoteAsset: former.attrs.quoteAssetCode,
             })
           "
           :error-message="getFieldErrorMessage(
@@ -52,7 +52,7 @@
           :max="config.MAX_AMOUNT"
           :step="config.MIN_AMOUNT"
           :label="'submit-trade-offer-form.base-amount-lbl' | globalize({
-            asset: former.attrs.pair.baseAssetCode
+            asset: former.attrs.baseAssetCode
           })"
           :error-message="getFieldErrorMessage(
             'form.baseAmount',
@@ -74,12 +74,12 @@
           <readonly-field
             :label="
               'submit-trade-offer-form.total-amount-lbl' | globalize({
-                asset: former.attrs.pair.quoteAssetCode
+                asset: former.attrs.quoteAssetCode
               })
             "
             :value="{
               value: quoteAmount,
-              currency: former.attrs.pair.quoteAssetCode,
+              currency: former.attrs.quoteAssetCode,
             } | formatMoney"
             :error-message="getFieldErrorMessage(
               'quoteAmount',
@@ -150,7 +150,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import { TradeFormer } from '@/js/formers/TradeFormer'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { createBalanceIfNotExists } from '@/js/helpers/trade-helper'
+import { createBalanceIfNotExist } from '@/js/helpers/sale-helper'
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
 
@@ -227,8 +227,8 @@ export default {
 
   computed: {
     ...mapGetters({
-      accountBalances: vuexTypes.accountBalances,
       accountId: vuexTypes.accountId,
+      accountBalanceByCode: vuexTypes.accountBalanceByCode,
     }),
     baseAssetLabelTranslationId () {
       return this.former.attrs.isBuy
@@ -237,16 +237,14 @@ export default {
     },
 
     baseAssetBalance () {
-      const balanceItem = this.accountBalances
-        .find(balance =>
-          balance.asset.code === this.former.attrs.pair.baseAssetCode)
+      const balanceItem =
+        this.accountBalanceByCode(this.former.attrs.baseAssetCode)
       return balanceItem ? balanceItem.balance : ''
     },
 
     quoteAssetBalance () {
-      const balanceItem = this.accountBalances
-        .find(balance =>
-          balance.asset.code === this.former.attrs.pair.quoteAssetCode)
+      const balanceItem =
+        this.accountBalanceByCode(this.former.attrs.quoteAssetCode)
       return balanceItem ? balanceItem.balance : ''
     },
 
@@ -275,10 +273,14 @@ export default {
   async created () {
     try {
       this.former.setAttr('creatorAccountId', this.accountId)
+      this.former.setAttr('baseBalanceId',
+        this.accountBalanceByCode(this.former.attrs.baseAssetCode).id)
+      this.former.setAttr('quoteBalanceId',
+        this.accountBalanceByCode(this.former.attrs.quoteAssetCode).id)
 
+      this.form.baseAmount = this.former.attrs.baseAmount
       this.form.price =
         this.former.attrs.quoteAmount / this.former.attrs.baseAmount
-      this.form.baseAmount = this.former.attrs.baseAmount
 
       await this.loadBalances()
       this.isLoaded = true
@@ -319,12 +321,12 @@ export default {
     async submit () {
       this.isOfferSubmitting = true
       try {
-        await createBalanceIfNotExists(this.former.attrs.pair.baseAssetCode)
-        await createBalanceIfNotExists(this.former.attrs.pair.quoteAssetCode)
+        await createBalanceIfNotExist(this.former.attrs.baseAssetCode)
+        await createBalanceIfNotExist(this.former.attrs.quoteAssetCode)
         await this.loadBalances()
 
-        const operation = await this.former.buildOpsCreate()
-        await api.postOperations(...operation)
+        const operation = await this.former.buildOpCreate()
+        await api.postOperations(operation)
         Bus.success('submit-trade-offer-form.order-submitted-msg')
         this.$emit(EVENTS.offerSubmitted)
       } catch (e) {
