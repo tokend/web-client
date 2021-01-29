@@ -154,6 +154,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { TradeFormer } from '@/js/formers/TradeFormer'
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
+import { buildOpCancel } from '@/js/helpers/trade-helper'
 
 import { MathUtil } from '@/js/utils/math.util'
 import config from '@/config'
@@ -300,7 +301,6 @@ export default {
     },
 
     'form.price' () {
-      this.former.setAttr('pricePerOneItem', this.form.price)
       this.tryLoadFees()
     },
   },
@@ -310,7 +310,8 @@ export default {
       this.former.setAttr('creatorAccountId', this.accountId)
 
       this.form.baseAmount = this.former.attrs.baseAmount
-      this.form.price = this.former.attrs.pricePerOneItem
+      this.form.price =
+        this.former.attrs.quoteAmount / this.former.attrs.baseAmount
 
       await this.loadBalances()
       this.isLoaded = true
@@ -360,7 +361,7 @@ export default {
       try {
         switch (this.submitMode) {
           case SUBMIT_MODES.cancel:
-            const opCancel = this.former.buildOpsCancel(this.offer)
+            const opCancel = buildOpCancel(this.offer)
             await api.postOperations(opCancel)
             Bus.success('your-trade-offer-form.order-canceled-msg')
             this.$emit(EVENTS.offerCanceled)

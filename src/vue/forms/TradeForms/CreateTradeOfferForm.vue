@@ -283,7 +283,6 @@ export default {
     },
 
     'form.price' () {
-      this.former.setAttr('pricePerOneItem', this.form.price)
       this.tryLoadFees()
     },
 

@@ -1,6 +1,9 @@
 import { Former } from './Former'
 import { calculateFees } from '@/js/helpers/fees-helper'
-import { getBalanceId } from '@/js/helpers/trade-helper'
+import {
+  getBalanceId,
+  buildOpCancel,
+} from '@/js/helpers/trade-helper'
 import { FEE_TYPES, base } from '@tokend/js-sdk'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 
@@ -13,7 +16,6 @@ export class TradeFormer extends Former {
     attrs = this.attrs || this._defaultAttrs
     get _defaultAttrs () {
       return {
-        pricePerOneItem: '',
         isBuy: false,
         pair: {
           baseAssetCode: '',
@@ -28,34 +30,15 @@ export class TradeFormer extends Former {
       }
     }
 
-    /**
-     * @param {Object} offer
-     * @param {String} offer.id - offer id
-     * @param {Object} offer.baseBalance.id - balance id of the base asset
-     * @param {String} offer.quoteBalance.id - balance id of the quote asset
-     * @param {String} offer.price - offer price for one item
-     * @returns {Object} operation cancel offer
-     */
-    buildOpsCancel (offer) {
-      const ops = {
-        offerID: offer.id,
-        baseBalance: offer.baseBalance.id,
-        quoteBalance: offer.quoteBalance.id,
-        price: offer.price,
-        orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
-      }
-      return base.ManageOfferBuilder.cancelOffer(ops)
-    }
-
     async buildOpsCreate (offer) {
       let operations = []
       if (offer) {
-        operations.push(this.buildOpsCancel(offer))
+        operations.push(buildOpCancel(offer))
       }
 
       const ops = {
         amount: this.attrs.baseAmount,
-        price: this.attrs.pricePerOneItem,
+        price: String(+this.attrs.quoteAmount / +this.attrs.baseAmount),
         orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
         isBuy: this.attrs.isBuy,
         baseBalance: getBalanceId(this.attrs.pair.baseAssetCode),
@@ -82,7 +65,6 @@ export class TradeFormer extends Former {
     /**
      *
      * @param {Object} source
-     * @param {String} price: price per one item
      * @param {String} baseAmount: base amount
      * @param {String} quoteAmount: quote amount
      * @param {String} baseAsset.id: baset asset id
@@ -93,7 +75,6 @@ export class TradeFormer extends Former {
     populate (source) {
       this.attrs = this._defaultAttrs
 
-      this.attrs.pricePerOneItem = source.price
       this.attrs.baseAmount = source.baseAmount
       this.attrs.quoteAmount = source.quoteAmount
       this.attrs.pair.baseAssetCode = source.baseAsset.id

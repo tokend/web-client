@@ -268,7 +268,6 @@ export default {
     },
 
     'form.price' () {
-      this.former.setAttr('pricePerOneItem', this.form.price)
       this.tryLoadFees()
     },
   },
@@ -277,7 +276,8 @@ export default {
     try {
       this.former.setAttr('creatorAccountId', this.accountId)
 
-      this.form.price = this.former.attrs.pricePerOneItem
+      this.form.price =
+        this.former.attrs.quoteAmount / this.former.attrs.baseAmount
       this.form.baseAmount = this.former.attrs.baseAmount
 
       await this.loadBalances()
