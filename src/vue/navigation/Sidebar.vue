@@ -30,7 +30,7 @@
 
       <section class="sidebar__links-section">
         <nav class="sidebar__links-group">
-          <router-link
+          <!-- <router-link
             key="dashboard"
             v-ripple
             class="sidebar__link"
@@ -45,8 +45,8 @@
             <span>
               {{ 'pages-names.dashboard' | globalize }}
             </span>
-          </router-link>
-          <router-link
+          </router-link> -->
+          <!-- <router-link
             key="movements"
             v-ripple
             class="sidebar__link"
@@ -61,8 +61,8 @@
             <span>
               {{ 'pages-names.movements' | globalize }}
             </span>
-          </router-link>
-          <router-link
+          </router-link> -->
+          <!-- <router-link
             v-if="isAccountCorporate"
             key="register-of-shares"
             v-ripple
@@ -77,6 +77,22 @@
             />
             <span>
               {{ 'pages-names.register-of-shares' | globalize }}
+            </span>
+          </router-link> -->
+          <router-link
+            key="sales"
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            tag="a"
+            :to="vueRoutes.sales"
+          >
+            <i
+              class="sidebar__link-icon"
+              :class="`mdi mdi-trending-up`"
+            />
+            <span>
+              {{ 'pages-names.sales' | globalize }}
             </span>
           </router-link>
           <router-link
@@ -95,23 +111,7 @@
               {{ 'pages-names.assets' | globalize }}
             </span>
           </router-link>
-          <router-link
-            key="sales"
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            tag="a"
-            :to="vueRoutes.sales"
-          >
-            <i
-              class="sidebar__link-icon"
-              :class="`mdi mdi-trending-up`"
-            />
-            <span>
-              {{ 'pages-names.sales' | globalize }}
-            </span>
-          </router-link>
-          <router-link
+          <!-- <router-link
             key="polls"
             v-ripple
             class="sidebar__link"
@@ -126,7 +126,7 @@
             <span>
               {{ 'pages-names.polls' | globalize }}
             </span>
-          </router-link>
+          </router-link> -->
           <router-link
             key="trade"
             v-ripple
@@ -143,7 +143,7 @@
               {{ 'pages-names.trade' | globalize }}
             </span>
           </router-link>
-          <router-link
+          <!-- <router-link
             v-if="isAccountCorporate"
             key="requests"
             v-ripple
@@ -159,8 +159,8 @@
             <span>
               {{ 'pages-names.requests' | globalize }}
             </span>
-          </router-link>
-          <router-link
+          </router-link> -->
+          <!-- <router-link
             key="issuance"
             v-ripple
             class="sidebar__link"
@@ -175,8 +175,8 @@
             <span>
               {{ 'pages-names.issuance' | globalize }}
             </span>
-          </router-link>
-          <router-link
+          </router-link> -->
+          <!-- <router-link
             key="limits"
             v-ripple
             class="sidebar__link"
@@ -191,8 +191,8 @@
             <span>
               {{ 'pages-names.limits' | globalize }}
             </span>
-          </router-link>
-          <router-link
+          </router-link> -->
+          <!-- <router-link
             key="fees"
             v-ripple
             class="sidebar__link"
@@ -207,15 +207,7 @@
             <span>
               {{ 'pages-names.fees' | globalize }}
             </span>
-          </router-link>
-        </nav>
-
-        <nav class="sidebar__links-group">
-          <p
-            class="sidebar__links-group-title"
-          >
-            {{ 'sidebar.section-account' | globalize }}
-          </p>
+          </router-link> -->
           <router-link
             key="settings"
             v-ripple
@@ -234,17 +226,12 @@
           </router-link>
         </nav>
       </section>
-
-      <section class="sidebar__footer-section">
-        <app-footer />
-      </section>
     </aside>
   </div>
 </template>
 
 <script>
 import Logo from '@/vue/assets/Logo'
-import AppFooter from '@/vue/navigation/Footer'
 
 import { vueRoutes } from '@/vue-router/routes'
 
@@ -263,7 +250,6 @@ export default {
 
   components: {
     Logo,
-    AppFooter,
   },
 
   data: () => ({

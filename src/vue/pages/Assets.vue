@@ -1,7 +1,7 @@
 <template>
   <div>
     <top-bar>
-      <template slot="main">
+      <!-- <template slot="main">
         <router-link :to="vueRoutes.assetsExplore">
           <span>{{ 'assets-page.explore-title' | globalize }}</span>
         </router-link>
@@ -29,7 +29,7 @@
             {{ 'assets-page.create-btn' | globalize }}
           </span>
         </button>
-      </template>
+      </template> -->
     </top-bar>
 
     <template v-if="isAccountCorporate">

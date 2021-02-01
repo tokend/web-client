@@ -606,7 +606,7 @@
     },
     "verification-form": {
       "account-information-lbl": "Account information",
-      "create-btn": "Create request",
+      "create-btn": "Update",
       "update-btn": "Update",
       "personal-details-lbl": "Personal details",
       "photo-verification-lbl": "Photo verification",
@@ -625,7 +625,7 @@
       "industry-lbl": "Industry",
       "team-size-lbl": "Team size",
       "website-lbl": "Website",
-      "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
+      "request-submitted-msg": "Your request has been submitted successfully",
       "login-btn": "Login"
     },
     "input-field": {
@@ -682,7 +682,7 @@
     "pages-names": {
       "dashboard": "Dashboard",
       "limits": "Limits",
-      "assets": "Assets",
+      "assets": "Wallet",
       "requests": "Requests",
       "trade": "Trade",
       "settings": "Settings",
@@ -690,7 +690,7 @@
       "movements": "Movements",
       "issuance": "Issuance requests",
       "terms": "Terms",
-      "sales": "Sales",
+      "sales": "Invest",
       "sale-details": "Sale details",
       "loyalty-points": "Loyalty points",
       "statistics": "Statistics",

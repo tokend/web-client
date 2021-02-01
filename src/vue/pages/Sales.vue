@@ -1,7 +1,7 @@
 <template>
   <div class="sales">
     <top-bar>
-      <template slot="main">
+      <!-- <template slot="main">
         <router-link :to="vueRoutes.investableSales">
           <span>{{ 'sales.investable-sales' | globalize }}</span>
         </router-link>
@@ -26,7 +26,7 @@
           <i class="mdi mdi-plus sales__btn-icon" />
           {{ 'sales.create-sale' | globalize }}
         </button>
-      </template>
+      </template> -->
     </top-bar>
     <template v-if="isAccountCorporate">
       <drawer

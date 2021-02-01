@@ -4,48 +4,6 @@
       <verification-state-message />
 
       <template v-if="!isAccountBlocked">
-        <p class="verification__subtitle">
-          {{ 'verification-page.account-type-lbl' | globalize }}
-        </p>
-        <div class="account-type-selector">
-          <router-link
-            tag="button"
-            :to="vueRoutes.verificationGeneral"
-            class="account-type-selector__item"
-            :disabled="!isRoleChangeable && !kycRequest.isGeneralKycRecord"
-          >
-            <p class="account-type-selector__item-title">
-              {{ 'verification-page.account-type-general-title' | globalize }}
-            </p>
-            <p class="account-type-selector__item-description">
-              <!-- eslint-disable-next-line max-len -->
-              {{ 'verification-page.account-type-general-description' | globalize }}
-            </p>
-            <div class="account-type-selector__selected-icon">
-              <!-- eslint-disable-next-line max-len -->
-              <i class="mdi mdi-check account-type-selector__selected-icon-tag" />
-            </div>
-          </router-link>
-
-          <router-link
-            tag="button"
-            :to="vueRoutes.verificationCorporate"
-            class="account-type-selector__item"
-            :disabled="!isRoleChangeable && !kycRequest.isCorporateKycRecord"
-          >
-            <p class="account-type-selector__item-title">
-              {{ 'verification-page.account-type-corporate-title' | globalize }}
-            </p>
-            <p class="account-type-selector__item-description">
-              <!-- eslint-disable-next-line max-len -->
-              {{ 'verification-page.account-type-corporate-description' | globalize }}
-            </p>
-            <div class="account-type-selector__selected-icon">
-              <i class="mdi mdi-check" />
-            </div>
-          </router-link>
-        </div>
-
         <div class="verification__form">
           <router-view />
         </div>
