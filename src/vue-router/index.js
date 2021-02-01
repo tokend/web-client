@@ -110,6 +110,12 @@ const router = new Router({
           component: resolve => require(['@/vue/pages/KycRecovery'], resolve),
           beforeEnter: authPageGuard,
         },
+        {
+          path: '/sign-up-general-verification',
+          name: vueRoutes.signupKyc.name,
+          component: resolve => require(['@/vue/pages/SignupGeneralKyc'], resolve),
+          beforeEnter: signupKycPageGuard,
+        },
       ],
     },
     {
@@ -434,6 +440,15 @@ function kycRecoveryGuard (to, from, next) {
     : next(vueRoutes.app)
 }
 
+function signupKycPageGuard (to, from, next) {
+  const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
+  const isAccountUnverified = store.getters[vuexTypes.isAccountUnverified]
+
+  isLoggedIn && isAccountUnverified
+    ? next()
+    : next(vueRoutes.app)
+}
+
 function authPageGuard (to, from, next) {
   const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
   isLoggedIn ? next(vueRoutes.app) : next()
@@ -441,8 +456,9 @@ function authPageGuard (to, from, next) {
 
 function redirectRouteGuard (to, from, next) {
   const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
+  const isAccountUnverified = store.getters[vuexTypes.isAccountUnverified]
 
-  if (isLoggedIn) {
+  if (isLoggedIn && !isAccountUnverified) {
     const isKycRecoveryInProgress =
       store.getters[vuexTypes.isAccountKycRecoveryInProgress]
 
@@ -453,6 +469,8 @@ function redirectRouteGuard (to, from, next) {
     } else {
       next()
     }
+  } else if (isLoggedIn && isAccountUnverified) {
+    next(vueRoutes.signupKyc)
   } else {
     next(vueRoutes.login)
   }

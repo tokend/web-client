@@ -2,13 +2,7 @@
   <div class="passport">
     <button
       @click="toggleDropdown">
-      <img
-        v-if="kyc.avatar && kyc.avatar.publicUrl"
-        class="passport__avatar passport__avatar-image"
-        :src="kyc.avatar.publicUrl"
-      >
       <p
-        v-else
         class="passport__avatar passport__email-abbr-btn"
       >
         {{ email | abbreviate }}

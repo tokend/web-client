@@ -93,7 +93,7 @@ export default {
           await this.storeWallet(wallet)
           await this.loadAccount(this.walletAccountId)
           await this.loadKyc()
-          await this.$router.push(vueRoutes.app)
+          await this.$router.push(vueRoutes.signupKyc)
         }
 
         const shouldVerifyEmail =

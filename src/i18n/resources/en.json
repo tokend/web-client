@@ -478,7 +478,8 @@
       "lost-seed-answer": "Recover account by KYC",
       "have-an-account-question": "Already have an account?",
       "have-an-account-answer": "Sign in now",
-      "verifying-email-msg": "Please wait while we verifying your email address."
+      "verifying-email-msg": "Please wait while we verifying your email address.",
+      "signup-general-kyc-title": "Personal details"
     },
     "settings-page": {
       "verification-tab": "Verification",
@@ -590,7 +591,7 @@
       "photo-verification-lbl": "Photo verification",
       "first-name-lbl": "First name",
       "last-name-lbl": "Last name",
-      "avatar-lbl": "Avatar",
+      "avatar-lbl": "Passport",
       "image-type-note": "image (Max 32mb)",
       "file-type-note": "image/pdf (Max 32mb)",
       "verification-code-btn": "Show the key",
@@ -624,7 +625,8 @@
       "industry-lbl": "Industry",
       "team-size-lbl": "Team size",
       "website-lbl": "Website",
-      "request-submitted-msg": "Your request has been submitted successfully. Please wait for review."
+      "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
+      "login-btn": "Login"
     },
     "input-field": {
       "caps-lock-warning": "Warning: Caps-Lock is ON"
@@ -781,7 +783,7 @@
       "account-unverified": "Unverified account",
       "account-us-accredited": "Verified accredited investor (US)",
       "account-us-verified": "Verified account (US)",
-      "account-general": "General account",
+      "account-general": "Investor account",
       "account-corporate": "Corporate account",
       "account-blocked": "Blocked account",
       "signed-in-as": "Signed in as",

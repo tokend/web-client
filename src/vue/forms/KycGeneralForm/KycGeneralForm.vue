@@ -4,36 +4,6 @@
     @submit.prevent="confirm"
   >
     <div class="kyc-general-form__sections">
-      <country-section
-        class="kyc-general-form__section"
-        :is-disabled="formMixin.isDisabled"
-        :former="former"
-      />
-
-      <personal-section
-        class="kyc-general-form__section"
-        :is-disabled="formMixin.isDisabled"
-        :former="former"
-      />
-
-      <address-section
-        class="kyc-general-form__section"
-        :is-disabled="formMixin.isDisabled"
-        :former="former"
-      />
-
-      <id-docs-section
-        class="kyc-general-form__section"
-        :is-disabled="formMixin.isDisabled"
-        :former="former"
-      />
-
-      <selfie-section
-        class="kyc-general-form__section"
-        :is-disabled="formMixin.isDisabled"
-        :former="former"
-      />
-
       <template v-if="!former.isRecoveryOpBuilder">
         <avatar-section
           class="kyc-general-form__section"
@@ -41,6 +11,13 @@
           :former="former"
         />
       </template>
+
+      <personal-section
+        class="kyc-general-form__section"
+        :is-disabled="formMixin.isDisabled"
+        :former="former"
+        :white-autofill="!isSignUpKycPage"
+      />
     </div>
 
     <div class="app__form-actions">
@@ -56,13 +33,14 @@
         class="app__button-raised"
         :disabled="formMixin.isDisabled"
       >
-        <template v-if="former.willUpdateRequest">
-          {{ 'verification-form.update-btn' | globalize }}
-        </template>
-
-        <template v-else>
-          {{ 'verification-form.create-btn' | globalize }}
-        </template>
+        {{
+          (isSignUpKycPage
+            ? 'verification-form.login-btn'
+            : former.willUpdateRequest
+              ? 'verification-form.update-btn'
+              : 'verification-form.create-btn'
+          ) | globalize
+        }}
       </button>
     </div>
   </form>
@@ -78,22 +56,15 @@ import { mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import formMixin from '@/vue/mixins/form.mixin'
 import config from '@/config'
-import CountrySection from './components/CountrySection'
 import PersonalSection from './components/PersonalSection'
-import AddressSection from './components/AddressSection'
-import IdDocsSection from './components/IdDocsSection'
-import SelfieSection from './components/SelfieSection'
 import AvatarSection from './components/AvatarSection'
+import { vueRoutes } from '@/vue-router/routes'
 
 export default {
   name: 'kyc-general-form',
 
   components: {
-    CountrySection,
     PersonalSection,
-    AddressSection,
-    IdDocsSection,
-    SelfieSection,
     AvatarSection,
   },
 
@@ -103,6 +74,11 @@ export default {
     former: {
       type: KycGeneralFormer,
       default: () => new KycGeneralFormer(),
+    },
+  },
+  computed: {
+    isSignUpKycPage () {
+      return this.$route.name === vueRoutes.signupKyc.name
     },
   },
 
@@ -134,8 +110,13 @@ export default {
 
     async afterKycSubmit () {
       await delay(config.RELOAD_TIMEOUT) // w8 for the horizon ingest
-      await this.loadKyc() // update the current kyc state
-      Bus.success('verification-form.request-submitted-msg')
+      if (this.isSignUpKycPage) {
+        await this.loadAccount()
+        await this.$router.push(vueRoutes.app)
+      } else {
+        await this.loadKyc() // update the current kyc state
+        Bus.success('verification-form.request-submitted-msg')
+      }
     },
 
     async afterKycRecoverySubmit () {
@@ -147,7 +128,11 @@ export default {
 
     async confirm () {
       if (!this.isFormValid()) return
-      this.showConfirmation()
+      if (this.isSignUpKycPage) {
+        this.submit()
+      } else {
+        this.showConfirmation()
+      }
     },
   },
 }
@@ -157,6 +142,6 @@ export default {
 .kyc-general-form__sections {
   display: grid;
   grid: auto-flow auto / auto;
-  gap: 6rem;
+  gap: 2rem;
 }
 </style>

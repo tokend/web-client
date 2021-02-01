@@ -1,13 +1,8 @@
 <template>
   <div class="personal-section">
-    <h4 class="personal-section__title">
-      {{ 'general-form.personal-details-lbl' | globalize }}
-    </h4>
-
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          white-autofill
           v-model="firstName"
           @change="former.setAttr('firstName', firstName)"
           @blur="touchField('firstName')"
@@ -15,11 +10,11 @@
           :label="'general-form.first-name-lbl' | globalize"
           :error-message="getFieldErrorMessage('firstName')"
           :disabled="isDisabled"
+          :white-autofill="whiteAutofill"
         />
       </div>
       <div class="app__form-field">
         <input-field
-          white-autofill
           v-model="lastName"
           @change="former.setAttr('lastName', lastName)"
           @blur="touchField('lastName')"
@@ -27,11 +22,12 @@
           :label="'general-form.last-name-lbl' | globalize"
           :error-message="getFieldErrorMessage('lastName')"
           :disabled="isDisabled"
+          :white-autofill="whiteAutofill"
         />
       </div>
     </div>
 
-    <div class="app__form-row">
+    <!-- <div class="app__form-row">
       <div class="app__form-field">
         <date-field
           v-model="dateOfBirth"
@@ -47,7 +43,7 @@
           :disabled="isDisabled"
         />
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -70,6 +66,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    whiteAutofill: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data () {
@@ -84,7 +84,6 @@ export default {
     return {
       firstName: { required },
       lastName: { required },
-      dateOfBirth: { required },
     }
   },
 }
