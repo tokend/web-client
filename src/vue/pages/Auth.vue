@@ -4,17 +4,6 @@
       <h3 class="auth__title-small">
         {{ 'auth-pages.small-title' | globalize }}
       </h3>
-      <!-- eslint-disable -->
-      <h1
-        class="auth__title-big"
-        v-html="$options.filters.globalize('auth-pages.big-title', { escapeValue: false })"
-      />
-      <!-- eslint-enable -->
-      <template v-if="buildVersion">
-        <p class="auth__version">
-          {{ buildVersion }}
-        </p>
-      </template>
     </div>
     <div class="auth__form">
       <logo class="auth__logo" />
@@ -28,10 +17,6 @@
       </div>
 
       <router-view />
-
-      <section class="auth__footer-section">
-        <app-footer />
-      </section>
     </div>
   </div>
 </template>
@@ -40,7 +25,6 @@
 import Logo from '../assets/Logo'
 import IdleMessage from '@/vue/common/IdleMessage'
 import SessionMessage from '@/vue/common/SessionMessage'
-import AppFooter from '@/vue/navigation/Footer'
 import config from '@/config'
 
 export default {
@@ -49,7 +33,6 @@ export default {
     Logo,
     IdleMessage,
     SessionMessage,
-    AppFooter,
   },
   data () {
     return {

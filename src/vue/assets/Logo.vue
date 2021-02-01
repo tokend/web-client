@@ -3,7 +3,7 @@
     class="logotype"
     :to="vueRoutes.dashboard">
     <img
-      src="@static/branding/logo.svg"
+      src="@static/branding/logo.png"
       :alt="config.APP_NAME">
   </router-link>
 </template>

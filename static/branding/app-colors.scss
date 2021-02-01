@@ -1,10 +1,10 @@
-$col-primary: #3a4180;
+$col-primary: #199FD6;
 
 // auth
-$col-auth-titles-background-light: #5d5882;
-$col-auth-titles-background-dark: #2a2749;
-$col-text-auth-title-big: #ffffff;
-$col-text-auth-title-small: #7b6eff;
+$col-auth-titles-background-light: #199FD6;
+$col-auth-titles-background-dark: #262461;
+$col-text-auth-title-big: rgb(255, 255, 255);
+$col-text-auth-title-small: rgb(255, 255, 255);
 $col-text-auth-version: rgba(#7b6eff, 0.65);
 
 // sidebar
@@ -14,7 +14,7 @@ $col-footer-text: $col-primary;
 $col-sidebar-active-elem-text: rgba($col-sidebar-text, 1);
 $col-sidebar-active-elem-background: #f2f2f4;
 
-$col-btn: #7b6eff;
+$col-btn: #199FD6;
 $col-button-disabled: rgba($col-btn, 0.7);
 $col-text-page-heading: $col-primary;
 
