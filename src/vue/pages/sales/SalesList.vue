@@ -119,7 +119,7 @@ export default {
     saleRecords: [
       {
         name: 'Linde industry facility investment project - Linde Coins',
-        logoUrl: '/static/images/linde.jpg',
+        logoUrl: '/static/images/linde-logo.jpg',
       },
       {
         name: 'UK student accommodation investment - Bel coins',
