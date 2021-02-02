@@ -22,16 +22,16 @@
 
           <!-- eslint-disable-next-line max-len -->
           <button
-            v-if="currentAsset.isTransferable"
             class="app__button-raised dashboard__action"
             @click="transferFormIsShown = true"
           >
-            <i class="mdi mdi-send mdi-rotate-315 dashboard__send-icon" />
-            {{
-              'dashboard.send-asset-lbl' | globalize({
-                asset: currentAssetCode
-              })
-            }}
+            Redemption
+          </button>
+          <button
+            class="app__button-raised dashboard__action"
+            @click="transferFormIsShown = true"
+          >
+            Deposit
           </button>
         </div>
       </div>
@@ -40,10 +40,10 @@
           v-if="currentAssetCode !== defaultQuoteAsset"
           class="dashboard__chart"
         >
-          <chart
+          <!-- <chart
             :base-asset="currentAssetCode"
             :quote-asset="defaultQuoteAsset"
-          />
+          /> -->
         </div>
         <div
           class="dashboard__activity"
@@ -89,7 +89,7 @@ import AssetSelector from '@/vue/pages/dashboard/Dashboard.AssetSelector.vue'
 import Transfer from '@/vue/forms/TransferForm'
 import IssuanceForm from '@/vue/forms/IssuanceForm'
 import Drawer from '@/vue/common/Drawer'
-import Chart from '@/vue/common/chart/Chart'
+// import Chart from '@/vue/common/chart/Chart'
 import MovementsHistoryModule from '@/vue/modules/movements-history'
 
 import UpdateList from '@/vue/mixins/update-list.mixin'
@@ -108,7 +108,7 @@ export default {
     Transfer,
     Drawer,
     IssuanceForm,
-    Chart,
+    // Chart,
     MovementsHistoryModule,
   },
 
@@ -253,7 +253,7 @@ export default {
 
 .dashboard__activity {
   width: 100%;
-  margin-top: 2.4rem;
+  margin-top: 5.4rem;
   overflow-x: auto;
 }
 </style>
