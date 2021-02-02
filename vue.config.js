@@ -57,8 +57,8 @@ module.exports = {
       new IgnorePlugin(/ed25519/),
       new CopyWebpackPlugin([
         {
-          from: path.resolve(__dirname, resolveApp('static/images/pre-issuance-guide')),
-          to: 'static/images/pre-issuance-guide',
+          from: path.resolve(__dirname, resolveApp('static/images')),
+          to: 'static/images',
         },
         {
           from: path.resolve(__dirname, resolveApp('static/init-loader')),

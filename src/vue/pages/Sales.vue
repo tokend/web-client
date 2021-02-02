@@ -1,7 +1,7 @@
 <template>
   <div class="sales">
-    <top-bar>
-      <!-- <template slot="main">
+    <!--<top-bar>
+       <template slot="main">
         <router-link :to="vueRoutes.investableSales">
           <span>{{ 'sales.investable-sales' | globalize }}</span>
         </router-link>
@@ -26,8 +26,8 @@
           <i class="mdi mdi-plus sales__btn-icon" />
           {{ 'sales.create-sale' | globalize }}
         </button>
-      </template> -->
-    </top-bar>
+      </template>
+    </top-bar>-->
     <template v-if="isAccountCorporate">
       <drawer
         :is-shown.sync="isCreateSaleDrawerShown"
@@ -50,7 +50,7 @@
 <script>
 import config from '@/config'
 
-import TopBar from '@/vue/common/TopBar'
+// import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
 import SaleForm from '@/vue/forms/SaleForm'
 
@@ -64,7 +64,7 @@ import UpdateList from '@/vue/mixins/update-list.mixin'
 export default {
   name: 'sales',
   components: {
-    TopBar,
+    // TopBar,
     Drawer,
     SaleForm,
   },

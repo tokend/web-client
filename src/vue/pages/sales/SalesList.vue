@@ -1,6 +1,6 @@
 <template>
   <div class="sales-list">
-    <div class="sales__state-filter">
+    <!-- <div class="sales__state-filter">
       <select-field
         v-model="filters.state"
         class="sales-asset-selector__field app__select app__select--no-border"
@@ -13,7 +13,7 @@
           {{ saleState.labelTranslationId | globalize }}
         </option>
       </select-field>
-    </div>
+    </div> -->
     <template>
       <div class="sales__sale-cards">
         <drawer :is-shown.sync="isDetailsDrawerShown">
@@ -52,22 +52,20 @@
     v-show is a hack to hide `More` button if there are no sales,
     matching the filtering criteria (when no data message is shown).
   -->
-    <collection-loader
+    <!-- <collection-loader
       v-show="filteredSales.length"
       class="sales__loader"
       :key="saleUpdateKey"
       :first-page-loader="recordsLoader"
       @first-page-load="setRecords"
       @next-page-load="extendRecords"
-    />
+    /> -->
   </div>
 </template>
 
 <script>
 import Drawer from '@/vue/common/Drawer'
-import CollectionLoader from '@/vue/common/CollectionLoader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
-import SelectField from '@/vue/fields/SelectField'
 
 import SaleOverview from '@/vue/pages/sales/SaleOverview'
 import SaleCard from '@/vue/pages/sales/SaleCard'
@@ -102,11 +100,9 @@ export default {
   name: 'sales-list',
   components: {
     Drawer,
-    CollectionLoader,
     NoDataMessage,
     SaleOverview,
     SaleCard,
-    SelectField,
     SaleSkeletonLoader,
   },
 
@@ -120,12 +116,21 @@ export default {
   },
 
   data: _ => ({
-    saleRecords: [],
+    saleRecords: [
+      {
+        name: 'Linde industry facility investment project - Linde Coins',
+        logoUrl: '/static/images/linde.jpg',
+      },
+      {
+        name: 'UK student accommodation investment - Bel coins',
+        logoUrl: '/static/images/belfast.jpg',
+      },
+    ],
     filters: {
       baseAsset: '',
       state: SALE_STATES.live.value,
     },
-    isLoaded: false,
+    isLoaded: true,
     isDetailsDrawerShown: false,
     selectedSale: null,
     itemsPerSkeletonLoader: 3,

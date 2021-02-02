@@ -49,13 +49,13 @@ export default {
   },
 
   data: _ => ({
-    saleDescription: '',
+    saleDescription: 'Linde is a leading global industrial gases and engineering company with 2019 sales of $28 billion (€25 billion), and is actively looking for expansion of its industry-leading plants  for the supply of nitrogen, oxygen and compressed air to clients to meet the increasing demand in industrial gases. Linde constructs the plants and hands them over completed to clients. ',
     isLoaded: false,
     isLoadingFailed: false,
   }),
 
   async created () {
-    await this.loadSaleDescription()
+    // await this.loadSaleDescription()
   },
 
   methods: {

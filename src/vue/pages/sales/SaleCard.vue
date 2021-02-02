@@ -1,12 +1,12 @@
 <template>
   <router-link
     class="sale-card"
-    :to="{ ...vueRoutes.saleDetails, params: { id: sale.id } }"
+    :to="{ ...vueRoutes.saleDetails, params: { id: 1 } }"
   >
     <div class="sale-card__header">
       <img
         class="sale-card__logo"
-        :src="saleLogoUrl"
+        :src="sale.logoUrl"
       >
     </div>
 
@@ -18,71 +18,16 @@
         {{ sale.name }}
       </p>
 
-      <p
-        class="sale-card__desc"
-        :title="sale.shortDescription"
-      >
-        {{ sale.shortDescription }}
-      </p>
-
-      <div class="sale-card__progress-bar">
-        <div
-          class="sale-card__progress"
-          :style="`width: ${capProgress}%`"
-        />
-      </div>
-
-      <p class="sale-card__funded">
-        <!-- eslint-disable max-len -->
-        {{ 'sale-card.funded' | globalize({ funded: sale.currentCap / sale.hardCap }) }}
-        <!-- eslint-enable max-len -->
-      </p>
-
-      <p class="sale-card__invested">
-        <!-- eslint-disable max-len -->
-        {{ 'sale-card.invested' | globalize({ invested: { value: sale.currentCap, currency: sale.defaultQuoteAsset } }) }}
-        <!-- eslint-enable max-len -->
-      </p>
-
-      <p class="sale-card__days-to-launch">
-        <template v-if="sale.daysToGo >= 0">
-          {{ 'sale-card.days-to-launch' | globalize({ days: sale.daysToGo }) }}
-        </template>
-
-        <!-- eslint-disable max-len -->
-        <template v-else-if="sale.daysToEnd >= 0 && sale.stateValue === SALE_STATES.open">
-          {{ 'sale-card.days-to-end' | globalize({ days: sale.daysToEnd }) }}
-          <!-- eslint-enable max-len -->
-        </template>
-
-        <!-- eslint-disable max-len -->
-        <template v-else-if="sale.daysToEnd >= 0 && sale.stateValue === SALE_STATES.cancelled">
-          {{ 'sale-card.canceled' | globalize }}
-          <!-- eslint-enable max-len -->
-        </template>
-
-        <!-- eslint-disable max-len -->
-        <template v-else-if="sale.daysToEnd >= 0 && sale.stateValue === SALE_STATES.closed">
-          {{ 'sale-card.closed' | globalize }}
-          <!-- eslint-enable max-len -->
-        </template>
-
-        <template v-else>
-          <!-- eslint-disable-next-line -->
-          {{ 'sale-card.days-after-end' | globalize({ days: sale.daysAfterEnd }) }}
-        </template>
-      </p>
-
       <vue-markdown
         class="sale-card__offer"
         :source="'sale-card.offer' | globalize({
           baseHardCap: {
-            value: sale.baseHardCap,
-            currency: sale.baseAsset
+            value: 1,
+            currency: 'token'
           },
           hardCap: {
-            value: sale.hardCap,
-            currency: sale.defaultQuoteAsset
+            value: 1,
+            currency: 'Euro'
           }
         })"
         :html="false"
@@ -96,7 +41,6 @@ import VueMarkdown from 'vue-markdown'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
-import { documentsManager } from '@/api'
 import { vueRoutes } from '@/vue-router/routes'
 import { SALE_STATES } from '@/js/const/sale-states'
 
@@ -116,10 +60,6 @@ export default {
   }),
 
   computed: {
-    saleLogoUrl () {
-      return documentsManager.getDocumentUrlByKey(this.sale.logoKey)
-    },
-
     capProgress () {
       const capPercentage = (this.sale.currentCap / this.sale.hardCap) * 100
       const progress = Math.round(capPercentage * 100) / 100
@@ -143,6 +83,9 @@ export default {
   text-decoration: none;
   color: inherit;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .sale-card__header {
@@ -161,7 +104,7 @@ export default {
   border-radius: 0.4rem 0.4rem 0 0;
   max-height: 100%;
   max-width: 100%;
-  width: auto;
+  width: 100%;
   height: auto;
   position: absolute;
   top: 0;
@@ -169,16 +112,21 @@ export default {
   left: 0;
   right: 0;
   margin: auto;
+  object-fit: cover;
 }
 
 .sale-card__info {
   padding: 2.2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .sale-card__name {
   font-size: 1.8rem;
   font-weight: 700;
   color: $col-sale-card-text-primary;
+  flex: 1;
 }
 
 .sale-card__desc {

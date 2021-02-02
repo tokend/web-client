@@ -12,7 +12,7 @@ const STATES = {
 }
 
 export class SaleRecord {
-  constructor (record) {
+  constructor (record = {}) {
     this._record = record
 
     this.id = record.id

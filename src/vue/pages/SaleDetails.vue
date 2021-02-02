@@ -1,72 +1,19 @@
 <template>
   <div class="sale-details">
-    <template v-if="sale">
-      <top-bar>
-        <template slot="main">
-          <!--
-            HACK: we don't need any active-class here, so empty "active-class"
-            attr prevents adding any active-class
-           -->
-          <router-link
-            :to="vueRoutes.sales"
-            active-class>
-            <span>{{ 'sale-details.investable-sales-tab' | globalize }}</span>
-          </router-link>
+    <div class="sale-details__title">
+      <h2 class="sale-details__name">
+        Linde industry facility investment project - Linde Coins
+      </h2>
+    </div>
 
-          <router-link
-            v-if="isAccountCorporate"
-            :to="vueRoutes.userOwnedSales"
-          >
-            <span>{{ 'sales.my-sales' | globalize }}</span>
-          </router-link>
-
-          <router-link :to="{ ...vueRoutes.saleCampaign, params: { id } }">
-            <span>{{ 'sale-details.campaign-tab' | globalize }}</span>
-          </router-link>
-        </template>
-      </top-bar>
-
-      <div class="sale-details__title">
-        <h2 class="sale-details__name">
-          {{ `${sale.name} (${sale.baseAsset})` }}
-        </h2>
-
-        <p class="sale-details__short-desc">
-          {{ sale.shortDescription }}
-        </p>
-      </div>
-
-      <router-view
-        :sale="sale"
-        @sale-updated="refreshSale"
-      />
-    </template>
-
-    <template v-else-if="isSaleNotFound">
-      <no-data-message
-        icon-name="alert-circle"
-        :title="'sale-details.sale-not-found-title' | globalize"
-        :message="'sale-details.sale-not-found-desc' | globalize"
-      />
-    </template>
-
-    <template v-else-if="isLoadingFailed">
-      <p>
-        {{ 'sale-details.loading-error-msg' | globalize }}
-      </p>
-    </template>
-
-    <template v-else>
-      <sale-details-skeleton-loader />
-    </template>
+    <router-view
+      :sale="sale"
+      @sale-updated="refreshSale"
+    />
   </div>
 </template>
 
 <script>
-import TopBar from '@/vue/common/TopBar'
-import NoDataMessage from '@/vue/common/NoDataMessage'
-import SaleDetailsSkeletonLoader from './SaleDetailsSkeletonLoader'
-
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
 import { api } from '@/api'
@@ -81,18 +28,13 @@ import { vuexTypes } from '@/vuex'
 
 export default {
   name: 'sale-details',
-  components: {
-    TopBar,
-    NoDataMessage,
-    SaleDetailsSkeletonLoader,
-  },
 
   props: {
     id: { type: String, default: '' },
   },
 
   data: _ => ({
-    sale: null,
+    sale: new SaleRecord(),
     isSaleNotFound: false,
     isLoadingFailed: false,
     vueRoutes,
@@ -105,7 +47,7 @@ export default {
   },
 
   async created () {
-    await this.loadSale(this.id)
+    // await this.loadSale(this.id)
   },
 
   methods: {
