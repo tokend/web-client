@@ -74,7 +74,7 @@ const INPUT_TYPES = {
 
 export default {
   props: {
-    label: { type: String, default: 'Label' },
+    label: { type: String, default: '' },
     value: { type: [String, Number], default: undefined },
     monospaced: { type: Boolean, default: false },
     errorMessage: { type: String, default: undefined },
@@ -258,7 +258,7 @@ $pwd-toggle-btn-width: 3.2rem;
     box-shadow: inset 0 0 0 5rem $col-block-bg;
   }
 
-  &:placeholder-shown:not(:focus)::-webkit-input-placeholder {
+  /* &:placeholder-shown:not(:focus)::-webkit-input-placeholder {
     opacity: 0;
   }
 
@@ -276,7 +276,7 @@ $pwd-toggle-btn-width: 3.2rem;
 
   &:placeholder-shown:not(:focus)::placeholder {
     opacity: 0;
-  }
+  } */
 
   // Hide number arrows
   &[type='number']:not(:hover):not(:focus) {

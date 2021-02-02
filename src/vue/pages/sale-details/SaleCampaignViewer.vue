@@ -162,6 +162,7 @@
         @submit.prevent="submit"
       >
         <input-field
+          novalidate
           white-autofill
           type="number"
           :step="$config.MIN_AMOUNT"

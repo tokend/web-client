@@ -30,7 +30,7 @@
         v-ripple
         v-else
         type="submit"
-        class="app__button-raised"
+        class="app__button-raised kyc-general-form__btn"
         :disabled="formMixin.isDisabled"
       >
         {{
@@ -143,5 +143,9 @@ export default {
   display: grid;
   grid: auto-flow auto / auto;
   gap: 2rem;
+}
+
+.kyc-general-form__btn {
+  margin-top: 2rem;
 }
 </style>

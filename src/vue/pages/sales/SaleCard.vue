@@ -91,12 +91,12 @@ export default {
 .sale-card__header {
   position: relative;
   border-radius: 0.4rem 0.4rem 0 0;
-  height: 16rem;
+  height: 26rem;
   width: 100%;
   background-color: $col-sale-card-header-background;
 
   @include respond-to($x-medium) {
-    height: 12rem;
+    height: 20rem;
   }
 }
 
@@ -105,7 +105,7 @@ export default {
   max-height: 100%;
   max-width: 100%;
   width: 100%;
-  height: auto;
+  height: 100%;
   position: absolute;
   top: 0;
   bottom: 0;

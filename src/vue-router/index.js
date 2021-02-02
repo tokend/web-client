@@ -38,6 +38,7 @@ import BalanceExplorerModule from '@modules/assets/balance-explorer'
 import MyAssetsExplorerModule from '@modules/assets/my-assets-explorer'
 import SalesList from '@/vue/pages/sales/SalesList'
 import Requests from '@/vue/pages/Requests'
+import Pairing from '@/vue/pages/Pairing'
 
 Vue.use(Router)
 
@@ -347,6 +348,13 @@ const router = new Router({
           name: vueRoutes.issuance.name,
           meta: { pageNameTranslationId: 'pages-names.issuance' },
           component: Issuance,
+          beforeEnter: inAppRouteGuard,
+        },
+        {
+          path: '/pairing',
+          name: vueRoutes.pairing.name,
+          meta: { pageNameTranslationId: 'pages-names.pairing' },
+          component: Pairing,
           beforeEnter: inAppRouteGuard,
         },
         {

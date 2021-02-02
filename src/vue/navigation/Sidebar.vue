@@ -143,6 +143,22 @@
               {{ 'pages-names.trade' | globalize }}
             </span>
           </router-link>
+          <router-link
+            key="pairing"
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            tag="a"
+            :to="vueRoutes.pairing"
+          >
+            <i
+              class="sidebar__link-icon"
+              :class="`mdi mdi-poll-box`"
+            />
+            <span>
+              Pairing
+            </span>
+          </router-link>
           <!-- <router-link
             v-if="isAccountCorporate"
             key="requests"
