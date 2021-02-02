@@ -39,7 +39,9 @@
                   Vehicle:
                 </td>
                 <!-- eslint-disable-next-line max-len -->
-                <td title="Tokenized Loan secured by real estate and corporate guarantee">
+                <td
+                  class="sale-campaign-viewer__vehicle"
+                >
                   Tokenized Loan secured by real estate and corporate guarantee
                 </td>
               </tr>
@@ -383,5 +385,10 @@ export default {
 .advanced-step__loader {
   margin: 2rem auto 0;
   justify-content: center;
+}
+
+.sale-campaign-viewer__vehicle {
+  // stylelint-disable-next-line
+  white-space: normal !important;
 }
 </style>
