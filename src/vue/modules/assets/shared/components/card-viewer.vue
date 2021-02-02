@@ -10,15 +10,15 @@
     </div>
     <div class="card-viewer__info">
       <p
-        :title="asset.code"
+        :title="asset.name"
         class="card-viewer__code">
-        {{ asset.code }}
+        {{ asset.name }}
       </p>
-      <p
+      <!-- <p
         :title="asset.name || asset.code"
         class="card-viewer__name">
         {{ asset.name || asset.code }}
-      </p>
+      </p> -->
       <p
         v-if="balance"
         class="card-viewer__balance"
@@ -64,7 +64,6 @@ export default {
     assetBalance () {
       return {
         value: this.balance,
-        currency: this.asset.code,
       }
     },
   },
@@ -90,7 +89,7 @@ $media-small-desktop: 960px;
 /* stylelint-enable function-calc-no-invalid */
 
 .card-viewer {
-  min-height: 19rem;
+  min-height: 16rem;
   cursor: pointer;
   border-radius: 0.4rem;
   box-shadow: 0 0.5rem 1rem 0 $col-field-shadow;

@@ -15,21 +15,25 @@
           <span>{{ 'assets-page.my-assets-title' | globalize }}</span>
         </router-link>
       </template>
+      -->
       <template
         slot="extra"
-        v-if="isAccountCorporate"
       >
         <button
           v-ripple
           class="assets-page__create-btn app__button-raised"
           @click="isAssetDrawerShown = true"
         >
-          <i class="mdi mdi-plus assets-page__btn-icon" />
-          <span>
-            {{ 'assets-page.create-btn' | globalize }}
-          </span>
+          Deposit
         </button>
-      </template> -->
+        <button
+          v-ripple
+          class="assets-page__create-btn app__button-raised"
+          @click="isAssetDrawerShown = true"
+        >
+          Redemption
+        </button>
+      </template>
     </top-bar>
 
     <template v-if="isAccountCorporate">
