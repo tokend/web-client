@@ -2,6 +2,13 @@
 @import '~@scss/mixins';
 @import '~@/vue/forms/app-form';
 
+.auth-page {
+  padding: 3.2rem;
+  border-radius: 0.4rem;
+  background-color: $col-block-bg;
+  @include box-shadow();
+}
+
 .auth-page__title {
   font-size: 3.2rem;
   font-weight: 400;

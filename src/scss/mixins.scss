@@ -44,10 +44,10 @@ $x-large: 1920px;
 }
 @mixin button-raised () {
   @include button();
-
-  border-radius: 0.2rem;
+  padding: 1.2rem 4.6rem;
+  border-radius: 3rem;
   background-color: $col-button-raised;
-  box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.15);
+  box-shadow: none;
   color: $col-button-raised-txt;
 
   &[disabled] {
@@ -84,7 +84,7 @@ $x-large: 1920px;
   }
 }
 @mixin box-shadow () {
-  box-shadow: 0 0.4rem 1rem 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0.4rem 1rem 0 rgba(0, 0, 0, 0.1);
 }
 @mixin respond-to($media) {
   @if $media == xsmall {

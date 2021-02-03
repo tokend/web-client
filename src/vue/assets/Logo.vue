@@ -23,7 +23,7 @@ export default {
 
 <style lang="scss">
 .logotype img {
-  max-height: 4.5rem;
+  max-height: 8.5rem;
   height: inherit;
 }
 </style>

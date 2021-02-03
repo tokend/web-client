@@ -138,7 +138,7 @@ const router = new Router({
         {
           path: '/dashboard',
           name: vueRoutes.dashboard.name,
-          meta: { pageNameTranslationId: 'pages-names.dashboard' },
+          meta: { pageNameTranslationId: 'My Wallet' },
           component: Dashboard,
           beforeEnter: inAppRouteGuard,
         },

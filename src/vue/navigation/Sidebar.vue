@@ -101,7 +101,7 @@
             class="sidebar__link"
             @click.native="closeSidebar"
             tag="a"
-            :to="vueRoutes.assets"
+            :to="vueRoutes.dashboard"
           >
             <i
               class="sidebar__link-icon"
@@ -413,7 +413,7 @@ $content-item-right-padding: 2.4rem;
 .sidebar__logo {
   max-width: 9.5rem;
   width: 100%;
-  height: 3.1rem;
+  height: 6rem;
   display: block;
 }
 

@@ -8,7 +8,6 @@
           @blur="touchField('firstName')"
           name="verification-general-first-name"
           :label="'general-form.first-name-lbl' | globalize"
-          :error-message="getFieldErrorMessage('firstName')"
           :disabled="isDisabled"
           :white-autofill="whiteAutofill"
         />
@@ -20,14 +19,13 @@
           @blur="touchField('lastName')"
           name="verification-general-last-name"
           :label="'general-form.last-name-lbl' | globalize"
-          :error-message="getFieldErrorMessage('lastName')"
           :disabled="isDisabled"
           :white-autofill="whiteAutofill"
         />
       </div>
     </div>
 
-    <!-- <div class="app__form-row">
+    <div class="app__form-row">
       <div class="app__form-field">
         <date-field
           v-model="dateOfBirth"
@@ -39,17 +37,24 @@
           :placeholder="'general-form.date-of-birth-placeholder' | globalize"
           :disable-after="new Date().toISOString()"
           :label="'general-form.date-of-birth-lbl' | globalize"
-          :error-message="getFieldErrorMessage('dateOfBirth')"
           :disabled="isDisabled"
         />
       </div>
-    </div> -->
+      <div class="app__form-field">
+        <input-field
+          v-model="taxId"
+          @change="former.setAttr('taxId', taxId)"
+          label="Tax Id"
+          :disabled="isDisabled"
+          :white-autofill="whiteAutofill"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import formMixin from '@/vue/mixins/form.mixin'
-import { required } from '@validators'
 import { KycGeneralFormer } from '@/js/formers/KycGeneralFormer'
 
 export default {
@@ -77,13 +82,7 @@ export default {
       firstName: this.former.attrs.firstName || '',
       lastName: this.former.attrs.lastName || '',
       dateOfBirth: this.former.attrs.dateOfBirth || '',
-    }
-  },
-
-  validations () {
-    return {
-      firstName: { required },
-      lastName: { required },
+      taxId: this.former.attrs.taxId || '',
     }
   },
 }

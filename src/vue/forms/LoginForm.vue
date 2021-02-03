@@ -12,7 +12,6 @@
           :error-message="getFieldErrorMessage('form.email', {
             length: MAX_FIELD_LENGTH.email
           })"
-          :white-autofill="false"
         />
       </div>
     </div>
@@ -27,7 +26,6 @@
           :error-message="getFieldErrorMessage('form.password', {
             length: MAX_FIELD_LENGTH.password
           })"
-          :white-autofill="false"
           :label="'auth-pages.password' | globalize"
         />
       </div>
@@ -41,7 +39,6 @@
           v-model="form.tfaCode"
           @blur="touchField('form.tfaCode')"
           :error-message="getFieldErrorMessage('form.tfaCode')"
-          :white-autofill="false"
           :label="'auth-pages.tfa-code' | globalize"
         />
       </div>

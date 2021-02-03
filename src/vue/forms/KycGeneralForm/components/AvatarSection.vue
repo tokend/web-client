@@ -11,7 +11,6 @@
           :document-type="$DOCUMENT_TYPES.kycAvatar"
           :label="'general-form.avatar-lbl' | globalize"
           :disabled="isDisabled"
-          :error-message="getFieldErrorMessage('avatar')"
         />
       </div>
     </div>
@@ -21,7 +20,6 @@
 <script>
 import formMixin from '@/vue/mixins/form.mixin'
 import { KycGeneralFormer } from '@/js/formers/KycGeneralFormer'
-import { nonEmptyDocument } from '@validators'
 
 export default {
   name: 'avatar-section',
@@ -43,10 +41,6 @@ export default {
     return {
       avatar: this.former.attrs.avatar || null,
     }
-  },
-
-  validations: {
-    avatar: { nonEmptyDocument },
   },
 }
 </script>

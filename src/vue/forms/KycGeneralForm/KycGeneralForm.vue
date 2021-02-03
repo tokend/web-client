@@ -4,6 +4,27 @@
     @submit.prevent="confirm"
   >
     <div class="kyc-general-form__sections">
+      <personal-section
+        class="kyc-general-form__section"
+        :is-disabled="formMixin.isDisabled"
+        :former="former"
+        white-autofill
+      />
+
+      <address-section
+        class="kyc-general-form__section"
+        :is-disabled="formMixin.isDisabled"
+        :former="former"
+        white-autofill
+      />
+
+      <id-docs-section
+        class="kyc-general-form__section"
+        :is-disabled="formMixin.isDisabled"
+        :former="former"
+        white-autofill
+      />
+
       <template v-if="!former.isRecoveryOpBuilder">
         <avatar-section
           class="kyc-general-form__section"
@@ -11,13 +32,6 @@
           :former="former"
         />
       </template>
-
-      <personal-section
-        class="kyc-general-form__section"
-        :is-disabled="formMixin.isDisabled"
-        :former="former"
-        :white-autofill="!isSignUpKycPage"
-      />
     </div>
 
     <div class="app__form-actions">
@@ -35,7 +49,7 @@
       >
         {{
           (isSignUpKycPage
-            ? 'verification-form.login-btn'
+            ? 'Become an Investor'
             : former.willUpdateRequest
               ? 'verification-form.update-btn'
               : 'verification-form.create-btn'
@@ -59,6 +73,8 @@ import config from '@/config'
 import PersonalSection from './components/PersonalSection'
 import AvatarSection from './components/AvatarSection'
 import { vueRoutes } from '@/vue-router/routes'
+import AddressSection from './components/AddressSection'
+import IdDocsSection from './components/IdDocsSection'
 
 export default {
   name: 'kyc-general-form',
@@ -66,6 +82,8 @@ export default {
   components: {
     PersonalSection,
     AvatarSection,
+    AddressSection,
+    IdDocsSection,
   },
 
   mixins: [formMixin],
@@ -142,10 +160,10 @@ export default {
 .kyc-general-form__sections {
   display: grid;
   grid: auto-flow auto / auto;
-  gap: 2rem;
+  gap: 4rem;
 }
 
 .kyc-general-form__btn {
-  margin-top: 2rem;
+  margin: 2rem auto 0;
 }
 </style>

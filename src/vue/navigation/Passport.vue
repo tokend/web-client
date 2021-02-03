@@ -2,11 +2,10 @@
   <div class="passport">
     <button
       @click="toggleDropdown">
-      <p
-        class="passport__avatar passport__email-abbr-btn"
+      <img
+        class="passport__avatar passport__avatar-image"
+        src="/static/images/avatar.jpeg"
       >
-        {{ email | abbreviate }}
-      </p>
     </button>
 
     <div class="passport__account-details-wrp">
@@ -14,7 +13,7 @@
         class="passport__email-btn"
         @click="toggleDropdown"
       >
-        {{ email }}
+        Petra Muller
         <i
           class="passport__dropdown-status-icon mdi mdi-chevron-down"
           :class="{

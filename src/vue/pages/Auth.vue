@@ -1,9 +1,9 @@
 <template>
   <div class="auth">
     <div class="auth__titles">
-      <h3 class="auth__title-small">
+      <!-- <h3 class="auth__title-small">
         {{ 'auth-pages.small-title' | globalize }}
-      </h3>
+      </h3> -->
     </div>
     <div class="auth__form">
       <logo class="auth__logo" />
@@ -49,23 +49,18 @@ export default {
 .auth {
   display: flex;
   flex: 1;
-}
-
-.auth__titles,
-.auth__form {
-  width: 50%;
+  height: 100vh;
 }
 
 .auth__titles {
-  background:
-    linear-gradient(
-      $col-auth-titles-background-light 0%,
-      $col-auth-titles-background-dark 65%
-    );
+  background: url('/static/images/auth_background.jpg')
+    center center / cover no-repeat rgb(45, 36, 29);
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 0 11rem;
+  filter: grayscale(50%);
+  width: 50%;
 
   @include respond-to(large) {
     padding: 0 7rem;
@@ -98,6 +93,8 @@ export default {
 .auth__form {
   padding: 8rem 11rem;
   position: relative;
+  overflow: scroll;
+  width: 50%;
 
   @include respond-to(large) {
     padding: 6rem 7rem;
@@ -112,10 +109,10 @@ export default {
 
 .auth__logo {
   display: inline-block;
-  margin-bottom: 16.5rem;
+  margin-bottom: 10rem;
 
   @include respond-to-height(950px) {
-    margin-bottom: 12rem;
+    margin-bottom: 10rem;
   }
   @include respond-to-height(750px) {
     margin-bottom: 6.4rem;

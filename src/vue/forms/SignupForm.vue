@@ -13,7 +13,6 @@
           :error-message="getFieldErrorMessage('form.email', {
             length: MAX_FIELD_LENGTH.email,
           })"
-          :white-autofill="false"
           :disabled="isDisabled || formMixin.isDisabled"
         />
       </div>
@@ -29,7 +28,6 @@
           :error-message="getFieldErrorMessage('form.password', {
             length: MAX_FIELD_LENGTH.password,
           })"
-          :white-autofill="false"
           :label="'auth-pages.password' | globalize"
           :disabled="isDisabled || formMixin.isDisabled"
         />
@@ -46,7 +44,6 @@
           :error-message="getFieldErrorMessage('form.confirmPassword', {
             length: MAX_FIELD_LENGTH.password,
           })"
-          :white-autofill="false"
           :label="'auth-pages.confirm-password' | globalize"
           :disabled="isDisabled || formMixin.isDisabled"
         />
