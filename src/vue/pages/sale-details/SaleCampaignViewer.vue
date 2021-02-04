@@ -80,7 +80,7 @@
     </div>
     <div class="sale-campaign-viewer__content">
       <div class="sale-campaign-viewer__state">
-        <span>Description on issuer:  </span>
+        <span>Description of issuer:  </span>
         <!-- eslint-disable-next-line max-len -->
         <p>Linde is a leading global industrial gases and engineering company with <b>2019</b> sales of <b>€25</b> billion, and is actively looking for expansion of its industry-leading plants  for the supply of nitrogen, oxygen and compressed air to clients to meet the increasing demand in industrial gases. Linde constructs the plants and hands them over completed to clients.</p>
       </div>
@@ -329,6 +329,7 @@ export default {
   }
 
   p {
+    text-align: justify;
     color: $col-text-black;
   }
 }

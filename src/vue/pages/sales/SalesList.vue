@@ -122,7 +122,7 @@ export default {
         logoUrl: '/static/images/linde-logo.jpg',
       },
       {
-        name: 'UK student accommodation investment - Bel coins',
+        name: 'UK student accommodation investment - Bell coins',
         logoUrl: '/static/images/belfast.jpg',
       },
     ],

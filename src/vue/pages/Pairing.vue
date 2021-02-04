@@ -32,6 +32,14 @@
               0.0068
             </td>
           </tr>
+          <tr>
+            <td>
+              USD
+            </td>
+            <td>
+              0.0032
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
