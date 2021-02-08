@@ -39,7 +39,7 @@ export class TradeFormer extends Former {
         fee: this.attrs.fees.calculatedPercent,
       }
       return base.ManageOfferBuilder.manageOffer(operation)
-    }TradeFormer
+    }
 
     async calculateFees () {
       const fee = await calculateFees({
