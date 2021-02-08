@@ -128,8 +128,6 @@ export default {
       this.isSubmitOfferDrawerShown = true
       this.selectedOffer = offer
       this.former = new TradeFormer(offer)
-      this.former.setAttr('baseBalanceId', offer.baseBalance.id)
-      this.former.setAttr('quoteBalanceId', offer.quoteBalance.id)
     },
     closeDrawer () {
       this.isSubmitOfferDrawerShown = false

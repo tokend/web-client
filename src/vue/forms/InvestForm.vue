@@ -293,7 +293,7 @@ export default {
 
       this.sale.quoteAssets.forEach(quote => {
         const balance = this.accountBalanceByCode(quote.asset.id)
-        if (balance) {
+        if (balance.id) {
           quoteAssetBalances.push(balance)
         }
       })

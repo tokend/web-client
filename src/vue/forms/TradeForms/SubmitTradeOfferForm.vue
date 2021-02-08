@@ -279,9 +279,10 @@ export default {
         this.accountBalanceByCode(this.former.attrs.quoteAssetCode).id)
 
       this.form.baseAmount = this.former.attrs.baseAmount
-      this.form.price =
-        this.former.attrs.quoteAmount / this.former.attrs.baseAmount
-
+      this.form.price = String(MathUtil.divide(
+        +this.former.attrs.quoteAmount,
+        +this.former.attrs.baseAmount
+      ))
       await this.loadBalances()
       this.isLoaded = true
     } catch (e) {

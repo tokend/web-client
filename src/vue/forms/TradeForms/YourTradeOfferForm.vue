@@ -309,8 +309,10 @@ export default {
       this.former.setAttr('creatorAccountId', this.accountId)
 
       this.form.baseAmount = this.former.attrs.baseAmount
-      this.form.price =
-        this.former.attrs.quoteAmount / this.former.attrs.baseAmount
+      this.form.price = String(MathUtil.divide(
+        +this.former.attrs.quoteAmount,
+        +this.former.attrs.baseAmount
+      ))
 
       await this.loadBalances()
       this.isLoaded = true
