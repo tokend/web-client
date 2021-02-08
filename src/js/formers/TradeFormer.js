@@ -1,5 +1,6 @@
 import { Former } from './Former'
 import { calculateFees } from '@/js/helpers/fees-helper'
+import { MathUtil } from '@/js/utils/math.util'
 import { FEE_TYPES, base } from '@tokend/js-sdk'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 
@@ -27,7 +28,10 @@ export class TradeFormer extends Former {
     async buildOpCreate () {
       const operation = {
         amount: this.attrs.baseAmount,
-        price: String(+this.attrs.quoteAmount / +this.attrs.baseAmount),
+        price: String(MathUtil.divide(
+          +this.attrs.quoteAmount,
+          +this.attrs.baseAmount
+        )),
         orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
         isBuy: this.attrs.isBuy,
         baseBalance: this.attrs.baseBalanceId,
@@ -35,7 +39,7 @@ export class TradeFormer extends Former {
         fee: this.attrs.fees.calculatedPercent,
       }
       return base.ManageOfferBuilder.manageOffer(operation)
-    }
+    }TradeFormer
 
     async calculateFees () {
       const fee = await calculateFees({
@@ -48,23 +52,14 @@ export class TradeFormer extends Former {
       return fee
     }
 
-    /**
-     *
-     * @param {Object} source
-     * @param {String} baseAmount: base amount
-     * @param {String} quoteAmount: quote amount
-     * @param {String} baseAsset.id: baset asset id
-     * @param {String} quoteAsset.id: quote asset id
-     * @param {Boolean} isBuy: is buy or not
-     * @param {String} fee: fees
-     */
+    /** @param {OfferRecord} source */
     populate (source) {
       this.attrs = this._defaultAttrs
 
       this.attrs.baseAmount = source.baseAmount
       this.attrs.quoteAmount = source.quoteAmount
-      this.attrs.baseAssetCode = source.baseAsset.id
-      this.attrs.quoteAssetCode = source.quoteAsset.id
+      this.attrs.baseAssetCode = source.baseAssetCode
+      this.attrs.quoteAssetCode = source.quoteAssetCode
       this.attrs.isBuy = source.isBuy
       this.attrs.fees = source.fee
     }

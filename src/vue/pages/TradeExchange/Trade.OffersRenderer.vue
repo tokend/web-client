@@ -78,15 +78,16 @@
 </template>
 
 <script>
+import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 import SubmitTradeOfferForm from '@/vue/forms/TradeForms/SubmitTradeOfferForm'
-import { TradeFormer } from '@/js/formers/TradeFormer'
+import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
+import Drawer from '@/vue/common/Drawer'
 
 import FormMixin from '@/vue/mixins/form.mixin'
-import Drawer from '@/vue/common/Drawer'
+
+import { TradeFormer } from '@/js/formers/TradeFormer'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
-import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
-import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 
 const EVENTS = {
   reloadTrades: 'reload-trades',
