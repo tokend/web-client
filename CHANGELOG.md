@@ -14,6 +14,9 @@ for further information about branching and tagging conventions.
   - `identity-helper.js` - Includes reusable actions over identities
   - `fees-helper.js` - Includes reusable actions over fees
 - New error-message when saleLogo doesn`t added in the ShortBlurbStepForm
+- New records:
+  - OrderBookRecord
+  - OfferRecord
 
 ### Changed
 - New formers:
@@ -32,6 +35,7 @@ for further information about branching and tagging conventions.
 - New versions of packages: 
   - lodash: 4.17.20
   - resolve-url-loader: 3.1.2
+  - js-sdk: 1.14.0-rc.13
 - New positions of forms: 
   - DepositForm
   - SaleForm

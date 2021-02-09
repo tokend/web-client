@@ -61,7 +61,5 @@ export class TradeFormer extends Former {
       this.attrs.baseAssetCode = source.baseAssetCode
       this.attrs.quoteAssetCode = source.quoteAssetCode
       this.attrs.isBuy = source.isBuy
-      this.attrs.baseBalanceId = source.baseBalanceId
-      this.attrs.quoteBalanceId = source.quoteBalanceId
     }
 }
