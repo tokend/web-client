@@ -52,6 +52,8 @@ function validatePackageJsonUseProdSdkVersion () {
 }
 
 function validateSdkPulled () {
+  console.log('SDK_VERSION')
+  console.log(SDK_VERSION)
   const freshSdkVersionRe = new RegExp(`"@tokend/js-sdk@${SDK_VERSION}"`)
 
   if (!freshSdkVersionRe.test(YARN_LOCK_CONTENT)) {

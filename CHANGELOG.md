@@ -7,10 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
-## [Unreleased]
+## [1.13.0-rc.1] - 2021-02-09
 #### Added
 - New i18n-component for easier nodes interpolation
-- New helpers: 
+- New helpers:
   - `identity-helper.js` - Includes reusable actions over identities
   - `fees-helper.js` - Includes reusable actions over fees
 - New error-message when saleLogo doesn`t added in the ShortBlurbStepForm
@@ -32,11 +32,11 @@ for further information about branching and tagging conventions.
 #### Fixed
 - A bug with `MarkdownField` length
 - A bug with cancel order in `YourTradeOfferForm`
-- New versions of packages: 
+- New versions of packages:
   - lodash: 4.17.20
   - resolve-url-loader: 3.1.2
   - js-sdk: 1.14.0-rc.13
-- New positions of forms: 
+- New positions of forms:
   - DepositForm
   - SaleForm
 
@@ -1262,7 +1262,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.13.0-rc.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.13.0-rc.1...HEAD
+[1.13.0-rc.1]: https://github.com/tokend/web-client/compare/1.13.0-rc.0...1.13.0-rc.1
 [1.13.0-rc.0]: https://github.com/tokend/web-client/compare/1.12.0...1.13.0-rc.0
 [1.12.0]: https://github.com/tokend/web-client/compare/1.12.0-rc.6...1.12.0
 [1.12.0-rc.6]: https://github.com/tokend/web-client/compare/1.12.0-rc.5...1.12.0-rc.6
