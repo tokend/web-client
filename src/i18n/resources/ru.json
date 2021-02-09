@@ -1396,6 +1396,9 @@
       "closed": "Закрыт",
       "canceled": "Отменен"
     },
+    "asset-card": {
+      "details-lbl": "Детали"
+    },
     "trade-history": {
       "title": "История обмена",
       "table-amount-lbl": "Количество ({{asset}})",

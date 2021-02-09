@@ -110,6 +110,7 @@ for further information about branching and tagging conventions.
 - Signup now uses the `signers-helpers.js` to create the signers
 - `vuexTypes.LOAD_ACCOUNT`’s `accountId` arg is optional now
 - Use @tokend/js-sdk@1.14.0-rc.0
+- Asset card list
 
 #### Fixed
 - Stretching mobile sidebar

@@ -21,24 +21,33 @@
         </template>
       </p>
     </template>
+    <template v-else-if="asset.owner === accountId">
+      <button
+        v-ripple
+        class="app__button-raised asset-actions__btn"
+        @click="$emit(EVENTS.updateClick)"
+      >
+        {{ 'assets.update-btn' | globalize }}
+      </button>
 
-    <button
-      v-else-if="asset.owner === accountId"
-      v-ripple
-      class="app__button-raised asset-actions__btn"
-      @click="$emit(EVENTS.updateClick)"
-    >
-      {{ 'assets.update-btn' | globalize }}
-    </button>
+      <router-link
+        :to="vueRoutes.registerOfShares"
+        tag="button"
+        class="app__button-flat asset-actions__btn"
+      >
+        {{ 'assets.view-shares-btn' | globalize }}
+      </router-link>
+    </template>
   </div>
 </template>
 
 <script>
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
-import { types } from '../store/types'
+import { types } from '@/vue/modules/assets/shared/store/types'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { vueRoutes } from '@/vue-router/routes'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
@@ -63,6 +72,7 @@ export default {
   data: _ => ({
     isPending: false,
     EVENTS,
+    vueRoutes,
   }),
   computed: {
     ...mapGetters({
@@ -113,6 +123,12 @@ export default {
 
 <style lang="scss" scoped>
 @import '~@scss/variables';
+
+.asset-actions {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+}
 
 .asset-actions__btn {
   max-width: 18rem;

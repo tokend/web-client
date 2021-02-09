@@ -2,8 +2,6 @@ import BalanceExplorerModule from './index'
 
 import Vuex from 'vuex'
 
-import { AssetRecord } from '@/js/records/entities/asset.record'
-
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -80,27 +78,6 @@ describe('Balance explorer module', () => {
 
           expect(wrapper.vm.isLoadFailed).to.be.true
           expect(ErrorHandler.processWithoutFeedback).to.have.been.calledOnce
-        })
-      })
-
-      describe('selectBalance', () => {
-        it('sets selectedBalance property to passed param, isAssetFormShown property to false, and isDrawerShown property to true', () => {
-          const asset = new AssetRecord({ id: 'USD' }, [{
-            asset: { code: 'USD' },
-            balance: '1.000000',
-          }]
-          )
-
-          wrapper.setData({
-            isAssetFormShown: true,
-            isDrawerShown: false,
-          })
-
-          wrapper.vm.selectBalance({ asset })
-
-          expect(wrapper.vm.selectedBalance).to.deep.equal({ asset })
-          expect(wrapper.vm.isAssetFormShown).to.be.false
-          expect(wrapper.vm.isDrawerShown).to.be.true
         })
       })
     })
