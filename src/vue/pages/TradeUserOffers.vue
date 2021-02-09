@@ -27,6 +27,7 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { api } from '@/api'
 import UpdateList from '@/vue/mixins/update-list.mixin'
+import { OfferRecord } from '@/js/records/entities/offer.record'
 
 export default {
   name: 'trade-user-offers',
@@ -75,7 +76,7 @@ export default {
       this.firstPageLoader = _ => this.loadOffersHistory()
     },
     setOpenOffers (offers) {
-      this.openOffers = offers
+      this.openOffers = offers.map(i => new OfferRecord(i))
     },
     concatOpenOffers (offers) {
       this.openOffers = this.openOffers.concat(offers)

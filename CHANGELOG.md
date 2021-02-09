@@ -14,6 +14,9 @@ for further information about branching and tagging conventions.
   - `identity-helper.js` - Includes reusable actions over identities
   - `fees-helper.js` - Includes reusable actions over fees
 - New error-message when saleLogo doesn`t added in the ShortBlurbStepForm
+- New records:
+  - OrderBookRecord
+  - OfferRecord
 
 ### Changed
 - New formers:
@@ -24,19 +27,24 @@ for further information about branching and tagging conventions.
   - New `PollFormer`
   - New `SaleFormer`
   - New `InvestFormer`
+  - New `TradeFormer`
+
+#### Fixed
+- A bug with `MarkdownField` length
+- A bug with cancel order in `YourTradeOfferForm`
 - New versions of packages: 
   - lodash: 4.17.20
   - resolve-url-loader: 3.1.2
+  - js-sdk: 1.14.0-rc.13
 - New positions of forms: 
   - DepositForm
   - SaleForm
 
-#### Fixed
-- A bug with `MarkdownField` length
-- A bug with cancel order
-
 ### Removed
 - Removed `issuance-form` from modules
+- Removed `offer-manager.mixin` from mixins
+- Removed `fees.mixin` from fees
+- Removed `fees.mixin.spec` from fees
 
 ## [1.13.0-rc.0] - 2020-09-18
 #### Added

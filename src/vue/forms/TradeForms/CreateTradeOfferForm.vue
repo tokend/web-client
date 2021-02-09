@@ -6,7 +6,7 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <select-field
-          v-model="form.asset"
+          v-model="form.assetCode"
           name="trade-offer-base-asset"
           :disabled="formMixin.isDisabled"
           :label="baseAssetLabelTranslationId | globalize"
@@ -33,7 +33,7 @@
           :step="config.MIN_AMOUNT"
           :label="
             'create-trade-offer-form.price-lbl' | globalize({
-              baseAsset: form.asset,
+              baseAsset: form.assetCode,
               quoteAsset: assetPair.quote
             })
           "
@@ -60,7 +60,7 @@
           :max="config.MAX_AMOUNT"
           :step="config.MIN_AMOUNT"
           :label="'create-trade-offer-form.amount-lbl' | globalize({
-            asset: form.asset
+            asset: form.assetCode
           })"
           :error-message="getFieldErrorMessage(
             'form.amount',
@@ -144,22 +144,24 @@
 import debounce from 'lodash/debounce'
 
 import ReadonlyField from '@/vue/fields/ReadonlyField'
+import Loader from '@/vue/common/Loader'
 import SkeletonLoaderOfferForm from './SkeletonLoaderOfferForm'
 import FeesRenderer from '@/vue/common/fees/FeesRenderer'
 
 import FormMixin from '@/vue/mixins/form.mixin'
-import OfferManagerMixin from '@/vue/mixins/offer-manager.mixin'
-import FeesMixin from '@/vue/common/fees/fees.mixin'
-
-import { FEE_TYPES } from '@tokend/js-sdk'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { createBalanceIfNotExist } from '@/js/helpers/sale-helper'
+import { TradeFormer } from '@/js/formers/TradeFormer'
 
 import { MathUtil } from '@/js/utils/math.util'
 import config from '@/config'
+import { vuexTypes } from '@/vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 import _get from 'lodash/get'
+import { api } from '@/api'
 
 import {
   required,
@@ -180,23 +182,23 @@ export default {
     ReadonlyField,
     SkeletonLoaderOfferForm,
     FeesRenderer,
+    Loader,
   },
   mixins: [
     FormMixin,
-    OfferManagerMixin,
-    FeesMixin,
   ],
 
   props: {
     assetPair: { type: Object, required: true },
     isBuy: { type: Boolean, default: false },
+    former: { type: TradeFormer, default: () => new TradeFormer() },
   },
 
   data: () => ({
     form: {
       price: '',
-      amount: '',
-      asset: '',
+      amount: '0',
+      assetCode: '',
     },
     fees: {},
     feesDebouncedRequest: null,
@@ -233,6 +235,12 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      accountBalances: vuexTypes.accountBalances,
+      accountId: vuexTypes.accountId,
+      accountBalanceByCode: vuexTypes.accountBalanceByCode,
+    }),
+
     baseAssetLabelTranslationId () {
       return this.isBuy
         ? 'create-trade-offer-form.asset-to-buy-lbl'
@@ -246,43 +254,35 @@ export default {
     },
 
     baseAssetBalance () {
-      const balanceItem = this.accountBalances
-        .find(balance => balance.asset.code === this.form.asset)
+      const balanceItem = this.accountBalanceByCode(this.form.assetCode)
 
       return balanceItem ? balanceItem.balance : ''
     },
 
     quoteAssetBalance () {
-      const balanceItem = this.accountBalances
-        .find(balance => balance.asset.code === this.assetPair.quote)
+      const balanceItem = this.accountBalanceByCode(this.assetPair.quote)
+
+      if (balanceItem) {
+        this.former.setAttr('quoteBalanceId', balanceItem.id)
+      }
+
       return balanceItem ? balanceItem.balance : ''
     },
 
     quoteAmount () {
       if (this.form.price && this.form.amount) {
-        return MathUtil.multiply(this.form.price, this.form.amount)
+        let quoteAmount = MathUtil.multiply(this.form.price, this.form.amount)
+        this.former.setAttr('quoteAmount', quoteAmount)
+        return quoteAmount
       } else {
         return ''
-      }
-    },
-
-    createOfferOpts () {
-      return {
-        pair: {
-          base: this.form.asset,
-          quote: this.assetPair.quote,
-        },
-        baseAmount: this.form.amount,
-        quoteAmount: this.quoteAmount,
-        price: this.form.price,
-        isBuy: this.isBuy,
-        fee: this.fees.totalFee,
       }
     },
   },
 
   watch: {
     'form.amount' () {
+      this.former.setAttr('baseAmount', this.form.amount)
       this.tryLoadFees()
     },
 
@@ -290,7 +290,10 @@ export default {
       this.tryLoadFees()
     },
 
-    'form.asset' () {
+    'form.assetCode' () {
+      this.former.setAttr('baseAssetCode', this.form.assetCode)
+      this.former.setAttr('baseBalanceId',
+        this.accountBalanceByCode(this.form.assetCode).id)
       this.tryLoadFees()
     },
   },
@@ -299,7 +302,9 @@ export default {
     try {
       await this.loadBalances()
       this.setDefaultAsset()
-      await this.loadFees()
+      this.former.setAttr('isBuy', this.isBuy)
+      this.former.setAttr('quoteAssetCode', this.assetPair.quote)
+      this.former.setAttr('creatorAccountId', this.accountId)
       this.isLoaded = true
     } catch (e) {
       ErrorHandler.processWithoutFeedback(e)
@@ -307,6 +312,9 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+    }),
     tryLoadFees () {
       this.isFeesLoaded = false
       this.isFeesLoadFailed = false
@@ -322,13 +330,7 @@ export default {
 
     async loadFees () {
       try {
-        this.fees = await this.calculateFees({
-          assetCode: this.assetPair.quote,
-          amount: this.quoteAmount || 0,
-          senderAccountId: this.accountId,
-          type: FEE_TYPES.offerFee,
-        })
-
+        this.fees = await this.former.calculateFees()
         this.isFeesLoaded = true
       } catch (e) {
         this.isFeesLoadFailed = true
@@ -339,8 +341,12 @@ export default {
     async submit () {
       this.isOfferCreating = true
       try {
-        await this.createOffer(this.createOfferOpts)
+        await createBalanceIfNotExist(this.former.attrs.baseAssetCode)
+        await createBalanceIfNotExist(this.former.attrs.quoteAssetCode)
+        await this.loadBalances()
 
+        const operation = await this.former.buildOpCreate()
+        await api.postOperations(operation)
         Bus.success('create-trade-offer-form.order-created-msg')
         this.$emit(EVENTS.offerCreated)
       } catch (e) {
@@ -351,9 +357,8 @@ export default {
     },
 
     setDefaultAsset () {
-      const accountBalances = this.accountBalances
-        .find(item => item === this.assetPair.base)
-      this.form.asset = _get(accountBalances, 'asset.code', this.accountAssets[0])
+      const accountBalances = this.accountBalanceByCode(this.assetPair.base)
+      this.form.assetCode = _get(accountBalances, 'asset.code', this.accountAssets[0])
     },
   },
 }

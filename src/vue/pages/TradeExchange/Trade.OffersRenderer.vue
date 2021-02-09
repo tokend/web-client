@@ -70,9 +70,7 @@
         </template>
       </template>
       <submit-trade-offer-form
-        :is-buy="!isBuy"
-        :asset-pair="assetPair"
-        :offer="selectedOffer"
+        :former="former"
         @offer-submitted="closeDrawer"
       />
     </drawer>
@@ -80,14 +78,16 @@
 </template>
 
 <script>
-import SubmitTradeOfferForm from '@/vue/forms/market-orders/SubmitTradeOfferForm'
+import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
+import SubmitTradeOfferForm from '@/vue/forms/TradeForms/SubmitTradeOfferForm'
+import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
+import Drawer from '@/vue/common/Drawer'
 
 import FormMixin from '@/vue/mixins/form.mixin'
-import Drawer from '@/vue/common/Drawer'
+
+import { TradeFormer } from '@/js/formers/TradeFormer'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
-import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
-import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 
 const EVENTS = {
   reloadTrades: 'reload-trades',
@@ -128,7 +128,7 @@ export default {
   },
   data: () => ({
     isSubmitOfferDrawerShown: false,
-    selectedOffer: {},
+    former: null,
   }),
   computed: {
     ...mapGetters([
@@ -151,7 +151,8 @@ export default {
   methods: {
     selectOffer (offer) {
       this.isSubmitOfferDrawerShown = true
-      this.selectedOffer = offer
+      this.former = new TradeFormer(offer)
+      this.former.attrs.isBuy = !this.isBuy
     },
     closeDrawer () {
       this.isSubmitOfferDrawerShown = false
