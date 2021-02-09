@@ -10,9 +10,41 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - New i18n-component for easier nodes interpolation
+- New helpers: 
+  - `identity-helper.js` - Includes reusable actions over identities
+  - `fees-helper.js` - Includes reusable actions over fees
+- New error-message when saleLogo doesn`t added in the ShortBlurbStepForm
+- New records:
+  - OrderBookRecord
+  - OfferRecord
+
+### Changed
+- New formers:
+  - New `TransferFormer`
+  - New `IssuanceFormer`
+  - New `LimitsFormer`
+  - New `WithdrawalFormer`
+  - New `PollFormer`
+  - New `SaleFormer`
+  - New `InvestFormer`
+  - New `TradeFormer`
 
 #### Fixed
 - A bug with `MarkdownField` length
+- A bug with cancel order in `YourTradeOfferForm`
+- New versions of packages: 
+  - lodash: 4.17.20
+  - resolve-url-loader: 3.1.2
+  - js-sdk: 1.14.0-rc.13
+- New positions of forms: 
+  - DepositForm
+  - SaleForm
+
+### Removed
+- Removed `issuance-form` from modules
+- Removed `offer-manager.mixin` from mixins
+- Removed `fees.mixin` from fees
+- Removed `fees.mixin.spec` from fees
 
 ## [1.13.0-rc.0] - 2020-09-18
 #### Added
@@ -78,6 +110,7 @@ for further information about branching and tagging conventions.
 - Signup now uses the `signers-helpers.js` to create the signers
 - `vuexTypes.LOAD_ACCOUNT`’s `accountId` arg is optional now
 - Use @tokend/js-sdk@1.14.0-rc.0
+- Asset card list
 
 #### Fixed
 - Stretching mobile sidebar

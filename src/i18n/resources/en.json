@@ -87,6 +87,7 @@
       "field-error_email": "This field should be a valid email",
       "field-error_seed": "This field should be a valid secret seed",
       "field-error_required": "Please fill out this field",
+      "field-error_nonEmptyDocument": "Please fill out this field",
       "field-error_validateUrl": "This field should be a valid website URL",
       "field-error_documentContainer": "This field should contain a document",
       "field-error_integer": "This field should be a valid integer",
@@ -1395,6 +1396,9 @@
       "days-to-end": "{{days}} days to close",
       "closed": "Closed",
       "canceled": "Canceled"
+    },
+    "asset-card": {
+      "details-lbl": "Details"
     },
     "trade-history": {
       "title": "Trade history",

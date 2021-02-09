@@ -25,6 +25,7 @@ const TEMPLATES = {
   imageViewer: 'image-viewer',
   fieldViewer: 'field-viewer',
   mediumButton: 'medium-button',
+  smallButton: 'small-button',
   fillMode: 'fill-mode',
 }
 

@@ -160,7 +160,8 @@ import { vueRoutes } from '@/vue-router/routes'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import FeesMixin from '@/vue/common/fees/fees.mixin'
+import FeesRenderer from '@/vue/common/fees/FeesRenderer.vue'
+
 import { FEE_TYPES } from '@tokend/js-sdk'
 import config from '@/config'
 import { api } from '@/api'
@@ -180,11 +181,11 @@ export default {
   name: 'transfers-form',
   components: {
     TransferFormSkeletonLoader,
+    FeesRenderer,
   },
   mixins: [
     FormMixin,
     IdentityGetterMixin,
-    FeesMixin,
   ],
   props: {
     assetToTransfer: { type: String, default: '' },
