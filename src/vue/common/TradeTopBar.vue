@@ -139,7 +139,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
 
 import SelectField from '@/vue/fields/SelectField'
-import CreateTradeOfferForm from '@/vue/forms/market-orders/CreateTradeOfferForm'
+import CreateTradeOfferForm from '@/vue/forms/TradeForms/CreateTradeOfferForm'
 
 import { api } from '@/api'
 import { errors, ASSET_PAIR_POLICIES } from '@tokend/js-sdk'

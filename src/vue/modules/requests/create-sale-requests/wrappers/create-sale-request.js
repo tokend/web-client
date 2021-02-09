@@ -32,7 +32,6 @@ export class CreateSaleRequest extends Request {
     )
 
     this.logo = safeGet(record, 'requestDetails.creatorDetails.logo')
-    this.logoKey = safeGet(record, 'requestDetails.creatorDetails.logo.key')
 
     this.youtubeVideoId = safeGet(
       record, 'requestDetails.creatorDetails.youtubeVideoId'

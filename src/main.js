@@ -14,7 +14,7 @@ import router from '@/vue-router'
 import { buildStore } from '@/vuex'
 import { tableScrollShadow } from '@/vue/directives/tableScrollShadow'
 import { ripple } from '@/vue/directives/ripple'
-import { i18n } from '@/i18n'
+import { i18n, i18nComponent } from '@/i18n'
 import { globalize } from '@/vue/filters/globalize'
 import { globalizeCountry } from './vue/filters/globalizeCountry'
 import { formatDate } from '@/vue/filters/formatDate'
@@ -66,6 +66,7 @@ async function init () {
   Vue.filter('formatCalendarInline', formatCalendarInline)
   Vue.filter('abbreviate', abbreviate)
   Vue.filter('cropAddress', cropAddress)
+  Vue.component('i18n', i18nComponent)
   Vue.prototype.$config = config
   Vue.prototype.$routes = vueRoutes
   Vue.prototype.$kv = keyValues

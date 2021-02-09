@@ -9,6 +9,45 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Added
+- New i18n-component for easier nodes interpolation
+- New helpers: 
+  - `identity-helper.js` - Includes reusable actions over identities
+  - `fees-helper.js` - Includes reusable actions over fees
+- New error-message when saleLogo doesn`t added in the ShortBlurbStepForm
+- New records:
+  - OrderBookRecord
+  - OfferRecord
+
+### Changed
+- New formers:
+  - New `TransferFormer`
+  - New `IssuanceFormer`
+  - New `LimitsFormer`
+  - New `WithdrawalFormer`
+  - New `PollFormer`
+  - New `SaleFormer`
+  - New `InvestFormer`
+  - New `TradeFormer`
+
+#### Fixed
+- A bug with `MarkdownField` length
+- A bug with cancel order in `YourTradeOfferForm`
+- New versions of packages: 
+  - lodash: 4.17.20
+  - resolve-url-loader: 3.1.2
+  - js-sdk: 1.14.0-rc.13
+- New positions of forms: 
+  - DepositForm
+  - SaleForm
+
+### Removed
+- Removed `issuance-form` from modules
+- Removed `offer-manager.mixin` from mixins
+- Removed `fees.mixin` from fees
+- Removed `fees.mixin.spec` from fees
+
+## [1.13.0-rc.0] - 2020-09-18
+#### Added
 - Smart App Banner
 - Formers - guys that collect attributes:
   - Migrate the asset creation/update and asset request creation/update to
@@ -1223,7 +1262,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.12.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.13.0-rc.0...HEAD
+[1.13.0-rc.0]: https://github.com/tokend/web-client/compare/1.12.0...1.13.0-rc.0
 [1.12.0]: https://github.com/tokend/web-client/compare/1.12.0-rc.6...1.12.0
 [1.12.0-rc.6]: https://github.com/tokend/web-client/compare/1.12.0-rc.5...1.12.0-rc.6
 [1.12.0-rc.5]: https://github.com/tokend/web-client/compare/1.12.0-rc.4...1.12.0-rc.5

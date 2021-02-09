@@ -58,17 +58,19 @@
 </template>
 
 <script>
-import Chart from '@/vue/common/chart/Chart'
 import TradeHistoryRenderer from '@/vue/pages/TradeExchange/Trade.HistoryRenderer'
 import TradeOffersRenderer from '@/vue/pages/TradeExchange/Trade.OffersRenderer'
-import { ErrorHandler } from '@/js/helpers/error-handler'
-import config from '@/config'
-import { api } from '@/api'
-import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 import CollectionLoader from '@/vue/common/CollectionLoader'
-import { mapActions } from 'vuex'
-import { vuexTypes } from '@/vuex'
 import UpdateList from '@/vue/mixins/update-list.mixin'
+import Chart from '@/vue/common/chart/Chart'
+import config from '@/config'
+
+import { OrderBookRecord } from '@/js/records/entities/order-book.record'
+import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
+import { ErrorHandler } from '@/js/helpers/error-handler'
+import { vuexTypes } from '@/vuex'
+import { mapActions } from 'vuex'
+import { api } from '@/api'
 
 const REFS = {
   tradeHistory: 'trade-history',
@@ -154,9 +156,10 @@ export default {
         const orderBookId = SECONDARY_MARKET_ORDER_BOOK_ID
 
         const endpoint = `/v3/order_books/${baseAsset}:${quoteAsset}:${orderBookId}`
-        const { data: orderBook } = await api.get(endpoint, {
+        const { data } = await api.get(endpoint, {
           include: ['buy_entries', 'sell_entries'],
         })
+        let orderBook = new OrderBookRecord(data)
 
         this.buyOffersList = this.sortOffersList(orderBook.buyEntries, 'ask')
         this.sellOffersList = this.sortOffersList(orderBook.sellEntries, 'bids')

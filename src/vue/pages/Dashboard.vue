@@ -65,7 +65,7 @@
             {{ 'dashboard.create-issuance-title' | globalize }}
           </template>
 
-          <issuance-form-module
+          <issuance-form
             @issuance-created="closeDrawerAndUpdateList"
           />
         </template>
@@ -87,7 +87,7 @@
 <script>
 import AssetSelector from '@/vue/pages/dashboard/Dashboard.AssetSelector.vue'
 import Transfer from '@/vue/forms/TransferForm'
-import IssuanceFormModule from '@/vue/modules/issuance-form'
+import IssuanceForm from '@/vue/forms/IssuanceForm'
 import Drawer from '@/vue/common/Drawer'
 import Chart from '@/vue/common/chart/Chart'
 import MovementsHistoryModule from '@/vue/modules/movements-history'
@@ -107,7 +107,7 @@ export default {
     AssetSelector,
     Transfer,
     Drawer,
-    IssuanceFormModule,
+    IssuanceForm,
     Chart,
     MovementsHistoryModule,
   },
