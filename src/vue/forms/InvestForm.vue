@@ -433,14 +433,14 @@ export default {
       this.former.setAttr('saleBaseAssetCode', this.saleBaseAsset.code || '')
 
       const baseBalance = this.accountBalanceByCode(this.sale.baseAsset)
-
-      if (!baseBalance) {
+      if (!baseBalance.id) {
         const operation = this.former.buildOpCreateBalance()
         await api.postOperations(operation)
         await this.loadBalances()
       }
 
-      this.former.setAttr('baseBalanceId', baseBalance.id || '')
+      this.former.setAttr('baseBalanceId',
+        this.accountBalanceByCode(this.sale.baseAsset).id || '')
 
       await this.loadCurrentInvestment()
       this.isLoaded = true
