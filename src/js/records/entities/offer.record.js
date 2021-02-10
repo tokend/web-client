@@ -12,5 +12,8 @@ export class OfferRecord {
     this.price = record.price
     this.baseAssetCode = safeGet(record, 'baseAsset.id', '')
     this.quoteAssetCode = safeGet(record, 'quoteAsset.id', '')
+
+    this.baseBalanceId = safeGet(record, 'baseBalance.id', '')
+    this.quoteBalanceId = safeGet(record, 'quoteBalance.id', '')
   }
 }
