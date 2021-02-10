@@ -42,15 +42,6 @@ export class InvestFormer extends Former {
       return operations
     }
 
-    buildOpCreateBalance () {
-      const operation = base.Operation.manageBalance({
-        destination: this.attrs.senderAccountId,
-        asset: this.attrs.saleBaseAssetCode,
-        action: base.xdr.ManageBalanceAction.createUnique(),
-      })
-      return operation
-    }
-
     buildOpCancelOffer () {
       const fees = '0'
       const operation = base.ManageOfferBuilder.cancelOffer(

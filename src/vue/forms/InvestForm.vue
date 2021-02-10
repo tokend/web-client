@@ -208,6 +208,7 @@ import { vueRoutes } from '@/vue-router/routes'
 import { MathUtil } from '@/js/utils'
 import { keyValues } from '@/key-values'
 import { InvestFormer } from '@/js/formers/InvestFormer'
+import { createBalanceIfNotExist } from '@/js/helpers/sale-helper'
 
 const EVENTS = {
   submitted: 'submitted',
@@ -432,12 +433,8 @@ export default {
       this.former.setAttr('saleId', this.sale.id || '')
       this.former.setAttr('saleBaseAssetCode', this.saleBaseAsset.code || '')
 
-      const baseBalance = this.accountBalanceByCode(this.sale.baseAsset)
-      if (!baseBalance.id) {
-        const operation = this.former.buildOpCreateBalance()
-        await api.postOperations(operation)
-        await this.loadBalances()
-      }
+      await createBalanceIfNotExist(this.sale.baseAsset)
+      await this.loadBalances()
 
       this.former.setAttr('baseBalanceId',
         this.accountBalanceByCode(this.sale.baseAsset).id || '')
