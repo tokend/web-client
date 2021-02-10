@@ -324,7 +324,6 @@ export default {
       try {
         await createBalanceIfNotExist(this.former.attrs.baseAssetCode)
         await createBalanceIfNotExist(this.former.attrs.quoteAssetCode)
-        await this.loadBalances()
 
         const operation = await this.former.buildOpCreate()
         await api.postOperations(operation)

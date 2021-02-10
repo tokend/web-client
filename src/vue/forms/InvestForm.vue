@@ -434,8 +434,6 @@ export default {
       this.former.setAttr('saleBaseAssetCode', this.saleBaseAsset.code || '')
 
       await createBalanceIfNotExist(this.sale.baseAsset)
-      await this.loadBalances()
-
       this.former.setAttr('baseBalanceId',
         this.accountBalanceByCode(this.sale.baseAsset).id || '')
 

@@ -32,6 +32,7 @@ export async function createBalanceIfNotExist (assetCode) {
     })
     await api.postOperations(operation)
   }
+  await store.dispatch(vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS)
 }
 
 export async function loadAssetsPairsByQuote (quoteAssetCode) {
