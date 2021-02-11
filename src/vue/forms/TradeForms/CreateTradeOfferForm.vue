@@ -341,8 +341,10 @@ export default {
     async submit () {
       this.isOfferCreating = true
       try {
-        await createBalanceIfNotExist(this.former.attrs.baseAssetCode)
         await createBalanceIfNotExist(this.former.attrs.quoteAssetCode)
+
+        this.former.setAttr('quoteBalanceId',
+          this.accountBalanceByCode(this.former.attrs.quoteAssetCode).id)
 
         const operation = await this.former.buildOpCreate()
         await api.postOperations(operation)

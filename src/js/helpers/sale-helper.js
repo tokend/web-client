@@ -21,16 +21,24 @@ export async function createSaleDescriptionBlobId (description) {
   return blob.id
 }
 
-export async function createBalanceIfNotExist (assetCode) {
-  let accountBalancesAssetsCodes =
+export async function createBalanceIfNotExist (...assetsCodes) {
+  let operations = []
+
+  assetsCodes.forEach(assetCode => {
+    let accountBalancesAssetsCodes =
       store.getters[vuexTypes.accountBalances].map(i => i.asset.code)
-  if (!(accountBalancesAssetsCodes.includes(assetCode))) {
-    let operation = base.Operation.manageBalance({
-      asset: assetCode,
-      destination: store.getters[vuexTypes.accountId],
-      action: base.xdr.ManageBalanceAction.createUnique(),
-    })
-    await api.postOperations(operation)
+
+    if (!(accountBalancesAssetsCodes.includes(assetCode))) {
+      let operation = base.Operation.manageBalance({
+        asset: assetCode,
+        destination: store.getters[vuexTypes.accountId],
+        action: base.xdr.ManageBalanceAction.createUnique(),
+      })
+      operations.push(operation)
+    }
+  })
+  if (operations.length) {
+    await api.postOperations(...operations)
   }
   await store.dispatch(vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS)
 }
