@@ -67,6 +67,7 @@ const actions = {
 
   // assets
   LOAD_ASSETS: 'LOAD_ASSETS',
+  CREATE_BALANCE: 'CREATE_BALANCE',
 
   // idle
   START_IDLE: 'START_IDLE',

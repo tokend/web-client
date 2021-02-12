@@ -208,7 +208,6 @@ import { vueRoutes } from '@/vue-router/routes'
 import { MathUtil } from '@/js/utils'
 import { keyValues } from '@/key-values'
 import { InvestFormer } from '@/js/formers/InvestFormer'
-import { createBalanceIfNotExist } from '@/js/helpers/sale-helper'
 
 const EVENTS = {
   submitted: 'submitted',
@@ -433,7 +432,7 @@ export default {
       this.former.setAttr('saleId', this.sale.id || '')
       this.former.setAttr('saleBaseAssetCode', this.saleBaseAsset.code || '')
 
-      await createBalanceIfNotExist(this.sale.baseAsset)
+      await this.createBalance([this.sale.baseAsset])
       this.former.setAttr('baseBalanceId',
         this.accountBalanceByCode(this.sale.baseAsset).id || '')
 
@@ -449,6 +448,7 @@ export default {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
       loadAssets: vuexTypes.LOAD_ASSETS,
+      createBalance: vuexTypes.CREATE_BALANCE,
     }),
 
     setAssetByCode (code) {

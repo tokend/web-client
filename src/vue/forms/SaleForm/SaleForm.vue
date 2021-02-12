@@ -61,7 +61,6 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { SaleFormer } from '@/js/formers/SaleFormer'
-import { createBalanceIfNotExist } from '@/js/helpers/sale-helper'
 
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -144,6 +143,7 @@ export default {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
       loadAssets: vuexTypes.LOAD_ASSETS,
+      createBalance: vuexTypes.CREATE_BALANCE,
     }),
 
     moveToNextStep () {
@@ -166,10 +166,10 @@ export default {
     async submit () {
       this.isDisabled = true
       try {
-        await Promise.all(
-          this.former.attrs.quoteAssetsAndPrices
-            .map(assetCode => createBalanceIfNotExist(assetCode.asset))
-        )
+        let quoteAssets = this.former.attrs.quoteAssetsAndPrices
+          .map(assetCode => assetCode.asset)
+        await this.createBalance(quoteAssets)
+
         const operation = await this.former.buildOps()
         await api.postOperations(...operation)
         Bus.success('create-sale-form.request-submitted-msg')

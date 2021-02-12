@@ -1,7 +1,5 @@
 import { api } from '@/api'
 import { types } from './types'
-import { base } from '@tokend/js-sdk'
-import { vuexTypes } from '@/vuex'
 
 export const state = {
   kycRequiredAssetType: null,
@@ -30,16 +28,6 @@ export const actions = {
     const { data } = await api.get(endpoint)
 
     commit(types.SET_SECURITY_ASSET_TYPE, data.value.u32)
-  },
-
-  async [types.CREATE_BALANCE] ({ rootGetters }, assetCode) {
-    const operation = base.Operation.manageBalance({
-      asset: assetCode,
-      destination: rootGetters[vuexTypes.accountId],
-      action: base.xdr.ManageBalanceAction.createUnique(),
-    })
-
-    await api.postOperations(operation)
   },
 }
 

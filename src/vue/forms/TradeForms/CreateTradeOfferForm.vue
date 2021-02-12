@@ -152,7 +152,6 @@ import FormMixin from '@/vue/mixins/form.mixin'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { createBalanceIfNotExist } from '@/js/helpers/sale-helper'
 import { TradeFormer } from '@/js/formers/TradeFormer'
 
 import { MathUtil } from '@/js/utils/math.util'
@@ -314,6 +313,7 @@ export default {
   methods: {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+      createBalance: vuexTypes.CREATE_BALANCE,
     }),
     tryLoadFees () {
       this.isFeesLoaded = false
@@ -341,7 +341,7 @@ export default {
     async submit () {
       this.isOfferCreating = true
       try {
-        await createBalanceIfNotExist(this.former.attrs.quoteAssetCode)
+        await this.createBalance([this.former.attrs.quoteAssetCode])
 
         this.former.setAttr('quoteBalanceId',
           this.accountBalanceByCode(this.former.attrs.quoteAssetCode).id)
