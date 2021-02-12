@@ -294,9 +294,7 @@
 <script>
 import AssetLogoDark from '@/vue/common/assets/AssetLogoDark'
 
-import { api, documentsManager } from '@/api'
-
-import { base } from '@tokend/js-sdk'
+import { documentsManager } from '@/api'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
@@ -382,6 +380,7 @@ export default {
   methods: {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+      createBalance: vuexTypes.CREATE_BALANCE,
     }),
     async createBalance () {
       if (!this.isBalanceCreationAllowed) {
@@ -391,13 +390,8 @@ export default {
 
       this.isBalanceCreating = true
       try {
-        const operation = base.Operation.manageBalance({
-          destination: this.accountId,
-          asset: this.asset.code,
-          action: base.xdr.ManageBalanceAction.createUnique(),
-        })
-        await api.postOperations(operation)
-        await this.loadBalances()
+        await this.createBalance([this.asset.code])
+
         this.$emit(EVENTS.balanceAdded)
         Bus.success('asset-details.balance-added-msg')
       } catch (e) {

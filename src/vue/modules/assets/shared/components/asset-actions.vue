@@ -44,7 +44,6 @@
 <script>
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
-import { types } from '@/vue/modules/assets/shared/store/types'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
@@ -99,16 +98,12 @@ export default {
   },
   methods: {
     ...mapActions({
-      loadAccountBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
-    }),
-    ...mapActions('asset-explorer', {
-      createBalance: types.CREATE_BALANCE,
+      createBalance: vuexTypes.CREATE_BALANCE,
     }),
     async addBalance () {
       this.isPending = true
       try {
-        await this.createBalance(this.asset.code)
-        await this.loadAccountBalances()
+        await this.createBalance([this.asset.code])
 
         Bus.success('assets.balance-added-msg')
         this.$emit(EVENTS.balanceAdded)

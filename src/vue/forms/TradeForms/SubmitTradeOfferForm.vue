@@ -150,7 +150,6 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import { TradeFormer } from '@/js/formers/TradeFormer'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { createBalanceIfNotExist } from '@/js/helpers/sale-helper'
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
 
@@ -293,6 +292,7 @@ export default {
   methods: {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+      createBalance: vuexTypes.CREATE_BALANCE,
     }),
 
     tryLoadFees () {
@@ -322,9 +322,15 @@ export default {
     async submit () {
       this.isOfferSubmitting = true
       try {
-        await createBalanceIfNotExist(this.former.attrs.baseAssetCode)
-        await createBalanceIfNotExist(this.former.attrs.quoteAssetCode)
-        await this.loadBalances()
+        await this.createBalance([
+          this.former.attrs.baseAssetCode,
+          this.former.attrs.quoteAssetCode,
+        ])
+
+        this.former.setAttr('baseBalanceId',
+          this.accountBalanceByCode(this.former.attrs.baseAssetCode).id)
+        this.former.setAttr('quoteBalanceId',
+          this.accountBalanceByCode(this.former.attrs.quoteAssetCode).id)
 
         const operation = await this.former.buildOpCreate()
         await api.postOperations(operation)

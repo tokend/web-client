@@ -432,16 +432,6 @@ export default {
       this.former.setAttr('saleId', this.sale.id || '')
       this.former.setAttr('saleBaseAssetCode', this.saleBaseAsset.code || '')
 
-      const baseBalance = this.accountBalanceByCode(this.sale.baseAsset)
-
-      if (!baseBalance) {
-        const operation = this.former.buildOpCreateBalance()
-        await api.postOperations(operation)
-        await this.loadBalances()
-      }
-
-      this.former.setAttr('baseBalanceId', baseBalance.id || '')
-
       await this.loadCurrentInvestment()
       this.isLoaded = true
     } catch (e) {
@@ -454,6 +444,7 @@ export default {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
       loadAssets: vuexTypes.LOAD_ASSETS,
+      createBalance: vuexTypes.CREATE_BALANCE,
     }),
 
     setAssetByCode (code) {
@@ -501,6 +492,10 @@ export default {
       this.former.setAttr('currentInvestmentId', this.currentInvestment.id)
 
       try {
+        await this.createBalance([this.sale.baseAsset])
+        this.former.setAttr('baseBalanceId',
+          this.accountBalanceByCode(this.sale.baseAsset).id || '')
+
         const operations = await this.former.buildOps()
         await api.postOperations(...operations)
 

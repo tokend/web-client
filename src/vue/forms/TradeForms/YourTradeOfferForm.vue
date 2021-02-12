@@ -307,10 +307,6 @@ export default {
   async created () {
     try {
       this.former.setAttr('creatorAccountId', this.accountId)
-      this.former.setAttr('baseBalanceId',
-        this.accountBalanceByCode(this.former.attrs.baseAssetCode).id)
-      this.former.setAttr('quoteBalanceId',
-        this.accountBalanceByCode(this.former.attrs.quoteAssetCode).id)
 
       this.form.baseAmount = this.former.attrs.baseAmount
       this.form.price = String(MathUtil.divide(

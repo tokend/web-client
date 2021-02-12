@@ -1,4 +1,4 @@
-import { BLOB_TYPES, base } from '@tokend/js-sdk'
+import { BLOB_TYPES } from '@tokend/js-sdk'
 import { api } from '@/api'
 import { store, vuexTypes } from '@/vuex'
 import { AssetPairRecord } from '@/js/records/entities/asset-pair.record'
@@ -19,19 +19,6 @@ export async function createSaleDescriptionBlobId (description) {
     },
   })
   return blob.id
-}
-
-export async function createBalanceIfNotExist (assetCode) {
-  let accountBalancesAssetsCodes =
-      store.getters[vuexTypes.accountBalances].map(i => i.asset.code)
-  if (!(accountBalancesAssetsCodes.includes(assetCode))) {
-    let operation = base.Operation.manageBalance({
-      asset: assetCode,
-      destination: store.getters[vuexTypes.accountId],
-      action: base.xdr.ManageBalanceAction.createUnique(),
-    })
-    await api.postOperations(operation)
-  }
 }
 
 export async function loadAssetsPairsByQuote (quoteAssetCode) {

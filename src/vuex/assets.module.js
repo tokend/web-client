@@ -1,6 +1,7 @@
 import { vuexTypes } from './types'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { api } from '@/api'
+import { base } from '@tokend/js-sdk'
 
 const ASSETS_PAGE_LIMIT = 100
 
@@ -41,6 +42,28 @@ export const actions = {
     }
 
     commit(vuexTypes.SET_ASSETS, assets)
+  },
+
+  async [vuexTypes.CREATE_BALANCE] ({ rootGetters, dispatch }, assetsCodes) {
+    const accountBalancesAssetsCodes =
+    rootGetters[vuexTypes.accountBalances].map(i => i.asset.code)
+
+    const operations = assetsCodes.reduce((ops, current) => {
+      if ((accountBalancesAssetsCodes.includes(current))) return ops
+
+      ops.push(base.Operation.manageBalance({
+        asset: current,
+        destination: rootGetters[vuexTypes.accountId],
+        action: base.xdr.ManageBalanceAction.createUnique(),
+      }))
+
+      return ops
+    }, [])
+
+    if (operations.length) {
+      await api.postOperations(...operations)
+    }
+    await dispatch(vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS)
   },
 }
 
