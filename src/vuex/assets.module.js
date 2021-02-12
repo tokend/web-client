@@ -48,7 +48,7 @@ export const actions = {
     const accountBalancesAssetsCodes =
     rootGetters[vuexTypes.accountBalances].map(i => i.asset.code)
 
-    let operations = assetsCodes.reduce((ops, current) => {
+    const operations = assetsCodes.reduce((ops, current) => {
       if ((accountBalancesAssetsCodes.includes(current))) return ops
 
       ops.push(base.Operation.manageBalance({
