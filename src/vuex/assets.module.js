@@ -44,25 +44,21 @@ export const actions = {
     commit(vuexTypes.SET_ASSETS, assets)
   },
 
-  async [vuexTypes.CREATE_BALANCE] (
-    { rootGetters, dispatch },
-    [ ...assetsCodes ]
-  ) {
-    let operations = []
+  async [vuexTypes.CREATE_BALANCE] ({ rootGetters, dispatch }, assetsCodes) {
+    const accountBalancesAssetsCodes =
+    rootGetters[vuexTypes.accountBalances].map(i => i.asset.code)
 
-    assetsCodes.forEach(assetCode => {
-      let accountBalancesAssetsCodes =
-        rootGetters[vuexTypes.accountBalances].map(i => i.asset.code)
+    let operations = assetsCodes.reduce((ops, current) => {
+      if ((accountBalancesAssetsCodes.includes(current))) return ops
 
-      if (!(accountBalancesAssetsCodes.includes(assetCode))) {
-        let operation = base.Operation.manageBalance({
-          asset: assetCode,
-          destination: rootGetters[vuexTypes.accountId],
-          action: base.xdr.ManageBalanceAction.createUnique(),
-        })
-        operations.push(operation)
-      }
-    })
+      ops.push(base.Operation.manageBalance({
+        asset: current,
+        destination: rootGetters[vuexTypes.accountId],
+        action: base.xdr.ManageBalanceAction.createUnique(),
+      }))
+
+      return ops
+    }, [])
 
     if (operations.length) {
       await api.postOperations(...operations)

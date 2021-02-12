@@ -432,10 +432,6 @@ export default {
       this.former.setAttr('saleId', this.sale.id || '')
       this.former.setAttr('saleBaseAssetCode', this.saleBaseAsset.code || '')
 
-      await this.createBalance([this.sale.baseAsset])
-      this.former.setAttr('baseBalanceId',
-        this.accountBalanceByCode(this.sale.baseAsset).id || '')
-
       await this.loadCurrentInvestment()
       this.isLoaded = true
     } catch (e) {
@@ -496,6 +492,10 @@ export default {
       this.former.setAttr('currentInvestmentId', this.currentInvestment.id)
 
       try {
+        await this.createBalance([this.sale.baseAsset])
+        this.former.setAttr('baseBalanceId',
+          this.accountBalanceByCode(this.sale.baseAsset).id || '')
+
         const operations = await this.former.buildOps()
         await api.postOperations(...operations)
 
