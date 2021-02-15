@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [1.13.0-rc.2] - 2021-02-15
+### Changed
+- Refactor function addBalance
+
 ## [1.13.0-rc.1] - 2021-02-09
 #### Added
 - New i18n-component for easier nodes interpolation
@@ -1262,7 +1266,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.13.0-rc.1...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.13.0-rc.2...HEAD
+[1.13.0-rc.2]: https://github.com/tokend/web-client/compare/1.13.0-rc.1...1.13.0-rc.2
 [1.13.0-rc.1]: https://github.com/tokend/web-client/compare/1.13.0-rc.0...1.13.0-rc.1
 [1.13.0-rc.0]: https://github.com/tokend/web-client/compare/1.12.0...1.13.0-rc.0
 [1.12.0]: https://github.com/tokend/web-client/compare/1.12.0-rc.6...1.12.0
