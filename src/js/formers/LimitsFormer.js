@@ -17,7 +17,7 @@ export class LimitsFormer extends Former {
         monthlyOut: '',
         annualOut: '',
         note: '',
-        requestType: '',
+        requestType: LIMITS_REQUEST_TYPE.initial,
         statsOpType: '',
         operationType: '',
       }
@@ -38,7 +38,7 @@ export class LimitsFormer extends Former {
             monthlyOut: attrs.monthlyOut,
             weeklyOut: attrs.weeklyOut,
           },
-          requestType: LIMITS_REQUEST_TYPE.initial,
+          requestType: attrs.requestType,
           note: attrs.note,
         },
       })
