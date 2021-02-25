@@ -44,16 +44,15 @@ export class LimitsFormer extends Former {
       })
     }
 
-    populate (limits) {
+    /** @param {LimitsRecord} source*/
+    populate (source) {
       this.attrs = this.attrs || this._defaultAttrs
 
-      this.attrs.dailyOut = limits.dailyOut
-      this.attrs.weeklyOut = limits.weeklyOut
-      this.attrs.monthlyOut = limits.monthlyOut
-      this.attrs.annualOut = limits.annualOut
-      this.attrs.assetCode = limits.assetCode
-      this.attrs.requestType = limits.requestType
-      this.attrs.statsOpType = limits.statsOpType
-      this.attrs.operationType = limits.operationType
+      this.attrs.annualOut = source.annualOut
+      this.attrs.assetCode = source.assetCode
+      this.attrs.dailyOut = source.dailyOut
+      this.attrs.monthlyOut = source.monthlyOut
+      this.attrs.weeklyOut = source.weeklyOut
+      this.attrs.statsOpType = source.statsOpType
     }
 }
