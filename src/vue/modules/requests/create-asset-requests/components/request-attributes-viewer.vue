@@ -59,38 +59,6 @@
 
         <tr>
           <td>
-            <!-- eslint-disable-next-line max-len -->
-            {{ 'create-asset-requests.can-be-base-in-atomic-swap-title' | globalize }}
-          </td>
-          <td>
-            <template v-if="request.isBaseInAtomicSwap">
-              {{ 'create-asset-requests.yes-msg' | globalize }}
-            </template>
-
-            <template v-else>
-              {{ 'create-asset-requests.no-msg' | globalize }}
-            </template>
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            <!-- eslint-disable-next-line max-len -->
-            {{ 'create-asset-requests.can-be-quote-in-atomic-swap-title' | globalize }}
-          </td>
-          <td>
-            <template v-if="request.isQuoteInAtomicSwap">
-              {{ 'create-asset-requests.yes-msg' | globalize }}
-            </template>
-
-            <template v-else>
-              {{ 'create-asset-requests.no-msg' | globalize }}
-            </template>
-          </td>
-        </tr>
-
-        <tr>
-          <td>
             {{ 'create-asset-requests.requires-kyc-title' | globalize }}
           </td>
           <td>

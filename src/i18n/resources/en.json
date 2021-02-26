@@ -695,7 +695,6 @@
       "documents": "Documents",
       "register-of-shares": "Register of shares",
       "polls": "Polls",
-      "atomic-swaps": "Atomic swaps",
       "kyc-recovery": "KYC Recovery"
     },
     "limits": {
@@ -1972,76 +1971,6 @@
       "permission-type-unrestricted-val": "Re-vote allowed",
       "yes-val": "Yes",
       "no-val": "No"
-    },
-    "atomic-swaps": {
-      "explore-atomic-swaps": "Explore atomic swaps",
-      "create-atomic-swap-bth": "Create atomic swap",
-      "new-atomic-swap": "New atomic swap"
-    },
-    "create-atomic-swap-form": {
-      "asset-lbl": "Asset",
-      "no-base-atomic-swap-assets-title": "No base atomic swap assets yet",
-      "no-base-atomic-swap-assets-msg": "Please create an asset to create atomic swap",
-      "no-quote-atomic-swap-assets-title": "No quote atomic swap assets yet",
-      "no-quote-atomic-swap-assets-msg": "Please create an asset to create atomic swap",
-      "load-failed-msg": "There was an error while loading. Please, try again later",
-      "amount-lbl": "Amount",
-      "available-amount-hint": "Available: {{amount, money}}",
-      "create-btn": "Create",
-      "price-lbl": "Price",
-      "address-lbl": "Address",
-      "add-quote-asset-btn": "Add quote asset",
-      "quote-assets-subheading": "Quote asset {{ number }}",
-      "created-atomic-swap-msg": "Atomic swap request successfully created",
-      "available-balance":"Balance: {{amount, number}} {{asset}}.",
-      "available-for-issuance": "Available for issuance: {{amount, number}} {{asset}}"
-    },
-    "atomic-swaps-explore": {
-      "atomic-swap-drawer-title": "Atomic swap details",
-      "no-list-title": "No atomic swaps yet",
-      "no-list-msg": "Here will be the list of atomic swaps",
-      "owned-by-me-filter-lbl": "Owned by me",
-      "buying": "Buying of {{asset}}"
-    },
-    "atomic-swap-form":{
-      "available": "Available for buy {{amount, money}} {{asset}}",
-      "asset-in-which-buying": "Asset in which buying",
-      "amount": "Amount of {{asset}}",
-      "buy": "Buy",
-      "price": "Price",
-      "total-price": "Total price",
-      "error-msg": "Payment request was successful. Cannot load address for payment.",
-      "load-failed-msg": "There was an error while loading.",
-      "loading-msg": "Please wait while we loading your data."
-    },
-    "atomic-swap-actions": {
-      "cancel-btn": "Cancel",
-      "yes-msg": "Yes",
-      "no-msg": "No",
-      "cancellation-msg": "Are you sure to cancel the atomic swap?",
-      "atomic-swap-canceled-msg": "Your atomic swap was successfully cancelled"
-    },
-    "atomic-swap-attributes": {
-      "id-key": "ID",
-      "owner-key": "Owner",
-      "created-key": "Created",
-      "base-asset-key": "Base asset",
-      "available-amount-key": "Available amount",
-      "locked-amount-key": "Locked amount",
-      "is-canceled-key": "Is canceled?",
-      "yes-val": "Yes",
-      "no-val": "No",
-      "quote-asset-key": "Code",
-      "price-key": "Price",
-      "address-key": "Address",
-      "quote-assets-subheading": "Quote asset #{{ number }}"
-    },
-    "atomic-swap-card": {
-      "id-prefix":"#{{id}}",
-      "author-prefix":"By",
-      "base-asset": "Base: {{ baseAsset }}",
-      "quote-assets": "Quote:",
-      "quote-asset-with-comma": "{{ quoteAsset }},"
     },
     "kyc-recovery": {
       "submit-again-lbl": "Submit again",

@@ -694,7 +694,6 @@
       "documents": "Документы",
       "register-of-shares": "Реестр акций",
       "polls": "Опросы",
-      "atomic-swaps": "Атомарный обмен",
       "kyc-recovery": "Восстановление по KYC"
     },
     "limits": {
@@ -1972,81 +1971,11 @@
       "yes-val": "Да",
       "no-val": "Нет"
     },
-    "atomic-swaps": {
-      "explore-atomic-swaps": "Все предложения",
-      "create-atomic-swap-bth": "Создать предложение",
-      "new-atomic-swap": "Новое предложение"
-    },
-    "create-atomic-swap-form": {
-      "asset-lbl": "Актив",
-      "no-base-atomic-swap-assets-title": "Нет активов, которые могли бы бить базовыми в атомарном обмене",
-      "no-base-atomic-swap-assets-msg": "Пожалуйста, создайте актив, который мог бы быть базовым в атомарном обмене.",
-      "no-quote-atomic-swap-assets-title": "Нет активов, которые могли бы бить котируемыми в атомарном обмене.",
-      "no-quote-atomic-swap-assets-msg": "Пожалуйста, создайте актив, который мог бы быть котируемым в атомарном обмене.",
-      "load-failed-msg": "Произошла ошибка при загрузке. Пожалуйста, попробуйте позже",
-      "amount-lbl": "Количество",
-      "available-amount-hint": "Доступно: {{amount, money}}",
-      "create-btn": "Создать",
-      "price-lbl": "Цена",
-      "address-lbl": "Адрес",
-      "add-quote-asset-btn": "Добавить котируемый актив",
-      "quote-assets-subheading": "Котируемый актив {{number}}",
-      "created-atomic-swap-msg": "Запрос отправлен",
-      "available-balance": "Баланс: {{amount, number}} {{asset}}.",
-      "available-for-issuance": "Доступно для выдачи: {{amount, number}} {{asset}}"
-    },
-    "atomic-swaps-explore": {
-      "owned-by-me-filter-lbl": "Принадлежит мне",
-      "buying": "Покупка {{asset}}",
-      "atomic-swap-drawer-title": "Детали атомарных обменов",
-      "no-list-title": "Нет атомарных обменов",
-      "no-list-msg": "Здесь будет список атомарных обменов"
-    },
-    "atomic-swap-form":{
-      "available": "Доступно для покупки {{amount, money}} {{asset}}",
-      "asset-in-which-buying": "Актив, для оплаты",
-      "amount": "Количество {{asset}}",
-      "buy": "Купить",
-      "price": "Цена",
-      "total-price": "Итоговая цена",
-      "error-msg": "Запрос на оплату прошел успешно. Не удается загрузить адрес для оплаты.",
-      "load-failed-msg": "Произошла ошибка при загрузке.",
-      "loading-msg": "Пожалуйста подождите пока мы загрузим ваши данные."
-    },
     "kyc-recovery": {
       "submit-again-lbl": "Отпарвить заново",
       "request-submitted-msg": "Ваш запрос находится в очереди на рассмотрение. Пожалуйста, дождитесь результата рассмотрения запроса администратором.",
       "email-code": "Введите код, отправленный вам по электронной почте",
       "tfa-code": "Введите 2FA код"
-    },
-    "atomic-swap-card": {
-      "id-prefix":"#{{id}}",
-      "author-prefix":"От",
-      "base-asset": "Базовый актив: {{ baseAsset }}",
-      "quote-assets": "Котируемый:",
-      "quote-asset-with-comma": "{{ quoteAsset }},"
-    },
-    "atomic-swap-actions": {
-      "cancel-btn": "Отменить",
-      "yes-msg": "Да",
-      "no-msg": "Нет",
-      "cancellation-msg": "Вы уверены что хотите отменить атомарный обмен?",
-      "atomic-swap-canceled-msg": "Ваш атомарный обмен был успешно отменен"
-    },
-    "atomic-swap-attributes": {
-      "id-key": "Идентификатор",
-      "owner-key": "Владелец",
-      "created-key": "Создано",
-      "base-asset-key": "Базовый актив",
-      "available-amount-key": "Доступное количество",
-      "locked-amount-key": "Заблокированое количество",
-      "is-canceled-key": "Отменен?",
-      "yes-val": "Да",
-      "no-val": "Нет",
-      "quote-asset-key": "Код",
-      "price-key": "Цена",
-      "address-key": "Адрес",
-      "quote-assets-subheading": "Котируемый актив #{{ number }}"
     },
     "smart-banner": {
       "open-store-btn": "ОТКРЫТЬ"
