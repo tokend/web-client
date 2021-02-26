@@ -10,6 +10,8 @@ for further information about branching and tagging conventions.
 ## [1.13.0-rc.2] - 2021-02-15
 ### Changed
 - Refactor function addBalance
+- Modules: 
+  - `movements-top-bar`
 
 ## [1.13.0-rc.1] - 2021-02-09
 #### Added

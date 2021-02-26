@@ -1,6 +1,6 @@
 <template>
   <div class="movements">
-    <movements-top-bar-module
+    <movements-top-bar
       @asset-updated="updateAsset"
       @movements-update-required="emitUpdateList('movements:updateList')"
     />
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import MovementsTopBarModule from '@modules/movements-top-bar'
+import MovementsTopBar from '@/vue/common/MovementsTopBar'
 import MovementsHistoryModule from '@/vue/modules/movements-history'
 
 import config from '@/config'
@@ -21,7 +21,7 @@ import UpdateList from '@/vue/mixins/update-list.mixin'
 export default {
   name: 'movements-page',
   components: {
-    MovementsTopBarModule,
+    MovementsTopBar,
     MovementsHistoryModule,
   },
 
