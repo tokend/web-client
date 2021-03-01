@@ -56,7 +56,7 @@ import IssuanceViewer from './IssuanceViewer'
 import FormMixin from '@/vue/mixins/form.mixin'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { Document } from '@tokend/js-sdk'
+import { Document, base } from '@tokend/js-sdk'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
@@ -64,7 +64,7 @@ import { nonEmptyDocument } from '@validators'
 import { vueRoutes } from '@/vue-router/routes'
 import { FileUtil } from '@/js/utils/file.util'
 import { errors } from '@/js/errors'
-import { base } from '@tokend/js-sdk'
+
 import { api } from '@/api'
 
 const EVENTS = {
