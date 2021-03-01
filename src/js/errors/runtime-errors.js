@@ -17,3 +17,13 @@ export class UserDoesntExistError extends RuntimeError {}
  * The account doesn't have specified balance
  */
 export class BalanceNotFoundError extends RuntimeError {}
+
+/**
+ * The user doesn't own specified asset
+ */
+export class AssetNotOwnedError extends RuntimeError {}
+
+/**
+ * The uploaded file is corrupted
+ */
+export class FileCorruptedError extends RuntimeError {}

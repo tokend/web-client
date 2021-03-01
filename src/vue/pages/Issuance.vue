@@ -34,7 +34,7 @@
         {{ 'issuance-page.upload-pre-issuance' | globalize }}
       </template>
 
-      <pre-issuance-form-module
+      <pre-issuance-form
         @pre-issuance-created="isPreIssuanceDrawerShown = false"
       />
     </drawer>
@@ -64,7 +64,7 @@ import { vueRoutes } from '@/vue-router/routes'
 
 import IssuanceExplorerModule from '@/vue/modules/issuance-explorer'
 import IssuanceForm from '@/vue/forms/IssuanceForm'
-import PreIssuanceFormModule from '@modules/pre-issuance-form'
+import PreIssuanceForm from '@/vue/forms/PreIssuanceForm'
 import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
@@ -73,7 +73,7 @@ export default {
     Drawer,
     TopBar,
     IssuanceForm,
-    PreIssuanceFormModule,
+    PreIssuanceForm,
     IssuanceExplorerModule,
   },
 

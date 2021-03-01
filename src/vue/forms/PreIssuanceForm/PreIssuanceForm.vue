@@ -10,7 +10,6 @@
       <template v-else>
         <template v-if="ownedAssets.length">
           <upload-pre-issuance-form
-            :owned-assets="ownedAssets"
             @submit="$emit(EVENTS.preIssuanceCreated)"
           />
         </template>
@@ -33,8 +32,8 @@
 
 <script>
 import NoDataMessage from '@/vue/common/NoDataMessage'
-import SkeletonLoaderPreIssuanceForm from './components/skeleton-loader-pre-issuance-form'
-import UploadPreIssuanceForm from './components/upload-pre-issuance-form'
+import SkeletonLoaderPreIssuanceForm from './components/SkeletonLoaderPreIssuanceForm'
+import UploadPreIssuanceForm from './components/UploadPreIssuanceForm'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -46,7 +45,7 @@ const EVENTS = {
 }
 
 export default {
-  name: 'issuance-form-module',
+  name: 'pre-issuance-form',
   components: {
     NoDataMessage,
     UploadPreIssuanceForm,
