@@ -141,7 +141,9 @@
       "account-blocked": "Your account is blocked.",
       "user-doesnt-exist": "This user doesn't exist in system.",
       "balance-not-found": "The user does not have this asset balance yet.",
-      "file-upload": "Cannot upload a file to the storage. Please upload another file or try again later."
+      "file-upload": "Cannot upload a file to the storage. Please upload another file or try again later.",
+      "asset-not-owned": "You cannot upload the asset that is not owned by you",
+      "file-corrupted": "Your file is corrupted. Please, try to upload another one"
     },
     "transaction-errors": {
       "tx_failed": "Transaction failed",
@@ -1022,8 +1024,6 @@
       "file-type-note": "Pre-issuance asset file (.iss)",
       "no-owned-assets-title": "No assets yet",
       "no-owned-assets-msg": "Your wallet doesn't contain any issuable assets yet. Please create some and get back",
-      "asset-not-owned-err": "You cannot upload the asset that is not owned by you",
-      "file-corrupted-err": "Your file is corrupted. Please, try to upload another one",
       "pre-issuance-details-title": "Pre-issuance info",
       "pre-issuance-uploaded-msg": "Pre-issuance request was successfully uploaded",
       "pre-issuance-guide-link": "More on pre-issuance"

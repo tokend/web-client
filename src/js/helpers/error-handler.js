@@ -76,6 +76,12 @@ export class ErrorHandler {
       case errors.UserExistsError:
         translationId = 'errors.user-exists'
         break
+      case errors.AssetNotOwnedError:
+        translationId = 'errors.asset-not-owned'
+        break
+      case errors.FileCorruptedError:
+        translationId = 'errors.file-corrupted'
+        break
       case errors.TransactionError:
         let errorCode
         const errorResults = error.errorResults

@@ -51,18 +51,21 @@
 </template>
 
 <script>
-import IssuanceViewer from './issuance-viewer'
+import IssuanceViewer from './IssuanceViewer'
 
 import FormMixin from '@/vue/mixins/form.mixin'
-import ManagePreIssuanceMixin from '../mixins/manage-pre-issuance.mixin'
-
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { AssetNotOwnedError } from '../_errors'
-import { Document } from '@tokend/js-sdk'
+import { Document, base } from '@tokend/js-sdk'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 import { nonEmptyDocument } from '@validators'
 import { vueRoutes } from '@/vue-router/routes'
+import { FileUtil } from '@/js/utils/file.util'
+import { errors } from '@/js/errors'
+
+import { api } from '@/api'
 
 const EVENTS = {
   submit: 'submit',
@@ -71,20 +74,23 @@ const EVENTS = {
 export default {
   name: 'upload-pre-issuance-form',
   components: { IssuanceViewer },
-  mixins: [FormMixin, ManagePreIssuanceMixin],
-
-  props: {
-    ownedAssets: { type: Array, required: true },
-  },
+  mixins: [FormMixin],
 
   data: _ => ({
     preIssuanceDocument: new Document(),
     isFormSubmitting: false,
     vueRoutes,
+    issuance: {},
   }),
 
   validations: {
     preIssuanceDocument: { nonEmptyDocument },
+  },
+
+  computed: {
+    ...mapGetters({
+      ownedAssets: vuexTypes.ownedAssets,
+    }),
   },
 
   watch: {
@@ -101,11 +107,7 @@ export default {
         Bus.success('pre-issuance-form.pre-issuance-uploaded-msg')
         this.$emit(EVENTS.submit)
       } catch (e) {
-        if (e instanceof AssetNotOwnedError) {
-          ErrorHandler.process(e, 'pre-issuance-form.asset-not-owned-err')
-        } else {
-          ErrorHandler.process(e)
-        }
+        ErrorHandler.process(e)
       }
 
       this.isFormSubmitting = false
@@ -118,8 +120,46 @@ export default {
       try {
         await this.extractPreIssuance(newDoc.file)
       } catch (e) {
-        ErrorHandler.process(e, 'pre-issuance-form.file-corrupted-err')
+        ErrorHandler.process(e)
       }
+    },
+
+    async extractPreIssuance (file) {
+      try {
+        const extracted = await FileUtil.getText(file)
+        const rawPreIssuance = JSON.parse(extracted).issuances[0]
+        this.parsePreIssuance(rawPreIssuance)
+      } catch (e) {
+        throw new errors.FileCorruptedError()
+      }
+    },
+
+    parsePreIssuance (preIssuance) {
+      const _xdr = base.xdr.PreIssuanceRequest
+        .fromXDR(preIssuance.preEmission, 'hex')
+      const result = base.PreIssuanceRequest.dataFromXdr(_xdr)
+
+      this.issuance = {
+        asset: result.asset,
+        amount: result.amount,
+        xdr: _xdr,
+        isUsed: preIssuance.used,
+      }
+    },
+
+    async createPreIssuanceRequest () {
+      const issuanceAsset = this.ownedAssets
+        .find(item => item.code === this.issuance.asset)
+
+      if (!issuanceAsset) {
+        throw new errors.AssetNotOwnedError()
+      }
+
+      const operation = base.PreIssuanceRequestOpBuilder
+        .createPreIssuanceRequestOp({
+          request: this.issuance.xdr,
+        })
+      await api.postOperations(operation)
     },
   },
 }
