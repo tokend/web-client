@@ -9,7 +9,7 @@ import kyc from './kyc.module'
 import identities from './identities.module'
 import kycRecovery from './kyc-recovery.module'
 import assetsModule from '@/vue/modules/assets/shared/store'
-import fees from '@/vue/modules/fees/store'
+import fees from './fees.module'
 import movementsHistory from '@/vue/modules/movements-history/store'
 import issuanceExplorer from '@/vue/modules/issuance-explorer/store'
 import createAssetRequests from '@/vue/modules/requests/create-asset-requests/store'
@@ -91,8 +91,8 @@ function buildStore () {
       identities,
       idleHandler,
       kycRecovery,
+      fees,
       'assets-module': assetsModule,
-      'fees': fees,
       'issuance-explorer': issuanceExplorer,
       'movements-history': movementsHistory,
       'create-asset-requests': createAssetRequests,

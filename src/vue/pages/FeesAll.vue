@@ -19,14 +19,13 @@
 </template>
 
 <script>
-import FeesTable from './components/fees-table'
-
+import FeesTable from '@/vue/pages/fees-all/FeesTable'
 import { mapActions, mapGetters } from 'vuex'
-import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
-  name: 'fees-module',
+  name: 'fees',
   components: {
     FeesTable,
   },
@@ -43,8 +42,8 @@ export default {
   }),
 
   computed: {
-    ...mapGetters('fees', {
-      fees: types.fees,
+    ...mapGetters({
+      fees: vuexTypes.fees,
     }),
 
     valuableFeesByAssetCode () {
@@ -58,9 +57,10 @@ export default {
   async created () {
     await this.loadFees()
   },
+
   methods: {
-    ...mapActions('fees', {
-      loadAccountFees: types.LOAD_ACCOUNT_FEES,
+    ...mapActions({
+      loadAccountFees: vuexTypes.LOAD_ACCOUNT_FEES,
     }),
 
     async loadFees () {

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { Fee } from '../../wrappers/fee'
+import { FeeRecord } from '@/js/records/entities/fee.record'
 
 import { FEE_TYPES, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
 
@@ -30,7 +30,7 @@ export default {
 
   props: {
     fee: {
-      type: Fee,
+      type: FeeRecord,
       required: true,
     },
   },

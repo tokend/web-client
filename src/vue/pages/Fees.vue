@@ -36,7 +36,7 @@
         </template>
       </top-bar>
 
-      <fees-module
+      <fees
         :asset-code="asset.code"
       />
     </template>
@@ -61,7 +61,7 @@
 
 <script>
 import SelectField from '@/vue/fields/SelectField'
-import FeesModule from '@/vue/modules/fees'
+import Fees from '@/vue/pages/FeesAll'
 import TopBar from '@/vue/common/TopBar'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
@@ -76,7 +76,7 @@ export default {
   components: {
     SelectField,
     TopBar,
-    FeesModule,
+    Fees,
     NoDataMessage,
     SkeletonLoader,
   },
