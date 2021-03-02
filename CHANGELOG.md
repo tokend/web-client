@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+### Removes
+- Modules:
+  - `issuance-explorer`
+
+### Fixed
+- Added types to `types.spec.js`
+
 ## [1.13.0-rc.2] - 2021-02-15
 ### Changed
 - Refactor function addBalance
