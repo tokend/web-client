@@ -95,7 +95,7 @@ export default {
 
   props: {
     fees: {
-      type: Array,
+      type: Array, /** {@link FeeRecord} **/
       required: true,
     },
     assetCode: {
