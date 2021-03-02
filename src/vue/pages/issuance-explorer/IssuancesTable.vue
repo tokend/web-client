@@ -73,10 +73,11 @@
 
 <script>
 import EmailGetter from '@/vue/common/EmailGetter'
-import RequestStateViewer from './request-state-viewer'
+import RequestStateViewer from './RequestStateViewer'
 import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
-
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 export default {
   name: 'issuanes-table',
   components: {
@@ -87,14 +88,16 @@ export default {
   },
 
   props: {
-    issuances: {
-      type: Array, /** {@link Issuance} **/
-      required: true,
-    },
     isLoaded: {
       type: Boolean,
       required: true,
     },
+  },
+
+  computed: {
+    ...mapGetters({
+      issuances: vuexTypes.issuances,
+    }),
   },
 }
 </script>

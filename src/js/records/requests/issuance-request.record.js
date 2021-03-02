@@ -1,7 +1,7 @@
+import { RequestRecord } from '@/js/records/request-record'
 import _get from 'lodash/get'
-import { Request } from './request'
 
-export class IssuanceRequest extends Request {
+export class IssuanceRequest extends RequestRecord {
   constructor (record) {
     super(record)
     this.amount = _get(record, 'requestDetails.amount')

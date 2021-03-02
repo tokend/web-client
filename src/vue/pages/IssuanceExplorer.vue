@@ -2,7 +2,6 @@
   <div class="issuance-explorer">
     <template>
       <issuances-table
-        :issuances="issuances"
         :is-loaded="isLoaded"
       />
     </template>
@@ -26,17 +25,16 @@
 
 <script>
 import CollectionLoader from '@/vue/common/CollectionLoader'
-
-import IssuancesTable from './components/issuances-table'
+import IssuancesTable from '@/vue/pages/issuance-explorer/IssuancesTable'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
-import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import UpdateList from '@/vue/mixins/update-list.mixin'
 
 export default {
-  name: 'issuance-explorer-module',
+  name: 'issuance-explorer',
   components: {
     IssuancesTable,
     CollectionLoader,
@@ -51,8 +49,8 @@ export default {
   }),
 
   computed: {
-    ...mapGetters('issuance-explorer', {
-      issuances: types.issuances,
+    ...mapGetters({
+      issuances: vuexTypes.issuances,
     }),
   },
 
@@ -66,12 +64,12 @@ export default {
   },
 
   methods: {
-    ...mapMutations('issuance-explorer', {
-      setIssuances: types.SET_ISSUANCES,
-      concatIssuances: types.CONCAT_ISSUANCES,
+    ...mapMutations({
+      setIssuances: vuexTypes.SET_ISSUANCES,
+      concatIssuances: vuexTypes.CONCAT_ISSUANCES,
     }),
-    ...mapActions('issuance-explorer', {
-      loadIssuances: types.LOAD_ISSUANCES,
+    ...mapActions({
+      loadIssuances: vuexTypes.LOAD_ISSUANCES,
     }),
 
     initFirstPageLoader () {
