@@ -134,7 +134,7 @@
           {{ 'withdrawal-form.no-assets' | globalize }}
         </p>
         <router-link
-          :to="vueRoutes.assets"
+          :to="vueRoutes.wallet"
           tag="button"
           class="app__button-raised"
         >

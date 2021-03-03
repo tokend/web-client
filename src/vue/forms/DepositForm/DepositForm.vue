@@ -56,7 +56,7 @@
           {{ 'deposit-form.deposit-no-assets' | globalize }}
         </p>
         <router-link
-          :to="vueRoutes.assets"
+          :to="vueRoutes.wallet"
           tag="button"
           class="app__button-raised deposit-form__discover-asset-btn">
           {{ 'deposit-form.discover-assets-btn' | globalize }}

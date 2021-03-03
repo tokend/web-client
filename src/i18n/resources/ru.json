@@ -679,7 +679,7 @@
     "pages-names": {
       "dashboard": "Главная",
       "limits": "Лимиты",
-      "assets": "Активы",
+      "wallet": "Кошелёк",
       "requests": "Запросы",
       "trade": "Торговля",
       "settings": "Настройки",
@@ -687,7 +687,7 @@
       "movements": "Движение активов",
       "issuance": "Запросы эмиссий",
       "terms": "Соглашение",
-      "sales": "Сейлы",
+      "marketplace": "Торговая Площадка",
       "sale-details": "Детали сейла",
       "loyalty-points": "Очки лояльности",
       "statistics": "Статистика",
@@ -1383,8 +1383,8 @@
       "sale-upcoming-state": "Предстоящий",
       "sale-all-state": "Все",
       "new-sale": "Новый сейл",
-      "investable-sales": "Сейлы",
-      "my-sales": "Мои сейлы"
+      "all-offers": "Все предложения",
+      "my-offers": "Мои предложения"
     },
     "sale-card": {
       "funded": "{{funded, percent}} профинансировано",
@@ -1493,7 +1493,7 @@
       "loading-msg": "Загружаем…",
       "loading-error-msg": "Произошла ошибка при загрузке.",
       "campaign-tab": "Кампания",
-      "investable-sales-tab": "Сейлы",
+      "offers-tab": "Предложения",
       "invest-title": "Инвестировать в этот сейл",
       "statistics-title": "Статистика",
       "whitelist-title": "Белый список",

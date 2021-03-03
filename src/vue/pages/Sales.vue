@@ -2,15 +2,15 @@
   <div class="sales">
     <top-bar>
       <template slot="main">
-        <router-link :to="vueRoutes.investableSales">
-          <span>{{ 'sales.investable-sales' | globalize }}</span>
+        <router-link :to="vueRoutes.offers">
+          <span>{{ 'sales.all-offers' | globalize }}</span>
         </router-link>
 
         <router-link
           v-if="isAccountCorporate"
           :to="vueRoutes.userOwnedSales"
         >
-          <span>{{ 'sales.my-sales' | globalize }}</span>
+          <span>{{ 'sales.my-offers' | globalize }}</span>
         </router-link>
       </template>
 

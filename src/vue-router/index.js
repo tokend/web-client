@@ -146,29 +146,29 @@ const router = new Router({
           beforeEnter: inAppRouteGuard,
         },
         {
-          path: '/assets',
-          name: vueRoutes.assets.name,
+          path: '/wallet',
+          name: vueRoutes.wallet.name,
           meta: {
-            pageNameTranslationId: 'pages-names.assets',
+            pageNameTranslationId: 'pages-names.wallet',
           },
           component: Assets,
           beforeEnter: inAppRouteGuard,
           redirect: vueRoutes.assetsExplore,
           children: [
             {
-              path: '/assets/explore',
+              path: '/wallet/explore',
               name: vueRoutes.assetsExplore.name,
               component: AssetExplorerModule,
               beforeEnter: inAppRouteGuard,
             },
             {
-              path: '/assets/balances',
+              path: '/wallet/balances',
               name: vueRoutes.balances.name,
               component: BalanceExplorerModule,
               beforeEnter: inAppRouteGuard,
             },
             {
-              path: '/assets/my-assets',
+              path: '/wallet/my-assets',
               name: vueRoutes.myAssets.name,
               meta: {
                 isCorporateOnly: true,
@@ -179,16 +179,16 @@ const router = new Router({
           ],
         },
         {
-          path: '/sales',
-          name: vueRoutes.sales.name,
-          meta: { pageNameTranslationId: 'pages-names.sales' },
+          path: '/offers',
+          name: vueRoutes.marketplace.name,
+          meta: { pageNameTranslationId: 'pages-names.marketplace' },
           component: Sales,
           beforeEnter: inAppRouteGuard,
-          redirect: vueRoutes.investableSales,
+          redirect: vueRoutes.offers,
           children: [
             {
-              path: '/sales/all',
-              name: vueRoutes.investableSales.name,
+              path: '/offers/all',
+              name: vueRoutes.offers.name,
               component: SalesList,
               props: {
                 default: true,
@@ -197,7 +197,7 @@ const router = new Router({
               beforeEnter: inAppRouteGuard,
             },
             {
-              path: '/sales/my',
+              path: '/offers/my',
               name: vueRoutes.userOwnedSales.name,
               component: SalesList,
               props: {

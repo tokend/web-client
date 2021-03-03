@@ -31,19 +31,19 @@
       <section class="sidebar__links-section">
         <nav class="sidebar__links-group">
           <router-link
-            key="dashboard"
+            key="marketplace"
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
             tag="a"
-            :to="vueRoutes.dashboard"
+            :to="vueRoutes.marketplace"
           >
             <i
               class="sidebar__link-icon"
-              :class="`mdi mdi-view-dashboard`"
+              :class="`mdi mdi-trending-up`"
             />
             <span>
-              {{ 'pages-names.dashboard' | globalize }}
+              {{ 'pages-names.marketplace' | globalize }}
             </span>
           </router-link>
           <router-link
@@ -63,117 +63,19 @@
             </span>
           </router-link>
           <router-link
-            v-if="isAccountCorporate"
-            key="register-of-shares"
+            key="wallet"
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
             tag="a"
-            :to="vueRoutes.registerOfShares"
+            :to="vueRoutes.wallet"
           >
             <i
               class="sidebar__link-icon"
-              :class="`mdi mdi-book-open`"
+              :class="`mdi mdi-wallet`"
             />
             <span>
-              {{ 'pages-names.register-of-shares' | globalize }}
-            </span>
-          </router-link>
-          <router-link
-            key="assets"
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            tag="a"
-            :to="vueRoutes.assets"
-          >
-            <i
-              class="sidebar__link-icon"
-              :class="`mdi mdi-coins`"
-            />
-            <span>
-              {{ 'pages-names.assets' | globalize }}
-            </span>
-          </router-link>
-          <router-link
-            key="sales"
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            tag="a"
-            :to="vueRoutes.sales"
-          >
-            <i
-              class="sidebar__link-icon"
-              :class="`mdi mdi-trending-up`"
-            />
-            <span>
-              {{ 'pages-names.sales' | globalize }}
-            </span>
-          </router-link>
-          <router-link
-            key="polls"
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            tag="a"
-            :to="vueRoutes.polls"
-          >
-            <i
-              class="sidebar__link-icon"
-              :class="`mdi mdi-vote`"
-            />
-            <span>
-              {{ 'pages-names.polls' | globalize }}
-            </span>
-          </router-link>
-          <router-link
-            key="trade"
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            tag="a"
-            :to="vueRoutes.trade"
-          >
-            <i
-              class="sidebar__link-icon"
-              :class="`mdi mdi-finance`"
-            />
-            <span>
-              {{ 'pages-names.trade' | globalize }}
-            </span>
-          </router-link>
-          <router-link
-            v-if="isAccountCorporate"
-            key="requests"
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            tag="a"
-            :to="vueRoutes.requests"
-          >
-            <i
-              class="sidebar__link-icon"
-              :class="`mdi mdi-book-open-variant`"
-            />
-            <span>
-              {{ 'pages-names.requests' | globalize }}
-            </span>
-          </router-link>
-          <router-link
-            key="issuance"
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            tag="a"
-            :to="vueRoutes.issuance"
-          >
-            <i
-              class="sidebar__link-icon"
-              :class="`mdi mdi-poll`"
-            />
-            <span>
-              {{ 'pages-names.issuance' | globalize }}
+              {{ 'pages-names.wallet' | globalize }}
             </span>
           </router-link>
           <router-link

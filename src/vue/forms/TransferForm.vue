@@ -9,7 +9,7 @@
           {{ 'transfer-form.no-assets' | globalize }}
         </p>
         <router-link
-          :to="vueRoutes.assets.name"
+          :to="vueRoutes.wallet.name"
           tag="button"
           class="app__button-raised transfer-form__discover-asset-btn"
         >

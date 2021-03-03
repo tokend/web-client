@@ -8,16 +8,16 @@
             attr prevents adding any active-class
            -->
           <router-link
-            :to="vueRoutes.sales"
+            :to="vueRoutes.marketplace"
             active-class>
-            <span>{{ 'sale-details.investable-sales-tab' | globalize }}</span>
+            <span>{{ 'sale-details.offers-tab' | globalize }}</span>
           </router-link>
 
           <router-link
             v-if="isAccountCorporate"
             :to="vueRoutes.userOwnedSales"
           >
-            <span>{{ 'sales.my-sales' | globalize }}</span>
+            <span>{{ 'sales.my-offers' | globalize }}</span>
           </router-link>
 
           <router-link :to="{ ...vueRoutes.saleCampaign, params: { id } }">

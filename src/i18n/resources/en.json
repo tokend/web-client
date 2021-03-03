@@ -680,7 +680,7 @@
     "pages-names": {
       "dashboard": "Dashboard",
       "limits": "Limits",
-      "assets": "Assets",
+      "wallet": "Wallet",
       "requests": "Requests",
       "trade": "Trade",
       "settings": "Settings",
@@ -688,7 +688,7 @@
       "movements": "Movements",
       "issuance": "Issuance requests",
       "terms": "Terms",
-      "sales": "Sales",
+      "marketplace": "Marketplace",
       "sale-details": "Sale details",
       "loyalty-points": "Loyalty points",
       "statistics": "Statistics",
@@ -1384,8 +1384,8 @@
       "sale-upcoming-state": "Upcoming only",
       "sale-all-state": "All",
       "new-sale": "New sale",
-      "investable-sales": "Sales",
-      "my-sales": "My sales"
+      "all-offers": "All Offers",
+      "my-offers": "My offers"
     },
     "sale-card": {
       "funded": "{{funded, percent}} funded",
@@ -1494,7 +1494,7 @@
       "loading-msg": "Loading",
       "loading-error-msg": "There was an error while loading.",
       "campaign-tab": "Campaign",
-      "investable-sales-tab": "Investable sales",
+      "offers-tab": "Offers",
       "invest-title": "Invest in this sale",
       "statistics-title": "Statistics",
       "whitelist-title": "Whitelist management",
