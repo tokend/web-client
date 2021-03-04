@@ -27,7 +27,7 @@ const mutations = {
   SET_ASSETS: 'SET_ASSETS',
   UPDATE_ASSETS: 'UPDATE_ASSETS',
 
-  // asset type
+  // asset types
   SET_KYC_REQUIRED_ASSET_TYPE: 'SET_KYC_REQUIRED_ASSET_TYPE',
   SET_SECURITY_ASSET_TYPE: 'SET_SECURITY_ASSET_TYPE',
 
@@ -73,7 +73,7 @@ const actions = {
   LOAD_ASSETS: 'LOAD_ASSETS',
   CREATE_BALANCE: 'CREATE_BALANCE',
 
-  // asset type
+  // asset types
   LOAD_KYC_REQUIRED_ASSET_TYPE: 'LOAD_KYC_REQUIRED_ASSET_TYPE',
   LOAD_SECURITY_ASSET_TYPE: 'LOAD_SECURITY_ASSET_TYPE',
 
@@ -152,7 +152,7 @@ const getters = {
   baseAtomicSwapBalancesAssets: 'baseAtomicSwapBalancesAssets',
   quoteAtomicSwapAssets: 'quoteAtomicSwapAssets',
 
-  // asset type
+  // asset types
   kycRequiredAssetType: 'kycRequiredAssetType',
   securityAssetType: 'securityAssetType',
 
