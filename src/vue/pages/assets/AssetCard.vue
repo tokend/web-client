@@ -80,8 +80,8 @@
 <script>
 import Card from '@/vue/common/Card'
 import CardLogo from '@/vue/common/CardLogo'
-import AssetAttributesViewer from '@/vue/modules/assets/shared/components/asset-attributes-viewer'
-import AssetActions from '@/vue/modules/assets/shared/components/asset-actions'
+import AssetAttributesViewer from './AssetAttributesViewer'
+import AssetActions from './AssetActions'
 import Drawer from '@/vue/common/Drawer'
 import AssetForm from '@/vue/forms/AssetForm'
 
@@ -89,7 +89,6 @@ import { AssetRecord } from '@/js/records/entities/asset.record'
 import { AssetFormer } from '@/js/formers/AssetFormer'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { types } from '@/vue/modules/assets/shared/store/types'
 
 export default {
   name: 'asset-card',
@@ -122,9 +121,9 @@ export default {
       vuexTypes.isAccountCorporate,
     ]),
 
-    ...mapGetters('assets-module', {
-      kycRequiredAssetType: types.kycRequiredAssetType,
-      securityAssetType: types.securityAssetType,
+    ...mapGetters({
+      kycRequiredAssetType: vuexTypes.kycRequiredAssetType,
+      securityAssetType: vuexTypes.securityAssetType,
     }),
 
     assetBalance () {
@@ -146,9 +145,9 @@ export default {
     ...mapActions({
       loadAssets: vuexTypes.LOAD_ASSETS,
     }),
-    ...mapActions('assets-module', {
-      loadKycRequiredAssetType: types.LOAD_KYC_REQUIRED_ASSET_TYPE,
-      loadSecurityAssetType: types.LOAD_SECURITY_ASSET_TYPE,
+    ...mapActions({
+      loadKycRequiredAssetType: vuexTypes.LOAD_KYC_REQUIRED_ASSET_TYPE,
+      loadSecurityAssetType: vuexTypes.LOAD_SECURITY_ASSET_TYPE,
     }),
 
     showUpdateForm () {

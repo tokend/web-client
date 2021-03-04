@@ -27,6 +27,10 @@ const mutations = {
   SET_ASSETS: 'SET_ASSETS',
   UPDATE_ASSETS: 'UPDATE_ASSETS',
 
+  // asset type
+  SET_KYC_REQUIRED_ASSET_TYPE: 'SET_KYC_REQUIRED_ASSET_TYPE',
+  SET_SECURITY_ASSET_TYPE: 'SET_SECURITY_ASSET_TYPE',
+
   // idle
   UPDATE_LOGOUT_AT: 'UPDATE_LOGOUT_AT',
 
@@ -68,6 +72,10 @@ const actions = {
   // assets
   LOAD_ASSETS: 'LOAD_ASSETS',
   CREATE_BALANCE: 'CREATE_BALANCE',
+
+  // asset type
+  LOAD_KYC_REQUIRED_ASSET_TYPE: 'LOAD_KYC_REQUIRED_ASSET_TYPE',
+  LOAD_SECURITY_ASSET_TYPE: 'LOAD_SECURITY_ASSET_TYPE',
 
   // idle
   START_IDLE: 'START_IDLE',
@@ -143,6 +151,10 @@ const getters = {
   ownedBalancesAssets: 'ownedBalancesAssets',
   baseAtomicSwapBalancesAssets: 'baseAtomicSwapBalancesAssets',
   quoteAtomicSwapAssets: 'quoteAtomicSwapAssets',
+
+  // asset type
+  kycRequiredAssetType: 'kycRequiredAssetType',
+  securityAssetType: 'securityAssetType',
 
   // idle-handler
   logoutAt: 'logoutAt',

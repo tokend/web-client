@@ -258,8 +258,8 @@
 </template>
 
 <script>
-import LogoViewer from './logo-viewer'
-import TermsViewer from './terms-viewer'
+import LogoViewer from './LogoViewer'
+import TermsViewer from './TermsViewer'
 import EmailGetter from '@/vue/common/EmailGetter'
 import { STELLAR_TYPES } from '@/js/const/asset-subtypes.const'
 import { AssetRecord } from '@/js/records/entities/asset.record'
