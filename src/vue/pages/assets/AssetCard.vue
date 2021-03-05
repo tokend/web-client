@@ -54,8 +54,6 @@
         <asset-attributes-viewer
           :asset="asset"
           :balance="assetBalance.value"
-          :kyc-required-asset-type="kycRequiredAssetType"
-          :security-asset-type="securityAssetType"
         />
 
         <div class="assets-renderer__actions">
@@ -66,8 +64,6 @@
             :is-account-us-accredited="isAccountUsAccredited"
             :is-account-us-verified="isAccountUsVerified"
             :is-account-corporate="isAccountCorporate"
-            :kyc-required-asset-type="kycRequiredAssetType"
-            :security-asset-type="securityAssetType"
             @update-click="showUpdateForm"
             @balance-added="loadAssets() || (isDrawerShown = false)"
           />
@@ -121,11 +117,6 @@ export default {
       vuexTypes.isAccountCorporate,
     ]),
 
-    ...mapGetters({
-      kycRequiredAssetType: vuexTypes.kycRequiredAssetType,
-      securityAssetType: vuexTypes.securityAssetType,
-    }),
-
     assetBalance () {
       const record = this.accountBalances
         .find(item => item.asset.code === this.asset.code)
@@ -136,18 +127,9 @@ export default {
     },
   },
 
-  async created () {
-    await this.loadKycRequiredAssetType()
-    await this.loadSecurityAssetType()
-  },
-
   methods: {
     ...mapActions({
       loadAssets: vuexTypes.LOAD_ASSETS,
-    }),
-    ...mapActions({
-      loadKycRequiredAssetType: vuexTypes.LOAD_KYC_REQUIRED_ASSET_TYPE,
-      loadSecurityAssetType: vuexTypes.LOAD_SECURITY_ASSET_TYPE,
     }),
 
     showUpdateForm () {
