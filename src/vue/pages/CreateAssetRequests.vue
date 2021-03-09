@@ -50,7 +50,7 @@ import Drawer from '@/vue/common/Drawer'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 
 import RequestViewer from '@/vue/pages/requests/create-asset-requests/RequestViewer'
-import RequestsTable from '@/vue/pages/requests/shared/RequestsTable'
+import RequestsTable from '@/vue/pages/requests/create-asset-requests/RequestsTable'
 import { AssetRequest } from '@/js/records/requests/asset-request.record'
 
 import AssetForm from '@/vue/forms/AssetForm'

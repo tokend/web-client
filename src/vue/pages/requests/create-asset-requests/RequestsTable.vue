@@ -74,11 +74,9 @@
 import RequestStateViewer from '../shared/RequestStateViewer'
 import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
-
 const EVENTS = {
   select: 'select',
 }
-
 export default {
   name: 'requests-table',
   components: {
@@ -86,7 +84,6 @@ export default {
     SkeletonLoaderTableBody,
     EmptyTbodyPlaceholder,
   },
-
   props: {
     requests: {
       type: Array,
@@ -97,7 +94,6 @@ export default {
       required: true,
     },
   },
-
   data: _ => ({
     EVENTS,
   }),

@@ -31,7 +31,7 @@
 import AssetSummaryViewer from '@/vue/pages/requests/shared/AssetSummaryViewer'
 import RequestMessageViewer from '@/vue/pages/requests/shared/RequestMessageViewer'
 import RequestAttributesViewer from './RequestAttributesViewer'
-import RequestActions from '@/vue/pages/requests/shared/RequestActions'
+import RequestActions from './RequestActions'
 
 import { AssetRequest } from '@/js/records/requests/asset-request.record'
 
