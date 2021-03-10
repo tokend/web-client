@@ -77,7 +77,7 @@ describe('SignupForm component test', () => {
       wrapper = shallowMount(SignupForm, {
         localVue,
         propsData: {
-          submitEvent: 'submit-event',
+          submitEvent: 'submit',
         },
         data: _ => ({
           form: {
@@ -109,7 +109,7 @@ describe('SignupForm component test', () => {
       await wrapper.vm.submit()
 
       expect(spy.calledOnce).to.be.true
-      expect(wrapper.emitted()['submit-event']).to.not.exist
+      expect(wrapper.emitted()['submit']).to.not.exist
     })
 
     it('properly emits the submitted event if user doesn\'t exist', async () => {
@@ -127,9 +127,9 @@ describe('SignupForm component test', () => {
 
       await wrapper.vm.submit()
 
-      expect(wrapper.emitted()['submit-event']).to.exist
-      expect(wrapper.emitted()['submit-event'].length).to.equal(1)
-      expect(wrapper.emitted()['submit-event'][0]).to.deep.equal([form])
+      expect(wrapper.emitted()['submit']).to.exist
+      expect(wrapper.emitted()['submit'].length).to.equal(1)
+      expect(wrapper.emitted()['submit'][0]).to.deep.equal([form])
     })
   })
 })
