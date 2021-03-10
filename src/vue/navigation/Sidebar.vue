@@ -208,9 +208,7 @@
               {{ 'pages-names.fees' | globalize }}
             </span>
           </router-link>
-        </nav>
 
-        <nav class="sidebar__links-group">
           <p
             class="sidebar__links-group-title"
           >
@@ -439,8 +437,6 @@ $content-item-right-padding: 2.4rem;
 }
 
 .sidebar__links-group {
-  margin-bottom: 4rem;
-
   &:last-child {
     margin-bottom: 0;
   }
@@ -451,6 +447,7 @@ $content-item-right-padding: 2.4rem;
   opacity: 0.7;
   font-size: 1.4rem;
   margin-bottom: 0.2rem;
+  margin-top: 4rem;
   color: $col-footer-text;
 }
 
