@@ -86,7 +86,7 @@ describe('FormConfirmation component test', () => {
 
   it('component emits the passed okEvent when clicking the OK button', () => {
     sinon.stub(FormConfirmation, 'created')
-    const okEvent = 'okey'
+    const okEvent = 'ok'
     const wrapper = mount(FormConfirmation, {
       propsData: { okEvent },
       localVue: createLocalVue(),
