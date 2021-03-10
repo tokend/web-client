@@ -33,6 +33,10 @@ import { Bus } from '@/js/helpers/event-bus'
 import { api } from '@/api'
 import config from '@/config'
 
+const EVENTS = {
+  submitted: 'submitted',
+}
+
 export default {
   name: 'kyc-recovery-unverified',
   data: _ => ({
@@ -92,7 +96,7 @@ export default {
         await this.loadAccount()
         await this.loadKycRecovery()
         Bus.success('kyc-recovery.request-submitted-msg')
-        this.$emit('submitted')
+        this.$emit(EVENTS.submitted)
       } catch (e) {
         ErrorHandler.process(e)
       }
