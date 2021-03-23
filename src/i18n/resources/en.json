@@ -1108,7 +1108,8 @@
       "alphanumeric-4-lbl": "Alphanumeric 4",
       "alphanumeric-12-lbl": "Alphanumeric 12",
       "native-lbl": "Native",
-      "stellar-type-lbl": "Asset type"
+      "stellar-type-lbl": "Asset type",
+      "external-system-type-lbl": "External system type"
     },
     "assets-list": {
       "update-asset-title": "Update asset",

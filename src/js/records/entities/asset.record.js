@@ -22,7 +22,7 @@ export class AssetRecord {
 
     this.details = record.details
     this.name = get(record, 'details.name')
-    this.externalSystemType = get(record, 'details.externalSystemType')
+    this.externalSystemType = get(record, 'details.externalSystemType', '')
     this.isCoinpayments = get(record, 'details.isCoinpayments')
 
     const logo = get(record, 'details.logo') || {}

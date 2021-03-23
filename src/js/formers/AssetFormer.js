@@ -37,6 +37,7 @@ export class AssetFormer extends Former {
         isDepositable: false,
         address: '',
       },
+      externalSystemType: '',
     }
   }
 
@@ -81,6 +82,7 @@ export class AssetFormer extends Former {
     this.attrs.maxIssuanceAmount = source.maxIssuanceAmount
     this.attrs.preIssuanceAssetSigner = source.preIssuanceAssetSigner
     this.attrs.initialPreissuedAmount = source.initialPreissuedAmount
+    this.attrs.externalSystemType = source.externalSystemType
 
     this.attrs.stellarIntegration = this.attrs.stellarIntegration || {}
     this.attrs.stellarIntegration.isWithdrawable = source.stellarWithdraw
@@ -108,6 +110,7 @@ export class AssetFormer extends Former {
     this.attrs.maxIssuanceAmount = source.maxIssuanceAmount
     this.attrs.preIssuanceAssetSigner = source.preissuedAssetSigner
     this.attrs.initialPreissuedAmount = source.initialPreissuedAmount
+    this.attrs.externalSystemType = source.externalSystemType
 
     this.attrs.stellarIntegration = this.attrs.stellarIntegration || {}
     this.attrs.stellarIntegration.isWithdrawable = source.stellarWithdraw
@@ -139,6 +142,7 @@ export class AssetFormer extends Former {
       initialPreissuedAmount: str(attrs.initialPreissuedAmount || maxIssuance),
       creatorDetails: {
         name: str(attrs.name),
+        external_system_type: str(attrs.externalSystemType),
         logo: doc(attrs.logo),
         terms: doc(attrs.terms),
         stellar: this._getStellarOpts(),
@@ -158,6 +162,7 @@ export class AssetFormer extends Former {
       policies: num(attrs.policies),
       creatorDetails: {
         name: str(attrs.name),
+        external_system_type: str(attrs.externalSystemType),
         logo: doc(attrs.logo),
         terms: doc(attrs.terms),
         stellar: this._getStellarOpts(),
