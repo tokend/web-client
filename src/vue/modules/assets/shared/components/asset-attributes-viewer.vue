@@ -165,6 +165,14 @@
               />
             </td>
           </tr>
+          <tr
+            v-if="asset.externalSystemType"
+          >
+            <td>{{ 'assets.external-system-type' | globalize }}</td>
+            <td>
+              {{ asset.externalSystemType }}
+            </td>
+          </tr>
           <template v-if="asset.stellarAssetCode">
             <tr :title="'assets.stellar-asset-code-title' | globalize">
               <td>
