@@ -53,4 +53,8 @@ export const vueRoutes = Object.freeze({
   pairing: { name: 'app.pairing' },
   atomicSwapsExplore: { name: 'app.atomic-swaps-explore' },
   signupKyc: { name: 'signup-kyc' },
+  campaigns: { name: 'app.campaigns' },
+  campaignsList: { name: 'app.campaigns-list' },
+  campaignsCreate: { name: 'app.campaigns-create' },
+  campaignsDetails: { name: 'app.campaigns-details' },
 })

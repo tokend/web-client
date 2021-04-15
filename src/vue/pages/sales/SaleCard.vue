@@ -6,7 +6,7 @@
     <div class="sale-card__header">
       <img
         class="sale-card__logo"
-        :src="sale.logoUrl"
+        :src="sale.logo"
       >
     </div>
 
@@ -17,28 +17,11 @@
       >
         {{ sale.name }}
       </p>
-
-      <vue-markdown
-        class="sale-card__offer"
-        :source="'sale-card.offer' | globalize({
-          baseHardCap: {
-            value: 1,
-            currency: 'token'
-          },
-          hardCap: {
-            value: 1,
-            currency: 'Euro'
-          }
-        })"
-        :html="false"
-      />
     </div>
   </router-link>
 </template>
 
 <script>
-import VueMarkdown from 'vue-markdown'
-
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
 import { vueRoutes } from '@/vue-router/routes'
@@ -46,9 +29,6 @@ import { SALE_STATES } from '@/js/const/sale-states'
 
 export default {
   name: 'sale-card',
-  components: {
-    VueMarkdown,
-  },
 
   props: {
     sale: { type: SaleRecord, required: true },

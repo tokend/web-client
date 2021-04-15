@@ -2,10 +2,12 @@
   <div class="passport">
     <button
       @click="toggleDropdown">
-      <img
-        class="passport__avatar passport__avatar-image"
-        src="/static/images/avatar.jpeg"
-      >
+      <template v-if="!isAccountCorporate">
+        <img
+          class="passport__avatar passport__avatar-image"
+          src="/static/images/avatar.jpeg"
+        >
+      </template>
     </button>
 
     <div class="passport__account-details-wrp">
@@ -13,7 +15,12 @@
         class="passport__email-btn"
         @click="toggleDropdown"
       >
-        Petra Muller
+        <template v-if="isAccountCorporate">
+          Admin
+        </template>
+        <template v-else>
+          Petra Muller
+        </template>
         <i
           class="passport__dropdown-status-icon mdi mdi-chevron-down"
           :class="{
@@ -26,7 +33,12 @@
         class="passport__account-type"
         :class="{ 'passport__account-type--blocked': isAccountBlocked }"
       >
-        {{ accountRoleTranslationId | globalize }}
+        <template v-if="isAccountCorporate">
+          {{ 'passport.admin-user' | globalize }}
+        </template>
+        <template v-else>
+          {{ accountRoleTranslationId | globalize }}
+        </template>
       </div>
     </div>
 

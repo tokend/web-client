@@ -3,7 +3,7 @@
     <div class="sale-campaign-viewer__logo-desc-wrp">
       <sale-logo-viewer
         class="sale-campaign-viewer__logo"
-        url="/static/images/linde.jpg" />
+        url="/static/images/buildings.jpg" />
       <div class="sale-campaign-viewer__desc">
         <span>Investment Details and Terms:</span>
 
@@ -24,25 +24,6 @@
                 </td>
                 <td>
                   € 30 million
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Price per token:
-                </td>
-                <td>
-                  1 €
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Vehicle:
-                </td>
-                <!-- eslint-disable-next-line max-len -->
-                <td
-                  class="sale-campaign-viewer__vehicle"
-                >
-                  Tokenized Loan secured by real estate and corporate guarantee
                 </td>
               </tr>
               <tr>
@@ -73,7 +54,7 @@
             class="app__button app__button-raised sale-campaign-viewer__buy-btn"
             @click="clearFields(); isBuyDrawerShown = true"
           >
-            Buy
+            Invest
           </button>
         </div>
       </div>
@@ -82,13 +63,13 @@
       <div class="sale-campaign-viewer__state">
         <span>Description of issuer:  </span>
         <!-- eslint-disable-next-line max-len -->
-        <p>Linde is a leading global industrial gases and engineering company with <b>2019</b> sales of <b>€25</b> billion, and is actively looking for expansion of its industry-leading plants  for the supply of nitrogen, oxygen and compressed air to clients to meet the increasing demand in industrial gases. Linde constructs the plants and hands them over completed to clients.</p>
+        <p>Home to the new ME Dubai hotel, the Opus is located in the Burj Khalifa district adjacent to Downtown Dubai and Business Bay on the Dubai Water Canal. Exploring the balance between solid and void, opaque and transparent, interior and exterior, the design was presented by Zaha Hadid in 2007 and is the only hotel in which she created both its architecture and interiors.</p>
       </div>
 
       <div class="sale-campaign-viewer__state">
         <span>Description of Investment:</span>
         <!-- eslint-disable-next-line max-len -->
-        <p>Linde air separation unit to be constructed for Salgin Chemical Company (SCC) in Saratov, Russia, which is expected to be completed in <b>24</b> months, with a lead time of <b>6</b> months for contracts, by July of <b>2023</b>. Supporting Salgin Chemical’s expansion, the plant will provide nitrogen, oxygen and compressed air to meet the increasing demand for industrial gases in the region.</p>
+        <p>Spanning 84,300 square metres (907,400 square feet), the Opus was designed as two separate towers that coalesce into a singular whole—taking the form of a cube. The cube has been ‘eroded’ in its centre, creating a free-form void that is an important volume of the design in its own right. The two halves of the building on either side of the void are linked by a four-storey atrium at ground level and also connected by an asymmetric 38 metre wide, three-storey bridge 71 metres above the ground.</p>
       </div>
     </div>
     <!-- eslint-disable-next-line max-len -->
@@ -103,7 +84,7 @@
                   Location:
                 </td>
                 <td>
-                  Saratov, Russia
+                  Dubai, United Arab Emirates
                 </td>
               </tr>
               <tr>
@@ -152,12 +133,12 @@
       </div>
       <sale-logo-viewer
         class="sale-campaign-viewer__logo sale-campaign-viewer__logo-right"
-        url="/static/images/saratov.jpg" />
+        url="/static/images/interier.jpg" />
     </div>
 
     <drawer :is-shown.sync="isBuyDrawerShown">
       <template slot="heading">
-        Buy Linde Coin No. 1
+        Invest Linde Coin No. 1
       </template>
       <form
         class="app__form"
@@ -189,7 +170,7 @@
           class="app__button-raised advanced-step__btn"
           :disabled="formMixin.isDisabled"
         >
-          Buy
+          Invest
         </button>
       </form>
     </drawer>
@@ -264,7 +245,7 @@ export default {
       setTimeout(() => {
         this.enableForm()
         this.isBuyDrawerShown = false
-        Bus.success(`You have successfully bought ${this.form.amount} Linde Coins No. 1`)
+        Bus.success(`You have successfully invested to ${this.form.amount} Linde Coins No. 1`)
         this.clearFields()
       }, 1000)
     },

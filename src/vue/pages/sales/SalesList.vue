@@ -79,6 +79,7 @@ import { vuexTypes } from '@/vuex'
 import { SaleRecord } from '@/js/records/entities/sale.record'
 import UpdateList from '@/vue/mixins/update-list.mixin'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { sleep } from '@/js/helpers/sleep-helper'
 
 const SALE_STATES = {
   live: {
@@ -118,12 +119,16 @@ export default {
   data: _ => ({
     saleRecords: [
       {
-        name: 'Linde industry facility investment project - Linde Coins',
-        logoUrl: '/static/images/linde-logo.jpg',
+        details: {
+          name: 'Opus by Zaha Hadid Architects',
+          logo: require('@static/images/buildings.jpg'),
+        },
       },
       {
-        name: 'UK student accommodation investment - Bell coins',
-        logoUrl: '/static/images/belfast.jpg',
+        details: {
+          name: 'UK student accommodation investment - Bell coins',
+          logo: require('@static/images/belfast.jpg'),
+        },
       },
     ],
     filters: {
@@ -148,7 +153,7 @@ export default {
     // method loads all the existing sales.
     filteredSales () {
       if (this.filters.baseAsset === '') {
-        return this.saleRecords
+        return this.saleRecords.map(el => new SaleRecord(el))
       } else {
         return this.saleRecords
           .filter(sale => {
@@ -220,6 +225,7 @@ export default {
 
       let response
       try {
+        await sleep(5000)
         response = await api.getWithSignature(endpoint, opts)
       } catch (error) {
         ErrorHandler.processWithoutFeedback(error)

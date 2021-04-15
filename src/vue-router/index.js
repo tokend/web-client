@@ -39,6 +39,10 @@ import MyAssetsExplorerModule from '@modules/assets/my-assets-explorer'
 import SalesList from '@/vue/pages/sales/SalesList'
 import Requests from '@/vue/pages/Requests'
 import Pairing from '@/vue/pages/Pairing'
+import Campaigns from '@/vue/pages/Campaigns'
+import CampaignsCreate from '@/vue/pages/Campaigns/CampaignsCreate'
+import CampaignsDetails from '@/vue/pages/Campaigns/CampaignsDetails'
+import CampaignsList from '@/vue/pages/Campaigns/CampaignsList'
 
 Vue.use(Router)
 
@@ -430,6 +434,32 @@ const router = new Router({
             },
           ],
         },
+        {
+          path: '/campaigns',
+          name: vueRoutes.campaigns.name,
+          component: Campaigns,
+          redirect: vueRoutes.campaignsList,
+          children: [
+            {
+              path: '/campaigns/list',
+              name: vueRoutes.campaignsList.name,
+              component: CampaignsList,
+              beforeEnter: inAppRouteGuard,
+            },
+            {
+              path: '/campaigns/create',
+              name: vueRoutes.campaignsCreate.name,
+              component: CampaignsCreate,
+              beforeEnter: inAppRouteGuard,
+            },
+            {
+              path: '/campaigns/details',
+              name: vueRoutes.campaignsDetails.name,
+              component: CampaignsDetails,
+              beforeEnter: inAppRouteGuard,
+            },
+          ],
+        },
       ],
     },
   ],
@@ -473,7 +503,7 @@ function redirectRouteGuard (to, from, next) {
     if (isKycRecoveryInProgress) {
       next(vueRoutes.kycRecoveryManagement)
     } else if (to.name === vueRoutes.app.name) {
-      next(vueRoutes.sales)
+      next(vueRoutes.campaigns)
     } else {
       next()
     }

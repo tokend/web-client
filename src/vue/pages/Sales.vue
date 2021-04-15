@@ -122,9 +122,9 @@ export default {
 }
 
 .sales__sale-cards {
-  display: flex;
-  flex-wrap: wrap;
-  margin: -1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 30%);
+  grid-gap: 3rem;
 }
 
 .sales-asset-selector__field {

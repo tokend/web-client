@@ -2,7 +2,7 @@
   <div class="sale-details">
     <div class="sale-details__title">
       <h2 class="sale-details__name">
-        Linde industry facility investment project - Linde Coins
+        Opus by Zaha Hadid Architects
       </h2>
     </div>
 

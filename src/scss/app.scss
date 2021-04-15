@@ -444,3 +444,14 @@ h6.app__page-heading {
     height: 0.3rem !important;
   }
 }
+
+.app__campaign-form-file-field {
+
+  .file-field__content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+  }
+}

@@ -699,7 +699,8 @@
       "polls": "Polls",
       "atomic-swaps": "Atomic swaps",
       "kyc-recovery": "KYC Recovery",
-      "pairing": "Pairing"
+      "pairing": "Pairing",
+      "campaigns": "Campaigns"
     },
     "limits": {
       "explore-limits": "Explore limits",
@@ -791,7 +792,8 @@
       "settings-btn": "Settings",
       "sign-out-btn": "Sign out",
       "balances-subheading": "Balances",
-      "show-more-link": "Show more"
+      "show-more-link": "Show more",
+      "admin-user": "Admin"
     },
     "sidebar": {
       "section-explore": "Explorations",
@@ -1993,7 +1995,7 @@
       "add-quote-asset-btn": "Add quote asset",
       "quote-assets-subheading": "Quote asset {{ number }}",
       "created-atomic-swap-msg": "Atomic swap request successfully created",
-      "available-balance":"Balance: {{amount, number}} {{asset}}.",
+      "available-balance": "Balance: {{amount, number}} {{asset}}.",
       "available-for-issuance": "Available for issuance: {{amount, number}} {{asset}}"
     },
     "atomic-swaps-explore": {
@@ -2003,7 +2005,7 @@
       "owned-by-me-filter-lbl": "Owned by me",
       "buying": "Buying of {{asset}}"
     },
-    "atomic-swap-form":{
+    "atomic-swap-form": {
       "available": "Available for buy {{amount, money}} {{asset}}",
       "asset-in-which-buying": "Asset in which buying",
       "amount": "Amount of {{asset}}",
@@ -2037,8 +2039,8 @@
       "quote-assets-subheading": "Quote asset #{{ number }}"
     },
     "atomic-swap-card": {
-      "id-prefix":"#{{id}}",
-      "author-prefix":"By",
+      "id-prefix": "#{{id}}",
+      "author-prefix": "By",
       "base-asset": "Base: {{ baseAsset }}",
       "quote-assets": "Quote:",
       "quote-asset-with-comma": "{{ quoteAsset }},"
@@ -2051,6 +2053,35 @@
     },
     "smart-banner": {
       "open-store-btn": "OPEN"
+    },
+    "campaigns-list": {
+      "loading-error-msg": "Error on loading, please try again",
+      "no-data-title": "No campaigns yet!",
+      "no-data-message": "There will be campaigns!",
+      "create-btn": "Create Campaign"
+    },
+    "campaigns-details": {
+      "finish-msg": "Company has been ended, shares distributed at",
+      "end-campaign-success": "Campaign has been ended successfully",
+      "end-btn": "End Campaign",
+      "progress-text-left": "Raised",
+      "progress-text-right": "Goal"
+    },
+    "campaigns-create": {
+      "title": "Create Campaign"
+    },
+    "campaigns-form": {
+      "submit-btn": "Create Campaign",
+      "created-campaign-title": "Campaign was Created!",
+      "created-campaign-message": "Your campaign will be available in a minute",
+      "logo-lbl": "Logo",
+      "name-lbl": "Name",
+      "description-lbl": "Description",
+      "amount-of-shapes-lbl": "Amount of shapes",
+      "rising-amount-lbl": "Raising amount",
+      "recheck-form-msg": "Please recheck the form before proceeding",
+      "create-campaign-btn": "Confirm",
+      "create-success": "Campaign has been created success"
     }
   }
 }

@@ -30,200 +30,88 @@
 
       <section class="sidebar__links-section">
         <nav class="sidebar__links-group">
-          <!-- <router-link
-            key="dashboard"
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            tag="a"
-            :to="vueRoutes.dashboard"
-          >
-            <i
-              class="sidebar__link-icon"
-              :class="`mdi mdi-view-dashboard`"
-            />
-            <span>
-              {{ 'pages-names.dashboard' | globalize }}
-            </span>
-          </router-link> -->
-          <!-- <router-link
-            key="movements"
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            tag="a"
-            :to="vueRoutes.movements"
-          >
-            <i
-              class="sidebar__link-icon"
-              :class="`mdi mdi-menu`"
-            />
-            <span>
-              {{ 'pages-names.movements' | globalize }}
-            </span>
-          </router-link> -->
-          <!-- <router-link
+          <router-link
             v-if="isAccountCorporate"
-            key="register-of-shares"
+            key="campaigns"
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
             tag="a"
-            :to="vueRoutes.registerOfShares"
+            :to="vueRoutes.campaigns"
           >
             <i
-              class="sidebar__link-icon"
-              :class="`mdi mdi-book-open`"
+              class="sidebar__link-icon mdi mdi-coin"
             />
             <span>
-              {{ 'pages-names.register-of-shares' | globalize }}
-            </span>
-          </router-link> -->
-          <router-link
-            key="sales"
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            tag="a"
-            :to="vueRoutes.sales"
-          >
-            <i
-              class="sidebar__link-icon"
-              :class="`mdi mdi-trending-up`"
-            />
-            <span>
-              {{ 'pages-names.sales' | globalize }}
+              {{ 'pages-names.campaigns' | globalize }}
             </span>
           </router-link>
-          <router-link
-            key="assets"
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            tag="a"
-            :to="vueRoutes.dashboard"
-          >
-            <i
-              class="sidebar__link-icon"
-              :class="`mdi mdi-coins`"
-            />
-            <span>
-              {{ 'pages-names.assets' | globalize }}
-            </span>
-          </router-link>
-          <!-- <router-link
-            key="polls"
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            tag="a"
-            :to="vueRoutes.polls"
-          >
-            <i
-              class="sidebar__link-icon"
-              :class="`mdi mdi-vote`"
-            />
-            <span>
-              {{ 'pages-names.polls' | globalize }}
-            </span>
-          </router-link> -->
-          <router-link
-            key="trade"
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            tag="a"
-            :to="vueRoutes.trade"
-          >
-            <i
-              class="sidebar__link-icon"
-              :class="`mdi mdi-finance`"
-            />
-            <span>
-              {{ 'pages-names.trade' | globalize }}
-            </span>
-          </router-link>
-          <router-link
-            key="pairing"
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            tag="a"
-            :to="vueRoutes.pairing"
-          >
-            <i
-              class="sidebar__link-icon"
-              :class="`mdi mdi-poll-box`"
-            />
-            <span>
-              Pairing
-            </span>
-          </router-link>
-          <!-- <router-link
-            v-if="isAccountCorporate"
-            key="requests"
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            tag="a"
-            :to="vueRoutes.requests"
-          >
-            <i
-              class="sidebar__link-icon"
-              :class="`mdi mdi-book-open-variant`"
-            />
-            <span>
-              {{ 'pages-names.requests' | globalize }}
-            </span>
-          </router-link> -->
-          <!-- <router-link
-            key="issuance"
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            tag="a"
-            :to="vueRoutes.issuance"
-          >
-            <i
-              class="sidebar__link-icon"
-              :class="`mdi mdi-poll`"
-            />
-            <span>
-              {{ 'pages-names.issuance' | globalize }}
-            </span>
-          </router-link> -->
-          <!-- <router-link
-            key="limits"
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            tag="a"
-            :to="vueRoutes.limits"
-          >
-            <i
-              class="sidebar__link-icon"
-              :class="`mdi mdi-poll-box`"
-            />
-            <span>
-              {{ 'pages-names.limits' | globalize }}
-            </span>
-          </router-link> -->
-          <!-- <router-link
-            key="fees"
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            tag="a"
-            :to="vueRoutes.fees"
-          >
-            <i
-              class="sidebar__link-icon"
-              :class="`mdi mdi-flash`"
-            />
-            <span>
-              {{ 'pages-names.fees' | globalize }}
-            </span>
-          </router-link> -->
+          <template v-if="!isAccountCorporate">
+            <router-link
+              key="sales"
+              v-ripple
+              class="sidebar__link"
+              @click.native="closeSidebar"
+              tag="a"
+              :to="vueRoutes.sales"
+            >
+              <i
+                class="sidebar__link-icon"
+                :class="`mdi mdi-trending-up`"
+              />
+              <span>
+                {{ 'pages-names.sales' | globalize }}
+              </span>
+            </router-link>
+            <router-link
+              key="assets"
+              v-ripple
+              class="sidebar__link"
+              @click.native="closeSidebar"
+              tag="a"
+              :to="vueRoutes.dashboard"
+            >
+              <i
+                class="sidebar__link-icon"
+                :class="`mdi mdi-coins`"
+              />
+              <span>
+                {{ 'pages-names.assets' | globalize }}
+              </span>
+            </router-link>
+            <router-link
+              key="trade"
+              v-ripple
+              class="sidebar__link"
+              @click.native="closeSidebar"
+              tag="a"
+              :to="vueRoutes.trade"
+            >
+              <i
+                class="sidebar__link-icon"
+                :class="`mdi mdi-finance`"
+              />
+              <span>
+                {{ 'pages-names.trade' | globalize }}
+              </span>
+            </router-link>
+            <router-link
+              key="pairing"
+              v-ripple
+              class="sidebar__link"
+              @click.native="closeSidebar"
+              tag="a"
+              :to="vueRoutes.pairing"
+            >
+              <i
+                class="sidebar__link-icon"
+                :class="`mdi mdi-poll-box`"
+              />
+              <span>
+                Pairing
+              </span>
+            </router-link>
+          </template>
           <router-link
             key="settings"
             v-ripple

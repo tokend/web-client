@@ -64,18 +64,27 @@ export const rootModule = {
       )
       useWallet(wallet)
     },
+    GET_IS_SHOW_ALL_CAMPAIGNS ({ commit }, isShowAllCampaigns) {
+      commit('SET_IS_SHOW_ALL_CAMPAIGNS', isShowAllCampaigns)
+    },
   },
   mutations: {
     // These mutations are being subscribed by plugins
     [vuexTypes.POP_STATE] () { },
     [vuexTypes.CLEAR_STATE] () { },
+    SET_IS_SHOW_ALL_CAMPAIGNS (state, isShowAllCampaigns) {
+      state.isShowAllCampaigns = isShowAllCampaigns
+    },
   },
   getters: {
     [vuexTypes.isLoggedIn]: (_, getters) => !_isEmpty(
       getters[vuexTypes.account]
     ),
+    isShowAllCampaigns: state => state.isShowAllCampaigns,
   },
-  state: {},
+  state: {
+    isShowAllCampaigns: false,
+  },
 }
 
 let store
