@@ -22,21 +22,22 @@ export default {
 function translateToVNodes (path, slots) {
   const fakeInterpolationParams = {}
   for (const key of Object.keys(slots)) {
+    // Preserve interpolation positions from removal by the i18n call
     fakeInterpolationParams[key] = `{{${key}}}`
   }
   const translated = i18n.t(path, fakeInterpolationParams)
-  const parts = translated.split(/(?={{.*?}})|(?<={{.*?}})/)
+  const parts = translated.split(/{(?={)|}}/)
 
   return concatAll(parts.map(el => {
     const tokenName = extractTokenName(el)
-    if (!tokenName) return el
+    if (!tokenName || !slots[tokenName]) return el
 
     return slots[tokenName]
   }))
 }
 
 function extractTokenName (str) {
-  const matched = /^{{(.*?)}}$/.exec(str)
+  const matched = /^{(.*?)$/.exec(str)
   if (!matched) return ''
   return matched[1]
 }
