@@ -31,6 +31,8 @@ export class AssetRequest extends RequestRecord {
     this.erc20Address = get(record, 'requestDetails.creatorDetails.erc20.address') || ''
     this.erc20Withdraw = get(record, 'requestDetails.creatorDetails.erc20.withdraw') || false
     this.erc20Deposit = get(record, 'requestDetails.creatorDetails.erc20.deposit') || false
+
+    this.externalSystemType = get(dts, 'creatorDetails.externalSystemType', '')
   }
 
   get isCreateAssetRequest () {

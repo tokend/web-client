@@ -1105,7 +1105,8 @@
       "alphanumeric-4-lbl": "Alphanumeric 4",
       "alphanumeric-12-lbl": "Alphanumeric 12",
       "native-lbl": "Native",
-      "stellar-type-lbl": "Тип актива"
+      "stellar-type-lbl": "Тип актива",
+      "external-system-type-lbl": "External system type"
     },
     "assets-list": {
       "update-asset-title": "Обновить актив",
@@ -1174,7 +1175,8 @@
       "stellar-deposit-title": "Stellar депозит",
       "credit-alphanum4-stellar-asset-type-lbl": "Буквенно-цифровой 4",
       "credit-alphanum12-stellar-asset-type-lbl": "Буквенно-цифровой 12",
-      "native-stellar-asset-type-lbl": "Нативный"
+      "native-stellar-asset-type-lbl": "Нативный",
+      "external-system-type-title": "Тип внешней системы"
     },
     "update-asset-requests": {
       "update-asset-title": "Обновить актив",
@@ -1209,7 +1211,8 @@
       "stellar-deposit-title": "Stellar депозит",
       "credit-alphanum4-stellar-asset-type-lbl": "Буквенно-цифровой 4",
       "credit-alphanum12-stellar-asset-type-lbl": "Буквенно-цифровой 12",
-      "native-stellar-asset-type-lbl": "Нативный"
+      "native-stellar-asset-type-lbl": "Нативный",
+      "external-system-type-title": "Тип внешней системы"
     },
     "create-sale-requests": {
       "update-sale-title": "Обновить сейл",
@@ -1784,7 +1787,8 @@
       "no-msg": "Нет",
       "erc20-withdraw-title": "Erc20 вывод",
       "erc20-deposit-title": "Erc20 депозит",
-      "erc20-address-title": "Erc20 адрес"
+      "erc20-address-title": "Erc20 адрес",
+      "external-system-type": "Тип внешней системы"
     },
     "document-upload-form": {
       "document-lbl": "Select your document. You cannot upload the same file twice",

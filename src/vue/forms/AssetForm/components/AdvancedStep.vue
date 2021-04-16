@@ -36,6 +36,12 @@
         />
       </template>
 
+      <external-system-type-section
+        class="app__form advanced-step__section"
+        :former="former"
+        :is-disabled="isDisabled"
+      />
+
       <terms-section
         class="app__form advanced-step__section"
         :former="former"
@@ -77,6 +83,7 @@ import PermissionsSection from './PermissionsSection'
 import StellarSection from './StellarSection'
 import Erc20Section from './Erc20Section'
 import TermsSection from './TermsSection'
+import ExternalSystemTypeSection from './ExternalSystemTypeSection'
 
 const INTEGRATIONS = {
   stellar: 'stellar',
@@ -92,6 +99,7 @@ export default {
     StellarSection,
     Erc20Section,
     TermsSection,
+    ExternalSystemTypeSection,
   },
 
   mixins: [FormMixin],

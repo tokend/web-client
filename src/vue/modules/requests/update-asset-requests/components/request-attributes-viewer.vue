@@ -45,6 +45,23 @@
           </td>
         </tr>
 
+        <!-- eslint-disable-next-line max-len -->
+        <tr
+          v-if="request.externalSystemType"
+          :title="
+            'update-asset-requests.external-system-type-title' | globalize
+          "
+        >
+          <td>
+            {{
+              'update-asset-requests.external-system-type-title' | globalize
+            }}
+          </td>
+          <td>
+            {{ request.externalSystemType }}
+          </td>
+        </tr>
+
         <tr>
           <td>
             <!-- eslint-disable-next-line max-len -->

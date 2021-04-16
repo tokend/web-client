@@ -66,7 +66,7 @@
           </div>
 
           <div class="app__form-row withdrawal__form-row">
-            <template v-if="isMasterAssetOwner">
+            <template v-if="form.asset.erc20Withdraw">
               <input-field
                 white-autofill
                 :maxlength="ADDRESS_MAX_LENGTH"
@@ -82,20 +82,20 @@
                 :disabled="formMixin.isDisabled || !balance"
               />
             </template>
+          </div>
 
-            <template v-else>
-              <input-field
-                white-autofill
-                class="app__form-field"
-                v-model.trim="form.comment"
-                name="withdrawal-address"
-                @change="former.setAttr('creatorDetails.comment', form.comment)"
-                @blur="touchField('form.address')"
-                :error-message="getFieldErrorMessage('form.address')"
-                :label="'withdrawal-form.comment' | globalize"
-                :disabled="formMixin.isDisabled || !balance"
-              />
-            </template>
+          <div class="app__form-row withdrawal__form-row">
+            <input-field
+              white-autofill
+              class="app__form-field"
+              v-model.trim="form.comment"
+              name="withdrawal-address"
+              @change="former.setAttr('creatorDetails.comment', form.comment)"
+              @blur="touchField('form.address')"
+              :error-message="getFieldErrorMessage('form.address')"
+              :label="'withdrawal-form.comment' | globalize"
+              :disabled="formMixin.isDisabled || !balance"
+            />
           </div>
 
           <div class="app__form-row withdrawal__form-row">

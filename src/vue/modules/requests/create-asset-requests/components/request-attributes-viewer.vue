@@ -117,6 +117,20 @@
           </td>
         </tr>
 
+        <tr
+          v-if="request.externalSystemType"
+          :title="
+            'create-asset-requests.external-system-type-title' | globalize
+          "
+        >
+          <td>
+            {{ 'create-asset-requests.external-system-type-title' | globalize }}
+          </td>
+          <td>
+            {{ request.externalSystemType }}
+          </td>
+        </tr>
+
         <template v-if="request.stellarAssetCode">
           <!-- eslint-disable-next-line max-len -->
           <tr :title="'create-asset-requests.stellar-asset-code-title' | globalize">
