@@ -503,7 +503,12 @@ function redirectRouteGuard (to, from, next) {
     if (isKycRecoveryInProgress) {
       next(vueRoutes.kycRecoveryManagement)
     } else if (to.name === vueRoutes.app.name) {
-      next(vueRoutes.campaigns)
+      const isAccountCorporate = store.getters[vuexTypes.isAccountCorporate]
+      if (isAccountCorporate) {
+        next(vueRoutes.campaigns)
+      } else {
+        next(vueRoutes.sales)
+      }
     } else {
       next()
     }
