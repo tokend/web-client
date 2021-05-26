@@ -82,14 +82,14 @@ import { errors } from '@/js/errors'
 import { walletsManager } from '@/api'
 import { MAX_FIELD_LENGTH } from '@/js/const/field-length.const'
 
+const EVENTS = {
+  submit: 'submit',
+}
+
 export default {
   name: 'signup-form',
   mixins: [FormMixin],
   props: {
-    submitEvent: {
-      type: String,
-      required: true,
-    },
     isDisabled: {
       type: Boolean,
       default: false,
@@ -137,7 +137,7 @@ export default {
       } catch (e) {
         if (e instanceof errors.NotFoundError) {
           // If user not found - it's our case, so we will continue sign-up
-          this.$emit(this.submitEvent, this.form)
+          this.$emit(EVENTS.submit, this.form)
           this.enableForm()
           return
         }

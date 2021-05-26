@@ -34,6 +34,10 @@
 </template>
 
 <script>
+const EVENTS = {
+  changed: 'changed',
+}
+
 export default {
   props: {
     options: {
@@ -90,7 +94,7 @@ export default {
         tab.isActive = (tab.hash === selectedTab.hash)
       })
 
-      this.$emit('changed', { tab: selectedTab })
+      this.$emit(EVENTS.changed, { tab: selectedTab })
 
       this.activeTabHash = selectedTab.hash
     },

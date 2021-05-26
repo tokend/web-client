@@ -118,6 +118,9 @@ import { required, maxLength, assetCode } from '@validators'
 import { AssetFormer } from '@/js/formers/AssetFormer'
 
 const NAME_MAX_LENGTH = 255
+const EVENTS = {
+  next: 'next',
+}
 
 export default {
   name: 'basic-step',
@@ -166,7 +169,7 @@ export default {
         logo: this.form.logo,
         policies: this.form.policies,
       })
-      this.$emit('next')
+      this.$emit(EVENTS.next)
     },
   },
 }

@@ -44,6 +44,10 @@ const STEPS = {
   },
 }
 
+const EVENTS = {
+  submitted: 'submitted',
+}
+
 export default {
   name: 'asset-form',
   components: {
@@ -78,7 +82,7 @@ export default {
         const ops = await this.former.buildOps()
         await api.postOperations(...ops)
         Bus.success('asset-form.request-submitted-msg')
-        this.$emit('submitted')
+        this.$emit(EVENTS.submitted)
       } catch (e) {
         this.isDisabled = false
         ErrorHandler.process(e)

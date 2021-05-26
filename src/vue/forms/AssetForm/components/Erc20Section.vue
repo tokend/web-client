@@ -69,6 +69,11 @@ import formMixin from '@/vue/mixins/form.mixin'
 import { AssetFormer } from '@/js/formers/AssetFormer'
 import { requiredIf } from '@validators'
 
+const EVENTS = {
+  enabled: 'enabled',
+  disabled: 'disabled',
+}
+
 export default {
   name: 'erc20-section',
 
@@ -105,7 +110,7 @@ export default {
   watch: {
     'form.isIntegrated': {
       immediate: true,
-      handler (v) { this.$emit(v ? 'enabled' : 'disabled') },
+      handler (v) { this.$emit(v ? EVENTS.enabled : EVENTS.disabled) },
     },
   },
 

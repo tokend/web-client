@@ -77,6 +77,10 @@
  * }
  */
 
+const EVENTS = {
+  update: 'update:currentStep',
+}
+
 export default {
   name: 'form-stepper',
   props: {
@@ -92,7 +96,7 @@ export default {
   methods: {
     updateStep (step) {
       if (!this.$attrs.disabled && step.number < this.currentStep) {
-        this.$emit('update:currentStep', step.number)
+        this.$emit(EVENTS.update, step.number)
       }
     },
   },

@@ -35,6 +35,10 @@
 
 <script>
 const CONFIRMATION_DISABLED_TIME = 1000
+const EVENTS = {
+  okey: 'ok',
+  cancel: 'cancel',
+}
 
 export default {
   props: {
@@ -54,14 +58,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    okEvent: {
-      type: String,
-      default: 'ok',
-    },
-    cancelEvent: {
-      type: String,
-      default: 'cancel',
-    },
     isDangerColor: {
       type: Boolean,
       default: false,
@@ -79,10 +75,10 @@ export default {
   },
   methods: {
     emitOk () {
-      this.$emit(this.okEvent)
+      this.$emit(EVENTS.okey)
     },
     emitCancel () {
-      this.$emit(this.cancelEvent)
+      this.$emit(EVENTS.cancel)
     },
   },
 }

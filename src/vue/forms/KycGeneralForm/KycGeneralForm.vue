@@ -85,6 +85,10 @@ import IdDocsSection from './components/IdDocsSection'
 import SelfieSection from './components/SelfieSection'
 import AvatarSection from './components/AvatarSection'
 
+const EVENTS = {
+  submitted: 'submitted',
+}
+
 export default {
   name: 'kyc-general-form',
 
@@ -125,7 +129,7 @@ export default {
         } else if (this.former.isRecoveryOpBuilder) {
           await this.afterKycRecoverySubmit()
         }
-        this.$emit('submitted')
+        this.$emit(EVENTS.submitted)
       } catch (e) {
         ErrorHandler.process(e)
       }

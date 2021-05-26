@@ -283,6 +283,9 @@ import {
 import config from '@/config'
 
 const NAME_MAX_LENGTH = 255
+const EVENTS = {
+  next: 'next',
+}
 
 export default {
   name: 'information-step-form',
@@ -438,7 +441,7 @@ export default {
 
   methods: {
     next () {
-      if (this.isFormValid()) this.$emit('next')
+      if (this.isFormValid()) this.$emit(EVENTS.next)
     },
     setBaseAssetByCode (code) {
       this.form.baseAsset = this.ownedAssets.find(item => item.code === code)

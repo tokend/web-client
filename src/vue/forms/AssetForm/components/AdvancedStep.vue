@@ -83,6 +83,11 @@ const INTEGRATIONS = {
   erc20: 'erc20',
 }
 
+const EVENTS = {
+  update: 'update:isDisabled',
+  next: 'next',
+}
+
 export default {
   name: 'advanced-step',
 
@@ -112,12 +117,12 @@ export default {
     confirm () {
       if (!this.isFormValid()) return
       this.showConfirmation()
-      this.$emit('update:isDisabled', true)
+      this.$emit(EVENTS.update, true)
     },
 
     next () {
       if (!this.isFormValid()) return
-      this.$emit('next')
+      this.$emit(EVENTS.next)
     },
 
     isOtherIntegration (integration) {
