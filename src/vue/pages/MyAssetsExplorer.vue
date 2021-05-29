@@ -36,7 +36,7 @@
 <script>
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import SkeletonCardsLoader from '@/vue/common/skeleton-loader/SkeletonCardsLoader'
-import AssetCard from '@/vue/modules/assets/shared/components/asset-card'
+import AssetCard from '@/vue/pages/assets/AssetCard'
 
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'

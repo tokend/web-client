@@ -54,8 +54,6 @@
         <asset-attributes-viewer
           :asset="asset"
           :balance="assetBalance.value"
-          :kyc-required-asset-type="kycRequiredAssetType"
-          :security-asset-type="securityAssetType"
         />
 
         <div class="assets-renderer__actions">
@@ -66,8 +64,6 @@
             :is-account-us-accredited="isAccountUsAccredited"
             :is-account-us-verified="isAccountUsVerified"
             :is-account-corporate="isAccountCorporate"
-            :kyc-required-asset-type="kycRequiredAssetType"
-            :security-asset-type="securityAssetType"
             @update-click="showUpdateForm"
             @balance-added="loadAssets() || (isDrawerShown = false)"
           />
@@ -80,8 +76,8 @@
 <script>
 import Card from '@/vue/common/Card'
 import CardLogo from '@/vue/common/CardLogo'
-import AssetAttributesViewer from '@/vue/modules/assets/shared/components/asset-attributes-viewer'
-import AssetActions from '@/vue/modules/assets/shared/components/asset-actions'
+import AssetAttributesViewer from './AssetAttributesViewer'
+import AssetActions from './AssetActions'
 import Drawer from '@/vue/common/Drawer'
 import AssetForm from '@/vue/forms/AssetForm'
 
@@ -89,7 +85,6 @@ import { AssetRecord } from '@/js/records/entities/asset.record'
 import { AssetFormer } from '@/js/formers/AssetFormer'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { types } from '@/vue/modules/assets/shared/store/types'
 
 export default {
   name: 'asset-card',
@@ -122,11 +117,6 @@ export default {
       vuexTypes.isAccountCorporate,
     ]),
 
-    ...mapGetters('assets-module', {
-      kycRequiredAssetType: types.kycRequiredAssetType,
-      securityAssetType: types.securityAssetType,
-    }),
-
     assetBalance () {
       const record = this.accountBalances
         .find(item => item.asset.code === this.asset.code)
@@ -137,18 +127,9 @@ export default {
     },
   },
 
-  async created () {
-    await this.loadKycRequiredAssetType()
-    await this.loadSecurityAssetType()
-  },
-
   methods: {
     ...mapActions({
       loadAssets: vuexTypes.LOAD_ASSETS,
-    }),
-    ...mapActions('assets-module', {
-      loadKycRequiredAssetType: types.LOAD_KYC_REQUIRED_ASSET_TYPE,
-      loadSecurityAssetType: types.LOAD_SECURITY_ASSET_TYPE,
     }),
 
     showUpdateForm () {

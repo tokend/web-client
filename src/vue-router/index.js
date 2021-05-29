@@ -33,9 +33,9 @@ import Verification from '@/vue/pages/Verification'
 import VerificationGeneral from '@/vue/pages/VerificationGeneral'
 import VerificationCorporate from '@/vue/pages/VerificationCorporate'
 import Security from '@/vue/pages/Security'
-import AssetExplorerModule from '@modules/assets/asset-explorer'
-import BalanceExplorerModule from '@modules/assets/balance-explorer'
-import MyAssetsExplorerModule from '@modules/assets/my-assets-explorer'
+import AssetsExplorer from '@/vue/pages/AssetsExplorer'
+import BalanceExplorer from '@/vue/pages/BalanceExplorer'
+import MyAssetsExplorer from '@/vue/pages/MyAssetsExplorer'
 import SalesList from '@/vue/pages/sales/SalesList'
 import Requests from '@/vue/pages/Requests'
 
@@ -158,13 +158,13 @@ const router = new Router({
             {
               path: '/assets/explore',
               name: vueRoutes.assetsExplore.name,
-              component: AssetExplorerModule,
+              component: AssetsExplorer,
               beforeEnter: inAppRouteGuard,
             },
             {
               path: '/assets/balances',
               name: vueRoutes.balances.name,
-              component: BalanceExplorerModule,
+              component: BalanceExplorer,
               beforeEnter: inAppRouteGuard,
             },
             {
@@ -173,7 +173,7 @@ const router = new Router({
               meta: {
                 isCorporateOnly: true,
               },
-              component: MyAssetsExplorerModule,
+              component: MyAssetsExplorer,
               beforeEnter: inAppRouteGuard,
             },
           ],

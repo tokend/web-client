@@ -60,8 +60,6 @@ export default {
   name: 'asset-actions',
   props: {
     asset: { type: AssetRecord, required: true },
-    kycRequiredAssetType: { type: Number, required: true },
-    securityAssetType: { type: Number, required: true },
     isAccountUnverified: { type: Boolean, required: true },
     isAccountUsVerified: { type: Boolean, required: true },
     isAccountUsAccredited: { type: Boolean, required: true },
@@ -99,6 +97,8 @@ export default {
   methods: {
     ...mapActions({
       createBalance: vuexTypes.CREATE_BALANCE,
+      kycRequiredAssetType: vuexTypes.kycRequiredAssetType,
+      securityAssetType: vuexTypes.securityAssetType,
     }),
     async addBalance () {
       this.isPending = true
