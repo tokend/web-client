@@ -81,8 +81,8 @@
 </template>
 
 <script>
-import FeeTypeViewer from './viewers/fee-type-viewer'
-import FeeSubtypeViewer from './viewers/fee-subtype-viewer'
+import FeeTypeViewer from '@/vue/pages/fees-all/FeeTypeViewer'
+import FeeSubtypeViewer from '@/vue/pages/fees-all/FeeSubtypeViewer'
 import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 
 export default {
@@ -95,7 +95,7 @@ export default {
 
   props: {
     fees: {
-      type: Array, /** {@link Fee} **/
+      type: Array, /** {@link FeeRecord} **/
       required: true,
     },
     assetCode: {

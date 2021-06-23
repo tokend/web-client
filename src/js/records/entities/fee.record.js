@@ -1,6 +1,6 @@
 import _get from 'lodash/get'
 
-export class Fee {
+export class FeeRecord {
   constructor (record) {
     this.fixed = record.fixed
     this.percent = record.percent

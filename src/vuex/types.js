@@ -32,6 +32,9 @@ const mutations = {
 
   // identities
   SET_IDENTITIES: 'SET_IDENTITIES',
+
+  // fees
+  SET_ACCOUNT_FEES: 'SET_ACCOUNT_FEES',
 }
 
 const actions = {
@@ -78,6 +81,9 @@ const actions = {
 
   // identities
   LOAD_IDENTITIES_BY_ACCOUNT_ID: 'LOAD_IDENTITIES_BY_ACCOUNT_ID',
+
+  // fees
+  LOAD_ACCOUNT_FEES: 'LOAD_ACCOUNT_FEES',
 }
 
 const getters = {
@@ -150,6 +156,9 @@ const getters = {
   // identitys
   usersIdentities: 'usersIdentities',
   emailByAccountId: 'emailByAccountId',
+
+  // fees
+  fees: 'fees',
 }
 
 export const vuexTypes = {
