@@ -49,7 +49,7 @@
       />
     </drawer>
 
-    <issuance-explorer-module />
+    <issuance-explorer />
   </div>
 </template>
 
@@ -62,7 +62,7 @@ import { vuexTypes } from '@/vuex'
 
 import { vueRoutes } from '@/vue-router/routes'
 
-import IssuanceExplorerModule from '@/vue/modules/issuance-explorer'
+import IssuanceExplorer from '@/vue/pages/IssuanceExplorer'
 import IssuanceForm from '@/vue/forms/IssuanceForm'
 import PreIssuanceFormModule from '@modules/pre-issuance-form'
 import UpdateList from '@/vue/mixins/update-list.mixin'
@@ -74,7 +74,7 @@ export default {
     TopBar,
     IssuanceForm,
     PreIssuanceFormModule,
-    IssuanceExplorerModule,
+    IssuanceExplorer,
   },
 
   mixins: [UpdateList],

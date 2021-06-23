@@ -2,6 +2,7 @@ import { vuexTypes, rootModule } from './index'
 
 import account from './account.module'
 import assets from './assets.module'
+import issuances from './issuances.module'
 import factors from './factors.module'
 import kyc from './kyc.module'
 import wallet from './wallet.module'
@@ -26,6 +27,9 @@ describe('vuex types unit tests', () => {
       expect(vuexTypes).to.have.property(key)
     }
     for (const key of getModuleKeys(assets)) {
+      expect(vuexTypes).to.have.property(key)
+    }
+    for (const key of getModuleKeys(issuances)) {
       expect(vuexTypes).to.have.property(key)
     }
     for (const key of getModuleKeys(kyc)) {
@@ -53,6 +57,7 @@ describe('vuex types unit tests', () => {
       ...getModuleKeys(rootModule),
       ...getModuleKeys(account),
       ...getModuleKeys(assets),
+      ...getModuleKeys(issuances),
       ...getModuleKeys(kyc),
       ...getModuleKeys(factors),
       ...getModuleKeys(wallet),

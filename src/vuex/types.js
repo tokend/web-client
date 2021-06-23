@@ -32,6 +32,10 @@ const mutations = {
 
   // identities
   SET_IDENTITIES: 'SET_IDENTITIES',
+
+  // issuances
+  SET_ISSUANCES: 'SET_ISSUANCES',
+  CONCAT_ISSUANCES: 'CONCAT_ISSUANCES',
 }
 
 const actions = {
@@ -78,6 +82,9 @@ const actions = {
 
   // identities
   LOAD_IDENTITIES_BY_ACCOUNT_ID: 'LOAD_IDENTITIES_BY_ACCOUNT_ID',
+
+  // issuances
+  LOAD_ISSUANCES: 'LOAD_ISSUANCES',
 }
 
 const getters = {
@@ -150,6 +157,9 @@ const getters = {
   // identitys
   usersIdentities: 'usersIdentities',
   emailByAccountId: 'emailByAccountId',
+
+  // issuances
+  issuances: 'issuances',
 }
 
 export const vuexTypes = {

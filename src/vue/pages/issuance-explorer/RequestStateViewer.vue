@@ -41,7 +41,6 @@
 </template>
 
 <script>
-import { Request } from '../wrappers/request'
 import { RequestRecord } from '@/js/records/request-record'
 
 export default {
@@ -49,7 +48,7 @@ export default {
 
   props: {
     request: {
-      type: [Request, RequestRecord],
+      type: RequestRecord,
       required: true,
     },
   },
