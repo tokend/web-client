@@ -73,7 +73,6 @@ export class EventBus extends Vue {
       incomingWithdrawalRequestsUpdateList: 'incomingWithdrawalRequests:updateList',
       updateAssetRequestsUpdateList: 'updateAssetRequests:updateList',
       createAssetRequestsUpdateList: 'createAssetRequests:updateList',
-      atomicSwapsUpdateList: 'atomicSwaps:updateList',
     }
   }
 

@@ -45,38 +45,6 @@
           </td>
         </tr>
 
-        <tr>
-          <td>
-            <!-- eslint-disable-next-line max-len -->
-            {{ 'update-asset-requests.can-be-base-in-atomic-swap-title' | globalize }}
-          </td>
-          <td>
-            <template v-if="request.isBaseInAtomicSwap">
-              {{ 'update-asset-requests.yes-msg' | globalize }}
-            </template>
-
-            <template v-else>
-              {{ 'update-asset-requests.no-msg' | globalize }}
-            </template>
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            <!-- eslint-disable-next-line max-len -->
-            {{ 'update-asset-requests.can-be-quote-in-atomic-swap-title' | globalize }}
-          </td>
-          <td>
-            <template v-if="request.isQuoteInAtomicSwap">
-              {{ 'update-asset-requests.yes-msg' | globalize }}
-            </template>
-
-            <template v-else>
-              {{ 'update-asset-requests.no-msg' | globalize }}
-            </template>
-          </td>
-        </tr>
-
         <template v-if="request.stellarAssetCode">
           <!-- eslint-disable-next-line max-len -->
           <tr :title="'update-asset-requests.stellar-asset-code-title' | globalize">

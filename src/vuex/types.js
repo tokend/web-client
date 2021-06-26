@@ -141,8 +141,6 @@ const getters = {
   defaultQuoteAsset: 'defaultQuoteAsset',
   ownedAssets: 'ownedAssets',
   ownedBalancesAssets: 'ownedBalancesAssets',
-  baseAtomicSwapBalancesAssets: 'baseAtomicSwapBalancesAssets',
-  quoteAtomicSwapAssets: 'quoteAtomicSwapAssets',
 
   // idle-handler
   logoutAt: 'logoutAt',

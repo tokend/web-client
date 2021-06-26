@@ -26,8 +26,6 @@ import IncomingWithdrawalRequestsModule from '@/vue/modules/requests/incoming-wi
 import Issuance from '@/vue/pages/Issuance'
 import Limits from '@/vue/pages/Limits'
 import Fees from '@/vue/pages/Fees'
-import AtomicSwaps from '@/vue/pages/AtomicSwaps'
-import AtomicSwapsExplore from '@/vue/pages/atomic-swaps/AtomicSwapsExplore'
 import Settings from '@/vue/pages/Settings'
 import Verification from '@/vue/pages/Verification'
 import VerificationGeneral from '@/vue/pages/VerificationGeneral'
@@ -356,29 +354,6 @@ const router = new Router({
           meta: { pageNameTranslationId: 'pages-names.fees' },
           component: Fees,
           beforeEnter: inAppRouteGuard,
-        },
-        {
-          path: '/atomic-swaps',
-          name: vueRoutes.atomicSwaps.name,
-          meta: {
-            pageNameTranslationId: 'pages-names.atomic-swaps',
-            isDisabled: true,
-          },
-          component: AtomicSwaps,
-          beforeEnter: inAppRouteGuard,
-          redirect: vueRoutes.atomicSwapsExplore,
-          children: [
-            {
-              path: '/atomic-swaps/explore',
-              name: vueRoutes.atomicSwapsExplore.name,
-              props: true,
-              component: AtomicSwapsExplore,
-              beforeEnter: inAppRouteGuard,
-              meta: {
-                isDisabled: true,
-              },
-            },
-          ],
         },
         {
           path: '/settings',
