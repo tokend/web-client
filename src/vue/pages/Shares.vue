@@ -1,6 +1,6 @@
 <template>
   <div class="register-of-shares">
-    <movements-top-bar-module
+    <movements-top-bar
       @asset-updated="updateAsset"
       @movements-update-required="updateList"
       @show-no-data-message="showNoDataMessage = true"
@@ -34,7 +34,7 @@
 <script>
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import Loader from '@/vue/common/Loader'
-import MovementsTopBarModule from '@modules/movements-top-bar'
+import MovementsTopBar from '@/vue/common/MovementsTopBar'
 import MovementsHistoryModule from '@/vue/modules/movements-history'
 
 export default {
@@ -42,7 +42,7 @@ export default {
   components: {
     NoDataMessage,
     Loader,
-    MovementsTopBarModule,
+    MovementsTopBar,
     MovementsHistoryModule,
   },
 
