@@ -25,6 +25,7 @@ export class KycGeneralFormer extends Former {
       firstName: '',
       lastName: '',
       dateOfBirth: '',
+      age: '',
       idDocType: '',
       idDocFace: new Document(),
       idDocBack: new Document(),
@@ -97,6 +98,7 @@ export class KycGeneralFormer extends Former {
     this.attrs.proofOfInvestor = source.proofOfInvestor
     this.attrs.selfie = source.selfie
     this.attrs.avatar = source.avatar
+    this.attrs.age = source.age
 
     this.attrs.address = this.attrs.address || {}
     this.attrs.address.line1 = source.address.line1
@@ -151,6 +153,7 @@ export class KycGeneralFormer extends Former {
       first_name: str(attrs.firstName),
       last_name: str(attrs.lastName),
       date_of_birth: toRFC3339(attrs.dateOfBirth),
+      age: str(attrs.age),
       address: {
         line_1: str(address.line1),
         line_2: str(address.line2),
