@@ -92,13 +92,13 @@ export class KycGeneralFormer extends Former {
     this.attrs.firstName = source.firstName
     this.attrs.lastName = source.lastName
     this.attrs.dateOfBirth = source.dateOfBirth
+    this.attrs.age = source.age
     this.attrs.idDocType = source.idDocType
     this.attrs.idDocFace = source.idDocFace
     this.attrs.idDocBack = source.idDocBack
     this.attrs.proofOfInvestor = source.proofOfInvestor
     this.attrs.selfie = source.selfie
     this.attrs.avatar = source.avatar
-    this.attrs.age = source.age
 
     this.attrs.address = this.attrs.address || {}
     this.attrs.address.line1 = source.address.line1
@@ -107,6 +107,7 @@ export class KycGeneralFormer extends Former {
     this.attrs.address.state = source.address.state
     this.attrs.address.postalCode = source.address.postalCode
     this.attrs.address.country = source.address.country
+    //  console.dir(this.attrs)
   }
 
   /** @param {KycRequestRecord|KycRecoveryRequestRecord} source */

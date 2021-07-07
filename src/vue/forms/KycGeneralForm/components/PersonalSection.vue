@@ -48,13 +48,16 @@
         />
       </div>
       <div class="app__form-field">
-        <input-field
+        <amount-input-field
           white-autofill
-          type="number"
           v-model="age"
+          :min="18"
+          :max="120"
+          :step="1"
           @change="former.setAttr('age', age)"
           @blur="touchField('age')"
           name="verefication-general-age"
+          :asset="age"
           :label="'general-form.age-lbl' | globalize"
           :error-message="getFieldErrorMessage('age')"
           :disabled="isDisabled"
