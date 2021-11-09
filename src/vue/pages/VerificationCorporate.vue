@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { scrollToTop } from '@/js/helpers/scroll-helpers'
 import { KycCorporateFormer } from '@/js/formers/KycCorporateFormer'
@@ -26,12 +25,10 @@ export default {
     KycCorporateForm,
   },
 
-  computed: {
-    ...mapGetters({ kycRequest: vuexTypes.kycRequest }),
-
-    former () {
-      return new KycCorporateFormer(this.kycRequest)
-    },
+  data () {
+    return {
+      former: new KycCorporateFormer(this.$store.getters[vuexTypes.kycRequest]),
+    }
   },
 
   methods: {
