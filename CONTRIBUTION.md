@@ -321,8 +321,234 @@ Vuex безусловно очень помогает в таких ситуац
 Чаще всего vuex используется для хранения более глобальных и неизменяемых данных,
 например аккаунта, он ведь в системе один, или же `assets` они общие для всех пользователей.
 
-
 ## Formers
+Предназначен для формирования сложных запросов или же если вам нужно собирать тело запроса,
+собирая данные из нескольких компонент.
+
+Допустим у нас есть пошаговая форма, состоящая из нескольких компонент.
+Наследуя супер класс [Former](./src/js/formers/Former.js), мы создаём свой `формер`
+например [AssetFormer](./src/js/formers/AssetFormer.js)
+
+Разберём сперва некоторые его методы:
+1. начнём с `_defaultAttrs` - здесь объявляются все переменные, которые по итогу будут использоваться в запросах
+2. `populate` - Если уже есть данные, и нужно предзаполнить формер, то мы передаём их через конструктор класса формера, который в свою очередь вызывает этот метод для заполнени. Чаще всего в конструктор формера передаётся какой-нибудь класс с данными, для заполнения. Поэтому внутри `populate` часто бывает switch, который следит за типом переданного объекта и назначает ему уже определённое поведение.
+3. `buildOps`, `_buildOpCreate`, `_buildOpUpdate` - `buildOps` служит входной точкой при сборке запроса. Методы класса следят за тем, как был инициализирован формер, если он был создан на основе каких-нибудь данных, то `buildOps` будет принимать в себя `_buildOpUpdate` иначе же `_buildOpCreate`
+
+В остальном же - это обычно вспомогательные методы, которые помогают определять какой тип запроса сейчас(создание или обновление), декомпозиция сложных запросов, чтобы не городить всё в одну функцию и так далее...
+
+Есть и другие случаи использования формера, это необязательно должно быть только сборка запроса из нескольких компонент.
+Вторым частым кейсом является построение сложного запроса, ведь
+объявлять кучу методов внутри компоненты,
+или же писать одну большую функцию является плохим тоном,
+поэтому имеет смысл инкапсулировать это всё в отдельный класс,
+в нашем случае это формер.
+
+Пример использования
+
+Перво наперво создадим формер
+
+```javascript
+export class SomeFormer extends Former {
+  attrs = this.attrs || this._defaultAttrs
+
+  get _defaultAttrs () {
+    return {
+      firstName: '',
+      lastName: '',
+    }
+  }
+
+  _opBuilder = this._opBuilder || this._buildOpCreate
+
+  get isCreateOpBuilder () { return this._opBuilder === this._buildOpCreate }
+  get isUpdateOpBuilder () { return this._opBuilder === this._buildOpUpdate }
+  useCreateOpBuilder () { this._opBuilder = this._buildOpCreate; return this }
+  useUpdateOpBuilder () { this._opBuilder = this._buildOpUpdate; return this }
+
+  async buildOps () {
+    return this._opBuilder()
+  }
+
+  populate (source) {
+    switch (source.constructor) {
+      case SomeClassTypeFoo: this._populateFromFoo(source); break
+      case SomeClassTypeBar: this._populateFromBar(source); break
+      default: throw TypeError('Unknown source type')
+    }
+    return this
+  }
+
+  _populateFromFoo (source) {
+      this.useUpdateOpBuilder()
+      this.attrs.firstName = source.firstName
+      this.attrs.lastName = source.lastName
+  }
+
+  _populateFromBar (source) {
+    this.useUpdateOpBuilder()
+    this.attrs.firstName = `${source.firstName} but with bar`
+    this.attrs.lastName = `${source.lastName} but with bar`
+  }
+
+  _buildOpCreate () {
+      return {
+        type: 'create-request',
+        attributes: {
+            first_name: this.attrs.firstName,
+            last_name: this.attrs.lastName,
+        }
+      }
+  }
+
+  _buildOpUpdate () {
+    return {
+      type: 'update-request',
+      attributes: {
+        first_name: this.attrs.firstName,
+        last_name: this.attrs.lastName,
+      }
+    }
+  }
+}
+```
+
+Теперь у нас есть Формер, и если его инициализируют с данными, то вызовется populate,
+затем обработается определённый случай соответствующий типу пришедших данных.
+Например `_populateFromFoo`, и внутри, сначала вызовется `this.useUpdateOpBuilder()`
+Который скажет формеру ипользовать `_buildOpUpdate`, а потом уже заполняться поля формера.
+Иначе же, будет использоваться `_buildOpCreate`, а все данные будут заполняться с нуля.
+
+### Теперь рассмотрим применение
+
+Допустим у нас есть пошаговая форма FormStepper,
+вдаваться в принцип его работы мы не будем,
+просто представьте, что внутри можно переключаться между шагами заполнения полей.
+
+Для начала, нам нужно инициализировать экземпляр формера в родительском классе.
+Затем через пропсу передать формер в каждый компонент формы
+
+```vue
+<template>
+  <div class="some-component">
+    <form-stepper class="some-component__form-stepper">
+      <step>
+        <some-form
+          :former="former"
+        />
+      </step>
+      <step>
+        <some-form
+          :former="former"
+        />
+      </step>
+      <step>
+        <some-form
+          :former="former"
+        />
+      </step>
+    </form-stepper>
+  </div>
+</template>
+<script>
+import SomeFormer from '@/js/former/SomeFormer.js'
+
+export default {
+  name: 'some-component',
+  data () {
+    return {
+      former: new SomeFormer(),
+    }
+  },
+}
+</script>
+```
+
+Таким образом, у нас есть экземпляр класса, в родительской компоненте,
+и у нас будет доступ к ней во всех дочерних компонентах, в которые мы передали формер,
+что позволит нам заполнять поля для создания запроса.
+
+Пример заполнения формера
+
+```vue
+
+<template>
+  <form
+    class="some-component"
+    @submit.prevent="submit"
+  >
+    <input
+      type="text"
+      v-model="form.firstName"
+      @input="former.setAttr('firstName', this.form.firstName)"
+    >
+    <input
+      type="text"
+      v-model="form.lastName"
+      @input="former.setAttr('firstName', this.form.lastName)"
+    >
+  </form>
+</template>
+<script>
+import SomeFormer from '@/js/former/SomeFormer.js'
+
+import { ErrorHandler } from '@/js/helpers/error-handler'
+import { api } from '@/api'
+
+export default {
+  name: 'some-component',
+  props: {
+    former: {
+      type: SomeFormer,
+      default: () => new SomeFormer(),
+    },
+  },
+  data() {
+    return {
+      form: {
+        firstName: this.former.attrs.firstName,
+        lastName: this.former.attrs.lastName,
+      },
+    }
+  },
+  methods: {
+    async submit() {
+      try {
+        const buildedOp = this.former.buildOps()
+        await api.post('/some/endpoint', buildedOp)
+      } catch (error) {
+        ErrorHandler.process(error)
+      }
+    },
+  },
+}
+</script>
+```
+
+В пропсах мы объявляем, что ожидаем `former`, с типом SomeFormer,
+и если его не будет, просто возвращаем новый экземпляр формера.
+
+Таким образом мы можем обработать оба случая - когда требуется создать запрос с нуля,
+или же на основе существующих данных.
+
+Внутри `data` мы объявляем поля формы, и предзаполняем их полями формера, на случай,
+если нам пришёл всё таки заполненный формер. Если же нет, то `firstName` и `lastName`
+инициализируются со значениями, которые были объявлены внутри `_defaultAttrs` формера,
+другими словами "дефолтными значениями".
+
+Теперь, внутри `<templates></templates>` на элементах инпута, при вводе данных,
+мы будем вызывать метод `former.setAttr`, и передавать туда наши данные из data,
+которые двусторонне связаны с текущими элементами ввода.
+
+`former.setAttr` - первым параметром, мы передаём строку, которая указывает,
+какой из полей формера мы хотим заполнить, а вторым параметром передаём значение.
+Так и заполняется формер.
+
+В конце, после заполнения нужных полей, мы можем инициализировать сборку запроса,
+например в форме `this.former.buildOps()` и после этого послать запрос.
+
+Как итог мы получаем инкапсулированную функциональность,
+с помощью которой можно удобно контролировать сборку запросов
+не нагромождая код внутри компоненты.
 
 ## BEM
 
