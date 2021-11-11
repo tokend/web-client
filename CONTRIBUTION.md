@@ -183,8 +183,144 @@ Vue.filter('cropAddress', cropAddress)
 ```
 
 ## Vuex
+Используется для того, чтобы получать данные из общего хранилища данных,
+когда требуется получать одни и те же данные в нескольких компонентах.
+
+99% Данных, которые требуются для работы с TokenD уже реализованы
+и рассортированы по [модулям](./src/vuex)
+
+Все переменные, по-которым нужно будет обращаться за данными,
+а так-же те, которые требуется добавить в vuex,
+должны быть сперва объявлены в [vuexTypes](./src/vuex/types.js)
+и уже потом реализованы в соответствующем модуле
+
+пример:
+```javascript
+const mutations = {
+    SET_ACCOUNT: 'SET_ACCOUNT',
+}
+
+const actions = {
+    LOAD_ACCOUNT: 'LOAD_ACCOUNT',
+}
+
+const getters = {
+    account: 'account',
+}
+
+export const vuexTypes = {
+  ...mutations,
+  ...actions,
+  ...getters,
+}
+```
+
+```javascript
+import { api } from '@/api'
+import { vuexTypes } from './types'
+
+export const state = {
+  account: {},
+}
+
+export const mutations = {
+  [vuexTypes.SET_ACCOUNT] (state, account) {
+    state.account = account
+  },
+}
+
+export const actions = {
+  async [vuexTypes.LOAD_ACCOUNT] ({ commit }, accountId) {
+    accountId = accountId || getCurrentAccId()
+    const response = await api.getWithSignature(`/v3/accounts/${accountId}`, {
+      include: ['external_system_ids', 'balances', 'balances.state', 'balances.asset'],
+    })
+    commit(vuexTypes.SET_ACCOUNT, response.data)
+  },
+}
+
+export const getters = {
+  [vuexTypes.account]: state => state.account,
+}
+```
+
+Теперь по ним можно легко получать доступ из компонент
+```vue
+
+<script>
+import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { vuexTypes } from '@/vuex'
+
+
+// Придерживайтесь определённых правил при получении данных из `mapGetters`,
+// `mapActions`, а так же `mapMutations`.
+
+export default {
+  name: 'component',
+
+  computed: {
+    // Для `...mapGetters` объявляем массив, и перечисляем через vuexTypes нужные переменные
+    ...mapGetters([
+      vuexTypes.accountId,
+    ])
+  },
+  methods: {
+    // для `mapActions`, а так же `mapMutations` нужно в объекте объявлять ключ
+    // чаще всего это просто camelCase взятой vuexTypes переменной
+    ...mapActions({
+      loadAccount: vuexTypes.LOAD_ACCOUNT,
+    }),
+    ...mapMutations({
+      loadAccount: vuexTypes.LOAD_ACCOUNT,
+    }),
+  },
+}
+</script>
+```
+
+А так же из `*.js` файлов
+```javascript
+import { store, vuexTypes } from '@/vuex'
+
+export function getAccountId () {
+    return store.getters[vuexTypes.accountId]
+}
+```
+
+Чтобы объявить новую переменную, стоит придерживаться некоторых правил,
+в [vuexTypes](./src/vuex/types.js) названия всех переменных в `mutations` и `actions`,
+должны быть в верхнем регистре, и в **`SNAKE_CASE`**,
+рекомендуется так же соблюдать логику именования. Например если вы загружаете
+данные аккаунта, то в `actions` нужно написать `LOAD_ACCOUNT`, а в mutations `SET_ACCOUNT`
+В `getters` же, нужно писать через camelCase - `account`
+
+Все переменные, которые объявлены в [vuexTypes](./src/vuex/types.js)
+должны быть реализованы. За выполнением этого пункта следят тесты, поэтому сборка проекта
+может завалиться если не выполнить требование
+
+Так же, если вам нужно объявить новый модуль и подключить его,
+то его так же нужно включить и в [unit-test](./src/vuex/types.spec.js)
+проверяющий соответствие всех модулей
 
 #### Do we need vuex all the time?
+
+Vuex безусловно очень помогает в таких ситуациях,
+когда нужно загрузить и получить данные в нескольких местах.
+
+Но всегда ли он нам нужен?
+
+Например, если вы знаете, что запрос на какие-то данные будет происходить единожды,
+в какой-нибудь компоненте, нет смысла засорять vuex стору ненужными данными.
+
+А так же стоит подумать, можно ли вынести запрос в [helpers](./src/js/helpers)
+если вам всё же понадобиться вызывать запрос несколько раз.
+
+Вопрос стоит в целях, если запрос должен быть гибким, и выдавать разную информацию
+в зависимости от принимаемых параметров, то стоит создать функцию в [helpers](./src/js/helpers)
+
+Чаще всего vuex используется для хранения более глобальных и неизменяемых данных,
+например аккаунта, он ведь в системе один, или же `assets` они общие для всех пользователей.
+
 
 ## Formers
 
