@@ -502,7 +502,7 @@ export default {
       default: () => new SomeFormer(),
     },
   },
-  data() {
+  data () {
     return {
       form: {
         firstName: this.former.attrs.firstName,
@@ -511,7 +511,7 @@ export default {
     }
   },
   methods: {
-    async submit() {
+    async submit () {
       try {
         const buildedOp = this.former.buildOps()
         await api.post('/some/endpoint', buildedOp)
@@ -655,9 +655,270 @@ export default {
 ```
 
 ## Default "*Loading Data*" schema
-#### try-catch + ErrorHandler
+Для всех компонент, в которых надо делать запросы на получение данных
+используется, уже стандартная для нас, схема построения компоненты.
+
+```vue
+
+<template>
+  <div class="some-component">
+    <template v-if="isLoaded">
+      <template v-if="isLoadFailed">
+        <error-message
+          :message="'some-component.loading-error-msg' | globalize"
+        />
+      </template>
+      <template v-else>
+        {{ someData }}
+      </template>
+    </template>
+    <template>
+      <loader/>
+    </template>
+  </div>
+</template>
+
+<script>
+import Loader from '@/vue/common/Loader'
+
+import { SomeClassRecord } from '@/js/records/entities/some-class.record'
+import { ErrorHandler } from 'error-handler'
+import { api } from '@/api'
+
+export default {
+  components: { Loader },
+  data () {
+    return {
+      isLoaded: false,
+      isLoadFailed: false,
+      someData: {},
+    }
+  },
+  async created () {
+    try {
+      await this.loadList()
+    } catch (error) {
+      this.isLoadFailed = true
+      ErrorHandler.processWithoutFeedback(error)
+    }
+    this.isLoaded = true
+  },
+  methods: {
+    async loadList () {
+      const endpoint = '/some-endpoint/to-take-data'
+      const { data } = await api.get(endpoint)
+      this.someData = new SomeClassRecord(data)
+    },
+  },
+}
+</script>
+```
+
+##### Начнём по порядку
+Сперва нужно объявить 2 переменные - `isLoaded` и `isLoadFailed`.
+Они служат для того, чтобы показать пользователю,
+что в данный момент происходит на странице.
+Ну, и собственно `someData` для хранения полученных данных.
+
+##### Далее разберём уже сам процесс загрузки
+Самое важное - это использовать try-catch, ведь мы никогда не знаем заранее,
+как ответит сервер, поэтому нужно обработать все варианты.
+
+Ну, и, понятное дело делаем запрос внутри `try` блока, но что интереснее,
+это блок `catch`, вы наверняка увидели там класс [ErrorHandler](./src/js/helpers/error-handler.js)
+вызывающий статический метод `processWithoutFeedback`.
+
+Немного про класс [ErrorHandler](./src/js/helpers/error-handler.js) - он предназначен для того, чтобы следить за
+ошибками и выводить их. Внутри класса, мы следим, какой тип ошибки к нам приходит.
+И через switch выводим соответствующее сообщение.
+в 99% случаев, всё что нужно - это использовать методы `process` и `processWithoutFeedback`
+
+`process` - используя кастомную класс - обёртку [Bus](./src/js/helpers/event-bus.js)([подробнее](https://v3.vuejs.org/guide/migration/events-api.html#overview)),
+показывает всплывающее сообщение([нотификацию](./src/vue/common/StatusMessage.vue)) в углу экрана.
+
+`processWithoutFeedback` - только выводит в консоль
+
+Логично предположить, что например в коде выше, с описанной дефолтной структурой загрузки данных,
+которая при `isLoadFailed = true` рендерит `<error-message />`, использовать `process` нет смысла,
+ведь сообщение об ошибке уже выведено. Более правильным там будет использовать `processWithoutFeedback`.
+
+А вот например при запросах на отправку данных
+
+Пример:
+```javascript
+async function sendRequest () {
+    try {
+      await api.post('/some/endpoint', {
+        data: {
+          congratulation: 'say hello',
+        },
+      })
+    } catch (error) {
+        ErrorHandler.process(error)
+    }
+}
+```
+
+Более целесообразным будет использовать `process`,
+ведь при ошибке надо показать пользователю, что произошло.
+
+Далее, немного о строке `this.someData = new SomeClassRecord(data)`
+
+Так как в JS нет строгой типизации - данный подход служит её замене.
+С сервера мы получаем ком каких-то данных, и безусловно, если есть документация и мы её прочли,
+то понимаем какие данные придут и можем к ним сразу обратиться. Но стоит помнить,
+что на проекте может быть не один человек, и не все могут знать таких нюансов.
+Поэтому в [Рекордах](./src/js/records) мы создаём классы, которые получают этот самый ком данных,
+и возвращают экземпляр данных с явно обозначенными полями.
+
+Пример
+```javascript
+import _get from 'lodash/get'
+
+export class SomeClassRecord {
+    constructor(record) {
+        this._record = record
+
+        this.id = record.id
+        this.someSpecialData = _get(record, 'some.special.data', '')
+    }
+}
+```
+
+Если вы понимаете, что данные, которые вам нужны, имеют большую вложенность - `this.someSpecialData = _get(record, 'some.special.data', '')`
+то правильным будет использовать [lodash/get](https://lodash.com/docs/4.17.15#get)
+
+Таким образом, если по этому пути ничего не нашло, то нам вернётся дефолтное значение - то, что указано третьим параметром.
+Если же оно не указано, вернётся `undefined`
 
 ## CollectionLoader
+Продолжая тему загрузки данных, что если нужно получить список.
+
+Сперва повторим нашу дефолтную структуру, но с некоторыми дополнениями
+
+```vue
+
+<template>
+  <div class="some-component">
+    <template v-if="isLoaded">
+      <template v-if="isLoadFailed">
+        <error-message
+          :message="'some-component.loading-error-msg' | globalize"
+        />
+      </template>
+      <template v-else>
+        <template v-if="list.length">
+          <div class="some-component__list">
+            <div
+              class="some-component__item"
+              v-for="item in list"
+              :key="item.id"
+            >
+              {{ item }}
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <no-data-message
+            :message="'some-component.no-data-msg' | globalize"
+          />
+        </template>
+      </template>
+    </template>
+    <template v-else>
+      <loader/>
+    </template>
+    <collection-loader
+      v-show="list.length"
+      :first-page-loader="loadList"
+      @first-page-load="setList"
+      @next-page-load="concatList"
+    />
+  </div>
+</template>
+
+<script>
+import NoDataMessage from '@/vue/common/NoDataMessage'
+import Loader from '@/vue/common/Loader'
+import CollectionLoader from '@/vue/common/CollectionLoader'
+
+import { ErrorHandler } from '@/js/helpers/error-handler'
+import { SomeClassRecord } from '@/js/record/entities/some-class.record'
+import { api } from '@/api'
+
+export default {
+  components: {
+    CollectionLoader,
+    Loader,
+    NoDataMessage
+  },
+  data () {
+    return {
+      isLoaded: false,
+      isLoadFailed: false,
+      list: [],
+    }
+  },
+  methods: {
+    async loadList () {
+      let response
+      try {
+        response = await api.get('/some/data', {
+          filter: {
+            order: 'desc',
+          }
+        })
+      } catch (error) {
+        this.isLoadFailed = true
+        ErrorHandler.processWithoutFeedback(error)
+      }
+      this.isLoaded = true
+      return response
+    },
+    setList (data) {
+      this.list = data.map(el => new SomeClassRecord(el))
+    },
+    concatList (chunk) {
+      this.list = this.list.concat(
+        chunk.map(el => new SomeClassRecord(el))
+      )
+    },
+  },
+}
+</script>
+```
+
+Для начала мы добавили ещё одну проверку, когда `isLoadFailed = false`
+внутри `v-else` мы проверяем на наличие элементов в массиве.
+Если есть, то отображаем список, если нет - то отображаем специальный компонент
+`<no-data-message />`
+
+Теперь о загрузке данных - как видно из кода, мы добавили компонент `<collection-loader />`
+Он предназначен для загрузки списка частями. Другими словами - некая пагинация.
+
+Использовать его легко - должны быть три функции:
+1. `loadList` - получает данные и возвращает их
+2. `setList` - Присваивает нашему массиву `list` данные, которые пришли из `loadList` (в основном, этот метод предназначен для типизации полученных данных)
+3. `concatList` - Если `loadList` и `setList` это загрузка и присваивание первых n-количества элементов списка, то этот метод догружает ровно такое же количество не перезагружая при этом весь список.
+
+После создания всех этих методов, мы просто их прокидываем через `props` и `events` в `<collection-loader />` и получаем рабочий загрузчик.
+
+### P. S.
+Бывают моменты, когда нужно загрузить сразу весь список
+Для этого есть специальный метод - `loadAllResponsePages`
+
+Пример:
+```javascript
+export async function loadAllList () {
+    try {
+        const response = await api.get('/some/data')
+        const data = await loadAllResponsePages(response)
+        return data.map(el => new SomeClassRecord(el))
+    } catch (error) {
+        ErrorHandler.processWithoutFeedback(error)
+    }
+}
+```
 
 ## Operations and Transactions
 
