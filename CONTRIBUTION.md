@@ -551,6 +551,108 @@ export default {
 не нагромождая код внутри компоненты.
 
 ## BEM
+Внутри проекта обязательно нужно соблюдать [BEM](https://ru.bem.info/methodology/)
+
+Пример:
+```vue
+<template>
+  <div class="some-component">
+    <h1 class="some-component__title">
+      {{ 'some-component.title' | globalize }}
+    </h1>
+    <div class="some-component__content-wrapper">
+      <div class="some-component__content">
+        <app-sidebar class="some-component__sidebar" />
+        <main class="some-component__main">
+          <app-navbar class="some-component__navbar" />
+          <div
+            class="some-component__main-content"
+            :class="{
+              'some-component__main-content--darked': theme === THEMES.dark,
+              'some-component__main-content--lighted': theme === THEMES.light,
+            }"
+          >
+            <router-view />
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+const THEMES = {
+  dark: 'dark',
+  light: 'light',
+}
+
+export default {
+  name: 'some-component',
+  props: {
+    theme: {
+      type: String,
+      default: THEMES.light,
+    },
+  },
+  data () {
+    return {
+      THEMES,
+    }
+  },
+}
+</script>
+
+<style lang="scss">
+.some-component {}
+
+.some-component__title {
+
+  &:hover {}
+
+  &:before {}
+
+  &:after {}
+}
+
+.some-component__content-wrapper {}
+
+.some-component__content {
+
+  &--darked {}
+
+  &--lighted {}
+}
+
+.some-component__sidebar {}
+
+.some-component__main {}
+
+.some-component__navbar {}
+
+.some-component__main-content {}
+</style>
+```
+
+В целом, это стандартная реализация методологии BEM, но обратите внимание,
+что все классы, помимо модификаций, описаны здесь отдельно.
+Это сделано в основном для удобства чтения и быстрой навигации по проекту.
+
+Другими словами
+
+НЕПРАВИЛЬНО
+```scss
+.some-component__main {
+
+  &-content {}
+}
+```
+
+ПРАВИЛЬНО
+```scss
+.some-component__main {}
+
+.some-component__main-content {}
+```
 
 ## Default "*Loading Data*" schema
 #### try-catch + ErrorHandler
