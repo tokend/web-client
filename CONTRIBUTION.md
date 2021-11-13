@@ -920,12 +920,148 @@ export async function loadAllList () {
 }
 ```
 
-## Operations and Transactions
+## Взаимодействие с TokenD блокчейн системой через TokenD JS SDK
+Для взаимодействия с TokenD есть 2 способа:
 
-#### XDR
+### Первый
+[Horizon](https://docs.tokend.io/horizon/#tag/Signer-Roles)
+и [Identities](https://docs.tokend.io/identity/#operation/getKDF) - Их можно считать простыми API с ендпоинтами,
+по которым можно получить нужную информацию, например данные аккаунта, текущие активы в системе, балансы,
+получить email пользователя по его accountId и наоборот.
 
-#### TokenD JS SDK
+Для связи, и отправки запросов есть singleton [ApiCaller](./src/api.js), тут мы его
+инициализируем и задаём в опциях необходимые пути. После чего можем запрашивать нужные нам данные.
+
+### Второй
+[XDR](https://docs.tokend.io/xdr/) - Это построение запросов для отправки непосредственно
+для ядра TokenD. Методами из этой документации собирают структуру в виде XDR (операцию), после чего
+отправляют `запрос - транзакцию` с этой операцией внутри. В одной транзакции может быть несколько
+разных операций.
+
+##### Немного подробнее об операциях
+Операция - это построенная структура запроса в виде XDR. Предоставляет нам эту функциональность
+объект base из [Tokend Js SDK](https://github.com/tokend/new-js-sdk).
+
+Документацию можно найти [тут](https://tokend.github.io/new-js-sdk/)
+
+### Пример получения данных из Horizon:
+```javascript
+export async function getAccount (accountId) {
+    const { data } = await api.getWithSignature(`/v3/accounts/${accountId}`)
+    return data
+}
+```
+
+### Пример получения данных Identity:
+```javascript
+export async function getEmailByAccountId (accountId) {
+  const { data } = await api.get('/identities', {
+    filter: { address: accountId },
+    page: { limit: 1 },
+  })
+  return data
+}
+```
+
+### Пример построения Payment операции (более подробно можно посмотреть [тут](./src/js/formers/TransferFormer.js))
+```javascript
+export function buildPaymentOp (attrs) {
+      return base.PaymentBuilder.payment({
+        sourceBalanceId: attrs.sourceBalanceId,
+        destination: attrs.recipientAccountId,
+        amount: attrs.amount,
+        feeData: {
+          sourceFee: {
+            percent: str(attrs.fee.sourceFee.percent),
+            fixed: str(attrs.fee.sourceFee.fixed),
+          },
+          destinationFee: {
+            percent: str(attrs.fee.destinationFee.percent),
+            fixed: str(attrs.fee.destinationFee.fixed),
+          },
+          sourcePaysForDest: attrs.isPaidFeeForRecipient,
+        },
+        subject: attrs.subject,
+        asset: attrs.assetCode,
+      })
+    }
+```
+
+Функция вернёт нам структуру, которая подходит для отправки транзакции
+```javascript
+export async function sendTransaction (attrs) {
+    const buildedOp = buildPaymentOp(attrs)
+    await api.postOperations(buildedOp)
+}
+```
+
+Это был пример отправки одной операции внутри транзакции.
+Стоит ещё учесть, что при засылании нескольких операций внутри одной транзакции,
+если одна завалится, то отменятся все.
 
 ## Promise All
+### Немного о фичах при получении данных
+Когда у нас есть возможность из одного места в коде получать данные из разных источников,
+никак не зависящих друг от друга. То удобно использовать [Promise.all](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Promise/all).
+Это существенно ускорит загрузку контента для пользователя.
+
+Допустим нам нужно получить баллансы пользователя, а так же активы в системе:
+```javascript
+await Promise.all([
+  this.loadBalances(),
+  this.loadAssets(),
+])
+```
+
+Или же если у нас есть массив имейлов пользователей, и нам хотелось бы узнать их id:
+```javascript
+const accountIds = await Promise.all(
+  emails.map(email => this.getAccountIdByIdentifier(email, null))
+)
+```
 
 ## Developer-edition
+Проекты, с которыми мы работаем, используют поднятый `узел` блокчейн системы TokenD
+и разного рода сервисы, запущенные параллельно.
+
+Для того чтобы не подымать каждый из этих узлов - используется [docker-compose](https://docs.docker.com/compose/install/)
+Внутри developer-edition, есть главный файл - [docker-compose.yml](https://github.com/tokend/developer-edition/blob/master/docker-compose.yml),
+внутри которого перечислены сервисы, базы данных, зависимости друг от друга, порядок запуска,
+а так же пути к [конфигурации каждого сервиса](https://github.com/tokend/developer-edition/tree/master/configs).
+
+Для работы с ними, нужно во - первых установить [docker](https://docs.docker.com/engine/install/),
+[docker-compose](https://docs.docker.com/compose/install/),
+авторизоваться в докере как пользователь [hub.docker.com](https://hub.docker.com/) - `docker login`,
+а так же в приватном registry gitlab, как пользователь gitlab - `docker login registry.gitlab.com`
+
+Ко всему этому, нужно будет ещё получить доступы, чтобы иметь право выкачивать
+[images](https://docs.docker.com/engine/reference/commandline/images/) сервисов.
+Для этого нужно обратиться к нашим разработчикам.
+
+Теперь попробуем поднять, локально, [developer-edition](https://github.com/tokend/developer-edition).
+
+На главной странице репозитория можем увидеть основные команды для начала работы
+```zsh
+# drop any persistent state to make sure you are working with clean install
+$ docker-compose down -v && docker-compose pull
+# spin everything up
+$ docker-compose up -d
+# wait while environment initialization is complete
+$ docker-compose logs -f initscripts
+```
+
+`docker-compose down` - останавливает все контейнеры
+
+`docker-compose down -v` - останавливает все контейнеры и удаляет все вольюмы, обычно используется, когда нужно поднять новый проект
+
+`docker-compose pull` - подгружает все images, если они у вас не скачанные
+
+`docker-compose up -d` - запускает все сервисы
+
+`docker-compose logs [parameters] [service-name]` - открывает лог сервиса
+
+`initscripts` - это сервис, который инициализирует окружение с необходимыми данными, и отрабатывает, обычно лишь раз, после чего в системе появляются роли для пользователей, необходимые разрешения, ключи, активы и так далее.
+
+Поэтому последней командой `docker-compose logs -f initscripts` мы проверяем, когда всё наполнится необходимыми данными, после чего можем приступать к пользованию
+
+!!! На данный момент нельзя поднять сразу 2 и больше проектов, поэтому при поднятии проекта, убедитесь что сервисы предыдущего проекта остановлены, а его вольюмы удалены.
