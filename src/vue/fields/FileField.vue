@@ -131,6 +131,9 @@ import { DOCUMENT_POLICIES } from '../../js/const/document-policies.const'
 
 const MAX_FILE_MEGABYTES = 32
 const IMAGE_FILE_EXTENSIONS = ['jpg', 'png']
+const EVENTS = {
+  input: 'input',
+}
 
 export default {
   name: 'file-field',
@@ -202,7 +205,7 @@ export default {
             name: file.name,
             file: file,
           }, newDocType)
-          this.$emit('input', newDoc)
+          this.$emit(EVENTS.input, newDoc)
         }
       } catch (e) {
         if (e instanceof FileNotPresentInEventError) {
@@ -250,7 +253,7 @@ export default {
     reset () {
       this.$el.querySelector('input').value = ''
       this.documentUrl = ''
-      this.$emit('input', new Document())
+      this.$emit(EVENTS.input, new Document())
     },
 
     isValidFileSize (file) {

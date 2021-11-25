@@ -24,6 +24,11 @@
  *
  * As long as `isSwitchEnabled` is `true`, the switch will be enabled.
  */
+
+const EVENTS = {
+  input: 'input',
+}
+
 export default {
   name: 'switch-field',
   props: {
@@ -32,7 +37,7 @@ export default {
   },
   methods: {
     toggle () {
-      this.$emit('input', !this.value)
+      this.$emit(EVENTS.input, !this.value)
     },
   },
 }

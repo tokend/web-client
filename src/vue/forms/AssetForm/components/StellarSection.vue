@@ -114,6 +114,11 @@ const CODE_MAX_LEN_MAP = {
   [STELLAR_TYPES.native]: STELLAR_NATIVE_ASSET_CODE.length,
 }
 
+const EVENTS = {
+  enabled: 'enabled',
+  disabled: 'disabled',
+}
+
 export default {
   name: 'stellar-section',
 
@@ -162,7 +167,7 @@ export default {
   watch: {
     'form.isIntegrated': {
       immediate: true,
-      handler (v) { this.$emit(v ? 'enabled' : 'disabled') },
+      handler (v) { this.$emit(v ? EVENTS.enabled : EVENTS.disabled) },
     },
     'form.stellarAssetType': {
       handler (v) {

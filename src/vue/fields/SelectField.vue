@@ -54,6 +54,10 @@ const CUSTOM_SELECT_CONFIG = {
   isOpenClass: 'select-field--open',
 }
 
+const EVENTS = {
+  input: 'input',
+}
+
 export default {
   props: {
     label: {
@@ -104,7 +108,7 @@ export default {
 
   methods: {
     onChange (event) {
-      this.$emit('input', event.target.value)
+      this.$emit(EVENTS.input, event.target.value)
     },
 
     addCustomSelectEvents () {

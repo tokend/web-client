@@ -60,6 +60,9 @@ import { required, maxLength, nonEmptyDocument } from '@validators'
 import { SaleFormer } from '@/js/formers/SaleFormer'
 
 const DESCRIPTION_MAX_LENGTH = 255
+const EVENTS = {
+  next: 'next',
+}
 
 export default {
   name: 'short-blurb-step-form',
@@ -96,7 +99,7 @@ export default {
 
   methods: {
     next () {
-      if (this.isFormValid()) this.$emit('next')
+      if (this.isFormValid()) this.$emit(EVENTS.next)
     },
   },
 }

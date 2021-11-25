@@ -91,6 +91,10 @@ import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { types } from '@/vue/modules/assets/shared/store/types'
 
+const EVENTS = {
+  updateList: 'update-list',
+}
+
 export default {
   name: 'asset-card',
   components: {
@@ -158,7 +162,7 @@ export default {
 
     onAssetUpdate () {
       this.isDrawerShown = false
-      this.$emit('update-list')
+      this.$emit(EVENTS.updateList)
     },
 
     showDetails () {

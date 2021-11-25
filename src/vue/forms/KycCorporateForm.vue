@@ -152,6 +152,10 @@ import { required, validateUrl, integer, minValue } from '@validators'
 import formMixin from '@/vue/mixins/form.mixin'
 import config from '@/config'
 
+const EVENTS = {
+  submitted: 'submitted',
+}
+
 export default {
   name: 'kyc-corporate-form',
 
@@ -219,7 +223,7 @@ export default {
         } else if (this.former.isRecoveryOpBuilder) {
           await this.afterKycRecoverySubmit()
         }
-        this.$emit('submitted')
+        this.$emit(EVENTS.submitted)
       } catch (e) {
         ErrorHandler.process(e)
       }
