@@ -1,0 +1,7 @@
+build/*.js
+dist/*.js
+config/*.js
+playground
+*.schema.js
+index.html
+*.md
