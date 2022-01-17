@@ -1,5 +1,6 @@
 import fs from 'fs'
 import { fileURLToPath } from 'url'
+import { createRequire } from 'module'
 import path, { dirname } from 'path'
 import chalk from 'chalk'
 import childProcess from 'child_process'
@@ -31,8 +32,8 @@ function exec (command) {
 }
 
 function getPackageJson () {
-  const packageJsonPath = path.resolve(__dirname, '../package.jsom')
-  return require(packageJsonPath)
+  const require = createRequire(import.meta.url)
+  return require('../package.json')
 }
 
 function readFile (relativePath) {
