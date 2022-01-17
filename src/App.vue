@@ -11,7 +11,8 @@ new Promise((a, b) => {
   <img
     alt="Vue logo"
     src="./assets/logo.png">
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
+  yopta
+  <HelloWorld msg="Hello Vue 3 + TScript + Vite" />
 </template>
 
 <style>
