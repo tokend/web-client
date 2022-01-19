@@ -1,13 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="branding/favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+<html lang="en" dir="ltr">
+<head>
+  <!-- The title will be obtained from the config in App.vue -->
+  <title></title>
+
+  <noscript>
+    <style>
+      #noscript {
+        display: none;
+      }
+    </style>
+  </noscript>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme-color" content="#ffffff">
+
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <meta name="description" content="App description">
+  <meta property="og:description" content="App description">
+  <meta property="og:title" content="App Name">
+  <meta property="og:locale" content="en_GB">
+  <meta property="og:url" content="https://app.url">
+  <meta property="og:image" content="/branding/logo.png">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="/branding/favicon.ico">
+  <link href="/branding/favicon.png" rel="icon" type="image/png">
+  <link rel="apple-touch-icon" href="/branding/apple-touch-icon.png">
+
+  <link rel="manifest" href="/site.webmanifest">
+
+  <link rel="preload" href="/branding/fonts/Izmir/Izmir-Regular.otf" as="font" crossorigin="anonymous">
+  <link rel="preload" href="/branding/fonts/Izmir/Izmir-Semibold.otf" as="font" crossorigin="anonymous">
+  <link as="style" rel="stylesheet preload" type="text/css" href="/branding/fonts/index.css" crossorigin="anonymous">
+  <link href="/noscript/style.css" type="text/css" rel="stylesheet">
+  <link href="/init-loader/style.css" type="text/css" rel="stylesheet">
+  <script type="module" src="/src/main.ts"></script>
+</head>
+<body>
+<div id="app">
+  <div id="noscript" class="app__init">
+    <img src="/init-loader/init-logo.gif" alt="App Name" width="280">
+  </div>
+</div>
+<!-- built files will be auto injected -->
+<noscript>
+  <div class="noscript">
+    <h1 class="noscript__title">Update your browser or enable JavaScript</h1>
+    <p class="noscript__message">Your browser either does not support JavaScript, or it has JavaScript support disabled. If you want to correctly view this page, please upgrade your browser or <a class="noscript__enable-support" href="http://activatejavascript.org/en/instructions/" target="_blank">enable JavaScript support</a>.</p>
+    <p class="noscript__recommendations">These are the ones we recommend:</p>
+    <ul class="noscript__list">
+      <li class="noscript__list-item">
+        <a class="noscript__link" href="https://www.google.com/chrome/?hl=en%22" >
+          <img class="noscript__image" src="/noscript/chrome.jpg" width="138px" height="138px" alt="chrome-logo">
+        </a>
+        <span class="noscript__browser-name">Google Chrome</span>
+      </li>
+      <li class="noscript__list-item">
+        <a class="noscript__link" href="https://www.mozilla.com/firefox/">
+          <img class="noscript__image" src="/noscript/firefox.jpg" width="138px" height="138px" alt="firefox-logo">
+        </a>
+        <span class="noscript__browser-name">Firefox</span>
+      </li>
+      <li class="noscript__list-item" style="margin-right: 0;">
+        <a class="noscript__link" href="https://www.apple.com/safari/">
+          <img class="noscript__image" src="/noscript/safari.jpg" width="138px" height="138px" alt="safari-logo">
+        </a>
+        <span class="noscript__browser-name">Safari</span>
+      </li>
+    </ul>
+  </div>
+</noscript>
+</body>
 </html>

@@ -10,3 +10,8 @@ declare module '@vue/runtime-core' {
     $locale: WritableComputedRef,
   }
 }
+
+interface ImportMetaEnv {
+  VITE_APP_API_URL: string
+  VITE_APP_HOST_URL: string
+}

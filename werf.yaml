@@ -1,0 +1,38 @@
+configVersion: 1
+project: 'web-client-dappad'
+---
+image: builder              # Название собираемого образа.
+from: node:14-alpine3.11               # Базовый образ.
+git:                        # Секция с директивами для добавления исходных файлов из git-репозитория.
+- add: /                    # Исходный путь в репозитории.
+  to: /app                  # Путь назначения в образе.
+  stageDependencies:        # Настройка перевыполнения сборочных инструкций при изменениях определённых файлов в репозитории.
+    install:                # Для стадии Install.
+    - package.json
+    - yarn.lock
+    setup:                  # Для стадии Setup.
+    - "**/*"
+shell:                      # Shell сборочные инструкции.
+  install:                  # Для стадии Install.
+  - cd /app
+  - apk --no-cache --update --virtual build-dependencies add python make g++
+  #- yarn autoclean --init
+  #- yarn autoclean --force
+  - yarn install
+  setup:                    # Для стадии Setup.
+  - cd /app
+  - yarn build
+
+---
+image: web-client-dappad
+from: nginx:stable-alpine
+docker:
+  WORKDIR: /usr/share/nginx
+git:
+- add: /nginx.conf
+  to: /etc/nginx/nginx.conf
+import:
+- image: builder
+  add: /app/dist
+  to: /usr/share/nginx/html
+  after: setup

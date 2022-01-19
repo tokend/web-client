@@ -1,0 +1,137 @@
+image: node:12
+
+
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOMAIN: blockchain.ua
+  GITHUB_REF: $CI_COMMIT_SHA
+  DH_IMAGE_NAME: $CI_PROJECT_ROOT_NAMESPACE/$CI_PROJECT_NAME
+  SERVICE: $CI_PROJECT_NAME
+  REGISTRY: registry.gitlab.com/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
+  IMAGE_NAME: $REGISTRY:$CI_COMMIT_SHA
+  #WERF_CACHE_REPO_1: $CI_REGISTRY_IMAGE/werf_stages
+  WERF_LOG_COLOR_MODE: "on"
+  WERF_IMAGES_REPO: $CI_REGISTRY_IMAGE
+  #WERF_FINAL_REPO: $CI_REGISTRY_IMAGE
+  #WERF_PARALLEL: "true"
+  #WERF_STAGES_STORAGE: ":local"
+  #WERF_USE_CUSTOM_TAG: $CI_COMMIT_SHA
+  #WERF_ADD_CUSTOM_TAG: $CI_COMMIT_SHA
+  #WERF_TAG_GIT_COMMIT: $CI_COMMIT_TAG
+  #WERF_INSECURE_REGISTRY: "false"
+
+
+.before_script_template: &before_script_templ
+  before_script:
+    - |
+       cat >> werf-giterminism.yaml << 'END'
+       giterminismConfigVersion: 1
+       cli:
+          allowCustomTags: true
+       END
+    - werf version
+    - docker version
+    - echo $CI_REGISTRY
+    - echo $CI_REGISTRY_USER
+    - echo $CI_REGISTRY_PASSWORD
+    - echo $WERF_IMAGES_REPO
+    - echo $WERF_ADD_CUSTOM_TAG_1
+
+
+stages:
+  - build-and-publish
+  # - deploy
+  - cleanup
+
+
+Build and Publish:
+  stage: build-and-publish
+  tags:
+    - tokend
+  services:
+      - docker:18-dind
+  image: 
+    name: "registry.gitlab.com/tokend/devops/werf-dind:1a7ff15973f6624280eac8f3d65a89fde0800e87"
+    entrypoint: [""]
+  variables:
+    #WERF_ADD_CUSTOM_TAG: $CI_COMMIT_SHA
+    WERF_ADD_CUSTOM_TAG_1: "%image%-$CI_COMMIT_SHA"
+  <<: *before_script_templ
+  script:
+    #- echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
+    - type multiwerf && . $(multiwerf use 1.1 stable --as-file)
+    - type werf && source $(werf ci-env gitlab --as-file)
+    - werf build --dev
+  except: [schedules]
+
+
+Build and Publish Tag:
+  stage: build-and-publish
+  tags:
+    - tokend
+  only:
+    - tags
+  services:
+      - docker:18-dind
+  image: 
+    name: "registry.gitlab.com/tokend/devops/werf-dind:1a7ff15973f6624280eac8f3d65a89fde0800e87"
+    entrypoint: [""]
+  variables:
+    #WERF_ADD_CUSTOM_TAG: $CI_COMMIT_TAG
+    WERF_ADD_CUSTOM_TAG_1: "%image%-$CI_COMMIT_TAG"
+  <<: *before_script_templ
+  script:
+    #- echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
+    - type multiwerf && . $(multiwerf use 1.1 stable --as-file)
+    - type werf && source $(werf ci-env gitlab --as-file)
+    - werf build --dev
+  except: [schedules]
+
+# Deploy to Staging:
+#   services:
+#       - docker:18-dind
+#   image: dtzar/helm-kubectl:latest
+#   tags:
+#     - tokend
+#   stage: deploy
+#   script:
+#     - mkdir ~/.kube/
+#     - echo ${k8sconfig} | base64 -d > config
+#     - mv config ~/.kube/
+#     - helm upgrade -i "webclient" ".helm" --set ingress.hosts[0].host[0]={stage.${DOMAIN}} --set ingress.tls[0].hosts[0]={stage.${DOMAIN}} --set "image.repository=${REGISTRY}" --set "image.tag=${CI_COMMIT_SHA}" --create-namespace --namespace $CI_PROJECT_NAME-stage
+
+
+# Deploy to Production:
+#   services:
+#       - docker:18-dind
+#   image: dtzar/helm-kubectl:latest
+#   tags:
+#     - tokend
+#   stage: deploy
+#   script:
+#     - mkdir ~/.kube/
+#     - echo ${k8sconfig} | base64 -d > config
+#     - mv config ~/.kube/
+#     - helm upgrade -i "webclient" ".helm" --set ingress.hosts[0].host=${DOMAIN} --set ingress.tls[0].hosts[0]={${DOMAIN}} --set "image.repository=${REGISTRY}" --set "image.tag=${CI_COMMIT_SHA}" --create-namespace --namespace $CI_PROJECT_NAME-prod 
+#   when: manual
+
+
+
+Cleanup:
+  stage: cleanup
+  tags:
+    - tokend
+  services:
+      - docker:18-dind
+  image: 
+    name: "registry.gitlab.com/tokend/devops/werf-dind:1a7ff15973f6624280eac8f3d65a89fde0800e87"
+    entrypoint: [""]
+  <<: *before_script_templ
+  script:
+    - type multiwerf && . $(multiwerf use 1.1 stable --as-file)
+    - type werf && source $(werf ci-env gitlab --as-file)
+    - docker login -u nobody -p ${WERF_IMAGES_CLEANUP_PASSWORD} ${WERF_IMAGES_REPO}
+    - werf cleanup --dev
+  only: [schedules]
+
