@@ -22,6 +22,7 @@
     "paths": {
       "@/*": ["src/*"],
       "@config": ["src/config.ts"],
+      "@static": ["static"],
     },
     "lib": [
       "esnext",

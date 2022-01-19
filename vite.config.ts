@@ -54,6 +54,7 @@ export default defineConfig({
     alias: {
       '@': `${root}/`,
       '@config': `${root}/config.ts`,
+      '@static': `${root}/../static`,
     },
   },
 })

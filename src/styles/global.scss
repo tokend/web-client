@@ -1,0 +1,134 @@
+/* stylelint-disable declaration-no-important */
+/* stylelint-disable unit-disallowed-list */
+html {
+  font-family: var(--app-font-family);
+  overflow: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  min-height: vh(100);
+  display: flex;
+  flex-direction: column;
+}
+
+body,
+#app {
+  background-color: var(--col-app-bg);
+  color: var(--col-app-txt);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+input,
+select,
+textarea {
+  background: var(--col-white);
+  color: var(--col-black);
+  font-family: var(--app-font-family);
+  font-size: toRem(16);
+  font-weight: 400;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+body,
+span,
+p,
+a {
+  font-size: toRem(16);
+}
+
+button {
+  border: none;
+  outline: 0;
+  font-family: var(--app-font-family);
+  border-radius: toRem(52);
+  margin: 0;
+  padding: 0;
+  font-size: toRem(16);
+  font-weight: 600;
+  width: auto;
+  overflow: visible;
+  cursor: pointer;
+  user-select: none;
+  background-color: var(--col-blue-400);
+  color: var(--col-white);
+  line-height: 1.5;
+
+  /* Corrects font smoothing for webkit */
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
+
+  /* Corrects inability to style clickable `input` types in iOS */
+  -webkit-appearance: none;
+
+  /* Remove excess padding and border in Firefox 4+ */
+  &::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+  }
+}
+
+body,
+p,
+li,
+ul {
+  list-style-type: none;
+  color: var(--col-black);
+}
+
+p {
+  line-height: 2;
+
+  @include respond-to(tablet) { line-height: 1.6; }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  color: var(--col-black);
+  font-family: var(--app-font-family);
+  font-weight: 600;
+  line-height: 1;
+}
+
+h1 {
+  font-size: toRem(24);
+}
+
+h2 {
+  font-size: toRem(20);
+}
+
+h3 {
+  font-size: toRem(18);
+}
+
+h4 {
+  font-size: toRem(16);
+}
+
+h5 {
+  font-size: toRem(14);
+}
+
+a {
+  font-size: toRem(14);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--col-gray-400);
+  text-decoration: none;
+  outline: none;
+
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: underline;
+  }
+}

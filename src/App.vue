@@ -1,27 +1,67 @@
-<script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import HelloWorld from './components/HelloWorld.vue'
-new Promise((a, b) => {
-  a('')
+<template>
+  <div class="app__container">
+    <router-view v-slot="{ Component, route }">
+      <transition
+        :name="route.meta.transition || 'fade'"
+        mode="out-in"
+      >
+        <component
+          class="app__main"
+          :is="Component"
+        />
+      </transition>
+    </router-view>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+  name: 'app',
+  setup () {
+    return {}
+  },
 })
 </script>
 
-<template>
-  <img
-    alt="Vue logo"
-    src="./assets/logo.png">
-  yopta
-  <HelloWorld msg="Hello Vue 3 + TScript + Vite" />
-</template>
+<style lang="scss" scoped>
+.app__container {
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: toRem(108) 1fr;
+  flex: 1;
+}
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.app__main {
+  padding: toRem(30) var(--app-padding-right) 0 var(--app-padding-left);
+
+  @include respond-to(medium) {
+    padding-right: var(--app-padding-right-tablet);
+    padding-left: var(--app-padding-left-tablet);
+  }
+
+  @include respond-to(xsmall) {
+    padding-right: var(--app-padding-right-xsmall);
+    padding-left: var(--app-padding-left-xsmall);
+  }
+}
+
+.fade-enter-active {
+  animation: fade-in 0.25s;
+}
+
+.fade-leave-active {
+  animation: fade-in 0.25s reverse;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 </style>

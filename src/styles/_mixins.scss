@@ -1,0 +1,122 @@
+/* stylelint-disable unit-disallowed-list */
+$x-small: 480px;
+$small: 600px;
+$tablet: 868px;
+$medium: 1024px;
+$x-medium: 1280px;
+$large: 1400px;
+$x-large: 1920px;
+$x-large-4k: 4096px;
+$x-large-2k: 2048px;
+
+@mixin respond-to ($media) {
+
+  @if $media == xsmall {
+
+    @media only screen and (max-width: $x-small - 1px) {
+      @content;
+    }
+  }
+
+  @else if $media == xsmall {
+
+    @media only screen and (max-width: $x-small - 1px) {
+      @content;
+    }
+  }
+
+  @else if $media == small {
+
+    @media only screen and (max-width: $small - 1px) {
+      @content;
+    }
+  }
+
+  @else if $media == tablet {
+
+    @media only screen and (max-width: $tablet - 1px) {
+      @content;
+    }
+  }
+
+  @else if $media == medium {
+
+    @media only screen and (max-width: $medium) {
+      @content;
+    }
+  }
+
+  @else if $media == xmedium {
+
+    @media only screen and (max-width: $x-medium - 1px) {
+      @content;
+    }
+  }
+
+  @else if $media == large {
+
+    @media only screen and (max-width: $large - 1px) {
+      @content;
+    }
+  }
+
+  @else if $media == xlarge {
+
+    @media only screen and (max-width: $x-large - 1px) {
+      @content;
+    }
+  }
+
+  @else if $media == xlarge2k {
+
+    @media only screen and (max-width: $x-large-2k - 1px) {
+      @content;
+    }
+  }
+
+  @else if $media == xlarge4k {
+
+    @media only screen and (max-width: $x-large-4k - 1px) {
+      @content;
+    }
+  }
+
+  @else {
+
+    @media only screen and (max-width: $media) {
+      @content;
+    }
+  }
+}
+
+@mixin text-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+/* stylelint-enable unit-disallowed-list */
+
+@mixin field-text {
+  font-size: var(--field-font-size-text);
+  line-height: var(--field-line-height-text);
+  -webkit-text-fill-color: var(--field-col-text);
+  color: var(--field-col-text);
+}
+
+@mixin field-label {
+  font-size: var(--field-font-size-label);
+  line-height: var(--field-line-height-label);
+  color: var(--field-col-label);
+}
+
+@mixin field-border ($border-color) {
+  border: toRem(1) solid $border-color;
+  border-radius: toRem(8);
+}
+
+@mixin placeholder {
+  color: var(--field-col-placeholder);
+  -webkit-text-fill-color: var(--field-col-placeholder);
+  fill: var(--field-col-placeholder);
+  transition: opacity var(--field-transition-duration);
+}

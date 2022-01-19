@@ -1,0 +1,113 @@
+@import '../../static/branding/app-colors';
+
+/* App variables */
+:root,
+:before,
+:after {
+  --app-font-family: 'Izmir', 'Helvetica Neue', 'Arial', sans-serif;
+  --app-padding-right: #{toRem(120)};
+  --app-padding-left: #{toRem(120)};
+
+  --app-padding-right-tablet: #{toRem(60)};
+  --app-padding-left-tablet: #{toRem(60)};
+
+  --app-padding-right-xsmall: #{toRem(30)};
+  --app-padding-left-xsmall: #{toRem(30)};
+
+  /* status colors */
+  --app-status-success: #{$_green};
+  --app-status-error: #{$_red};
+  --app-status-warning: #{$_orange};
+  --app-status-info: #{$_blue};
+
+  /* Z index variables */
+  --z-tooltip: 100;
+
+  /* Ui variables */
+  --ui-transition-duration: 0.2s;
+  --ui-error-message-font-size: #{toRem(12)};
+  --ui-line-height: 1.3;
+  --ui-field-border-radius: #{toRem(8)};
+  --ui-field-padding: #{toRem(20)};
+  --ui-field-font-size: #{toRem(14)};
+  --ui-field-min-height: #{toRem(60.19)};
+  --ui-field-label-font-size: #{toRem(14)};
+  --ui-field-border: #{toRem(1)} solid rgba(var(--col-gray-400-rgb), 0.14);
+  --ui-field-border-color-focused: var(--col-blue-200);
+  --ui-field-border-color-error: var(--col-red-200);
+  --ui-field-box-shadow: 0 0 0 #{toRem(3)} transparent;
+  --ui-field-box-shadow-focused: 0 0 0 #{toRem(3)} #{var(--col-blue-100)};
+  --ui-field-box-shadow-error: 0 0 0 #{toRem(3)} #{var(--col-red-100)};
+
+  /* Color variables */
+  --col-app-bg: #{$_shark};
+  --col-app-txt: #{$_white};
+
+  --col-btn: #{$_electricViolet};
+  --col-primary-text: #{$_white};
+
+  /* Button variables */
+  --button-bg-raised: #{$_electricViolet};
+  --button-col-raised: #{$_white};
+
+  --button-col-flat: #{$_electricViolet};
+  --button-border-flat: #{$_electricViolet};
+
+  --button-bg-success: var(--app-status-success);
+  --button-col-success: #{$_white};
+
+  --button-bg-danger: var(--app-status-error);
+  --button-col-danger: #{$_white};
+
+  --button-bg-warning: var(--app-status-warning);
+  --button-col-warning: #{$_white};
+
+  --button-bg-info: var(--app-status-info);
+  --button-col-info: #{$_white};
+
+  /* Field variables */
+  --field-col-bg: var(--app-block-bg);
+  --field-col-label: #{$_white};
+  --field-col-text: #{$_white};
+  --field-col-placeholder: rgba(var(--field-col-text), 0.7);
+  --field-col-border: #{$_midGray};
+  --field-col-error: var(--app-status-error);
+
+  /* label */
+  --field-font-size-label: 1rem;
+  --field-line-height-label: 1.75;
+
+  /* text */
+  --field-font-size-text: 1rem;
+  --field-line-height-text: 1.75;
+
+  /* transition duration */
+  --field-transition-duration: 0.2s;
+
+  /* paddings */
+  --field-padding-top: 0.5rem;
+  --field-padding-right: 1.5rem;
+  --field-padding-bottom: 0.5rem;
+  --field-padding-left: 1.5rem;
+  --field-padding:
+    var(--field-padding-top)
+    var(--field-padding-right)
+    var(--field-padding-bottom)
+    var(--field-padding-left);
+
+  /* errors */
+  --field-error-transition: 0.35s ease-in-out;
+  --field-error-font-size: #{toRem(16)};
+  --field-error-line-height: 1.25;
+  --field-error-margin-top: #{toRem(5)};
+
+  /* marketplace card */
+  --marketplace-card-border: #{$_midGray};
+
+  /* product overview media */
+  --product-overview-media-bullet: #{rgba($_electricViolet, 0.5)};
+  --product-overview-media-bullet-active: #{$_electricViolet};
+
+  /* product overview details */
+  --product-overview-details-tab-active: #{$_electricViolet};
+}

@@ -1,8 +1,12 @@
 /// <reference types="vite/client" />
+import { config } from '@config'
+import { ROUTE_NAMES } from '@/enums'
+import { WritableComputedRef } from 'vue'
 
-declare module '*.vue' {
-  import { DefineComponent } from 'vue'
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
-  const component: DefineComponent<{}, {}, any>
-  export default component
+declare module '@vue/runtime-core' {
+  export interface ComponentCustomProperties {
+    $routes: typeof ROUTE_NAMES
+    $config: typeof config
+    $locale: WritableComputedRef,
+  }
 }
