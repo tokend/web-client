@@ -12,7 +12,7 @@
     "build": "cross-env ENVIRONMENT=production yarn vite-build",
     "analyze": "cross-env ENVIRONMENT=analyze yarn vite-build",
     "test": "yarn test:unit && yarn test:e2e",
-    "test:e2e": "start-server-and-test start http-get://localhost:3000 cypress",
+    "test:e2e": "start-server-and-test start http-get://localhost:8095 cypress",
     "test:unit": "jest --passWithNoTests src",
     "cypress": "cypress run",
     "lint": "yarn lint:styles && yarn lint:scripts",
