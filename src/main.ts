@@ -9,6 +9,7 @@ import { i18n } from '@/localization'
 import { config } from '@config'
 import { router } from '@/router'
 import { ROUTE_NAMES } from '@/enums'
+// TODO: ICON_NAMES
 
 const app = createApp({
   setup () {

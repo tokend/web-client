@@ -4,7 +4,7 @@ image: node:12
 
 variables:
   DOCKER_DRIVER: overlay2
-  DOMAIN: blockchain.ua
+  DOMAIN: dappad.tokend.io
   GITHUB_REF: $CI_COMMIT_SHA
   DH_IMAGE_NAME: $CI_PROJECT_ROOT_NAMESPACE/$CI_PROJECT_NAME
   SERVICE: $CI_PROJECT_NAME
@@ -25,11 +25,11 @@ variables:
 .before_script_template: &before_script_templ
   before_script:
     - |
-       cat >> werf-giterminism.yaml << 'END'
-       giterminismConfigVersion: 1
-       cli:
-          allowCustomTags: true
-       END
+      cat >> werf-giterminism.yaml << 'END'
+      giterminismConfigVersion: 1
+      cli:
+         allowCustomTags: true
+      END
     - werf version
     - docker version
     - echo $CI_REGISTRY
@@ -41,7 +41,7 @@ variables:
 
 stages:
   - build-and-publish
-  # - deploy
+  - deploy
   - cleanup
 
 
@@ -50,8 +50,8 @@ Build and Publish:
   tags:
     - tokend
   services:
-      - docker:18-dind
-  image: 
+    - docker:18-dind
+  image:
     name: "registry.gitlab.com/tokend/devops/werf-dind:1a7ff15973f6624280eac8f3d65a89fde0800e87"
     entrypoint: [""]
   variables:
@@ -73,8 +73,8 @@ Build and Publish Tag:
   only:
     - tags
   services:
-      - docker:18-dind
-  image: 
+    - docker:18-dind
+  image:
     name: "registry.gitlab.com/tokend/devops/werf-dind:1a7ff15973f6624280eac8f3d65a89fde0800e87"
     entrypoint: [""]
   variables:
@@ -88,33 +88,33 @@ Build and Publish Tag:
     - werf build --dev
   except: [schedules]
 
-# Deploy to Staging:
-#   services:
-#       - docker:18-dind
-#   image: dtzar/helm-kubectl:latest
-#   tags:
-#     - tokend
-#   stage: deploy
-#   script:
-#     - mkdir ~/.kube/
-#     - echo ${k8sconfig} | base64 -d > config
-#     - mv config ~/.kube/
-#     - helm upgrade -i "webclient" ".helm" --set ingress.hosts[0].host[0]={stage.${DOMAIN}} --set ingress.tls[0].hosts[0]={stage.${DOMAIN}} --set "image.repository=${REGISTRY}" --set "image.tag=${CI_COMMIT_SHA}" --create-namespace --namespace $CI_PROJECT_NAME-stage
+Deploy to Staging:
+  services:
+    - docker:18-dind
+  image: dtzar/helm-kubectl:latest
+  tags:
+    - tokend
+  stage: deploy
+  script:
+    - mkdir ~/.kube/
+    - echo ${k8sconfig} | base64 -d > config
+    - mv config ~/.kube/
+    - helm upgrade -i "webclient" ".helm" --set global.IngressDomain=stage.${DOMAIN} --set "image.repository=${REGISTRY}" --set "image.tag=web-client-dappad-${CI_COMMIT_SHA}" --create-namespace --namespace $CI_PROJECT_NAME-stage
 
 
-# Deploy to Production:
-#   services:
-#       - docker:18-dind
-#   image: dtzar/helm-kubectl:latest
-#   tags:
-#     - tokend
-#   stage: deploy
-#   script:
-#     - mkdir ~/.kube/
-#     - echo ${k8sconfig} | base64 -d > config
-#     - mv config ~/.kube/
-#     - helm upgrade -i "webclient" ".helm" --set ingress.hosts[0].host=${DOMAIN} --set ingress.tls[0].hosts[0]={${DOMAIN}} --set "image.repository=${REGISTRY}" --set "image.tag=${CI_COMMIT_SHA}" --create-namespace --namespace $CI_PROJECT_NAME-prod 
-#   when: manual
+Deploy to Production:
+  services:
+    - docker:18-dind
+  image: dtzar/helm-kubectl:latest
+  tags:
+    - tokend
+  stage: deploy
+  script:
+    - mkdir ~/.kube/
+    - echo ${k8sconfig} | base64 -d > config
+    - mv config ~/.kube/
+    - helm upgrade -i "webclient" ".helm" --set global.IngressDomain=${DOMAIN} --set "image.repository=${REGISTRY}" --set "image.tag=web-client-dappad-${CI_COMMIT_SHA}" --create-namespace --namespace $CI_PROJECT_NAME-prod
+  when: manual
 
 
 
@@ -123,8 +123,8 @@ Cleanup:
   tags:
     - tokend
   services:
-      - docker:18-dind
-  image: 
+    - docker:18-dind
+  image:
     name: "registry.gitlab.com/tokend/devops/werf-dind:1a7ff15973f6624280eac8f3d65a89fde0800e87"
     entrypoint: [""]
   <<: *before_script_templ

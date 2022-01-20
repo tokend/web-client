@@ -1,9 +1,12 @@
 <template>
   <div class="app-logo">
-    {{ $t('LOGO') }}
+    <img
+      src="@static/branding/logo.svg"
+      :alt="$config.APP_NAME"
+    >
     <router-link
       class="app-logo__link"
-      :to="{ name: $routes.marketplacePage }"
+      :to="{ name: $routes.homePage }"
     />
   </div>
 </template>
