@@ -39,6 +39,13 @@ export default defineComponent({
     try {
       parsedIconName.value = JSON.parse(props.name)
     } catch (error) {
+      // eslint-disable-next-line no-warning-comments
+      /**
+       * FIXME:
+       * if use literal string with dynamic icon name,
+       * it will not load component,
+       * and if use hardcoded string - component will be loaded
+       */
       const path = `@/assets/icons/${props.name}-icon.vue`
       iconComponent = defineAsyncComponent({
         loader: () => import(/* @vite-ignore */ path),
