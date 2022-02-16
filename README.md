@@ -26,7 +26,7 @@ yarn lint
 
 ### Run unit and e2e tests
 ```
-yarn lint
+yarn test
 ```
 
 ### Lints release/release candidate version

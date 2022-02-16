@@ -1,5 +1,9 @@
 <template>
-  <div class="app__container">
+  <div
+    v-if="isAppInitialized"
+    class="app__container"
+  >
+    <app-navbar class="app__navbar" />
     <router-view v-slot="{ Component, route }">
       <transition
         :name="route.meta.transition || 'fade'"
@@ -15,12 +19,32 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import AppNavbar from '@/common/AppNavbar.vue'
+
+import { ErrorHandler } from '@/helpers/error-handler'
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
   name: 'app',
+  components: { AppNavbar },
   setup () {
-    return {}
+    const isAppInitialized = ref(false)
+
+    const init = async () => {
+      // FIXME
+      // eslint-disable-next-line no-empty
+      try {} catch (error) {
+        // FIXME
+        ErrorHandler.process(error as Error)
+      }
+      isAppInitialized.value = true
+    }
+
+    init()
+
+    return {
+      isAppInitialized,
+    }
   },
 })
 </script>
@@ -29,22 +53,16 @@ export default defineComponent({
 .app__container {
   overflow: hidden;
   display: grid;
-  grid-template-rows: toRem(108) 1fr;
+  grid-template-rows: toRem(85) 1fr max-content;
   flex: 1;
+
+  @include respond-to(small) {
+    grid-template-rows: max-content 1fr max-content;
+  }
 }
 
 .app__main {
-  padding: toRem(30) var(--app-padding-right) 0 var(--app-padding-left);
-
-  @include respond-to(medium) {
-    padding-right: var(--app-padding-right-tablet);
-    padding-left: var(--app-padding-left-tablet);
-  }
-
-  @include respond-to(xsmall) {
-    padding-right: var(--app-padding-right-xsmall);
-    padding-left: var(--app-padding-left-xsmall);
-  }
+  padding: 0 var(--app-padding-right) 0 var(--app-padding-left);
 }
 
 .fade-enter-active {

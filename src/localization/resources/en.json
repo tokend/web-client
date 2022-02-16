@@ -1,2 +1,16 @@
 {
+  "example-form": {
+    "input-example-lbl": "Input example label",
+    "input-placeholder": "Input placeholder",
+    "input-number-example-lbl": "Input number label",
+    "input-number-placeholder": "Input number placeholder",
+    "tick-example-lbl": "Tick example",
+    "submit-btn": "Submit",
+    "cancel-btn": "Cancel",
+    "example-success-msg": "Success message"
+  },
+  "home-page": {
+    "loading-error-msg": "Error on loading",
+    "no-data-msg": "Empty..."
+  }
 }

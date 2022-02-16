@@ -12,8 +12,8 @@ html {
   flex-direction: column;
 }
 
-body,
-#app {
+/* stylelint-disable-next-line */
+body, #app {
   background-color: var(--col-app-bg);
   color: var(--col-app-txt);
   display: flex;
@@ -92,7 +92,7 @@ h2,
 h3,
 h4,
 h5 {
-  color: var(--col-black);
+  color: var(--app-headings);
   font-family: var(--app-font-family);
   font-weight: 600;
   line-height: 1;
@@ -103,7 +103,7 @@ h1 {
 }
 
 h2 {
-  font-size: toRem(20);
+  font-size: toRem(24);
 }
 
 h3 {
@@ -119,16 +119,16 @@ h5 {
 }
 
 a {
-  font-size: toRem(14);
-  font-weight: 500;
-  line-height: 1;
-  color: var(--col-gray-400);
+  font-size: toRem(16);
+  line-height: 1.25;
+  font-weight: 600;
+  color: var(--app-link);
   text-decoration: none;
   outline: none;
 
   &:hover,
   &:focus,
   &:active {
-    text-decoration: underline;
+    text-decoration: none;
   }
 }

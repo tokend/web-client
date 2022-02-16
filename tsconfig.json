@@ -17,7 +17,9 @@
       "node",
       "vite/client",
       "@types/jest",
-      "cypress"
+      "@types/lodash-es",
+      "cypress",
+      "jsona"
     ],
     "paths": {
       "@/*": ["src/*"],
@@ -37,6 +39,7 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx",
+    "e2e/**/*.ts",
     "index.d.ts",
   ],
   "exclude": ["node_modules", "dist"]

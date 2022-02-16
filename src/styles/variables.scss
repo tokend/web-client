@@ -4,16 +4,6 @@
 :root,
 :before,
 :after {
-  --app-font-family: 'Roboto', 'Arial', sans-serif;
-  --app-padding-right: #{toRem(120)};
-  --app-padding-left: #{toRem(120)};
-
-  --app-padding-right-tablet: #{toRem(60)};
-  --app-padding-left-tablet: #{toRem(60)};
-
-  --app-padding-right-xsmall: #{toRem(30)};
-  --app-padding-left-xsmall: #{toRem(30)};
-
   /* status colors */
   --app-status-success: #{$_green};
   --app-status-error: #{$_red};
@@ -21,37 +11,68 @@
   --app-status-info: #{$_blue};
 
   /* Z index variables */
-  --z-tooltip: 100;
+  --z-navbar: 10;
+  --z-modal: 15;
 
-  /* Ui variables */
-  --ui-transition-duration: 0.2s;
-  --ui-error-message-font-size: #{toRem(12)};
-  --ui-line-height: 1.3;
-  --ui-field-border-radius: #{toRem(8)};
-  --ui-field-padding: #{toRem(20)};
-  --ui-field-font-size: #{toRem(14)};
-  --ui-field-min-height: #{toRem(60.19)};
-  --ui-field-label-font-size: #{toRem(14)};
-  --ui-field-border: #{toRem(1)} solid rgba(var(--col-gray-400-rgb), 0.14);
-  --ui-field-border-color-focused: var(--col-blue-200);
-  --ui-field-border-color-error: var(--col-red-200);
-  --ui-field-box-shadow: 0 0 0 #{toRem(3)} transparent;
-  --ui-field-box-shadow-focused: 0 0 0 #{toRem(3)} #{var(--col-blue-100)};
-  --ui-field-box-shadow-error: 0 0 0 #{toRem(3)} #{var(--col-red-100)};
+  /* Modal */
+  --modal-backdrop-bg: #{rgba($_woodSmoke, 0.05)};
+  --modal-pane-bg: #{$_white};
+  --modal-close-btn: #{$_stormGray};
 
-  /* Color variables */
-  --col-app-bg: #{$_shark};
-  --col-app-txt: #{$_white};
+  /* Error message */
+  --error-message-icon: var(--app-status-error);
+  --error-message-title: var(--app-status-error);
+  --error-message-message: var(--app-status-error);
 
-  --col-btn: #{$_electricViolet};
-  --col-primary-text: #{$_white};
+  /* No data message */
+  --no-data-message-icon: #{$_stormGray};
+  --no-data-message-title: #{$_stormGray};
+  --no-data-message-message: #{$_stormGray};
+
+  /* --------------------------------------- */
+
+  /* App variables */
+
+  /* --------------------------------------- */
+  --col-app-bg: #{$_athensGray};
+  --col-app-txt: #{$_black};
+  --app-font-family: 'Roboto', 'Arial', sans-serif;
+  --app-padding-right: #{toRem(120)};
+  --app-padding-left: #{toRem(120)};
+  --app-headings: #{$_woodSmoke};
+  --app-link: #{$_woodSmoke};
+
+  @include respond-to(small) {
+    --app-padding-right: #{toRem(24)};
+    --app-padding-left: #{toRem(24)};
+  }
+
+  /* --------------------------------------- */
+
+  /* App navbar variables */
+
+  /* --------------------------------------- */
+  --app-navbar-bg: #{$_white};
+  --app-navbar-shadow: #{rgba($_outerSpace, 0.08)};
+  --app-navbar-border: #{toRem(1) solid $_mischka};
+  --app-navbar-active: var(--col-btn);
+
+  /* --------------------------------------- */
 
   /* Button variables */
-  --button-bg-raised: #{$_electricViolet};
+
+  /* --------------------------------------- */
+  --col-btn: #{$_blueRibbon};
+  --col-btn-disabled: #{$_snuff};
+  --col-primary-text: #{$_white};
+
+  --button-bg-raised: #{$_blueRibbon};
+  --button-raised-hover: #{$_darkBlue};
   --button-col-raised: #{$_white};
 
-  --button-col-flat: #{$_electricViolet};
-  --button-border-flat: #{$_electricViolet};
+  --button-col-flat: #{$_blueRibbon};
+  --button-col-flat-hover: #{$_darkBlue};
+  --button-border-flat: #{$_blueRibbon};
 
   --button-bg-success: var(--app-status-success);
   --button-col-success: #{$_white};
@@ -65,35 +86,44 @@
   --button-bg-info: var(--app-status-info);
   --button-col-info: #{$_white};
 
+  /* --------------------------------------- */
+
   /* Field variables */
-  --field-col-bg: var(--app-block-bg);
-  --field-col-label: #{$_white};
-  --field-col-text: #{$_white};
+
+  /* --------------------------------------- */
+
+  --field-col-bg: transparent;
+  --field-col-label: #{$_woodSmoke};
+  --field-col-text: #{$_stormGray};
   --field-col-placeholder: rgba(var(--field-col-text), 0.7);
-  --field-col-border: #{$_midGray};
+  --field-col-border: #{$_logan};
   --field-col-error: var(--app-status-error);
 
   /* label */
-  --field-font-size-label: 1rem;
-  --field-line-height-label: 1.75;
+  --field-font-size-label: #{toRem(16)};
+  --field-line-height-label: 1.35;
 
   /* text */
-  --field-font-size-text: 1rem;
-  --field-line-height-text: 1.75;
+  --field-font-size-text: #{toRem(14)};
+  --field-line-height-text: 1.35;
 
   /* transition duration */
   --field-transition-duration: 0.2s;
 
   /* paddings */
-  --field-padding-top: 0.5rem;
-  --field-padding-right: 1.5rem;
-  --field-padding-bottom: 0.5rem;
-  --field-padding-left: 1.5rem;
+  --field-padding-top: #{toRem(11)};
+  --field-padding-right: #{toRem(16)};
+  --field-padding-bottom: #{toRem(11)};
+  --field-padding-left: #{toRem(16)};
   --field-padding:
     var(--field-padding-top)
     var(--field-padding-right)
     var(--field-padding-bottom)
     var(--field-padding-left);
+
+  /* tick field */
+  --tick-field-tick-bg: var(--col-btn);
+  --tick-field-tick-icon: #{$_white};
 
   /* errors */
   --field-error-transition: 0.35s ease-in-out;
@@ -101,13 +131,8 @@
   --field-error-line-height: 1.25;
   --field-error-margin-top: #{toRem(5)};
 
-  /* marketplace card */
-  --marketplace-card-border: #{$_midGray};
+  /* loader */
 
-  /* product overview media */
-  --product-overview-media-bullet: #{rgba($_electricViolet, 0.5)};
-  --product-overview-media-bullet-active: #{$_electricViolet};
-
-  /* product overview details */
-  --product-overview-details-tab-active: #{$_electricViolet};
+  /* Spinner */
+  --spinner-border: var(--col-btn);
 }

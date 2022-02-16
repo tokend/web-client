@@ -1,6 +1,7 @@
 <template>
   <div class="app-logo">
     <img
+      class="app-logo__img"
       src="@static/branding/logo.svg"
       :alt="$config.APP_NAME"
     >
@@ -11,22 +12,27 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   name: 'app-logo',
-}
+})
 </script>
 
 <style lang="scss" scoped>
 .app-logo {
+  display: flex;
+  flex-direction: column;
   position: relative;
 }
 
 .app-logo__link {
   position: absolute;
   top: 0;
+  right: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  bottom: 0;
 }
+
 </style>

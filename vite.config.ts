@@ -2,9 +2,10 @@ import checker from 'vite-plugin-checker'
 import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
 import { visualizer } from 'rollup-plugin-visualizer'
+import NodeGlobalsPolyfillPlugin from '@esbuild-plugins/node-globals-polyfill'
 
-import * as fs from 'fs'
-import * as path from 'path'
+import fs from 'fs'
+import path from 'path'
 
 const appDirectory = fs.realpathSync(process.cwd())
 const resolveApp = (relative: string) => path.resolve(appDirectory, relative)
@@ -55,6 +56,18 @@ export default defineConfig({
       '@': `${root}/`,
       '@config': `${root}/config.ts`,
       '@static': `${root}/../static`,
+    },
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      define: {
+        global: 'globalThis',
+      },
+      plugins: [
+        NodeGlobalsPolyfillPlugin({
+          buffer: true,
+        }),
+      ],
     },
   },
 })
