@@ -22,7 +22,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - [branding static files](static/branding)
   - [styles and files for init-loader](static/init-loader)
   - [noscript files](static/noscript)
-  - [etc...](static)
 - [sanity-check](scripts/release-sanity-check.mjs)
 - [ErrorHandler](src/helpers/error-handler.ts)
 - [Event Bus by mitt](src/helpers/event-bus.ts)
@@ -38,12 +37,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - [App navbar](src/common/AppNavbar.vue)
   - [App logo](src/common/AppLogo.vue)
 - [Icon](src/common/Icon.vue)
-- [Modal](src/common/Modal.vue)
 - [Fields](src/fields)
   - [InputField](src/fields/InputField.vue)
   - [TickField](src/fields/TickField.vue)
-- Marketplace page
-- Product overview page
+- [composables](src/composables)
+  - [useForm](src/composables/use-form.ts)
+  - [useFormValidation](src/composables/use-form-validation.ts)
 
 ## [1.0.0-rc.0] - 2021-12-23
 #### Under the hood changes

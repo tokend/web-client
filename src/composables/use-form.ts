@@ -41,6 +41,11 @@ export function useForm (): IFormController {
     isPending.value = false
   }
 
+  /**
+   * FIXME:
+   * isDisabled and etc... is Ref and in template it
+   * can be used only as like as formController.isDisabled.value
+   */
   return {
     isDisabled,
     isPending,

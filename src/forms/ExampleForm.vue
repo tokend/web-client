@@ -1,7 +1,7 @@
 <template>
   <form
     class="example-form"
-    @submit.prevent="submit"
+    @submit.prevent="isFormValid() && submit()"
   >
     <div class="app__form-row">
       <div class="app__form-field">
@@ -9,7 +9,8 @@
           v-model="form.inputExample"
           :label="$t('example-form.input-example-lbl')"
           :placeholder="$t('example-form.input-placeholder')"
-          :error-message="form.inputExample"
+          :error-message="getFieldErrorMessage('inputExample').value"
+          @blur="touchField('inputExample')"
           :disabled="formController.isDisabled.value"
         />
       </div>
@@ -37,6 +38,7 @@
     </div>
     <div class="app__form-actions">
       <app-button
+        type="submit"
         :text="$t('example-form.submit-btn')"
       />
       <app-button
@@ -51,11 +53,12 @@
 <script lang="ts">
 import InputField from '@/fields/InputField.vue'
 import TickField from '@/fields/TickField.vue'
+import AppButton from '@/common/AppButton.vue'
 
 import { Bus, ErrorHandler } from '@/helpers'
-import { defineComponent, reactive } from 'vue'
-import { useForm } from '@/composables'
-import AppButton from '@/common/AppButton.vue'
+import { defineComponent, reactive, toRefs } from 'vue'
+import { useForm, useFormValidation } from '@/composables'
+import { required } from '@/validators'
 
 export default defineComponent({
   name: 'example-form',
@@ -68,6 +71,11 @@ export default defineComponent({
     })
 
     const formController = useForm()
+    const validationController = useFormValidation({
+      inputExample: {
+        required,
+      },
+    }, toRefs(form))
 
     const submit = async () => {
       formController.disableForm
@@ -83,6 +91,7 @@ export default defineComponent({
       form,
       submit,
       formController,
+      ...toRefs(validationController),
     }
   },
 })

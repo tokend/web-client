@@ -1,4 +1,7 @@
 {
+  "validations": {
+    "field-error_required": "Please fill out this field"
+  },
   "example-form": {
     "input-example-lbl": "Input example label",
     "input-placeholder": "Input placeholder",
