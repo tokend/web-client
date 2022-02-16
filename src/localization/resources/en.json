@@ -2,6 +2,21 @@
   "validations": {
     "field-error_required": "Please fill out this field"
   },
+  "errors": {
+    "default": "Something went wrong"
+  },
+  "notification": {
+    "default-title-success": "Success",
+    "default-title-error": "Error",
+    "default-title-warning": "Warning",
+    "default-title-info": "Info",
+    "default-title-default": "Just a message",
+    "default-message-success": "Action successful",
+    "default-message-error": "Something went wrong",
+    "default-message-warning": "Something you are doing is not recommended",
+    "default-message-info": "Something is happening. Just want you to know that",
+    "default-message-default": "Just a message"
+  },
   "example-form": {
     "input-example-lbl": "Input example label",
     "input-placeholder": "Input placeholder",
@@ -10,7 +25,7 @@
     "tick-example-lbl": "Tick example",
     "submit-btn": "Submit",
     "cancel-btn": "Cancel",
-    "example-success-msg": "Success message"
+    "example-success-msg": "Success message {value}"
   },
   "home-page": {
     "loading-error-msg": "Error on loading",

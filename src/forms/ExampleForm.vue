@@ -44,7 +44,26 @@
       <app-button
         schemes="flat"
         :text="$t('example-form.cancel-btn')"
-        type="button"
+      />
+      <app-button
+        schemes="flat"
+        :text="$t('success')"
+        @click="callSuccess"
+      />
+      <app-button
+        schemes="flat"
+        :text="$t('error')"
+        @click="callError"
+      />
+      <app-button
+        schemes="flat"
+        :text="$t('warning')"
+        @click="callWarning"
+      />
+      <app-button
+        schemes="flat"
+        :text="$t('info')"
+        @click="callInfo"
       />
     </div>
   </form>
@@ -59,6 +78,7 @@ import { Bus, ErrorHandler } from '@/helpers'
 import { defineComponent, reactive, toRefs } from 'vue'
 import { useForm, useFormValidation } from '@/composables'
 import { required } from '@/validators'
+import { ICON_NAMES } from '@/enums'
 
 export default defineComponent({
   name: 'example-form',
@@ -80,7 +100,13 @@ export default defineComponent({
     const submit = async () => {
       formController.disableForm
       try {
-        Bus.success('example-form.example-success-msg')
+        Bus.error({
+          messageId: 'example-form.example-success-msg',
+          messageArgs: {
+            value: 'ehhehehehehas dfasd fasd fasdfa sdf asdf a sdfasd fasd fasdf asdf asdf asdf',
+          },
+          iconName: ICON_NAMES.faFolderOpen,
+        })
       } catch (error) {
         ErrorHandler.process(error as Error)
       }
@@ -92,6 +118,10 @@ export default defineComponent({
       submit,
       formController,
       ...toRefs(validationController),
+      callError: () => { Bus.error('Some error message') },
+      callSuccess: () => { Bus.success('Some success message') },
+      callWarning: () => { Bus.warning('Some warning message') },
+      callInfo: () => { Bus.info('Some info message') },
     }
   },
 })

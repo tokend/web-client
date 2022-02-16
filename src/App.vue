@@ -23,6 +23,7 @@ import AppNavbar from '@/common/AppNavbar.vue'
 
 import { ErrorHandler } from '@/helpers/error-handler'
 import { defineComponent, ref } from 'vue'
+import { useNotifications } from '@/composables'
 
 export default defineComponent({
   name: 'app',
@@ -31,9 +32,9 @@ export default defineComponent({
     const isAppInitialized = ref(false)
 
     const init = async () => {
-      // FIXME
-      // eslint-disable-next-line no-empty
-      try {} catch (error) {
+      try {
+        useNotifications()
+      } catch (error) {
         // FIXME
         ErrorHandler.process(error as Error)
       }

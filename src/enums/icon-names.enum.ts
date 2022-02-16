@@ -13,5 +13,6 @@ export enum ICON_NAMES {
   faCheck = '["fa","check"]',
   faTimes = '["fa","times"]',
   faExclamationCircle = '["fa","exclamation-circle"]',
-  faFolderOpen = '["fa","folder-open"]'
+  faFolderOpen = '["fa","folder-open"]',
+  vuue = 'vuue'
 }

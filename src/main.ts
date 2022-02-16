@@ -3,6 +3,7 @@ import '@/styles/app.scss'
 import App from '@/App.vue'
 import log from 'loglevel'
 
+import VueToastificationPlugin from 'vue-toastification'
 import { ICON_NAMES, ROUTE_NAMES } from '@/enums'
 import { createApp, getCurrentInstance, h } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -31,6 +32,7 @@ app
   .use(router)
   .use(store)
   .use(i18n)
+  .use(VueToastificationPlugin)
 
 app.config.globalProperties.$routes = ROUTE_NAMES
 app.config.globalProperties.$config = config

@@ -135,4 +135,11 @@
 
   /* Spinner */
   --spinner-border: var(--col-btn);
+
+  /* Notification */
+  --notification-bg-success: var(--app-status-success);
+  --notification-bg-error: var(--app-status-error);
+  --notification-bg-warning: var(--app-status-warning);
+  --notification-bg-info: var(--app-status-info);
+  --notification-title: #{$_white};
 }

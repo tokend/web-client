@@ -45,6 +45,15 @@
         <loader />
       </div>
     </div>
+    <div class="home-page__row">
+      <div class="home-page__col">
+        <icon :name="$icons.faFolderOpen" />
+        <icon :name="$icons.faCheck" />
+        <icon :name="$icons.faExclamationCircle" />
+        <icon :name="$icons.faTimes" />
+        <icon :name="$icons.vuue" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -56,10 +65,18 @@ import ErrorMessage from '@/common/ErrorMessage.vue'
 import NoDataMessage from '@/common/NoDataMessage.vue'
 import AppButton from '@/common/AppButton.vue'
 import Loader from '@/common/Loader.vue'
+import Icon from '@/common/Icon.vue'
 
 export default defineComponent({
   name: 'home-page',
-  components: { Loader, AppButton, NoDataMessage, ErrorMessage, ExampleForm },
+  components: {
+    Icon,
+    Loader,
+    AppButton,
+    NoDataMessage,
+    ErrorMessage,
+    ExampleForm,
+  },
   setup () {
 
     return {}
