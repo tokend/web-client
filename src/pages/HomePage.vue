@@ -51,7 +51,7 @@
         <icon :name="$icons.faCheck" />
         <icon :name="$icons.faExclamationCircle" />
         <icon :name="$icons.faTimes" />
-        <icon :name="$icons.vuue" />
+        <icon :name="$icons.vue" />
       </div>
     </div>
   </div>

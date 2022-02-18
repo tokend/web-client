@@ -15,17 +15,12 @@
 <script lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-import {
-  PropType,
-  defineAsyncComponent,
-  defineComponent,
-  ref,
-} from 'vue'
+import { defineAsyncComponent, defineComponent, PropType, ref } from 'vue'
 import { ICON_NAMES } from '@/enums'
 
 export default defineComponent({
   name: 'icon',
-  components:{ FontAwesomeIcon },
+  components: { FontAwesomeIcon },
   props: {
     name: {
       type: String as PropType<ICON_NAMES>,
@@ -39,17 +34,11 @@ export default defineComponent({
     try {
       parsedIconName.value = JSON.parse(props.name)
     } catch (error) {
-      // eslint-disable-next-line no-warning-comments
-      /**
-       * FIXME:
-       * if use literal string with dynamic icon name,
-       * it will not load component,
-       * and if use hardcoded string - component will be loaded
-       */
-      const path = `@/assets/icons/${props.name}-icon.vue`
-      iconComponent = defineAsyncComponent({
-        loader: () => import(/* @vite-ignore */ path),
-      })
+      if (props.name === ICON_NAMES.vue) {
+        iconComponent = defineAsyncComponent({
+          loader: () => import('@/assets/icons/vue-icon.vue'),
+        })
+      }
     }
 
     return {

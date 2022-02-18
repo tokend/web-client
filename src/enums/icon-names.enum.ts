@@ -14,5 +14,5 @@ export enum ICON_NAMES {
   faTimes = '["fa","times"]',
   faExclamationCircle = '["fa","exclamation-circle"]',
   faFolderOpen = '["fa","folder-open"]',
-  vuue = 'vuue'
+  vue = 'vue'
 }
