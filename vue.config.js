@@ -1,13 +1,11 @@
 const UnusedWebpackPlugin = require('unused-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const sharp = require('responsive-loader/sharp')
 const path = require('path')
 const fs = require('fs')
 const appDirectory = fs.realpathSync(process.cwd())
 const resolveApp = relativePath => path.resolve(appDirectory, relativePath)
 const root = path.resolve(__dirname, resolveApp('src'))
 const ArgumentParser = require('argparse').ArgumentParser
-const { IgnorePlugin } = require('webpack')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
 const parser = new ArgumentParser({
@@ -54,7 +52,6 @@ module.exports = {
   configureWebpack: {
     devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'eval-source-map',
     plugins: [
-      new IgnorePlugin(/ed25519/),
       new CopyWebpackPlugin([
         {
           from: path.resolve(__dirname, resolveApp('static/images/pre-issuance-guide')),
@@ -151,20 +148,5 @@ module.exports = {
       .loader('url-loader')
       .end()
       .end()
-      .rule('images')
-      .test(/^((?!\/node_modules).)*(\.png|\.jpg|\.jpeg)$/)
-      .use('url-loader')
-      .loader('url-loader')
-      .tap(options => {
-        const fallback = options.fallback
-        fallback.loader = 'responsive-loader'
-        fallback.options = {
-          ...fallback.options,
-          adapter: sharp,
-          sizes: [375, 768, 1200, 1920, 2880, 3840],
-        }
-
-        return options
-      })
   },
 }

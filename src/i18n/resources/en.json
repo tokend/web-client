@@ -98,7 +98,7 @@
       "field-error_amount": "Amount must be a number, greater than {{ minValue, number }}",
       "field-error_maxValue": "Value should be less than {{maxValue, number}}",
       "field-error_decimal": "Allowed integer or decimal numbers only",
-      "field-error_amountRange": "Amount should be in the range from {{from, money}} to {{to, money}}",
+      "field-error_amountRange": "Amount should be in the range from {{min, money}} to {{max, money}}",
       "field-error_minDate": "Date should be after {{ minDate, date }}",
       "field-error_maxDate": "Date should be before {{ maxDate, date }}",
       "field-error_emailOrAccountId": "This field should be a valid email or account ID",

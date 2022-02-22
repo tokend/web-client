@@ -31,8 +31,8 @@
           "
           :error-message="getFieldErrorMessage(
             'form.price', {
-              from: config.MIN_AMOUNT,
-              to: config.MAX_AMOUNT,
+              min: config.MIN_AMOUNT,
+              max: config.MAX_AMOUNT,
               available: quoteAssetBalance
             }
           )"
@@ -58,8 +58,8 @@
             'form.baseAmount',
             {
               available: baseAssetBalance,
-              from: config.MIN_AMOUNT,
-              to: config.MAX_AMOUNT,
+              min: config.MIN_AMOUNT,
+              max: config.MAX_AMOUNT,
             }
           )"
           @blur="touchField('form.baseAmount')"
@@ -86,8 +86,8 @@
               {
                 available: former.attrs.isBuy ?
                   quoteAssetBalance : baseAssetBalance,
-                from: config.MIN_AMOUNT,
-                to: config.MAX_AMOUNT,
+                min: config.MIN_AMOUNT,
+                max: config.MAX_AMOUNT,
               }
             )"
           />
