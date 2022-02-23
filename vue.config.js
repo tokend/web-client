@@ -7,7 +7,7 @@ const resolveApp = relativePath => path.resolve(appDirectory, relativePath)
 const root = path.resolve(__dirname, resolveApp('src'))
 const ArgumentParser = require('argparse').ArgumentParser
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
-const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 
 const parser = new ArgumentParser({
   addHelp: true,
@@ -53,28 +53,30 @@ module.exports = {
   configureWebpack: {
     devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'eval-source-map',
     plugins: [
-      new CopyWebpackPlugin([
-        {
-          from: path.resolve(__dirname, resolveApp('static/images/pre-issuance-guide')),
-          to: 'static/images/pre-issuance-guide',
-        },
-        {
-          from: path.resolve(__dirname, resolveApp('static/init-loader')),
-          to: 'static/init-loader',
-        },
-        {
-          from: path.resolve(__dirname, resolveApp('static/noscript')),
-          to: 'static/noscript',
-        },
-        {
-          from: path.resolve(__dirname, resolveApp('static/branding/favicon.png')),
-          to: 'static/branding/favicon.png',
-        },
-        {
-          from: path.resolve(__dirname, resolveApp('static/env.js')),
-          to: 'static/env.js',
-        },
-      ]),
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: path.resolve(__dirname, resolveApp('static/images/pre-issuance-guide')),
+            to: 'static/images/pre-issuance-guide',
+          },
+          {
+            from: path.resolve(__dirname, resolveApp('static/init-loader')),
+            to: 'static/init-loader',
+          },
+          {
+            from: path.resolve(__dirname, resolveApp('static/noscript')),
+            to: 'static/noscript',
+          },
+          {
+            from: path.resolve(__dirname, resolveApp('static/branding/favicon.png')),
+            to: 'static/branding/favicon.png',
+          },
+          {
+            from: path.resolve(__dirname, resolveApp('static/env.js')),
+            to: 'static/env.js',
+          },
+        ],
+      }),
       new NodePolyfillPlugin(),
       ...optionalPlugins,
     ],
