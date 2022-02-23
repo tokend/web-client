@@ -1,57 +1,141 @@
-services:
-  - docker:18-dind
-
 variables:
+  DOCKER_DRIVER: overlay2
+  #DOMAIN: dapppad.com
   GITHUB_REF: $CI_COMMIT_SHA
-  DH_IMAGE: tokend/web-client
+  DH_IMAGE_NAME: $CI_PROJECT_ROOT_NAMESPACE/$CI_PROJECT_NAME
+  SERVICE: $CI_PROJECT_NAME
+  REGISTRY: registry.gitlab.com/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
+  IMAGE_NAME: $REGISTRY:$CI_COMMIT_SHA
+  IMAGE_NAME_TAG: $REGISTRY:$CI_COMMIT_TAG
+  WERF_LOG_COLOR_MODE: "on"
+  WERF_IMAGES_REPO: $CI_REGISTRY_IMAGE
+
+
+.before_script_template: &before_script_templ
+  before_script:
+    - werf version
+    - docker version
+    - echo $CI_REGISTRY
+    - echo $CI_REGISTRY_USER
+    - echo $CI_REGISTRY_PASSWORD
+    - echo $WERF_IMAGES_REPO
+    - echo $WERF_ADD_CUSTOM_TAG_1
+
 
 stages:
-  - build
-  - publish
+  - build-and-publish
+  - lint-and-test
+  #- publish
+  #- deploy
+  - cleanup
 
-build:
-  image: registry.gitlab.com/tokend/deployment/docker-build:latest
-  stage: build
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+Build:
+  stage: build-and-publish
   tags:
     - tokend
+  services:
+      - docker:18-dind
+  image: 
+    name: "registry.gitlab.com/tokend/devops/werf-dind:8588e38f423bc5cc35c68e57e0c0dd57eb920e5d"
+    entrypoint: [""]
+  <<: *before_script_templ
   script:
-    - ci-little-helper set-pending build
-    - .ci/build.sh && STATE=0 || STATE=1
-    - ci-little-helper set-state $STATE build && exit $STATE
+    - type werf && source $(werf ci-env gitlab --as-file)
+    - werf build --report-path=images-report.json
+    - docker pull $(cat images-report.json | jq -r .Images.web.DockerImageName)
+    - docker tag $(cat images-report.json | jq -r .Images.web.DockerImageName) $IMAGE_NAME
+    - docker push $IMAGE_NAME
+  except: [schedules]
+  interruptible: true
 
-lint:
-  image: registry.gitlab.com/tokend/deployment/js-build:latest
-  stage: build
-  tags:
-    - tokend
-  script:
-    - ci-little-helper set-pending lint
-    - .ci/lint.sh && STATE=0 || STATE=1
-    - ci-little-helper set-state $STATE lint && exit $STATE
 
-unit_test:
-  image: registry.gitlab.com/tokend/deployment/js-build:latest
-  stage: build
-  tags:
-    - tokend
-  script:
-    - ci-little-helper set-pending unit_test
-    - .ci/test.sh && STATE=0 || STATE=1
-    - ci-little-helper set-state $STATE unit_test && exit $STATE
-
-publish dockerhub:                                                                                                                                                                                                 
-  image: registry.gitlab.com/tokend/deployment/docker-build:latest
-  stage: publish
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PWD                                                                                                                                                                  
+Build Tag:
+  stage: build-and-publish
   tags:
     - tokend
   only:
-    - /^.+\..+\..+$/
+    - tags
+  services:
+      - docker:18-dind
+  image: 
+    name: "registry.gitlab.com/tokend/devops/werf-dind:8588e38f423bc5cc35c68e57e0c0dd57eb920e5d"
+    entrypoint: [""]
+  <<: *before_script_templ
   script:
-    - ci-little-helper set-pending publish
-    - .ci/publish.sh && STATE=0 || STATE=1
-    - ci-little-helper set-state $STATE publish && exit $STATE
+    - type werf && source $(werf ci-env gitlab --as-file)
+    - werf build --report-path=images-report.json
+    - docker pull $(cat images-report.json | jq -r .Images.web.DockerImageName)
+    - docker tag $(cat images-report.json | jq -r .Images.web.DockerImageName) $IMAGE_NAME_TAG
+    - docker push $IMAGE_NAME_TAG
+  except: [schedules]
+  interruptible: true
+
+Lint and Test:
+  stage: lint-and-test
+  tags:
+    - tokend
+  only:
+    - merge_requests
+  services:
+      - docker:18-dind
+  image: 
+    name: "registry.gitlab.com/tokend/devops/docker-containers:front14-a7d73669fd1fa97a461226c292357bc33d478070"
+    entrypoint: [""]
+  <<: *before_script_templ
+  script:
+    - yarn install
+    - yarn test
+    - yarn lint
+  except: [schedules]
+  interruptible: true
+
+# Deploy to Staging:
+#   services:
+#       - docker:18-dind
+#   image: dtzar/helm-kubectl:latest
+#   tags:
+#     - tokend-deploy
+#   stage: deploy
+#   script:
+#     - mkdir ~/.kube/
+#     - echo ${k8sconfig} | base64 -d > config
+#     - mv config ~/.kube/
+#     - helm upgrade -i "webclient" ".helm" --set global.IngressDomain=stage.${DOMAIN} --set "image.repository=${REGISTRY}" --set "image.tag=${CI_COMMIT_SHA}" --create-namespace --namespace $CI_PROJECT_NAME-stage
+#   interruptible: true
+
+
+# Deploy to Production:
+#   services:
+#       - docker:18-dind
+#   image: dtzar/helm-kubectl:latest
+#   tags:
+#     - tokend-deploy
+#   stage: deploy
+#   script:
+#     - mkdir ~/.kube/
+#     - echo ${k8sconfig} | base64 -d > config
+#     - mv config ~/.kube/
+#     - helm upgrade -i "webclient" ".helm" --set global.IngressDomain=${DOMAIN} --set "image.repository=${REGISTRY}" --set "image.tag=${CI_COMMIT_TAG}" --create-namespace --namespace $CI_PROJECT_NAME-prod
+#   when: manual
+#   interruptible: true
+
+
+
+Cleanup:
+  stage: cleanup
+  tags:
+    - tokend
+  services:
+      - docker:18-dind
+  image: 
+    name: "registry.gitlab.com/tokend/devops/werf-dind:8588e38f423bc5cc35c68e57e0c0dd57eb920e5d"
+    entrypoint: [""]
+  <<: *before_script_templ
+  script:
+    - type werf && source $(werf ci-env gitlab --as-file)
+    - docker login -u nobody -p ${WERF_IMAGES_CLEANUP_PASSWORD} ${WERF_IMAGES_REPO}
+    - werf cleanup
+  only: [schedules]
+  interruptible: true
+
