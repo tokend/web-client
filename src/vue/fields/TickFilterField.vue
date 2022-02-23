@@ -14,12 +14,12 @@ $filter-tick-size: 1.4rem;
   width: auto;
 }
 
-.tick-field /deep/ .tick-field__label {
+.tick-field ::v-deep .tick-field__label {
   font-size: 1.6rem;
   padding-left: 2.4rem;
 }
 
-.tick-field /deep/ .tick-field__tick {
+.tick-field ::v-deep .tick-field__tick {
   width: $filter-tick-size;
   min-width: $filter-tick-size;
   height: $filter-tick-size;
@@ -31,7 +31,7 @@ $filter-tick-size: 1.4rem;
   }
 }
 
-.tick-field /deep/ .tick-field__input {
+.tick-field ::v-deep .tick-field__input {
   width: $filter-tick-size;
   height: $filter-tick-size;
 }

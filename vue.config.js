@@ -92,14 +92,6 @@ module.exports = {
       },
     },
   },
-  css: {
-    loaderOptions: {
-      sass: {
-        sourceMap: true,
-        sourceMapContents: false,
-      },
-    },
-  },
 
   chainWebpack: config => {
     // Exclude workers to not be parsed by other JS loaders
@@ -134,11 +126,5 @@ module.exports = {
           sourceMap: true,
         }))
     })
-
-    config.module
-      .rule('images')
-      .test(/^((?!\/node_modules).)*(\.png|\.jpg|\.jpeg)$/)
-      .use('url-loader')
-      .loader('url-loader')
   },
 }

@@ -164,7 +164,7 @@ export default {
 }
 /* stylelint-enable selector-nested-pattern */
 
-.signup__key-viewer /deep/ .clipboard-field {
+.signup__key-viewer ::v-deep .clipboard-field {
   background: $col-clipboard-background-darken;
 }
 </style>
