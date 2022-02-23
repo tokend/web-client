@@ -119,38 +119,26 @@ module.exports = {
     // Pre-fetching ALL the chunks harms the app performance
     config.plugins.delete('prefetch')
 
+    const moduleTypes = ['vue-modules', 'vue', 'normal-modules', 'normal']
+    moduleTypes.forEach(rule => {
+      config.module.rule('scss')
+        .oneOf(rule)
+        .use('resolve-url-loader')
+        .loader('resolve-url-loader')
+        .before('sass-loader')
+        .end()
+        .use('sass-loader')
+        .loader('sass-loader')
+        .tap(options => ({
+          ...options,
+          sourceMap: true,
+        }))
+    })
+
     config.module
-      .rule('scss')
-      .oneOf('vue')
-      .use('resolve-url-loader')
-      .loader('resolve-url-loader')
-      .before('sass-loader')
-      .end()
-      .end()
-      .oneOf('vue-modules')
-      .use('resolve-url-loader')
-      .loader('resolve-url-loader')
-      .before('sass-loader')
-      .end()
-      .end()
-      .oneOf('normal')
-      .use('resolve-url-loader')
-      .loader('resolve-url-loader')
-      .before('sass-loader')
-      .end()
-      .end()
-      .oneOf('normal-modules')
-      .use('resolve-url-loader')
-      .loader('resolve-url-loader')
-      .before('sass-loader')
-      .end()
-      .end()
-      .end()
-      .rule('img')
-      .test(/(\.png|\.jpg|\.jpeg)$/)
+      .rule('images')
+      .test(/^((?!\/node_modules).)*(\.png|\.jpg|\.jpeg)$/)
       .use('url-loader')
       .loader('url-loader')
-      .end()
-      .end()
   },
 }
