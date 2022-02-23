@@ -6,7 +6,7 @@ module.exports = {
     'distributed-lab/vue',
   ],
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: '@babel/eslint-parser',
     ecmaVersion: 2017,
     sourceType: 'module',
   },

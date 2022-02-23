@@ -7,6 +7,7 @@ const resolveApp = relativePath => path.resolve(appDirectory, relativePath)
 const root = path.resolve(__dirname, resolveApp('src'))
 const ArgumentParser = require('argparse').ArgumentParser
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
 
 const parser = new ArgumentParser({
   addHelp: true,
@@ -74,6 +75,7 @@ module.exports = {
           to: 'static/env.js',
         },
       ]),
+      new NodePolyfillPlugin(),
       ...optionalPlugins,
     ],
     resolve: {
