@@ -83,10 +83,10 @@ describe('account.module', () => {
         await actions[vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS](store)
 
         expect(store.commit).to.have.been.calledWithExactly(
-          vuexTypes.UPDATE_ASSETS, assetsPayload, { root: true }
+          vuexTypes.UPDATE_ASSETS, assetsPayload, { root: true },
         )
         expect(store.commit).to.have.been.calledWithExactly(
-          vuexTypes.SET_ACCOUNT_BALANCES_DETAILS, balances
+          vuexTypes.SET_ACCOUNT_BALANCES_DETAILS, balances,
         )
       })
   })

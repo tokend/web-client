@@ -65,20 +65,20 @@ export class KycGeneralFormer extends Former {
   /** @param {KycGeneralRecord|KycRequestRecord|KycRecoveryRequestRecord} source */
   populate (source) {
     switch (source.constructor) {
-      case KycGeneralRecord:
-        this._populateFromRecord(source)
-        break
+    case KycGeneralRecord:
+      this._populateFromRecord(source)
+      break
 
-      case KycRequestRecord:
-        this._populateFromRequest(source)
-        break
+    case KycRequestRecord:
+      this._populateFromRequest(source)
+      break
 
-      case KycRecoveryRequestRecord:
-        this._populateFromRecoveryRequest(source)
-        break
+    case KycRecoveryRequestRecord:
+      this._populateFromRecoveryRequest(source)
+      break
 
-      default:
-        throw new TypeError('Unknown source type')
+    default:
+      throw new TypeError('Unknown source type')
     }
     return this
   }
@@ -178,12 +178,12 @@ export class KycGeneralFormer extends Former {
     const isUsResident = isUSResidence(get, this.attrs, 'address.country')
     const isAccredited = Boolean(this.attrs.proofOfInvestor)
     switch (true) {
-      case isUsResident && isAccredited:
-        return keyValues.usAccreditedRoleId
-      case isUsResident && !isAccredited:
-        return keyValues.usVerifiedRoleId
-      default:
-        return keyValues.generalRoleId
+    case isUsResident && isAccredited:
+      return keyValues.usAccreditedRoleId
+    case isUsResident && !isAccredited:
+      return keyValues.usVerifiedRoleId
+    default:
+      return keyValues.generalRoleId
     }
   }
 }

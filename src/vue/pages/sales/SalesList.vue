@@ -14,31 +14,29 @@
         </option>
       </select-field>
     </div>
-    <template>
-      <div class="sales__sale-cards">
-        <drawer :is-shown.sync="isDetailsDrawerShown">
-          <template slot="heading">
-            {{ 'sales.overview-title' | globalize }}
-          </template>
-          <sale-overview :sale="selectedSale" />
-        </drawer>
+    <div class="sales__sale-cards">
+      <drawer :is-shown.sync="isDetailsDrawerShown">
+        <template slot="heading">
+          {{ 'sales.overview-title' | globalize }}
+        </template>
+        <sale-overview :sale="selectedSale" />
+      </drawer>
 
-        <template v-for="sale in filteredSales">
-          <sale-card
-            class="sales__sale-card"
-            :key="sale.id"
-            :sale="sale"
-          />
-        </template>
-        <template v-for="index in itemsPerSkeletonLoader">
-          <sale-skeleton-loader
-            class="sales__sale-card"
-            v-if="!isLoaded && !filteredSales.length"
-            :key="`skeleton-loader-${index}`"
-          />
-        </template>
-      </div>
-    </template>
+      <template v-for="sale in filteredSales">
+        <sale-card
+          class="sales__sale-card"
+          :key="sale.id"
+          :sale="sale"
+        />
+      </template>
+      <template v-for="index in itemsPerSkeletonLoader">
+        <sale-skeleton-loader
+          class="sales__sale-card"
+          v-if="!isLoaded && !filteredSales.length"
+          :key="`skeleton-loader-${index}`"
+        />
+      </template>
+    </div>
 
     <template v-if="isLoaded && !filteredSales.length">
       <no-data-message
@@ -195,18 +193,18 @@ export default {
 
       if (this.isUserSales) {
         opts.filter.owner = this.accountId
-        endpoint = `/v3/sales`
+        endpoint = '/v3/sales'
       } else {
         endpoint = `/v3/accounts/${this.accountId}/sales`
       }
 
       switch (saleState) {
-        case SALE_STATES.live.value:
-          opts.filter.state = SALE_STATES.live.state
-          break
-        case SALE_STATES.upcoming.value:
-          opts.filter.min_start_time = new Date().toISOString()
-          break
+      case SALE_STATES.live.value:
+        opts.filter.state = SALE_STATES.live.state
+        break
+      case SALE_STATES.upcoming.value:
+        opts.filter.min_start_time = new Date().toISOString()
+        break
       }
 
       if (this.$route.query.owner) {

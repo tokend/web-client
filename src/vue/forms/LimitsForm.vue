@@ -161,26 +161,26 @@ export default {
     getLimitByScope (period) {
       const limitByType = this.selectedOpType
       switch (period) {
-        case 'dailyOut':
-          if (limitByType.dailyOut === MAX_VALID_LIMIT_VALUE) {
-            return ''
-          }
-          return limitByType.dailyOut
-        case 'weeklyOut':
-          if (limitByType.weeklyOut === MAX_VALID_LIMIT_VALUE) {
-            return ''
-          }
-          return limitByType.weeklyOut
-        case 'monthlyOut':
-          if (limitByType.monthlyOut === MAX_VALID_LIMIT_VALUE) {
-            return ''
-          }
-          return limitByType.monthlyOut
-        case 'annualOut':
-          if (limitByType.annualOut === MAX_VALID_LIMIT_VALUE) {
-            return ''
-          }
-          return limitByType.annualOut
+      case 'dailyOut':
+        if (limitByType.dailyOut === MAX_VALID_LIMIT_VALUE) {
+          return ''
+        }
+        return limitByType.dailyOut
+      case 'weeklyOut':
+        if (limitByType.weeklyOut === MAX_VALID_LIMIT_VALUE) {
+          return ''
+        }
+        return limitByType.weeklyOut
+      case 'monthlyOut':
+        if (limitByType.monthlyOut === MAX_VALID_LIMIT_VALUE) {
+          return ''
+        }
+        return limitByType.monthlyOut
+      case 'annualOut':
+        if (limitByType.annualOut === MAX_VALID_LIMIT_VALUE) {
+          return ''
+        }
+        return limitByType.annualOut
       }
     },
 

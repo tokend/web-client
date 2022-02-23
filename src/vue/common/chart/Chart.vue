@@ -103,7 +103,7 @@ export default {
         this.isActualData = true
         const response = this.quoteAsset
           ? await api.getRaw(
-            `/charts/${this.lockedAssets.base}-${this.lockedAssets.quote}`
+            `/charts/${this.lockedAssets.base}-${this.lockedAssets.quote}`,
           )
           : await api.getRaw(`/charts/${this.lockedAssets.base}`)
         this.data = response.data

@@ -80,14 +80,14 @@ export default {
     }),
     isBalanceCreationAllowed () {
       switch (this.asset.assetType) {
-        case this.kycRequiredAssetType:
-          return !this.isAccountUnverified
-        case this.securityAssetType:
-          return this.isAccountGeneral ||
+      case this.kycRequiredAssetType:
+        return !this.isAccountUnverified
+      case this.securityAssetType:
+        return this.isAccountGeneral ||
                  this.isAccountUsAccredited ||
                  this.isAccountCorporate
-        default:
-          return true
+      default:
+        return true
       }
     },
     isHaveBalance () {

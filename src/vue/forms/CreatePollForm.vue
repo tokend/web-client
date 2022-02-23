@@ -146,9 +146,7 @@
         :disabled="formMixin.isDisabled"
         class="app__button-raised create-poll-form__btn"
       >
-        <template>
-          {{ 'create-poll-form.create-btn' | globalize }}
-        </template>
+        {{ 'create-poll-form.create-btn' | globalize }}
       </button>
     </div>
   </form>

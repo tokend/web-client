@@ -59,9 +59,9 @@ export class AssetFormer extends Former {
   /** @param {AssetRequest|AssetRecord} source */
   populate (source) {
     switch (source.constructor) {
-      case AssetRequest: this._populateFromRequest(source); break
-      case AssetRecord: this._populateFromRecord(source); break
-      default: throw TypeError('Unknown source type')
+    case AssetRequest: this._populateFromRequest(source); break
+    case AssetRecord: this._populateFromRecord(source); break
+    default: throw TypeError('Unknown source type')
     }
     return this
   }
@@ -175,7 +175,7 @@ export class AssetFormer extends Former {
         stellarIntegration.isWithdrawable ||
         stellarIntegration.isDepositable ||
         stellarIntegration.assetType ||
-        stellarIntegration.assetCode
+        stellarIntegration.assetCode,
       )
 
     return isIntegrationEnabled ? {
@@ -192,7 +192,7 @@ export class AssetFormer extends Former {
       keyValues.bridgesEnabled > 0 && Boolean(
         erc20Integration.isWithdrawable ||
         erc20Integration.isDepositable ||
-        erc20Integration.address
+        erc20Integration.address,
       )
 
     return isIntegrationEnabled ? {

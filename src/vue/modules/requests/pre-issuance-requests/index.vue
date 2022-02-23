@@ -1,11 +1,9 @@
 <template>
   <div class="pre-issuance-requests">
-    <template>
-      <requests-table
-        :requests="requests"
-        :is-loaded="isLoaded"
-      />
-    </template>
+    <requests-table
+      :requests="requests"
+      :is-loaded="isLoaded"
+    />
 
     <p v-if="isLoadingFailed">
       {{ 'pre-issuance-requests.loading-error-msg' | globalize }}

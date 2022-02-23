@@ -1,49 +1,45 @@
 <template>
   <div>
-    <template>
-      <top-bar>
-        <template slot="main">
-          <router-link :to="vueRoutes.allPolls">
-            <span>{{ 'polls.all' | globalize }}</span>
-          </router-link>
-          <router-link
-            v-if="isAccountCorporate"
-            :to="vueRoutes.pollRequests"
-          >
-            <span>{{ 'polls.requests' | globalize }}</span>
-          </router-link>
-        </template>
-
-        <template
-          slot="extra"
+    <top-bar>
+      <template slot="main">
+        <router-link :to="vueRoutes.allPolls">
+          <span>{{ 'polls.all' | globalize }}</span>
+        </router-link>
+        <router-link
           v-if="isAccountCorporate"
+          :to="vueRoutes.pollRequests"
         >
-          <button
-            v-ripple
-            class="app__button-raised"
-            @click="isCreatePollDrawerShown = true"
-          >
-            <i class="mdi mdi-plus sales__btn-icon" />
-            {{ 'polls.create-poll' | globalize }}
-          </button>
-        </template>
-      </top-bar>
-
-      <template>
-        <drawer
-          :is-shown.sync="isCreatePollDrawerShown"
-          :close-by-click-outside="false"
-        >
-          <template slot="heading">
-            {{ 'polls.new-poll' | globalize }}
-          </template>
-
-          <create-poll-form
-            @submitted="closeDrawerAndUpdateList"
-          />
-        </drawer>
+          <span>{{ 'polls.requests' | globalize }}</span>
+        </router-link>
       </template>
-    </template>
+
+      <template
+        slot="extra"
+        v-if="isAccountCorporate"
+      >
+        <button
+          v-ripple
+          class="app__button-raised"
+          @click="isCreatePollDrawerShown = true"
+        >
+          <i class="mdi mdi-plus sales__btn-icon" />
+          {{ 'polls.create-poll' | globalize }}
+        </button>
+      </template>
+    </top-bar>
+
+    <drawer
+      :is-shown.sync="isCreatePollDrawerShown"
+      :close-by-click-outside="false"
+    >
+      <template slot="heading">
+        {{ 'polls.new-poll' | globalize }}
+      </template>
+
+      <create-poll-form
+        @submitted="closeDrawerAndUpdateList"
+      />
+    </drawer>
     <router-view />
   </div>
 </template>

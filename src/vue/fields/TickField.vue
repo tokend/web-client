@@ -46,17 +46,17 @@ export default {
       }
       let result
       switch (this.typeof(model)) {
-        case 'number':
-          result = model & +value
-          break
-        case 'array':
-          result = this.typeof(value) !== 'array'
-            ? ~model.findIndex((item) => item === value)
-            : value.every(item => this.arrayIncludes(model, item))
-          break
-        default:
-          result = model
-          break
+      case 'number':
+        result = model & +value
+        break
+      case 'array':
+        result = this.typeof(value) !== 'array'
+          ? ~model.findIndex((item) => item === value)
+          : value.every(item => this.arrayIncludes(model, item))
+        break
+      default:
+        result = model
+        break
       }
       return result
     },
@@ -71,26 +71,26 @@ export default {
       }
 
       switch (this.typeof(model)) {
-        case 'number':
-          this.$emit(
-            EVENTS.input,
-            isChecked ? model + +value : model - value
-          )
-          break
-        case 'array':
-          if (this.typeof(value) !== 'array') {
-            this.$emit(EVENTS.input, isChecked
-              ? model.concat(value)
-              : model.filter((item) => item !== value))
-          } else {
-            this.$emit(EVENTS.input, isChecked
-              ? model.concat(value)
-              : model.filter((item) => !this.arrayIncludes(value, item)))
-          }
-          break
-        default:
-          this.$emit(EVENTS.input, isChecked)
-          break
+      case 'number':
+        this.$emit(
+          EVENTS.input,
+          isChecked ? model + +value : model - value,
+        )
+        break
+      case 'array':
+        if (this.typeof(value) !== 'array') {
+          this.$emit(EVENTS.input, isChecked
+            ? model.concat(value)
+            : model.filter((item) => item !== value))
+        } else {
+          this.$emit(EVENTS.input, isChecked
+            ? model.concat(value)
+            : model.filter((item) => !this.arrayIncludes(value, item)))
+        }
+        break
+      default:
+        this.$emit(EVENTS.input, isChecked)
+        break
       }
     },
     typeof (value) {
@@ -98,13 +98,13 @@ export default {
 
       let result
       switch (type) {
-        case 'object':
-          if (Array.isArray(value)) result = 'array'
-          if (value === null) result = 'null'
-          break
-        default:
-          result = type
-          break
+      case 'object':
+        if (Array.isArray(value)) result = 'array'
+        if (value === null) result = 'null'
+        break
+      default:
+        result = type
+        break
       }
       return result
     },

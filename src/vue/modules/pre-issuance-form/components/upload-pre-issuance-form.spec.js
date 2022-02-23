@@ -37,7 +37,7 @@ describe('Upload pre-issuance form', () => {
       })
     })
 
-    it(`preIssuanceDocument model is validating by proper set of rules`, () => {
+    it('preIssuanceDocument model is validating by proper set of rules', () => {
       expect(Object.keys(wrapper.vm.$v.preIssuanceDocument.$params))
         .to.deep.equal(['nonEmptyDocument'])
     })
@@ -94,7 +94,7 @@ describe('Upload pre-issuance form', () => {
           wrapper.vm.onPreIssuanceDocumentChange(nonEmptyDoc)
           expect(wrapper.vm.extractPreIssuance)
             .to.have.been.calledOnceWithExactly('SOME_FILE')
-        }
+        },
       )
     })
   })

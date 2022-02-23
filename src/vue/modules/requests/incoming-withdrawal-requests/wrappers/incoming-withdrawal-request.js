@@ -11,7 +11,7 @@ export class IncomingWithdrawalRequest extends Request {
     this.amount = safeGet(record, 'requestDetails.amount')
     this.fixedFee = safeGet(record, 'requestDetails.fee.fixed')
     this.calculatedPercentFee = safeGet(
-      record, 'requestDetails.fee.calculatedPercent'
+      record, 'requestDetails.fee.calculatedPercent',
     )
 
     this.comment = safeGet(record, 'requestDetails.creatorDetails.comment')

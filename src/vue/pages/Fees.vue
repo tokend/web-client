@@ -1,45 +1,43 @@
 <template>
   <div class="fees-page">
-    <template>
-      <top-bar>
-        <template slot="main">
-          <div class="fees-page__filter">
-            <span
-              v-if="isLoaded && assets.length"
-              class="fees-page__filter-prefix"
+    <top-bar>
+      <template slot="main">
+        <div class="fees-page__filter">
+          <span
+            v-if="isLoaded && assets.length"
+            class="fees-page__filter-prefix"
+          >
+            {{ 'fees-page.asset-filter-prefix' | globalize }}
+          </span>
+          <skeleton-loader
+            v-else
+            template="bigString"
+          />
+          <select-field
+            v-if="isLoaded && assets.length"
+            :value="asset.code"
+            @input="setAssetByCode"
+            class="app__select app__select--no-border"
+          >
+            <option
+              v-for="item in assets"
+              :key="item.code"
+              :value="item.code"
             >
-              {{ 'fees-page.asset-filter-prefix' | globalize }}
-            </span>
-            <skeleton-loader
-              v-else
-              template="bigString"
-            />
-            <select-field
-              v-if="isLoaded && assets.length"
-              :value="asset.code"
-              @input="setAssetByCode"
-              class="app__select app__select--no-border"
-            >
-              <option
-                v-for="asset in assets"
-                :key="asset.code"
-                :value="asset.code"
-              >
-                {{ asset.nameAndCode }}
-              </option>
-            </select-field>
-            <skeleton-loader
-              v-else
-              template="bigString"
-            />
-          </div>
-        </template>
-      </top-bar>
+              {{ item.nameAndCode }}
+            </option>
+          </select-field>
+          <skeleton-loader
+            v-else
+            template="bigString"
+          />
+        </div>
+      </template>
+    </top-bar>
 
-      <fees-module
-        :asset-code="asset.code"
-      />
-    </template>
+    <fees-module
+      :asset-code="asset.code"
+    />
 
     <template v-if="isLoaded && !assets.length">
       <no-data-message

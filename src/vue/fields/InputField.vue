@@ -147,7 +147,7 @@ export default {
     normalizeTargetValue (target) {
       if (this.type === INPUT_TYPES.number && target.value !== '') {
         const normalizeValue = this.normalizeDecimalPrecision(
-          this.normalizeRange(target.value)
+          this.normalizeRange(target.value),
         )
         if (target.value !== normalizeValue) target.value = normalizeValue
       }

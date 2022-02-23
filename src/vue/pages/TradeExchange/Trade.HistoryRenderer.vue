@@ -6,55 +6,53 @@
     <div
       class="trade-history__data-wrapper"
     >
-      <template>
-        <div class="app__table app__table--with-shadow">
-          <table>
-            <thead>
-              <tr>
-                <th>
-                  <!-- eslint-disable-next-line -->
-                  {{ 'trade-history.table-amount-lbl' | globalize({ asset: assetPair.base }) }}
-                </th>
-                <th>
-                  <!-- eslint-disable-next-line -->
-                  {{ 'trade-history.table-price-lbl' | globalize({ asset: assetPair.quote }) }}
-                </th>
-                <th>
-                  <!-- eslint-disable-next-line -->
-                  {{ 'trade-history.table-total-lbl' | globalize({ asset: assetPair.quote }) }}
-                </th>
-                <th>
-                  {{ 'trade-history.table-time-lbl' | globalize }}
-                </th>
-              </tr>
-            </thead>
-            <tbody
-              v-if="tradeHistory.length && !isLoading"
-            >
-              <tr
-                v-for="(item, i) in tradeHistory"
-                :key="`trade-history-row-${i}`">
-                <td>{{ item.baseAmount | formatMoney }}</td>
-                <td>{{ item.price | formatMoney }}</td>
-                <td>{{ item.quoteAmount | formatMoney }}</td>
-                <td>{{ item.createdAt | formatCalendar }}</td>
-              </tr>
-            </tbody>
-            <empty-tbody-placeholder
-              v-else-if="!tradeHistory.length && !isLoading"
-              :message="'trade-history.no-data-message' | globalize({
-                base: assetPair.base,
-                quote: assetPair.quote
-              })"
-              :colspan="4"
-            />
-            <skeleton-loader-table-body
-              v-else-if="isLoading"
-              :cells="4"
-            />
-          </table>
-        </div>
-      </template>
+      <div class="app__table app__table--with-shadow">
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <!-- eslint-disable-next-line -->
+              {{ 'trade-history.table-amount-lbl' | globalize({ asset: assetPair.base }) }}
+              </th>
+              <th>
+                <!-- eslint-disable-next-line -->
+              {{ 'trade-history.table-price-lbl' | globalize({ asset: assetPair.quote }) }}
+              </th>
+              <th>
+                <!-- eslint-disable-next-line -->
+              {{ 'trade-history.table-total-lbl' | globalize({ asset: assetPair.quote }) }}
+              </th>
+              <th>
+                {{ 'trade-history.table-time-lbl' | globalize }}
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            v-if="tradeHistory.length && !isLoading"
+          >
+            <tr
+              v-for="(item, i) in tradeHistory"
+              :key="`trade-history-row-${i}`">
+              <td>{{ item.baseAmount | formatMoney }}</td>
+              <td>{{ item.price | formatMoney }}</td>
+              <td>{{ item.quoteAmount | formatMoney }}</td>
+              <td>{{ item.createdAt | formatCalendar }}</td>
+            </tr>
+          </tbody>
+          <empty-tbody-placeholder
+            v-else-if="!tradeHistory.length && !isLoading"
+            :message="'trade-history.no-data-message' | globalize({
+              base: assetPair.base,
+              quote: assetPair.quote
+            })"
+            :colspan="4"
+          />
+          <skeleton-loader-table-body
+            v-else-if="isLoading"
+            :cells="4"
+          />
+        </table>
+      </div>
     </div>
   </div>
 </template>

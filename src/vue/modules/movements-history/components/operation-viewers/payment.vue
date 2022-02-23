@@ -147,7 +147,7 @@ export default {
       )
       const destinationFee = MathUtil.add(
         this.operationDetails.destinationFixedFee,
-        this.operationDetails.destinationCalculatedPercentFee
+        this.operationDetails.destinationCalculatedPercentFee,
       )
 
       return {

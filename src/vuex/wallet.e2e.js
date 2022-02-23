@@ -45,7 +45,7 @@ describe('wallet.module end-to-end test', () => {
         },
       })
       sinon.stub(walletsManager, 'get').resolves(
-        new Wallet(email, seed, accountId, walletId, sessionId, sessionKey)
+        new Wallet(email, seed, accountId, walletId, sessionId, sessionKey),
       )
       await store.dispatch(vuexTypes.LOAD_WALLET, { email, password })
     })

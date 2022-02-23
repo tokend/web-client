@@ -84,7 +84,7 @@ export class SaleFormer extends Former {
 
   async _buildOp () {
     this.attrs.saleDescriptionBlobId = await createSaleDescriptionBlobId(
-      this.attrs.fullDescription
+      this.attrs.fullDescription,
     )
 
     const opts = this._getOpts()

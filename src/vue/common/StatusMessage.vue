@@ -83,28 +83,28 @@ export default {
   computed: {
     messageIconClass () {
       switch (this.messageType) {
-        case MESSAGE_TYPES.success:
-          return 'mdi-emoticon-cool-outline'
-        case MESSAGE_TYPES.error:
-          return 'mdi-emoticon-cry-outline'
-        case MESSAGE_TYPES.info:
-          return 'mdi-information-outline'
-        case MESSAGE_TYPES.warning:
-          return 'mdi-alert-outline'
-        default:
-          return ''
+      case MESSAGE_TYPES.success:
+        return 'mdi-emoticon-cool-outline'
+      case MESSAGE_TYPES.error:
+        return 'mdi-emoticon-cry-outline'
+      case MESSAGE_TYPES.info:
+        return 'mdi-information-outline'
+      case MESSAGE_TYPES.warning:
+        return 'mdi-alert-outline'
+      default:
+        return ''
       }
     },
 
     getInvertedProgressPercents () {
       const animationProgressPercents = MathUtil.multiply(
         this.progressBar.progress,
-        ONE_HUNDRED_PERCENTS
+        ONE_HUNDRED_PERCENTS,
       )
 
       const animationProgressPercentsInverted = MathUtil.subtract(
         ONE_HUNDRED_PERCENTS,
-        animationProgressPercents
+        animationProgressPercents,
       )
       return animationProgressPercentsInverted
     },
@@ -161,15 +161,15 @@ export default {
 
           const animationTime = MathUtil.subtract(
             currentAnimationTime,
-            animationStartTime
+            animationStartTime,
           )
           const animationRuntime = MathUtil.add(
             timestamp,
-            animationTime
+            animationTime,
           )
           const animationProgress = MathUtil.divide(
             animationRuntime,
-            CLOSE_TIMEOUT_MS
+            CLOSE_TIMEOUT_MS,
           )
 
           if (animationRuntime < CLOSE_TIMEOUT_MS) {
@@ -209,7 +209,7 @@ export default {
       this.progressBar.paused = false
       const currentAnimationTime = MathUtil.multiply(
         CLOSE_TIMEOUT_MS,
-        this.progressBar.progress
+        this.progressBar.progress,
       )
 
       this.startAnimationTimeout(currentAnimationTime)

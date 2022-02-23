@@ -163,7 +163,7 @@ export default {
         if (error instanceof errors.TFARequiredError) {
           try {
             await factorsManager.verifyPasswordFactor(
-              error, this.form.password
+              error, this.form.password,
             )
             const { data } = await api.postWithSignature(endpoint, {
               data: { type: 'totp' },
@@ -189,7 +189,7 @@ export default {
         if (error instanceof errors.TFARequiredError) {
           try {
             await factorsManager.verifyPasswordFactorAndRetry(error,
-              this.form.password
+              this.form.password,
             )
             Bus.success('tfa-form.tfa-disabled-msg')
             this.$emit(EVENTS.update)

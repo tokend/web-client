@@ -10,12 +10,12 @@ export const resolveRedirect = (to, from, next) => {
   const decodedValue = JSON.parse(atob(encodedValue))
 
   switch (decodedValue.type) {
-    case REDIRECT_TYPES.apiVerify:
-      handleEmailRedirect(encodedValue, next)
-      break
-    case REDIRECT_TYPES.inviteVerify:
-      handleInviteRedirect(decodedValue.meta, next)
-      break
+  case REDIRECT_TYPES.apiVerify:
+    handleEmailRedirect(encodedValue, next)
+    break
+  case REDIRECT_TYPES.inviteVerify:
+    handleInviteRedirect(decodedValue.meta, next)
+    break
   }
 }
 

@@ -90,9 +90,7 @@
           :disabled="formMixin.isDisabled"
           class="app__button-raised atomic-swap-form__btn"
         >
-          <template>
-            {{ 'atomic-swap-form.buy' | globalize }}
-          </template>
+          {{ 'atomic-swap-form.buy' | globalize }}
         </button>
       </div>
     </form>
@@ -169,7 +167,7 @@ export default {
         amount: {
           amountRange: amountRange(
             config.MIN_AMOUNT,
-            this.atomicSwap.availableAmount
+            this.atomicSwap.availableAmount,
           ),
           required,
         },

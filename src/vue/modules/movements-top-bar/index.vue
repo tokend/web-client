@@ -15,11 +15,11 @@
             class="app__select app__select--no-border"
           >
             <option
-              v-for="asset in assets"
-              :key="asset.code"
-              :value="asset.code"
+              v-for="item in assets"
+              :key="item.code"
+              :value="item.code"
             >
-              {{ asset.nameAndCode }}
+              {{ item.nameAndCode }}
             </option>
           </select-field>
         </div>

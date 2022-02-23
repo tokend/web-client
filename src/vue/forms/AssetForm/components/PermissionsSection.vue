@@ -91,7 +91,7 @@ export default {
 
       const isUsageRestricted = Boolean(
         attrs.assetType &&
-        attrs.assetType !== defaultAssetType
+        attrs.assetType !== defaultAssetType,
       )
 
       this.form.isUsageRestricted = isUsageRestricted

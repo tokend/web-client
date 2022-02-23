@@ -196,11 +196,11 @@ export default {
       const attrs = this.former.attrs
       const isMaxAmountRestricted = Boolean(
         attrs.maxIssuanceAmount &&
-        attrs.maxIssuanceAmount !== config.MAX_AMOUNT
+        attrs.maxIssuanceAmount !== config.MAX_AMOUNT,
       )
       const isPreIssuanceEnabled = Boolean(
         attrs.preIssuanceAssetSigner &&
-        attrs.preIssuanceAssetSigner !== config.NULL_ASSET_SIGNER
+        attrs.preIssuanceAssetSigner !== config.NULL_ASSET_SIGNER,
       )
 
       this.form.isMaxAmountRestricted = isMaxAmountRestricted

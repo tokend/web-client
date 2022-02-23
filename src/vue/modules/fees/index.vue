@@ -1,13 +1,11 @@
 <template>
   <div class="fees">
     <template v-if="assetCode">
-      <template>
-        <fees-table
-          :fees="valuableFeesByAssetCode"
-          :asset-code="assetCode"
-          :is-loaded="isLoaded"
-        />
-      </template>
+      <fees-table
+        :fees="valuableFeesByAssetCode"
+        :asset-code="assetCode"
+        :is-loaded="isLoaded"
+      />
 
       <template v-if="isLoadFailed">
         <p class="fees__error-msg">

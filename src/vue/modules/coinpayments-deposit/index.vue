@@ -70,7 +70,7 @@ export default {
     },
     concatPendingIssuances (records) {
       this.pendingIssuances = this.pendingIssuances.concat(records
-        .map(item => new IssuanceRecord(item))
+        .map(item => new IssuanceRecord(item)),
       )
     },
     async loadFirstPage () {

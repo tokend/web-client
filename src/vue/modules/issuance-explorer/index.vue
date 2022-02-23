@@ -1,11 +1,9 @@
 <template>
   <div class="issuance-explorer">
-    <template>
-      <issuances-table
-        :issuances="issuances"
-        :is-loaded="isLoaded"
-      />
-    </template>
+    <issuances-table
+      :issuances="issuances"
+      :is-loaded="isLoaded"
+    />
 
     <template v-if="isLoadFailed">
       <p class="issuance-explorer__error-msg">

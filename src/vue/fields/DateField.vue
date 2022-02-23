@@ -154,14 +154,14 @@ export default {
 
     const hooks = {
       [FLATPICKR_HOOKS.onClose]: this.arrayify(
-        safeConfig[FLATPICKR_HOOKS.onClose]
+        safeConfig[FLATPICKR_HOOKS.onClose],
       ).concat(
-        (...args) => this.onClose(...args)
+        (...args) => this.onClose(...args),
       ),
       [FLATPICKR_HOOKS.onOpen]: this.arrayify(
-        safeConfig[FLATPICKR_HOOKS.onOpen]
+        safeConfig[FLATPICKR_HOOKS.onOpen],
       ).concat(
-        (...args) => this.onOpen(...args)
+        (...args) => this.onOpen(...args),
       ),
     }
 

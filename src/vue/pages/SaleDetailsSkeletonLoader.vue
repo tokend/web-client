@@ -1,17 +1,15 @@
 <template>
   <div class="sale-details-skeleton-loader">
     <top-bar>
-      <template>
-        <skeleton-loader
-          template="smallString"
-        />
-        <skeleton-loader
-          template="smallString"
-        />
-        <skeleton-loader
-          template="smallString"
-        />
-      </template>
+      <skeleton-loader
+        template="smallString"
+      />
+      <skeleton-loader
+        template="smallString"
+      />
+      <skeleton-loader
+        template="smallString"
+      />
     </top-bar>
 
     <div class="sale-details-skeleton-loader__title">
@@ -67,19 +65,15 @@
             />
           </div>
 
-          <template>
-            <skeleton-loader
-              class="sale-state-widget__days-to-go"
-              template="bigString"
-            />
-          </template>
+          <skeleton-loader
+            class="sale-state-widget__days-to-go"
+            template="bigString"
+          />
 
-          <template>
-            <skeleton-loader
-              class="sale-state-widget__days-after-end"
-              template="smallString"
-            />
-          </template>
+          <skeleton-loader
+            class="sale-state-widget__days-after-end"
+            template="smallString"
+          />
 
           <skeleton-loader
             class="sale-state-widget__invest-btn"

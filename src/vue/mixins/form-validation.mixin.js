@@ -80,7 +80,7 @@ export default {
 
       for (const rule of Object.keys(field.$params)) {
         if (!field[rule]) {
-          return globalize(`validation.field-error`, {
+          return globalize('validation.field-error', {
             context: rule,
             ...options,
           })

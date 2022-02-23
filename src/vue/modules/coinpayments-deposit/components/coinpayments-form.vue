@@ -112,7 +112,7 @@ export default {
           {
             amount: this.form.amount,
             receiver: this.balanceId,
-          }
+          },
         )
         this.depositDetails.amount = response.amount || response.data.amount
         this.depositDetails.address = response.address || response.data.amount

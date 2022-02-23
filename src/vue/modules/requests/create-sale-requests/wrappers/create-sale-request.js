@@ -11,10 +11,10 @@ export class CreateSaleRequest extends Request {
 
     this.baseAsset = safeGet(record, 'requestDetails.baseAsset.id')
     this.defaultQuoteAsset = safeGet(
-      record, 'requestDetails.defaultQuoteAsset.id'
+      record, 'requestDetails.defaultQuoteAsset.id',
     )
     this.baseAssetForHardCap = safeGet(
-      record, 'requestDetails.baseAssetForHardCap'
+      record, 'requestDetails.baseAssetForHardCap',
     )
     this.quoteAssets = this._getQuoteAssets(record)
 
@@ -25,16 +25,16 @@ export class CreateSaleRequest extends Request {
     this.hardCap = safeGet(record, 'requestDetails.hardCap')
 
     this.description = safeGet(
-      record, 'requestDetails.creatorDetails.description'
+      record, 'requestDetails.creatorDetails.description',
     )
     this.shortDescription = safeGet(
-      record, 'requestDetails.creatorDetails.shortDescription'
+      record, 'requestDetails.creatorDetails.shortDescription',
     )
 
     this.logo = safeGet(record, 'requestDetails.creatorDetails.logo')
 
     this.youtubeVideoId = safeGet(
-      record, 'requestDetails.creatorDetails.youtubeVideoId'
+      record, 'requestDetails.creatorDetails.youtubeVideoId',
     )
 
     this.definitionType = safeGet(record, 'requestDetails.accessDefinitionType.value')

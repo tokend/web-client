@@ -87,7 +87,7 @@ export default {
         currency: this.assetCode,
         value: MathUtil.add(
           this.effect.fixedFee,
-          this.effect.calculatedPercentFee
+          this.effect.calculatedPercentFee,
         ),
       }
     },

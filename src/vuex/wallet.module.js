@@ -31,7 +31,7 @@ export const mutations = {
   [vuexTypes.SET_ENCRYPTED_SECRET_SEED] (state, { secretSeed, sessionKey }) {
     const encryptedSecretSeed = encryptSecretSeed(
       secretSeed,
-      sessionKey
+      sessionKey,
     )
     state.wallet.encryptedSecretSeed = encryptedSecretSeed
   },
@@ -55,7 +55,7 @@ export const actions = {
       wallet.accountId,
       wallet.id,
       wallet.sessionId,
-      wallet.sessionKey
+      wallet.sessionKey,
     )
     useWallet(newWallet)
     commit(vuexTypes.SET_WALLET, newWallet)
@@ -70,7 +70,7 @@ export const actions = {
     const session = await dispatch(vuexTypes.GET_SESSION)
     const decryptedSecretSeed = decryptSecretSeed(
       encryptedSecretSeed,
-      session.encryptionKey
+      session.encryptionKey,
     )
     return decryptedSecretSeed
   },

@@ -3,7 +3,7 @@ import { loadAllResponsePages } from '@/js/helpers/api-helpers'
 
 class KeyValues {
   async load () {
-    const response = await api.get(`/v3/key_values`)
+    const response = await api.get('/v3/key_values')
     const kvArray = await loadAllResponsePages(response)
     const kvGet = this._makeGetter(kvArray)
 

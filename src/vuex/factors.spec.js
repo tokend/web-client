@@ -44,7 +44,7 @@ describe('factors.module', () => {
 
     it('LOAD_FACTORS should commit the proper set of mutations', async () => {
       sinon.stub(api, 'getWithSignature').resolves(
-        MockWrapper.makeJsonapiResponse(factorsJSON)
+        MockWrapper.makeJsonapiResponse(factorsJSON),
       )
 
       const expectedMutations = {

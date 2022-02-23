@@ -174,7 +174,7 @@ export default {
       this.isDropdownOpen = true
       this.destructClickOutsideHandler = handleClickOutside(
         '.passport',
-        this.closeDropdown
+        this.closeDropdown,
       )
     },
 

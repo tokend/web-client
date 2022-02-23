@@ -82,7 +82,7 @@ describe('CollectionLoader component test', () => {
         await wrapper.vm.loadPage('event', spy)
 
         expect(wrapper.vm.isCollectionFetched).to.be.false
-      }
+      },
     )
 
     it('sets isCollectionFetched to true when data is fully loaded',
@@ -99,7 +99,7 @@ describe('CollectionLoader component test', () => {
         await wrapper.vm.loadPage('event', spy)
 
         expect(wrapper.vm.isCollectionFetched).to.be.true
-      }
+      },
     )
   })
 

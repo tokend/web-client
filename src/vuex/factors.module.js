@@ -38,17 +38,17 @@ export const actions = {
 export const getters = {
   [vuexTypes.factors]: state => state.factors,
   [vuexTypes.factorsTotp]: state => state.factors.filter(
-    factor => factor.type === FACTOR_TYPES.totp
+    factor => factor.type === FACTOR_TYPES.totp,
   ),
   [vuexTypes.factorsPassword]: state => state.factors.filter(
-    factor => factor.type === FACTOR_TYPES.password
+    factor => factor.type === FACTOR_TYPES.password,
   ),
   [vuexTypes.factorsEmail]: state => state.factors.filter(
-    factor => factor.type === FACTOR_TYPES.email
+    factor => factor.type === FACTOR_TYPES.email,
   ),
   [vuexTypes.factorsTotpEnabled]: (_, getters) =>
     getters[vuexTypes.factorsTotp].filter(
-      factor => factor.priority === ENABLED_FACTOR_PRIORITY
+      factor => factor.priority === ENABLED_FACTOR_PRIORITY,
     ),
   [vuexTypes.isTotpEnabled]: (_, getters) =>
     !!getters[vuexTypes.factorsTotpEnabled].length,

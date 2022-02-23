@@ -186,7 +186,7 @@ export default {
         invitations.map(item => {
           item.shouldBeRemoved = false
           return item
-        })
+        }),
       )
     },
 

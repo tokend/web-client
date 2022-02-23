@@ -69,28 +69,28 @@ export default {
 
     verificationState () {
       switch (true) {
-        case this.isAccountBlocked: return VERIFICATION_STATES.blocked
-        case this.kycRequest.isReset: return VERIFICATION_STATES.reset
-        case this.kycRequest.isApproved: return VERIFICATION_STATES.approved
-        case this.kycRequest.isPending: return VERIFICATION_STATES.pending
-        case this.kycRequest.isRejected: return VERIFICATION_STATES.rejected
-        case this.kycRequest.isPermanentlyRejected:
-          return VERIFICATION_STATES.permanentlyRejected
-        default: return ''
+      case this.isAccountBlocked: return VERIFICATION_STATES.blocked
+      case this.kycRequest.isReset: return VERIFICATION_STATES.reset
+      case this.kycRequest.isApproved: return VERIFICATION_STATES.approved
+      case this.kycRequest.isPending: return VERIFICATION_STATES.pending
+      case this.kycRequest.isRejected: return VERIFICATION_STATES.rejected
+      case this.kycRequest.isPermanentlyRejected:
+        return VERIFICATION_STATES.permanentlyRejected
+      default: return ''
       }
     },
 
     verificationReason () {
       switch (this.verificationState) {
-        case VERIFICATION_STATES.blocked:
-          return this.kycRequest.blockReason
-        case VERIFICATION_STATES.reset:
-          return this.kycRequest.resetReason
-        case VERIFICATION_STATES.rejected:
-        case VERIFICATION_STATES.permanentlyRejected:
-          return this.kycRequest.rejectReason
-        default:
-          return ''
+      case VERIFICATION_STATES.blocked:
+        return this.kycRequest.blockReason
+      case VERIFICATION_STATES.reset:
+        return this.kycRequest.resetReason
+      case VERIFICATION_STATES.rejected:
+      case VERIFICATION_STATES.permanentlyRejected:
+        return this.kycRequest.rejectReason
+      default:
+        return ''
       }
     },
 

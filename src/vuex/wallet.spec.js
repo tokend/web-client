@@ -14,7 +14,7 @@ describe('wallet.module', () => {
     mockSeed,
     'GA7QET54X3WDJPMGRKTE32WKM4NRLKKKHHI74NXNMNTQR3VONA3XGIBP',
     '01DES43BFYPNHGRWY4TZKNC60W',
-    '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
+    '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c',
   )
 
   afterEach(() => {

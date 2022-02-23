@@ -283,7 +283,7 @@ export default {
       if (this.form.price && this.form.baseAmount) {
         let quoteAmount = MathUtil.multiply(
           this.form.price,
-          this.form.baseAmount
+          this.form.baseAmount,
         )
         this.former.setAttr('quoteAmount', quoteAmount)
         return quoteAmount
@@ -311,7 +311,7 @@ export default {
       this.form.baseAmount = this.former.attrs.baseAmount
       this.form.price = String(MathUtil.divide(
         +this.former.attrs.quoteAmount,
-        +this.former.attrs.baseAmount
+        +this.former.attrs.baseAmount,
       ))
 
       await this.loadBalances()
@@ -333,7 +333,7 @@ export default {
       if (!this.feesDebouncedRequest) {
         this.feesDebouncedRequest = debounce(
           () => this.loadFees(),
-          FEES_LOADING_DELAY_MS
+          FEES_LOADING_DELAY_MS,
         )
       }
       return this.feesDebouncedRequest()
@@ -361,21 +361,21 @@ export default {
       this.isFormSubmitting = true
       try {
         switch (this.submitMode) {
-          case SUBMIT_MODES.cancel:
-            const opCancel = buildOpCancel(this.offer)
-            await api.postOperations(opCancel)
-            Bus.success('your-trade-offer-form.order-canceled-msg')
-            this.$emit(EVENTS.offerCanceled)
+        case SUBMIT_MODES.cancel:
+          const opCancel = buildOpCancel(this.offer)
+          await api.postOperations(opCancel)
+          Bus.success('your-trade-offer-form.order-canceled-msg')
+          this.$emit(EVENTS.offerCanceled)
 
-            break
-          case SUBMIT_MODES.update:
-            const opCancelOp = buildOpCancel(this.offer)
-            const opCreateOp = await this.former.buildOpCreate()
-            await api.postOperations(opCancelOp, opCreateOp)
-            Bus.success('your-trade-offer-form.order-updated-msg')
-            this.$emit(EVENTS.offerUpdated)
+          break
+        case SUBMIT_MODES.update:
+          const opCancelOp = buildOpCancel(this.offer)
+          const opCreateOp = await this.former.buildOpCreate()
+          await api.postOperations(opCancelOp, opCreateOp)
+          Bus.success('your-trade-offer-form.order-updated-msg')
+          this.$emit(EVENTS.offerUpdated)
 
-            break
+          break
         }
       } catch (e) {
         ErrorHandler.process(e)

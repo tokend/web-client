@@ -53,20 +53,20 @@ export class KycCorporateFormer extends Former {
   /** @param {KycCorporateRecord|KycRequestRecord|KycRecoveryRequestRecord} source */
   populate (source) {
     switch (source.constructor) {
-      case KycCorporateRecord:
-        this._populateFromRecord(source)
-        break
+    case KycCorporateRecord:
+      this._populateFromRecord(source)
+      break
 
-      case KycRequestRecord:
-        this._populateFromRequest(source)
-        break
+    case KycRequestRecord:
+      this._populateFromRequest(source)
+      break
 
-      case KycRecoveryRequestRecord:
-        this._populateFromRecoveryRequest(source)
-        break
+    case KycRecoveryRequestRecord:
+      this._populateFromRecoveryRequest(source)
+      break
 
-      default:
-        throw new TypeError('Unknown source type')
+    default:
+      throw new TypeError('Unknown source type')
     }
     return this
   }

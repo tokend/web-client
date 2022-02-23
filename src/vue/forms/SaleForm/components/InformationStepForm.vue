@@ -333,19 +333,19 @@ export default {
         softCap: {
           required,
           softCapMoreThanHardCap: softCapMoreThanHardCap(
-            config.MIN_AMOUNT, this.form.hardCap
+            config.MIN_AMOUNT, this.form.hardCap,
           ),
         },
         hardCap: {
           required,
           hardCapLessThanSoftCap: hardCapLessThanSoftCap(
-            this.form.softCap, config.MAX_AMOUNT
+            this.form.softCap, config.MAX_AMOUNT,
           ),
         },
         assetsToSell: {
           required,
           noMoreThanAvailableForIssuance: maxValueBig(
-            this.availableForIssuance
+            this.availableForIssuance,
           ),
         },
         quoteAssets: { requiredAtLeastOne },
@@ -363,7 +363,7 @@ export default {
     priceForAsset () {
       let value = MathUtil.divide(
         this.form.hardCap,
-        this.form.assetsToSell
+        this.form.assetsToSell,
       )
       return {
         value: isNaN(value) ? 0 : value,
@@ -478,7 +478,7 @@ export default {
     getQuoteAssetsAndPrices () {
       const basePrice = MathUtil.divide(
         this.form.hardCap,
-        this.form.assetsToSell
+        this.form.assetsToSell,
       )
 
       let quoteAssetsCodesAndPrices =
@@ -496,7 +496,7 @@ export default {
       if (capAssetCode !== assetCode) {
         if (this.form.type === SALE_TYPES.immediate) {
           let assetPair = this.assetPairs.filter(item =>
-            item.baseAndQuote === `${assetCode}/${capAssetCode}`
+            item.baseAndQuote === `${assetCode}/${capAssetCode}`,
           )
           result = MathUtil.divide(basePrice, assetPair[0].price)
         } else {

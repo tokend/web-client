@@ -121,22 +121,22 @@ export default {
       let result
 
       switch (this.validationType) {
-        case AMOUNT_VALIDATION_TYPE.outgoing:
-          result = this.balance
-          break
-        case AMOUNT_VALIDATION_TYPE.incoming:
-        case AMOUNT_VALIDATION_TYPE.issuance:
-          result = this.assetRecord.availableForIssuance
-          break
-        case AMOUNT_VALIDATION_TYPE.atomicSwap:
-          result = MathUtil.add(
-            this.assetRecord.availableForIssuance, this.balance
-          )
-          break
+      case AMOUNT_VALIDATION_TYPE.outgoing:
+        result = this.balance
+        break
+      case AMOUNT_VALIDATION_TYPE.incoming:
+      case AMOUNT_VALIDATION_TYPE.issuance:
+        result = this.assetRecord.availableForIssuance
+        break
+      case AMOUNT_VALIDATION_TYPE.atomicSwap:
+        result = MathUtil.add(
+          this.assetRecord.availableForIssuance, this.balance,
+        )
+        break
 
-        default:
-          result = config.MAX_AMOUNT
-          break
+      default:
+        result = config.MAX_AMOUNT
+        break
       }
 
       return MathUtil.compare(this.max, result) >= 0

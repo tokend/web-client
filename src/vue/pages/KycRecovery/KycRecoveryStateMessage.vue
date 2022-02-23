@@ -44,54 +44,54 @@ export default {
     kycRecoveryTitleTranslationId () {
       const request = this.kycRecoveryRequest
       switch (true) {
-        case request.isPermanentlyRejected:
-          return 'kyc-recovery-state-message.permanently-rejected-title'
-        case request.isPending:
-          return 'kyc-recovery-state-message.pending-title'
-        case request.isApproved:
-          return 'kyc-recovery-state-message.approved-title'
-        case request.isRejected:
-          return 'kyc-recovery-state-message.rejected-title'
-        default:
-          const errMsg = `Unknown kyc recovery state. got: ${request.stateI}`
-          ErrorHandler.processWithoutFeedback(new Error(errMsg))
-          return ''
+      case request.isPermanentlyRejected:
+        return 'kyc-recovery-state-message.permanently-rejected-title'
+      case request.isPending:
+        return 'kyc-recovery-state-message.pending-title'
+      case request.isApproved:
+        return 'kyc-recovery-state-message.approved-title'
+      case request.isRejected:
+        return 'kyc-recovery-state-message.rejected-title'
+      default:
+        const errMsg = `Unknown kyc recovery state. got: ${request.stateI}`
+        ErrorHandler.processWithoutFeedback(new Error(errMsg))
+        return ''
       }
     },
 
     kycRecoveryDescriptionTranslationId () {
       const request = this.kycRecoveryRequest
       switch (true) {
-        case request.isPermanentlyRejected:
-          return 'kyc-recovery-state-message.permanently-rejected-desc'
-        case request.isPending:
-          return 'kyc-recovery-state-message.pending-desc'
-        case request.isApproved:
-          return 'kyc-recovery-state-message.approved-desc'
-        case request.isRejected:
-          return 'kyc-recovery-state-message.rejected-desc'
-        default:
-          const errMsg = `Unknown kyc recovery state. got: ${request.stateI}`
-          ErrorHandler.processWithoutFeedback(new Error(errMsg))
-          return ''
+      case request.isPermanentlyRejected:
+        return 'kyc-recovery-state-message.permanently-rejected-desc'
+      case request.isPending:
+        return 'kyc-recovery-state-message.pending-desc'
+      case request.isApproved:
+        return 'kyc-recovery-state-message.approved-desc'
+      case request.isRejected:
+        return 'kyc-recovery-state-message.rejected-desc'
+      default:
+        const errMsg = `Unknown kyc recovery state. got: ${request.stateI}`
+        ErrorHandler.processWithoutFeedback(new Error(errMsg))
+        return ''
       }
     },
 
     kycRecoveryReasonTranslationId () {
       const request = this.kycRecoveryRequest
       switch (true) {
-        case request.isPermanentlyRejected:
-          return 'kyc-recovery-state-message.permanently-rejected-reason'
-        case request.isPending:
-          return 'kyc-recovery-state-message.pending-reason'
-        case request.isApproved:
-          return 'kyc-recovery-state-message.approved-reason'
-        case request.isRejected:
-          return 'kyc-recovery-state-message.rejected-reason'
-        default:
-          const errMsg = `Unknown kyc recovery state. got: ${request.stateI}`
-          ErrorHandler.processWithoutFeedback(new Error(errMsg))
-          return ''
+      case request.isPermanentlyRejected:
+        return 'kyc-recovery-state-message.permanently-rejected-reason'
+      case request.isPending:
+        return 'kyc-recovery-state-message.pending-reason'
+      case request.isApproved:
+        return 'kyc-recovery-state-message.approved-reason'
+      case request.isRejected:
+        return 'kyc-recovery-state-message.rejected-reason'
+      default:
+        const errMsg = `Unknown kyc recovery state. got: ${request.stateI}`
+        ErrorHandler.processWithoutFeedback(new Error(errMsg))
+        return ''
       }
     },
   },

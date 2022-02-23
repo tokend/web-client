@@ -72,7 +72,7 @@ export const rootModule = {
   },
   getters: {
     [vuexTypes.isLoggedIn]: (_, getters) => !_isEmpty(
-      getters[vuexTypes.account]
+      getters[vuexTypes.account],
     ),
   },
   state: {},

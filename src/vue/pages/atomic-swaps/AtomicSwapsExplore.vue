@@ -161,7 +161,7 @@ export default {
 
     concatList (newChunk) {
       this.list = this.list.concat(
-        newChunk.map(i => new AtomicSwapRecord(i))
+        newChunk.map(i => new AtomicSwapRecord(i)),
       )
     },
 

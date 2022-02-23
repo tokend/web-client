@@ -117,7 +117,7 @@ export class MathUtil {
 
     const num = new BigNumber(value)
     const result = new BigNumber(
-      num.toFixed(config.decimalPlaces, ROUNDING_MODES.ROUND_HALF_UP)
+      num.toFixed(config.decimalPlaces, ROUNDING_MODES.ROUND_HALF_UP),
     )
 
     return result.toFormat()

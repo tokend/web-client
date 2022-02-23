@@ -1,22 +1,20 @@
 <template>
   <div>
-    <template>
-      <drawer :is-shown.sync="isDrawerShown">
-        <template slot="heading">
-          {{ 'poll-requests.details-title' | globalize }}
-        </template>
-        <request-viewer
-          :request="selectedRequest"
-          @cancel="closeDrawerAndUpdateList()"
-        />
-      </drawer>
-
-      <requests-table
-        :requests="requests"
-        :is-loaded="isLoaded"
-        @select="showRequestDetails"
+    <drawer :is-shown.sync="isDrawerShown">
+      <template slot="heading">
+        {{ 'poll-requests.details-title' | globalize }}
+      </template>
+      <request-viewer
+        :request="selectedRequest"
+        @cancel="closeDrawerAndUpdateList()"
       />
-    </template>
+    </drawer>
+
+    <requests-table
+      :requests="requests"
+      :is-loaded="isLoaded"
+      @select="showRequestDetails"
+    />
 
     <p v-if="isLoadingFailed">
       {{ 'poll-requests.loading-error-msg' | globalize }}

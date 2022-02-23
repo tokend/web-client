@@ -84,7 +84,7 @@ export default {
 
   mounted () {
     this.customSelectInstance = customSelect(
-      `#select-${this._uid}`, CUSTOM_SELECT_CONFIG
+      `#select-${this._uid}`, CUSTOM_SELECT_CONFIG,
     )[0]
 
     if (this.customSelectInstance && this.customSelectInstance.container) {
@@ -110,30 +110,30 @@ export default {
     addCustomSelectEvents () {
       this.customSelectInstance.container.addEventListener(
         'custom-select:open',
-        e => { this.isListOpened = true }
+        e => { this.isListOpened = true },
       )
       this.customSelectInstance.container.addEventListener(
         'custom-select:close',
-        e => { this.isListOpened = false }
+        e => { this.isListOpened = false },
       )
       this.customSelectInstance.container.addEventListener(
         'keydown',
-        e => { e.preventDefault() }
+        e => { e.preventDefault() },
       )
     },
 
     removeCustomSelectEvents () {
       this.customSelectInstance.container.removeEventListener(
         'custom-select:open',
-        e => { this.isListOpened = true }
+        e => { this.isListOpened = true },
       )
       this.customSelectInstance.container.removeEventListener(
         'custom-select:close',
-        e => { this.isListOpened = false }
+        e => { this.isListOpened = false },
       )
       this.customSelectInstance.container.removeEventListener(
         'keydown',
-        e => { e.preventDefault() }
+        e => { e.preventDefault() },
       )
     },
 

@@ -27,7 +27,7 @@ export class IssuanceFormer extends Former {
     const receiverAccountId = await getReceiverAccountId(attrs.receiver)
     const receiverBalanceId = await getReceiverBalanceId(
       receiverAccountId,
-      attrs.assetCode
+      attrs.assetCode,
     )
     if (!receiverBalanceId) {
       throw new errors.BalanceNotFoundError()

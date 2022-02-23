@@ -1,35 +1,33 @@
 <template>
   <div class="update-asset-requests">
-    <template>
-      <drawer :is-shown.sync="isDrawerShown">
-        <template v-if="isAssetFormShown">
-          <template slot="heading">
-            {{ 'update-asset-requests.update-asset-title' | globalize }}
-          </template>
-          <asset-form
-            :former="former"
-            @submitted="onRequestUpdate()"
-          />
+    <drawer :is-shown.sync="isDrawerShown">
+      <template v-if="isAssetFormShown">
+        <template slot="heading">
+          {{ 'update-asset-requests.update-asset-title' | globalize }}
         </template>
+        <asset-form
+          :former="former"
+          @submitted="onRequestUpdate()"
+        />
+      </template>
 
-        <template v-else>
-          <template slot="heading">
-            {{ 'update-asset-requests.details-title' | globalize }}
-          </template>
-          <request-viewer
-            :request="selectedRequest"
-            @update-click="showUpdateForm"
-            @cancel="onRequestUpdate()"
-          />
+      <template v-else>
+        <template slot="heading">
+          {{ 'update-asset-requests.details-title' | globalize }}
         </template>
-      </drawer>
+        <request-viewer
+          :request="selectedRequest"
+          @update-click="showUpdateForm"
+          @cancel="onRequestUpdate()"
+        />
+      </template>
+    </drawer>
 
-      <requests-table
-        :requests="requests"
-        :is-loaded="isLoaded"
-        @select="showRequestDetails"
-      />
-    </template>
+    <requests-table
+      :requests="requests"
+      :is-loaded="isLoaded"
+      @select="showRequestDetails"
+    />
 
     <p v-if="isLoadingFailed">
       {{ 'update-asset-requests.loading-error-msg' | globalize }}

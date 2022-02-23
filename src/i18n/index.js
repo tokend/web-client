@@ -49,26 +49,26 @@ class I18n {
     // TODO: replace require.ensures with imports
 
     switch (lang) {
-      case 'en':
-        result = _merge(
-          await require.ensure([], require => require('./resources/en')),
-          await require.ensure([], require => require('./resources/en.terms')),
-          await require.ensure([], require => require('./resources/en.pre-issuance-guide')),
-          await require.ensure([], require => require('./resources/en.countries')),
-        )
-        break
+    case 'en':
+      result = _merge(
+        await require.ensure([], require => require('./resources/en')),
+        await require.ensure([], require => require('./resources/en.terms')),
+        await require.ensure([], require => require('./resources/en.pre-issuance-guide')),
+        await require.ensure([], require => require('./resources/en.countries')),
+      )
+      break
 
-      case 'ru':
-        result = _merge(
-          await require.ensure([], require => require('./resources/ru')),
-          await require.ensure([], require => require('./resources/ru.terms')),
-          await require.ensure([], require => require('./resources/ru.pre-issuance-guide')),
-          await require.ensure([], require => require('./resources/ru.countries')),
-        )
-        break
+    case 'ru':
+      result = _merge(
+        await require.ensure([], require => require('./resources/ru')),
+        await require.ensure([], require => require('./resources/ru.terms')),
+        await require.ensure([], require => require('./resources/ru.pre-issuance-guide')),
+        await require.ensure([], require => require('./resources/ru.countries')),
+      )
+      break
 
-      default:
-        throw new Error(`I18n._loadResources(): unknown language: ${lang}`)
+    default:
+      throw new Error(`I18n._loadResources(): unknown language: ${lang}`)
     }
 
     return result
@@ -80,19 +80,19 @@ class I18n {
 
       if (parsed.translations) {
         this._i18nextInstance.addResourceBundle(
-          lang, 'translation', parsed.translations, true, true
+          lang, 'translation', parsed.translations, true, true,
         )
       }
 
       if (parsed.config) {
         this._i18nextInstance.addResourceBundle(
-          lang, 'config', parsed.config, true, true
+          lang, 'config', parsed.config, true, true,
         )
       }
 
       if (parsed.countries) {
         this._i18nextInstance.addResourceBundle(
-          lang, 'countries', parsed.countries, true, true
+          lang, 'countries', parsed.countries, true, true,
         )
       }
     }
@@ -169,45 +169,45 @@ class I18n {
             .getResourceBundle(this.language, 'config')
 
           switch (format.toLowerCase()) {
-            case 'date':
-              return moment(param)
-                .format(_get(lngConfig, 'date.presets.datetime'))
-            case 'dmy':
-              return moment(param)
-                .format(_get(lngConfig, 'date.presets.dmy'))
-            case 'dmyt':
-              return moment(param)
-                .format(_get(lngConfig, 'date.presets.dmyt'))
-            case 'calendar':
-              return moment(param)
-                .calendar(null, _get(lngConfig, 'date.calendar'))
-            case 'calendar-inline':
-              return moment(param)
-                .calendar(null, _get(lngConfig, 'date.calendarInline'))
-            case 'money':
-              const value = (_isObject(param) ? param.value : param) || '0'
-              const defaultFormat =
+          case 'date':
+            return moment(param)
+              .format(_get(lngConfig, 'date.presets.datetime'))
+          case 'dmy':
+            return moment(param)
+              .format(_get(lngConfig, 'date.presets.dmy'))
+          case 'dmyt':
+            return moment(param)
+              .format(_get(lngConfig, 'date.presets.dmyt'))
+          case 'calendar':
+            return moment(param)
+              .calendar(null, _get(lngConfig, 'date.calendar'))
+          case 'calendar-inline':
+            return moment(param)
+              .calendar(null, _get(lngConfig, 'date.calendarInline'))
+          case 'money':
+            const value = (_isObject(param) ? param.value : param) || '0'
+            const defaultFormat =
                 _get(lngConfig, 'number.formats.amounts.default')
 
-              const result = MathUtil.format(value, defaultFormat)
-              return param.currency
-                ? result.concat(' ', param.currency)
-                : result
-            case 'number':
-              return MathUtil
-                .format(param, _get(lngConfig, 'number.formats.default'))
-            case 'integer':
-              return MathUtil
-                .format(param, _get(lngConfig, 'number.formats.integer'))
-            case 'percent':
-              const convertedPercent = MathUtil.multiply(param, 100)
-              return MathUtil.format(
-                convertedPercent,
-                _get(lngConfig, 'number.formats.percent')
-              )
-            default:
-              console.warn(`Unknown format: ${format}, skipping…`)
-              return param
+            const result = MathUtil.format(value, defaultFormat)
+            return param.currency
+              ? result.concat(' ', param.currency)
+              : result
+          case 'number':
+            return MathUtil
+              .format(param, _get(lngConfig, 'number.formats.default'))
+          case 'integer':
+            return MathUtil
+              .format(param, _get(lngConfig, 'number.formats.integer'))
+          case 'percent':
+            const convertedPercent = MathUtil.multiply(param, 100)
+            return MathUtil.format(
+              convertedPercent,
+              _get(lngConfig, 'number.formats.percent'),
+            )
+          default:
+            console.warn(`Unknown format: ${format}, skipping…`)
+            return param
           }
         },
       },

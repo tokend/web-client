@@ -92,21 +92,21 @@ function verificationGuard (to, from, next) {
   const isToCorporateRoute = to.name === vueRoutes.verificationCorporate.name
 
   switch (true) {
-    case isRoleUnset(kycRequest):
-      next()
-      break
+  case isRoleUnset(kycRequest):
+    next()
+    break
 
-    case kycRequest.isGeneralKycRecord && !isToGeneralRoute:
-      next(vueRoutes.verificationGeneral)
-      break
+  case kycRequest.isGeneralKycRecord && !isToGeneralRoute:
+    next(vueRoutes.verificationGeneral)
+    break
 
-    case kycRequest.isCorporateKycRecord && !isToCorporateRoute:
-      next(vueRoutes.verificationCorporate)
-      break
+  case kycRequest.isCorporateKycRecord && !isToCorporateRoute:
+    next(vueRoutes.verificationCorporate)
+    break
 
-    default:
-      next()
-      break
+  default:
+    next()
+    break
   }
 }
 
@@ -115,6 +115,14 @@ export default {
   components: {
     Loader,
     VerificationStateMessage,
+  },
+
+  async beforeRouteEnter (to, from, next) {
+    verificationGuard(to, from, next)
+  },
+
+  async beforeRouteUpdate (to, from, next) {
+    verificationGuard(to, from, next)
   },
 
   data: _ => ({
@@ -136,14 +144,6 @@ export default {
     isRoleChangeable () {
       return isRoleUnset(this.kycRequest)
     },
-  },
-
-  async beforeRouteEnter (to, from, next) {
-    verificationGuard(to, from, next)
-  },
-
-  async beforeRouteUpdate (to, from, next) {
-    verificationGuard(to, from, next)
   },
 
   async created () {

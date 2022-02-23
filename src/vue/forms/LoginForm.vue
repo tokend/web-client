@@ -135,40 +135,40 @@ export default {
       if (this.tfaError) {
         await factorsManager.verifyTotpFactor(
           this.tfaError,
-          this.form.tfaCode
+          this.form.tfaCode,
         )
       }
     },
     async processAuthError (error) {
       switch (error.constructor) {
-        case errors.VerificationRequiredError:
-          await this.$router.push({
-            ...vueRoutes.verify,
-            params: {
-              paramsBase64: btoa(JSON.stringify({
-                walletId: error.meta.walletId,
-                email: this.form.email.toLowerCase(),
-              })),
-            },
-          })
-          break
-        case errors.TFARequiredError:
-          this.tfaError = error
-          break
-        case errors.NotFoundError:
-          ErrorHandler.process(
-            error,
-            'auth-pages.wrong-email-or-password-err'
-          )
-          break
-        case errors.BadRequestError:
-          ErrorHandler.process(
-            error,
-            'auth-pages.wrong-tfa-code-err'
-          )
-          break
-        default:
-          ErrorHandler.process(error)
+      case errors.VerificationRequiredError:
+        await this.$router.push({
+          ...vueRoutes.verify,
+          params: {
+            paramsBase64: btoa(JSON.stringify({
+              walletId: error.meta.walletId,
+              email: this.form.email.toLowerCase(),
+            })),
+          },
+        })
+        break
+      case errors.TFARequiredError:
+        this.tfaError = error
+        break
+      case errors.NotFoundError:
+        ErrorHandler.process(
+          error,
+          'auth-pages.wrong-email-or-password-err',
+        )
+        break
+      case errors.BadRequestError:
+        ErrorHandler.process(
+          error,
+          'auth-pages.wrong-tfa-code-err',
+        )
+        break
+      default:
+        ErrorHandler.process(error)
       }
     },
   },

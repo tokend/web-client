@@ -13,7 +13,7 @@ const localVue = createLocalVue()
 localVue.use(Vuelidate)
 
 const Component = {
-  template: `<div></div>`,
+  template: '<div></div>',
   data: _ => ({
     form: {
       firstName: '',

@@ -41,6 +41,13 @@ import { walletsManager } from '@/api'
 export default {
   name: 'verify',
   mixins: [FormMixin],
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      if (from.name === vueRoutes.login.name) {
+        walletsManager.resendEmail(vm.walletId)
+      }
+    })
+  },
   props: {
     paramsBase64: {
       type: String,
@@ -53,13 +60,6 @@ export default {
     from: '',
     vueRoutes,
   }),
-  beforeRouteEnter (to, from, next) {
-    next(vm => {
-      if (from.name === vueRoutes.login.name) {
-        walletsManager.resendEmail(vm.walletId)
-      }
-    })
-  },
   created () {
     const params = JSON.parse(atob(this.paramsBase64))
     this.email = params.email

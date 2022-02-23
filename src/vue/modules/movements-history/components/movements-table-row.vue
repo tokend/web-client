@@ -82,7 +82,7 @@ export default {
       let value
       const fee = MathUtil.add(
         movement.effect.calculatedPercentFee,
-        movement.effect.fixedFee
+        movement.effect.fixedFee,
       )
       if (movement.isIncoming) {
         value = MathUtil.subtract(movement.effect.amount, fee)

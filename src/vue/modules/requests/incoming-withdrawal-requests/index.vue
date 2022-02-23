@@ -1,22 +1,20 @@
 <template>
   <div class="incoming-withdrawal-requests">
-    <template>
-      <drawer :is-shown.sync="isDrawerShown">
-        <template slot="heading">
-          {{ 'incoming-withdrawal-requests.details-title' | globalize }}
-        </template>
-        <request-viewer
-          :request="selectedRequest"
-          @request-updated="closeDrawerAndUpdateList()"
-        />
-      </drawer>
-
-      <requests-table
-        :requests="requests"
-        :is-loaded="isLoaded"
-        @select="showRequestDetails"
+    <drawer :is-shown.sync="isDrawerShown">
+      <template slot="heading">
+        {{ 'incoming-withdrawal-requests.details-title' | globalize }}
+      </template>
+      <request-viewer
+        :request="selectedRequest"
+        @request-updated="closeDrawerAndUpdateList()"
       />
-    </template>
+    </drawer>
+
+    <requests-table
+      :requests="requests"
+      :is-loaded="isLoaded"
+      @select="showRequestDetails"
+    />
 
     <p v-if="isLoadingFailed">
       {{ 'incoming-withdrawal-requests.loading-error-msg' | globalize }}

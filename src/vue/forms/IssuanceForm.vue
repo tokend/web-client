@@ -112,7 +112,7 @@
 
             <div class="app__form-row create-issuance-form__total">
               <template v-if="isFeesLoaded">
-                <fees-renderer :fees-collection="fees" />
+                <fees-renderer :fees-collection.sync="fees" />
 
                 <readonly-field
                   :label="'issuance-form.amount-to-receive-msg' | globalize"
@@ -234,7 +234,7 @@ export default {
           required,
           amountRange: amountRange(
             config.MIN_AMOUNT,
-            this.availableForIssuance
+            this.availableForIssuance,
           ),
           maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
         },
@@ -257,7 +257,7 @@ export default {
     receivingAmount () {
       const fees = MathUtil.add(
         this.fees.totalFee.fixed,
-        this.fees.totalFee.calculatedPercent
+        this.fees.totalFee.calculatedPercent,
       )
       return {
         value: MathUtil.subtract(this.form.amount, fees),
@@ -305,7 +305,7 @@ export default {
       if (!this.feesDebouncedRequest) {
         this.feesDebouncedRequest = debounce(
           () => this.loadFees(),
-          FEES_LOADING_DELAY_MS
+          FEES_LOADING_DELAY_MS,
         )
       }
       return this.feesDebouncedRequest()

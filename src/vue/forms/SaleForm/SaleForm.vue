@@ -123,8 +123,8 @@ export default {
         this.former.setAttr('fullDescription',
           await this.getSaleFullDescription(
             this.former.attrs.saleDescriptionBlobId,
-            this.former.attrs.creatorAccountId
-          )
+            this.former.attrs.creatorAccountId,
+          ),
         )
       }
 

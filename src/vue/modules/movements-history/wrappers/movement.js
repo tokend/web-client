@@ -121,49 +121,49 @@ export class Movement {
   static parseOperationDetails (operation) {
     const details = operation.details
     switch (details.type) {
-      case OPERATION_DETAILS_TYPES.payment:
-        return new PaymentOp(details)
-      case OPERATION_DETAILS_TYPES.paymentV2:
-        return new PaymentOp(details)
-      case OPERATION_DETAILS_TYPES.manageOffer:
-        return new ManageOfferOp(details)
-      case OPERATION_DETAILS_TYPES.reviewRequest:
-        return new ReviewRequestOp(details)
-      case OPERATION_DETAILS_TYPES.checkSaleState:
-        return new CheckSaleStateOp(details)
-      case OPERATION_DETAILS_TYPES.manageAssetPair:
-        return new ManageAssetPairOp(details)
-      case OPERATION_DETAILS_TYPES.createAmlAlert:
-        return new CreateAMLAlertRequestOp(details)
-      case OPERATION_DETAILS_TYPES.createIssuanceRequest:
-        return new CreateIssuanceRequestOp(details)
-      case OPERATION_DETAILS_TYPES.createWithdrawalRequest:
-        return new CreateWithdrawRequestOp(details)
-      default:
-        return {}
+    case OPERATION_DETAILS_TYPES.payment:
+      return new PaymentOp(details)
+    case OPERATION_DETAILS_TYPES.paymentV2:
+      return new PaymentOp(details)
+    case OPERATION_DETAILS_TYPES.manageOffer:
+      return new ManageOfferOp(details)
+    case OPERATION_DETAILS_TYPES.reviewRequest:
+      return new ReviewRequestOp(details)
+    case OPERATION_DETAILS_TYPES.checkSaleState:
+      return new CheckSaleStateOp(details)
+    case OPERATION_DETAILS_TYPES.manageAssetPair:
+      return new ManageAssetPairOp(details)
+    case OPERATION_DETAILS_TYPES.createAmlAlert:
+      return new CreateAMLAlertRequestOp(details)
+    case OPERATION_DETAILS_TYPES.createIssuanceRequest:
+      return new CreateIssuanceRequestOp(details)
+    case OPERATION_DETAILS_TYPES.createWithdrawalRequest:
+      return new CreateWithdrawRequestOp(details)
+    default:
+      return {}
     }
   }
 
   static parseEffect (effect) {
     switch (effect.type) {
-      case EFFECT_TYPES.funded:
-        return new FundedEffect(effect)
-      case EFFECT_TYPES.issued:
-        return new IssuedEffect(effect)
-      case EFFECT_TYPES.locked:
-        return new LockedEffect(effect)
-      case EFFECT_TYPES.charged:
-        return new ChargedEffect(effect)
-      case EFFECT_TYPES.matched:
-        return new MatchedEffect(effect)
-      case EFFECT_TYPES.unlocked:
-        return new UnlockedEffect(effect)
-      case EFFECT_TYPES.withdrawn:
-        return new WithdrawnEffect(effect)
-      case EFFECT_TYPES.chargedFromLocked:
-        return new ChargedFromLockedEffect(effect)
-      default:
-        return {}
+    case EFFECT_TYPES.funded:
+      return new FundedEffect(effect)
+    case EFFECT_TYPES.issued:
+      return new IssuedEffect(effect)
+    case EFFECT_TYPES.locked:
+      return new LockedEffect(effect)
+    case EFFECT_TYPES.charged:
+      return new ChargedEffect(effect)
+    case EFFECT_TYPES.matched:
+      return new MatchedEffect(effect)
+    case EFFECT_TYPES.unlocked:
+      return new UnlockedEffect(effect)
+    case EFFECT_TYPES.withdrawn:
+      return new WithdrawnEffect(effect)
+    case EFFECT_TYPES.chargedFromLocked:
+      return new ChargedFromLockedEffect(effect)
+    default:
+      return {}
     }
   }
 }

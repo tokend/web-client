@@ -13,9 +13,9 @@ export function createKycRecord (blob) {
   }
 
   switch (blob.type) {
-    case BLOB_TYPES.kycGeneral: return new KycGeneralRecord(blob)
-    case BLOB_TYPES.kycCorporate: return new KycCorporateRecord(blob)
-    default: return new KycRecord(blob)
+  case BLOB_TYPES.kycGeneral: return new KycGeneralRecord(blob)
+  case BLOB_TYPES.kycCorporate: return new KycCorporateRecord(blob)
+  default: return new KycRecord(blob)
   }
 }
 

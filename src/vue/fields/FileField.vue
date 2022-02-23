@@ -259,7 +259,7 @@ export default {
 
     isValidFileType (file) {
       return Boolean(this.fileExtensions
-        .find(item => item.toUpperCase() === this.getFileExtension(file))
+        .find(item => item.toUpperCase() === this.getFileExtension(file)),
       )
     },
 

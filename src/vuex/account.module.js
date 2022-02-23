@@ -39,7 +39,7 @@ export const actions = {
   },
 
   async [vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS] (
-    { commit, rootGetters, getters }
+    { commit, rootGetters, getters },
   ) {
     const accountId = getters[vuexTypes.accountId]
     const defaultQuoteAsset = rootGetters[vuexTypes.defaultQuoteAsset]
@@ -54,7 +54,7 @@ export const actions = {
     commit(
       vuexTypes.UPDATE_ASSETS,
       balances.map(b => b.asset),
-      { root: true }
+      { root: true },
     )
     commit(vuexTypes.SET_ACCOUNT_BALANCES_DETAILS, balances)
   },

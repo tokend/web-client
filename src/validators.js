@@ -42,12 +42,12 @@ export const maxDate = (maxDate) => value => {
 }
 export const address = (asset) => value => {
   switch (asset) {
-    case ASSETS.btc:
-      return WAValidator.validate(value, ASSETS.btc, 'both')
-    case ASSETS.eth:
-      return /^(0x)?[0-9a-f]{40}$/i.test(value)
-    default:
-      return true
+  case ASSETS.btc:
+    return WAValidator.validate(value, ASSETS.btc, 'both')
+  case ASSETS.eth:
+    return /^(0x)?[0-9a-f]{40}$/i.test(value)
+  default:
+    return true
   }
 }
 export const emailOrAccountId = value => {

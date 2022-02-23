@@ -127,7 +127,7 @@ describe('LoginForm component unit test', () => {
 
       expect(spyLoadWallet
         .withArgs(sinon.match.any, { email, password })
-        .calledOnce
+        .calledOnce,
       )
         .to
         .be

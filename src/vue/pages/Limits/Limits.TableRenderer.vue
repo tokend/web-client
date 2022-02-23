@@ -1,6 +1,10 @@
 <template>
+  <loader
+    v-if="isLoading && !isLoadingFailed"
+    :message-id="'limits-table-renderer.data-loading'"
+  />
   <div
-    v-if="!isLoadingFailed"
+    v-else-if="!isLoadingFailed"
     class="limits-table-renderer__table app__table app__table--with-shadow"
   >
     <table>
@@ -94,10 +98,6 @@
       />
     </table>
   </div>
-  <loader
-    v-else-if="isLoading && !isLoadingFailed"
-    :message-id="'limits-table-renderer.data-loading'"
-  />
   <no-data-message
     v-else-if="!isLoading && isLoadingFailed"
     :title="'limits-table-renderer.loading-failed' | globalize"
@@ -140,7 +140,10 @@ export default {
     SkeletonLoaderTableBody,
   },
   props: {
-    limits: { type: Object, required: true, default: () => [] },
+    limits: {
+      type: Array, /** {@link LimitsRecord} */
+      required: true,
+    },
     isLoading: { type: Boolean, required: true, default: false },
     isLoadingFailed: { type: Boolean, required: true, default: false },
   },

@@ -100,7 +100,7 @@
 
           <div class="app__form-row withdrawal__form-row">
             <template v-if="isFeesLoaded">
-              <fees-renderer :fees-collection="fees" />
+              <fees-renderer :fees-collection.sync="fees" />
             </template>
 
             <template v-else>

@@ -42,7 +42,7 @@ const d3 = Object.assign(
   d3Shape,
   d3Scale,
   d3Transition,
-  d3Ease
+  d3Ease,
 )
 const CLASS_NAME = 'chart'
 export default {
@@ -386,31 +386,31 @@ export default {
           // Change text of the tooltip
           tipPriceText.text(`${formatMoney(nearestPoint.value)} ${this.defaultAsset}`)
           switch (this.scale) {
-            case 'year': {
-              tipTimeTextDD.text(moment(nearestPoint.time).format('DD MMM'))
-              tipTimeTextMM.text(moment(nearestPoint.time).format('YYYY'))
-              break
-            }
-            case 'month': {
-              tipTimeTextDD.text(moment(nearestPoint.time).format('DD'))
-              tipTimeTextMM.text(moment(nearestPoint.time).format('MMM'))
-              break
-            }
-            case 'day': {
-              tipTimeTextDD.text(moment(nearestPoint.time).format('h:mm a'))
-              tipTimeTextMM.text(moment(nearestPoint.time).format('DD MMM'))
-              break
-            }
-            case 'hour': {
-              tipTimeTextDD.text(moment(nearestPoint.time).format('h:mm a'))
-              tipTimeTextMM.text(moment(nearestPoint.time).format('DD MMM'))
-              break
-            }
-            default: {
-              tipTimeTextDD.text(moment(nearestPoint.time).format('DD'))
-              tipTimeTextMM.text(moment(nearestPoint.time).format('MMM'))
-              break
-            }
+          case 'year': {
+            tipTimeTextDD.text(moment(nearestPoint.time).format('DD MMM'))
+            tipTimeTextMM.text(moment(nearestPoint.time).format('YYYY'))
+            break
+          }
+          case 'month': {
+            tipTimeTextDD.text(moment(nearestPoint.time).format('DD'))
+            tipTimeTextMM.text(moment(nearestPoint.time).format('MMM'))
+            break
+          }
+          case 'day': {
+            tipTimeTextDD.text(moment(nearestPoint.time).format('h:mm a'))
+            tipTimeTextMM.text(moment(nearestPoint.time).format('DD MMM'))
+            break
+          }
+          case 'hour': {
+            tipTimeTextDD.text(moment(nearestPoint.time).format('h:mm a'))
+            tipTimeTextMM.text(moment(nearestPoint.time).format('DD MMM'))
+            break
+          }
+          default: {
+            tipTimeTextDD.text(moment(nearestPoint.time).format('DD'))
+            tipTimeTextMM.text(moment(nearestPoint.time).format('MMM'))
+            break
+          }
           }
           if (data[data.indexOf(nearestPoint) - 1]) {
             const prevValue = data[data.indexOf(nearestPoint) - 1].value

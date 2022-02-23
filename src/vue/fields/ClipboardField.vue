@@ -50,7 +50,7 @@ export default {
   }),
   mounted () {
     const btn = document.querySelector(
-      `#clipboard-btn-${this._uid}`
+      `#clipboard-btn-${this._uid}`,
     )
     if (!btn) return
     this.clipboard = new Clipboard(btn)

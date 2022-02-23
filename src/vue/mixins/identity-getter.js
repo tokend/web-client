@@ -28,7 +28,7 @@ export default {
       // so the user can know which emails were not found
 
       const accountIds = await Promise.all(
-        emails.map(email => this.getAccountIdByIdentifier(email, null))
+        emails.map(email => this.getAccountIdByIdentifier(email, null)),
       )
       return accountIds.filter(item => item)
     },

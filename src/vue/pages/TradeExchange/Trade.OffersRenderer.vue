@@ -11,54 +11,52 @@
     <div
       class="trade-offers-wrapper"
     >
-      <template>
-        <div
-          class="app__table
+      <div
+        class="app__table
                 app__table--with-shadow
                 app__table--clickable-rows"
-        >
-          <table>
-            <thead>
-              <tr>
-                <th>
-                  <!-- eslint-disable-next-line -->
-                  {{ 'trade-offers.table-want-lbl' | globalize({ asset: assetPair.base }) }}
-                </th>
-                <th>
-                  <!-- eslint-disable-next-line -->
-                  {{ 'trade-offers.table-offer-lbl' | globalize({ asset: assetPair.quote }) }}
-                </th>
-                <th>
-                  <!-- eslint-disable-next-line -->
-                  {{ 'trade-offers.table-price-lbl' | globalize({ asset: assetPair.quote }) }}
-                </th>
-              </tr>
-            </thead>
-            <tbody
-              v-if="offersList.length && !isLoading"
-            >
-              <tr
-                v-for="(offer, o) in offersList"
-                :key="`trade-offers-row-${o}-${updateOffersKey}`"
-                @click="selectOffer(offer)"
-                :disabled="offer.ownerId === accountId">
-                <td>{{ offer.baseAmount | formatMoney }}</td>
-                <td>{{ offer.quoteAmount | formatMoney }}</td>
-                <td>{{ offer.price | formatMoney }}</td>
-              </tr>
-            </tbody>
-            <empty-tbody-placeholder
-              v-else-if="!offersList.length && !isLoading"
-              :message="'trade-offers.no-data-title' | globalize"
-              :colspan="3"
-            />
-            <skeleton-loader-table-body
-              v-else-if="isLoading"
-              :cells="3"
-            />
-          </table>
-        </div>
-      </template>
+      >
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <!-- eslint-disable-next-line -->
+              {{ 'trade-offers.table-want-lbl' | globalize({ asset: assetPair.base }) }}
+              </th>
+              <th>
+                <!-- eslint-disable-next-line -->
+              {{ 'trade-offers.table-offer-lbl' | globalize({ asset: assetPair.quote }) }}
+              </th>
+              <th>
+                <!-- eslint-disable-next-line -->
+              {{ 'trade-offers.table-price-lbl' | globalize({ asset: assetPair.quote }) }}
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            v-if="offersList.length && !isLoading"
+          >
+            <tr
+              v-for="(offer, o) in offersList"
+              :key="`trade-offers-row-${o}-${updateOffersKey}`"
+              @click="selectOffer(offer)"
+              :disabled="offer.ownerId === accountId">
+              <td>{{ offer.baseAmount | formatMoney }}</td>
+              <td>{{ offer.quoteAmount | formatMoney }}</td>
+              <td>{{ offer.price | formatMoney }}</td>
+            </tr>
+          </tbody>
+          <empty-tbody-placeholder
+            v-else-if="!offersList.length && !isLoading"
+            :message="'trade-offers.no-data-title' | globalize"
+            :colspan="3"
+          />
+          <skeleton-loader-table-body
+            v-else-if="isLoading"
+            :cells="3"
+          />
+        </table>
+      </div>
     </div>
     <drawer :is-shown.sync="isSubmitOfferDrawerShown">
       <template slot="heading">

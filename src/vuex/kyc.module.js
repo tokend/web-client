@@ -65,7 +65,7 @@ export const actions = {
     const accountId = rootGetters[vuexTypes.accountId]
     const { data: account } = await api.getWithSignature(
       `/v3/accounts/${accountId}`,
-      { include: ['kyc_data'] }
+      { include: ['kyc_data'] },
     )
 
     const blobId = get(account, 'kycData.kycData.blobId')

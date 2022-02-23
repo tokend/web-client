@@ -77,7 +77,7 @@ export default {
     },
     concatPendingAtomicSwapBids (records) {
       this.pendingAtomicSwapBids = this.pendingAtomicSwapBids.concat(records
-        .map(item => new AtomicSwapBidRecord(item))
+        .map(item => new AtomicSwapBidRecord(item)),
       )
     },
     async loadFirstPage () {

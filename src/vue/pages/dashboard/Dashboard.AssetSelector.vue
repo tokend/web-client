@@ -1,105 +1,101 @@
 <template>
   <div class="asset-selector">
-    <template>
-      <div
-        class="asset-selector__wrapper"
-      >
-        <div class="asset-selector__select">
+    <div
+      class="asset-selector__wrapper"
+    >
+      <div class="asset-selector__select">
+        <skeleton-loader
+          v-if="imgUrl === null || !currentAssetCode ||
+            assets.length === 0"
+          template="bigIcon"
+          class="asset-selector__select-picture"
+        />
+        <div
+          v-else
+          class="asset-selector__select-picture">
+          <img
+            v-if="imgUrl"
+            class="asset-selector__select-picture-tag"
+            :src="imgUrl"
+          >
+          <p
+            v-if="currentAssetCode && !imgUrl"
+            class="asset-selector__asset-code-abbr"
+          >
+            {{ currentAssetCode | abbreviate }}
+          </p>
+        </div>
+        <div>
           <skeleton-loader
             v-if="imgUrl === null || !currentAssetCode ||
               assets.length === 0"
-            template="bigIcon"
-            class="asset-selector__select-picture"
+            class="app__select"
+            template="bigString"
+          />
+          <select-field
+            v-else
+            :value="currentAssetForSelect.code"
+            :key="currentAssetForSelect.code"
+            @input="$emit(EVENTS.assetChange, $event)"
+            class="app__select app__select--no-border"
+          >
+            <option
+              v-for="asset in assetsList"
+              :key="asset.code"
+              :value="asset.code"
+            >
+              {{ asset.nameAndCode }}
+            </option>
+          </select-field>
+        </div>
+      </div>
+    </div>
+    <div class="asset-selector__wrapper asset-selector__wrapper--values">
+      <div class="asset-selector__asset-available">
+        <div class="asset-selector__asset-value">
+          <skeleton-loader
+            v-if="!currentAssetCode"
+            template="bigString"
+          />
+          <span
+            v-else
+            class="asset-selector__asset-value-main"
+          >
+            {{
+              {
+                value: currentAssetBalanceDetails.balance,
+                currency: currentAssetCode
+              } | formatMoney
+            }}
+          </span>
+        </div>
+        <div class="asset-selector__asset-subvalue">
+          <skeleton-loader
+            v-if="!currentAssetCode &&
+              currentAssetBalanceDetails.convertedBalance"
+            template="bigString"
           />
           <div
-            v-else
-            class="asset-selector__select-picture">
-            <img
-              v-if="imgUrl"
-              class="asset-selector__select-picture-tag"
-              :src="imgUrl"
-            >
-            <p
-              v-if="currentAssetCode && !imgUrl"
-              class="asset-selector__asset-code-abbr"
-            >
-              {{ currentAssetCode | abbreviate }}
-            </p>
-          </div>
-          <div>
-            <skeleton-loader
-              v-if="imgUrl === null || !currentAssetCode ||
-                assets.length === 0"
-              class="app__select"
-              template="bigString"
-            />
-            <select-field
-              v-else
-              :value="currentAssetForSelect.code"
-              :key="currentAssetForSelect.code"
-              @input="$emit(EVENTS.assetChange, $event)"
-              class="app__select app__select--no-border"
-            >
-              <option
-                v-for="asset in assetsList"
-                :key="asset.code"
-                :value="asset.code"
-              >
-                {{ asset.nameAndCode }}
-              </option>
-            </select-field>
+            class="asset-selector__asset-converted"
+            v-else-if="currentAssetBalanceDetails.convertedBalance"
+          >
+            <span class="asset-selector__asset-value-secondary">
+              {{
+                {
+                  value: currentAssetBalanceDetails.convertedBalance,
+                  currency: currentAssetBalanceDetails.convertedToAsset
+                } | formatMoney
+              }}
+            </span>
           </div>
         </div>
       </div>
-      <template>
-        <div class="asset-selector__wrapper asset-selector__wrapper--values">
-          <div class="asset-selector__asset-available">
-            <div class="asset-selector__asset-value">
-              <skeleton-loader
-                v-if="!currentAssetCode"
-                template="bigString"
-              />
-              <span
-                v-else
-                class="asset-selector__asset-value-main"
-              >
-                {{
-                  {
-                    value: currentAssetBalanceDetails.balance,
-                    currency: currentAssetCode
-                  } | formatMoney
-                }}
-              </span>
-            </div>
-            <div class="asset-selector__asset-subvalue">
-              <skeleton-loader
-                v-if="!currentAssetCode &&
-                  currentAssetBalanceDetails.convertedBalance"
-                template="bigString"
-              />
-              <div
-                class="asset-selector__asset-converted"
-                v-else-if="currentAssetBalanceDetails.convertedBalance"
-              >
-                <span class="asset-selector__asset-value-secondary">
-                  {{
-                    {
-                      value: currentAssetBalanceDetails.convertedBalance,
-                      currency: currentAssetBalanceDetails.convertedToAsset
-                    } | formatMoney
-                  }}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </template>
-      <template v-if="assets.length && !currentAssetCode">
-        <no-data-message
-          :title="'dashboard.no-assets-in-your-wallet' | globalize"
-          :message="'dashboard.here-will-be-the-assets' | globalize"
-        />
-      </template>
+    </div>
+    <template v-if="assets.length && !currentAssetCode">
+      <no-data-message
+        :title="'dashboard.no-assets-in-your-wallet' | globalize"
+        :message="'dashboard.here-will-be-the-assets' | globalize"
+      />
     </template>
     <template v-if="isLoadingFailed">
       <p>

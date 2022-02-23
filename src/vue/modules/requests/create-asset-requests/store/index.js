@@ -48,7 +48,7 @@ export const actions = {
   },
 
   async [types.LOAD_SECURITY_ASSET_TYPE] ({ commit }) {
-    const endpoint = `/v3/key_values/asset_type:security`
+    const endpoint = '/v3/key_values/asset_type:security'
     const { data } = await api.get(endpoint)
 
     commit(types.SET_SECURITY_ASSET_TYPE, data.value.u32)

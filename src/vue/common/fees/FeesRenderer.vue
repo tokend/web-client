@@ -64,6 +64,7 @@ import { vueRoutes } from '@/vue-router/routes'
 
 const EVENTS = {
   updatePaidForDestination: 'update:paidForDestination',
+  updateFeesCollection: 'update:feesCollection',
 }
 
 export default {
@@ -93,14 +94,17 @@ export default {
       return Boolean(
         asset.externalSystemType &&
         asset.owner === api.networkDetails.adminAccountId &&
-        this.feesCollection.isHaveWithdrawalFee
+        this.feesCollection.isHaveWithdrawalFee,
       )
     },
   },
 
   methods: {
     updatePaidForDestination (value) {
-      this.feesCollection.isPaidForDestination = value
+      this.$emit(EVENTS.updateFeesCollection, {
+        ...this.feesCollection,
+        isPaidForDestination: value,
+      })
       this.$emit(EVENTS.updatePaidForDestination, value)
     },
   },

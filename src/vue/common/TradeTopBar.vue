@@ -1,128 +1,126 @@
 <template>
   <div class="trade-top-bar">
-    <template>
-      <top-bar>
-        <template slot="main">
-          <router-link
-            v-if="isLoaded"
-            :to="{
-              name: vueRoutes.tradeExchange.name,
-              query: { base: assetPair.base, quote: assetPair.quote }
-            }"
-          >
-            <span>
-              {{ 'trade-top-bar.exchange-view' | globalize }}
-            </span>
-          </router-link>
-          <skeleton-loader
-            v-else
-            template="smallString"
-          />
-          <router-link
-            v-if="isLoaded"
-            :to="{
-              name: vueRoutes.tradeUserOffers.name,
-              query: { base: assetPair.base, quote: assetPair.quote }
-            }"
-          >
-            <span>
-              {{ 'trade-top-bar.my-offers-view' | globalize }}
-            </span>
-          </router-link>
-          <skeleton-loader
-            v-else
-            template="smallString"
-          />
-        </template>
-        <template slot="extra">
-          <button
-            v-ripple
-            class="app__button-raised"
-            @click="isCreateBuyOfferDrawerShown = true"
-          >
-            {{ 'trade-top-bar.create-buy-offer-button' | globalize }}
-          </button>
-          <button
-            v-ripple
-            class="app__button-raised"
-            @click="isCreateSellOfferDrawerShown = true"
-          >
-            {{ 'trade-top-bar.create-sell-offer-button' | globalize }}
-          </button>
-        </template>
-      </top-bar>
-
-      <div class="trade-asset-selector__wrapper">
-        <select-field
-          v-if="formattedPairs.length && isLoaded"
-          v-model="selectedPair"
-          :key="selectedPair"
-          class="trade-asset-selector__field app__select app__select--no-border"
+    <top-bar>
+      <template slot="main">
+        <router-link
+          v-if="isLoaded"
+          :to="{
+            name: vueRoutes.tradeExchange.name,
+            query: { base: assetPair.base, quote: assetPair.quote }
+          }"
         >
-          <option
-            v-for="assetPair in formattedPairs"
-            :key="assetPair"
-            :value="assetPair"
-          >
-            {{ assetPair }}
-          </option>
-        </select-field>
+          <span>
+            {{ 'trade-top-bar.exchange-view' | globalize }}
+          </span>
+        </router-link>
         <skeleton-loader
-          v-else-if="!isLoaded"
-          template="bigString"
-        />
-        <no-data-message
           v-else
-          :title="'trade-top-bar.no-pairs-message' | globalize"
-          :message="'trade-top-bar.here-will-pairs-list' | globalize"
-        />
-      </div>
-      <div class="trade-asset-selector__balances">
-        <p
-          v-if="formattedPairs.length && isLoaded"
-          class="trade-asset-selector__balances-value"
-        >
-          {{ baseAssetPairBalances }}
-          /
-          {{ quoteAssetPairBalances }}
-        </p>
-        <skeleton-loader
-          v-else-if="!isLoaded"
-          template="bigString"
-        />
-        <p
-          v-if="formattedPairs.length && isLoaded"
-          class="trade-asset-selector__balances-label"
-        >
-          {{ 'trade-top-bar.user-balances-label' | globalize }}
-        </p>
-        <skeleton-loader
-          v-else-if="!isLoaded"
-          class="trade-asset-selector__balances-skeleton-loader--margin"
           template="smallString"
         />
-      </div>
+        <router-link
+          v-if="isLoaded"
+          :to="{
+            name: vueRoutes.tradeUserOffers.name,
+            query: { base: assetPair.base, quote: assetPair.quote }
+          }"
+        >
+          <span>
+            {{ 'trade-top-bar.my-offers-view' | globalize }}
+          </span>
+        </router-link>
+        <skeleton-loader
+          v-else
+          template="smallString"
+        />
+      </template>
+      <template slot="extra">
+        <button
+          v-ripple
+          class="app__button-raised"
+          @click="isCreateBuyOfferDrawerShown = true"
+        >
+          {{ 'trade-top-bar.create-buy-offer-button' | globalize }}
+        </button>
+        <button
+          v-ripple
+          class="app__button-raised"
+          @click="isCreateSellOfferDrawerShown = true"
+        >
+          {{ 'trade-top-bar.create-sell-offer-button' | globalize }}
+        </button>
+      </template>
+    </top-bar>
 
-      <drawer :is-shown.sync="isCreateBuyOfferDrawerShown">
-        <template slot="heading">
-          {{ 'trade-top-bar.create-buy-offer-form-title' | globalize }}
-        </template>
-        <create-trade-offer-form
-          is-buy
-          :asset-pair="assetPair"
-          @offer-created="closeBuyOfferDrawer"
-        />
-      </drawer>
-      <drawer :is-shown.sync="isCreateSellOfferDrawerShown">
-        <template slot="heading">
-          {{ 'trade-top-bar.create-sell-offer-form-title' | globalize }}
-        </template>
-        <create-trade-offer-form
-          :asset-pair="assetPair"
-          @offer-created="closeSellOfferDrawer"
-        />
-      </drawer>
-    </template>
+    <div class="trade-asset-selector__wrapper">
+      <select-field
+        v-if="formattedPairs.length && isLoaded"
+        v-model="selectedPair"
+        :key="selectedPair"
+        class="trade-asset-selector__field app__select app__select--no-border"
+      >
+        <option
+          v-for="item in formattedPairs"
+          :key="item"
+          :value="item"
+        >
+          {{ item }}
+        </option>
+      </select-field>
+      <skeleton-loader
+        v-else-if="!isLoaded"
+        template="bigString"
+      />
+      <no-data-message
+        v-else
+        :title="'trade-top-bar.no-pairs-message' | globalize"
+        :message="'trade-top-bar.here-will-pairs-list' | globalize"
+      />
+    </div>
+    <div class="trade-asset-selector__balances">
+      <p
+        v-if="formattedPairs.length && isLoaded"
+        class="trade-asset-selector__balances-value"
+      >
+        {{ baseAssetPairBalances }}
+        /
+        {{ quoteAssetPairBalances }}
+      </p>
+      <skeleton-loader
+        v-else-if="!isLoaded"
+        template="bigString"
+      />
+      <p
+        v-if="formattedPairs.length && isLoaded"
+        class="trade-asset-selector__balances-label"
+      >
+        {{ 'trade-top-bar.user-balances-label' | globalize }}
+      </p>
+      <skeleton-loader
+        v-else-if="!isLoaded"
+        class="trade-asset-selector__balances-skeleton-loader--margin"
+        template="smallString"
+      />
+    </div>
+
+    <drawer :is-shown.sync="isCreateBuyOfferDrawerShown">
+      <template slot="heading">
+        {{ 'trade-top-bar.create-buy-offer-form-title' | globalize }}
+      </template>
+      <create-trade-offer-form
+        is-buy
+        :asset-pair="assetPair"
+        @offer-created="closeBuyOfferDrawer"
+      />
+    </drawer>
+    <drawer :is-shown.sync="isCreateSellOfferDrawerShown">
+      <template slot="heading">
+        {{ 'trade-top-bar.create-sell-offer-form-title' | globalize }}
+      </template>
+      <create-trade-offer-form
+        :asset-pair="assetPair"
+        @offer-created="closeSellOfferDrawer"
+      />
+    </drawer>
   </div>
 </template>
 
@@ -147,7 +145,7 @@ import { vueRoutes } from '@/vue-router/routes'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
-import { formatMoney } from "@/vue/filters/formatMoney"
+import { formatMoney } from '@/vue/filters/formatMoney'
 
 const EVENTS = {
   reloadTradeData: 'reload-trade-data',
@@ -192,13 +190,13 @@ export default {
     baseAssetPairBalances () {
       return formatMoney({
         value: this.assetPairBalances.base,
-        currency: this.assetPair.base
+        currency: this.assetPair.base,
       })
     },
     quoteAssetPairBalances () {
       return formatMoney({
         value: this.assetPairBalances.quote,
-        currency: this.assetPair.quote
+        currency: this.assetPair.quote,
       })
     },
   },

@@ -223,13 +223,13 @@ export default {
     },
     setLimitsRequests (data) {
       this.limitsRequests = data.map(item =>
-        new LimitsUpdateRequestRecord(item)
+        new LimitsUpdateRequestRecord(item),
       )
     },
     extendLimitsRequests (data) {
       this.limitsRequests = this.limitsRequests
         .concat(data.map(item =>
-          new LimitsUpdateRequestRecord(item)
+          new LimitsUpdateRequestRecord(item),
         ))
     },
     formatLimits (limitsWithStats) {
@@ -243,14 +243,14 @@ export default {
           })
           .reduce((acc, item) => {
             switch (item.limits.attributes.statsOpType) {
-              case STATS_OPERATION_TYPES.paymentOut:
-                return { ...acc, payment: new LimitsRecord(item) }
-              case STATS_OPERATION_TYPES.withdraw:
-                return { ...acc, withdraw: new LimitsRecord(item) }
-              case STATS_OPERATION_TYPES.deposit:
-                return { ...acc, deposit: new LimitsRecord(item) }
-              default:
-                return acc
+            case STATS_OPERATION_TYPES.paymentOut:
+              return { ...acc, payment: new LimitsRecord(item) }
+            case STATS_OPERATION_TYPES.withdraw:
+              return { ...acc, withdraw: new LimitsRecord(item) }
+            case STATS_OPERATION_TYPES.deposit:
+              return { ...acc, deposit: new LimitsRecord(item) }
+            default:
+              return acc
             }
           }, {})
         if (!formattedLimits[assetCode].payment) {

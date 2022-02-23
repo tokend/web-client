@@ -43,7 +43,7 @@ describe('factors.module end-to-end test', () => {
 
     it('factors', async () => {
       sinon.stub(api, 'getWithSignature').resolves(
-        MockWrapper.makeJsonapiResponse(responseDefaultRaw)
+        MockWrapper.makeJsonapiResponse(responseDefaultRaw),
       )
 
       await store.dispatch(vuexTypes.LOAD_FACTORS)
@@ -56,7 +56,7 @@ describe('factors.module end-to-end test', () => {
 
     it('factorsTotp', async () => {
       sinon.stub(api, 'getWithSignature').resolves(
-        MockWrapper.makeJsonapiResponse(responseDefaultRaw)
+        MockWrapper.makeJsonapiResponse(responseDefaultRaw),
       )
 
       await store.dispatch(vuexTypes.LOAD_FACTORS)
@@ -69,7 +69,7 @@ describe('factors.module end-to-end test', () => {
 
     it('factorsPassword', async () => {
       sinon.stub(api, 'getWithSignature').resolves(
-        MockWrapper.makeJsonapiResponse(responseDefaultRaw)
+        MockWrapper.makeJsonapiResponse(responseDefaultRaw),
       )
 
       await store.dispatch(vuexTypes.LOAD_FACTORS)
@@ -82,7 +82,7 @@ describe('factors.module end-to-end test', () => {
 
     it('factorsEmail', async () => {
       sinon.stub(api, 'getWithSignature').resolves(
-        MockWrapper.makeJsonapiResponse(responseDefaultRaw)
+        MockWrapper.makeJsonapiResponse(responseDefaultRaw),
       )
 
       await store.dispatch(vuexTypes.LOAD_FACTORS)
@@ -101,7 +101,7 @@ describe('factors.module end-to-end test', () => {
             { type: 'password', id: 652, attributes: { priority: 1 } },
             { type: 'totp', id: 991, attributes: { priority: 1 } },
           ],
-        })
+        }),
       )
 
       await store.dispatch(vuexTypes.LOAD_FACTORS)
@@ -121,7 +121,7 @@ describe('factors.module end-to-end test', () => {
             { type: 'password', id: 652, attributes: { priority: 1 } },
             { type: 'totp', id: 991, attributes: { priority: 0 } },
           ],
-        })
+        }),
       )
 
       await store.dispatch(vuexTypes.LOAD_FACTORS)
@@ -140,7 +140,7 @@ describe('factors.module end-to-end test', () => {
             { type: 'password', id: 652, attributes: { priority: 1 } },
             { type: 'totp', id: 991, attributes: { priority: 1 } },
           ],
-        })
+        }),
       )
 
       await store.dispatch(vuexTypes.LOAD_FACTORS)
@@ -157,7 +157,7 @@ describe('factors.module end-to-end test', () => {
             { type: 'password', id: 652, attributes: { priority: 1 } },
             { type: 'totp', id: 991, attributes: { priority: 0 } },
           ],
-        })
+        }),
       )
 
       await store.dispatch(vuexTypes.LOAD_FACTORS)

@@ -1,36 +1,32 @@
 <template>
   <div class="movements-history">
-    <template>
-      <template>
-        <h2
-          class="app__table-title"
-          v-if="latestActivity">
-          {{ 'movements-history.latest-activity' | globalize }}
-        </h2>
-        <div class="movements-history__list-wrp">
-          <movements-table
-            :is-movements-loaded="isMovementsLoaded"
-            :movements="movements"
-          />
-        </div>
-      </template>
-      <template v-if="isMovementsLoadFailed">
-        <p class="movements-history__error-msg">
-          {{ 'movements-history.movements-load-failed-msg' | globalize }}
-        </p>
-      </template>
-
-      <div class="movements-history__collection-loader-wrp">
-        <collection-loader
-          v-if="!isMovementsLoadFailed && assetCode"
-          v-show="isMovementsLoaded && !latestActivity"
-          :first-page-loader="firstPageLoader"
-          @first-page-load="setMovements"
-          @next-page-load="concatMovements"
-          :ref="REFS.collectionLoader"
-        />
-      </div>
+    <h2
+      class="app__table-title"
+      v-if="latestActivity">
+      {{ 'movements-history.latest-activity' | globalize }}
+    </h2>
+    <div class="movements-history__list-wrp">
+      <movements-table
+        :is-movements-loaded="isMovementsLoaded"
+        :movements="movements"
+      />
+    </div>
+    <template v-if="isMovementsLoadFailed">
+      <p class="movements-history__error-msg">
+        {{ 'movements-history.movements-load-failed-msg' | globalize }}
+      </p>
     </template>
+
+    <div class="movements-history__collection-loader-wrp">
+      <collection-loader
+        v-if="!isMovementsLoadFailed && assetCode"
+        v-show="isMovementsLoaded && !latestActivity"
+        :first-page-loader="firstPageLoader"
+        @first-page-load="setMovements"
+        @next-page-load="concatMovements"
+        :ref="REFS.collectionLoader"
+      />
+    </div>
   </div>
 </template>
 

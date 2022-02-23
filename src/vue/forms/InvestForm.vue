@@ -100,7 +100,7 @@
             class="invest-form__fee-box"
             v-if="isFeesLoaded"
           >
-            <fees-renderer :fees-collection="fees" />
+            <fees-renderer :fees-collection.sync="fees" />
           </div>
         </transition>
 
@@ -260,7 +260,7 @@ export default {
           required,
           amountRange: amountRange(
             this.MIN_AMOUNT,
-            this.availableBalance.value
+            this.availableBalance.value,
           ),
           noMoreThanSaleCap: _ => !this.isCapExceeded,
         },
@@ -316,7 +316,7 @@ export default {
       if (this.currentInvestment.quoteAmount) {
         const convertedAmount = MathUtil.add(
           this.currentInvestment.quoteAmount,
-          this.currentInvestment.fee.calculatedPercent
+          this.currentInvestment.fee.calculatedPercent,
         )
         availableBalance = MathUtil.add(
           convertedAmount,
@@ -348,14 +348,14 @@ export default {
 
     isAllowedAccountType () {
       switch (this.sale.baseAsset.assetType) {
-        case keyValues.assetTypeKycRequired:
-          return !this.isAccountUnverified
-        case keyValues.assetTypeSecurity:
-          return this.isAccountGeneral ||
+      case keyValues.assetTypeKycRequired:
+        return !this.isAccountUnverified
+      case keyValues.assetTypeSecurity:
+        return this.isAccountGeneral ||
                  this.isAccountUsAccredited ||
                  this.isAccountCorporate
-        default:
-          return true
+      default:
+        return true
       }
     },
 
@@ -401,11 +401,11 @@ export default {
         this.former.setAttr('investedAssetCode', this.form.asset.code || '')
         this.former.setAttr(
           'quoteBalanceId',
-          this.accountBalanceByCode(this.form.asset.code).id || ''
+          this.accountBalanceByCode(this.form.asset.code).id || '',
         )
         this.former.setAttr(
           'saleQuoteAssetPrices',
-          this.sale.quoteAssetPrices[this.form.asset.code] || ''
+          this.sale.quoteAssetPrices[this.form.asset.code] || '',
         )
         if (this.form.asset.code !== this.sale.defaultQuoteAsset) {
           await this.loadAssetPairPrice()

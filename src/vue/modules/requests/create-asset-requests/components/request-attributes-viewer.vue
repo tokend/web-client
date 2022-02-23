@@ -195,21 +195,21 @@ export default {
       let translationId
 
       switch (this.request.stellarAssetType) {
-        case STELLAR_TYPES.creditAlphanum4:
-          translationId = 'create-asset-requests.credit-alphanum4-stellar-asset-type-lbl'
-          break
+      case STELLAR_TYPES.creditAlphanum4:
+        translationId = 'create-asset-requests.credit-alphanum4-stellar-asset-type-lbl'
+        break
 
-        case STELLAR_TYPES.creditAlphanum12:
-          translationId = 'create-asset-requests.credit-alphanum12-stellar-asset-type-lbl'
-          break
+      case STELLAR_TYPES.creditAlphanum12:
+        translationId = 'create-asset-requests.credit-alphanum12-stellar-asset-type-lbl'
+        break
 
-        case STELLAR_TYPES.native:
-          translationId = 'create-asset-requests.native-stellar-asset-type-lbl'
-          break
+      case STELLAR_TYPES.native:
+        translationId = 'create-asset-requests.native-stellar-asset-type-lbl'
+        break
 
-        default:
-          translationId = '[UNKNOWN_STELLAR_ASSET_TYPE]'
-          break
+      default:
+        translationId = '[UNKNOWN_STELLAR_ASSET_TYPE]'
+        break
       }
 
       return this.$options.filters.globalize(translationId)

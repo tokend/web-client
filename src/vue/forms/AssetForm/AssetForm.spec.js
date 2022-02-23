@@ -57,7 +57,7 @@ describe('Asset form module', () => {
             expect(Bus.success).to.have.been.calledOnceWith('asset-form.request-submitted-msg')
             expect(wrapper.emitted('submitted')).to.exist
             expect(wrapper.vm.isDisabled).to.be.true
-          }
+          },
         )
 
         it('handles a thrown error properly and set isDisabled property to false',
@@ -72,7 +72,7 @@ describe('Asset form module', () => {
 
             expect(ErrorHandler.process).to.have.been.calledOnce
             expect(wrapper.vm.isDisabled).to.be.false
-          }
+          },
         )
       })
     })

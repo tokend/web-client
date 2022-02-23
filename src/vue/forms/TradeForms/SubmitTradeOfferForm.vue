@@ -280,7 +280,7 @@ export default {
       this.form.baseAmount = this.former.attrs.baseAmount
       this.form.price = String(MathUtil.divide(
         +this.former.attrs.quoteAmount,
-        +this.former.attrs.baseAmount
+        +this.former.attrs.baseAmount,
       ))
       await this.loadBalances()
       this.isLoaded = true
@@ -302,7 +302,7 @@ export default {
       if (!this.feesDebouncedRequest) {
         this.feesDebouncedRequest = debounce(
           () => this.loadFees(),
-          FEES_LOADING_DELAY_MS
+          FEES_LOADING_DELAY_MS,
         )
       }
       return this.feesDebouncedRequest()

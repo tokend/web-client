@@ -131,17 +131,17 @@ export default {
       let translationId
 
       switch (this.poll.permissionType) {
-        case keyValues.restrictedPollType:
-          translationId = 'poll-attributes.permission-type-restricted-val'
-          break
+      case keyValues.restrictedPollType:
+        translationId = 'poll-attributes.permission-type-restricted-val'
+        break
 
-        case keyValues.unrestrictedPollType:
-          translationId = 'poll-attributes.permission-type-unrestricted-val'
-          break
+      case keyValues.unrestrictedPollType:
+        translationId = 'poll-attributes.permission-type-unrestricted-val'
+        break
 
-        default:
-          translationId = '[UNKNOWN_PERMISSION_TYPE]'
-          break
+      default:
+        translationId = '[UNKNOWN_PERMISSION_TYPE]'
+        break
       }
 
       return this.$options.filters.globalize(translationId)

@@ -108,7 +108,7 @@ export default {
       return Object
         .values(this[vuexTypes.accountDepositAddresses])
         .find(
-          item => +item.externalSystemType === +this.externalSystemType
+          item => +item.externalSystemType === +this.externalSystemType,
         ) || {}
     },
     address () {
@@ -130,7 +130,7 @@ export default {
       const externalSystemId = Object
         .values(this[vuexTypes.accountDepositAddresses])
         .find(
-          item => +item.externalSystemType === +this.externalSystemType
+          item => +item.externalSystemType === +this.externalSystemType,
         ) || {}
       return moment(externalSystemId.expiresAt).unix() - TRANSACTION_TIME_MARGIN
     },

@@ -24,7 +24,7 @@ export class AtomicSwapRecord {
         // we use camelCase because js-sdk parse response data keys in camelCase
         address: _get(
           record,
-          `details.addresses[${camelCase(item.quoteAsset)}]`
+          `details.addresses[${camelCase(item.quoteAsset)}]`,
         ),
       }))
   }

@@ -50,7 +50,7 @@ export default {
       // so the user can know which emails were not found
 
       const balanceIds = await Promise.all(
-        accountIds.map(accId => this.getBalanceId(accId, assetCode, null))
+        accountIds.map(accId => this.getBalanceId(accId, assetCode, null)),
       )
 
       return balanceIds.filter(item => item)

@@ -130,7 +130,7 @@ export default {
       try {
         await walletsManager.kycRecovery(
           this.form.email.toLowerCase(),
-          this.form.password
+          this.form.password,
         )
 
         await this.login()
@@ -139,15 +139,15 @@ export default {
         await this.$router.push(vueRoutes.app)
       } catch (e) {
         switch (e.constructor) {
-          case errors.NotFoundError:
-            Bus.error('errors.user-doesnt-exist')
-            ErrorHandler.processWithoutFeedback(e)
-            break
-          case errors.TFARequiredError:
-            this.$emit(EVENT.error, e)
-            break
-          default:
-            ErrorHandler.process(e)
+        case errors.NotFoundError:
+          Bus.error('errors.user-doesnt-exist')
+          ErrorHandler.processWithoutFeedback(e)
+          break
+        case errors.TFARequiredError:
+          this.$emit(EVENT.error, e)
+          break
+        default:
+          ErrorHandler.process(e)
         }
       }
       this.enableForm()

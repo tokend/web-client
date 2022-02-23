@@ -13,7 +13,7 @@ import { Issuance } from '../wrappers/issuance'
 const localVue = createLocalVue()
 
 const Component = {
-  template: `<div></div>`,
+  template: '<div></div>',
   props: ['ownedAssets'],
 }
 
@@ -46,7 +46,7 @@ describe('Manage pre-issuance mixin', () => {
           })
 
           sandbox.stub(
-            base.PreIssuanceRequestOpBuilder, 'createPreIssuanceRequestOp'
+            base.PreIssuanceRequestOpBuilder, 'createPreIssuanceRequestOp',
           ).returns('SOME_OPERATION')
           sandbox.stub(api, 'postOperations').resolves()
 
@@ -58,7 +58,7 @@ describe('Manage pre-issuance mixin', () => {
             })
           expect(api.postOperations)
             .to.have.been.calledOnceWithExactly('SOME_OPERATION')
-        }
+        },
       )
 
       it('throws AssetNotOwnedError if issuance asset is not owned by user',
@@ -76,7 +76,7 @@ describe('Manage pre-issuance mixin', () => {
           } catch (e) {
             expect(e).to.be.instanceOf(AssetNotOwnedError)
           }
-        }
+        },
       )
     })
 
@@ -93,7 +93,7 @@ describe('Manage pre-issuance mixin', () => {
             .to.have.been.calledOnceWithExactly('SOME_FILE')
           expect(wrapper.vm.parsePreIssuance)
             .to.have.been.calledOnceWithExactly({ asset: 'USD' })
-        }
+        },
       )
 
       it('throws FileCorruptedError if extracting failed', async () => {
@@ -131,9 +131,9 @@ describe('Manage pre-issuance mixin', () => {
               record: { asset: 'USD', amount: '10.000000' },
               xdr: 'SOME_XDR_VALUE',
               isUsed: false,
-            })
+            }),
           )
-        }
+        },
       )
     })
   })

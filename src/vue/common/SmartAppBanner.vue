@@ -15,6 +15,25 @@ export default {
     }
   },
 
+  head () {
+    if (!this.isRendered) return
+
+    const meta = []
+    const link = []
+
+    if (config.PLAY_MARKET_ID) {
+      meta.push({ name: 'google-play-app', content: `app-id=${config.PLAY_MARKET_ID}` })
+      link.push({ rel: 'android-touch-icon', href: config.PLAY_MARKET_ICON })
+    }
+
+    if (config.APP_STORE_ID) {
+      meta.push({ name: 'apple-itunes-app', content: `app-id=${config.APP_STORE_ID}` })
+      link.push({ rel: 'apple-touch-icon', href: config.APP_STORE_ICON })
+    }
+
+    return { meta, link }
+  },
+
   computed: {
     isRendered () {
       const isConfigured = config.MOBILE_APP_NAME && config.MOBILE_APP_AUTHOR
@@ -61,25 +80,6 @@ export default {
     this.createBanner()
 
     return createElement()
-  },
-
-  head () {
-    if (!this.isRendered) return
-
-    const meta = []
-    const link = []
-
-    if (config.PLAY_MARKET_ID) {
-      meta.push({ name: 'google-play-app', content: `app-id=${config.PLAY_MARKET_ID}` })
-      link.push({ rel: 'android-touch-icon', href: config.PLAY_MARKET_ICON })
-    }
-
-    if (config.APP_STORE_ID) {
-      meta.push({ name: 'apple-itunes-app', content: `app-id=${config.APP_STORE_ID}` })
-      link.push({ rel: 'apple-touch-icon', href: config.APP_STORE_ICON })
-    }
-
-    return { meta, link }
   },
 }
 </script>

@@ -1,36 +1,34 @@
 <template>
   <div class="create-sale-requests">
-    <template>
-      <drawer :is-shown.sync="isDrawerShown">
-        <template v-if="isUpdateMode">
-          <template slot="heading">
-            {{ 'create-sale-requests.update-sale-title' | globalize }}
-          </template>
-          <sale-form
-            :former="new SaleFormer(selectedRequest)"
-            @submitted="isDrawerShown = false"
-            @request-updated="emitUpdateList('createSaleRequests:updateList')"
-          />
+    <drawer :is-shown.sync="isDrawerShown">
+      <template v-if="isUpdateMode">
+        <template slot="heading">
+          {{ 'create-sale-requests.update-sale-title' | globalize }}
         </template>
+        <sale-form
+          :former="new SaleFormer(selectedRequest)"
+          @submitted="isDrawerShown = false"
+          @request-updated="emitUpdateList('createSaleRequests:updateList')"
+        />
+      </template>
 
-        <template v-else>
-          <template slot="heading">
-            {{ 'create-sale-requests.details-title' | globalize }}
-          </template>
-          <request-viewer
-            :request="selectedRequest"
-            @update-click="isUpdateMode = true"
-            @cancel="closeDrawerAndUpdateList()"
-          />
+      <template v-else>
+        <template slot="heading">
+          {{ 'create-sale-requests.details-title' | globalize }}
         </template>
-      </drawer>
+        <request-viewer
+          :request="selectedRequest"
+          @update-click="isUpdateMode = true"
+          @cancel="closeDrawerAndUpdateList()"
+        />
+      </template>
+    </drawer>
 
-      <requests-table
-        :requests="requests"
-        :is-loaded="isLoaded"
-        @select="showRequestDetails"
-      />
-    </template>
+    <requests-table
+      :requests="requests"
+      :is-loaded="isLoaded"
+      @select="showRequestDetails"
+    />
 
     <p v-if="isLoadingFailed">
       {{ 'create-sale-requests.loading-error-msg' | globalize }}

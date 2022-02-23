@@ -340,35 +340,35 @@ export default {
     },
     isBalanceCreationAllowed () {
       switch (this.asset.assetType) {
-        case this.kycRequiredAssetType:
-          return !this.isAccountUnverified
-        case this.securityAssetType:
-          return this.isAccountGeneral ||
+      case this.kycRequiredAssetType:
+        return !this.isAccountUnverified
+      case this.securityAssetType:
+        return this.isAccountGeneral ||
             this.isAccountUsAccredited ||
             this.isAccountCorporate
-        default:
-          return true
+      default:
+        return true
       }
     },
     stellarAssetTypeTranslated () {
       let translationId
 
       switch (this.asset.stellarAssetType) {
-        case STELLAR_TYPES.creditAlphanum4:
-          translationId = 'assets.credit-alphanum4-stellar-asset-type-lbl'
-          break
+      case STELLAR_TYPES.creditAlphanum4:
+        translationId = 'assets.credit-alphanum4-stellar-asset-type-lbl'
+        break
 
-        case STELLAR_TYPES.creditAlphanum12:
-          translationId = 'assets.credit-alphanum12-stellar-asset-type-lbl'
-          break
+      case STELLAR_TYPES.creditAlphanum12:
+        translationId = 'assets.credit-alphanum12-stellar-asset-type-lbl'
+        break
 
-        case STELLAR_TYPES.native:
-          translationId = 'assets.native-stellar-asset-type-lbl'
-          break
+      case STELLAR_TYPES.native:
+        translationId = 'assets.native-stellar-asset-type-lbl'
+        break
 
-        default:
-          translationId = '[UNKNOWN_STELLAR_ASSET_TYPE]'
-          break
+      default:
+        translationId = '[UNKNOWN_STELLAR_ASSET_TYPE]'
+        break
       }
 
       return this.$options.filters.globalize(translationId)

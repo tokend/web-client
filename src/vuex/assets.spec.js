@@ -63,7 +63,7 @@ describe('assets.module', () => {
         [
           { id: 'BTC' },
           { id: 'USD' },
-        ]
+        ],
       )
     })
   })

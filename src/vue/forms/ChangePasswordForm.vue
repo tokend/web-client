@@ -168,7 +168,7 @@ export default {
     async retryPasswordChange (tfaError) {
       try {
         await factorsManager.verifyPasswordFactorAndRetry(
-          tfaError, this.form.currentPassword
+          tfaError, this.form.currentPassword,
         )
       } catch (e) {
         // If 2FA is enabled we should verify TOTP factor
@@ -176,14 +176,14 @@ export default {
         if (e instanceof errors.TFARequiredError) {
           try {
             await factorsManager.verifyTotpFactorAndRetry(
-              e, this.form.tfaCode
+              e, this.form.tfaCode,
             )
           } catch (e) {
             // FIXME: We need to verify password factor again after
             // verifying 2FA factor.
             if (e instanceof errors.TFARequiredError) {
               await factorsManager.verifyPasswordFactorAndRetry(
-                e, this.form.currentPassword
+                e, this.form.currentPassword,
               )
             } else {
               // If verifyTotpFactor threw an error different from
@@ -214,18 +214,18 @@ export default {
       try {
         newWallet = await walletsManager.get(
           this.walletEmail,
-          this.form.newPassword
+          this.form.newPassword,
         )
       } catch (e) {
         // If 2FA is enabled we should verify TOTP factor
         // to get a user's wallet.
         if (e instanceof errors.TFARequiredError) {
           await factorsManager.verifyTotpFactor(e,
-            this.form.tfaCode
+            this.form.tfaCode,
           )
           newWallet = await walletsManager.get(
             this.walletEmail,
-            this.form.newPassword
+            this.form.newPassword,
           )
         } else {
           throw e

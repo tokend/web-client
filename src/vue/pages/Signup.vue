@@ -1,30 +1,28 @@
 <template>
   <div class="auth-page">
-    <template>
-      <h2 class="auth-page__title">
-        {{ 'auth-pages.signup-title' | globalize }}
-      </h2>
+    <h2 class="auth-page__title">
+      {{ 'auth-pages.signup-title' | globalize }}
+    </h2>
 
-      <div class="auth-page__content">
-        <signup-form
-          :is-disabled="formMixin.isDisabled"
-          :submit-event="'submit'"
-          @submit="handleChildFormSubmit"
-        />
+    <div class="auth-page__content">
+      <signup-form
+        :is-disabled="formMixin.isDisabled"
+        :submit-event="'submit'"
+        @submit="handleChildFormSubmit"
+      />
 
-        <div class="auth-page__tips">
-          <div class="auth-page__tip">
-            {{ 'auth-pages.have-an-account-question' | globalize }}
-            <router-link
-              class="auth-page__tip-link"
-              :to="vueRoutes.login"
-            >
-              {{ 'auth-pages.have-an-account-answer' | globalize }}
-            </router-link>
-          </div>
+      <div class="auth-page__tips">
+        <div class="auth-page__tip">
+          {{ 'auth-pages.have-an-account-question' | globalize }}
+          <router-link
+            class="auth-page__tip-link"
+            :to="vueRoutes.login"
+          >
+            {{ 'auth-pages.have-an-account-answer' | globalize }}
+          </router-link>
         </div>
       </div>
-    </template>
+    </div>
   </div>
 </template>
 

@@ -322,7 +322,7 @@ export default {
       if (!this.feesDebouncedRequest) {
         this.feesDebouncedRequest = debounce(
           () => this.loadFees(),
-          FEES_LOADING_DELAY_MS
+          FEES_LOADING_DELAY_MS,
         )
       }
       return this.feesDebouncedRequest()
