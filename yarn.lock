@@ -1212,9 +1212,10 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
-"@tokend/js-sdk@git+https://github.com/tokend/new-js-sdk.git#f88f0b1e09299762acc9d1f5c7af6809c812096c":
+"@tokend/js-sdk@1.14.0-rc.25":
   version "1.14.0-rc.25"
-  resolved "git+https://github.com/tokend/new-js-sdk.git#f88f0b1e09299762acc9d1f5c7af6809c812096c"
+  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.14.0-rc.25.tgz#e6a4f2fa764402393d807f97274c4b143cd0ca40"
+  integrity sha512-64TneBzfvPrB/fhjBX7QdXsDSIU5oInrjzrqKWloq96F1ddBXu8sG4rTtjAQ6rpzKCsnYh7OxOARzPG+BWGuCw==
   dependencies:
     axios "0.19.0"
     base32.js "0.1.0"
@@ -1393,9 +1394,9 @@
   integrity sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==
 
 "@types/node@*":
-  version "17.0.19"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.19.tgz#726171367f404bfbe8512ba608a09ebad810c7e6"
-  integrity sha512-PfeQhvcMR4cPFVuYfBN4ifG7p9c+Dlh3yUZR6k+5yQK7wX3gDgVxBly4/WkBRs9x4dmcy1TVl08SY67wwtEvmA==
+  version "17.0.21"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.21.tgz#864b987c0c68d07b4345845c3e63b75edd143644"
+  integrity sha512-DBZCJbhII3r90XbQxI8Y9IjjiiOGlZ0Hr32omXIZvwwZ7p4DMMXGrKXVyPfuoBOri9XNtL0UK69jYIBIsRX3QQ==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.1"
