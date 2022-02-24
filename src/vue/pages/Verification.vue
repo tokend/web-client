@@ -197,7 +197,7 @@ export default {
     padding: 1.2rem;
   }
 
-  @include box-shadow();
+  @include box-shadow;
 
   &[disabled] {
     opacity: 0.7;

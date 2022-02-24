@@ -226,7 +226,8 @@ $payload-padding: 2.4rem;
 $icon-padding: 2.4rem;
 
 .status-message {
-  @include box-shadow();
+  @include box-shadow;
+
   position: fixed;
   right: 4rem;
   top: 4rem;
@@ -377,13 +378,13 @@ $icon-padding: 2.4rem;
 
   &:before,
   &:after {
-    transition: 0.2s;
-
     content: '';
+    transition: 0.2s;
     position: absolute;
     height: $cross-stroke-height;
     width: $cross-stroke-width;
     top: $payload-padding - 0.2rem;
+    /* stylelint-disable-next-line */
     // wait for 10.0.2 stylelint version
     /* stylelint-disable function-calc-no-invalid */
     left: calc(50% - (#{$cross-stroke-width} / 2));
@@ -410,11 +411,13 @@ $icon-padding: 2.4rem;
   &:hover:after,
   &:hover:before {
     transition: 0.2s;
+    /* stylelint-disable-next-line */
     // wait for 10.0.2 stylelint version
     /* stylelint-disable function-calc-no-invalid */
     top: calc(50% - (#{$cross-stroke-height} / 2));
     /* stylelint-enable function-calc-no-invalid */
   }
+  /* stylelint-disable-next-line */
   /* /cross */
 }
 
@@ -437,6 +440,7 @@ $icon-padding: 2.4rem;
   opacity: 0;
 }
 
+/* stylelint-disable-next-line */
 @keyframes status-message__transition-jump {
   0% {
     transform: scale(1);

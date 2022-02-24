@@ -121,8 +121,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~@scss/variables.scss';
-@import '~@scss/mixins.scss';
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 $media-custom-breakpoint: 1100px;
 

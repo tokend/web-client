@@ -163,6 +163,7 @@ export default {
   }
 }
 /* stylelint-enable selector-nested-pattern */
+/* stylelint-disable selector-pseudo-element-no-unknown */
 
 .signup__key-viewer ::v-deep .clipboard-field {
   background: $col-clipboard-background-darken;

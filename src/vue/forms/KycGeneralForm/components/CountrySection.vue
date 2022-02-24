@@ -158,7 +158,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@/vue/forms/_app-form';
+@import '~@/vue/forms/app-form';
 
 .country-section__usa-warning-msg {
   color: $col-warning;

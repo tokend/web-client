@@ -1,5 +1,5 @@
-@import '~@scss/variables.scss';
-@import '~@scss/mixins.scss';
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 $margin-row-to-row: 2.4rem;
 $margin-row-to-row-small: 3rem;
@@ -27,7 +27,7 @@ $field-to-field-gap: 2rem;
     }
   }
 
-  & > .app__form-field + .app__form-field {
+  & > * + * {
     margin-left: $field-to-field-gap;
   }
 
@@ -110,6 +110,7 @@ $field-to-field-gap: 2rem;
   font-size: 1.2rem;
   margin-top: 0.6rem;
 }
+
 .app__form-field-description--error {
   color: $col-error;
 }

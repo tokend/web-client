@@ -44,7 +44,8 @@ $col-tick-field-unfocused: $col-primary-lighten;
   font-size: $field-label-font-size;
   line-height: $field-label-line-height;
 }
-@mixin material-border($color-focused, $color-unfocused, $focused-selector:'') {
+/* stylelint-disable */
+@mixin material-border ($color-focused, $color-unfocused, $focused-selector:'') {
   border-bottom: 0.1rem solid $color-unfocused;
   background: radial-gradient($color-focused, $color-focused) bottom -0.1rem center no-repeat;
   background-size: 0 0.2rem;
@@ -68,7 +69,8 @@ $col-tick-field-unfocused: $col-primary-lighten;
     }
   }
 }
-@mixin readonly-material-border($color) {
+/* stylelint-enable */
+@mixin readonly-material-border ($color) {
   border-bottom: 0.1rem dashed $color;
   background: none;
 }

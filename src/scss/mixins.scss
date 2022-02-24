@@ -1,6 +1,7 @@
 @import 'variables';
 
 /* https://material.io/guidelines/layout/responsive-ui.html#responsive-ui-breakpoints */
+/* stylelint-disable */
 $x-small: 480px;
 $small: 600px;
 $tablet: 820px;
@@ -8,6 +9,7 @@ $medium: 1024px;
 $x-medium: 1200px;
 $large: 1440px;
 $x-large: 1920px;
+/* stylelint-enable */
 
 @mixin button () {
   display: flex;
@@ -30,7 +32,7 @@ $x-large: 1920px;
   }
 }
 @mixin button-icon () {
-  @include button();
+  @include button;
 
   padding: 0.5rem;
   min-width: 3.6rem;
@@ -43,7 +45,7 @@ $x-large: 1920px;
   }
 }
 @mixin button-raised () {
-  @include button();
+  @include button;
 
   border-radius: 0.2rem;
   background-color: $col-button-raised;
@@ -57,7 +59,8 @@ $x-large: 1920px;
   }
 }
 @mixin button-accent () {
-  @include button();
+  @include button;
+
   transition: 0.3s ease-out;
   color: $col-button-flat-accent-txt;
 
@@ -70,7 +73,7 @@ $x-large: 1920px;
   }
 }
 @mixin button-flat () {
-  @include button();
+  @include button;
 
   color: $col-button-flat-txt;
   transition: 0.3s ease-out;
@@ -86,7 +89,9 @@ $x-large: 1920px;
 @mixin box-shadow () {
   box-shadow: 0 0.4rem 1rem 0 rgba(0, 0, 0, 0.15);
 }
-@mixin respond-to($media) {
+
+/* stylelint-disable */
+@mixin respond-to ($media) {
   @if $media == xsmall {
     @media only screen and (max-width: $x-small - 1px) {
       @content;
@@ -130,18 +135,19 @@ $x-large: 1920px;
     }
   }
 }
-@mixin respond-to-height($media) {
+/* stylelint-enable */
+@mixin respond-to-height ($media) {
   @media only screen and (max-height: $media) {
     @content;
   }
 }
-@mixin respond-to-custom($media) {
+@mixin respond-to-custom ($media) {
   @media only screen and (max-width: $media) {
     @content;
   }
 }
 
-@mixin multi-line-ellipsis(
+@mixin multi-line-ellipsis (
   $line-height: 1.5,
   $line-count: 2,
   $strict: false,
@@ -158,7 +164,7 @@ $x-large: 1920px;
   word-break: break-all;
   text-overflow: ellipsis;
 
-  @if ($strict) {
+  @if $strict {
     height: $max-height;
   }
 

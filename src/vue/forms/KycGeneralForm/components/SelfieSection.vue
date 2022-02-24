@@ -92,10 +92,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@/vue/forms/_app-form';
+@import '~@/vue/forms/app-form';
 
 .selfie-section__code-btn {
-  @include button-raised();
+  @include button-raised;
+
   margin-top: 1.5rem;
 }
 </style>

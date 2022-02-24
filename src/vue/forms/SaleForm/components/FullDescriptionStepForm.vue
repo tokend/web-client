@@ -151,7 +151,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/vue/forms/_app-form';
+@import '@/vue/forms/app-form';
 @import '~@scss/variables';
 
 .full-description-step-form__btn {

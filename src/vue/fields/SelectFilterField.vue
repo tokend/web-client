@@ -7,6 +7,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/* stylelint-disable selector-pseudo-element-no-unknown */
 .select-field {
   display: inline-block;
   width: auto;

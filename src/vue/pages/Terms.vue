@@ -66,7 +66,7 @@ export default {
   background-color: $col-terms-block-bg;
   padding: 3.2rem 2.5rem;
 
-  @include box-shadow();
+  @include box-shadow;
 }
 
 /* stylelint-disable selector-nested-pattern */

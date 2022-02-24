@@ -6,7 +6,9 @@ $z-drawer: 10;
 $z-status-message: 11;
 $z-sidebar: 12;
 
+/* stylelint-disable-next-line */
 $sidebar-hide-bp: 768px;
+/* stylelint-disable-next-line */
 $status-message-reposition-bp: 470px;
 
 $sidebar-width: 27.5rem;
@@ -62,11 +64,13 @@ $col-secondary: $_lightPurple;
 $col-primary-lighten: $_cornflowerBlue;
 $col-text-on-dark-bg: $_white;
 $col-primary-inactive: rgba($col-primary, 0.7);
+/* stylelint-disable-next-line */
 $col-primary-inactive-hover-darken: darken($col-primary-inactive, 20%);
 $col-field-inactive: rgba($col-field-txt, 0.7);
 $col-primary-flat-inactive: $col-button-disabled;
 $col-primary-flat-hover: rgba($col-btn, 0.2);
 $col-text-inactive: rgba($col-text, 0.7);
+
 // status colors:
 $col-accent: $_lightRed;
 $col-pending: $_orange;
@@ -151,12 +155,15 @@ $col-switch-field-background: $_whiteSmoke;
 $col-switch-field-border: $_thinPurple;
 $col-switch-field-disabled: $_mediumGray;
 $col-switch-field-enabled: $col-btn;
+/* stylelint-disable-next-line */
 $col-switch-field-enabled-border: darken($col-switch-field-enabled, 10%);
+/* stylelint-disable-next-line */
 $col-switch-field-disabled-border: darken($col-switch-field-disabled, 10%);
 
 // other colors
 $col-auth-titles-background-fallback: #332f5c;
 $col-clipboard-background: $_whiteSmoke;
+/* stylelint-disable-next-line */
 $col-clipboard-background-darken: darken($col-clipboard-background, 5%);
 
 // table colors:
@@ -165,6 +172,7 @@ $col-table-alt-row-background: $_whiteSmoke;
 $col-table-cell-text: $col-text;
 $col-table-cell-text-inactive: $_lightPurple;
 $col-table-head-text: $_lightPurple;
+/* stylelint-disable-next-line */
 $col-table-row-selected: darken($_whiteSmoke, 10%);
 $col-table-row-disabled: $_alto;
 $col-table-shadow: rgba(0, 0, 0, 0.1);
@@ -308,6 +316,7 @@ $col-sale-details-block: $col-block-bg;
 $col-sale-details-logo-bg: $_athensGray;
 $col-sale-details-progress-bar-bg: $_thinPurple;
 $col-sale-details-progress-bar-funded: $col-primary;
+/* stylelint-disable-next-line */
 // TODO: paste here variables that are ready to use during the refactor process
 
 // movement history colors:
@@ -351,7 +360,7 @@ $col-comment-content-gradient-from: $col-primary;
 $col-comment-content-gradient-to: $_gray;
 
 // skeleton-loader
-$col-background-skeleton-loader: rgba($col-primary, 0.10);
+$col-background-skeleton-loader: rgba($col-primary, 0.1);
 
 // hint-wrapper
 $col-hint-wrapper-box-bg: rgba($_black, 0.9);
@@ -360,4 +369,5 @@ $col-hint-wrapper-box-text: $_concrete;
 // tooltip-wrapper
 $col-tooltip-wrapper-msg-bg: rgba($_black, 0.9);
 $col-tooltip-wrapper-msg-text: $_white;
+/* stylelint-disable-next-line */
 $col-tooltip-wrapper-border-style: transparent transparent $col-tooltip-wrapper-msg-bg transparent;

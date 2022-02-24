@@ -276,26 +276,31 @@ export default {
 
   &::-webkit-input-placeholder {
     @include placeholder;
+
     opacity: 0;
   }
 
   &::-moz-placeholder {
     @include placeholder;
+
     opacity: 0;
   }
 
   &:-moz-placeholder {
     @include placeholder;
+
     opacity: 0;
   }
 
   &:-ms-input-placeholder {
     @include placeholder;
+
     opacity: 0;
   }
 
   &::placeholder {
     @include placeholder;
+
     opacity: 0;
   }
 

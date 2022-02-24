@@ -194,7 +194,7 @@ export default {
   border-radius: 0.2rem;
   background-color: $col-ios-guide-block-bg;
 
-  @include box-shadow();
+  @include box-shadow;
   @include respond-to($tablet) {
     padding: 2rem;
   }

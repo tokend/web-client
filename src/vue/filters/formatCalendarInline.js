@@ -1,5 +1,5 @@
 import { globalize } from './globalize'
 
-export function formatCalendar (value) {
+export function formatCalendarInline (value) {
   return globalize('formats.calendar-inline', { value })
 }

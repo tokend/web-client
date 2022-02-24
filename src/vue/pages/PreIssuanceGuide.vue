@@ -66,7 +66,7 @@ export default {
   background-color: $col-pre-issuance-guide-block-bg;
   padding: 3.2rem 2.5rem;
 
-  @include box-shadow();
+  @include box-shadow;
 }
 
 /* stylelint-disable selector-nested-pattern */
@@ -159,7 +159,7 @@ export default {
     margin-top: 1rem;
 
     img {
-      @include box-shadow();
+      @include box-shadow;
     }
   }
 }

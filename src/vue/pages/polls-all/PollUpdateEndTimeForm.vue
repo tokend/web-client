@@ -153,7 +153,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/vue/forms/_app-form';
+@import '@/vue/forms/app-form';
 @import '~@scss/variables';
 
 .poll-update-end-time-form__form-actions:not(:first-child) {

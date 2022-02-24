@@ -288,7 +288,7 @@ $dropdown-item-side-padding: 2.4rem;
   display: flex;
   flex-direction: column;
 
-  @include box-shadow();
+  @include box-shadow;
 
   &:before {
     // dropdown arrow

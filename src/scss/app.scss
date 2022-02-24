@@ -22,7 +22,12 @@ button,
 textarea {
   background: $col-app-background;
   color: $col-primary;
-  font-family: 'Circular', 'Noto Sans', '-apple-system', 'BlinkMacSystemFont', sans-serif;
+  font-family:
+    'Circular',
+    'Noto Sans',
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
   font-weight: 400;
   letter-spacing: 0.005rem;
 }
@@ -37,7 +42,9 @@ p {
   font-size: 1.4rem;
 }
 
-p, li, ul {
+p,
+li,
+ul {
   color: $col-text;
 }
 
@@ -48,7 +55,6 @@ button {
   width: auto;
   overflow: visible;
   cursor: pointer;
-
   background: transparent;
 
   /* inherit font & color from ancestor */
@@ -72,17 +78,20 @@ button {
   }
 }
 
-
 input,
 textarea {
   width: 100%;
 }
 
 html {
+  /* stylelint-disable-next-line */
   font-size: 10px;
+  /* stylelint-disable-next-line */
   // Fixes the bug:
   // https://www.igorkromin.net/index.php/2016/05/20/mobile-safari-scrolling-problem-with-an-input-field-inside-a-fixed-div/
+  /* stylelint-disable-next-line */
   overflow: auto !important;
+  /* stylelint-disable-next-line */
   -webkit-overflow-scrolling: touch !important;
   min-height: 100vh;
   display: flex;
@@ -105,7 +114,6 @@ body {
   & main {
     background-color: $col-app-content-background;
   }
-
 
   .app__page-content-wrp {
     flex: 1;
@@ -172,28 +180,28 @@ body {
       display: block;
       font-size: 1.17em;
       margin: 1em 0;
-      font-weight: bold;
+      font-weight: 700;
     }
 
     h4 {
       display: block;
       font-size: 1em;
       margin: 1.33em 0;
-      font-weight: bold;
+      font-weight: 700;
     }
 
     h5 {
       display: block;
       font-size: 0.83em;
       margin: 1.67em 0;
-      font-weight: bold;
+      font-weight: 700;
     }
 
     h6 {
       display: block;
       font-size: 0.67em;
       margin: 2.33em 0;
-      font-weight: bold;
+      font-weight: 700;
     }
 
     img {
@@ -228,41 +236,41 @@ h2.app__page-heading {
 h3.app__page-heading {
   font-size: 1.17em;
   margin: 0 0 1em;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 h4.app__page-heading {
   font-size: 1em;
   margin: 0 0 1.33em;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 h5.app__page-heading {
   font-size: 0.83em;
   margin: 0 0 1.67em;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 h6.app__page-heading {
   font-size: 0.67em;
   margin: 0 0 2.33em;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .app__button {
-  @include button();
+  @include button;
 }
 
 .app__button-icon {
-  @include button-icon();
+  @include button-icon;
 }
 
 .app__button-flat {
-  @include button-flat();
+  @include button-flat;
 }
 
 .app__button-raised {
-  @include button-raised();
+  @include button-raised;
 
   &--danger {
     background-color: $col-error;
@@ -273,7 +281,7 @@ h6.app__page-heading {
   background-color: $col-block-bg;
 
   &:not(.app__card--shadow-none) {
-    @include box-shadow();
+    @include box-shadow;
   }
 }
 
@@ -320,12 +328,16 @@ h6.app__page-heading {
         text-overflow: ellipsis;
         white-space: nowrap;
         color: $col-table-head-text;
-        font-weight: normal;
+        font-weight: 400;
       }
     }
 
     tbody {
       tr {
+        .app__table--clickable-rows & {
+          cursor: pointer;
+        }
+
         &:nth-child(odd) {
           background-color: $col-table-alt-row-background;
         }
@@ -349,10 +361,6 @@ h6.app__page-heading {
         }
       }
     }
-  }
-
-  &.app__table--clickable-rows tbody tr {
-    cursor: pointer;
   }
 
   &--last-td-to-right {
@@ -406,7 +414,9 @@ h6.app__page-heading {
     // to remove the borders and background of the asset-selector to use the
     // component outside forms
     div span {
+      /* stylelint-disable-next-line */
       border-bottom: 0 !important;
+      /* stylelint-disable-next-line */
       background-size: 0 !important;
       padding-top: 0;
       padding-bottom: 0;
@@ -418,14 +428,15 @@ h6.app__page-heading {
   }
 }
 
-
 .app__select-with-label {
 
   &--no-border {
     // to remove the borders and background of the asset-selector-with-label
     // to use the component outside forms
     div span {
+      /* stylelint-disable-next-line */
       border-bottom: 0 !important;
+      /* stylelint-disable-next-line */
       background-size: 0 !important;
     }
 
@@ -436,11 +447,14 @@ h6.app__page-heading {
 }
 
 #nprogress {
+  /* stylelint-disable-next-line */
   z-index: 5;
 
   .bar {
     // !importants are for overwrite nprogress’ styles
+    /* stylelint-disable-next-line */
     background: $col-primary !important;
+    /* stylelint-disable-next-line */
     height: 0.3rem !important;
   }
 }

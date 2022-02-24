@@ -70,6 +70,7 @@ export default {
     reverse;
 }
 
+/* stylelint-disable-next-line */
 @keyframes readonly-field__err-transition-keyframes {
   from {
     max-height: 0;

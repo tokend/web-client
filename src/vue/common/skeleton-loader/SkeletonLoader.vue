@@ -52,8 +52,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '~@scss/variables.scss';
-@import '~@scss/mixins.scss';
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 // TODO: refactoring variables name
 $asset-card-header-height: 8.5rem;
@@ -61,12 +61,12 @@ $asset-card-margin: 0.75rem;
 $media-desktop: 1130px;
 $media-small-desktop: 960px;
 
-/* stylelint-disable function-calc-no-invalid */
+/* stylelint-disable */
 @mixin asset-card-width($width) {
   flex: 0 1 calc(#{$width}% - (#{$asset-card-margin} * 2));
   max-width: calc(#{$width}% - (#{$asset-card-margin} * 2));
 }
-/* stylelint-enable function-calc-no-invalid */
+/* stylelint-enable */
 
 .skeleton-loader {
   z-index: $z-skeleton-loader;
@@ -196,6 +196,7 @@ $media-small-desktop: 960px;
   }
 }
 
+/* stylelint-disable-next-line */
 @keyframes skeleton-loader__gradient-animation {
   from {
     left: -50%;

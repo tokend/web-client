@@ -251,6 +251,7 @@ $pwd-toggle-btn-width: 3.2rem;
 
   &:not(:read-only) {
     box-shadow: inset 0 0 0 5rem $field-color-background;
+    /* stylelint-disable-next-line */
     // autofill hack
   }
 
@@ -300,6 +301,7 @@ $pwd-toggle-btn-width: 3.2rem;
 
   // TODO: fix issue when decimal number entered in the input that have
   // mismatched "step" attribute
+  /* stylelint-disable-next-line */
   //.input-field__input:not(:placeholder-shown):invalid,
   .input-field--error > & {
     @include material-border($field-color-error, $field-color-error);
@@ -366,6 +368,7 @@ $pwd-toggle-btn-width: 3.2rem;
 
   // TODO: fix issue when decimal number entered in the input that have
   // mismatched "step" attribute
+  /* stylelint-disable-next-line */
   //.input-field__input:not(:placeholder-shown):invalid ~ .input-field__label,
   .input-field--error > &,
   .input-field--error > .input-field__input:focus ~ & {
@@ -410,6 +413,7 @@ $pwd-toggle-btn-width: 3.2rem;
     reverse;
 }
 
+/* stylelint-disable-next-line */
 @keyframes input-field__err-transition-keyframes {
   from {
     max-height: 0;

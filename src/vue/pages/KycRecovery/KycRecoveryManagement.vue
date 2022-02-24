@@ -152,6 +152,6 @@ export default {
   background-color: $col-block-bg;
   padding: 2.4rem;
 
-  @include box-shadow();
+  @include box-shadow;
 }
 </style>

@@ -42,5 +42,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '@/vue/forms/_app-form';
+@import '@/vue/forms/app-form';
 </style>

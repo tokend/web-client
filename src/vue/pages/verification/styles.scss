@@ -1,4 +1,4 @@
-@import '~@/vue/forms/_app-form';
+@import '~@/vue/forms/app-form';
 
 .verification-container__heading {
   font-size: 1.3rem;
@@ -11,5 +11,5 @@
   background-color: $col-block-bg;
   padding: 2.4rem;
 
-  @include box-shadow();
+  @include box-shadow;
 }

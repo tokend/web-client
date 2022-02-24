@@ -89,8 +89,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~@scss/variables.scss';
-@import '~@scss/mixins.scss';
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .form-confirmation {
   display: flex;
@@ -149,6 +149,7 @@ export default {
   animation: form-confirmation__transition-keyframes 0s ease-in-out reverse;
 }
 
+/* stylelint-disable-next-line */
 @keyframes form-confirmation__transition-keyframes {
   from { opacity: 0; }
   to { opacity: 1; }

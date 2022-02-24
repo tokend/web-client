@@ -208,7 +208,7 @@ export default {
   background: $col-block-bg;
   padding: 0 2.4rem;
 
-  @include box-shadow();
+  @include box-shadow;
 }
 
 .security-page__row {

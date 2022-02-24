@@ -234,7 +234,7 @@ export default {
   background-color: $col-downloads-block-bg;
   padding: 4.1rem 10rem;
 
-  @include box-shadow();
+  @include box-shadow;
   @include respond-to($medium) {
     padding: 4.1rem 6rem;
   }

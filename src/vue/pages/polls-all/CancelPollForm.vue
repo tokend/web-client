@@ -89,7 +89,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/vue/forms/_app-form';
+@import '@/vue/forms/app-form';
 @import '~@scss/variables';
 
 .cancel-poll-form__form-actions:not(:first-child) {

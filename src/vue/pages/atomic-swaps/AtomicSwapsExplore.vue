@@ -183,8 +183,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@scss/mixins.scss';
-@import '~@scss/variables.scss';
+@import '~@scss/mixins';
+@import '~@scss/variables';
 
 $list-item-margin: 2rem;
 $filter-field-to-filter-field-margin: 2rem;
@@ -219,7 +219,7 @@ $filter-field-to-filter-field-margin: 2rem;
   $media-desktop: 1130px;
   $media-small-desktop: 960px;
 
-  @mixin list-item-width($width) {
+  @mixin list-item-width ($width) {
     flex: 0 1 calc(#{$width} - (#{$list-item-margin}));
     max-width: calc(#{$width} - (#{$list-item-margin}));
   }

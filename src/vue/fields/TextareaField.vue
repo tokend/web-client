@@ -102,6 +102,7 @@ export default {
 .text-field {
   width: 100%;
   position: relative;
+  /* stylelint-disable-next-line */
   // we leave padding-bottom here to  keep out plugins that draw something on
   // the fields from our digit counter on the bottom
   padding-bottom: 2.6rem;

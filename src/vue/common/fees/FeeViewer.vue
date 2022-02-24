@@ -163,6 +163,7 @@ $fee-viewer-animation-duration: 0.2s;
     ease-in-out reverse;
 }
 
+/* stylelint-disable-next-line */
 @keyframes fee-viewer__details-keyframes {
   from {
     max-height: 0;

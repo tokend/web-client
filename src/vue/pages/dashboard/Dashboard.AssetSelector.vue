@@ -214,8 +214,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~@scss/variables.scss';
-@import '~@scss/mixins.scss';
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 $media-custom-breakpoint-small: 540px;
 $media-custom-breakpoint: 800px;
@@ -286,7 +286,7 @@ $media-custom-breakpoint-medium: 870px;
   height: 5.5rem;
   border-radius: 0.2rem;
 
-  @include box-shadow();
+  @include box-shadow;
   @include respond-to(small) {
     width: 4rem;
     height: 4rem;

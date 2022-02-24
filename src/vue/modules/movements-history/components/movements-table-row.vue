@@ -192,7 +192,7 @@ export default {
   margin-top: -0.6rem;
   position: relative;
 
-  @include box-shadow();
+  @include box-shadow;
 
   &:before {
     // HACK: to cover sticking out shadow at the top
