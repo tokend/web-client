@@ -133,4 +133,15 @@ module.exports = {
     'promise/no-callback-in-promise': 'warn',
     'promise/prefer-await-to-then': 'warn',
   },
+  overrides: [
+    {
+      files: [
+        '**/__tests__/*.{j,t}s?(x)',
+        '**/*.spec.{j,t}s?(x)',
+      ],
+      env: {
+        mocha: true,
+      },
+    },
+  ],
 }

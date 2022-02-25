@@ -36,7 +36,7 @@ if (process.env.NODE_ENV !== 'test') {
       directories: [path.join(__dirname, 'src')],
       failOnUnused: process.env.NODE_ENV === 'production',
       exclude: ['*.spec.js', '*.e2e.js', '*.md', 'test/*'],
-    })
+    }),
   )
 }
 
