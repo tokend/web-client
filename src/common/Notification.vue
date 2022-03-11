@@ -1,9 +1,6 @@
 <template>
   <div class="notification">
-    <icon
-      class="notification__icon"
-      :name="iconName"
-    />
+    <icon class="notification__icon" :name="iconName" />
     <div class="notification__details">
       <h4 class="notification__title">
         {{ title }}
@@ -38,7 +35,7 @@ export default defineComponent({
       default: ICON_NAMES.check,
     },
   },
-  setup () {
+  setup() {
     return {}
   },
 })
@@ -58,7 +55,6 @@ export default defineComponent({
 @import 'vue-toastification/src/scss/animations/bounce';
 
 .Vue-Toastification__toast {
-
   &--success {
     background: var(--notification-bg-success);
   }
@@ -96,5 +92,4 @@ export default defineComponent({
 .notification__title {
   color: var(--notification-title);
 }
-
 </style>

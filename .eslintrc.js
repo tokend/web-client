@@ -23,10 +23,9 @@ module.exports = {
     'plugin:@typescript-eslint/recommended', // @typescript-eslint/eslint-plugin
     '@vue/typescript/recommended', // @vue/eslint-config-typescript
     'plugin:vue-i18n/recommended', // eslint-plugin-vue-i18n
+    'plugin:prettier/recommended',
   ],
-  plugins: [
-    'promise',
-  ],
+  plugins: ['promise'],
   globals: {
     defineProps: 'readonly',
     defineEmits: 'readonly',
@@ -34,6 +33,21 @@ module.exports = {
     withDefaults: 'readonly',
   },
   rules: {
+    'prettier/prettier': [
+      'warn',
+      {
+        vueIndentScriptAndStyle: false,
+        printWidth: 80,
+        trailingComma: 'all',
+        endOfLine: 'auto',
+        tabWidth: 2,
+        semi: false,
+        singleQuote: true,
+        bracketSpacing: true,
+        bracketSameLine: false,
+        arrowParens: 'avoid',
+      },
+    ],
     'vue-i18n/no-v-html': 'off',
     'vue-i18n/no-dynamic-keys': 'warn',
     'vue-i18n/no-missing-keys': 'warn',
@@ -82,27 +96,14 @@ module.exports = {
         allow: ['warn', 'error'],
       },
     ],
-    indent: [2, 2],
     quotes: [2, 'single', { avoidEscape: false }],
     'no-multiple-empty-lines': [2, { max: 1, maxEOF: 0, maxBOF: 0 }],
     semi: [2, 'never'],
     '@typescript-eslint/no-non-null-assertion': 'off',
-
     // Vue
     'vue/multi-word-component-names': 0,
     'vue/component-definition-name-casing': ['error', 'kebab-case'],
     'vue/name-property-casing': [2, 'kebab-case'],
-    'vue/max-attributes-per-line': [
-      1,
-      {
-        singleline: {
-          max: 1,
-        },
-        multiline: {
-          max: 1,
-        },
-      },
-    ],
     'vue/valid-v-for': 2,
     'vue/attributes-order': 0,
     'vue/order-in-components': 1,
@@ -112,7 +113,6 @@ module.exports = {
     'vue/html-end-tags': 2,
     'vue/html-indent': 1,
     'vue/html-quotes': 1,
-    'vue/html-self-closing': 1,
     'vue/multiline-html-element-content-newline': 1,
     'vue/mustache-interpolation-spacing': 1,
     'vue/no-async-in-computed-properties': 2,

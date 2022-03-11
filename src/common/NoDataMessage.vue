@@ -1,9 +1,6 @@
 <template>
   <div class="no-data-message">
-    <icon
-      class="no-data-message__icon"
-      :name="$icons.folder"
-    />
+    <icon class="no-data-message__icon" :name="$icons.folder" />
     <span class="no-data-message__message">
       {{ message }}
     </span>

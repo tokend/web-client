@@ -246,7 +246,13 @@ module.exports = {
       'always-single-line',
       { severity: 'warning' },
     ],
-    'at-rule-empty-line-before': 'always',
+    'at-rule-empty-line-before': [
+      'always',
+      {
+        severity: 'warning',
+        ignore: ['after-comment', 'first-nested'],
+      },
+    ],
     'at-rule-name-case': ['lower', { severity: 'warning' }],
     'at-rule-name-space-after': ['always', { severity: 'warning' }],
     'at-rule-semicolon-newline-after': ['always', { severity: 'warning' }],

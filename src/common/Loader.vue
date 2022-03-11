@@ -24,8 +24,7 @@ export default defineComponent({
       default: SCHEMES.spinner,
     },
   },
-  setup () {
-
+  setup() {
     return {
       SCHEMES,
     }

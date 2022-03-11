@@ -25,9 +25,7 @@ export default defineComponent({
   margin: toRem(8);
   border-radius: 50%;
   border: toRem(6) solid var(--spinner-border);
-  border-color: var(--spinner-border)
-    transparent
-    var(--spinner-border)
+  border-color: var(--spinner-border) transparent var(--spinner-border)
     transparent;
   animation: spinner 1.2s linear infinite;
 }

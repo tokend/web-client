@@ -6,15 +6,8 @@
     v-bind="$attrs"
     :to="routeRecord"
   >
-    <icon
-      v-if="iconName"
-      class="app-button__icon"
-      :name="iconName"
-    />
-    <span
-      v-if="text"
-      class="app-button__content"
-    >
+    <icon v-if="iconName" class="app-button__icon" :name="iconName" />
+    <span v-if="text" class="app-button__content">
       {{ text }}
     </span>
   </router-link>
@@ -33,10 +26,7 @@
       }"
       :name="iconName"
     />
-    <span
-      v-if="text"
-      class="app-button__content"
-    >
+    <span v-if="text" class="app-button__content">
       {{ text }}
     </span>
   </a>
@@ -46,7 +36,6 @@
     :class="buttonClasses"
     v-bind="$attrs"
     :disabled="isDisabled"
-
     :type="$attrs.type || 'button'"
   >
     <icon
@@ -57,10 +46,7 @@
       }"
       :name="iconName"
     />
-    <span
-      v-if="text"
-      class="app-button__content"
-    >
+    <span v-if="text" class="app-button__content">
       {{ text }}
     </span>
   </button>
@@ -88,14 +74,19 @@ const MODIFICATIONS: Record<string, string> = {
   info: 'info',
 }
 
-const includingValidator =
-    (receipt: Record<string, string>): (v: string) => boolean => {
-      return (v: string): boolean => {
-        return Boolean(v) && !v.split(' ')
-          .filter(el => Boolean(el) && !Object.values(receipt).includes(el))
-          .length
-      }
-    }
+const includingValidator = (
+  receipt: Record<string, string>,
+): ((v: string) => boolean) => {
+  return (v: string): boolean => {
+    return (
+      Boolean(v) &&
+      !v
+        .split(' ')
+        .filter(el => Boolean(el) && !Object.values(receipt).includes(el))
+        .length
+    )
+  }
+}
 
 export default defineComponent({
   name: 'app-button',
@@ -147,9 +138,7 @@ export default defineComponent({
         .filter(el => Boolean(el))
         .map(el => `app-button--${el}`)
 
-      let states = [
-        ...(isDisabled.value ? ['app-button--disabled'] : []),
-      ]
+      let states = [...(isDisabled.value ? ['app-button--disabled'] : [])]
 
       return schemes.concat(modifications).concat(states).join(' ')
     })

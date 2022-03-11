@@ -8,11 +8,7 @@
       'input-field--right-align': scheme === SCHEMES.rightAlign,
     }"
   >
-    <label
-      v-if="label"
-      :for="`input-field--${uid}`"
-      class="input-field__label"
-    >
+    <label v-if="label" :for="`input-field--${uid}`" class="input-field__label">
       {{ label }}
     </label>
     <div class="input-field__input-wrp">
@@ -27,13 +23,10 @@
         :type="type"
         :max="max"
         :disabled="isDisabled || isReadonly"
-      >
+      />
     </div>
     <transition name="input-field__err-msg-transition">
-      <span
-        v-if="errorMessage"
-        class="input-field__err-msg"
-      >
+      <span v-if="errorMessage" class="input-field__err-msg">
         {{ errorMessage }}
       </span>
     </transition>
@@ -42,12 +35,7 @@
 
 <script lang="ts">
 import { MathUtil } from '@/utils/math.util'
-import {
-  computed,
-  defineComponent,
-  getCurrentInstance,
-  PropType,
-} from 'vue'
+import { computed, defineComponent, getCurrentInstance, PropType } from 'vue'
 
 enum INPUT_TYPES {
   text = 'text',
@@ -60,7 +48,7 @@ enum EVENTS {
 
 enum SCHEMES {
   default = 'default',
-  rightAlign = 'right-align'
+  rightAlign = 'right-align',
 }
 
 export default defineComponent({
@@ -75,15 +63,15 @@ export default defineComponent({
       default: INPUT_TYPES.text,
     },
     scheme: { type: String, default: SCHEMES.default },
-    errorMessage: {  type: String, default: ''  },
+    errorMessage: { type: String, default: '' },
   },
   emits: Object.values(EVENTS),
-  setup (props, { emit, attrs }) {
+  setup(props, { emit, attrs }) {
     const uid = getCurrentInstance()?.uid
 
     const isNumberType = computed(() => props.type === INPUT_TYPES.number)
 
-    const max = computed(() : string => (attrs?.max as string) || '')
+    const max = computed((): string => (attrs?.max as string) || '')
 
     const listeners = computed(() => ({
       input: (event: Event) => {
@@ -176,27 +164,22 @@ export default defineComponent({
   @include field-border(var(--field-col-border));
 
   &::-webkit-input-placeholder {
-
     @include placeholder;
   }
 
   &::-moz-placeholder {
-
     @include placeholder;
   }
 
   &:-moz-placeholder {
-
     @include placeholder;
   }
 
   &:-ms-input-placeholder {
-
     @include placeholder;
   }
 
   &::placeholder {
-
     @include placeholder;
   }
 
@@ -223,7 +206,6 @@ export default defineComponent({
   }
 
   .input-field--error & {
-
     @include field-border(var(--field-col-error));
   }
 

@@ -5,41 +5,26 @@
         <example-form />
       </div>
       <div class="home-page__col">
-        <error-message
-          :message="$t('home-page.loading-error-msg')"
-        />
-        <no-data-message
-          :message="$t('home-page.no-data-msg')"
-        />
+        <error-message :message="$t('home-page.loading-error-msg')" />
+        <no-data-message :message="$t('home-page.no-data-msg')" />
       </div>
     </div>
     <div class="home-page__row">
       <div class="home-page__col home-page__btns">
-        <app-button
-          :text="$t('home-page.icon-btn')"
-          :icon-name="$icons.home"
-        />
-        <app-button
-          :icon-name="$icons.add"
-        />
+        <app-button :text="$t('home-page.icon-btn')" :icon-name="$icons.home" />
+        <app-button :icon-name="$icons.add" />
         <app-button
           schemes="flat"
           :text="$t('home-page.icon-btn')"
           :icon-name="$icons.heart"
         />
-        <app-button
-          schemes="flat"
-          :icon-name="$icons.search"
-        />
+        <app-button schemes="flat" :icon-name="$icons.search" />
         <app-button
           schemes="default"
           :text="$t('home-page.icon-btn')"
           :icon-name="$icons.check"
         />
-        <app-button
-          schemes="default"
-          :icon-name="$icons.apps"
-        />
+        <app-button schemes="default" :icon-name="$icons.apps" />
       </div>
       <div class="home-page__col">
         <loader />
@@ -77,8 +62,7 @@ export default defineComponent({
     ErrorMessage,
     ExampleForm,
   },
-  setup () {
-
+  setup() {
     return {}
   },
 })

@@ -19,18 +19,12 @@
         :value="cbValue"
         :name="$attrs.name || `tick-field__${uid}`"
         :tabindex="isDisabled || isReadonly ? -1 : tabIndex"
-      >
+      />
       <div class="tick-field__tick">
-        <icon
-          class="tick-field__tick-icon"
-          :name="$icons.check"
-        />
+        <icon class="tick-field__tick-icon" :name="$icons.check" />
       </div>
     </div>
-    <label
-      class="tick-field__label"
-      :for="`tick-field__${uid}`"
-    >
+    <label class="tick-field__label" :for="`tick-field__${uid}`">
       {{ label }}
     </label>
   </div>
@@ -57,11 +51,11 @@ export default defineComponent({
       default: false,
     },
     label: { type: String, default: '' },
-    errorMessage: {  type: String, default: ''  },
+    errorMessage: { type: String, default: '' },
     tabIndex: { type: Number, default: 0 },
   },
   emits: Object.values(EVENTS),
-  setup (props, { emit, attrs }) {
+  setup(props, { emit, attrs }) {
     const uid = getCurrentInstance()?.uid
 
     const checked = computed(() => {
@@ -73,19 +67,20 @@ export default defineComponent({
       let resultModel: unknown[] = model as unknown[]
       let result
       switch (_typeof(model)) {
-      case 'number': {
-        result = +model & +value
-        break
-      }
-      case 'array': {
-        result = _typeof(value) !== 'array'
-          ? ~resultModel.findIndex(el => el === value)
-          : resultModel.every(el => _arrayIncludes(resultModel, el))
-        break
-      }
-      default: {
-        result = model
-      }
+        case 'number': {
+          result = +model & +value
+          break
+        }
+        case 'array': {
+          result =
+            _typeof(value) !== 'array'
+              ? ~resultModel.findIndex(el => el === value)
+              : resultModel.every(el => _arrayIncludes(resultModel, el))
+          break
+        }
+        default: {
+          result = model
+        }
       }
       return result
     })
@@ -101,34 +96,37 @@ export default defineComponent({
         }
 
         switch (_typeof(model)) {
-        case 'number': {
-          emit(
-            EVENTS.updateModelValue,
-            isChecked
-              ? +model + +value
-              : +model - +value,
-          )
-          break
-        }
-        case 'array': {
-          let resultModel: unknown[] = model as unknown[]
-          if (_typeof(value) !== 'array') {
-            emit(EVENTS.updateModelValue, isChecked
-              ? resultModel.concat(value)
-              : resultModel.filter((item) => item !== value))
-          } else {
+          case 'number': {
             emit(
-              EVENTS.updateModelValue, isChecked
-                ? resultModel.concat(value)
-                : resultModel.filter((item) =>
-                  !_arrayIncludes(value as unknown[], item)),
+              EVENTS.updateModelValue,
+              isChecked ? +model + +value : +model - +value,
             )
+            break
           }
-          break
-        }
-        default: {
-          return emit(EVENTS.updateModelValue, isChecked)
-        }
+          case 'array': {
+            let resultModel: unknown[] = model as unknown[]
+            if (_typeof(value) !== 'array') {
+              emit(
+                EVENTS.updateModelValue,
+                isChecked
+                  ? resultModel.concat(value)
+                  : resultModel.filter(item => item !== value),
+              )
+            } else {
+              emit(
+                EVENTS.updateModelValue,
+                isChecked
+                  ? resultModel.concat(value)
+                  : resultModel.filter(
+                      item => !_arrayIncludes(value as unknown[], item),
+                    ),
+              )
+            }
+            break
+          }
+          default: {
+            return emit(EVENTS.updateModelValue, isChecked)
+          }
         }
       },
     }))
@@ -147,17 +145,17 @@ export default defineComponent({
       let result
 
       switch (type) {
-      case 'object': {
-        if (Array.isArray(value)) {
-          result = 'array'
-        } else if (value === null) {
-          result = null
+        case 'object': {
+          if (Array.isArray(value)) {
+            result = 'array'
+          } else if (value === null) {
+            result = null
+          }
+          break
         }
-        break
-      }
-      default: {
-        result = type
-      }
+        default: {
+          result = type
+        }
       }
 
       return result
@@ -240,5 +238,4 @@ export default defineComponent({
     opacity: 1;
   }
 }
-
 </style>

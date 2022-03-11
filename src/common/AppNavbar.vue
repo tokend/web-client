@@ -12,8 +12,7 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'app-navbar',
   components: { AppLogo },
-  setup () {
-
+  setup() {
     return {}
   },
 })
@@ -33,7 +32,6 @@ export default defineComponent({
 }
 
 .app-navbar__logo {
-
   @include respond-to(xsmall) {
     width: 100%;
     margin-bottom: toRem(24);
@@ -45,7 +43,6 @@ export default defineComponent({
 }
 
 .app-navbar__auth-btn {
-
   @include respond-to(tablet) {
     margin-left: auto;
     order: 2;

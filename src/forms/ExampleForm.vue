@@ -1,8 +1,5 @@
 <template>
-  <form
-    class="example-form"
-    @submit.prevent="isFormValid() && submit()"
-  >
+  <form class="example-form" @submit.prevent="isFormValid() && submit()">
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
@@ -37,34 +34,12 @@
       </div>
     </div>
     <div class="app__form-actions">
-      <app-button
-        type="submit"
-        :text="$t('example-form.submit-btn')"
-      />
-      <app-button
-        schemes="flat"
-        :text="$t('example-form.cancel-btn')"
-      />
-      <app-button
-        schemes="flat"
-        :text="$t('success')"
-        @click="callSuccess"
-      />
-      <app-button
-        schemes="flat"
-        :text="$t('error')"
-        @click="callError"
-      />
-      <app-button
-        schemes="flat"
-        :text="$t('warning')"
-        @click="callWarning"
-      />
-      <app-button
-        schemes="flat"
-        :text="$t('info')"
-        @click="callInfo"
-      />
+      <app-button type="submit" :text="$t('example-form.submit-btn')" />
+      <app-button schemes="flat" :text="$t('example-form.cancel-btn')" />
+      <app-button schemes="flat" :text="$t('success')" @click="callSuccess" />
+      <app-button schemes="flat" :text="$t('error')" @click="callError" />
+      <app-button schemes="flat" :text="$t('warning')" @click="callWarning" />
+      <app-button schemes="flat" :text="$t('info')" @click="callInfo" />
     </div>
   </form>
 </template>
@@ -83,7 +58,7 @@ import { ICON_NAMES } from '@/enums'
 export default defineComponent({
   name: 'example-form',
   components: { AppButton, TickField, InputField },
-  setup () {
+  setup() {
     const form = reactive({
       inputExample: '',
       inputNumberExample: 0,
@@ -91,11 +66,14 @@ export default defineComponent({
     })
 
     const formController = useForm()
-    const validationController = useFormValidation({
-      inputExample: {
-        required,
+    const validationController = useFormValidation(
+      {
+        inputExample: {
+          required,
+        },
       },
-    }, toRefs(form))
+      toRefs(form),
+    )
 
     const submit = async () => {
       formController.disableForm
@@ -103,7 +81,8 @@ export default defineComponent({
         Bus.error({
           messageId: 'example-form.example-success-msg',
           messageArgs: {
-            value: 'ehhehehehehas dfasd fasd fasdfa sdf asdf a sdfasd fasd fasdf asdf asdf asdf',
+            value:
+              'ehhehehehehas dfasd fasd fasdfa sdf asdf a sdfasd fasd fasdf asdf asdf asdf',
           },
           iconName: ICON_NAMES.folder,
         })
@@ -118,15 +97,21 @@ export default defineComponent({
       submit,
       formController,
       ...toRefs(validationController),
-      callError: () => { Bus.error('Some error message') },
-      callSuccess: () => { Bus.success('Some success message') },
-      callWarning: () => { Bus.warning('Some warning message') },
-      callInfo: () => { Bus.info('Some info message') },
+      callError: () => {
+        Bus.error('Some error message')
+      },
+      callSuccess: () => {
+        Bus.success('Some success message')
+      },
+      callWarning: () => {
+        Bus.warning('Some warning message')
+      },
+      callInfo: () => {
+        Bus.info('Some info message')
+      },
     }
   },
 })
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

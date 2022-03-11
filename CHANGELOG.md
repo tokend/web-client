@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Added
 - [Eslint](.eslintrc.js)
 - [Stylelint](stylelint.config.js)
+- [prettier](.eslintrc.js)
 - [e2e testing by Cypress](e2e)
 - [unit testing Jest](jest.config.js)
 - [Vite bundler](vite.config.ts)
