@@ -23,7 +23,7 @@
       <div class="tick-field__tick">
         <icon
           class="tick-field__tick-icon"
-          :name="$icons.faCheck"
+          :name="$icons.check"
         />
       </div>
     </div>
@@ -198,7 +198,6 @@ export default defineComponent({
 }
 
 .tick-field__input {
-  pointer-events: none;
   opacity: 0;
 }
 
@@ -231,7 +230,8 @@ export default defineComponent({
 }
 
 .tick-field__tick-icon {
-  font-size: toRem(10);
+  width: 100%;
+  height: 100%;
   opacity: 0;
   color: var(--tick-field-tick-icon);
   transition: var(--field-transition-duration) ease-in-out;

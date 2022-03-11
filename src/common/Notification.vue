@@ -35,7 +35,7 @@ export default defineComponent({
     },
     iconName: {
       type: String as PropType<ICON_NAMES>,
-      default: ICON_NAMES.faCheck,
+      default: ICON_NAMES.check,
     },
   },
   setup () {

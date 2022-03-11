@@ -17,28 +17,28 @@
       <div class="home-page__col home-page__btns">
         <app-button
           :text="$t('home-page.icon-btn')"
-          :icon-name="$icons.faTimes"
+          :icon-name="$icons.home"
         />
         <app-button
-          :icon-name="$icons.faTimes"
+          :icon-name="$icons.add"
         />
         <app-button
           schemes="flat"
           :text="$t('home-page.icon-btn')"
-          :icon-name="$icons.faCheck"
+          :icon-name="$icons.heart"
         />
         <app-button
           schemes="flat"
-          :icon-name="$icons.faCheck"
+          :icon-name="$icons.search"
         />
         <app-button
           schemes="default"
           :text="$t('home-page.icon-btn')"
-          :icon-name="$icons.faExclamationCircle"
+          :icon-name="$icons.check"
         />
         <app-button
           schemes="default"
-          :icon-name="$icons.faExclamationCircle"
+          :icon-name="$icons.apps"
         />
       </div>
       <div class="home-page__col">
@@ -47,11 +47,11 @@
     </div>
     <div class="home-page__row">
       <div class="home-page__col">
-        <icon :name="$icons.faFolderOpen" />
-        <icon :name="$icons.faCheck" />
-        <icon :name="$icons.faExclamationCircle" />
-        <icon :name="$icons.faTimes" />
-        <icon :name="$icons.vue" />
+        <icon :name="$icons.folder" />
+        <icon :name="$icons.check" />
+        <icon :name="$icons.home" />
+        <icon :name="$icons.heart" />
+        <icon :name="$icons.add" />
       </div>
     </div>
   </div>

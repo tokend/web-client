@@ -36,7 +36,7 @@ export default defineComponent({
     },
     iconName: {
       type: String as PropType<ICON_NAMES>,
-      default: ICON_NAMES.faExclamationCircle,
+      default: ICON_NAMES.shieldExclamation,
     },
   },
 })

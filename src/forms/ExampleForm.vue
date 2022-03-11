@@ -105,7 +105,7 @@ export default defineComponent({
           messageArgs: {
             value: 'ehhehehehehas dfasd fasd fasdfa sdf asdf a sdfasd fasd fasdf asdf asdf asdf',
           },
-          iconName: ICON_NAMES.faFolderOpen,
+          iconName: ICON_NAMES.folder,
         })
       } catch (error) {
         ErrorHandler.process(error as Error)

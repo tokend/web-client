@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
 import { visualizer } from 'rollup-plugin-visualizer'
 import NodeGlobalsPolyfillPlugin from '@esbuild-plugins/node-globals-polyfill'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
 import fs from 'fs'
 import path from 'path'
@@ -23,6 +24,10 @@ export default defineConfig({
   publicDir: 'static',
   plugins: [
     vue(),
+    createSvgIconsPlugin({
+      iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
+      symbolId: '[name]',
+    }),
     checker({
       typescript: true,
       eslint: {

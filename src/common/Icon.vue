@@ -1,50 +1,25 @@
 <template>
-  <div class="icon">
-    <template v-if="parsedIconName">
-      <font-awesome-icon :icon="parsedIconName" />
-    </template>
-    <template v-else>
-      <component
-        v-bind="$attrs"
-        :is="iconComponent"
-      />
-    </template>
-  </div>
+  <svg class="icon">
+    <use
+      :xlink:href="`#${name}-icon`"
+      aria-hidden="true"
+      fill="currentColor"
+      stroke="currentColor"
+    />
+  </svg>
 </template>
 
 <script lang="ts">
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-
-import { defineAsyncComponent, defineComponent, PropType, ref } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { ICON_NAMES } from '@/enums'
 
 export default defineComponent({
   name: 'icon',
-  components: { FontAwesomeIcon },
   props: {
     name: {
       type: String as PropType<ICON_NAMES>,
       required: true,
     },
-  },
-  setup (props) {
-    const parsedIconName = ref(null)
-    let iconComponent
-
-    try {
-      parsedIconName.value = JSON.parse(props.name)
-    } catch (error) {
-      if (props.name === ICON_NAMES.vue) {
-        iconComponent = defineAsyncComponent({
-          loader: () => import('@/assets/icons/vue-icon.vue'),
-        })
-      }
-    }
-
-    return {
-      iconComponent,
-      parsedIconName,
-    }
   },
 })
 </script>
@@ -53,5 +28,6 @@ export default defineComponent({
 .icon {
   display: grid;
   place-items: center;
+  pointer-events: none;
 }
 </style>

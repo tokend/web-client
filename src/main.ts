@@ -1,4 +1,5 @@
 import '@/styles/app.scss'
+import 'virtual:svg-icons-register'
 
 import App from '@/App.vue'
 import log from 'loglevel'

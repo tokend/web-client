@@ -2,7 +2,7 @@
   <div class="no-data-message">
     <icon
       class="no-data-message__icon"
-      :name="$icons.faFolderOpen"
+      :name="$icons.folder"
     />
     <span class="no-data-message__message">
       {{ message }}
