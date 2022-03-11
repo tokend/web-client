@@ -5,7 +5,7 @@ import { isEmpty } from 'lodash-es'
 
 const externalConfig: GlobalAppConfigType = {}
 
-function normalize (value: GlobalAppConfigValueType): GlobalAppConfigValueType {
+function normalize(value: GlobalAppConfigValueType): GlobalAppConfigValueType {
   if (value === 'true') return true
   if (value === 'false') return false
   return value

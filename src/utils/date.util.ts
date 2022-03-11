@@ -1,23 +1,23 @@
-import dayjs  from 'dayjs'
+import dayjs from 'dayjs'
 
 export class DateUtil {
-  static get ISOFormat () {
+  static get ISOFormat() {
     return 'YYYY-MM-DDT00:00:00+00:00'
   }
 
-  static toISO (date: dayjs.ConfigType, format?: dayjs.OptionType) {
+  static toISO(date: dayjs.ConfigType, format?: dayjs.OptionType) {
     return this._instance(date, format).format(this.ISOFormat)
   }
 
-  static toTimestamp (date: dayjs.ConfigType, format?: dayjs.OptionType) {
+  static toTimestamp(date: dayjs.ConfigType, format?: dayjs.OptionType) {
     return this._instance(date, format).unix()
   }
 
-  static _instance (date?: dayjs.ConfigType, format?: dayjs.OptionType) {
+  static _instance(date?: dayjs.ConfigType, format?: dayjs.OptionType) {
     return format ? dayjs(date, format) : dayjs(date)
   }
 
-  static timeLeft (date: dayjs.ConfigType) {
+  static timeLeft(date: dayjs.ConfigType) {
     if (!date) return 0
     const currentDate = this._instance()
     const targetDate = this._instance(date)
@@ -25,7 +25,7 @@ export class DateUtil {
     return targetDate.diff(currentDate, 'ms')
   }
 
-  static diffs (
+  static diffs(
     checkingDate: dayjs.ConfigType,
     targetDate: dayjs.ConfigType,
   ): number {

@@ -8,7 +8,7 @@ declare module '@vue/runtime-core' {
     $routes: typeof ROUTE_NAMES
     $icons: typeof ICON_NAMES
     $config: typeof config
-    $locale: WritableComputedRef,
+    $locale: WritableComputedRef
   }
 }
 

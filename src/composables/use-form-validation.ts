@@ -3,10 +3,10 @@ import useVuelidate, { ValidationArgs } from '@vuelidate/core'
 import { get } from 'lodash-es'
 
 interface IFormValidation {
-  isFieldsValid: ComputedRef<boolean>,
-  getFieldErrorMessage: (fieldPath: string) => Ref<string>,
-  touchField: (fieldPath: string) => void,
-  isFormValid: () => boolean,
+  isFieldsValid: ComputedRef<boolean>
+  getFieldErrorMessage: (fieldPath: string) => Ref<string>
+  touchField: (fieldPath: string) => void
+  isFormValid: () => boolean
 }
 
 export const useFormValidation = (
@@ -30,13 +30,15 @@ export const useFormValidation = (
     const field = get(validationController.value, fieldPath)
 
     if (!field || !Object.keys(field).length) {
-      throw new Error(`getFieldErrorMessage: Cannot find vuelidate field by '${fieldPath}'`)
+      throw new Error(
+        `getFieldErrorMessage: Cannot find vuelidate field by '${fieldPath}'`,
+      )
     }
 
     if (!field.$dirty) errorMessage.value = ''
 
     errorMessage.value = field.$errors.length
-      ? field.$errors[0].$message as string
+      ? (field.$errors[0].$message as string)
       : ''
 
     return errorMessage

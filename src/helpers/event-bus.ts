@@ -16,31 +16,31 @@ export class EventBus {
     this.emitter = mitt<Record<EventType, unknown>>()
   }
 
-  public get eventList (): Readonly<typeof EVENTS> {
+  public get eventList(): Readonly<typeof EVENTS> {
     return EVENTS
   }
 
-  on (eventName: EventType, handlerFn: ( payload: unknown ) => void): void {
+  on(eventName: EventType, handlerFn: (payload: unknown) => void): void {
     this.emitter.on(eventName, handlerFn)
   }
 
-  emit (eventName: EventType, payload?: unknown): void {
+  emit(eventName: EventType, payload?: unknown): void {
     this.emitter.emit(eventName, payload)
   }
 
-  success (payload: string | NotificationObjectPayload): void {
+  success(payload: string | NotificationObjectPayload): void {
     this.emit(this.eventList.success, payload)
   }
 
-  error (payload: string | NotificationObjectPayload): void {
+  error(payload: string | NotificationObjectPayload): void {
     this.emit(this.eventList.error, payload)
   }
 
-  warning (payload: string | NotificationObjectPayload): void {
+  warning(payload: string | NotificationObjectPayload): void {
     this.emit(this.eventList.warning, payload)
   }
 
-  info (payload: string | NotificationObjectPayload): void {
+  info(payload: string | NotificationObjectPayload): void {
     this.emit(this.eventList.info, payload)
   }
 }

@@ -14,7 +14,7 @@ export enum ROUNDING_MODES {
 
 export class MathUtil {
   // FIXME
-  static format (
+  static format(
     value: string,
     config?: BigNumber.Config,
     isFixed = true,
@@ -31,22 +31,20 @@ export class MathUtil {
         : num.toFixed(),
     )
 
-    return isFixed
-      ? result.toFixed()
-      : result.toFormat(config?.DECIMAL_PLACES)
+    return isFixed ? result.toFixed() : result.toFormat(config?.DECIMAL_PLACES)
   }
 
-  static shiftAmount (amount: string, shiftAmount: number): string {
+  static shiftAmount(amount: string, shiftAmount: number): string {
     const result = new BigNumber(amount)
 
     return result.shiftedBy(shiftAmount).toFixed()
   }
 
-  static get roundingModes (): typeof ROUNDING_MODES {
+  static get roundingModes(): typeof ROUNDING_MODES {
     return ROUNDING_MODES
   }
 
-  static compare (firstVal: string, secondVal: string) {
+  static compare(firstVal: string, secondVal: string) {
     const firstBN = new BigNumber(firstVal)
     const secondBN = new BigNumber(secondVal)
 

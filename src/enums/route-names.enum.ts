@@ -1,4 +1,4 @@
 export enum ROUTE_NAMES {
   app = 'app',
-  homePage = 'home-page'
+  homePage = 'home-page',
 }

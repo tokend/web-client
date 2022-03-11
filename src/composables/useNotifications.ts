@@ -28,11 +28,10 @@ export const useNotifications = (): void => {
       const msgPayload = payload as NotificationObjectPayload
 
       title = msgPayload.titleId ? t(msgPayload.titleId as string) : ''
-      message = t(
-        msgPayload.messageId,
-        { ...msgPayload.messageArgs as TranslateOptions },
-      )
-      iconName = msgPayload.iconName ? msgPayload.iconName as string : ''
+      message = t(msgPayload.messageId, {
+        ...(msgPayload.messageArgs as TranslateOptions),
+      })
+      iconName = msgPayload.iconName ? (msgPayload.iconName as string) : ''
     } else if (payload) {
       message = t(payload as string)
     } else {
@@ -43,17 +42,20 @@ export const useNotifications = (): void => {
       title = t(`notification.default-title-${messageType}`)
     }
 
-    toast({
-      component: Notification,
-      props: {
-        ...(title && { title }),
-        message,
-        ...(iconName && { iconName }),
+    toast(
+      {
+        component: Notification,
+        props: {
+          ...(title && { title }),
+          message,
+          ...(iconName && { iconName }),
+        },
       },
-    }, {
-      icon: false,
-      type: messageType,
-    })
+      {
+        icon: false,
+        type: messageType,
+      },
+    )
   }
 }
 

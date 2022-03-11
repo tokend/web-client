@@ -15,7 +15,7 @@ import { router } from '@/router'
 import { store } from '@/store'
 
 const app = createApp({
-  setup () {
+  setup() {
     const app = getCurrentInstance()
     const { t, locale } = useI18n({ useScope: 'global' })
     if (app) {
@@ -29,17 +29,13 @@ const app = createApp({
 
 log.setDefaultLevel(config.LOG_LEVEL)
 
-app
-  .use(router)
-  .use(store)
-  .use(i18n)
-  .use(VueToastificationPlugin)
+app.use(router).use(store).use(i18n).use(VueToastificationPlugin)
 
 app.config.globalProperties.$routes = ROUTE_NAMES
 app.config.globalProperties.$config = config
 app.config.globalProperties.$icons = ICON_NAMES
 
-app.config.errorHandler = function(err, vm, info) {
+app.config.errorHandler = function (err, vm, info) {
   log.error(`Error: ${err}; Info: ${info}`)
 }
 
