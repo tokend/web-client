@@ -4,7 +4,7 @@
     class="app-button"
     :class="buttonClasses"
     v-bind="$attrs"
-    :to="routeRecord"
+    :to="route"
   >
     <icon v-if="iconName" class="app-button__icon" :name="iconName" />
     <span v-if="text" class="app-button__content">
@@ -74,20 +74,6 @@ const MODIFICATIONS: Record<string, string> = {
   info: 'info',
 }
 
-const includingValidator = (
-  receipt: Record<string, string>,
-): ((v: string) => boolean) => {
-  return (v: string): boolean => {
-    return (
-      Boolean(v) &&
-      !v
-        .split(' ')
-        .filter(el => Boolean(el) && !Object.values(receipt).includes(el))
-        .length
-    )
-  }
-}
-
 export default defineComponent({
   name: 'app-button',
   components: { Icon },
@@ -98,16 +84,17 @@ export default defineComponent({
     schemes: {
       type: String,
       default: SCHEMES.raised,
-      validator: includingValidator(SCHEMES),
     },
     modifications: {
       type: String,
       default: MODIFICATIONS.default,
-      validator: includingValidator(MODIFICATIONS),
     },
     route: {
       type: Object as PropType<RouteRecordRaw>,
       default: null,
+      validator: (value: RouteRecordRaw): boolean => {
+        return !value || (isObject(value) && Boolean(value.name))
+      },
     },
     href: {
       type: String,
@@ -117,12 +104,6 @@ export default defineComponent({
   setup(props, { attrs }) {
     const isDisabled = computed((): boolean =>
       ['', 'disabled', true].includes(attrs.disabled as string | boolean),
-    )
-
-    const routeRecord = computed(() =>
-      props.route && isObject(props.route)
-        ? props.route
-        : { name: props.route },
     )
 
     const isNeedGap = computed(() => props.iconName && props.text)
@@ -147,7 +128,6 @@ export default defineComponent({
       buttonClasses,
       isDisabled,
       isNeedGap,
-      routeRecord,
     }
   },
 })

@@ -25,8 +25,7 @@ export default defineComponent({
       try {
         useNotifications()
       } catch (error) {
-        // FIXME
-        ErrorHandler.process(error as Error)
+        ErrorHandler.process(error)
       }
       isAppInitialized.value = true
     }

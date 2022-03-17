@@ -36,10 +36,26 @@
     <div class="app__form-actions">
       <app-button type="submit" :text="$t('example-form.submit-btn')" />
       <app-button schemes="flat" :text="$t('example-form.cancel-btn')" />
-      <app-button schemes="flat" :text="$t('success')" @click="callSuccess" />
-      <app-button schemes="flat" :text="$t('error')" @click="callError" />
-      <app-button schemes="flat" :text="$t('warning')" @click="callWarning" />
-      <app-button schemes="flat" :text="$t('info')" @click="callInfo" />
+      <app-button
+        schemes="flat"
+        :text="$t('example-form.success-msg')"
+        @click="callSuccess"
+      />
+      <app-button
+        schemes="flat"
+        :text="$t('example-form.error-msg')"
+        @click="callError"
+      />
+      <app-button
+        schemes="flat"
+        :text="$t('example-form.warning-msg')"
+        @click="callWarning"
+      />
+      <app-button
+        schemes="flat"
+        :text="$t('example-form.info-msg')"
+        @click="callInfo"
+      />
     </div>
   </form>
 </template>
@@ -54,6 +70,7 @@ import { defineComponent, reactive, toRefs } from 'vue'
 import { useForm, useFormValidation } from '@/composables'
 import { required } from '@/validators'
 import { ICON_NAMES } from '@/enums'
+import { i18n } from '@/localization'
 
 export default defineComponent({
   name: 'example-form',
@@ -79,15 +96,11 @@ export default defineComponent({
       formController.disableForm
       try {
         Bus.error({
-          messageId: 'example-form.example-success-msg',
-          messageArgs: {
-            value:
-              'ehhehehehehas dfasd fasd fasdfa sdf asdf a sdfasd fasd fasdf asdf asdf asdf',
-          },
+          message: i18n.global.t('example-form.example-success-msg'),
           iconName: ICON_NAMES.folder,
         })
       } catch (error) {
-        ErrorHandler.process(error as Error)
+        ErrorHandler.process(error)
       }
       formController.enableForm
     }
@@ -98,16 +111,16 @@ export default defineComponent({
       formController,
       ...toRefs(validationController),
       callError: () => {
-        Bus.error('Some error message')
+        Bus.error(i18n.global.t('example-form.error-msg'))
       },
       callSuccess: () => {
-        Bus.success('Some success message')
+        Bus.success(i18n.global.t('example-form.success-msg'))
       },
       callWarning: () => {
-        Bus.warning('Some warning message')
+        Bus.warning(i18n.global.t('example-form.warning-msg'))
       },
       callInfo: () => {
-        Bus.info('Some info message')
+        Bus.info(i18n.global.t('example-form.info-msg'))
       },
     }
   },

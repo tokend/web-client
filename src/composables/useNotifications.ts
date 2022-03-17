@@ -1,7 +1,7 @@
 import Notification from '@/common/Notification.vue'
 
 import { TYPE, useToast } from 'vue-toastification'
-import { TranslateOptions, useI18n } from 'vue-i18n'
+import { useI18n } from 'vue-i18n'
 import { NotificationObjectPayload } from '@/types'
 import { Bus } from '@/helpers'
 import { isObject } from 'lodash-es'
@@ -27,19 +27,31 @@ export const useNotifications = (): void => {
     if (isObject(payload)) {
       const msgPayload = payload as NotificationObjectPayload
 
-      title = msgPayload.titleId ? t(msgPayload.titleId as string) : ''
-      message = t(msgPayload.messageId, {
-        ...(msgPayload.messageArgs as TranslateOptions),
-      })
+      title = msgPayload.title || ''
+      message = msgPayload.message
       iconName = msgPayload.iconName ? (msgPayload.iconName as string) : ''
     } else if (payload) {
-      message = t(payload as string)
+      message = payload as string
     } else {
-      message = t(`notification.default-message-${messageType}`)
+      const defaultMessages = {
+        [TYPE.DEFAULT]: t('notification.default-message-default'),
+        [TYPE.INFO]: t('notification.default-message-info'),
+        [TYPE.SUCCESS]: t('notification.default-message-success'),
+        [TYPE.ERROR]: t('notification.default-message-error'),
+        [TYPE.WARNING]: t('notification.default-message-warning'),
+      }
+      message = defaultMessages[messageType]
     }
 
     if (!title) {
-      title = t(`notification.default-title-${messageType}`)
+      const defaultTitles = {
+        [TYPE.SUCCESS]: t('notification.default-title-success'),
+        [TYPE.ERROR]: t('notification.default-title-error'),
+        [TYPE.WARNING]: t('notification.default-title-warning'),
+        [TYPE.INFO]: t('notification.default-title-info'),
+        [TYPE.DEFAULT]: t('notification.default-title-default'),
+      }
+      title = defaultTitles[messageType]
     }
 
     toast(

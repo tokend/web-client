@@ -25,7 +25,11 @@
     "tick-example-lbl": "Tick example",
     "submit-btn": "Submit",
     "cancel-btn": "Cancel",
-    "example-success-msg": "Success message {value}"
+    "example-success-msg": "Success message {value}",
+    "success-msg": "success",
+    "error-msg": "error",
+    "warning-msg": "warning",
+    "info-msg": "info"
   },
   "home-page": {
     "loading-error-msg": "Error on loading",

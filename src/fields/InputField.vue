@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import { MathUtil } from '@/utils/math.util'
+import { BN } from '@/utils/math.util'
 import { computed, defineComponent, getCurrentInstance, PropType } from 'vue'
 
 enum INPUT_TYPES {
@@ -88,10 +88,7 @@ export default defineComponent({
     const normalizeRange = (value: string | number): string => {
       let result = value
 
-      if (
-        max.value &&
-        MathUtil.compare(value as string, max.value as string) > 0
-      ) {
+      if (max.value && new BN(value).compare(max.value) > 0) {
         result = max.value
       }
 
