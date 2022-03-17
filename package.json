@@ -17,7 +17,7 @@
     "cypress": "cypress run",
     "lint": "yarn lint:styles && yarn lint:scripts",
     "lint:styles": "stylelint \"src/**/*.{vue,scss,css}\" --max-warnings=0",
-    "lint:scripts": "eslint \"{src,config}/**/*.{vue,js}\" --cache --fix --max-warnings=0",
+    "lint:scripts": "eslint \"{src,config}/**/*.{vue,js,ts}\" --cache --fix --max-warnings=0",
     "preview": "vite preview",
     "rsc": "node scripts/release-sanity-check.mjs"
   },
