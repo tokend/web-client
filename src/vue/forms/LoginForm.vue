@@ -140,6 +140,8 @@ export default {
       }
     },
     async processAuthError (error) {
+      if (!error || !error.constructor) return
+
       switch (error.constructor) {
       case errors.VerificationRequiredError:
         await this.$router.push({

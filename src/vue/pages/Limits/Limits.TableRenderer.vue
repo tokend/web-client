@@ -141,7 +141,7 @@ export default {
   },
   props: {
     limits: {
-      type: Array, /** {@link LimitsRecord} */
+      type: [Array, Object], /** {@link LimitsRecord} */
       required: true,
     },
     isLoading: { type: Boolean, required: true, default: false },
