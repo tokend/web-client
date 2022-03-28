@@ -24,6 +24,7 @@
   "dependencies": {
     "@vuelidate/core": "^2.0.0-alpha.34",
     "@vuelidate/validators": "^2.0.0-alpha.26",
+    "@vueuse/core": "^8.2.0",
     "axios": "^0.26.0",
     "bignumber.js": "^9.0.2",
     "dayjs": "^1.10.7",

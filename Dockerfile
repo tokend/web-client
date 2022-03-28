@@ -5,7 +5,7 @@ RUN apk --no-cache --update --virtual build-dependencies add \
     g++
 
 ARG BUILD_VERSION
-WORKDIR /build
+WORKDIR /dist
 COPY package*.json ./
 COPY yarn*.lock ./
 RUN true \

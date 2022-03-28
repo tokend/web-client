@@ -38,6 +38,21 @@
         <icon :name="$icons.heart" />
         <icon :name="$icons.add" />
       </div>
+      <div class="home-page__col">
+        <collapse>
+          <template #head="{ collapse }">
+            <app-button
+              class="home-page__collapse-btn"
+              :text="$t('home-page.collapse-btn')"
+              @click="collapse.toggle"
+            >
+            </app-button>
+          </template>
+          <div class="home-page__collapse-body">
+            {{ $t('home-page.collapse-text') }}
+          </div>
+        </collapse>
+      </div>
     </div>
   </div>
 </template>
@@ -51,10 +66,12 @@ import NoDataMessage from '@/common/NoDataMessage.vue'
 import AppButton from '@/common/AppButton.vue'
 import Loader from '@/common/Loader.vue'
 import Icon from '@/common/Icon.vue'
+import Collapse from '@/common/Collapse.vue'
 
 export default defineComponent({
   name: 'home-page',
   components: {
+    Collapse,
     Icon,
     Loader,
     AppButton,

@@ -34,9 +34,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - [Spinner](src/common/loader/Spinner.vue)
 - [ErrorMessage](src/common/ErrorMessage.vue)
 - [AppButton](src/common/AppButton.vue)
-- App navigation
-  - [App navbar](src/common/AppNavbar.vue)
-  - [App logo](src/common/AppLogo.vue)
+- [App navbar](src/common/AppNavbar.vue)
+- [App logo](src/common/AppLogo.vue)
 - [Icon](src/common/Icon.vue)
 - [Fields](src/fields)
   - [InputField](src/fields/InputField.vue)
@@ -44,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [composables](src/composables)
   - [useForm](src/composables/use-form.ts)
   - [useFormValidation](src/composables/use-form-validation.ts)
+- [Collapse](src/common/Collapse.vue)
 
 ## [1.0.0-rc.0] - 2021-12-23
 #### Under the hood changes
