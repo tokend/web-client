@@ -2,8 +2,6 @@
 
 # Eslint + Stylelint
 
-# Jest + Cypress
-
 ## Project setup
 ```
 yarn install

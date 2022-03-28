@@ -10,7 +10,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Stylelint](stylelint.config.js)
 - [prettier](.eslintrc.js)
 - [e2e testing by Cypress](e2e)
-- [unit testing Jest](jest.config.js)
 - [Vite bundler](vite.config.ts)
 - [PiniaJS store](src/store/index.ts)
 - [Vue-Router](src/router/index.ts)

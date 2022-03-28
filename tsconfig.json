@@ -16,7 +16,6 @@
     "types": [
       "node",
       "vite/client",
-      "@types/jest",
       "@types/lodash-es",
       "cypress",
       "jsona"
