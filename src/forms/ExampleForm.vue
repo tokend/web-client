@@ -13,7 +13,7 @@
             validationController.getFieldErrorMessage('inputExample')
           "
           @blur="validationController.touchField('inputExample')"
-          :disabled="formController.isDisabled"
+          :disabled="isFormDisabled"
         />
       </div>
     </div>
@@ -25,7 +25,7 @@
           :label="$t('example-form.input-number-example-lbl')"
           :placeholder="$t('example-form.input-number-placeholder')"
           :error-message="form.inputNumberExample"
-          :disabled="formController.isDisabled"
+          :disabled="isFormDisabled"
         />
       </div>
     </div>
@@ -34,7 +34,7 @@
         <tick-field
           v-model="form.tickExample"
           :label="$t('example-form.tick-example-lbl')"
-          :disabled="formController.isDisabled"
+          :disabled="isFormDisabled"
         />
       </div>
     </div>
@@ -71,7 +71,7 @@ import TickField from '@/fields/TickField.vue'
 import AppButton from '@/common/AppButton.vue'
 
 import { Bus, ErrorHandler } from '@/helpers'
-import { defineComponent, reactive, toRefs } from 'vue'
+import { defineComponent, reactive } from 'vue'
 import { useForm, useFormValidation } from '@/composables'
 import { maxLength, required } from '@/validators'
 import { ICON_NAMES } from '@/enums'
@@ -87,7 +87,7 @@ export default defineComponent({
       tickExample: false,
     })
 
-    const formController = useForm()
+    const { isFormDisabled, disableForm, enableForm } = useForm()
     const validationController = useFormValidation(
       {
         inputExample: {
@@ -95,11 +95,11 @@ export default defineComponent({
           maxLength: maxLength(32),
         },
       },
-      toRefs(form),
+      form,
     )
 
     const submit = async () => {
-      formController.disableForm()
+      disableForm()
       try {
         Bus.error({
           message: i18n.global.t('example-form.example-success-msg'),
@@ -108,7 +108,7 @@ export default defineComponent({
       } catch (error) {
         ErrorHandler.process(error)
       }
-      formController.enableForm()
+      enableForm()
     }
 
     const callError = () => {
@@ -118,18 +118,18 @@ export default defineComponent({
       Bus.success(i18n.global.t('example-form.success-msg'))
     }
     const callWarning = () => {
-      formController.disableForm()
+      disableForm()
       Bus.warning(i18n.global.t('example-form.warning-msg'))
     }
     const callInfo = () => {
-      formController.enableForm()
+      enableForm()
       Bus.info(i18n.global.t('example-form.info-msg'))
     }
 
     return {
       form,
-      formController,
       validationController,
+      isFormDisabled,
       isFieldsValid: validationController.isFieldsValid,
       submit,
       callError,

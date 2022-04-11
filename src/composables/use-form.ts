@@ -1,8 +1,8 @@
-import { reactive, ref, Ref, UnwrapNestedRefs } from 'vue'
+import { ref, Ref } from 'vue'
 
 interface IFormController {
-  isDisabled: Ref<boolean>
-  isPending: Ref<boolean>
+  isFormDisabled: Ref<boolean>
+  isFormPending: Ref<boolean>
   isConfirmationShown: Ref<boolean>
   disableForm: () => void
   enableForm: () => void
@@ -11,17 +11,17 @@ interface IFormController {
   hideConfirmationAfterSubmit: (submitFn: () => void) => Promise<void>
 }
 
-export function useForm(): UnwrapNestedRefs<IFormController> {
-  const isDisabled = ref(false)
-  const isPending = ref(false)
+export function useForm(): IFormController {
+  const isFormDisabled = ref(false)
+  const isFormPending = ref(false)
   const isConfirmationShown = ref(false)
 
   const disableForm = () => {
-    isDisabled.value = true
+    isFormDisabled.value = true
   }
 
   const enableForm = () => {
-    isDisabled.value = false
+    isFormDisabled.value = false
   }
 
   const showConfirmation = () => {
@@ -35,20 +35,22 @@ export function useForm(): UnwrapNestedRefs<IFormController> {
   }
 
   const hideConfirmationAfterSubmit = async (submitFn: () => void) => {
-    isPending.value = true
+    isFormPending.value = true
     await submitFn()
     hideConfirmation()
-    isPending.value = false
+    isFormPending.value = false
   }
 
-  return reactive({
-    isDisabled,
-    isPending,
+  // TODO: invalid structure - useForm var should be unreactive in destruct
+  //  reactive in ...toRefs as like as PiniaJS
+  return {
+    isFormDisabled,
+    isFormPending,
     isConfirmationShown,
     disableForm,
     enableForm,
     showConfirmation,
     hideConfirmation,
     hideConfirmationAfterSubmit,
-  })
+  }
 }

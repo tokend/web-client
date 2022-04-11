@@ -1,5 +1,5 @@
-import { computed, ComputedRef, ToRefs } from 'vue'
-import useVuelidate, { ValidationArgs } from '@vuelidate/core'
+import { computed, ComputedRef, UnwrapNestedRefs } from 'vue'
+import useVuelidate, { ChildStateLeafs, ValidationArgs } from '@vuelidate/core'
 import { get } from 'lodash-es'
 
 interface IFormValidation {
@@ -11,7 +11,7 @@ interface IFormValidation {
 
 export const useFormValidation = (
   rules: ValidationArgs,
-  state: ToRefs,
+  state: UnwrapNestedRefs<ChildStateLeafs>,
 ): IFormValidation => {
   const validationRules = computed(() => ({
     ...rules,
