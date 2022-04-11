@@ -21,11 +21,16 @@
         :placeholder="placeholder"
         :tabindex="isDisabled || isReadonly ? -1 : tabIndex"
         :type="type"
+        :min="min"
         :max="max"
         :disabled="isDisabled || isReadonly"
       />
     </div>
-    <transition name="input-field__err-msg-transition">
+    <transition
+      name="input-field__err-msg-transition"
+      @enter="setHeightCSSVar"
+      @before-leave="setHeightCSSVar"
+    >
       <span v-if="errorMessage" class="input-field__err-msg">
         {{ errorMessage }}
       </span>
@@ -71,7 +76,16 @@ export default defineComponent({
 
     const isNumberType = computed(() => props.type === INPUT_TYPES.number)
 
+    const min = computed((): string => (attrs?.min as string) || '')
     const max = computed((): string => (attrs?.max as string) || '')
+
+    const isDisabled = computed(() =>
+      ['', 'disabled', true].includes(attrs.disabled as string | boolean),
+    )
+
+    const isReadonly = computed(() =>
+      ['', 'readonly', true].includes(attrs.readonly as string | boolean),
+    )
 
     const listeners = computed(() => ({
       input: (event: Event) => {
@@ -88,27 +102,30 @@ export default defineComponent({
     const normalizeRange = (value: string | number): string => {
       let result = value
 
-      if (max.value && new BN(value).compare(max.value) > 0) {
+      if (min.value && new BN(value).compare(min.value) < 0) {
+        result = min.value
+      } else if (max.value && new BN(value).compare(max.value) > 0) {
         result = max.value
       }
 
       return result as string
     }
 
-    const isDisabled = computed(() =>
-      ['', 'disabled', true].includes(attrs.disabled as string | boolean),
-    )
-
-    const isReadonly = computed(() =>
-      ['', 'readonly', true].includes(attrs.readonly as string | boolean),
-    )
+    const setHeightCSSVar = (element: HTMLElement) => {
+      element.style.setProperty(
+        '--field-error-msg-height',
+        `${element.scrollHeight}px`,
+      )
+    }
 
     return {
       uid,
       listeners,
       isDisabled,
       isReadonly,
+      min,
       max,
+      setHeightCSSVar,
       SCHEMES,
     }
   },
@@ -134,7 +151,7 @@ export default defineComponent({
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-bottom: 0.5rem;
+  margin-bottom: toRem(8);
   transition: all var(--field-transition-duration);
 
   @include field-label;
@@ -181,7 +198,7 @@ export default defineComponent({
   }
 
   &:not(:read-only) {
-    box-shadow: inset 0 0 0 3.125rem var(--field-col-bg);
+    box-shadow: inset 0 0 0 toRem(50) var(--field-col-bg);
   }
 
   &:read-only,
@@ -213,9 +230,9 @@ export default defineComponent({
 
 .input-field__err-msg {
   overflow: hidden;
-  margin-top: 0.5rem;
+  margin-top: var(--field-error-margin-top);
   color: var(--field-col-error);
-  font-size: 0.625rem;
+  font-size: toRem(10);
 }
 
 .input-field__err-msg-transition-enter-active {
@@ -228,15 +245,11 @@ export default defineComponent({
 
 @keyframes fade-down {
   from {
-    max-height: 0;
-    margin-top: 0;
+    height: 0;
   }
 
   to {
-    max-height: calc(
-      var(--field-error-font-size) * var(--field-error-line-height)
-    );
-    margin-top: var(--field-error-margin-top);
+    height: var(--field-error-msg-height);
   }
 }
 </style>

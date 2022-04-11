@@ -34,15 +34,13 @@ export default defineConfig({
         files: [`${root}/**/*.{js,vue,ts}`],
       },
     }),
-    ...(
-      isAnalyze
-        ? [
+    ...(isAnalyze
+      ? [
           visualizer({
             open: true,
           }),
         ]
-        : []
-    ),
+      : []),
   ],
   css: {
     preprocessorOptions: {

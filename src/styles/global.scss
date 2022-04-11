@@ -14,11 +14,11 @@ html {
 
 /* stylelint-disable-next-line */
 body, #app {
-  background-color: var(--col-app-bg);
-  color: var(--col-app-txt);
   display: flex;
   flex-direction: column;
   flex: 1;
+  background-color: var(--col-app-bg);
+  color: var(--col-app-txt);
 }
 
 input,

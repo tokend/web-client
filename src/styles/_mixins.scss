@@ -115,6 +115,8 @@ $x-large-2k: 2048px;
 }
 
 @mixin placeholder {
+  @include field-text;
+
   color: var(--field-col-placeholder);
   -webkit-text-fill-color: var(--field-col-placeholder);
   fill: var(--field-col-placeholder);

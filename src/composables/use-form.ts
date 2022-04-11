@@ -1,4 +1,4 @@
-import { ref, Ref } from 'vue'
+import { reactive, ref, Ref, UnwrapNestedRefs } from 'vue'
 
 interface IFormController {
   isDisabled: Ref<boolean>
@@ -11,7 +11,7 @@ interface IFormController {
   hideConfirmationAfterSubmit: (submitFn: () => void) => Promise<void>
 }
 
-export function useForm(): IFormController {
+export function useForm(): UnwrapNestedRefs<IFormController> {
   const isDisabled = ref(false)
   const isPending = ref(false)
   const isConfirmationShown = ref(false)
@@ -41,12 +41,7 @@ export function useForm(): IFormController {
     isPending.value = false
   }
 
-  /**
-   * FIXME:
-   * isDisabled and etc... is Ref and in template it
-   * can be used only as like as formController.isDisabled.value
-   */
-  return {
+  return reactive({
     isDisabled,
     isPending,
     isConfirmationShown,
@@ -55,5 +50,5 @@ export function useForm(): IFormController {
     showConfirmation,
     hideConfirmation,
     hideConfirmationAfterSubmit,
-  }
+  })
 }

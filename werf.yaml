@@ -1,5 +1,5 @@
 configVersion: 1
-project: 'web-client-dappad'
+project: 'vue-vite-template'
 ---
 image: builder              # Название собираемого образа.
 from: node:14-alpine3.11               # Базовый образ.
@@ -24,7 +24,7 @@ shell:                      # Shell сборочные инструкции.
   - yarn build
 
 ---
-image: web-client-dappad
+image: vue-vite-template
 from: nginx:stable-alpine
 docker:
   WORKDIR: /usr/share/nginx

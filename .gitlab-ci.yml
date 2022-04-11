@@ -1,7 +1,6 @@
 variables:
   DOCKER_DRIVER: overlay2
   #DOMAIN: dapppad.com
-  DOMAIN: dapppad.com
   GITHUB_REF: $CI_COMMIT_SHA
   DH_IMAGE_NAME: $CI_PROJECT_ROOT_NAMESPACE/$CI_PROJECT_NAME
   SERVICE: $CI_PROJECT_NAME
@@ -70,35 +69,35 @@ Build and Publish Tag:
   except: [schedules]
   interruptible: true
 
-Deploy to Staging:
-  services:
-    - docker:18-dind
-  image: dtzar/helm-kubectl:latest
-  tags:
-    - tokend
-  stage: deploy
-  script:
-    - mkdir ~/.kube/
-    - echo ${k8sconfig} | base64 -d > config
-    - mv config ~/.kube/
-    - helm upgrade -i "webclient" ".helm" --set global.IngressDomain=stage.${DOMAIN} --set "image.repository=${REGISTRY}" --set "config.data.VITE_API_URL=https://admin.stage.${DOMAIN}" --set "image.tag=${CI_COMMIT_SHA}" --create-namespace --namespace $CI_PROJECT_NAME-stage
-  interruptible: true
-
-
-Deploy to Production:
-  services:
-    - docker:18-dind
-  image: dtzar/helm-kubectl:latest
-  tags:
-    - tokend
-  stage: deploy
-  script:
-    - mkdir ~/.kube/
-    - echo ${k8sconfig} | base64 -d > config
-    - mv config ~/.kube/
-    - helm upgrade -i "webclient" ".helm" --set global.IngressDomain=${DOMAIN} --set "image.repository=${REGISTRY}" --set "config.data.VITE_API_URL=https://admin.${DOMAIN}" --set "image.tag=${CI_COMMIT_SHA}" --create-namespace --namespace $CI_PROJECT_NAME-prod
-  when: manual
-  interruptible: true
+#Deploy to Staging:
+#  services:
+#    - docker:18-dind
+#  image: dtzar/helm-kubectl:latest
+#  tags:
+#    - tokend
+#  stage: deploy
+#  script:
+#    - mkdir ~/.kube/
+#    - echo ${k8sconfig} | base64 -d > config
+#    - mv config ~/.kube/
+#    - helm upgrade -i "webclient" ".helm" --set global.IngressDomain=stage.${DOMAIN} --set "image.repository=${REGISTRY}" --set "config.data.VITE_API_URL=https://admin.stage.${DOMAIN}" --set "image.tag=${CI_COMMIT_SHA}" --create-namespace --namespace $CI_PROJECT_NAME-stage
+#  interruptible: true
+#
+#
+#Deploy to Production:
+#  services:
+#    - docker:18-dind
+#  image: dtzar/helm-kubectl:latest
+#  tags:
+#    - tokend
+#  stage: deploy
+#  script:
+#    - mkdir ~/.kube/
+#    - echo ${k8sconfig} | base64 -d > config
+#    - mv config ~/.kube/
+#    - helm upgrade -i "webclient" ".helm" --set global.IngressDomain=${DOMAIN} --set "image.repository=${REGISTRY}" --set "config.data.VITE_API_URL=https://admin.${DOMAIN}" --set "image.tag=${CI_COMMIT_SHA}" --create-namespace --namespace $CI_PROJECT_NAME-prod
+#  when: manual
+#  interruptible: true
 
 
 

@@ -1,3 +1,6 @@
+// TODO: rewrite config to be patient to runtime replacement,
+//  typescript autocompletion and security(optional)
+
 import packageJson from '../package.json'
 import { LogLevelDesc } from 'loglevel'
 import { GlobalAppConfigType, GlobalAppConfigValueType } from '@/env'
@@ -30,7 +33,7 @@ export const config = Object.assign(
   {
     API_URL: import.meta.env.VITE_API_URL,
     HOST_URL: import.meta.env.VITE_APP_HOST_URL,
-    APP_NAME: 'Dapppad',
+    APP_NAME: import.meta.env.VITE_APP_NAME,
     LOG_LEVEL: 'trace' as LogLevelDesc,
     BUILD_VERSION:
       packageJson.version || import.meta.env.VITE_APP_BUILD_VERSION,

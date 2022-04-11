@@ -15,6 +15,7 @@ import AppNavbar from '@/common/AppNavbar.vue'
 import { ErrorHandler } from '@/helpers/error-handler'
 import { defineComponent, ref } from 'vue'
 import { useNotifications } from '@/composables'
+import { config } from '@config'
 
 export default defineComponent({
   name: 'app',
@@ -24,6 +25,7 @@ export default defineComponent({
     const init = async () => {
       try {
         useNotifications()
+        document.title = config.APP_NAME
       } catch (error) {
         ErrorHandler.process(error)
       }

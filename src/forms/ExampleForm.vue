@@ -1,14 +1,19 @@
 <template>
-  <form class="example-form" @submit.prevent="isFormValid() && submit()">
+  <form
+    class="example-form"
+    @submit.prevent="validationController.isFormValid() && submit()"
+  >
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
           v-model="form.inputExample"
           :label="$t('example-form.input-example-lbl')"
           :placeholder="$t('example-form.input-placeholder')"
-          :error-message="getFieldErrorMessage('inputExample').value"
-          @blur="touchField('inputExample')"
-          :disabled="formController.isDisabled.value"
+          :error-message="
+            validationController.getFieldErrorMessage('inputExample')
+          "
+          @blur="validationController.touchField('inputExample')"
+          :disabled="formController.isDisabled"
         />
       </div>
     </div>
@@ -20,7 +25,7 @@
           :label="$t('example-form.input-number-example-lbl')"
           :placeholder="$t('example-form.input-number-placeholder')"
           :error-message="form.inputNumberExample"
-          :disabled="formController.isDisabled.value"
+          :disabled="formController.isDisabled"
         />
       </div>
     </div>
@@ -29,7 +34,7 @@
         <tick-field
           v-model="form.tickExample"
           :label="$t('example-form.tick-example-lbl')"
-          :disabled="formController.isDisabled.value"
+          :disabled="formController.isDisabled"
         />
       </div>
     </div>
@@ -68,7 +73,7 @@ import AppButton from '@/common/AppButton.vue'
 import { Bus, ErrorHandler } from '@/helpers'
 import { defineComponent, reactive, toRefs } from 'vue'
 import { useForm, useFormValidation } from '@/composables'
-import { required } from '@/validators'
+import { maxLength, required } from '@/validators'
 import { ICON_NAMES } from '@/enums'
 import { i18n } from '@/localization'
 
@@ -87,13 +92,14 @@ export default defineComponent({
       {
         inputExample: {
           required,
+          maxLength: maxLength(32),
         },
       },
       toRefs(form),
     )
 
     const submit = async () => {
-      formController.disableForm
+      formController.disableForm()
       try {
         Bus.error({
           message: i18n.global.t('example-form.example-success-msg'),
@@ -102,26 +108,34 @@ export default defineComponent({
       } catch (error) {
         ErrorHandler.process(error)
       }
-      formController.enableForm
+      formController.enableForm()
+    }
+
+    const callError = () => {
+      Bus.error(i18n.global.t('example-form.error-msg'))
+    }
+    const callSuccess = () => {
+      Bus.success(i18n.global.t('example-form.success-msg'))
+    }
+    const callWarning = () => {
+      formController.disableForm()
+      Bus.warning(i18n.global.t('example-form.warning-msg'))
+    }
+    const callInfo = () => {
+      formController.enableForm()
+      Bus.info(i18n.global.t('example-form.info-msg'))
     }
 
     return {
       form,
-      submit,
       formController,
-      ...toRefs(validationController),
-      callError: () => {
-        Bus.error(i18n.global.t('example-form.error-msg'))
-      },
-      callSuccess: () => {
-        Bus.success(i18n.global.t('example-form.success-msg'))
-      },
-      callWarning: () => {
-        Bus.warning(i18n.global.t('example-form.warning-msg'))
-      },
-      callInfo: () => {
-        Bus.info(i18n.global.t('example-form.info-msg'))
-      },
+      validationController,
+      isFieldsValid: validationController.isFieldsValid,
+      submit,
+      callError,
+      callSuccess,
+      callWarning,
+      callInfo,
     }
   },
 })

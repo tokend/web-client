@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "gitHooks": {
     "pre-commit": "yarn lint",
-    "pre-push": "yarn test && yarn rsc"
+    "pre-push": "yarn rsc"
   },
   "scripts": {
     "vite-dev-server": "vite",

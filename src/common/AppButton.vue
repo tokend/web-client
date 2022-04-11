@@ -1,55 +1,53 @@
 <template>
-  <router-link
-    v-if="route"
-    class="app-button"
-    :class="buttonClasses"
-    v-bind="$attrs"
-    :to="route"
-  >
-    <icon v-if="iconName" class="app-button__icon" :name="iconName" />
-    <span v-if="text" class="app-button__content">
-      {{ text }}
-    </span>
-  </router-link>
-  <a
-    v-if="href"
-    class="app-button"
-    :class="buttonClasses"
-    v-bind="$attrs"
-    :href="href"
-  >
-    <icon
-      v-if="iconName"
-      class="app-button__icon"
-      :class="{
-        'app-button__icon--gap': isNeedGap,
-      }"
-      :name="iconName"
-    />
-    <span v-if="text" class="app-button__content">
-      {{ text }}
-    </span>
-  </a>
-  <button
-    v-else
-    class="app-button"
-    :class="buttonClasses"
-    v-bind="$attrs"
-    :disabled="isDisabled"
-    :type="$attrs.type || 'button'"
-  >
-    <icon
-      v-if="iconName"
-      class="app-button__icon"
-      :class="{
-        'app-button__icon--gap': isNeedGap,
-      }"
-      :name="iconName"
-    />
-    <span v-if="text" class="app-button__content">
-      {{ text }}
-    </span>
-  </button>
+  <template v-if="route">
+    <router-link
+      class="app-button"
+      :class="buttonClasses"
+      v-bind="$attrs"
+      :to="route"
+    >
+      <icon v-if="iconName" class="app-button__icon" :name="iconName" />
+      <span v-if="text" class="app-button__content">
+        {{ text }}
+      </span>
+    </router-link>
+  </template>
+  <template v-else-if="href">
+    <a class="app-button" :class="buttonClasses" v-bind="$attrs" :href="href">
+      <icon
+        v-if="iconName"
+        class="app-button__icon"
+        :class="{
+          'app-button__icon--gap': isNeedGap,
+        }"
+        :name="iconName"
+      />
+      <span v-if="text" class="app-button__content">
+        {{ text }}
+      </span>
+    </a>
+  </template>
+  <template v-else>
+    <button
+      class="app-button"
+      :class="buttonClasses"
+      v-bind="$attrs"
+      :disabled="isDisabled"
+      :type="$attrs.type || 'button'"
+    >
+      <icon
+        v-if="iconName"
+        class="app-button__icon"
+        :class="{
+          'app-button__icon--gap': isNeedGap,
+        }"
+        :name="iconName"
+      />
+      <span v-if="text" class="app-button__content">
+        {{ text }}
+      </span>
+    </button>
+  </template>
 </template>
 
 <script lang="ts">
@@ -60,18 +58,18 @@ import { ICON_NAMES } from '@/enums'
 import { RouteRecordRaw } from 'vue-router'
 import { isObject } from 'lodash-es'
 
-const SCHEMES: Record<string, string> = {
-  raised: 'raised',
-  flat: 'flat',
-  clear: 'clear',
+enum SCHEMES {
+  raised = 'raised',
+  flat = 'flat',
+  clear = 'clear',
 }
 
-const MODIFICATIONS: Record<string, string> = {
-  default: 'default',
-  danger: 'danger',
-  warning: 'warning',
-  success: 'success',
-  info: 'info',
+enum MODIFICATIONS {
+  default = 'default',
+  danger = 'danger',
+  warning = 'warning',
+  success = 'success',
+  info = 'info',
 }
 
 export default defineComponent({
@@ -82,11 +80,11 @@ export default defineComponent({
     iconName: { type: String as PropType<ICON_NAMES>, default: '' },
     text: { type: String, default: '' },
     schemes: {
-      type: String,
+      type: String as PropType<SCHEMES>,
       default: SCHEMES.raised,
     },
     modifications: {
-      type: String,
+      type: String as PropType<MODIFICATIONS>,
       default: MODIFICATIONS.default,
     },
     route: {

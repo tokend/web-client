@@ -196,10 +196,12 @@ export default defineComponent({
 }
 
 .tick-field__input {
+  cursor: pointer;
   opacity: 0;
 }
 
 .tick-field__label {
+  cursor: pointer;
   font-weight: 600;
   font-size: toRem(14);
   line-height: 1.3;
@@ -218,7 +220,7 @@ export default defineComponent({
   width: toRem(18.5);
   height: toRem(18.5);
   border: toRem(1) solid var(--field-col-border);
-  border-radius: 0.2rem;
+  border-radius: toRem(3.2);
   transition: var(--field-transition-duration) ease-in-out;
 
   .tick-field--checked & {

@@ -27,7 +27,6 @@ BigNumber.config({
   DECIMAL_PLACES: 0,
   ROUNDING_MODE: BN_ROUNDING.DEFAULT,
   FORMAT: {
-    // TODO: translate
     decimalSeparator: '.',
     groupSeparator: ',',
     groupSize: 3,

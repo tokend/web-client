@@ -1,10 +1,10 @@
-import { computed, ComputedRef, ref, Ref, ToRefs } from 'vue'
+import { computed, ComputedRef, ToRefs } from 'vue'
 import useVuelidate, { ValidationArgs } from '@vuelidate/core'
 import { get } from 'lodash-es'
 
 interface IFormValidation {
   isFieldsValid: ComputedRef<boolean>
-  getFieldErrorMessage: (fieldPath: string) => Ref<string>
+  getFieldErrorMessage: (fieldPath: string) => string
   touchField: (fieldPath: string) => void
   isFormValid: () => boolean
 }
@@ -21,10 +21,10 @@ export const useFormValidation = (
 
   const isFieldsValid = computed(() => !validationController.value.$invalid)
 
-  const getFieldErrorMessage = (fieldPath: string): Ref<string> => {
-    const errorMessage = ref('')
+  const getFieldErrorMessage = (fieldPath: string): string => {
+    let errorMessage = ''
     if (!validationController.value || !validationController.value.$invalid) {
-      errorMessage.value = ''
+      errorMessage = ''
     }
 
     const field = get(validationController.value, fieldPath)
@@ -35,9 +35,9 @@ export const useFormValidation = (
       )
     }
 
-    if (!field.$dirty) errorMessage.value = ''
+    if (!field.$dirty) errorMessage = ''
 
-    errorMessage.value = field.$errors.length
+    errorMessage = field.$errors.length
       ? (field.$errors[0].$message as string)
       : ''
 
