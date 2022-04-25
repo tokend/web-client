@@ -138,18 +138,10 @@ module.exports = {
       files: [
         '**/__tests__/*.{j,t}s?(x)',
         '**/*.spec.{j,t}s?(x)',
+        'src/**/*.{spec,e2e}.js',
       ],
       env: {
         mocha: true,
-      },
-    },
-    {
-      files: [
-        '**/__tests__/*.{j,t}s?(x)',
-        '**/tests/unit/**/*.spec.{j,t}s?(x)',
-      ],
-      env: {
-        jest: true,
       },
     },
   ],
