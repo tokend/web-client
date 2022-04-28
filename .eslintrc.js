@@ -1,25 +1,19 @@
+// https://eslint.org/docs/user-guide/configuring
+
 module.exports = {
   root: true,
-  env: {
-    es2021: true,
-    node: true,
-  },
-  parserOptions: {
-    ecmaVersion: 'latest',
-  },
   extends: [
     'plugin:vue/essential',
     'plugin:vue/recommended',
   ],
+  parserOptions: {
+    parser: '@babel/eslint-parser',
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+  },
   plugins: [
     'promise',
   ],
-  globals: {
-    defineProps: 'readonly',
-    defineEmits: 'readonly',
-    defineExpose: 'readonly',
-    withDefaults: 'readonly',
-  },
   rules: {
     'arrow-parens': 0,
     'no-debugger': 1,
@@ -133,12 +127,24 @@ module.exports = {
     'promise/no-callback-in-promise': 'warn',
     'promise/prefer-await-to-then': 'warn',
   },
+  env: {
+    mocha: true,
+    es2021: true,
+    node: true,
+  },
+  globals: {
+    defineProps: 'readonly',
+    defineEmits: 'readonly',
+    defineExpose: 'readonly',
+    withDefaults: 'readonly',
+    sinon: true,
+    expect: true,
+  },
   overrides: [
     {
       files: [
         '**/__tests__/*.{j,t}s?(x)',
-        '**/*.spec.{j,t}s?(x)',
-        'src/**/*.{spec,e2e}.js',
+        '**/tests/unit/**/*.spec.{j,t}s?(x)',
       ],
       env: {
         mocha: true,

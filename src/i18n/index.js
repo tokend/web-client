@@ -160,6 +160,7 @@ class I18n {
       fallbackLng: 'en',
       debug: false,
       resources: {},
+      supportedLngs: ['en', 'ru'],
       whitelist: ['en', 'ru'],
       // set to true if you need en-US/en-UK lng's:
       nonExplicitWhitelist: false,

@@ -5,23 +5,27 @@ const fs = require('fs')
 const appDirectory = fs.realpathSync(process.cwd())
 const resolveApp = relativePath => path.resolve(appDirectory, relativePath)
 const root = path.resolve(__dirname, resolveApp('src'))
-const ArgumentParser = require('argparse').ArgumentParser
+const { ArgumentParser } = require('argparse')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
+const nodeExternals = require('webpack-node-externals')
 
 const parser = new ArgumentParser({
-  addHelp: true,
+  add_help: true,
 })
 
-if (process.env.NODE_ENV === 'production' && !process.env.VUE_APP_BUNDLE_ANALYZER) {
-  parser.addArgument('build')
-  parser.addArgument(['--set-build-version'], {
+const isTestEnv = process.env.NODE_ENV === 'test'
+const isProductionEnv = process.env.NODE_ENV === 'prod'
+
+if (isProductionEnv && !process.env.VUE_APP_BUNDLE_ANALYZER) {
+  parser.add_argument('build')
+  parser.add_argument('--set-build-version', {
     metavar: 'VALUE',
     help: 'Set build version env key. Equivalent to --env-arg BUILD_VERSION [VALUE]',
-    type: 'string',
+    type: 'str',
     dest: 'setBuildVersion',
   })
-  const args = parser.parseArgs()
+  const args = parser.parse_args()
 
   if (args.setBuildVersion) {
     process.env.VUE_APP_BUILD_VERSION = args.setBuildVersion
@@ -30,7 +34,7 @@ if (process.env.NODE_ENV === 'production' && !process.env.VUE_APP_BUNDLE_ANALYZE
 
 const optionalPlugins = []
 
-if (process.env.NODE_ENV !== 'test') {
+if (!isTestEnv) {
   optionalPlugins.push(
     new UnusedWebpackPlugin({
       directories: [path.join(__dirname, 'src')],
@@ -51,7 +55,14 @@ module.exports = {
   runtimeCompiler: true,
   transpileDependencies: ['marked', 'd3-array', 'd3-scale'],
   configureWebpack: {
-    devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'eval-source-map',
+    devtool: isProductionEnv
+      ? 'source-map'
+      : isTestEnv
+        ? 'inline-cheap-module-source-map'
+        : 'eval-source-map',
+    ...(isTestEnv ? { externals: [nodeExternals({
+      allowlist: ['vue-simplemde'],
+    })] } : {}),
     plugins: [
       new CopyWebpackPlugin({
         patterns: [
@@ -111,20 +122,28 @@ module.exports = {
     // Pre-fetching ALL the chunks harms the app performance
     config.plugins.delete('prefetch')
 
-    const moduleTypes = ['vue-modules', 'vue', 'normal-modules', 'normal']
-    moduleTypes.forEach(rule => {
-      config.module.rule('scss')
-        .oneOf(rule)
-        .use('resolve-url-loader')
-        .loader('resolve-url-loader')
-        .before('sass-loader')
-        .end()
-        .use('sass-loader')
-        .loader('sass-loader')
-        .tap(options => ({
-          ...options,
-          sourceMap: true,
-        }))
-    })
+    if (isTestEnv) {
+      const scssRule = config.module.rule('scss')
+      scssRule.uses.clear()
+      scssRule
+        .use('null-loader')
+        .loader('null-loader')
+    } else {
+      const moduleTypes = ['vue-modules', 'vue', 'normal-modules', 'normal']
+      moduleTypes.forEach(rule => {
+        config.module.rule('scss')
+          .oneOf(rule)
+          .use('resolve-url-loader')
+          .loader('resolve-url-loader')
+          .before('sass-loader')
+          .end()
+          .use('sass-loader')
+          .loader('sass-loader')
+          .tap(options => ({
+            ...options,
+            sourceMap: true,
+          }))
+      })
+    }
   },
 }
