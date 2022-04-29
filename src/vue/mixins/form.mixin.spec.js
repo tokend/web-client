@@ -3,17 +3,17 @@ import FormMixin from './form.mixin'
 
 import { required } from '@validators'
 
-import {
-  mount,
-  createLocalVue,
-} from '@vue/test-utils'
+import { createLocalVue, createWrapper } from '@vue/test-utils'
+import Vue from 'vue'
 
 const localVue = createLocalVue()
 
 localVue.use(Vuelidate)
 
 const Component = {
+  localVue,
   template: '<div></div>',
+  mixins: [FormMixin],
   data: _ => ({
     form: {
       firstName: '',
@@ -32,10 +32,9 @@ describe('form.mixin unit test', () => {
   let wrapper
 
   beforeEach(() => {
-    wrapper = mount(Component, {
-      mixins: [FormMixin],
-      localVue,
-    })
+    const Constructor = Vue.extend(Component)
+    const vm = new Constructor().$mount()
+    wrapper = createWrapper(vm)
   })
 
   it('disable/enables methods correctly modify isDisabled ', () => {

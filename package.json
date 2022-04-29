@@ -7,7 +7,7 @@
   "scripts": {
     "start": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test": "vue-cli-service test:unit \"src/**/*.{spec,e2e}.js\" --require ./test.setup.js --inspect-brk",
+    "test": "vue-cli-service test:unit \"src/**/*.{spec,e2e}.js\" --require ./test.setup.js",
     "test:watch": "vue-cli-service test:unit \"src/**/*.{spec,e2e}.js\" --require ./test.setup.js --watch",
     "lint": "yarn lint:styles && yarn lint:scripts",
     "lint:scripts": "eslint \"{src,config}/**/*.{js,vue}\" --cache --fix --max-warnings=0",
@@ -73,7 +73,8 @@
     "@vue/cli-plugin-vuex": "^5.0.4",
     "@vue/cli-service": "^5.0.4",
     "@vue/eslint-config-standard": "^6.1.0",
-    "@vue/test-utils": "^1.1.3",
+    "@vue/server-test-utils": "1",
+    "@vue/test-utils": "1",
     "argparse": "^2.0.1",
     "babel-plugin-add-module-exports": "^1.0.2",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",

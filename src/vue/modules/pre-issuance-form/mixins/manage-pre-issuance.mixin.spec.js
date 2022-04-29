@@ -2,7 +2,7 @@ import ManagePreIssuanceMixin from './manage-pre-issuance.mixin'
 
 import { base } from '@tokend/js-sdk'
 
-import { mount, createLocalVue } from '@vue/test-utils'
+import { createLocalVue, shallowMount } from '@vue/test-utils'
 
 import { FileUtil } from '@/js/utils/file.util'
 
@@ -24,7 +24,7 @@ describe('Manage pre-issuance mixin', () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox()
 
-    wrapper = mount(Component, {
+    wrapper = shallowMount(Component, {
       mixins: [ManagePreIssuanceMixin],
       localVue,
     })
@@ -32,6 +32,12 @@ describe('Manage pre-issuance mixin', () => {
 
   afterEach(() => {
     sandbox.restore()
+  })
+
+  describe('check component', () => {
+    it('is component mounted correctly', () => {
+      expect(wrapper.is(Component)).toBe(true)
+    })
   })
 
   describe('method', () => {

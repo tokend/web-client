@@ -52,6 +52,7 @@ module.exports = {
   devServer: {
     port: 8095,
   },
+  ...(!isTestEnv ? { runtimeCompiler: true } : {}),
   runtimeCompiler: true,
   transpileDependencies: ['marked', 'd3-array', 'd3-scale'],
   configureWebpack: {
