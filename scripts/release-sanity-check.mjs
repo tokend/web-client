@@ -95,7 +95,7 @@ function validateChangelogHasVersionOnTop () {
 }
 
 function validateChangelogAnchorsLegend () {
-  const baseRepoUrl = 'https://gitlab.com/rarify-protocol/web-client-rarify-protocol'
+  const baseRepoUrl = 'https://gitlab.com/lukachi/vue-vite-template'
   const anyReleaseTagRe = /## \[\d+\.\d+\.\d+((-rc|-x)\.\d+)?\] - \d{4}-\d{2}-\d{2}/gi
 
   const expectedAnchorsLegend = `[Unreleased]: ${baseRepoUrl}/compare/${VERSION}...HEAD\n` +
