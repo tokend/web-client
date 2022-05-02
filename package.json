@@ -1,6 +1,6 @@
 {
-  "name": "web-client-rarify-protocol",
-  "version": "1.0.0-rc.0",
+  "name": "vue-vite-template",
+  "version": "0.0.0",
   "gitHooks": {
     "pre-commit": "yarn lint",
     "pre-push": "yarn rsc"
