@@ -1,5 +1,11 @@
+image:
+  name: "tokend/werf:0.0.3"
+  entrypoint: [""]
+services:
+  - docker:18-dind
+
 variables:
-  DOCKER_DRIVER: overlay2
+  #DOCKER_DRIVER: overlay2
   #DOMAIN: dapppad.com
   GITHUB_REF: $CI_COMMIT_SHA
   DH_IMAGE_NAME: $CI_PROJECT_ROOT_NAMESPACE/$CI_PROJECT_NAME
@@ -9,7 +15,6 @@ variables:
   IMAGE_NAME_TAG: $REGISTRY:$CI_COMMIT_TAG
   WERF_LOG_COLOR_MODE: "on"
   WERF_IMAGES_REPO: $CI_REGISTRY_IMAGE
-
 
 .before_script_template: &before_script_templ
   before_script:
@@ -21,22 +26,17 @@ variables:
     - echo $WERF_IMAGES_REPO
     - echo $WERF_ADD_CUSTOM_TAG_1
 
-
 stages:
   - build-and-publish
-  - deploy
+  - lint-and-test
+  #- publish
+  #- deploy
   - cleanup
 
-
-Build and Publish:
+Build:
   stage: build-and-publish
   tags:
     - tokend
-  services:
-    - docker:18-dind
-  image:
-    name: "registry.gitlab.com/tokend/devops/werf-dind:8588e38f423bc5cc35c68e57e0c0dd57eb920e5d"
-    entrypoint: [""]
   <<: *before_script_templ
   script:
     - type werf && source $(werf ci-env gitlab --as-file)
@@ -47,18 +47,12 @@ Build and Publish:
   except: [schedules]
   interruptible: true
 
-
-Build and Publish Tag:
+Build Tag:
   stage: build-and-publish
   tags:
     - tokend
   only:
     - tags
-  services:
-    - docker:18-dind
-  image:
-    name: "registry.gitlab.com/tokend/devops/werf-dind:8588e38f423bc5cc35c68e57e0c0dd57eb920e5d"
-    entrypoint: [""]
   <<: *before_script_templ
   script:
     - type werf && source $(werf ci-env gitlab --as-file)
@@ -69,48 +63,58 @@ Build and Publish Tag:
   except: [schedules]
   interruptible: true
 
-#Deploy to Staging:
-#  services:
-#    - docker:18-dind
-#  image: dtzar/helm-kubectl:latest
-#  tags:
-#    - tokend
-#  stage: deploy
-#  script:
-#    - mkdir ~/.kube/
-#    - echo ${k8sconfig} | base64 -d > config
-#    - mv config ~/.kube/
-#    - helm upgrade -i "webclient" ".helm" --set global.IngressDomain=stage.${DOMAIN} --set "image.repository=${REGISTRY}" --set "config.data.VITE_API_URL=https://admin.stage.${DOMAIN}" --set "image.tag=${CI_COMMIT_SHA}" --create-namespace --namespace $CI_PROJECT_NAME-stage
-#  interruptible: true
-#
-#
-#Deploy to Production:
-#  services:
-#    - docker:18-dind
-#  image: dtzar/helm-kubectl:latest
-#  tags:
-#    - tokend
-#  stage: deploy
-#  script:
-#    - mkdir ~/.kube/
-#    - echo ${k8sconfig} | base64 -d > config
-#    - mv config ~/.kube/
-#    - helm upgrade -i "webclient" ".helm" --set global.IngressDomain=${DOMAIN} --set "image.repository=${REGISTRY}" --set "config.data.VITE_API_URL=https://admin.${DOMAIN}" --set "image.tag=${CI_COMMIT_SHA}" --create-namespace --namespace $CI_PROJECT_NAME-prod
-#  when: manual
-#  interruptible: true
+Lint and Test:
+  stage: lint-and-test
+  tags:
+    - tokend
+  only:
+    - merge_requests
+  services:
+    - docker:18-dind
+  image:
+    name: "registry.gitlab.com/tokend/devops/docker-containers:front14-a7d73669fd1fa97a461226c292357bc33d478070"
+    entrypoint: [""]
+  <<: *before_script_templ
+  script:
+    - yarn install
+    - yarn test
+    - yarn lint
+  except: [schedules]
+  interruptible: true
 
+# Deploy to Staging:
+#   services:
+#       - docker:18-dind
+#   image: dtzar/helm-kubectl:latest
+#   tags:
+#     - tokend-deploy
+#   stage: deploy
+#   script:
+#     - mkdir ~/.kube/
+#     - echo ${k8sconfig} | base64 -d > config
+#     - mv config ~/.kube/
+#     - helm upgrade -i "webclient" ".helm" --set global.IngressDomain=stage.${DOMAIN} --set "image.repository=${REGISTRY}" --set "image.tag=${CI_COMMIT_SHA}" --create-namespace --namespace $CI_PROJECT_NAME-stage
+#   interruptible: true
 
-
+# Deploy to Production:
+#   services:
+#       - docker:18-dind
+#   image: dtzar/helm-kubectl:latest
+#   tags:
+#     - tokend-deploy
+#   stage: deploy
+#   script:
+#     - mkdir ~/.kube/
+#     - echo ${k8sconfig} | base64 -d > config
+#     - mv config ~/.kube/
+#     - helm upgrade -i "webclient" ".helm" --set global.IngressDomain=${DOMAIN} --set "image.repository=${REGISTRY}" --set "image.tag=${CI_COMMIT_TAG}" --create-namespace --namespace $CI_PROJECT_NAME-prod
+#   when: manual
+#   interruptible: true
 
 Cleanup:
   stage: cleanup
   tags:
     - tokend
-  services:
-    - docker:18-dind
-  image:
-    name: "registry.gitlab.com/tokend/devops/werf-dind:8588e38f423bc5cc35c68e57e0c0dd57eb920e5d"
-    entrypoint: [""]
   <<: *before_script_templ
   script:
     - type werf && source $(werf ci-env gitlab --as-file)
@@ -118,4 +122,3 @@ Cleanup:
     - werf cleanup
   only: [schedules]
   interruptible: true
-

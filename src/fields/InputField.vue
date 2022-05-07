@@ -19,7 +19,7 @@
         v-on="listeners"
         :value="modelValue"
         :placeholder="placeholder"
-        :tabindex="isDisabled || isReadonly ? -1 : tabIndex"
+        :tabindex="isDisabled || isReadonly ? -1 : $attrs.tabindex"
         :type="type"
         :min="min"
         :max="max"
@@ -62,7 +62,6 @@ export default defineComponent({
     modelValue: { type: [String, Number], default: '' },
     label: { type: String, default: '' },
     placeholder: { type: String, default: ' ' },
-    tabIndex: { type: Number, default: 0 },
     type: {
       type: String as PropType<INPUT_TYPES>,
       default: INPUT_TYPES.text,

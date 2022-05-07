@@ -1,0 +1,19 @@
+{{- if .Values.config.create -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "template.fullname" . }}-config
+  labels:
+    {{- include "template.labels" . | nindent 4 }}
+data:
+  {{ .Values.config.name  }}: |
+                              document.ENV = {
+                                {{ if  .Values.global.localstorage }}
+                                FILE_STORAGE: 'https://storage.{{ .Values.global.IngressDomain  }}/{{ .Values.config.data.BUCKET  }}',
+                                {{ else }}
+                                FILE_STORAGE: 'https://s3.{{ .Values.global.aws.Region  }}.amazonaws.com/{{ .Values.config.data.BUCKET  }}',
+                                {{ end }}
+                                WEB_CLIENT_URL: 'https://{{ .Values.global.IngressDomain  }}',
+                                VUE_APP_API_URL: '{{ .Values.config.data.VUE_APP_API_URL }}'
+                              }
+{{- end }}

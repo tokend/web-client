@@ -1,43 +1,31 @@
-// TODO: rewrite config to be patient to runtime replacement,
-//  typescript autocompletion and security(optional)
-
 import packageJson from '../package.json'
 import { LogLevelDesc } from 'loglevel'
-import { GlobalAppConfigType, GlobalAppConfigValueType } from '@/env'
-import { isEmpty } from 'lodash-es'
+import { pickBy, mapKeys } from 'lodash-es'
 
-const externalConfig: GlobalAppConfigType = {}
-
-function normalize(value: GlobalAppConfigValueType): GlobalAppConfigValueType {
-  if (value === 'true') return true
-  if (value === 'false') return false
-  return value
+interface AppConfig {
+  APP_NAME: string
+  API_URL: string
+  HOST_URL: string
+  LOG_LEVEL: LogLevelDesc
+  BUILD_VERSION: string
 }
 
-const env: GlobalAppConfigType = isEmpty(document.ENV)
-  ? import.meta.env
-  : document.ENV
+export const config: AppConfig = {
+  API_URL: import.meta.env.VITE_API_URL,
+  HOST_URL: import.meta.env.VITE_APP_HOST_URL,
+  APP_NAME: import.meta.env.VITE_APP_NAME,
+  LOG_LEVEL: 'trace',
+  BUILD_VERSION: packageJson.version || import.meta.env.VITE_APP_BUILD_VERSION,
+} as const
 
-Object.keys(env).forEach(varName => {
-  const value = normalize(env[varName])
+Object.assign(config, _mapEnvCfg(import.meta.env))
+Object.assign(config, _mapEnvCfg(document.ENV))
 
-  if (varName.startsWith('VITE_')) {
-    const key = varName.replace('VITE_', '')
-    externalConfig[key] = value
-  } else {
-    externalConfig[varName] = value
-  }
-})
-
-export const config = Object.assign(
-  {
-    API_URL: import.meta.env.VITE_API_URL,
-    HOST_URL: import.meta.env.VITE_APP_HOST_URL,
-    APP_NAME: import.meta.env.VITE_APP_NAME,
-    LOG_LEVEL: 'trace' as LogLevelDesc,
-    BUILD_VERSION:
-      packageJson.version || import.meta.env.VITE_APP_BUILD_VERSION,
-  },
-  import.meta.env ? externalConfig : import.meta.env,
-  document.ENV ? externalConfig : document.ENV,
-)
+function _mapEnvCfg(env: ImportMetaEnv | typeof document.ENV): {
+  [k: string]: string | boolean | undefined
+} {
+  return mapKeys(
+    pickBy(env, (v, k) => k.startsWith('VITE_APP_')),
+    (v, k) => k.replace(/^VITE_APP_/, ''),
+  )
+}

@@ -15,20 +15,12 @@ declare module '@vue/runtime-core' {
 interface ImportMetaEnv {
   VITE_APP_API_URL: string
   VITE_APP_HOST_URL: string
+  VITE_APP_ENVIRONMENT: string
+  VITE_APP_LOG_LEVEL: LogLevelDesc
 }
-
-export declare type GlobalAppConfigValueType =
-  | string
-  | number
-  | boolean
-  | unknown
-
-export declare type GlobalAppConfigType = Record<{
-  string: GlobalAppConfigValueType
-}>
 
 declare global {
   interface Document {
-    ENV: Record<string, unknown> | undefined
+    ENV: ImportMetaEnv
   }
 }
