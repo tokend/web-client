@@ -24,7 +24,7 @@
           type="number"
           :label="$t('example-form.input-number-example-lbl')"
           :placeholder="$t('example-form.input-number-placeholder')"
-          :error-message="form.inputNumberExample"
+          :error-message="String(form.inputNumberExample)"
           :disabled="isFormDisabled"
         />
       </div>

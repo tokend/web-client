@@ -41,8 +41,6 @@ export function useForm(): IFormController {
     isFormPending.value = false
   }
 
-  // TODO: invalid structure - useForm var should be unreactive in destruct
-  //  reactive in ...toRefs as like as PiniaJS
   return {
     isFormDisabled,
     isFormPending,
