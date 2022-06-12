@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import Icon from '@/common/Icon.vue'
+import { Icon } from '@/common'
 
 import { defineComponent, PropType } from 'vue'
 import { ICON_NAMES } from '@/enums'
@@ -42,54 +42,49 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import 'vue-toastification/src/scss/variables';
-
-@import 'vue-toastification/src/scss/toastContainer';
-
-@import 'vue-toastification/src/scss/toast';
-
-@import 'vue-toastification/src/scss/closeButton';
-
-@import 'vue-toastification/src/scss/progressBar';
-
-@import 'vue-toastification/src/scss/animations/bounce';
+@import 'vue-toastification/src/scss/index';
 
 .Vue-Toastification__toast {
   &--success {
-    background: var(--notification-bg-success);
+    background: var(--success-main);
   }
 
   &--error {
-    background: var(--notification-bg-error);
+    background: var(--error-main);
   }
 
   &--warning {
-    background: var(--notification-bg-warning);
+    background: var(--warning-main);
   }
 
   &--info {
-    background: var(--notification-bg-info);
+    background: var(--info-main);
   }
 }
 
 .notification {
   display: grid;
-  grid-template-columns: max-content 5fr;
+  place-items: center;
+  grid-template-columns: max-content 1fr;
   grid-gap: toRem(16);
 }
 
 .notification__icon {
-  display: grid;
-  place-items: center;
-  font-size: toRem(28);
+  max-width: toRem(48);
+  max-height: toRem(48);
 }
 
 .notification__details {
   display: grid;
   grid-gap: toRem(4);
+  width: 100%;
 }
 
 .notification__title {
   color: var(--notification-title);
+}
+
+.notification__message {
+  color: var(--notification-message-text);
 }
 </style>

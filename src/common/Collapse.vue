@@ -6,6 +6,7 @@
         :collapse="{
           isOpen: isCollapseOpen,
           toggle: toggleCollapse,
+          open: openCollapse,
           close: closeCollapse,
         }"
       />
@@ -15,11 +16,12 @@
       @enter="setHeightCSSVar"
       @before-leave="setHeightCSSVar"
     >
-      <div v-if="isCollapseOpen" class="collapse__body">
+      <div v-show="isCollapseOpen" class="collapse__body">
         <slot
           :collapse="{
             isOpen: isCollapseOpen,
             toggle: toggleCollapse,
+            open: openCollapse,
             close: closeCollapse,
           }"
         />
@@ -35,10 +37,20 @@ import { useRouter } from '@/router'
 
 export default defineComponent({
   name: 'collapse',
-  setup() {
+  props: {
+    isOpenedByDefault: {
+      type: Boolean,
+      default: false,
+    },
+    isCloseByClickOutside: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  setup(props) {
     const rootEl = ref<HTMLElement | null>(null)
     const destructClickOutsideHandler = ref<() => void | undefined>()
-    const isCollapseOpen = ref(false)
+    const isCollapseOpen = ref(props.isOpenedByDefault)
     const router = useRouter()
 
     router.afterEach(() => {
@@ -51,16 +63,19 @@ export default defineComponent({
     const closeCollapse = () => {
       isCollapseOpen.value = false
 
-      if (destructClickOutsideHandler.value) {
+      if (props.isCloseByClickOutside && destructClickOutsideHandler.value) {
         destructClickOutsideHandler.value()
       }
     }
     const openCollapse = () => {
       isCollapseOpen.value = true
-      destructClickOutsideHandler.value = onClickOutside(
-        rootEl.value,
-        closeCollapse,
-      )
+
+      if (props.isCloseByClickOutside) {
+        destructClickOutsideHandler.value = onClickOutside(
+          rootEl.value,
+          closeCollapse,
+        )
+      }
     }
 
     const setHeightCSSVar = (element: HTMLElement) => {
@@ -74,6 +89,7 @@ export default defineComponent({
       rootEl,
       isCollapseOpen,
       toggleCollapse,
+      openCollapse,
       closeCollapse,
       setHeightCSSVar,
     }

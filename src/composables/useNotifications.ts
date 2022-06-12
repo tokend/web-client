@@ -1,10 +1,11 @@
-import Notification from '@/common/Notification.vue'
+import { Notification } from '@/common'
 
 import { TYPE, useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
 import { NotificationObjectPayload } from '@/types'
 import { Bus } from '@/helpers'
 import { isObject } from 'lodash-es'
+import { ICON_NAMES } from '@/enums'
 
 export const useNotifications = (): void => {
   const toast = useToast()
@@ -24,6 +25,28 @@ export const useNotifications = (): void => {
     let message = ''
     let iconName = ''
 
+    const defaultTitles = {
+      [TYPE.SUCCESS]: t('notification.default-title-success'),
+      [TYPE.ERROR]: t('notification.default-title-error'),
+      [TYPE.WARNING]: t('notification.default-title-warning'),
+      [TYPE.INFO]: t('notification.default-title-info'),
+      [TYPE.DEFAULT]: t('notification.default-title-default'),
+    }
+    const defaultMessages = {
+      [TYPE.DEFAULT]: t('notification.default-message-default'),
+      [TYPE.INFO]: t('notification.default-message-info'),
+      [TYPE.SUCCESS]: t('notification.default-message-success'),
+      [TYPE.ERROR]: t('notification.default-message-error'),
+      [TYPE.WARNING]: t('notification.default-message-warning'),
+    }
+    const defaultIconNames = {
+      [TYPE.DEFAULT]: ICON_NAMES.check,
+      [TYPE.INFO]: ICON_NAMES.shieldExclamation,
+      [TYPE.SUCCESS]: ICON_NAMES.check,
+      [TYPE.ERROR]: ICON_NAMES.shieldExclamation,
+      [TYPE.WARNING]: ICON_NAMES.heart,
+    }
+
     if (isObject(payload)) {
       const msgPayload = payload as NotificationObjectPayload
 
@@ -33,25 +56,14 @@ export const useNotifications = (): void => {
     } else if (payload) {
       message = payload as string
     } else {
-      const defaultMessages = {
-        [TYPE.DEFAULT]: t('notification.default-message-default'),
-        [TYPE.INFO]: t('notification.default-message-info'),
-        [TYPE.SUCCESS]: t('notification.default-message-success'),
-        [TYPE.ERROR]: t('notification.default-message-error'),
-        [TYPE.WARNING]: t('notification.default-message-warning'),
-      }
       message = defaultMessages[messageType]
     }
 
     if (!title) {
-      const defaultTitles = {
-        [TYPE.SUCCESS]: t('notification.default-title-success'),
-        [TYPE.ERROR]: t('notification.default-title-error'),
-        [TYPE.WARNING]: t('notification.default-title-warning'),
-        [TYPE.INFO]: t('notification.default-title-info'),
-        [TYPE.DEFAULT]: t('notification.default-title-default'),
-      }
       title = defaultTitles[messageType]
+    }
+    if (!iconName) {
+      iconName = defaultIconNames[messageType]
     }
 
     toast(

@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import AppNavbar from '@/common/AppNavbar.vue'
+import { AppNavbar } from '@/common'
 
 import { ErrorHandler } from '@/helpers/error-handler'
 import { defineComponent, ref } from 'vue'

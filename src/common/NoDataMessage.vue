@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import Icon from '@/common/Icon.vue'
+import { Icon } from '@/common'
 
 import { defineComponent } from 'vue'
 

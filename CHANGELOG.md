@@ -38,7 +38,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Icon](src/common/Icon.vue)
 - [Fields](src/fields)
   - [InputField](src/fields/InputField.vue)
-  - [TickField](src/fields/TickField.vue)
 - [composables](src/composables)
   - [useForm](src/composables/use-form.ts)
   - [useFormValidation](src/composables/use-form-validation.ts)
