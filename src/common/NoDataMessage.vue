@@ -1,6 +1,6 @@
 <template>
   <div class="no-data-message">
-    <icon class="no-data-message__icon" :name="$icons.folder" />
+    <icon class="no-data-message__icon" :name="iconName" />
     <span class="no-data-message__message">
       {{ message }}
     </span>
@@ -10,12 +10,17 @@
 <script lang="ts">
 import { Icon } from '@/common'
 
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
+import { ICON_NAMES } from '@/enums'
 
 export default defineComponent({
   name: 'no-data-message',
   components: { Icon },
   props: {
+    iconName: {
+      type: String as PropType<ICON_NAMES>,
+      default: ICON_NAMES.archive,
+    },
     message: {
       type: String,
       required: true,

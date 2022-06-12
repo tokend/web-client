@@ -18,6 +18,7 @@ const EVENTS = {
   updateIsShown: 'update:is-shown',
 }
 
+/* TODO: Finish modal */
 export default defineComponent({
   name: 'modal',
   props: {

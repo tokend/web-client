@@ -25,7 +25,7 @@
         >
           <icon
             class="input-field__icon"
-            :name="isPasswordShown ? $icons.heart : $icons.check"
+            :name="isPasswordShown ? $icons.eye : $icons.eyeOff"
           />
         </button>
         <icon v-else class="input-field__icon" :name="iconName" />

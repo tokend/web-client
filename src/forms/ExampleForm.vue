@@ -7,6 +7,7 @@
       <div class="app__form-field">
         <input-field
           v-model="form.inputExample"
+          type="password"
           :label="$t('example-form.input-example-lbl')"
           :placeholder="$t('example-form.input-placeholder')"
           :error-message="
@@ -91,7 +92,7 @@ export default defineComponent({
       try {
         Bus.error({
           message: i18n.global.t('example-form.example-success-msg'),
-          iconName: ICON_NAMES.folder,
+          iconName: ICON_NAMES.desktopComputer,
         })
       } catch (error) {
         ErrorHandler.process(error)

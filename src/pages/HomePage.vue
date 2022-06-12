@@ -19,20 +19,20 @@
     </div>
     <div class="home-page__row">
       <div class="home-page__col home-page__btns">
-        <app-button :text="$t('home-page.icon-btn')" :icon-name="$icons.home" />
+        <app-button :text="$t('Home')" :icon-name="$icons.home" />
         <app-button :icon-name="$icons.add" />
         <app-button
           schemes="flat"
-          :text="$t('home-page.icon-btn')"
+          :text="$t('Search')"
           :icon-name="$icons.heart"
         />
         <app-button schemes="flat" :icon-name="$icons.search" />
         <app-button
           schemes="default"
-          :text="$t('home-page.icon-btn')"
+          :text="$t('Database')"
           :icon-name="$icons.check"
         />
-        <app-button schemes="default" :icon-name="$icons.apps" />
+        <app-button schemes="default" :icon-name="$icons.database" />
       </div>
       <div class="home-page__col">
         <loader />
@@ -44,14 +44,14 @@
         <icon :name="$icons.check" />
         <icon :name="$icons.home" />
         <icon :name="$icons.heart" />
-        <icon :name="$icons.add" />
+        <icon :name="$icons.gift" />
       </div>
       <div class="home-page__col">
         <collapse>
           <template #head="{ collapse }">
             <app-button
               class="home-page__collapse-btn"
-              :text="$t('home-page.collapse-btn')"
+              :text="$t('Collapse')"
               @click="collapse.toggle"
             >
             </app-button>

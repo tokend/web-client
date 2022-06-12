@@ -59,6 +59,7 @@ import { ICON_NAMES } from '@/enums'
 import { RouteRecordRaw } from 'vue-router'
 import { isObject } from 'lodash-es'
 
+/* TODO: Add more schemes */
 enum SCHEMES {
   primary = 'primary',
   flat = 'flat',
@@ -66,6 +67,7 @@ enum SCHEMES {
   error = 'error',
 }
 
+/* TODO: Add more modifications */
 enum MODIFICATIONS {
   borderCircle = 'border-circle',
   borderRounded = 'border-rounded',
@@ -134,6 +136,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+/* TODO: Add colors to Button variables, add more modifications ans schemes */
 .app-button {
   outline: 0;
   font-family: var(--app-font-family);
@@ -217,11 +220,11 @@ export default defineComponent({
   }
 
   &--error {
-    --app-button-bg: var(--col-error-main);
-    --app-button-bg-hover: var(--col-error-dark);
-    --app-button-bg-active: var(--col-error-dark);
-    --app-button-text: var(--col-text-primary-dark);
-    --app-button-text-hover: var(--col-text-primary-dark);
+    --app-button-bg: var(--error-main);
+    --app-button-bg-hover: var(--error-light);
+    --app-button-bg-active: var(--error-light);
+    --app-button-text: var(--error-dark);
+    --app-button-text-hover: var(--error-dark);
     --app-button-border: none;
   }
 
