@@ -6,25 +6,28 @@
       v-bind="$attrs"
       :to="route"
     >
+      <template v-if="$slots.default">
+        <slot />
+      </template>
+      <template v-else>
+        <span v-if="text" class="app-button__text">
+          {{ text }}
+        </span>
+      </template>
       <icon v-if="iconName" class="app-button__icon" :name="iconName" />
-      <span v-if="text" class="app-button__content">
-        {{ text }}
-      </span>
     </router-link>
   </template>
   <template v-else-if="href">
     <a class="app-button" :class="buttonClasses" v-bind="$attrs" :href="href">
-      <icon
-        v-if="iconName"
-        class="app-button__icon"
-        :class="{
-          'app-button__icon--gap': isNeedGap,
-        }"
-        :name="iconName"
-      />
-      <span v-if="text" class="app-button__content">
-        {{ text }}
-      </span>
+      <template v-if="$slots.default">
+        <slot />
+      </template>
+      <template v-else>
+        <span v-if="text" class="app-button__text">
+          {{ text }}
+        </span>
+      </template>
+      <icon v-if="iconName" class="app-button__icon" :name="iconName" />
     </a>
   </template>
   <template v-else>
@@ -35,23 +38,21 @@
       :disabled="isDisabled"
       :type="$attrs.type || 'button'"
     >
-      <icon
-        v-if="iconName"
-        class="app-button__icon"
-        :class="{
-          'app-button__icon--gap': isNeedGap,
-        }"
-        :name="iconName"
-      />
-      <span v-if="text" class="app-button__content">
-        {{ text }}
-      </span>
+      <template v-if="$slots.default">
+        <slot />
+      </template>
+      <template v-else>
+        <span v-if="text" class="app-button__text">
+          {{ text }}
+        </span>
+      </template>
+      <icon v-if="iconName" class="app-button__icon" :name="iconName" />
     </button>
   </template>
 </template>
 
 <script lang="ts">
-import Icon from '@/common/Icon.vue'
+import { Icon } from '@/common'
 
 import { computed, defineComponent, PropType } from 'vue'
 import { ICON_NAMES } from '@/enums'
@@ -59,17 +60,18 @@ import { RouteRecordRaw } from 'vue-router'
 import { isObject } from 'lodash-es'
 
 enum SCHEMES {
-  raised = 'raised',
+  primary = 'primary',
   flat = 'flat',
-  clear = 'clear',
+  success = 'success',
+  error = 'error',
 }
 
 enum MODIFICATIONS {
-  default = 'default',
-  danger = 'danger',
-  warning = 'warning',
-  success = 'success',
-  info = 'info',
+  borderCircle = 'border-circle',
+  borderRounded = 'border-rounded',
+  iconFirst = 'icon-first',
+  big = 'big',
+  small = 'small',
 }
 
 export default defineComponent({
@@ -81,11 +83,11 @@ export default defineComponent({
     text: { type: String, default: '' },
     schemes: {
       type: String as PropType<SCHEMES>,
-      default: SCHEMES.raised,
+      default: SCHEMES.primary,
     },
     modifications: {
       type: String as PropType<MODIFICATIONS>,
-      default: MODIFICATIONS.default,
+      default: MODIFICATIONS.borderRounded,
     },
     route: {
       type: Object as PropType<RouteRecordRaw>,
@@ -133,91 +135,137 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .app-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: transparent;
-  border: none;
-  box-shadow: none;
+  outline: 0;
+  font-family: var(--app-font-family);
+  margin: 0;
   cursor: pointer;
+  user-select: none;
+  overflow: hidden;
+  display: grid;
+  width: min-content;
+  grid: auto / auto-flow max-content;
+  grid-gap: toRem(16);
+  align-items: center;
+  justify-content: center;
+  min-width: toRem(100);
+  padding: toRem(16) toRem(25);
+  font-size: toRem(16);
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: 0;
+  transition: var(--button-transition-duration) ease-in;
+  transition-property: background-color, color;
   text-decoration: none;
-  text-transform: none;
-  border-radius: toRem(8);
-  padding: toRem(8) toRem(16);
-  font-size: toRem(18);
-  line-height: 1.5;
-  font-weight: 700;
-  width: auto;
-  height: auto;
+  border: var(--app-button-border);
+  background-color: var(--app-button-bg);
+  color: var(--app-button-text);
 
   &:disabled,
   &--disabled {
+    cursor: not-allowed;
     pointer-events: none;
-    filter: grayscale(1);
+    filter: grayscale(0.75);
     opacity: 0.5;
   }
 
-  &--raised {
-    background: var(--button-bg-raised);
-    color: var(--button-col-raised);
-    transition: 0.25s ease-in-out;
-
-    &:hover {
-      background: var(--button-raised-hover);
-      transform: scale(1.05);
-    }
-
-    &:disabled {
-      filter: none;
-      background: var(--col-btn-disabled);
-    }
+  &:not([disabled]):hover,
+  &:not([disabled]):focus {
+    text-decoration: none;
+    transition-timing-function: ease-out;
+    color: var(--app-button-text-hover);
+    background-color: var(--app-button-bg-hover);
   }
 
-  &--flat {
-    background: transparent;
-    color: var(--button-col-flat);
-    border: toRem(1) solid var(--button-border-flat);
-    transition: 0.25s ease-in-out;
-
-    &:hover {
-      color: var(--button-col-flat-hover);
-      border-color: var(--button-col-flat-hover);
-      transform: scale(1.1);
-    }
+  &:not([disabled]):active {
+    text-decoration: none;
+    transition-timing-function: ease-out;
+    background-color: var(--app-button-bg-active);
   }
 
-  &--danger {
-    background: var(--button-bg-danger);
-    color: var(--button-col-danger);
+  &--primary {
+    --app-button-bg: var(--col-primary-main);
+    --app-button-bg-hover: var(--col-primary-dark);
+    --app-button-bg-active: var(--col-primary-dark);
+    --app-button-text: var(--col-text-primary-dark);
+    --app-button-text-hover: var(--col-text-primary-dark);
+    --app-button-border: none;
   }
 
-  &--warning {
-    background: var(--button-bg-warning);
-    color: var(--button-col-warning);
+  &--primary-bright {
+    --app-button-bg: var(--col-primary-light);
+    --app-button-bg-hover: var(--col-primary-main);
+    --app-button-bg-active: var(--col-primary-main);
+    --app-button-text: var(--col-text-primary-dark);
+    --app-button-text-hover: var(--col-text-primary-dark);
+    --app-button-border: none;
+  }
+
+  &--primary-flat {
+    --app-button-text: var(--col-text-primary-light);
+    --app-button-text-hover: var(--col-text-primary-light);
+    --app-button-border: #{toRem(2)} solid var(--col-text-primary-light);
+    --app-button-bg: var(--app-bg);
   }
 
   &--success {
-    background: var(--button-bg-success);
-    color: var(--button-col-success);
+    --app-button-bg: var(--col-success-main);
+    --app-button-bg-hover: var(--col-success-dark);
+    --app-button-bg-active: var(--col-success-dark);
+    --app-button-text: var(--col-text-primary-dark);
+    --app-button-text-hover: var(--col-text-primary-dark);
+    --app-button-border: none;
   }
 
-  &--info {
-    background: var(--button-bg-info);
-    color: var(--button-col-info);
+  &--error {
+    --app-button-bg: var(--col-error-main);
+    --app-button-bg-hover: var(--col-error-dark);
+    --app-button-bg-active: var(--col-error-dark);
+    --app-button-text: var(--col-text-primary-dark);
+    --app-button-text-hover: var(--col-text-primary-dark);
+    --app-button-border: none;
+  }
+
+  &--border-circle {
+    border-radius: toRem(52);
+  }
+
+  &--border-rounded {
+    border-radius: toRem(10);
+  }
+
+  &--big {
+    padding: toRem(17) toRem(20);
+    min-height: toRem(60);
+    width: 100%;
+  }
+
+  &--small {
+    font-size: toRem(12);
+    padding: toRem(8) toRem(10);
+    min-width: toRem(80);
+    grid-gap: toRem(6);
   }
 }
 
 .app-button__icon {
-  width: 1em;
-  height: 1em;
+  height: toRem(12);
+  width: toRem(12);
 
-  &--gap {
-    margin-right: toRem(10);
+  .app-button--icon-first & {
+    grid-column: -1;
   }
 }
 
-.app-button__content {
+.app-button__text {
   color: inherit;
   font: inherit;
+  pointer-events: none;
+  min-width: 0;
+
+  // Magic fix of the font vertical alignment
+  margin-top: calc(#{toRem(2)} * (-1));
+  word-break: break-all;
+
+  @include text-ellipsis;
 }
 </style>

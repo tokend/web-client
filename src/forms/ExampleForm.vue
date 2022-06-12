@@ -13,7 +13,6 @@
             validationController.getFieldErrorMessage('inputExample')
           "
           @blur="validationController.touchField('inputExample')"
-          :disabled="isFormDisabled"
         />
       </div>
     </div>
@@ -25,15 +24,6 @@
           :label="$t('example-form.input-number-example-lbl')"
           :placeholder="$t('example-form.input-number-placeholder')"
           :error-message="String(form.inputNumberExample)"
-          :disabled="isFormDisabled"
-        />
-      </div>
-    </div>
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <tick-field
-          v-model="form.tickExample"
-          :label="$t('example-form.tick-example-lbl')"
           :disabled="isFormDisabled"
         />
       </div>
@@ -66,9 +56,8 @@
 </template>
 
 <script lang="ts">
-import InputField from '@/fields/InputField.vue'
-import TickField from '@/fields/TickField.vue'
-import AppButton from '@/common/AppButton.vue'
+import { InputField } from '@/fields'
+import { AppButton } from '@/common'
 
 import { Bus, ErrorHandler } from '@/helpers'
 import { defineComponent, reactive } from 'vue'
@@ -79,12 +68,11 @@ import { i18n } from '@/localization'
 
 export default defineComponent({
   name: 'example-form',
-  components: { AppButton, TickField, InputField },
+  components: { AppButton, InputField },
   setup() {
     const form = reactive({
       inputExample: '',
       inputNumberExample: 0,
-      tickExample: false,
     })
 
     const { isFormDisabled, disableForm, enableForm } = useForm()

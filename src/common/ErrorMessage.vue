@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import Icon from '@/common/Icon.vue'
+import { Icon } from '@/common'
 
 import { ICON_NAMES } from '@/enums'
 import { defineComponent, PropType } from 'vue'
@@ -45,18 +45,18 @@ export default defineComponent({
 }
 
 .error-message__icon {
-  color: var(--error-message-icon);
+  color: var(--text-primary-main);
   font-size: toRem(48);
   margin-bottom: toRem(12);
 }
 
 .error-message__title {
-  color: var(--error-message-title);
+  color: var(--text-primary-main);
   font-size: toRem(24);
 }
 
 .error-message__message {
-  color: var(--error-message-message);
+  color: var(--text-primary-main);
   font-size: toRem(18);
 }
 </style>

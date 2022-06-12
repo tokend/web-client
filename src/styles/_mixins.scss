@@ -97,28 +97,42 @@ $x-large-2k: 2048px;
 /* stylelint-enable unit-disallowed-list */
 
 @mixin field-text {
-  font-size: var(--field-font-size-text);
-  line-height: var(--field-line-height-text);
-  -webkit-text-fill-color: var(--field-col-text);
-  color: var(--field-col-text);
+  font-size: var(--field-text-font-size);
+  line-height: var(--field-text-line-height);
+  -webkit-text-fill-color: var(--field-text-font-size);
+  color: var(--field-text-font-size);
+  transition: color var(--field-transition-duration) ease;
 }
 
 @mixin field-label {
-  font-size: var(--field-font-size-label);
-  line-height: var(--field-line-height-label);
-  color: var(--field-col-label);
+  font-size: var(--field-label-font-size);
+  line-height: var(--field-label-line-height);
+  color: var(--field-label);
+  transition: color var(--field-transition-duration) ease;
+  margin-bottom: toRem(8);
 }
 
-@mixin field-border ($border-color) {
-  border: toRem(1) solid $border-color;
-  border-radius: toRem(8);
+@mixin field-border {
+  border: toRem(1) solid var(--border-primary-main);
+  border-radius: toRem(10);
 }
 
-@mixin placeholder {
+@mixin field-placeholder {
   @include field-text;
 
-  color: var(--field-col-placeholder);
-  -webkit-text-fill-color: var(--field-col-placeholder);
-  fill: var(--field-col-placeholder);
-  transition: opacity var(--field-transition-duration);
+  color: var(--field-placeholder);
+  -webkit-text-fill-color: var(--field-placeholder);
+  fill: var(--field-placeholder);
+  transition: color var(--field-transition-duration) ease;
+  transition-property: opacity, color;
+}
+
+@mixin field-error {
+  overflow: hidden;
+  color: var(--field-error);
+  font-size: toRem(10);
+  line-height: 1.4;
+  transition: var(--field-transition-duration) ease;
+  transition-property: opacity, color, font-size, transform;
+  margin-top: toRem(4);
 }

@@ -2,6 +2,14 @@
   <div class="home-page">
     <div class="home-page__row">
       <div class="home-page__col">
+        <app-button :text="$t('open modal')" @click="isModalShown = true" />
+        <modal v-model:is-shown="isModalShown">
+          {{ $t('Somebody Told me') }}
+        </modal>
+      </div>
+    </div>
+    <div class="home-page__row">
+      <div class="home-page__col">
         <example-form />
       </div>
       <div class="home-page__col">
@@ -58,15 +66,18 @@
 </template>
 
 <script lang="ts">
+import {
+  ErrorMessage,
+  NoDataMessage,
+  AppButton,
+  Loader,
+  Icon,
+  Collapse,
+  Modal,
+} from '@/common'
 import ExampleForm from '@/forms/ExampleForm.vue'
 
-import { defineComponent } from 'vue'
-import ErrorMessage from '@/common/ErrorMessage.vue'
-import NoDataMessage from '@/common/NoDataMessage.vue'
-import AppButton from '@/common/AppButton.vue'
-import Loader from '@/common/Loader.vue'
-import Icon from '@/common/Icon.vue'
-import Collapse from '@/common/Collapse.vue'
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
   name: 'home-page',
@@ -78,9 +89,14 @@ export default defineComponent({
     NoDataMessage,
     ErrorMessage,
     ExampleForm,
+    Modal,
   },
   setup() {
-    return {}
+    const isModalShown = ref<boolean>(false)
+
+    return {
+      isModalShown,
+    }
   },
 })
 </script>

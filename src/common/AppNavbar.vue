@@ -5,16 +5,13 @@
 </template>
 
 <script lang="ts">
-import AppLogo from './AppLogo.vue'
+import { AppLogo } from '@/common'
 
 import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'app-navbar',
   components: { AppLogo },
-  setup() {
-    return {}
-  },
 })
 </script>
 
@@ -23,8 +20,8 @@ export default defineComponent({
   display: flex;
   align-items: center;
   padding: toRem(24) var(--app-padding-right) toRem(24) var(--app-padding-left);
-  background: var(--app-navbar-bg);
-  border-bottom: var(--app-navbar-border);
+  background: var(--app-bg);
+  border-bottom: var(--border-primary-main);
 
   @include respond-to(tablet) {
     flex-wrap: wrap;
@@ -85,7 +82,7 @@ export default defineComponent({
   }
 
   &.router-link-active {
-    color: var(--app-navbar-active);
+    color: var(--primary-dark);
   }
 }
 </style>
