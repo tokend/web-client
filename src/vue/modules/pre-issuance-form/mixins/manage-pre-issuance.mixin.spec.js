@@ -34,12 +34,6 @@ describe('Manage pre-issuance mixin', () => {
     sandbox.restore()
   })
 
-  describe('check component', () => {
-    it('is component mounted correctly', () => {
-      expect(wrapper.is(Component)).toBe(true)
-    })
-  })
-
   describe('method', () => {
     describe('createPreIssuanceRequest', () => {
       it('creates and posts pre-issuance operation if issuance asset is owned by user',

@@ -339,7 +339,7 @@ const router = new Router({
         {
           path: '/issuance',
           name: vueRoutes.issuance.name,
-          meta: { pageNameTranslationId: 'pages-names.issuance' },
+          meta: { isAuth: true },
           component: Issuance,
           beforeEnter: inAppRouteGuard,
         },

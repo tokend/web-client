@@ -62,7 +62,7 @@ module.exports = {
         ? 'inline-cheap-module-source-map'
         : 'eval-source-map',
     ...(isTestEnv ? { externals: [nodeExternals({
-      allowlist: ['vue-simplemde'],
+      allowlist: ['vue-simplemde', '@vue/test-utils', 'vue'],
     })] } : {}),
     plugins: [
       new CopyWebpackPlugin({

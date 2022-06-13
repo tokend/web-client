@@ -14,7 +14,7 @@ export default {
 
   methods: {
     async createPreIssuanceRequest () {
-      const issuanceAsset = this.ownedAssets
+      const issuanceAsset = this.ownedAssets && this.ownedAssets
         .find(item => item.code === this.issuance.asset)
 
       if (!issuanceAsset) {
