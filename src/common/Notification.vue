@@ -44,8 +44,6 @@ export default defineComponent({
 <style lang="scss">
 @import 'vue-toastification/src/scss/index';
 
-/* TODO: Update notification styles to chakra ui */
-
 .Vue-Toastification__toast {
   &--success {
     background: var(--success-main);

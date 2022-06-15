@@ -38,25 +38,23 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .error-message {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  place-items: center;
+  grid-gap: toRem(12);
 }
 
 .error-message__icon {
-  color: var(--text-primary-main);
+  color: var(--error-main);
   font-size: toRem(48);
-  margin-bottom: toRem(12);
 }
 
 .error-message__title {
-  color: var(--text-primary-main);
+  color: var(--error-main);
   font-size: toRem(24);
 }
 
 .error-message__message {
-  color: var(--text-primary-main);
+  color: var(--error-main);
   font-size: toRem(18);
 }
 </style>

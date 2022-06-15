@@ -1,9 +1,9 @@
 <template>
   <teleport to="#modal">
     <transition name="modal">
-      <div v-if="isShown" class="modal">
-        <div class="modal__pane">
-          <slot />
+      <div v-show="isShown" class="modal">
+        <div class="modal__pane" ref="modalPane">
+          <slot :modal="{ close: closeModal }" />
         </div>
       </div>
     </transition>
@@ -18,7 +18,6 @@ const EVENTS = {
   updateIsShown: 'update:is-shown',
 }
 
-/* TODO: Finish modal */
 export default defineComponent({
   name: 'modal',
   props: {
@@ -32,12 +31,12 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const modal = ref<HTMLElement | undefined>()
+    const modalPane = ref<HTMLElement | undefined>()
 
     onMounted(() => {
-      if (modal.value) {
+      if (modalPane.value) {
         if (props.isCloseByClickOutside) {
-          onClickOutside(modal, () => {
+          onClickOutside(modalPane, () => {
             closeModal()
           })
         }
@@ -48,7 +47,11 @@ export default defineComponent({
       emit(EVENTS.updateIsShown, false)
     }
 
-    return {}
+    return {
+      modalPane,
+
+      closeModal,
+    }
   },
 })
 </script>

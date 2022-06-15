@@ -5,7 +5,7 @@
       src="/branding/logo.svg"
       :alt="$config.APP_NAME"
     />
-    <router-link class="app-logo__link" :to="{ name: $routes.homePage }" />
+    <router-link class="app-logo__link" :to="{ name: $routes.buttons }" />
   </div>
 </template>
 

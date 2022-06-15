@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import { useRouter } from '@/router'
 
@@ -49,7 +49,6 @@ export default defineComponent({
   },
   setup(props) {
     const rootEl = ref<HTMLElement | null>(null)
-    const destructClickOutsideHandler = ref<() => void | undefined>()
     const isCollapseOpen = ref(props.isOpenedByDefault)
     const router = useRouter()
 
@@ -57,25 +56,24 @@ export default defineComponent({
       closeCollapse()
     })
 
+    onMounted(() => {
+      if (rootEl.value) {
+        if (props.isCloseByClickOutside) {
+          onClickOutside(rootEl, () => {
+            closeCollapse()
+          })
+        }
+      }
+    })
+
     const toggleCollapse = () => {
       isCollapseOpen.value ? closeCollapse() : openCollapse()
     }
     const closeCollapse = () => {
       isCollapseOpen.value = false
-
-      if (props.isCloseByClickOutside && destructClickOutsideHandler.value) {
-        destructClickOutsideHandler.value()
-      }
     }
     const openCollapse = () => {
       isCollapseOpen.value = true
-
-      if (props.isCloseByClickOutside) {
-        destructClickOutsideHandler.value = onClickOutside(
-          rootEl.value,
-          closeCollapse,
-        )
-      }
     }
 
     const setHeightCSSVar = (element: HTMLElement) => {

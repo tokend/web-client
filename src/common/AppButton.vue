@@ -56,16 +56,14 @@ import { Icon } from '@/common'
 
 import { computed, defineComponent, PropType } from 'vue'
 import { ICON_NAMES } from '@/enums'
-import { RouteRecordRaw } from 'vue-router'
+import { LocationAsRelativeRaw } from 'vue-router'
 import { isObject } from 'lodash-es'
 
-/* TODO: Add more schemes */
 enum SCHEMES {
   primary = 'primary',
   flat = 'flat',
 }
 
-/* TODO: Add more modifications */
 enum MODIFICATIONS {
   borderCircle = 'border-circle',
   borderRounded = 'border-rounded',
@@ -94,9 +92,9 @@ export default defineComponent({
       default: MODIFICATIONS.borderRounded,
     },
     route: {
-      type: Object as PropType<RouteRecordRaw>,
+      type: Object as PropType<LocationAsRelativeRaw>,
       default: null,
-      validator: (value: RouteRecordRaw): boolean => {
+      validator: (value: LocationAsRelativeRaw): boolean => {
         return !value || (isObject(value) && Boolean(value.name))
       },
     },
@@ -138,7 +136,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-/* TODO: Add colors to Button variables, add more modifications ans schemes */
 .app-button {
   --button-transition-duration: 0.2s;
 

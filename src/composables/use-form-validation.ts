@@ -1,25 +1,21 @@
-import { computed, ComputedRef, UnwrapNestedRefs } from 'vue'
+import { computed, UnwrapNestedRefs } from 'vue'
 import useVuelidate, { ChildStateLeafs, ValidationArgs } from '@vuelidate/core'
 import { get } from 'lodash-es'
 
-interface IFormValidation {
-  isFieldsValid: ComputedRef<boolean>
-  getFieldErrorMessage: (fieldPath: string) => string
-  touchField: (fieldPath: string) => void
-  isFormValid: () => boolean
-}
-
 export const useFormValidation = (
-  rules: ValidationArgs,
   state: UnwrapNestedRefs<ChildStateLeafs>,
-): IFormValidation => {
-  const validationRules = computed(() => ({
-    ...rules,
-  }))
+  rules: ValidationArgs,
+) => {
+  const validationRules = computed(() => rules)
 
   const validationController = useVuelidate(validationRules, state)
 
   const isFieldsValid = computed(() => !validationController.value.$invalid)
+
+  const isFormValid = (): boolean => {
+    validationController.value.$touch()
+    return !validationController.value.$invalid
+  }
 
   const getFieldErrorMessage = (fieldPath: string): string => {
     let errorMessage = ''
@@ -49,11 +45,6 @@ export const useFormValidation = (
     if (field) {
       field.$touch()
     }
-  }
-
-  const isFormValid = (): boolean => {
-    validationController.value.$touch()
-    return !validationController.value.$invalid
   }
 
   return {
