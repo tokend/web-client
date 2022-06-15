@@ -7,55 +7,55 @@
           schemes="primary"
           modifications="border-rounded"
           :icon-name="$icons.gift"
-          :text="$t('primary, border-rounded')"
+          :text="'primary, border-rounded'"
         />
         <app-button
           class="buttons-page__button"
           schemes="primary"
           modifications="border-circle"
-          :text="$t('primary, border-circle')"
+          :text="'primary, border-circle'"
         />
         <app-button
           class="buttons-page__button"
           schemes="primary"
           modifications="icon-first"
-          :text="$t('primary, icon-first')"
+          :text="'primary, icon-first'"
         />
         <app-button
           class="buttons-page__button"
           schemes="primary"
           modifications="big"
-          :text="$t('primary, big')"
+          :text="'primary, big'"
         />
         <app-button
           class="buttons-page__button"
           schemes="primary"
           modifications="small"
-          :text="$t('primary, small')"
+          :text="'primary, small'"
         />
         <app-button
           class="buttons-page__button"
           schemes="primary"
           modifications="success"
-          :text="$t('primary, success')"
+          :text="'primary, success'"
         />
         <app-button
           class="buttons-page__button"
           schemes="primary"
           modifications="error"
-          :text="$t('primary, error')"
+          :text="'primary, error'"
         />
         <app-button
           class="buttons-page__button"
           schemes="primary"
           modifications="warning"
-          :text="$t('primary, warning')"
+          :text="'primary, warning'"
         />
         <app-button
           class="buttons-page__button"
           schemes="primary"
           modifications="info"
-          :text="$t('primary, info')"
+          :text="'primary, info'"
         />
       </div>
       <div class="buttons-page__col">
@@ -63,56 +63,56 @@
           class="buttons-page__button"
           schemes="primary"
           modifications="border-circle success"
-          :text="$t('primary, border-circle, success')"
+          :text="'primary, border-circle, success'"
         />
         <app-button
           class="buttons-page__button"
           schemes="primary"
           modifications="border-rounded error"
-          :text="$t('primary, border-rounded, error')"
+          :text="'primary, border-rounded, error'"
         />
         <app-button
           class="buttons-page__button"
           schemes="primary"
           modifications="icon-first"
           :icon-name="$icons.gift"
-          :text="$t('primary, icon-first')"
+          :text="'primary, icon-first'"
         />
         <app-button
           class="buttons-page__button"
           schemes="primary"
           modifications="big warning"
-          :text="$t('primary, big, warning')"
+          :text="'primary, big, warning'"
         />
         <app-button
           class="buttons-page__button"
           schemes="primary"
           modifications="small info"
-          :text="$t('primary, small, info')"
+          :text="'primary, small, info'"
         />
         <app-button
           class="buttons-page__button"
           schemes="primary"
           modifications="success"
-          :text="$t('primary, success')"
+          :text="'primary, success'"
         />
         <app-button
           class="buttons-page__button"
           schemes="primary"
           modifications="error"
-          :text="$t('primary, error')"
+          :text="'primary, error'"
         />
         <app-button
           class="buttons-page__button"
           schemes="primary"
           modifications="warning"
-          :text="$t('primary, warning')"
+          :text="'primary, warning'"
         />
         <app-button
           class="buttons-page__button"
           schemes="primary"
           modifications="info"
-          :text="$t('primary, info')"
+          :text="'primary, info'"
         />
       </div>
     </div>
@@ -122,56 +122,56 @@
           class="buttons-page__button"
           schemes="flat"
           modifications="border-circle"
-          :text="$t('flat, border-circle')"
+          :text="'flat, border-circle'"
         />
         <app-button
           class="buttons-page__button"
           schemes="flat"
           modifications="border-rounded"
           :icon-name="$icons.gift"
-          :text="$t('flat, border-rounded')"
+          :text="'flat, border-rounded'"
         />
         <app-button
           class="buttons-page__button"
           schemes="flat"
           modifications="icon-first"
-          :text="$t('flat, icon-first')"
+          :text="'flat, icon-first'"
         />
         <app-button
           class="buttons-page__button"
           schemes="flat"
           modifications="big"
-          :text="$t('flat, big')"
+          :text="'flat, big'"
         />
         <app-button
           class="buttons-page__button"
           schemes="flat"
           modifications="small"
-          :text="$t('flat, small')"
+          :text="'flat, small'"
         />
         <app-button
           class="buttons-page__button"
           schemes="flat"
           modifications="success"
-          :text="$t('flat, success')"
+          :text="'flat, success'"
         />
         <app-button
           class="buttons-page__button"
           schemes="flat"
           modifications="error"
-          :text="$t('flat, error')"
+          :text="'flat, error'"
         />
         <app-button
           class="buttons-page__button"
           schemes="flat"
           modifications="warning"
-          :text="$t('flat, warning')"
+          :text="'flat, warning'"
         />
         <app-button
           class="buttons-page__button"
           schemes="flat"
           modifications="info"
-          :text="$t('flat, info')"
+          :text="'flat, info'"
         />
       </div>
       <div class="buttons-page__col">
@@ -179,56 +179,56 @@
           class="buttons-page__button"
           schemes="flat"
           modifications="border-circle success"
-          :text="$t('flat, border-circle, success')"
+          :text="'flat, border-circle, success'"
         />
         <app-button
           class="buttons-page__button"
           schemes="flat"
           modifications="border-rounded error"
-          :text="$t('flat, border-rounded, error')"
+          :text="'flat, border-rounded, error'"
         />
         <app-button
           class="buttons-page__button"
           schemes="flat"
           modifications="icon-first"
           :icon-name="$icons.gift"
-          :text="$t('flat, icon-first')"
+          :text="'flat, icon-first'"
         />
         <app-button
           class="buttons-page__button"
           schemes="flat"
           modifications="big warning"
-          :text="$t('flat, big, warning')"
+          :text="'flat, big, warning'"
         />
         <app-button
           class="buttons-page__button"
           schemes="flat"
           modifications="small info"
-          :text="$t('flat, small, info')"
+          :text="'flat, small, info'"
         />
         <app-button
           class="buttons-page__button"
           schemes="flat"
           modifications="success"
-          :text="$t('flat, success')"
+          :text="'flat, success'"
         />
         <app-button
           class="buttons-page__button"
           schemes="flat"
           modifications="error"
-          :text="$t('flat, error')"
+          :text="'flat, error'"
         />
         <app-button
           class="buttons-page__button"
           schemes="flat"
           modifications="warning"
-          :text="$t('flat, warning')"
+          :text="'flat, warning'"
         />
         <app-button
           class="buttons-page__button"
           schemes="flat"
           modifications="info"
-          :text="$t('flat, info')"
+          :text="'flat, info'"
         />
       </div>
     </div>
