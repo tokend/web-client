@@ -13,10 +13,11 @@
     </div>
     <div class="common-page__row">
       <div class="common-page__col">
-        <collapse>
+        <collapse class="common-page__collapse">
           <template #head="{ collapse }">
             <app-button
               class="common-page__collapse-btn"
+              schemes="flat"
               :text="$t('common-page.collapse-btn')"
               @click="collapse.toggle"
             >
@@ -346,5 +347,13 @@ export default defineComponent({
     height: toRem(64);
     padding: toRem(12);
   }
+}
+
+.common-page__collapse {
+  width: 100%;
+}
+
+.common-page__collapse-btn {
+  width: 100%;
 }
 </style>
