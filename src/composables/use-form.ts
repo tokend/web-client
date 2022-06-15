@@ -1,17 +1,6 @@
-import { ref, Ref } from 'vue'
+import { ref } from 'vue'
 
-interface IFormController {
-  isFormDisabled: Ref<boolean>
-  isFormPending: Ref<boolean>
-  isConfirmationShown: Ref<boolean>
-  disableForm: () => void
-  enableForm: () => void
-  showConfirmation: () => void
-  hideConfirmation: () => void
-  hideConfirmationAfterSubmit: (submitFn: () => void) => Promise<void>
-}
-
-export function useForm(): IFormController {
+export function useForm() {
   const isFormDisabled = ref(false)
   const isFormPending = ref(false)
   const isConfirmationShown = ref(false)

@@ -63,7 +63,7 @@ enum INPUT_TYPES {
 }
 
 enum EVENTS {
-  updateModelValue = 'update:modelValue',
+  updateModelValue = 'update:model-value',
 }
 
 enum SCHEMES {

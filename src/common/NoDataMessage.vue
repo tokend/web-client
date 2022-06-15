@@ -31,20 +31,18 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .no-data-message {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  place-items: center;
+  grid-gap: toRem(12);
 }
 
 .no-data-message__icon {
-  color: var(--no-data-message-icon);
+  color: var(--text-primary-light);
   font-size: toRem(48);
-  margin-bottom: toRem(12);
 }
 
 .no-data-message__message {
-  color: var(--no-data-message-message);
+  color: var(--text-primary-light);
   font-size: toRem(18);
 }
 </style>
