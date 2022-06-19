@@ -7,6 +7,7 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
 import fs from 'fs'
 import path from 'path'
+import { configDefaults } from 'vitest/config'
 
 const appDirectory = fs.realpathSync(process.cwd())
 const resolveApp = (relative: string) => path.resolve(appDirectory, relative)
@@ -76,6 +77,9 @@ export default defineConfig(({ command, mode }) => {
           }),
         ],
       },
+    },
+    test: {
+      exclude: [...configDefaults.exclude],
     },
   }
 })
