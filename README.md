@@ -22,7 +22,7 @@ yarn build
 yarn lint
 ```
 
-### Run unit and e2e tests
+### Run unit tests
 ```
 yarn test
 ```

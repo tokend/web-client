@@ -9,7 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Eslint](.eslintrc.js)
 - [Stylelint](stylelint.config.js)
 - [prettier](.eslintrc.js)
-- [e2e testing by Cypress](e2e)
 - [Vite bundler](vite.config.ts)
 - [PiniaJS store](src/store/index.ts)
 - [Vue-Router](src/router/index.ts)
@@ -41,7 +40,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [composables](src/composables)
   - [useForm](src/composables/use-form.ts)
   - [useFormValidation](src/composables/use-form-validation.ts)
+  - [useNotifications](src/composables/use-notifications.ts)
 - [Collapse](src/common/Collapse.vue)
+- [Unit tests](vitest.config.ts)
 
 ## [1.0.0-rc.0] - 2021-12-23
 #### Under the hood changes
