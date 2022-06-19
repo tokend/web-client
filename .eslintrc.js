@@ -1,6 +1,3 @@
-const tsEslintParser = require('@typescript-eslint/parser')
-const programs = tsEslintParser.createProgram('tsconfig.json')
-
 module.exports = {
   root: true,
   env: {
@@ -13,9 +10,11 @@ module.exports = {
       localeDir: 'src/localization/**/*.(json|json5)',
     },
   },
+  parser: 'vue-eslint-parser',
   parserOptions: {
+    parser: '@typescript-eslint/parser',
     ecmaVersion: 'latest',
-    programs,
+    sourceType: 'module',
   },
   extends: [
     'eslint:recommended',

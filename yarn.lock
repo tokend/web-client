@@ -4108,7 +4108,7 @@ vue-eslint-parser@^8.0.0:
     lodash "^4.17.21"
     semver "^7.3.5"
 
-vue-eslint-parser@^9.0.1:
+vue-eslint-parser@^9.0.1, vue-eslint-parser@^9.0.2:
   version "9.0.2"
   resolved "https://registry.yarnpkg.com/vue-eslint-parser/-/vue-eslint-parser-9.0.2.tgz#d2535516f3f55adb387939427fe741065eb7948a"
   integrity sha512-uCPQwTGjOtAYrwnU+76pYxalhjsh7iFBsHwBqDHiOPTxtICDaraO4Szw54WFTNZTAEsgHHzqFOu1mmnBOBRzDA==
