@@ -6,25 +6,28 @@
       v-bind="$attrs"
       :to="route"
     >
+      <template v-if="$slots.default">
+        <slot />
+      </template>
+      <template v-else>
+        <span v-if="text" class="app-button__text">
+          {{ text }}
+        </span>
+      </template>
       <icon v-if="iconName" class="app-button__icon" :name="iconName" />
-      <span v-if="text" class="app-button__content">
-        {{ text }}
-      </span>
     </router-link>
   </template>
   <template v-else-if="href">
     <a class="app-button" :class="buttonClasses" v-bind="$attrs" :href="href">
-      <icon
-        v-if="iconName"
-        class="app-button__icon"
-        :class="{
-          'app-button__icon--gap': isNeedGap,
-        }"
-        :name="iconName"
-      />
-      <span v-if="text" class="app-button__content">
-        {{ text }}
-      </span>
+      <template v-if="$slots.default">
+        <slot />
+      </template>
+      <template v-else>
+        <span v-if="text" class="app-button__text">
+          {{ text }}
+        </span>
+      </template>
+      <icon v-if="iconName" class="app-button__icon" :name="iconName" />
     </a>
   </template>
   <template v-else>
@@ -35,40 +38,41 @@
       :disabled="isDisabled"
       :type="$attrs.type || 'button'"
     >
-      <icon
-        v-if="iconName"
-        class="app-button__icon"
-        :class="{
-          'app-button__icon--gap': isNeedGap,
-        }"
-        :name="iconName"
-      />
-      <span v-if="text" class="app-button__content">
-        {{ text }}
-      </span>
+      <template v-if="$slots.default">
+        <slot />
+      </template>
+      <template v-else>
+        <span v-if="text" class="app-button__text">
+          {{ text }}
+        </span>
+      </template>
+      <icon v-if="iconName" class="app-button__icon" :name="iconName" />
     </button>
   </template>
 </template>
 
 <script lang="ts">
-import Icon from '@/common/Icon.vue'
+import { Icon } from '@/common'
 
 import { computed, defineComponent, PropType } from 'vue'
 import { ICON_NAMES } from '@/enums'
-import { RouteRecordRaw } from 'vue-router'
+import { LocationAsRelativeRaw } from 'vue-router'
 import { isObject } from 'lodash-es'
 
 enum SCHEMES {
-  raised = 'raised',
+  primary = 'primary',
   flat = 'flat',
-  clear = 'clear',
 }
 
 enum MODIFICATIONS {
-  default = 'default',
-  danger = 'danger',
-  warning = 'warning',
+  borderCircle = 'border-circle',
+  borderRounded = 'border-rounded',
+  iconFirst = 'icon-first',
+  big = 'big',
+  small = 'small',
   success = 'success',
+  error = 'error',
+  warning = 'warning',
   info = 'info',
 }
 
@@ -81,16 +85,16 @@ export default defineComponent({
     text: { type: String, default: '' },
     schemes: {
       type: String as PropType<SCHEMES>,
-      default: SCHEMES.raised,
+      default: SCHEMES.primary,
     },
     modifications: {
       type: String as PropType<MODIFICATIONS>,
-      default: MODIFICATIONS.default,
+      default: MODIFICATIONS.borderRounded,
     },
     route: {
-      type: Object as PropType<RouteRecordRaw>,
+      type: Object as PropType<LocationAsRelativeRaw>,
       default: null,
-      validator: (value: RouteRecordRaw): boolean => {
+      validator: (value: LocationAsRelativeRaw): boolean => {
         return !value || (isObject(value) && Boolean(value.name))
       },
     },
@@ -133,91 +137,178 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .app-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: transparent;
-  border: none;
-  box-shadow: none;
+  --button-transition-duration: 0.2s;
+
+  outline: 0;
+  font-family: var(--app-font-family);
+  margin: 0;
   cursor: pointer;
+  user-select: none;
+  overflow: hidden;
+  display: grid;
+  width: min-content;
+  grid: auto / auto-flow max-content;
+  grid-gap: toRem(12);
+  align-items: center;
+  justify-content: center;
+  padding: toRem(16) toRem(30);
+  font-size: toRem(16);
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: 0;
+  transition: var(--button-transition-duration) ease-in;
+  transition-property: background-color, color;
   text-decoration: none;
-  text-transform: none;
-  border-radius: toRem(8);
-  padding: toRem(8) toRem(16);
-  font-size: toRem(18);
-  line-height: 1.5;
-  font-weight: 700;
-  width: auto;
-  height: auto;
+  border: var(--app-button-border);
+  background-color: var(--app-button-bg);
+  color: var(--app-button-text);
 
   &:disabled,
   &--disabled {
+    cursor: not-allowed;
     pointer-events: none;
-    filter: grayscale(1);
+    filter: grayscale(0.75);
     opacity: 0.5;
   }
 
-  &--raised {
-    background: var(--button-bg-raised);
-    color: var(--button-col-raised);
-    transition: 0.25s ease-in-out;
+  &:not([disabled]):hover,
+  &:not([disabled]):focus {
+    text-decoration: none;
+    transition-timing-function: ease-out;
+    color: var(--app-button-text-hover);
+    background-color: var(--app-button-bg-hover);
+    border-color: var(--app-button-border-hover);
+    border: var(--app-button-border-hover);
+  }
 
-    &:hover {
-      background: var(--button-raised-hover);
-      transform: scale(1.05);
-    }
+  &:not([disabled]):active {
+    text-decoration: none;
+    transition-timing-function: ease-out;
+    background-color: var(--app-button-bg-active);
+    border: var(--app-button-border-active);
+  }
 
-    &:disabled {
-      filter: none;
-      background: var(--col-btn-disabled);
-    }
+  &--primary {
+    --app-button-primary-bg: var(--primary-main);
+    --app-button-primary-bg-hover: var(--primary-dark);
+    --app-button-primary-bg-active: var(--primary-dark);
+
+    --app-button-primary-text: var(--text-primary-invert-main);
+    --app-button-primary-text-hover: var(--text-primary-invert-main);
+
+    --app-button-bg: var(--app-button-primary-bg);
+    --app-button-bg-hover: var(--app-button-primary-bg-hover);
+    --app-button-bg-active: var(--app-button-primary-bg-active);
+
+    --app-button-text: var(--app-button-primary-text);
+    --app-button-text-hover: var(--app-button-primary-text-hover);
+
+    --app-button-border: 0;
+    --app-button-border-hover: 0;
+    --app-button-border-active: 0;
   }
 
   &--flat {
-    background: transparent;
-    color: var(--button-col-flat);
-    border: toRem(1) solid var(--button-border-flat);
-    transition: 0.25s ease-in-out;
+    --app-button-flat-text: var(--text-primary-main);
+    --app-button-flat-text-hover: var(--text-primary-dark);
 
-    &:hover {
-      color: var(--button-col-flat-hover);
-      border-color: var(--button-col-flat-hover);
-      transform: scale(1.1);
-    }
-  }
+    --app-button-flat-border: #{toRem(2)} solid var(--text-primary-light);
+    --app-button-flat-border-hover: var(--app-button-flat-border);
+    --app-button-flat-border-active: var(--app-button-flat-border);
 
-  &--danger {
-    background: var(--button-bg-danger);
-    color: var(--button-col-danger);
-  }
+    --app-button-bg: transparent;
+    --app-button-bg-hover: transparent;
+    --app-button-bg-active: transparent;
 
-  &--warning {
-    background: var(--button-bg-warning);
-    color: var(--button-col-warning);
+    --app-button-text: var(--app-button-flat-text);
+    --app-button-text-hover: var(--app-button-flat-text-hover);
+
+    --app-button-border: var(--app-button-flat-border);
+    --app-button-border-hover: var(--app-button-flat-border-hover);
+    --app-button-border-active: var(--app-button-flat-border-active);
   }
 
   &--success {
-    background: var(--button-bg-success);
-    color: var(--button-col-success);
+    --app-button-flat-text: var(--success-main);
+    --app-button-flat-text-hover: var(--success-dark);
+    --app-button-flat-border: #{toRem(2)} solid var(--success-main);
+    --app-button-flat-border-hover: #{toRem(2)} solid var(--success-dark);
+    --app-button-flat-border-active: #{toRem(2)} solid var(--success-dark);
+
+    --app-button-primary-bg: var(--success-main);
+    --app-button-primary-bg-hover: var(--success-dark);
+    --app-button-primary-bg-active: var(--success-dark);
+  }
+
+  &--error {
+    --app-button-flat-text: var(--error-main);
+    --app-button-flat-text-hover: var(--error-dark);
+    --app-button-flat-border: #{toRem(2)} solid var(--error-main);
+    --app-button-flat-border-hover: #{toRem(2)} solid var(--error-dark);
+    --app-button-flat-border-active: #{toRem(2)} solid var(--error-dark);
+
+    --app-button-primary-bg: var(--error-main);
+    --app-button-primary-bg-hover: var(--error-dark);
+    --app-button-primary-bg-active: var(--error-dark);
+  }
+
+  &--warning {
+    --app-button-flat-text: var(--warning-main);
+    --app-button-flat-text-hover: var(--warning-dark);
+    --app-button-flat-border: #{toRem(2)} solid var(--warning-dark);
+    --app-button-flat-border-hover: #{toRem(2)} solid var(--warning-dark);
+    --app-button-flat-border-active: #{toRem(2)} solid var(--warning-dark);
+
+    --app-button-primary-bg: var(--warning-main);
+    --app-button-primary-bg-hover: var(--warning-dark);
+    --app-button-primary-bg-active: var(--warning-dark);
   }
 
   &--info {
-    background: var(--button-bg-info);
-    color: var(--button-col-info);
+    --app-button-flat-text: var(--info-main);
+    --app-button-flat-text-hover: var(--info-dark);
+    --app-button-flat-border: #{toRem(2)} solid var(--info-main);
+    --app-button-flat-border-hover: #{toRem(2)} solid var(--info-dark);
+    --app-button-flat-border-active: #{toRem(2)} solid var(--info-dark);
+
+    --app-button-primary-bg: var(--info-main);
+    --app-button-primary-bg-hover: var(--info-dark);
+    --app-button-primary-bg-active: var(--info-dark);
+  }
+
+  &--border-circle {
+    border-radius: toRem(50);
+  }
+
+  &--border-rounded {
+    border-radius: toRem(10);
+  }
+
+  &--big {
+    padding: toRem(20) toRem(30);
+  }
+
+  &--small {
+    padding: toRem(8) toRem(30);
   }
 }
 
 .app-button__icon {
-  width: 1em;
-  height: 1em;
+  height: 1.2em;
+  width: 1.2em;
 
-  &--gap {
-    margin-right: toRem(10);
+  .app-button--icon-first & {
+    grid-column: -1;
   }
 }
 
-.app-button__content {
+.app-button__text {
   color: inherit;
   font: inherit;
+  pointer-events: none;
+  word-break: break-all;
+  min-width: 0;
+
+  @include text-ellipsis;
 }
 </style>

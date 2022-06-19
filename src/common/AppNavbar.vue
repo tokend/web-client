@@ -1,20 +1,51 @@
 <template>
   <div class="app-navbar">
     <app-logo class="app-navbar__logo" />
+    <div class="app-navbar__links-section">
+      <app-button
+        class="app-navbar__link"
+        schemes="flat"
+        modifications="small border-rounded"
+        :route="{ name: $routes.buttons }"
+      >
+        {{ $t('app-navbar.buttons-page-link') }}
+      </app-button>
+      <app-button
+        class="app-navbar__link"
+        schemes="flat"
+        modifications="small border-rounded"
+        :route="{ name: $routes.inputs }"
+      >
+        {{ $t('app-navbar.inputs-page-link') }}
+      </app-button>
+      <app-button
+        class="app-navbar__link"
+        schemes="flat"
+        modifications="small border-rounded"
+        :route="{ name: $routes.forms }"
+      >
+        {{ $t('app-navbar.simple-form-link') }}
+      </app-button>
+      <app-button
+        class="app-navbar__link"
+        schemes="flat"
+        modifications="small border-rounded"
+        :route="{ name: $routes.common }"
+      >
+        {{ $t('app-navbar.simple-common-link') }}
+      </app-button>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import AppLogo from './AppLogo.vue'
+import { AppLogo, AppButton } from '@/common'
 
 import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'app-navbar',
-  components: { AppLogo },
-  setup() {
-    return {}
-  },
+  components: { AppButton, AppLogo },
 })
 </script>
 
@@ -23,8 +54,8 @@ export default defineComponent({
   display: flex;
   align-items: center;
   padding: toRem(24) var(--app-padding-right) toRem(24) var(--app-padding-left);
-  background: var(--app-navbar-bg);
-  border-bottom: var(--app-navbar-border);
+  background: var(--app-bg);
+  border-bottom: var(--border-primary-main);
 
   @include respond-to(tablet) {
     flex-wrap: wrap;
@@ -85,7 +116,7 @@ export default defineComponent({
   }
 
   &.router-link-active {
-    color: var(--app-navbar-active);
+    color: var(--primary-dark);
   }
 }
 </style>

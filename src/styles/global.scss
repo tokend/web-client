@@ -17,15 +17,15 @@ body, #app {
   display: flex;
   flex-direction: column;
   flex: 1;
-  background-color: var(--col-app-bg);
-  color: var(--col-app-txt);
+  background-color: var(--app-bg);
+  color: var(--text-primary-main);
 }
 
 input,
 select,
 textarea {
-  background: var(--col-white);
-  color: var(--col-black);
+  background: var(--app-bg);
+  color: var(--text-primary-main);
   font-family: var(--app-font-family);
   font-size: toRem(16);
   font-weight: 400;
@@ -44,20 +44,19 @@ a {
 
 button {
   border: none;
-  outline: 0;
-  font-family: var(--app-font-family);
-  border-radius: toRem(52);
-  margin: 0;
-  padding: 0;
-  font-size: toRem(16);
-  font-weight: 600;
   width: auto;
   overflow: visible;
   cursor: pointer;
   user-select: none;
-  background-color: var(--col-blue-400);
-  color: var(--col-white);
+  background: transparent;
+  font-family: var(--app-font-family);
+  font-size: toRem(16);
+  color: var(--text-primary-main);
   line-height: 1.5;
+  font-weight: 600;
+  outline: 0;
+  margin: 0;
+  padding: 0;
 
   /* Corrects font smoothing for webkit */
   -webkit-font-smoothing: inherit;
@@ -78,7 +77,7 @@ p,
 li,
 ul {
   list-style-type: none;
-  color: var(--col-black);
+  color: var(--text-primary-main);
 }
 
 p {
@@ -92,7 +91,7 @@ h2,
 h3,
 h4,
 h5 {
-  color: var(--app-headings);
+  color: var(--text-primary-main);
   font-family: var(--app-font-family);
   font-weight: 600;
   line-height: 1;
@@ -122,7 +121,7 @@ a {
   font-size: toRem(16);
   line-height: 1.25;
   font-weight: 600;
-  color: var(--app-link);
+  color: var(--primary-main);
   text-decoration: none;
   outline: none;
 

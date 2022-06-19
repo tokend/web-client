@@ -17,12 +17,12 @@ module.exports = {
     programs,
   },
   extends: [
-    'eslint:recommended', // eslint
-    'plugin:vue/vue3-essential', // @vue/eslint-config-typescript
-    'plugin:vue/vue3-recommended', // eslint-plugin-vue
-    'plugin:@typescript-eslint/recommended', // @typescript-eslint/eslint-plugin
-    '@vue/typescript/recommended', // @vue/eslint-config-typescript
-    'plugin:vue-i18n/recommended', // eslint-plugin-vue-i18n
+    'eslint:recommended',
+    'plugin:vue/vue3-essential',
+    'plugin:vue/vue3-recommended',
+    'plugin:@typescript-eslint/recommended',
+    '@vue/typescript/recommended',
+    'plugin:vue-i18n/recommended',
     'plugin:prettier/recommended',
   ],
   plugins: ['promise'],
@@ -99,11 +99,13 @@ module.exports = {
     quotes: [2, 'single', { avoidEscape: false }],
     'no-multiple-empty-lines': [2, { max: 1, maxEOF: 0, maxBOF: 0 }],
     semi: [2, 'never'],
+
+    // typescript
     '@typescript-eslint/no-non-null-assertion': 'off',
+
     // Vue
     'vue/multi-word-component-names': 0,
     'vue/component-definition-name-casing': ['error', 'kebab-case'],
-    'vue/name-property-casing': [2, 'kebab-case'],
     'vue/valid-v-for': 2,
     'vue/attributes-order': 0,
     'vue/order-in-components': 1,

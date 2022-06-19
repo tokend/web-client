@@ -7,6 +7,7 @@
 </template>
 
 <script lang="ts">
+/* create skeletons */
 import Spinner from '@/common/loader/Spinner.vue'
 
 import { defineComponent } from 'vue'

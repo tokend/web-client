@@ -1,4 +1,7 @@
 export enum ROUTE_NAMES {
   app = 'app',
-  homePage = 'home-page',
+  buttons = 'buttons',
+  inputs = 'inputs',
+  forms = 'forms',
+  common = 'common',
 }

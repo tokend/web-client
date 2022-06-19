@@ -33,7 +33,7 @@ $field-to-field-gap: toRem(20);
 
   &--border {
     padding-top: toRem(32);
-    border-top: toRem(1) solid var(--col-gray-low);
+    border-top: toRem(1) solid var(--border-primary-main);
   }
 
   & > * + * {

@@ -31,7 +31,8 @@ export default defineConfig({
     checker({
       typescript: true,
       eslint: {
-        files: [`${root}/**/*.{js,vue,ts}`],
+        lintCommand:
+          'eslint "{src,config}/**/*.{vue,js,ts}" --cache --max-warnings=0',
       },
     }),
     ...(isAnalyze

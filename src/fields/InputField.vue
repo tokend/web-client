@@ -1,13 +1,5 @@
 <template>
-  <div
-    class="input-field"
-    :class="{
-      'input-field--error': errorMessage,
-      'input-field--disabled': isDisabled,
-      'input-field--readonly': isReadonly,
-      'input-field--right-align': scheme === SCHEMES.rightAlign,
-    }"
-  >
+  <div class="input-field" :class="inputClasses">
     <label v-if="label" :for="`input-field--${uid}`" class="input-field__label">
       {{ label }}
     </label>
@@ -20,11 +12,24 @@
         :value="modelValue"
         :placeholder="placeholder"
         :tabindex="isDisabled || isReadonly ? -1 : $attrs.tabindex"
-        :type="type"
+        :type="isPasswordType && isPasswordShown ? 'text' : type"
         :min="min"
         :max="max"
         :disabled="isDisabled || isReadonly"
       />
+      <div v-if="isPasswordType || iconName" class="input-field__icon-wrp">
+        <button
+          type="button"
+          v-if="isPasswordType"
+          @click="isPasswordShown = !isPasswordShown"
+        >
+          <icon
+            class="input-field__icon"
+            :name="isPasswordShown ? $icons.eye : $icons.eyeOff"
+          />
+        </button>
+        <icon v-else class="input-field__icon" :name="iconName" />
+      </div>
     </div>
     <transition
       name="input-field__err-msg-transition"
@@ -39,25 +44,35 @@
 </template>
 
 <script lang="ts">
+import { Icon } from '@/common'
+
 import { BN } from '@/utils/math.util'
-import { computed, defineComponent, getCurrentInstance, PropType } from 'vue'
+import {
+  computed,
+  defineComponent,
+  getCurrentInstance,
+  PropType,
+  ref,
+} from 'vue'
+import { ICON_NAMES } from '@/enums'
 
 enum INPUT_TYPES {
   text = 'text',
+  password = 'password',
   number = 'number',
 }
 
 enum EVENTS {
-  updateModelValue = 'update:modelValue',
+  updateModelValue = 'update:model-value',
 }
 
 enum SCHEMES {
-  default = 'default',
-  rightAlign = 'right-align',
+  iconLeft = 'icon-left',
 }
 
 export default defineComponent({
   name: 'input-field',
+  components: { Icon },
   props: {
     modelValue: { type: [String, Number], default: '' },
     label: { type: String, default: '' },
@@ -66,14 +81,17 @@ export default defineComponent({
       type: String as PropType<INPUT_TYPES>,
       default: INPUT_TYPES.text,
     },
-    scheme: { type: String, default: SCHEMES.default },
+    schemes: { type: String as PropType<SCHEMES>, default: '' },
     errorMessage: { type: String, default: '' },
+    iconName: { type: String as PropType<ICON_NAMES>, default: '' },
   },
   emits: Object.values(EVENTS),
   setup(props, { emit, attrs }) {
     const uid = getCurrentInstance()?.uid
+    const isPasswordShown = ref(false)
 
     const isNumberType = computed(() => props.type === INPUT_TYPES.number)
+    const isPasswordType = computed(() => props.type === INPUT_TYPES.password)
 
     const min = computed((): string => (attrs?.min as string) || '')
     const max = computed((): string => (attrs?.max as string) || '')
@@ -98,6 +116,19 @@ export default defineComponent({
       },
     }))
 
+    const inputClasses = computed(() => {
+      const _schemes = props.schemes
+      const classList = [
+        ...(_schemes ? [_schemes.split(' ')] : []),
+        ...(isDisabled.value ? ['disabled'] : []),
+        ...(isReadonly.value ? ['readonly'] : []),
+        ...(props.errorMessage ? ['error'] : []),
+        ...(props.iconName || isPasswordType ? ['iconed'] : []),
+      ]
+
+      return classList.map(el => `input-field--${el}`).join(' ')
+    })
+
     const normalizeRange = (value: string | number): string => {
       let result = value
 
@@ -119,13 +150,17 @@ export default defineComponent({
 
     return {
       uid,
+      isPasswordShown,
+
       listeners,
       isDisabled,
       isReadonly,
       min,
       max,
+      inputClasses,
+      isPasswordType,
+
       setHeightCSSVar,
-      SCHEMES,
     }
   },
 })
@@ -141,8 +176,7 @@ export default defineComponent({
 
   &--disabled,
   &--readonly {
-    pointer-events: none;
-    filter: grayscale(100%);
+    opacity: 0.5;
   }
 }
 
@@ -150,13 +184,11 @@ export default defineComponent({
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-bottom: toRem(8);
-  transition: all var(--field-transition-duration);
 
   @include field-label;
 
   .input-field--error & {
-    color: var(--field-col-error);
+    color: var(--field-error);
   }
 }
 
@@ -167,43 +199,35 @@ export default defineComponent({
 }
 
 .input-field__input {
-  background: none;
-  border: none;
-  text-overflow: ellipsis;
   padding: var(--field-padding);
+  transition-property: box-shadow;
 
   @include field-text;
 
-  @include field-border(var(--field-col-border));
+  @include field-border;
 
   &::-webkit-input-placeholder {
-    @include placeholder;
+    @include field-placeholder;
   }
 
   &::-moz-placeholder {
-    @include placeholder;
+    @include field-placeholder;
   }
 
   &:-moz-placeholder {
-    @include placeholder;
+    @include field-placeholder;
   }
 
   &:-ms-input-placeholder {
-    @include placeholder;
+    @include field-placeholder;
   }
 
   &::placeholder {
-    @include placeholder;
+    @include field-placeholder;
   }
 
   &:not(:read-only) {
-    box-shadow: inset 0 0 0 toRem(50) var(--field-col-bg);
-  }
-
-  &:read-only,
-  &:disabled {
-    cursor: default;
-    filter: grayscale(100%);
+    box-shadow: inset 0 0 0 toRem(50) var(--app-bg);
   }
 
   // Hide number arrows
@@ -219,27 +243,60 @@ export default defineComponent({
   }
 
   .input-field--error & {
-    @include field-border(var(--field-col-error));
+    border-color: var(--field-error);
   }
 
-  .input-field--right-align & {
-    text-align: right;
+  .input-field--iconed & {
+    padding-right: calc(var(--field-padding-right) * 3);
   }
+
+  .input-field--icon-left & {
+    padding-right: var(--field-padding-right);
+    padding-left: calc(var(--field-padding-right) * 3);
+  }
+
+  &:not([disabled]):focus {
+    box-sizing: border-box;
+    box-shadow: 0 0 0 toRem(1.5) var(--primary-main);
+    border-color: var(--primary-main);
+  }
+
+  &:not([disabled]):not(:focus):hover {
+    border-color: var(--primary-light);
+  }
+}
+
+.input-field__icon-wrp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  right: calc(var(--field-padding-right) * 3 / 2);
+  transform: translate(50%, -50%);
+
+  .input-field--icon-left & {
+    right: 0;
+    left: calc(var(--field-padding-right) * 3 / 2);
+    transform: translate(-50%, -50%);
+  }
+}
+
+.input-field__icon {
+  width: toRem(18);
+  height: toRem(18);
 }
 
 .input-field__err-msg {
-  overflow: hidden;
-  margin-top: var(--field-error-margin-top);
-  color: var(--field-col-error);
-  font-size: toRem(10);
+  @include field-error;
 }
 
 .input-field__err-msg-transition-enter-active {
-  animation: fade-down var(--field-error-transition);
+  animation: fade-down var(--field-transition-duration);
 }
 
 .input-field__err-msg-transition-leave-active {
-  animation: fade-down var(--field-error-transition) reverse;
+  animation: fade-down var(--field-transition-duration) reverse;
 }
 
 @keyframes fade-down {

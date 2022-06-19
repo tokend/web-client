@@ -1,46 +1,71 @@
 @import '../../static/branding/app-colors';
 
-/* App variables */
 :root,
 :before,
 :after {
+  --white: #{$white};
+  --white-rgb: #{$white-rgb};
+  --black: #{$black};
+  --black-rgb: #{$black-rgb};
+
   /* status colors */
-  --app-status-success: #{$_green};
-  --app-status-error: #{$_red};
-  --app-status-warning: #{$_orange};
-  --app-status-info: #{$_blue};
+  --success-light: #{$success-light};
+  --success-main: #{$success-main};
+  --success-dark: #{$success-dark};
 
-  /* Z index variables */
-  --z-navbar: 10;
-  --z-modal: 15;
+  --error-light: #{$error-light};
+  --error-main: #{$error-main};
+  --error-dark: #{$error-dark};
 
-  /* Modal */
-  --modal-backdrop-bg: #{rgba($_woodSmoke, 0.05)};
-  --modal-pane-bg: #{$_white};
-  --modal-close-btn: #{$_stormGray};
+  --warning-light: #{$warning-light};
+  --warning-main: #{$warning-main};
+  --warning-dark: #{$warning-dark};
 
-  /* Error message */
-  --error-message-icon: var(--app-status-error);
-  --error-message-title: var(--app-status-error);
-  --error-message-message: var(--app-status-error);
+  --info-light: #{$info-light};
+  --info-main: #{$info-main};
+  --info-dark: #{$info-dark};
 
-  /* No data message */
-  --no-data-message-icon: #{$_stormGray};
-  --no-data-message-title: #{$_stormGray};
-  --no-data-message-message: #{$_stormGray};
+  /* brand colors */
+  --primary-light: #{$primary-light};
+  --primary-main: #{$primary-main};
+  --primary-dark: #{$primary-dark};
 
-  /* --------------------------------------- */
+  --secondary-light: #{$secondary-light};
+  --secondary-main: #{$secondary-main};
+  --secondary-dark: #{$secondary-dark};
+
+  --tertiary-light: #{$tertiary-light};
+  --tertiary-main: #{$tertiary-main};
+  --tertiary-dark: #{$tertiary-dark};
+
+  /* typography colors */
+  --text-primary-light: #{$text-primary-light};
+  --text-primary-main: #{$text-primary-main};
+  --text-primary-dark: #{$text-primary-dark};
+
+  --text-secondary-light: #{$text-secondary-light};
+  --text-secondary-main: #{$text-secondary-main};
+  --text-secondary-dark: #{$text-secondary-dark};
+
+  --text-primary-invert-light: #{$text-primary-invert-light};
+  --text-primary-invert-main: #{$text-primary-invert-main};
+  --text-primary-invert-dark: #{$text-primary-invert-dark};
+
+  --text-secondary-invert-light: #{$text-secondary-invert-light};
+  --text-secondary-invert-main: #{$text-secondary-invert-main};
+  --text-secondary-invert-dark: #{$text-secondary-invert-dark};
+
+  /* border colors */
+  --border-primary-light: #{$border-primary-light};
+  --border-primary-main: #{$border-primary-main};
+  --border-primary-dark: #{$border-primary-dark};
 
   /* App variables */
-
-  /* --------------------------------------- */
-  --col-app-bg: #{$_athensGray};
-  --col-app-txt: #{$_black};
+  --app-bg: #{$app-bg};
+  --app-txt: #{$text-primary-main};
   --app-font-family: 'Roboto', 'Arial', sans-serif;
   --app-padding-right: #{toRem(120)};
   --app-padding-left: #{toRem(120)};
-  --app-headings: #{$_woodSmoke};
-  --app-link: #{$_woodSmoke};
 
   @include respond-to(small) {
     --app-padding-right: #{toRem(24)};
@@ -49,63 +74,20 @@
 
   /* --------------------------------------- */
 
-  /* App navbar variables */
-
-  /* --------------------------------------- */
-  --app-navbar-bg: #{$_white};
-  --app-navbar-shadow: #{rgba($_outerSpace, 0.08)};
-  --app-navbar-border: #{toRem(1) solid $_mischka};
-  --app-navbar-active: var(--col-btn);
-
-  /* --------------------------------------- */
-
-  /* Button variables */
-
-  /* --------------------------------------- */
-  --col-btn: #{$_blueRibbon};
-  --col-btn-disabled: #{$_snuff};
-  --col-primary-text: #{$_white};
-
-  --button-bg-raised: #{$_blueRibbon};
-  --button-raised-hover: #{$_darkBlue};
-  --button-col-raised: #{$_white};
-
-  --button-col-flat: #{$_blueRibbon};
-  --button-col-flat-hover: #{$_darkBlue};
-  --button-border-flat: #{$_blueRibbon};
-
-  --button-bg-success: var(--app-status-success);
-  --button-col-success: #{$_white};
-
-  --button-bg-danger: var(--app-status-error);
-  --button-col-danger: #{$_white};
-
-  --button-bg-warning: var(--app-status-warning);
-  --button-col-warning: #{$_white};
-
-  --button-bg-info: var(--app-status-info);
-  --button-col-info: #{$_white};
-
-  /* --------------------------------------- */
-
   /* Field variables */
 
   /* --------------------------------------- */
 
-  --field-col-bg: transparent;
-  --field-col-label: #{$_woodSmoke};
-  --field-col-text: #{$_stormGray};
-  --field-col-placeholder: rgba(var(--field-col-text), 0.7);
-  --field-col-border: #{$_logan};
-  --field-col-error: var(--app-status-error);
-
   /* label */
-  --field-font-size-label: #{toRem(16)};
-  --field-line-height-label: 1.35;
+  --field-label: var(--text-primary-main);
+  --field-label-font-size: #{toRem(14)};
+  --field-label-line-height: 1.4;
 
   /* text */
-  --field-font-size-text: #{toRem(14)};
-  --field-line-height-text: 1.35;
+  --field-text: var(--text-primary-main);
+  --field-text-font-size: #{toRem(14)};
+  --field-text-line-height: 1.4;
+  --field-placeholder: #{rgba($text-primary-main, 0.35)};
 
   /* transition duration */
   --field-transition-duration: 0.2s;
@@ -121,25 +103,7 @@
     var(--field-padding-bottom)
     var(--field-padding-left);
 
-  /* tick field */
-  --tick-field-tick-bg: var(--col-btn);
-  --tick-field-tick-icon: #{$_white};
-
-  /* errors */
-  --field-error-transition: 0.35s ease-in-out;
-  --field-error-font-size: #{toRem(16)};
-  --field-error-line-height: 1.25;
-  --field-error-margin-top: #{toRem(5)};
-
-  /* loader */
-
-  /* Spinner */
-  --spinner-border: var(--col-btn);
-
-  /* Notification */
-  --notification-bg-success: var(--app-status-success);
-  --notification-bg-error: var(--app-status-error);
-  --notification-bg-warning: var(--app-status-warning);
-  --notification-bg-info: var(--app-status-info);
-  --notification-title: #{$_white};
+  --field-error: var(--error-main);
+  --field-success: var(--success-main);
+  --field-focused: var(--primary-main);
 }

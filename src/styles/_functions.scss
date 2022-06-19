@@ -10,3 +10,7 @@
 
   @return calc(var(--vh, 1vh) * #{$vh});
 }
+
+@function hexToRGB($color) {
+  @return red($color) + ', ' + green($color) + ', ' + blue($color);
+}
