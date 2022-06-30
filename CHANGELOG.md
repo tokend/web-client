@@ -48,5 +48,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Under the hood changes
 - Initiated and setup project
 
-[Unreleased]: https://gitlab.com/lukachi/vue-vite-template/compare/1.0.0-rc.0...master
+[Unreleased]: https://gitlab.com/lukachi/vue-vite-template/compare/1.0.0-rc.0...main
 [1.0.0-rc.0]: https://gitlab.com/lukachi/vue-vite-template/tags/1.0.0-rc.0
