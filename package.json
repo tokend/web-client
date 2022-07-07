@@ -48,7 +48,7 @@
     "iban": "^0.0.14",
     "iso-country-codes": "^0.0.5",
     "lodash": "^4.17.20",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "moment-timezone": "^0.5.28",
     "normalize-url": "5.0.0",
     "nprogress": "^0.2.0",
