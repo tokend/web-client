@@ -6,8 +6,8 @@ $medium: 1024px;
 $x-medium: 1280px;
 $large: 1400px;
 $x-large: 1920px;
-$x-large-4k: 4096px;
 $x-large-2k: 2048px;
+$x-large-4k: 4096px;
 
 @mixin respond-to ($media) {
 

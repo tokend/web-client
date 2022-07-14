@@ -108,8 +108,6 @@ export default defineComponent({
       ['', 'disabled', true].includes(attrs.disabled as string | boolean),
     )
 
-    const isNeedGap = computed(() => props.iconName && props.text)
-
     const buttonClasses = computed(() => {
       const schemes = props.schemes
         .split(' ')
@@ -129,7 +127,6 @@ export default defineComponent({
     return {
       buttonClasses,
       isDisabled,
-      isNeedGap,
     }
   },
 })
