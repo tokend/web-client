@@ -185,7 +185,7 @@ export default defineComponent({
   overflow: hidden;
   text-overflow: ellipsis;
 
-  @include field-label;
+  @extend %field-label;
 
   .input-field--error & {
     color: var(--field-error);
@@ -202,32 +202,32 @@ export default defineComponent({
   padding: var(--field-padding);
   transition-property: box-shadow;
 
-  @include field-text;
+  @extend %field-text;
 
-  @include field-border;
+  @extend %field-border;
 
   &::-webkit-input-placeholder {
-    @include field-placeholder;
+    @extend %field-placeholder;
   }
 
   &::-moz-placeholder {
-    @include field-placeholder;
+    @extend %field-placeholder;
   }
 
   &:-moz-placeholder {
-    @include field-placeholder;
+    @extend %field-placeholder;
   }
 
   &:-ms-input-placeholder {
-    @include field-placeholder;
+    @extend %field-placeholder;
   }
 
   &::placeholder {
-    @include field-placeholder;
+    @extend %field-placeholder;
   }
 
   &:not(:read-only) {
-    box-shadow: inset 0 0 0 toRem(50) var(--app-bg);
+    box-shadow: inset 0 0 0 toRem(50) var(--field-bg);
   }
 
   // Hide number arrows
@@ -257,12 +257,12 @@ export default defineComponent({
 
   &:not([disabled]):focus {
     box-sizing: border-box;
-    box-shadow: 0 0 0 toRem(1.5) var(--primary-main);
-    border-color: var(--primary-main);
+    box-shadow: 0 0 0 toRem(1.5) var(--field-border-focus);
+    border-color: var(--field-border-focus);
   }
 
   &:not([disabled]):not(:focus):hover {
-    border-color: var(--primary-light);
+    border-color: var(--field-border-hover);
   }
 }
 
@@ -279,6 +279,7 @@ export default defineComponent({
     right: 0;
     left: calc(var(--field-padding-right) * 3 / 2);
     transform: translate(-50%, -50%);
+    width: max-content;
   }
 }
 
@@ -288,7 +289,7 @@ export default defineComponent({
 }
 
 .input-field__err-msg {
-  @include field-error;
+  @extend %field-error;
 }
 
 .input-field__err-msg-transition-enter-active {

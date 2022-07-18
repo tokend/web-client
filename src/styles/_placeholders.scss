@@ -1,0 +1,46 @@
+%text-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+%field-text {
+  font-size: var(--field-text-font-size);
+  line-height: var(--field-text-line-height);
+  -webkit-text-fill-color: var(--field-text-font-size);
+  color: var(--field-text-font-size);
+  transition: color var(--field-transition-duration) ease;
+}
+
+%field-label {
+  font-size: var(--field-label-font-size);
+  line-height: var(--field-label-line-height);
+  color: var(--field-label);
+  transition: color var(--field-transition-duration) ease;
+  margin-bottom: toRem(8);
+}
+
+%field-border {
+  border: toRem(1) solid var(--field-border);
+  border-radius: toRem(10);
+}
+
+%field-placeholder {
+  @extend %field-text;
+
+  color: var(--field-placeholder);
+  -webkit-text-fill-color: var(--field-placeholder);
+  fill: var(--field-placeholder);
+  transition: color var(--field-transition-duration) ease;
+  transition-property: opacity, color;
+}
+
+%field-error {
+  overflow: hidden;
+  color: var(--field-error);
+  font-size: toRem(10);
+  line-height: 1.4;
+  transition: var(--field-transition-duration) ease;
+  transition-property: opacity, color, font-size, transform;
+  margin-top: toRem(4);
+}

@@ -1,3 +1,4 @@
 export { default as InputField } from '@/fields/InputField.vue'
+export { default as CheckboxField } from '@/fields/CheckboxField.vue'
 
-/* TODO: Create Select, Checkbox, Radio, Textarea */
+/* TODO: Create Select, Textarea */
