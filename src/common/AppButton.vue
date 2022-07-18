@@ -119,7 +119,7 @@ export default defineComponent({
         .filter(el => Boolean(el))
         .map(el => `app-button--${el}`)
 
-      let states = [...(isDisabled.value ? ['app-button--disabled'] : [])]
+      const states = [...(isDisabled.value ? ['app-button--disabled'] : [])]
 
       return schemes.concat(modifications).concat(states).join(' ')
     })
