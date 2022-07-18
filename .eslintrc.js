@@ -152,7 +152,6 @@ module.exports = {
     'promise/param-names': 'error',
     'promise/catch-or-return': 'error',
     'promise/no-nesting': 'warn',
-    'promise/avoid-new': 'warn',
     'promise/no-callback-in-promise': 'warn',
     'promise/prefer-await-to-then': 'warn',
   },
