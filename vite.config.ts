@@ -32,6 +32,9 @@ export default defineConfig(({ command, mode }) => {
         symbolId: '[name]',
       }),
       checker({
+        overlay: {
+          initialIsOpen: false,
+        },
         typescript: true,
         eslint: {
           lintCommand:
@@ -50,8 +53,9 @@ export default defineConfig(({ command, mode }) => {
       preprocessorOptions: {
         scss: {
           additionalData: `
-          @import "@/styles/_mixins.scss";
           @import "@/styles/_functions.scss";
+          @import "@/styles/_placeholders.scss";
+          @import "@/styles/_mixins.scss";
         `,
         },
       },

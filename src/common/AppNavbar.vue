@@ -69,22 +69,6 @@ export default defineComponent({
   }
 }
 
-.app-navbar__connect-wallet {
-  margin-right: toRem(16);
-}
-
-.app-navbar__auth-btn {
-  @include respond-to(tablet) {
-    margin-left: auto;
-    order: 2;
-  }
-
-  @include respond-to(xsmall) {
-    width: 50%;
-    margin-right: 0;
-  }
-}
-
 .app-navbar__links-section {
   display: flex;
   align-items: center;

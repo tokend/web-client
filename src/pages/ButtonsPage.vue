@@ -7,19 +7,23 @@
           schemes="primary"
           modifications="border-rounded"
           :icon-name="$icons.gift"
-          :text="'primary, border-rounded'"
+          :text="'RouterLink, primary, border-rounded'"
+          :route="{ name: $routes.forms }"
         />
         <app-button
           class="buttons-page__button"
           schemes="primary"
           modifications="border-circle"
-          :text="'primary, border-circle'"
+          :text="'href link, primary, border-circle'"
+          href="https://www.youtube.com/"
+          target="_blank"
         />
         <app-button
           class="buttons-page__button"
           schemes="primary"
           modifications="icon-first"
-          :text="'primary, icon-first'"
+          :text="'Alert, primary, icon-first'"
+          @click="handleClick"
         />
         <app-button
           class="buttons-page__button"
@@ -37,25 +41,29 @@
           class="buttons-page__button"
           schemes="primary"
           modifications="success"
-          :text="'primary, success'"
+          :text="'Bus.success, primary, success'"
+          @click="throwBusSuccess"
         />
         <app-button
           class="buttons-page__button"
           schemes="primary"
           modifications="error"
-          :text="'primary, error'"
+          :text="'Bus.error, primary, error'"
+          @click="throwBusError"
         />
         <app-button
           class="buttons-page__button"
           schemes="primary"
           modifications="warning"
-          :text="'primary, warning'"
+          :text="'Bus.warning, primary, warning'"
+          @click="throwBusWarning"
         />
         <app-button
           class="buttons-page__button"
           schemes="primary"
           modifications="info"
-          :text="'primary, info'"
+          :text="'Bus.info, primary, info'"
+          @click="throwBusInfo"
         />
       </div>
       <div class="buttons-page__col">
@@ -89,30 +97,6 @@
           schemes="primary"
           modifications="small info"
           :text="'primary, small, info'"
-        />
-        <app-button
-          class="buttons-page__button"
-          schemes="primary"
-          modifications="success"
-          :text="'primary, success'"
-        />
-        <app-button
-          class="buttons-page__button"
-          schemes="primary"
-          modifications="error"
-          :text="'primary, error'"
-        />
-        <app-button
-          class="buttons-page__button"
-          schemes="primary"
-          modifications="warning"
-          :text="'primary, warning'"
-        />
-        <app-button
-          class="buttons-page__button"
-          schemes="primary"
-          modifications="info"
-          :text="'primary, info'"
         />
       </div>
     </div>
@@ -206,30 +190,6 @@
           modifications="small info"
           :text="'flat, small, info'"
         />
-        <app-button
-          class="buttons-page__button"
-          schemes="flat"
-          modifications="success"
-          :text="'flat, success'"
-        />
-        <app-button
-          class="buttons-page__button"
-          schemes="flat"
-          modifications="error"
-          :text="'flat, error'"
-        />
-        <app-button
-          class="buttons-page__button"
-          schemes="flat"
-          modifications="warning"
-          :text="'flat, warning'"
-        />
-        <app-button
-          class="buttons-page__button"
-          schemes="flat"
-          modifications="info"
-          :text="'flat, info'"
-        />
       </div>
     </div>
   </div>
@@ -239,12 +199,39 @@
 import { AppButton } from '@/common'
 
 import { defineComponent } from 'vue'
+import { Bus } from '@/helpers'
 
 export default defineComponent({
   name: 'buttons-page',
   components: { AppButton },
   setup() {
-    return {}
+    const handleClick = () => {
+      alert('some string')
+    }
+
+    const throwBusSuccess = () => {
+      Bus.success('Success')
+    }
+
+    const throwBusError = () => {
+      Bus.error('Error')
+    }
+
+    const throwBusWarning = () => {
+      Bus.warning('Warning')
+    }
+
+    const throwBusInfo = () => {
+      Bus.info('Info')
+    }
+
+    return {
+      handleClick,
+      throwBusSuccess,
+      throwBusError,
+      throwBusWarning,
+      throwBusInfo,
+    }
   },
 })
 </script>
@@ -253,6 +240,7 @@ export default defineComponent({
 .buttons-page {
   display: grid;
   grid-gap: toRem(50);
+  padding-bottom: toRem(100);
 }
 
 .buttons-page__row {
@@ -262,6 +250,7 @@ export default defineComponent({
 
 .buttons-page__col {
   display: grid;
+  align-content: start;
   grid-gap: toRem(10);
 }
 </style>

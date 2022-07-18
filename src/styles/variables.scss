@@ -89,6 +89,11 @@
   --field-text-line-height: 1.4;
   --field-placeholder: #{rgba($text-primary-main, 0.35)};
 
+  /* border */
+  --field-border: var(--border-primary-main);
+  --field-border-hover: var(--primary-light);
+  --field-border-focus: var(--primary-light);
+
   /* transition duration */
   --field-transition-duration: 0.2s;
 
@@ -104,6 +109,5 @@
     var(--field-padding-left);
 
   --field-error: var(--error-main);
-  --field-success: var(--success-main);
-  --field-focused: var(--primary-main);
+  --field-bg: var(--app-bg);
 }

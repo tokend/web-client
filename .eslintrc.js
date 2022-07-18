@@ -1,9 +1,7 @@
-const tsEslintParser = require('@typescript-eslint/parser')
-const programs = tsEslintParser.createProgram('tsconfig.json')
-
 module.exports = {
   root: true,
   env: {
+    browser: true,
     es2021: true,
     node: true,
   },
@@ -12,18 +10,20 @@ module.exports = {
       localeDir: 'src/localization/**/*.(json|json5)',
     },
   },
+  parser: 'vue-eslint-parser',
   parserOptions: {
+    parser: '@typescript-eslint/parser',
     ecmaVersion: 'latest',
-    programs,
+    sourceType: 'module',
   },
   extends: [
     'eslint:recommended',
-    'plugin:vue/vue3-essential',
     'plugin:vue/vue3-recommended',
-    'plugin:@typescript-eslint/recommended',
     '@vue/typescript/recommended',
+    '@vue/eslint-config-typescript/recommended',
     'plugin:vue-i18n/recommended',
-    'plugin:prettier/recommended',
+    '@vue/prettier',
+    '@vue/eslint-config-prettier',
   ],
   plugins: ['promise'],
   globals: {
@@ -99,11 +99,6 @@ module.exports = {
     quotes: [2, 'single', { avoidEscape: false }],
     'no-multiple-empty-lines': [2, { max: 1, maxEOF: 0, maxBOF: 0 }],
     semi: [2, 'never'],
-
-    // typescript
-    '@typescript-eslint/no-non-null-assertion': 'off',
-
-    // Vue
     'vue/multi-word-component-names': 0,
     'vue/component-definition-name-casing': ['error', 'kebab-case'],
     'vue/valid-v-for': 2,
@@ -152,8 +147,6 @@ module.exports = {
         ignores: ['pre', 'textarea', 'span'],
       },
     ],
-
-    // Promise
     'promise/always-return': 'error',
     'promise/no-return-wrap': 'error',
     'promise/param-names': 'error',
