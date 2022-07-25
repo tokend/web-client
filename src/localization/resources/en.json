@@ -24,18 +24,28 @@
     "simple-form-link": "Simple form",
     "simple-common-link": "Commons"
   },
+  "login-page": {
+    "title": "Start tokenizing your assets in minutes",
+    "over-title": "Create, distribute and trade"
+  },
   "login-form": {
     "title": "Sign in",
     "subtitle": "Sign up on the internal platform",
     "oauth-facebook": "Login with Facebook",
     "oauth-google": "Login with Google",
     "divider-msg": "or login with email address",
-    "refs": "Don’t have an account? {link}",
+    "register-ref": "Don’t have an account? {link}",
+    "recover-ref": "Forgot your password? {link}",
     "register-link": "Sign up",
+    "recover-link": "Recover it",
     "login-lbl": "Email Address",
     "password-lbl": "Password",
     "submit-btn": "Sign In",
     "login-success-msg": "Access granted"
+  },
+  "register-page": {
+    "title": "Start tokenizing your assets in minutes",
+    "over-title": "Create, distribute and trade"
   },
   "register-form": {
     "title": "Create a new account",

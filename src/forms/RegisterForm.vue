@@ -1,29 +1,19 @@
 <script lang="ts" setup>
 import { AppButton } from '@/common'
-import { InputField, CheckboxField } from '@/fields'
+import { InputField } from '@/fields'
 
 import { reactive, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useForm, useFormValidation } from '@/composables'
-import {
-  email,
-  maxLength,
-  minLength,
-  required,
-  sameAs,
-  checked,
-} from '@/validators'
+import { email, maxLength, minLength, required, sameAs } from '@/validators'
 import { Bus, ErrorHandler, sleep } from '@/helpers'
 import { INPUT_LIMITS } from '@/enums'
 
 const { t } = useI18n({ useScope: 'global' })
 const form = reactive({
-  fname: '',
-  lname: '',
   login: '',
   password: '',
   repeatPassword: '',
-  isAgreeTerms: false,
 })
 
 const { isFormDisabled, disableForm, enableForm } = useForm()
@@ -31,16 +21,6 @@ const { isFormDisabled, disableForm, enableForm } = useForm()
 const { isFormValid, getFieldErrorMessage, touchField } = useFormValidation(
   form,
   {
-    fname: {
-      required,
-      minLength: minLength(INPUT_LIMITS.textMinLength),
-      maxLength: maxLength(INPUT_LIMITS.textMaxLength),
-    },
-    lname: {
-      required,
-      minLength: minLength(INPUT_LIMITS.textMinLength),
-      maxLength: maxLength(INPUT_LIMITS.textMaxLength),
-    },
     login: { email, required },
     password: {
       required,
@@ -48,7 +28,6 @@ const { isFormValid, getFieldErrorMessage, touchField } = useFormValidation(
       maxLength: maxLength(INPUT_LIMITS.passwordMaxLength),
     },
     repeatPassword: { required, sameAs: sameAs(toRefs(form).password) },
-    isAgreeTerms: { required, checked },
   },
 )
 
@@ -72,24 +51,7 @@ const submit = async () => {
       <h4 class="register-form__title">
         {{ $t('register-form.title') }}
       </h4>
-      <span class="register-form__subtitle">
-        {{ $t('register-form.subtitle') }}
-      </span>
     </div>
-    <input-field
-      v-model="form.fname"
-      :label="$t('register-form.f-name-lbl')"
-      :error-message="getFieldErrorMessage('fname')"
-      @blur="touchField('fname')"
-      :disabled="isFormDisabled"
-    />
-    <input-field
-      v-model="form.lname"
-      :label="$t('register-form.l-name-lbl')"
-      :error-message="getFieldErrorMessage('lname')"
-      @blur="touchField('lname')"
-      :disabled="isFormDisabled"
-    />
     <input-field
       v-model="form.login"
       :label="$t('register-form.login-lbl')"
@@ -113,21 +75,6 @@ const submit = async () => {
       @blur="touchField('repeatPassword')"
       :disabled="isFormDisabled"
     />
-    <!--TODO: Terms of use link-->
-    <div class="register-form__agreement">
-      <checkbox-field
-        v-model="form.isAgreeTerms"
-        :label="$t('register-form.is-agree-lbl')"
-        @blur="touchField('isAgreeTerms')"
-        :disabled="isFormDisabled"
-      />
-      <router-link
-        class="register-form__agreement-link"
-        :to="{ name: $routes.login }"
-      >
-        {{ $t('register-form.terms-link') }}
-      </router-link>
-    </div>
     <app-button
       class="register-form__submit-btn"
       type="submit"
@@ -152,20 +99,13 @@ const submit = async () => {
   display: grid;
   grid-gap: toRem(24);
   background: var(--bg-primary-light);
-  padding: toRem(32) toRem(24);
   max-width: toRem(550);
   width: 100%;
   border-radius: toRem(8);
-  box-shadow: toRem(0) toRem(4) toRem(6) toRem(-2) rgba(100, 116, 139, 0.05),
-    toRem(0) toRem(10) toRem(15) toRem(-3) rgba(100, 116, 139, 0.12);
 }
 
 .register-form__title {
   margin-bottom: toRem(8);
-}
-
-.register-form__subtitle {
-  color: var(--text-secondary-main);
 }
 
 .register-form__agreement {
