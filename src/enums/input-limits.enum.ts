@@ -1,7 +1,6 @@
 export enum INPUT_LIMITS {
-  textMinLength = 6,
-  textMaxLength = 32,
-  emailMaxLength = 64,
+  textMaxLength = 256,
+  emailMaxLength = 256,
   passwordMinLength = 8,
-  passwordMaxLength = 32,
+  passwordMaxLength = 128,
 }
