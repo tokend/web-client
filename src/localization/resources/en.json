@@ -25,24 +25,31 @@
     "simple-common-link": "Commons"
   },
   "login-form": {
-    "login-lbl": "Login",
+    "title": "Sign in",
+    "subtitle": "Sign up on the internal platform",
+    "oauth-facebook": "Login with Facebook",
+    "oauth-google": "Login with Google",
+    "divider-msg": "or login with email address",
+    "refs": "Don’t have an account? {link}",
+    "register-link": "Sign up",
+    "login-lbl": "Email Address",
     "password-lbl": "Password",
-    "login-success-msg": "Access granted",
-    "submit-btn": "Submit"
+    "submit-btn": "Sign In",
+    "login-success-msg": "Access granted"
   },
-  "button-page": {
-    "button": "Button"
-  },
-  "inputs-page": {
-    "some-placeholder": "placeholder",
-    "some-label": "label",
-    "some-error-message": "error-message"
-  },
-  "common-page": {
-    "modal-btn": "Open modal",
-    "collapse-btn": "Toggle Collapse",
-    "collapse-text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    "loading-error-msg": "Oops, something went wrong",
-    "no-data-msg": "Empty data, please add new"
+  "register-form": {
+    "title": "Create a new account",
+    "subtitle": "Use your email to create new account",
+    "refs": "Already have an account? {link}",
+    "register-link": "Sign in",
+    "f-name-lbl": "First name",
+    "l-name-lbl": "Last name",
+    "login-lbl": "Email Address",
+    "password-lbl": "Password",
+    "repeat-password-lbl": "Repeat Password",
+    "is-agree-lbl": "I have read the",
+    "terms-link": "Terms and Conditions",
+    "submit-btn": "Sign Up",
+    "register-success-msg": "Account created"
   }
 }

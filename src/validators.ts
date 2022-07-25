@@ -28,6 +28,7 @@ export const minLength = (length: number): ValidationRule =>
 export const maxLength = (length: number): ValidationRule =>
   <ValidationRule>withI18nMessage(_maxLength(length))
 
-export const sameAs = (field: Ref): ValidationRule => {
-  return <ValidationRule>withI18nMessage(_sameAs(field, get(field, '_key')))
-}
+export const sameAs = (field: Ref): ValidationRule =>
+  <ValidationRule>withI18nMessage(_sameAs(field, get(field, '_key')))
+
+export const checked = <ValidationRule>withI18nMessage(_sameAs(true))

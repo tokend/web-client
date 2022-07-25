@@ -11,27 +11,30 @@ import { ROUTE_NAMES } from '@/enums'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/:catchAll(.*)',
-    redirect: { name: ROUTE_NAMES.buttons },
+    redirect: { name: ROUTE_NAMES.dashboard },
   },
   {
-    path: '/buttons',
-    name: ROUTE_NAMES.buttons,
-    component: () => import('@/pages/ButtonsPage.vue'),
+    path: '/login',
+    name: ROUTE_NAMES.login,
+    component: () => import('@/pages/LoginPage.vue'),
   },
   {
-    path: '/inputs',
-    name: ROUTE_NAMES.inputs,
-    component: () => import('@/pages/InputsPage.vue'),
+    path: '/register',
+    name: ROUTE_NAMES.register,
+    component: () => import('@/pages/RegisterPage.vue'),
   },
   {
-    path: '/forms',
-    name: ROUTE_NAMES.forms,
-    component: () => import('@/pages/FormsPage.vue'),
-  },
-  {
-    path: '/common',
-    name: ROUTE_NAMES.common,
-    component: () => import('@/pages/CommonPage.vue'),
+    path: '/',
+    name: ROUTE_NAMES.app,
+    component: () => import('@/layouts/AuthorizedLayout.vue'),
+    redirect: ROUTE_NAMES.dashboard,
+    children: [
+      {
+        path: '/dashboard',
+        name: ROUTE_NAMES.dashboard,
+        component: () => import('@/pages/DashboardPage.vue'),
+      },
+    ],
   },
 ]
 

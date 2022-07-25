@@ -1,53 +1,12 @@
+<script lang="ts" setup>
+import { AppLogo } from '@/common'
+</script>
+
 <template>
   <div class="app-navbar">
     <app-logo class="app-navbar__logo" />
-    <div class="app-navbar__links-section">
-      <app-button
-        class="app-navbar__link"
-        schemes="flat"
-        modifications="small border-rounded"
-        :route="{ name: $routes.buttons }"
-      >
-        {{ $t('app-navbar.buttons-page-link') }}
-      </app-button>
-      <app-button
-        class="app-navbar__link"
-        schemes="flat"
-        modifications="small border-rounded"
-        :route="{ name: $routes.inputs }"
-      >
-        {{ $t('app-navbar.inputs-page-link') }}
-      </app-button>
-      <app-button
-        class="app-navbar__link"
-        schemes="flat"
-        modifications="small border-rounded"
-        :route="{ name: $routes.forms }"
-      >
-        {{ $t('app-navbar.simple-form-link') }}
-      </app-button>
-      <app-button
-        class="app-navbar__link"
-        schemes="flat"
-        modifications="small border-rounded"
-        :route="{ name: $routes.common }"
-      >
-        {{ $t('app-navbar.simple-common-link') }}
-      </app-button>
-    </div>
   </div>
 </template>
-
-<script lang="ts">
-import { AppLogo, AppButton } from '@/common'
-
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'app-navbar',
-  components: { AppButton, AppLogo },
-})
-</script>
 
 <style lang="scss" scoped>
 .app-navbar {
