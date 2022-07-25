@@ -12,11 +12,11 @@
       :max="maxAmount"
       :step="step"
       :error-message="getFieldErrorMessage('value', {
-        from: {
+        min: {
           value: minAmount,
           currency: assetRecord.code,
         },
-        to: {
+        max: {
           value: maxAmount,
           currency: assetRecord.code,
         },

@@ -1,13 +1,11 @@
 const UnusedWebpackPlugin = require('unused-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const sharp = require('responsive-loader/sharp')
 const path = require('path')
 const fs = require('fs')
 const appDirectory = fs.realpathSync(process.cwd())
 const resolveApp = relativePath => path.resolve(appDirectory, relativePath)
 const root = path.resolve(__dirname, resolveApp('src'))
 const ArgumentParser = require('argparse').ArgumentParser
-const { IgnorePlugin } = require('webpack')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
 const parser = new ArgumentParser({
@@ -54,7 +52,6 @@ module.exports = {
   configureWebpack: {
     devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'eval-source-map',
     plugins: [
-      new IgnorePlugin(/ed25519/),
       new CopyWebpackPlugin([
         {
           from: path.resolve(__dirname, resolveApp('static/images/pre-issuance-guide')),
@@ -95,7 +92,6 @@ module.exports = {
     loaderOptions: {
       sass: {
         sourceMap: true,
-        sourceMapContents: false,
       },
     },
   },
@@ -118,53 +114,20 @@ module.exports = {
     // Pre-fetching ALL the chunks harms the app performance
     config.plugins.delete('prefetch')
 
-    config.module
-      .rule('scss')
-      .oneOf('vue')
-      .use('resolve-url-loader')
-      .loader('resolve-url-loader')
-      .before('sass-loader')
-      .end()
-      .end()
-      .oneOf('vue-modules')
-      .use('resolve-url-loader')
-      .loader('resolve-url-loader')
-      .before('sass-loader')
-      .end()
-      .end()
-      .oneOf('normal')
-      .use('resolve-url-loader')
-      .loader('resolve-url-loader')
-      .before('sass-loader')
-      .end()
-      .end()
-      .oneOf('normal-modules')
-      .use('resolve-url-loader')
-      .loader('resolve-url-loader')
-      .before('sass-loader')
-      .end()
-      .end()
-      .end()
-      .rule('img')
-      .test(/(\.png|\.jpg|\.jpeg)$/)
-      .use('url-loader')
-      .loader('url-loader')
-      .end()
-      .end()
-      .rule('images')
-      .test(/^((?!\/node_modules).)*(\.png|\.jpg|\.jpeg)$/)
-      .use('url-loader')
-      .loader('url-loader')
-      .tap(options => {
-        const fallback = options.fallback
-        fallback.loader = 'responsive-loader'
-        fallback.options = {
-          ...fallback.options,
-          adapter: sharp,
-          sizes: [375, 768, 1200, 1920, 2880, 3840],
-        }
-
-        return options
-      })
+    const moduleTypes = ['vue-modules', 'vue', 'normal-modules', 'normal']
+    moduleTypes.forEach(rule => {
+      config.module.rule('scss')
+        .oneOf(rule)
+        .use('resolve-url-loader')
+        .loader('resolve-url-loader')
+        .before('sass-loader')
+        .end()
+        .use('sass-loader')
+        .loader('sass-loader')
+        .tap(options => ({
+          ...options,
+          sourceMap: true,
+        }))
+    })
   },
 }

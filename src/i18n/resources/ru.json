@@ -97,7 +97,7 @@
       "field-error_amount": "Значение должно быть числом больше или равным {{ minValue, number }}",
       "field-error_maxValue": "Значение должно быть меньше или равным {{maxValue, number}}",
       "field-error_decimal": "Значение должно быть целым или дробным числом",
-      "field-error_amountRange": "Значение должно быть в пределах от {{from, money}} до {{to, money}}",
+      "field-error_amountRange": "Значение должно быть в пределах от {{min, money}} до {{max, money}}",
       "field-error_minDate": "Дата должна быть позднее {{ minDate, date }}",
       "field-error_maxDate": "Дата должна быть ранее {{ maxDate, date }}",
       "field-error_emailOrAccountId": "Неверный имейл или идентификатор аккаунта",

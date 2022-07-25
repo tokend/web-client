@@ -34,8 +34,8 @@
             name="create-asset-max-issuance-amount"
             :label="'asset-form.max-issuance-amount-lbl' | globalize"
             :error-message="getFieldErrorMessage('form.maxIssuanceAmount', {
-              from: $config.MIN_AMOUNT,
-              to: $config.MAX_AMOUNT,
+              min: $config.MIN_AMOUNT,
+              max: $config.MAX_AMOUNT,
             })"
             :disabled="isDisabled"
           />
@@ -111,7 +111,7 @@
             :label="'asset-form.preissued-amount-lbl' | globalize"
             :error-message="getFieldErrorMessage(
               'form.initialPreissuedAmount',
-              { from: 0, to: form.maxIssuanceAmount }
+              { min: 0, max: form.maxIssuanceAmount }
             )"
             :disabled="isDisabled"
           />

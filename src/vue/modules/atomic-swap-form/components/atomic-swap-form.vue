@@ -31,15 +31,15 @@
         <div class="app__form-field">
           <input-field
             v-model="form.amount"
-            @blur="touchField('form.amount')"
             name="atomic-swap-amount"
             type="number"
             :error-message="getFieldErrorMessage(
-              'form.amount',
-              {
-                from: config.MIN_AMOUNT,
-                to: atomicSwap.availableAmount,
-              })"
+              'form.amount',{
+                min: config.MIN_AMOUNT,
+                max: atomicSwap.availableAmount,
+              }
+            )"
+            @blur="touchField('form.amount')"
             white-autofill
             :label="'atomic-swap-form.amount' | globalize({
               asset: atomicSwap.baseAsset
@@ -150,7 +150,6 @@ export default {
   },
   data () {
     return {
-      config,
       loadTickerTimeout: 3000,
       intervalId: '',
       isSubmitting: false,
@@ -161,6 +160,7 @@ export default {
         quoteAsset: '',
       },
       atomicSwapBidRecord: {},
+      config,
     }
   },
   validations () {
