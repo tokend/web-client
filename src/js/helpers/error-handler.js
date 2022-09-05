@@ -16,7 +16,13 @@ export class ErrorHandler {
 
   static processWithoutFeedback (error, errorTrackerConfig = {}) {
     ErrorHandler.trackMessage(error, errorTrackerConfig)
-    log.error(error)
+    const err = JSON.stringify({
+      message: error.message,
+      title: error.title,
+      meta: error.meta,
+      status: error.httpStatus,
+    })
+    log.error(err)
   }
 
   static trackMessage (error, opts = {}) {
