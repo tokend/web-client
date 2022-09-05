@@ -61,8 +61,9 @@ describe('error-handler helper', () => {
 
       expect(ErrorHandler.trackMessage, 'tracks the error')
         .to.have.been.calledOnceWithExactly(theError, { someParam: 42 })
+      const err = JSON.stringify({ message: theError.message })
       expect(log.error, 'logs the error')
-        .to.have.been.calledOnceWithExactly(theError)
+        .to.have.been.calledOnceWithExactly(err)
     })
   })
 
