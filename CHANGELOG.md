@@ -8,7 +8,7 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
-### Changed
+### Fixed
 - New version of vue: 2.7.14
 - New version of vue-template-compiler": 2.7.14
 
