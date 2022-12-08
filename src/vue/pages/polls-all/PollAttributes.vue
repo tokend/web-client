@@ -47,7 +47,7 @@
               {{ 'poll-attributes.state-key' | globalize }}
             </td>
             <td>
-              {{ pollStateTranslated }}
+              {{ pollStateTranslated | globalize }}
             </td>
           </tr>
 
@@ -71,7 +71,7 @@
               {{ 'poll-attributes.permission-type-key' | globalize }}
             </td>
             <td>
-              {{ pollPermissionTypeTranslated }}
+              {{ pollPermissionTypeTranslated | globalize }}
             </td>
           </tr>
 
@@ -80,7 +80,7 @@
               {{ 'poll-attributes.number-of-choices-key' | globalize }}
             </td>
             <td>
-              {{ poll.numberOfChoices | formatNumber }}
+              {{ formatNumber(poll.numberOfChoices) }}
             </td>
           </tr>
         </tbody>
@@ -93,10 +93,10 @@
 import { PollRecord } from '@/js/records/entities/poll.record'
 import EmailGetter from '@/vue/common/EmailGetter'
 import { keyValues } from '@/key-values'
+import { defineComponent, computed } from 'vue'
+import { useNumber } from '@/vue/composables'
 
-export default {
-  name: 'poll-attributes',
-
+export default defineComponent({
   components: {
     EmailGetter,
   },
@@ -108,46 +108,49 @@ export default {
     },
   },
 
-  computed: {
-    pollStateTranslated () {
+  setup (props) {
+    const { formatNumber } = useNumber()
+
+    const pollStateTranslated = computed(() => {
       let translationId
 
-      if (this.poll.isOpen) {
+      if (props.poll.isOpen) {
         translationId = 'poll-attributes.state-open-val'
-      } else if (this.poll.isPassed) {
+      } else if (props.poll.isPassed) {
         translationId = 'poll-attributes.state-passed-val'
-      } else if (this.poll.isFailed) {
+      } else if (props.poll.isFailed) {
         translationId = 'poll-attributes.state-failed-val'
-      } else if (this.poll.isCanceled) {
+      } else if (props.poll.isCanceled) {
         translationId = 'poll-attributes.state-canceled-val'
       } else {
         translationId = '[UNKNOWN_STATE]'
       }
+      return translationId
+    })
 
-      return this.$options.filters.globalize(translationId)
-    },
-
-    pollPermissionTypeTranslated () {
+    const pollPermissionTypeTranslated = computed(() => {
       let translationId
-
-      switch (this.poll.permissionType) {
+      switch (props.poll.permissionType) {
         case keyValues.restrictedPollType:
           translationId = 'poll-attributes.permission-type-restricted-val'
           break
-
         case keyValues.unrestrictedPollType:
           translationId = 'poll-attributes.permission-type-unrestricted-val'
           break
-
         default:
           translationId = '[UNKNOWN_PERMISSION_TYPE]'
           break
       }
+      return translationId
+    })
 
-      return this.$options.filters.globalize(translationId)
-    },
+    return {
+      pollStateTranslated,
+      pollPermissionTypeTranslated,
+      formatNumber,
+    }
   },
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -9,24 +9,6 @@
             "groupSize": 3,
             "decimalPlaces": 6
           }
-        },
-        "default": {
-          "decimalSeparator": ".",
-          "groupSeparator": ",",
-          "groupSize": 3,
-          "decimalPlaces": 6
-        },
-        "integer": {
-          "groupSeparator": ",",
-          "groupSize": 3,
-          "decimalPlaces": 0
-        },
-        "percent": {
-          "decimalSeparator": ".",
-          "groupSeparator": ",",
-          "groupSize": 3,
-          "decimalPlaces": 6,
-          "suffix": "%"
         }
       }
     },

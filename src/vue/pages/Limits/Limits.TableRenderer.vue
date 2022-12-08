@@ -39,9 +39,9 @@
             </template>
             <template v-else>
               <span class="limits-table-renderer__value">
-                {{ item.dailyLeft | formatNumber }}
+                {{ formatNumber(item.dailyLeft) }}
                 /
-                {{ item.dailyOut | formatNumber }}
+                {{ formatNumber(item.dailyOut) }}
               </span>
             </template>
           </td>
@@ -53,9 +53,9 @@
             </template>
             <template v-else>
               <span class="limits-table-renderer__value">
-                {{ item.weeklyLeft | formatNumber }}
+                {{ formatNumber(item.weeklyLeft) }}
                 /
-                {{ item.weeklyOut | formatNumber }}
+                {{ formatNumber(item.weeklyOut) }}
               </span>
             </template>
           </td>
@@ -67,9 +67,9 @@
             </template>
             <template v-else>
               <span class="limits-table-renderer__value">
-                {{ item.monthlyLeft | formatNumber }}
+                {{ formatNumber(item.monthlyLeft) }}
                 /
-                {{ item.monthlyOut | formatNumber }}
+                {{ formatNumber(item.monthlyOut) }}
               </span>
             </template>
           </td>
@@ -81,9 +81,9 @@
             </template>
             <template v-else>
               <span>
-                {{ item.annualLeft | formatNumber }}
+                {{ formatNumber(item.annualLeft) }}
                 /
-                {{ item.annualOut | formatNumber }}
+                {{ formatNumber(item.annualOut) }}
               </span>
             </template>
           </td>
@@ -115,25 +115,19 @@
 
 <script>
 import { STATS_OPERATION_TYPES } from '@tokend/js-sdk'
+import { useNumber } from '@/vue/composables'
 import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
+import { defineComponent } from 'vue'
 
 import config from '../../../config'
-
-const OPERATION_TYPES_TRANSLATION_ID = {
-  [STATS_OPERATION_TYPES.deposit]: 'limits-table-renderer.op-type-deposit',
-  [STATS_OPERATION_TYPES.withdraw]: 'limits-table-renderer.op-type-withdraw',
-  // eslint-disable-next-line
-  [STATS_OPERATION_TYPES.paymentOut]: 'limits-table-renderer.op-type-payment-out',
-}
 
 const EVENTS = Object.freeze({
   limitsReloadAsk: 'limits-reload-ask',
 })
 
-export default {
-  name: 'limits-table-renderer',
+export default defineComponent({
   components: {
     Loader,
     NoDataMessage,
@@ -144,16 +138,27 @@ export default {
     isLoading: { type: Boolean, required: true, default: false },
     isLoadingFailed: { type: Boolean, required: true, default: false },
   },
-  data: () => ({
-    OPERATION_TYPES_TRANSLATION_ID,
-    MAX_AMOUNT: config.MAX_AMOUNT,
-  }),
-  methods: {
-    askLimitsReload () {
-      this.$emit(EVENTS.limitsReloadAsk)
-    },
+  emits: 'limitsReloadAsk',
+  setup (_, { emit }) {
+    const OPERATION_TYPES_TRANSLATION_ID = {
+      [STATS_OPERATION_TYPES.deposit]: 'limits-table-renderer.op-type-deposit',
+      [STATS_OPERATION_TYPES.withdraw]: 'limits-table-renderer.op-type-withdraw',
+      // eslint-disable-next-line
+      [STATS_OPERATION_TYPES.paymentOut]: 'limits-table-renderer.op-type-payment-out',
+    }
+    const MAX_AMOUNT = config.MAX_AMOUNT
+    const { formatNumber } = useNumber()
+    const askLimitsReload = () => {
+      emit(EVENTS.limitsReloadAsk)
+    }
+    return {
+      askLimitsReload,
+      OPERATION_TYPES_TRANSLATION_ID,
+      MAX_AMOUNT,
+      formatNumber,
+    }
   },
-}
+})
 </script>
 
 <style lang="scss">
