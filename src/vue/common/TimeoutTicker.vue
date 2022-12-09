@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import moment from 'moment'
+import { DateUtil } from '@/js/utils'
 
 export default {
   name: 'timeout-ticker',
@@ -21,21 +21,19 @@ export default {
   data: _ => ({
     secondsLeft: null,
     intervalId: null,
-    moment,
   }),
   computed: {
     timeLeftFormatted () {
-      const timeLeft = moment
-        .duration(this.secondsLeft, 'seconds')
-        .asMilliseconds()
-
+      const timeLeft = DateUtil.millisecondOf(
+        DateUtil.duration({ seconds: this.secondsLeft })
+      )
       if (timeLeft <= 0) {
         return '00:00:00'
       }
 
-      return moment
-        .utc(timeLeft)
-        .format('HH:mm:ss')
+      return DateUtil.format(
+        DateUtil.utc(timeLeft), 'HH:mm:ss'
+      )
     },
   },
   created () {
@@ -46,9 +44,9 @@ export default {
   },
   methods: {
     startTicker () {
-      this.secondsLeft = (this.endTime - moment().unix())
+      this.secondsLeft = (this.endTime - DateUtil.toTimestamp())
       this.intervalId = setInterval(() => {
-        this.secondsLeft = this.endTime - moment().unix()
+        this.secondsLeft = this.endTime - DateUtil.toTimestamp()
       }, 1000)
     },
   },

@@ -1,5 +1,5 @@
-import moment from 'moment'
 import _get from 'lodash/get'
+import { DateUtil } from '@/js/utils'
 
 const STATES = Object.freeze({
   open: 1,
@@ -52,16 +52,16 @@ export class PollRecord {
   }
 
   get isStarted () {
-    return moment().isSameOrAfter(this.startsAt)
+    return DateUtil.isSameOrAfter(undefined, this.startsAt)
   }
 
   get isEnded () {
-    return moment().isSameOrAfter(this.endsAt)
+    return DateUtil.isSameOrAfter(undefined, this.endsAt)
   }
 
   get isInProgress () {
     return this.isOpen &&
-      moment().isBetween(this.startsAt, this.endsAt)
+      DateUtil.isBetween(undefined, this.startsAt, this.endsAt)
   }
 
   static get states () {

@@ -1,12 +1,11 @@
 import WAValidator from 'wallet-address-validator'
-import moment from 'moment'
 import iban from 'iban'
 import cardValidator from 'card-validator'
 import _isString from 'lodash/isString'
 
 import { base, Document } from '@tokend/js-sdk'
 
-import { MathUtil } from '@/js/utils'
+import { MathUtil, DateUtil } from '@/js/utils'
 
 import * as validators from 'vuelidate/lib/validators'
 
@@ -35,10 +34,10 @@ export const amountRange = (from, to) => value =>
     MathUtil.compare(to, value) >= 0
   )
 export const minDate = (minDate) => value => {
-  return moment(value).isAfter(moment(minDate))
+  return DateUtil.isAfter(value, minDate)
 }
 export const maxDate = (maxDate) => value => {
-  return moment(value).isBefore(moment(maxDate))
+  return DateUtil.isBefore(value, maxDate)
 }
 export const address = (asset) => value => {
   switch (asset) {
