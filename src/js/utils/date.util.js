@@ -232,10 +232,8 @@ export class DateUtil {
    * @returns {string}
    */
   static locale (preset, object, isLocal = false) {
-    if (typeof preset === 'string') {
-      return dayjs.locale(LOCALES[preset])
-    }
-
-    return dayjs.locale(preset, object, isLocal)
+    return !object && typeof preset === 'string'
+      ? dayjs.locale(LOCALES[preset])
+      : dayjs.locale(preset, object, isLocal)
   }
 }
