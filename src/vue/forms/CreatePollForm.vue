@@ -225,7 +225,7 @@ export default {
   computed: {
     yesterday () {
       return DateUtil.toISO(
-        DateUtil.subtract(undefined, 1, 'dayjs')
+        DateUtil.subtract(undefined, 1, 'days')
       )
     },
     pollPermissionTypes () {

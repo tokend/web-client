@@ -100,13 +100,15 @@ export default {
 
   computed: {
     getDisableDate () {
-      return DateUtil.isAfter(undefined, this.poll.startsAt)
-        ? DateUtil.toISO(
+      if (DateUtil.isAfter(undefined, this.poll.startsAt)) {
+        return DateUtil.toISO(
           DateUtil.subtract(undefined, 1, 'days')
         )
-        : DateUtil.toISO(
+      } else {
+        return DateUtil.toISO(
           DateUtil.subtract(this.poll.startsAt, 1, 'days')
         )
+      }
     },
   },
 
