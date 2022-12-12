@@ -94,7 +94,7 @@ import { PollRecord } from '@/js/records/entities/poll.record'
 import EmailGetter from '@/vue/common/EmailGetter'
 import { keyValues } from '@/key-values'
 import { defineComponent, computed } from 'vue'
-import { useNumber } from '@/vue/composables'
+import { formatNumber } from '@/js/helpers/number-helper'
 
 export default defineComponent({
   components: {
@@ -109,8 +109,6 @@ export default defineComponent({
   },
 
   setup (props) {
-    const { formatNumber } = useNumber()
-
     const pollStateTranslated = computed(() => {
       let translationId
 

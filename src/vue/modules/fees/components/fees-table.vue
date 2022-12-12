@@ -44,8 +44,8 @@
               {{ { value: fee.fixed, currency: fee.asset } | formatMoney }}
             </td>
 
-            <td :title="fee.percent | formatPercent">
-              {{ fee.percent | formatPercent }}
+            <td :title="formatNumber(fee.percent, ...formatNumberParams)">
+              {{ formatNumber(fee.percent, ...formatNumberParams) }}
             </td>
 
             <!-- eslint-disable-next-line -->
@@ -84,9 +84,10 @@
 import FeeTypeViewer from './viewers/fee-type-viewer'
 import FeeSubtypeViewer from './viewers/fee-subtype-viewer'
 import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
+import { defineComponent } from 'vue'
+import { formatNumber } from '@/js/helpers/number-helper'
 
-export default {
-  name: 'fees-table',
+export default defineComponent({
   components: {
     FeeTypeViewer,
     FeeSubtypeViewer,
@@ -107,7 +108,18 @@ export default {
       require: true,
     },
   },
-}
+
+  setup () {
+    const formatNumberParams = [
+      0,
+      '%',
+    ]
+    return {
+      formatNumberParams,
+      formatNumber,
+    }
+  },
+})
 </script>
 
 <style scoped lang="scss">

@@ -115,11 +115,11 @@
 
 <script>
 import { STATS_OPERATION_TYPES } from '@tokend/js-sdk'
-import { useNumber } from '@/vue/composables'
 import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 import { defineComponent } from 'vue'
+import { formatNumber } from '@/js/helpers/number-helper'
 
 import config from '../../../config'
 
@@ -147,10 +147,11 @@ export default defineComponent({
       [STATS_OPERATION_TYPES.paymentOut]: 'limits-table-renderer.op-type-payment-out',
     }
     const MAX_AMOUNT = config.MAX_AMOUNT
-    const { formatNumber } = useNumber()
+
     const askLimitsReload = () => {
       emit(EVENTS.limitsReloadAsk)
     }
+
     return {
       askLimitsReload,
       OPERATION_TYPES_TRANSLATION_ID,

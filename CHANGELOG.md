@@ -9,7 +9,8 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Changed
-- Move formatNumber filter to composable
+- Move formatNumber filter to helper
+- Move formatPercent to formatNumber helper
 
 ### Fixed
 - New version of vue: 2.7.14
