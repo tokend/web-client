@@ -2,16 +2,20 @@ import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import duration from 'dayjs/plugin/duration'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
+import calendar from 'dayjs/plugin/calendar'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import isBetween from 'dayjs/plugin/isBetween'
+import timezone from 'dayjs/plugin/timezone'
 
 import { LOCALES } from '@/js/const/date-locales.const'
 
 dayjs.extend(utc)
 dayjs.extend(duration)
 dayjs.extend(customParseFormat)
+dayjs.extend(calendar)
 dayjs.extend(isSameOrAfter)
 dayjs.extend(isBetween)
+dayjs.extend(timezone)
 
 export class DateUtil {
   static _dayjs (date, format) {
@@ -39,6 +43,16 @@ export class DateUtil {
    */
   static utc (date, format) {
     return this._dayjs(date, format).utc(true)
+  }
+
+  /**
+   * Returns a new date instance of DateUtil in the given timezone
+   * @param {string|date|object} [date] - date
+   * @param {string} [timezone] - your custom timezone
+   * @returns {object}
+   */
+  static tz (date, timezone) {
+    return dayjs.tz(date, timezone)
   }
 
   /**
@@ -116,6 +130,19 @@ export class DateUtil {
     }
 
     return this._dayjs(date).utc(true).format('YYYY-MM-DDTHH:mm:ss') + 'Z'
+  }
+
+  /**
+   * Returns provided date in human-friendly format
+   * @param {string|date|object} [date] - date to format
+   * @param {string} [format] - if date is provided in custom unknown
+   * format
+   * @param {object} [calendar] - config of specifying calendar output formats,
+   * e.g. { nextDay: '[Tomorrow]' }
+   * @returns {string}
+   */
+  static toHuman (date, format, calendar) {
+    return this._dayjs(date, format).calendar(dayjs.tz(), calendar)
   }
 
   /**
@@ -235,5 +262,13 @@ export class DateUtil {
     return !object && typeof preset === 'string'
       ? dayjs.locale(LOCALES[preset])
       : dayjs.locale(preset, object, isLocal)
+  }
+
+  /**
+   * Change default timezone from local time zone to your custom timezone
+   * @param {string} [timezone] - your custom timezone
+   */
+  static setDefaultTimezone (timezone) {
+    dayjs.tz.setDefault(timezone)
   }
 }

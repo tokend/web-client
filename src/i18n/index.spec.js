@@ -1,5 +1,5 @@
 import { i18n } from '@/i18n'
-import moment from 'moment-timezone'
+import { DateUtil } from '@/js/utils'
 
 const mockEn = {
   'config': {
@@ -87,7 +87,7 @@ const mockEn = {
 
 describe('the i18n is properly configured', () => {
   beforeEach(async () => {
-    moment.tz.setDefault('UTC') // Set timezone to 'UTC', so tests won't convert to local timezone
+    DateUtil.setDefaultTimezone('UTC') // Set timezone to 'UTC', so tests won't convert to local timezone
     await i18n.init()
     await i18n.changeLanguage('en')
     i18n._appendResources('en', mockEn)
