@@ -15,11 +15,11 @@ for further information about branching and tagging conventions.
 - New methods to `date.util.js` for not wrapped methods to using with dates
 
 ### Changed
-- Wrapped all using methods for dates with help `date.util.js`
+- Wrapped all using methods for dates by `date.util.js`
 
 ### Removed
 - Removed `date-helpers.js` from helpers
-- Removed `momentjs` from project
+- Removed `momentjs` and `moment-timezone` from project
 
 ## [1.13.0-rc.3] - 2021-11-09
 #### Fixed
