@@ -5,9 +5,10 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 import calendar from 'dayjs/plugin/calendar'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import isBetween from 'dayjs/plugin/isBetween'
+import updateLocale from 'dayjs/plugin/updateLocale'
 import timezone from 'dayjs/plugin/timezone'
 
-import { LOCALES } from '@/js/const/date-locales.const'
+import ru from 'dayjs/locale/ru'
 
 dayjs.extend(utc)
 dayjs.extend(duration)
@@ -15,7 +16,38 @@ dayjs.extend(customParseFormat)
 dayjs.extend(calendar)
 dayjs.extend(isSameOrAfter)
 dayjs.extend(isBetween)
+dayjs.extend(updateLocale)
 dayjs.extend(timezone)
+
+dayjs.updateLocale('ru', {
+  weekdays: [
+    'Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота',
+  ],
+  calendar: {
+    lastDay: '[Вчера в] H:mm',
+    sameDay: '[Сегодня в] H:mm',
+    nextDay: '[Завтра в] H:mm',
+    lastWeek: function () {
+      const format = 'dddd H:mm'
+      switch (this.day()) {
+        case 0:
+          return `Прошлое ${this.format(format).toLowerCase()}`
+        case 3:
+        case 5:
+        case 6:
+          return `Прошлая ${this.format(format).toLowerCase()}`
+        default:
+          return `Прошлый ${this.format(format).toLowerCase()}`
+      }
+    },
+    nextWeek: 'dddd H:mm',
+    sameElse: 'D MMMM YYYY HH:mm',
+  },
+})
+
+const LOCALES = {
+  ru,
+}
 
 export class DateUtil {
   static _dayjs (date, format) {

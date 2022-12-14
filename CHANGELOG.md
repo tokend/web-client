@@ -11,7 +11,6 @@ for further information about branching and tagging conventions.
 #### Added
 - Print error with meta in console
 - Added `dayjs` to project instead `momentjs`
-- Added `date-locales.const.js` to const for locales of `dayjs`
 - New methods to `date.util.js` for not wrapped methods to using with dates
 
 ### Changed
@@ -19,7 +18,7 @@ for further information about branching and tagging conventions.
 
 ### Removed
 - Removed `date-helpers.js` from helpers
-- Removed `momentjs` and `moment-timezone` from project
+- Removed `moment` and `moment-timezone` from project
 
 ## [1.13.0-rc.3] - 2021-11-09
 #### Fixed
