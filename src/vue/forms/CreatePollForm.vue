@@ -156,10 +156,10 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-import moment from 'moment'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { PollFormer } from '@/js/formers/PollFormer'
+import { DateUtil } from '@/js/utils'
 import {
   required,
   maxLength,
@@ -209,7 +209,7 @@ export default {
         },
         endTime: {
           required,
-          minDate: minDate(this.form.startTime || moment().toISOString()),
+          minDate: minDate(this.form.startTime || DateUtil.toISO()),
         },
         choices: {
           $each: {
@@ -224,7 +224,9 @@ export default {
 
   computed: {
     yesterday () {
-      return moment().subtract(1, 'days').toISOString()
+      return DateUtil.toISO(
+        DateUtil.subtract(undefined, 1, 'days')
+      )
     },
     pollPermissionTypes () {
       return [
@@ -287,7 +289,7 @@ export default {
       return index === this.form.choices.length
     },
     getCurrentDate () {
-      return moment().toISOString()
+      return DateUtil.toISO()
     },
   },
 }

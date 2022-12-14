@@ -1,5 +1,5 @@
 import _get from 'lodash/get'
-import moment from 'moment'
+import { DateUtil } from '@/js/utils'
 
 const TRANSACTION_TIME_MARGIN = 600 // seconds
 
@@ -17,6 +17,7 @@ export class IssuanceRecord {
   }
 
   _calculateEndTime () {
-    return moment(this.date).unix() + this.timeout - TRANSACTION_TIME_MARGIN
+    // eslint-disable-next-line max-len
+    return DateUtil.toTimestamp(this.date) + this.timeout - TRANSACTION_TIME_MARGIN
   }
 }

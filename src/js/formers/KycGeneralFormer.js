@@ -5,9 +5,9 @@ import { KycGeneralRecord } from '@/js/records/entities/kyc-general.record'
 import { KycRequestRecord } from '@/js/records/requests/kyc-request.record'
 import { KycRecoveryRequestRecord } from '@/js/records/requests/kyc-recovery-request.record'
 import { BlobRecord } from '@/js/records/entities/blob.record'
-import { toRFC3339 } from '@/js/helpers/date-helpers'
 import { createPrivateBlob, getCurrentAccId } from '@/js/helpers/api-helpers'
 import { isUSResidence, buildKycRecoveryOp } from '@/js/helpers/kyc-helpers'
+import { DateUtil } from '@/js/utils'
 import { keyValues } from '@/key-values'
 import get from 'lodash/get'
 
@@ -150,7 +150,7 @@ export class KycGeneralFormer extends Former {
     const blobValue = JSON.stringify({
       first_name: str(attrs.firstName),
       last_name: str(attrs.lastName),
-      date_of_birth: toRFC3339(attrs.dateOfBirth),
+      date_of_birth: DateUtil.toRFC3339(attrs.dateOfBirth),
       address: {
         line_1: str(address.line1),
         line_2: str(address.line2),

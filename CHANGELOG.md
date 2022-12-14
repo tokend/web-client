@@ -10,6 +10,15 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Print error with meta in console
+- Added `dayjs` to project instead `momentjs`
+- New methods to `date.util.js` for not wrapped methods to using with dates
+
+### Changed
+- Wrapped all using methods for dates by `date.util.js`
+
+### Removed
+- Removed `date-helpers.js` from helpers
+- Removed `moment` and `moment-timezone` from project
 
 ## [1.13.0-rc.3] - 2021-11-09
 #### Fixed

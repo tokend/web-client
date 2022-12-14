@@ -36,7 +36,7 @@
 
 <script>
 import Flatpickr from 'flatpickr'
-import moment from 'moment'
+import { DateUtil } from '@/js/utils'
 
 // All supported events by Flatpickr
 const FLATPICKR_HOOKS = {
@@ -96,13 +96,13 @@ export default {
         disable: [
           (date) => {
             if (!this.disableBefore) return false
-            const stamp = moment(this.disableBefore)
-            return moment(date).isBefore(stamp)
+            const stamp = DateUtil.date(this.disableBefore)
+            return DateUtil.isBefore(date, stamp)
           },
           (date) => {
             if (!this.disableAfter) return false
-            const stamp = moment(this.disableAfter)
-            return moment(date).isAfter(stamp)
+            const stamp = DateUtil.date(this.disableAfter)
+            return DateUtil.isAfter(date, stamp)
           },
         ],
         enableTime: this.enableTime,

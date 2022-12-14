@@ -66,7 +66,6 @@ import {
   required,
   minDate,
 } from '@validators'
-import moment from 'moment'
 import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
@@ -101,9 +100,15 @@ export default {
 
   computed: {
     getDisableDate () {
-      return moment().isAfter(moment(this.poll.startsAt))
-        ? moment().subtract(1, 'days').toISOString()
-        : moment(this.poll.startsAt).subtract(1, 'days').toISOString()
+      if (DateUtil.isAfter(undefined, this.poll.startsAt)) {
+        return DateUtil.toISO(
+          DateUtil.subtract(undefined, 1, 'days')
+        )
+      } else {
+        return DateUtil.toISO(
+          DateUtil.subtract(this.poll.startsAt, 1, 'days')
+        )
+      }
     },
   },
 
@@ -138,9 +143,9 @@ export default {
     },
 
     getMinDate () {
-      return moment().isAfter(moment(this.poll.startsAt))
-        ? moment().toISOString()
-        : moment(this.poll.startsAt).toISOString()
+      return DateUtil.isAfter(undefined, this.poll.startsAt)
+        ? DateUtil.toISO()
+        : DateUtil.toISO(this.poll.startsAt)
     },
     buildUpdatePollEndTimeOperation () {
       return base.ManagePollBuilder.updatePollEndTime({

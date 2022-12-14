@@ -1,6 +1,6 @@
 import config from '@/config'
 import { vuexTypes } from './types'
-import moment from 'moment'
+import { DateUtil } from '@/js/utils'
 import debounce from 'lodash/debounce'
 
 const IDLE_TICKER_INTERVAL = 1000
@@ -17,7 +17,7 @@ const state = {
 
 const mutations = {
   [vuexTypes.UPDATE_LOGOUT_AT] (state) {
-    state.logoutAt = moment().add(config.IDLE_TIMEOUT, 'minutes')
+    state.logoutAt = DateUtil.add(undefined, config.IDLE_TIMEOUT, 'minutes')
   },
 }
 
@@ -57,7 +57,7 @@ const actions = {
       const logoutAt = getters[vuexTypes.logoutAt]
 
       if (rootGetters[vuexTypes.isLoggedIn] &&
-        moment().isSameOrAfter(logoutAt)) {
+        DateUtil.isSameOrAfter(undefined, logoutAt)) {
         dispatch(vuexTypes.LOGOUT_IDLE)
       }
     }, IDLE_TICKER_INTERVAL)

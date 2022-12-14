@@ -58,12 +58,11 @@ import AddressViewer from '@/vue/common/address-viewer'
 
 import config from '@/config'
 
-import moment from 'moment'
-
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { DateUtil } from '@/js/utils'
 
 const EVENTS = {
   submitted: 'submitted',
@@ -121,7 +120,7 @@ export default {
           this.depositDetails.payload = response.payload ||
             response.data.payload
         }
-        this.depositDetails.endTime = moment().unix() +
+        this.depositDetails.endTime = DateUtil.toTimestamp() +
           this.depositDetails.timeout - TRANSACTION_TIME_MARGIN
         this.$emit(EVENTS.submitted)
       } catch (e) {

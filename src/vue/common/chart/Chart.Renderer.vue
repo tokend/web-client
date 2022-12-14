@@ -24,6 +24,7 @@
 import { formatMoney } from '@/vue/filters/formatMoney'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { DateUtil } from '@/js/utils'
 import * as d3Array from 'd3-array'
 import * as d3Selection from 'd3-selection'
 import * as d3Scale from 'd3-scale'
@@ -33,7 +34,6 @@ import * as d3Transition from 'd3-transition'
 import * as d3Ease from 'd3-ease'
 import * as d3Format from 'd3-format'
 // import * as d3 from 'd3'
-import moment from 'moment'
 const d3 = Object.assign(
   {},
   d3Array,
@@ -77,7 +77,7 @@ export default {
     }),
     normalizedData () {
       return this.data.map(item => ({
-        time: moment(item.timestamp).toDate(),
+        time: DateUtil.toDate(item.timestamp),
         value: parseFloat(parseFloat(item.value).toFixed(this.precision)),
       }))
     },
@@ -387,28 +387,28 @@ export default {
           tipPriceText.text(`${formatMoney(nearestPoint.value)} ${this.defaultAsset}`)
           switch (this.scale) {
             case 'year': {
-              tipTimeTextDD.text(moment(nearestPoint.time).format('DD MMM'))
-              tipTimeTextMM.text(moment(nearestPoint.time).format('YYYY'))
+              tipTimeTextDD.text(DateUtil.format(nearestPoint.time, 'DD MMM'))
+              tipTimeTextMM.text(DateUtil.format(nearestPoint.time, 'YYYY'))
               break
             }
             case 'month': {
-              tipTimeTextDD.text(moment(nearestPoint.time).format('DD'))
-              tipTimeTextMM.text(moment(nearestPoint.time).format('MMM'))
+              tipTimeTextDD.text(DateUtil.format(nearestPoint.time, 'DD'))
+              tipTimeTextMM.text(DateUtil.format(nearestPoint.time, 'MMM'))
               break
             }
             case 'day': {
-              tipTimeTextDD.text(moment(nearestPoint.time).format('h:mm a'))
-              tipTimeTextMM.text(moment(nearestPoint.time).format('DD MMM'))
+              tipTimeTextDD.text(DateUtil.format(nearestPoint.time, 'h:mm a'))
+              tipTimeTextMM.text(DateUtil.format(nearestPoint.time, 'DD MMM'))
               break
             }
             case 'hour': {
-              tipTimeTextDD.text(moment(nearestPoint.time).format('h:mm a'))
-              tipTimeTextMM.text(moment(nearestPoint.time).format('DD MMM'))
+              tipTimeTextDD.text(DateUtil.format(nearestPoint.time, 'h:mm a'))
+              tipTimeTextMM.text(DateUtil.format(nearestPoint.time, 'DD MMM'))
               break
             }
             default: {
-              tipTimeTextDD.text(moment(nearestPoint.time).format('DD'))
-              tipTimeTextMM.text(moment(nearestPoint.time).format('MMM'))
+              tipTimeTextDD.text(DateUtil.format(nearestPoint.time, 'DD'))
+              tipTimeTextMM.text(DateUtil.format(nearestPoint.time, 'MMM'))
               break
             }
           }

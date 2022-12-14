@@ -8,7 +8,6 @@ import VueHead from 'vue-head'
 import log from 'loglevel'
 import config from './config'
 import NProgress from 'nprogress'
-import moment from 'moment'
 import router from '@/vue-router'
 
 import { buildStore } from '@/vuex'
@@ -29,6 +28,7 @@ import { formatDateDMYT } from '@/vue/filters/formatDateDMYT'
 import { abbreviate } from '@/vue/filters/abbreviate'
 import { cropAddress } from '@/vue/filters/cropAddress'
 import { ErrorTracker } from '@/js/helpers/error-tracker'
+import { DateUtil } from '@/js/utils'
 import { vueRoutes } from './vue-router/routes'
 import { useBrowserUpdateBanner } from './browser-update'
 import { keyValues } from '@/key-values'
@@ -41,7 +41,7 @@ async function init () {
   await initApi()
   await keyValues.load()
 
-  i18n.onLanguageChanged(lang => moment.locale(lang))
+  i18n.onLanguageChanged(lang => DateUtil.locale(lang))
   await i18n.init()
 
   log.setDefaultLevel(config.LOG_LEVEL)

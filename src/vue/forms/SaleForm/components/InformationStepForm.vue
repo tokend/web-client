@@ -259,13 +259,11 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import moment from 'moment'
-
 import { SALE_TYPES } from '@tokend/js-sdk'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
-import { MathUtil } from '@/js/utils'
+import { MathUtil, DateUtil } from '@/js/utils'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { SaleFormer } from '@/js/formers/SaleFormer'
 import { loadAssetsPairsByQuote } from '@/js/helpers/sale-helper'
@@ -328,7 +326,7 @@ export default {
         },
         endTime: {
           required,
-          minDate: minDate(this.form.startTime || moment().toISOString()),
+          minDate: minDate(this.form.startTime || DateUtil.toISO()),
         },
         softCap: {
           required,
@@ -378,11 +376,15 @@ export default {
     },
 
     yesterday () {
-      return moment().subtract(1, 'days').toISOString()
+      return DateUtil.toISO(
+        DateUtil.subtract(undefined, 1, 'days')
+      )
     },
 
     lastTwentyYear () {
-      return moment().subtract(20, 'years').toISOString()
+      return DateUtil.toISO(
+        DateUtil.subtract(undefined, 20, 'years')
+      )
     },
 
     localizedSaleTypes () {
@@ -456,7 +458,7 @@ export default {
     },
 
     getCurrentDate () {
-      return moment().toISOString()
+      return DateUtil.toISO()
     },
 
     async loadBaseAssetsByQuote (quoteAssetCode) {

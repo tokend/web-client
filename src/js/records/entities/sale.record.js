@@ -1,7 +1,7 @@
-import moment from 'moment'
 import _get from 'lodash/get'
 
 import { SALE_DEFINITION_TYPES } from '@/js/const/sale-definition-types.const'
+import { DateUtil } from '@/js/utils'
 
 const STATES = {
   Open: 1,
@@ -114,16 +114,16 @@ export class SaleRecord {
   get isOpened () { return this._isInState(STATES.Open) }
   get isClosed () { return this._isInState(STATES.Closed) }
   get isCanceled () { return this._isInState(STATES.Canceled) }
-  get isUpcoming () { return moment(this.startTime).isAfter(moment()) }
+  get isUpcoming () { return DateUtil.isAfter(this.startTime) }
 
   /** progress info: **/
 
   get daysToGo () {
-    return moment(this.startTime).diff(moment(), 'days')
+    return DateUtil.diff(this.startTime, undefined, 'days')
   }
 
   get daysToEnd () {
-    return moment(this.endTime).diff(moment(), 'days')
+    return DateUtil.diff(this.endTime, undefined, 'days')
   }
 
   get daysAfterEnd () {
@@ -135,7 +135,7 @@ export class SaleRecord {
   }
 
   get startsIn () {
-    return moment(this.startTime).diff(moment().startOf('day'), 'days')
+    return DateUtil.diff(this.startTime, DateUtil.startOf('day'), 'days')
   }
 
   get hardCapProgress () {

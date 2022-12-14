@@ -68,7 +68,7 @@ import { api } from '@/api'
 import { base } from '@tokend/js-sdk'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import moment from 'moment'
+import { DateUtil } from '@/js/utils'
 import _isEmpty from 'lodash/isEmpty'
 
 const EVENTS = {
@@ -132,11 +132,12 @@ export default {
         .find(
           item => +item.externalSystemType === +this.externalSystemType
         ) || {}
-      return moment(externalSystemId.expiresAt).unix() - TRANSACTION_TIME_MARGIN
+      // eslint-disable-next-line max-len
+      return DateUtil.toTimestamp(externalSystemId.expiresAt) - TRANSACTION_TIME_MARGIN
     },
 
     isExpiredAddress () {
-      return (this.endTime - moment().unix()) <= 0
+      return (this.endTime - DateUtil.toTimestamp()) <= 0
     },
   },
   async created () {
