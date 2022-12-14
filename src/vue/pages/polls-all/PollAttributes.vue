@@ -47,7 +47,7 @@
               {{ 'poll-attributes.state-key' | globalize }}
             </td>
             <td>
-              {{ pollStateTranslated | globalize }}
+              {{ pollStateTranslated }}
             </td>
           </tr>
 
@@ -71,7 +71,7 @@
               {{ 'poll-attributes.permission-type-key' | globalize }}
             </td>
             <td>
-              {{ pollPermissionTypeTranslated | globalize }}
+              {{ pollPermissionTypeTranslated }}
             </td>
           </tr>
 
@@ -93,7 +93,7 @@
 import { PollRecord } from '@/js/records/entities/poll.record'
 import EmailGetter from '@/vue/common/EmailGetter'
 import { keyValues } from '@/key-values'
-import { defineComponent, computed } from 'vue'
+import { defineComponent } from 'vue'
 import { formatNumber } from '@/js/helpers/number-helper'
 
 export default defineComponent({
@@ -108,43 +108,48 @@ export default defineComponent({
     },
   },
 
-  setup (props) {
-    const pollStateTranslated = computed(() => {
+  computed: {
+    pollStateTranslated () {
       let translationId
 
-      if (props.poll.isOpen) {
+      if (this.poll.isOpen) {
         translationId = 'poll-attributes.state-open-val'
-      } else if (props.poll.isPassed) {
+      } else if (this.poll.isPassed) {
         translationId = 'poll-attributes.state-passed-val'
-      } else if (props.poll.isFailed) {
+      } else if (this.poll.isFailed) {
         translationId = 'poll-attributes.state-failed-val'
-      } else if (props.poll.isCanceled) {
+      } else if (this.poll.isCanceled) {
         translationId = 'poll-attributes.state-canceled-val'
       } else {
         translationId = '[UNKNOWN_STATE]'
       }
-      return translationId
-    })
 
-    const pollPermissionTypeTranslated = computed(() => {
+      return this.$options.filters.globalize(translationId)
+    },
+
+    pollPermissionTypeTranslated () {
       let translationId
-      switch (props.poll.permissionType) {
+
+      switch (this.poll.permissionType) {
         case keyValues.restrictedPollType:
           translationId = 'poll-attributes.permission-type-restricted-val'
           break
+
         case keyValues.unrestrictedPollType:
           translationId = 'poll-attributes.permission-type-unrestricted-val'
           break
+
         default:
           translationId = '[UNKNOWN_PERMISSION_TYPE]'
           break
       }
-      return translationId
-    })
 
+      return this.$options.filters.globalize(translationId)
+    },
+  },
+
+  setup () {
     return {
-      pollStateTranslated,
-      pollPermissionTypeTranslated,
       formatNumber,
     }
   },
