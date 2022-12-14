@@ -20,7 +20,7 @@
       </template>
 
       <template v-else-if="accountId || balanceId">
-        {{ accountId || balanceId | cropAddress }}
+        {{ accountId || abbrCenter(balanceId) }}
       </template>
 
       <template v-else>
@@ -55,12 +55,14 @@ import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 
 import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { defineComponent } from 'vue'
+import { abbrCenter } from '@/js/helpers/text-helper'
 import Clipboard from 'clipboard'
 import Tooltip from '@/vue/common/Tooltip'
 
 import safeGet from 'lodash/get'
 
-export default {
+export default defineComponent({
   components: {
     Tooltip,
   },
@@ -170,7 +172,12 @@ export default {
       }, hideTooltipTimeout)
     },
   },
-}
+  setup () {
+    return {
+      abbrCenter,
+    }
+  },
+})
 </script>
 
 <style lang="scss" scoped>

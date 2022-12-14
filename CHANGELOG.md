@@ -12,6 +12,7 @@ for further information about branching and tagging conventions.
 - Move formatNumber filter to helper
 - Move formatPercent to formatNumber helper
 - Move formatInteger to formatNumber helper
+- Move cropAddress to text helper and rename to abbrCenter
 
 ### Fixed
 - New version of vue: 2.7.14
