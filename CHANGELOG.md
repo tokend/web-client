@@ -11,6 +11,7 @@ for further information about branching and tagging conventions.
 #### Changed
 - Move formatNumber filter to helper
 - Move formatPercent to formatNumber helper
+- Move formatInteger to formatNumber helper
 
 ### Fixed
 - New version of vue: 2.7.14
