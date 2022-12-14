@@ -80,7 +80,7 @@
               {{ 'poll-attributes.number-of-choices-key' | globalize }}
             </td>
             <td>
-              {{ poll.numberOfChoices | formatNumber }}
+              {{ formatNumber(poll.numberOfChoices) }}
             </td>
           </tr>
         </tbody>
@@ -93,10 +93,10 @@
 import { PollRecord } from '@/js/records/entities/poll.record'
 import EmailGetter from '@/vue/common/EmailGetter'
 import { keyValues } from '@/key-values'
+import { defineComponent } from 'vue'
+import { formatNumber } from '@/js/helpers/number-helper'
 
-export default {
-  name: 'poll-attributes',
-
+export default defineComponent({
   components: {
     EmailGetter,
   },
@@ -147,7 +147,13 @@ export default {
       return this.$options.filters.globalize(translationId)
     },
   },
-}
+
+  setup () {
+    return {
+      formatNumber,
+    }
+  },
+})
 </script>
 
 <style lang="scss" scoped>
