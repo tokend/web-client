@@ -56,7 +56,7 @@
               </td>
               <td>
                 <!-- eslint-disable-next-line max-len -->
-                {{ { value: sale.softCap, currency: sale.defaultQuoteAsset } | formatMoney }}
+                {{ formatMoney({ value: sale.softCap, currency: sale.defaultQuoteAsset }) }}
               </td>
             </tr>
 
@@ -66,7 +66,7 @@
               </td>
               <td>
                 <!-- eslint-disable-next-line max-len -->
-                {{ { value: sale.hardCap, currency: sale.defaultQuoteAsset } | formatMoney }}
+                {{ formatMoney({ value: sale.hardCap, currency: sale.defaultQuoteAsset }) }}
               </td>
             </tr>
 
@@ -77,7 +77,7 @@
               </td>
               <td>
                 <!-- eslint-disable-next-line max-len -->
-                {{ { value: sale.baseHardCap, currency: sale.baseAsset } | formatMoney }}
+                {{ formatMoney({ value: sale.baseHardCap, currency: sale.baseAsset }) }}
               </td>
             </tr>
 
@@ -129,6 +129,7 @@ import { SaleRecord } from '@/js/records/entities/sale.record'
 
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 export default {
   name: 'sale-overview',
@@ -171,6 +172,11 @@ export default {
     ...mapActions({
       loadAssets: vuexTypes.LOAD_ASSETS,
     }),
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>

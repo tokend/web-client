@@ -20,10 +20,10 @@
       </td>
       <td class="attributes-viewer__table-cell">
         {{
-          {
+          formatMoney({
             value: operationDetails.physicalPrice,
             currency: operationDetails.quoteAssetCode
-          } | formatMoney
+          })
         }}
       </td>
     </tr>
@@ -34,10 +34,10 @@
       </td>
       <td class="attributes-viewer__table-cell">
         {{
-          {
+          formatMoney({
             value: operationDetails.currentPrice,
             currency: operationDetails.quoteAssetCode
-          } | formatMoney
+          })
         }}
       </td>
     </tr>
@@ -79,6 +79,7 @@
 
 <script>
 import { ManageAssetPairOp } from '../../wrappers/operation-details/manage-asset-pair'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 export default {
   props: {
@@ -86,6 +87,11 @@ export default {
       type: ManageAssetPairOp,
       required: true,
     },
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>

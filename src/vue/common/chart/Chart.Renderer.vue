@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { formatMoney } from '@/vue/filters/formatMoney'
+import { formatMoney } from '@/js/helpers/money-helper'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import * as d3Array from 'd3-array'
@@ -167,7 +167,7 @@ export default {
             .domain([0, 12])
           this.yAxisLine = d3.axisRight(y)
             .tickValues([0, 5, 10])
-            .tickFormat((d) => `${formatMoney(d)} ${this.defaultAsset}`)
+            .tickFormat((d) => `${formatMoney({ value: d })} ${this.defaultAsset}`)
             .tickSizeInner(this.width)
             .tickSizeOuter(0)
             .tickPadding(25)
@@ -293,7 +293,7 @@ export default {
       if (this.isTicksShown) {
         const yAxisLine = d3.axisRight(this.y)
           .ticks(4)
-          .tickFormat((d) => `${formatMoney(d.toFixed(2))} ${this.defaultAsset}`)
+          .tickFormat((d) => `${formatMoney({ value: d.toFixed(2) })} ${this.defaultAsset}`)
           .tickSizeInner(this.width)
           .tickSizeOuter(0)
           .tickPadding(25)

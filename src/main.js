@@ -18,7 +18,6 @@ import { i18n, i18nComponent } from '@/i18n'
 import { globalize } from '@/vue/filters/globalize'
 import { globalizeCountry } from './vue/filters/globalizeCountry'
 import { formatDate } from '@/vue/filters/formatDate'
-import { formatMoney } from '@/vue/filters/formatMoney'
 import { formatCalendar } from '@/vue/filters/formatCalendar'
 import { formatCalendarInline } from '@/vue/filters/formatCalendarInline'
 import { formatDateDMY } from '@/vue/filters/formatDateDMY'
@@ -54,7 +53,6 @@ async function init () {
   Vue.filter('formatDate', formatDate)
   Vue.filter('formatDateDMY', formatDateDMY)
   Vue.filter('formatDateDMYT', formatDateDMYT)
-  Vue.filter('formatMoney', formatMoney)
   Vue.filter('formatCalendar', formatCalendar)
   Vue.filter('formatCalendarInline', formatCalendarInline)
   Vue.filter('abbreviate', abbreviate)

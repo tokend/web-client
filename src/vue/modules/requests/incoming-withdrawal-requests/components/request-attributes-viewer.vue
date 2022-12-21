@@ -33,12 +33,12 @@
 
         <tr>
           <td>{{ 'incoming-withdrawal-requests.amount' | globalize }}</td>
-          <td>{{ request.amount | formatMoney }}  </td>
+          <td>{{ formatMoney(request.amount) }}  </td>
         </tr>
 
         <tr>
           <td>{{ 'incoming-withdrawal-requests.fixed-fee' | globalize }}</td>
-          <td>{{ request.fixedFee | formatMoney }}</td>
+          <td>{{ formatMoney(request.fixedFee) }}</td>
         </tr>
 
         <tr>
@@ -46,12 +46,12 @@
             <!-- eslint-disable-next-line max-len -->
             {{ 'incoming-withdrawal-requests.calculated-percent-fee' | globalize }}
           </td>
-          <td>{{ request.calculatedPercentFee | formatMoney }}</td>
+          <td>{{ formatMoney(request.calculatedPercentFee) }}</td>
         </tr>
 
         <tr>
           <td>{{ 'incoming-withdrawal-requests.total-fee' | globalize }}</td>
-          <td>{{ request.totalFee | formatMoney }}</td>
+          <td>{{ formatMoney(request.totalFee) }}</td>
         </tr>
       </tbody>
     </table>
@@ -62,6 +62,7 @@
 import EmailGetter from '@/vue/common/EmailGetter'
 
 import { IncomingWithdrawalRequest } from '../wrappers/incoming-withdrawal-request'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 export default {
   name: 'request-attributes-viewer',
@@ -70,6 +71,11 @@ export default {
   },
   props: {
     request: { type: IncomingWithdrawalRequest, required: true },
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>

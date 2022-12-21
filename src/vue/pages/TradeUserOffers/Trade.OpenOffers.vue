@@ -51,8 +51,8 @@
                   {{ 'trade-open-offers.sell-lbl' | globalize }}
                 </template>
               </td>
-              <td>{{ offer.baseAmount | formatMoney }}</td>
-              <td>{{ offer.price | formatMoney }}</td>
+              <td>{{ formatMoney(offer.baseAmount) }}</td>
+              <td>{{ formatMoney(offer.price) }}</td>
             </tr>
           </tbody>
           <empty-tbody-placeholder
@@ -95,6 +95,7 @@ import Drawer from '@/vue/common/Drawer'
 import { globalize } from '@/vue/filters/globalize'
 import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 import { TradeFormer } from '@/js/formers/TradeFormer'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 const EVENTS = {
   reloadOffers: 'reload-offers',
@@ -133,6 +134,11 @@ export default {
       this.isSubmitOfferDrawerShown = false
       this.$emit(EVENTS.reloadOffers)
     },
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>

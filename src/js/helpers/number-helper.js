@@ -2,13 +2,13 @@ import { MathUtil } from '@/js/utils'
 
 export function formatNumber (
   number,
-  decimalPlaces = 0,
+  decimalPlaces = 6,
   suffix = 0,
 ) {
   const cfg =
   ({
     decimalSeparator: '.',
-    groupSeparator: '',
+    groupSeparator: ',',
     groupSize: 3,
     suffix,
     decimalPlaces,

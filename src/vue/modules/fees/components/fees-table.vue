@@ -40,8 +40,8 @@
             </td>
 
             <!-- eslint-disable-next-line -->
-            <td :title="{ value: fee.fixed, currency: fee.asset } | formatMoney">
-              {{ { value: fee.fixed, currency: fee.asset } | formatMoney }}
+            <td :title="formatMoney({ value: fee.fixed, currency: fee.asset })">
+              {{ formatMoney({ value: fee.fixed, currency: fee.asset }) }}
             </td>
 
             <td :title="formatNumber(fee.percent, ...formatNumberParams)">
@@ -49,13 +49,13 @@
             </td>
 
             <!-- eslint-disable-next-line -->
-            <td :title="{ value: fee.lowerBound, currency: fee.asset } | formatMoney">
-              {{ { value: fee.lowerBound, currency: fee.asset } | formatMoney }}
+            <td :title="formatMoney({ value: fee.lowerBound, currency: fee.asset })">
+              {{ formatMoney({ value: fee.lowerBound, currency: fee.asset }) }}
             </td>
 
             <!-- eslint-disable-next-line -->
-            <td :title="{ value: fee.upperBound, currency: fee.asset } | formatMoney">
-              {{ { value: fee.upperBound, currency: fee.asset } | formatMoney }}
+            <td :title="formatMoney({ value: fee.upperBound, currency: fee.asset })">
+              {{ formatMoney({ value: fee.upperBound, currency: fee.asset }) }}
             </td>
           </tr>
         </tbody>
@@ -86,6 +86,7 @@ import FeeSubtypeViewer from './viewers/fee-subtype-viewer'
 import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 import { defineComponent } from 'vue'
 import { formatNumber } from '@/js/helpers/number-helper'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 export default defineComponent({
   components: {
@@ -111,12 +112,13 @@ export default defineComponent({
 
   setup () {
     const formatNumberParams = [
-      0,
+      6,
       '%',
     ]
     return {
       formatNumberParams,
       formatNumber,
+      formatMoney,
     }
   },
 })

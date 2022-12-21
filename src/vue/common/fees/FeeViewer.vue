@@ -9,7 +9,7 @@
         class="fee-viewer__total"
         @click="toggleDetails"
       >
-        {{ formatFee(fee.total) | formatMoney }}
+        {{ formatMoney(formatFee(fee.total)) }}
       </a>
     </p>
 
@@ -24,7 +24,7 @@
           </span>
 
           <span class="fee-viewer__details-row-text">
-            {{ formatFee(fee.fixed) | formatMoney }}
+            {{ formatMoney(formatFee(fee.fixed)) }}
           </span>
         </p>
 
@@ -34,7 +34,7 @@
           </span>
 
           <span class="fee-viewer__details-row-text">
-            {{ formatFee(fee.calculatedPercent) | formatMoney }}
+            {{ formatMoney(formatFee(fee.calculatedPercent)) }}
           </span>
         </p>
 
@@ -47,7 +47,7 @@
           </span>
 
           <span class="fee-viewer__details-row-text">
-            {{ formatFee(fee.additional) | formatMoney }}
+            {{ formatMoney(formatFee(fee.additional)) }}
           </span>
         </p>
       </div>
@@ -57,6 +57,7 @@
 
 <script>
 import { Fee } from './fee'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 export default {
   name: 'fee-viewer',
@@ -107,6 +108,12 @@ export default {
     toggleDetails () {
       this.isDetailsShown = !this.isDetailsShown
     },
+  },
+
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>

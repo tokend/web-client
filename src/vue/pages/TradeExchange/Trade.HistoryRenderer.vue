@@ -34,9 +34,9 @@
               <tr
                 v-for="(item, i) in tradeHistory"
                 :key="`trade-history-row-${i}`">
-                <td>{{ item.baseAmount | formatMoney }}</td>
-                <td>{{ item.price | formatMoney }}</td>
-                <td>{{ item.quoteAmount | formatMoney }}</td>
+                <td>{{ formatMoney(item.baseAmount) }}</td>
+                <td>{{ formatMoney(item.price) }}</td>
+                <td>{{ formatMoney(item.quoteAmount) }}</td>
                 <td>{{ item.createdAt | formatCalendar }}</td>
               </tr>
             </tbody>
@@ -62,6 +62,7 @@
 <script>
 import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 export default {
   name: 'trade-history-renderer',
@@ -77,6 +78,11 @@ export default {
     },
     tradeHistory: { type: Array, required: true, default: () => [] },
     isLoading: { type: Boolean, required: true, default: false },
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>

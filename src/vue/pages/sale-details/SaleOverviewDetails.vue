@@ -35,7 +35,7 @@
           </td>
           <td>
             <!-- eslint-disable-next-line max-len -->
-            {{ { value: sale.softCap, currency: sale.defaultQuoteAsset } | formatMoney }}
+            {{ formatMoney({ value: sale.softCap, currency: sale.defaultQuoteAsset }) }}
           </td>
         </tr>
 
@@ -45,7 +45,7 @@
           </td>
           <td>
             <!-- eslint-disable-next-line max-len -->
-            {{ { value: sale.hardCap, currency: sale.defaultQuoteAsset } | formatMoney }}
+            {{ formatMoney({ value: sale.hardCap, currency: sale.defaultQuoteAsset }) }}
           </td>
         </tr>
 
@@ -56,7 +56,7 @@
           </td>
           <td>
             <!-- eslint-disable-next-line max-len -->
-            {{ { value: sale.baseHardCap, currency: sale.baseAsset } | formatMoney }}
+            {{ formatMoney({ value: sale.baseHardCap, currency: sale.baseAsset }) }}
           </td>
         </tr>
 
@@ -115,6 +115,7 @@
 <script>
 import { SALE_TYPES } from '@tokend/js-sdk'
 import { SaleRecord } from '@/js/records/entities/sale.record'
+import { formatMoney } from '@/js/helpers/money-helper'
 import EmailGetter from '@/vue/common/EmailGetter'
 
 export default {
@@ -132,6 +133,11 @@ export default {
       keyValue[SALE_TYPES.immediate] = 'sale-overview.immediate'
       return keyValue
     },
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>

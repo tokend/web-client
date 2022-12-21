@@ -5,13 +5,13 @@
         <tr>
           <!-- eslint-disable-next-line max-len -->
           <td>{{ 'create-asset-requests.max-issuance-amount-title' | globalize }}</td>
-          <td>{{ request.maxIssuanceAmount | formatMoney }}</td>
+          <td>{{ formatMoney(request.maxIssuanceAmount) }}</td>
         </tr>
 
         <tr>
           <!-- eslint-disable-next-line max-len -->
           <td>{{ 'create-asset-requests.initial-preissued-amount-title' | globalize }}</td>
-          <td>{{ request.initialPreissuedAmount | formatMoney }}</td>
+          <td>{{ formatMoney(request.initialPreissuedAmount) }}</td>
         </tr>
 
         <tr>
@@ -177,6 +177,7 @@
 import { AssetRequest } from '@/js/records/requests/asset-request.record'
 import { STELLAR_TYPES } from '@/js/const/asset-subtypes.const'
 import { documentsManager } from '@/api'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 export default {
   name: 'request-attributes-viewer',
@@ -214,6 +215,11 @@ export default {
 
       return this.$options.filters.globalize(translationId)
     },
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>

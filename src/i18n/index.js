@@ -188,7 +188,6 @@ class I18n {
               const value = (_isObject(param) ? param.value : param) || '0'
               const defaultFormat =
                 _get(lngConfig, 'number.formats.amounts.default')
-
               const result = MathUtil.format(value, defaultFormat)
               return param.currency
                 ? result.concat(' ', param.currency)

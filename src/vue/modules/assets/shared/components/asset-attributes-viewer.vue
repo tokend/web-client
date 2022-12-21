@@ -31,7 +31,7 @@
             <td>{{ 'assets.balance-title' | globalize }}</td>
             <td>
               {{
-                { value: balance, currency: asset.code } | formatMoney
+                formatMoney({ value: balance, currency: asset.code })
               }}
             </td>
           </tr>
@@ -39,23 +39,24 @@
             <td>{{ 'assets.maximum-title' | globalize }}</td>
             <td>
               {{
-                { value: asset.maxIssuanceAmount, currency: asset.code } |
-                  formatMoney
+                formatMoney({
+                  value: asset.maxIssuanceAmount, currency: asset.code
+                })
               }}
             </td>
           </tr>
           <tr>
             <td>{{ 'assets.issued-title' | globalize }}</td>
             <td>
-              {{ { value: asset.issued, currency: asset.code } | formatMoney }}
+              {{ formatMoney({ value: asset.issued, currency: asset.code }) }}
             </td>
           </tr>
           <tr>
             <td>{{ 'assets.available-title' | globalize }}</td>
             <td>
-              {{ { value: asset.availableForIssuance, currency: asset.code } |
-                formatMoney
-              }}
+              {{ formatMoney({
+                value: asset.availableForIssuance, currency: asset.code
+              }) }}
             </td>
           </tr>
           <tr>
@@ -263,6 +264,7 @@ import TermsViewer from './terms-viewer'
 import EmailGetter from '@/vue/common/EmailGetter'
 import { STELLAR_TYPES } from '@/js/const/asset-subtypes.const'
 import { AssetRecord } from '@/js/records/entities/asset.record'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 export default {
   name: 'asset-attributes-viewer',
@@ -299,6 +301,11 @@ export default {
 
       return this.$options.filters.globalize(translationId)
     },
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>

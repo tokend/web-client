@@ -19,10 +19,10 @@
                 </td>
                 <td>
                   {{
-                    {
+                    formatMoney({
                       value: investment.amount,
                       currency: investment.quoteAsset.id
-                    } | formatMoney
+                    })
                   }}
                 </td>
               </tr>
@@ -70,6 +70,7 @@ import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 export default {
   name: 'sale-statictics-viewer',
@@ -121,6 +122,11 @@ export default {
     concatInvestments (investments) {
       this.investments = this.investments.concat(investments)
     },
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>

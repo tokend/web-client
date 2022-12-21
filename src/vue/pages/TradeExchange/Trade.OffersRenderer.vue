@@ -42,9 +42,9 @@
                 :key="`trade-offers-row-${o}-${updateOffersKey}`"
                 @click="selectOffer(offer)"
                 :disabled="offer.ownerId === accountId">
-                <td>{{ offer.baseAmount | formatMoney }}</td>
-                <td>{{ offer.quoteAmount | formatMoney }}</td>
-                <td>{{ offer.price | formatMoney }}</td>
+                <td>{{ formatMoney(offer.baseAmount) }}</td>
+                <td>{{ formatMoney(offer.quoteAmount) }}</td>
+                <td>{{ formatMoney(offer.price) }}</td>
               </tr>
             </tbody>
             <empty-tbody-placeholder
@@ -88,6 +88,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import { TradeFormer } from '@/js/formers/TradeFormer'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 const EVENTS = {
   reloadTrades: 'reload-trades',
@@ -158,6 +159,11 @@ export default {
       this.isSubmitOfferDrawerShown = false
       this.$emit(EVENTS.reloadTrades)
     },
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>
