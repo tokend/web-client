@@ -10,7 +10,7 @@
         />
       </td>
       <td class="pending-atomic-swap-table-row__amount">
-        {{ { value: amount, currency: asset } | formatMoney }}
+        {{ formatMoney({ value: amount, currency: asset }) }}
       </td>
       <td class="pending-atomic-swap-table-row__btn">
         <button
@@ -39,6 +39,7 @@
 <script>
 import TimeoutTicker from '@/vue/common/TimeoutTicker'
 import KeyViewer from '@/vue/common/KeyViewer'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 const EVENTS = {
   expandRequested: 'expand-requested',
@@ -61,6 +62,11 @@ export default {
     requestExpand () {
       this.$emit(EVENTS.expandRequested)
     },
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>

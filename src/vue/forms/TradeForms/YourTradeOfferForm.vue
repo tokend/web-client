@@ -75,10 +75,10 @@
                 asset: former.attrs.quoteAssetCode
               })
             "
-            :value="{
+            :value="formatMoney({
               value: quoteAmount,
               currency: former.attrs.quoteAssetCode,
-            } | formatMoney"
+            })"
             :error-message="getFieldErrorMessage(
               'quoteAmount',
               {
@@ -159,6 +159,7 @@ import { buildOpCancel } from '@/js/helpers/trade-helper'
 import { MathUtil } from '@/js/utils/math.util'
 import config from '@/config'
 import { api } from '@/api'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 import {
   required,
@@ -389,6 +390,11 @@ export default {
       if (this.submitMode === SUBMIT_MODES.update && !this.isFormValid()) return
       this.showConfirmation()
     },
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>

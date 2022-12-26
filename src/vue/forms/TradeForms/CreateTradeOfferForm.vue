@@ -81,10 +81,10 @@
         <template v-if="isFeesLoaded">
           <readonly-field
             :label="'create-trade-offer-form.total-amount-lbl' | globalize"
-            :value="{
+            :value="formatMoney({
               value: quoteAmount,
               currency: assetPair.quote,
-            } | formatMoney"
+            })"
             :error-message="getFieldErrorMessage(
               'quoteAmount',
               {
@@ -168,6 +168,7 @@ import {
   maxValueBig,
   decimal,
 } from '@validators'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 const EVENTS = {
   offerCreated: 'offer-created',
@@ -361,6 +362,11 @@ export default {
       const accountBalances = this.accountBalanceByCode(this.assetPair.base)
       this.form.assetCode = _get(accountBalances, 'asset.code', this.accountAssets[0])
     },
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>

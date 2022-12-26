@@ -116,7 +116,7 @@
 
                 <readonly-field
                   :label="'issuance-form.amount-to-receive-msg' | globalize"
-                  :value="receivingAmount | formatMoney"
+                  :value="formatMoney(receivingAmount)"
                   :error-message="getFieldErrorMessage('receivingAmount.value')"
                 />
               </template>
@@ -188,6 +188,7 @@ import {
   maxDecimalDigitsCount,
 } from '@validators'
 import { IssuanceFormer } from '@/js/formers/IssuanceFormer'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 const REFERENCE_MAX_LENGTH = 64
 const EVENTS = {
@@ -331,6 +332,11 @@ export default {
       this.isFormSubmitting = false
       this.hideConfirmation()
     },
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>

@@ -33,8 +33,8 @@
               {{ request.assetCode }}
             </td>
 
-            <td :title="request.amount | formatMoney">
-              {{ request.amount | formatMoney }}
+            <td :title="formatMoney(request.amount)">
+              {{ formatMoney(request.amount) }}
             </td>
 
             <td>
@@ -65,6 +65,8 @@ import RequestStateViewer from '../../shared/components/request-state-viewer'
 import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 
+import { formatMoney } from '@/js/helpers/money-helper'
+
 const EVENTS = {
   select: 'select',
 }
@@ -91,5 +93,10 @@ export default {
   data: _ => ({
     EVENTS,
   }),
+  setup () {
+    return {
+      formatMoney,
+    }
+  },
 }
 </script>

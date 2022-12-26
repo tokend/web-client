@@ -35,14 +35,14 @@
             <td>{{ 'create-sale-requests.soft-cap-title' | globalize }}</td>
             <td>
               <!-- eslint-disable-next-line max-len -->
-              {{ { value: request.softCap, currency: request.defaultQuoteAsset } | formatMoney }}
+              {{ formatMoney({ value: request.softCap, currency: request.defaultQuoteAsset }) }}
             </td>
           </tr>
           <tr>
             <td>{{ 'create-sale-requests.hard-cap-title' | globalize }}</td>
             <td>
               <!-- eslint-disable-next-line max-len -->
-              {{ { value: request.hardCap, currency: request.defaultQuoteAsset } | formatMoney }}
+              {{ formatMoney({ value: request.hardCap, currency: request.defaultQuoteAsset }) }}
             </td>
           </tr>
           <tr>
@@ -52,7 +52,7 @@
             </td>
             <td>
               <!-- eslint-disable-next-line max-len -->
-              {{ { value: request.baseAssetForHardCap, currency: request.baseAsset } | formatMoney }}
+              {{ formatMoney({ value: request.baseAssetForHardCap, currency: request.baseAsset }) }}
             </td>
           </tr>
           <tr>
@@ -95,6 +95,7 @@
 <script>
 import { SALE_TYPES } from '@tokend/js-sdk'
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 export default {
   name: 'request-attributes-viewer',
@@ -108,6 +109,11 @@ export default {
       keyValue[SALE_TYPES.immediate] = 'sale-overview.immediate'
       return keyValue
     },
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>

@@ -14,7 +14,7 @@
 
           <tr>
             <td>{{ 'pre-issuance-form.amount-lbl' | globalize }}</td>
-            <td>{{ issuance.amount | formatMoney }}</td>
+            <td>{{ formatMoney(issuance.amount) }}</td>
           </tr>
         </tbody>
       </table>
@@ -24,12 +24,18 @@
 
 <script>
 import { Issuance } from '../wrappers/issuance'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 export default {
   name: 'issuance-viewer',
 
   props: {
     issuance: { type: Issuance, required: true },
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>

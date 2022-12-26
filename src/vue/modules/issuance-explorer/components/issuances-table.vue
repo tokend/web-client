@@ -35,8 +35,8 @@
                 <email-getter :balance-id="issuance.counterparty" />
               </td>
 
-              <td :title="issuance.amount | formatMoney">
-                {{ issuance.amount | formatMoney }}
+              <td :title="formatMoney(issuance.amount)">
+                {{ formatMoney(issuance.amount) }}
               </td>
 
               <td :title="issuance.asset">
@@ -76,6 +76,7 @@ import EmailGetter from '@/vue/common/EmailGetter'
 import RequestStateViewer from './request-state-viewer'
 import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 export default {
   name: 'issuanes-table',
@@ -95,6 +96,11 @@ export default {
       type: Boolean,
       required: true,
     },
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>

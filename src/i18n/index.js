@@ -188,23 +188,10 @@ class I18n {
               const value = (_isObject(param) ? param.value : param) || '0'
               const defaultFormat =
                 _get(lngConfig, 'number.formats.amounts.default')
-
               const result = MathUtil.format(value, defaultFormat)
               return param.currency
                 ? result.concat(' ', param.currency)
                 : result
-            case 'number':
-              return MathUtil
-                .format(param, _get(lngConfig, 'number.formats.default'))
-            case 'integer':
-              return MathUtil
-                .format(param, _get(lngConfig, 'number.formats.integer'))
-            case 'percent':
-              const convertedPercent = MathUtil.multiply(param, 100)
-              return MathUtil.format(
-                convertedPercent,
-                _get(lngConfig, 'number.formats.percent')
-              )
             default:
               console.warn(`Unknown format: ${format}, skipping…`)
               return param

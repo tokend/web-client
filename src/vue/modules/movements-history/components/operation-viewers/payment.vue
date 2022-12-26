@@ -6,7 +6,7 @@
           {{ 'movements-history.source-fixed-fee-lbl' | globalize }}
         </td>
         <td class="attributes-viewer__table-cell">
-          {{ sourceFixedFee | formatMoney }}
+          {{ formatMoney(sourceFixedFee) }}
         </td>
       </tr>
       <tr class="attributes-viewer__table-row">
@@ -15,7 +15,7 @@
           {{ 'movements-history.source-calculated-percent-fee-lbl' | globalize }}
         </td>
         <td class="attributes-viewer__table-cell">
-          {{ sourceCalculatedPercentFee | formatMoney }}
+          {{ formatMoney(sourceCalculatedPercentFee) }}
         </td>
       </tr>
       <tr class="attributes-viewer__table-row">
@@ -23,7 +23,7 @@
           {{ 'movements-history.destination-fixed-fee-lbl' | globalize }}
         </td>
         <td class="attributes-viewer__table-cell">
-          {{ destinationFixedFee | formatMoney }}
+          {{ formatMoney(destinationFixedFee) }}
         </td>
       </tr>
       <tr class="attributes-viewer__table-row">
@@ -32,7 +32,7 @@
           {{ 'movements-history.destination-calculated-percent-fee-lbl' | globalize }}
         </td>
         <td class="attributes-viewer__table-cell">
-          {{ destinationCalculatedPercentFee | formatMoney }}
+          {{ formatMoney(destinationCalculatedPercentFee) }}
         </td>
       </tr>
       <tr class="attributes-viewer__table-row">
@@ -40,7 +40,7 @@
           {{ 'movements-history.total-fee-lbl' | globalize }}
         </td>
         <td class="attributes-viewer__table-cell">
-          {{ totalFee | formatMoney }}
+          {{ formatMoney(totalFee) }}
         </td>
       </tr>
     </template>
@@ -104,6 +104,7 @@ import EmailGetter from '@/vue/common/EmailGetter'
 import { PaymentOp } from '../../wrappers/operation-details/payment'
 
 import { MathUtil } from '@/js/utils'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 export default {
   components: {
@@ -155,6 +156,11 @@ export default {
         value: MathUtil.add(sourceFee, destinationFee),
       }
     },
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>

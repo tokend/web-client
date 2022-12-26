@@ -5,7 +5,7 @@
         {{ 'movements-history.amount-lbl' | globalize }}
       </td>
       <td class="attributes-viewer__table-cell">
-        {{ amount | formatMoney }}
+        {{ formatMoney(amount) }}
       </td>
     </tr>
 
@@ -15,7 +15,7 @@
           {{ 'movements-history.fixed-fee-lbl' | globalize }}
         </td>
         <td class="attributes-viewer__table-cell">
-          {{ fixedFee | formatMoney }}
+          {{ formatMoney(fixedFee) }}
         </td>
       </tr>
       <tr class="attributes-viewer__table-row">
@@ -23,7 +23,7 @@
           {{ 'movements-history.calculated-percent-fee-lbl' | globalize }}
         </td>
         <td class="attributes-viewer__table-cell">
-          {{ calculatedPercentFee | formatMoney }}
+          {{ formatMoney(calculatedPercentFee) }}
         </td>
       </tr>
       <tr class="attributes-viewer__table-row">
@@ -31,7 +31,7 @@
           {{ 'movements-history.total-fee-lbl' | globalize }}
         </td>
         <td class="attributes-viewer__table-cell">
-          {{ totalFee | formatMoney }}
+          {{ formatMoney(totalFee) }}
         </td>
       </tr>
     </template>
@@ -42,6 +42,7 @@
 import { BalanceChangedEffect } from '../../wrappers/effect'
 
 import { MathUtil } from '@/js/utils'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 export default {
   name: 'balance-changed',
@@ -91,6 +92,11 @@ export default {
         ),
       }
     },
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>
