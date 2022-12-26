@@ -21,15 +21,15 @@
       </td>
       <td
         class="movements-table-row__cell"
-        :title="movement.appliedAt | formatCalendar"
+        :title="formatCalendar(movement.appliedAt)"
       >
-        {{ movement.appliedAt | formatCalendar }}
+        {{ formatCalendar(movement.appliedAt) }}
       </td>
       <td
         class="movements-table-row__cell"
-        :title="movement | movementAmount | formatMoney"
+        :title="formatMoney(movementAmount)"
       >
-        {{ movement | movementAmount | formatMoney }}
+        {{ formatMoney(movementAmount) }}
       </td>
 
       <td
@@ -69,33 +69,14 @@ import TranslationFiltersMixin from '../mixins/translation-filters.mixin'
 import MovementAttributesViewer from './movement-attributes-viewer'
 import MovementDirectionMark from './movement-direction-mark'
 import { MathUtil } from '@/js/utils'
+import { formatMoney } from '@/js/helpers/money-helper'
+import { formatCalendar } from '@/js/helpers/date-helpers'
 
 export default {
   name: 'movement-table-row',
   components: {
     MovementAttributesViewer,
     MovementDirectionMark,
-  },
-  filters: {
-    movementAmount (movement) {
-      let currency = movement.assetCode
-      let value
-      const fee = MathUtil.add(
-        movement.effect.calculatedPercentFee,
-        movement.effect.fixedFee
-      )
-      if (movement.isIncoming) {
-        value = MathUtil.subtract(movement.effect.amount, fee)
-      }
-      if (movement.isUnlocked) {
-        value = MathUtil.add(movement.effect.amount, fee)
-      }
-      if (movement.isOutgoing || movement.isLocked) {
-        value = -MathUtil.add(movement.effect.amount, fee)
-      }
-
-      return { currency, value }
-    },
   },
   mixins: [TranslationFiltersMixin],
 
@@ -106,6 +87,35 @@ export default {
   data: () => ({
     isAttributesViewerShown: false,
   }),
+
+  computed: {
+    movementAmount () {
+      let currency = this.movement.assetCode
+      let value
+      const fee = MathUtil.add(
+        this.movement.effect.calculatedPercentFee,
+        this.movement.effect.fixedFee
+      )
+      if (this.movement.isIncoming) {
+        value = MathUtil.subtract(this.movement.effect.amount, fee)
+      }
+      if (this.movement.isUnlocked) {
+        value = MathUtil.add(this.movement.effect.amount, fee)
+      }
+      if (this.movement.isOutgoing || this.movement.isLocked) {
+        value = -MathUtil.add(this.movement.effect.amount, fee)
+      }
+
+      return { currency, value }
+    },
+  },
+
+  setup () {
+    return {
+      formatMoney,
+      formatCalendar,
+    }
+  },
 }
 </script>
 

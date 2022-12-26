@@ -8,6 +8,18 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Changed
+- Move formatNumber filter to helper
+- Move formatPercent to formatNumber helper
+- Move formatInteger to formatNumber helper
+- Move cropAddress to text helper and rename to abbrCenter
+- Move formatMoney to helper
+- Move formatDate to helper
+- Move formatDateDMY to helper
+- Move formatDateDMYT to helper
+- Move formatCalendar to helper
+- Move formatCalendarInline to helper
+
 ### Fixed
 - New version of vue: 2.7.14
 - New version of vue-template-compiler": 2.7.14

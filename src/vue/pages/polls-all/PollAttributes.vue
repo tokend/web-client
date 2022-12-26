@@ -29,7 +29,7 @@
               {{ 'poll-attributes.start-time-key' | globalize }}
             </td>
             <td>
-              {{ poll.startsAt | formatDateDMYT }}
+              {{ formatDateDMYT(poll.startsAt) }}
             </td>
           </tr>
 
@@ -38,7 +38,7 @@
               {{ 'poll-attributes.end-time-key' | globalize }}
             </td>
             <td>
-              {{ poll.endsAt | formatDateDMYT }}
+              {{ formatDateDMYT(poll.endsAt) }}
             </td>
           </tr>
 
@@ -80,7 +80,7 @@
               {{ 'poll-attributes.number-of-choices-key' | globalize }}
             </td>
             <td>
-              {{ poll.numberOfChoices | formatNumber }}
+              {{ formatNumber(poll.numberOfChoices) }}
             </td>
           </tr>
         </tbody>
@@ -93,10 +93,11 @@
 import { PollRecord } from '@/js/records/entities/poll.record'
 import EmailGetter from '@/vue/common/EmailGetter'
 import { keyValues } from '@/key-values'
+import { defineComponent } from 'vue'
+import { formatNumber } from '@/js/helpers/number-helper'
+import { formatDateDMYT } from '@/js/helpers/date-helpers'
 
-export default {
-  name: 'poll-attributes',
-
+export default defineComponent({
   components: {
     EmailGetter,
   },
@@ -147,7 +148,14 @@ export default {
       return this.$options.filters.globalize(translationId)
     },
   },
-}
+
+  setup () {
+    return {
+      formatNumber,
+      formatDateDMYT,
+    }
+  },
+})
 </script>
 
 <style lang="scss" scoped>

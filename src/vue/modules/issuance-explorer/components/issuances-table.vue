@@ -35,8 +35,8 @@
                 <email-getter :balance-id="issuance.counterparty" />
               </td>
 
-              <td :title="issuance.amount | formatMoney">
-                {{ issuance.amount | formatMoney }}
+              <td :title="formatMoney(issuance.amount)">
+                {{ formatMoney(issuance.amount) }}
               </td>
 
               <td :title="issuance.asset">
@@ -47,8 +47,8 @@
                 <request-state-viewer :request="issuance" />
               </td>
 
-              <td :title="issuance.date | formatCalendar">
-                {{ issuance.date | formatCalendar }}
+              <td :title="formatCalendar(issuance.date)">
+                {{ formatCalendar(issuance.date) }}
               </td>
 
               <td :title="issuance.reference">
@@ -76,6 +76,8 @@ import EmailGetter from '@/vue/common/EmailGetter'
 import RequestStateViewer from './request-state-viewer'
 import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
+import { formatMoney } from '@/js/helpers/money-helper'
+import { formatCalendar } from '@/js/helpers/date-helpers'
 
 export default {
   name: 'issuanes-table',
@@ -95,6 +97,12 @@ export default {
       type: Boolean,
       required: true,
     },
+  },
+  setup () {
+    return {
+      formatMoney,
+      formatCalendar,
+    }
   },
 }
 </script>

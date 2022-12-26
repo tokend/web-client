@@ -2,7 +2,7 @@
   <div class="sale-state-widget">
     <p class="sale-state-widget__invested">
       <!-- eslint-disable-next-line max-len -->
-      {{ { value: sale.currentCap, currency: sale.defaultQuoteAsset } | formatMoney }}
+      {{ formatMoney({ value: sale.currentCap, currency: sale.defaultQuoteAsset }) }}
     </p>
 
     <p class="sale-state-widget__funded">
@@ -73,6 +73,7 @@ import InvestForm from '@/vue/forms/InvestForm'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 import { SALE_STATES } from '@/js/const/sale-states'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 const EVENTS = {
   saleUpdated: 'sale-updated',
@@ -92,6 +93,11 @@ export default {
     SALE_STATES,
     EVENTS,
   }),
+  setup () {
+    return {
+      formatMoney,
+    }
+  },
 }
 </script>
 

@@ -32,7 +32,7 @@
               {{ 'asset-details.balance-title' | globalize }}
             </td>
             <td>
-              {{ asset.balance | formatMoney }}
+              {{ formatMoney(asset.balance) }}
             </td>
           </tr>
           <tr v-if="asset.balance.value">
@@ -40,7 +40,7 @@
               {{ 'asset-details.converted-balance-title' | globalize }}
             </td>
             <td>
-              {{ asset.convertedBalance | formatMoney }}
+              {{ formatMoney(asset.convertedBalance) }}
             </td>
           </tr>
           <tr>
@@ -48,7 +48,7 @@
               {{ 'asset-details.maximum-title' | globalize }}
             </td>
             <td>
-              {{ asset.maxIssuanceAmount | formatMoney }}
+              {{ formatMoney(asset.maxIssuanceAmount) }}
             </td>
           </tr>
           <tr>
@@ -56,7 +56,7 @@
               {{ 'asset-details.issued-title' | globalize }}
             </td>
             <td>
-              {{ asset.issued | formatMoney }}
+              {{ formatMoney(asset.issued) }}
             </td>
           </tr>
           <tr>
@@ -64,7 +64,7 @@
               {{ 'asset-details.available-title' | globalize }}
             </td>
             <td>
-              {{ asset.availableForIssuance | formatMoney }}
+              {{ formatMoney(asset.availableForIssuance) }}
             </td>
           </tr>
           <tr>
@@ -197,7 +197,7 @@
               {{ 'asset-details.maturity-date' | globalize }}
             </td>
             <td>
-              {{ +asset.maturityDate | formatCalendar }}
+              {{ formatCalendar(+asset.maturityDate) }}
             </td>
           </tr>
           <tr v-if="asset.annualReturn">
@@ -302,6 +302,8 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ASSET_SUBTYPE, STELLAR_TYPES } from '@/js/const/asset-subtypes.const'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { formatMoney } from '@/js/helpers/money-helper'
+import { formatCalendar } from '@/js/helpers/date-helpers'
 
 const EVENTS = {
   balanceAdded: 'balance-added',
@@ -399,6 +401,12 @@ export default {
         ErrorHandler.process(e)
       }
     },
+  },
+  setup () {
+    return {
+      formatMoney,
+      formatCalendar,
+    }
   },
 }
 </script>

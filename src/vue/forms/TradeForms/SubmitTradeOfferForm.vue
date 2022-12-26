@@ -77,10 +77,10 @@
                 asset: former.attrs.quoteAssetCode
               })
             "
-            :value="{
+            :value="formatMoney({
               value: quoteAmount,
               currency: former.attrs.quoteAssetCode,
-            } | formatMoney"
+            })"
             :error-message="getFieldErrorMessage(
               'quoteAmount',
               {
@@ -156,6 +156,7 @@ import { mapGetters, mapActions } from 'vuex'
 import { MathUtil } from '@/js/utils/math.util'
 import config from '@/config'
 import { api } from '@/api'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 import {
   required,
@@ -342,6 +343,11 @@ export default {
       this.isOfferSubmitting = false
       this.hideConfirmation()
     },
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>

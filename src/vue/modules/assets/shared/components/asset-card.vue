@@ -13,11 +13,9 @@
         {{ asset.name }}
       </template>
       <template slot="accent-title">
-        <span :title="assetBalance | formatMoney">
-          {{
-            'assets-list.list-item-balance-line' |
-              globalize({ value: assetBalance})
-          }}
+        <span :title="formatMoney(assetBalance)">
+          {{ 'assets-list.list-item-balance-line' | globalize }}
+          {{ formatMoney(assetBalance) }}
         </span>
       </template>
       <template slot="content">
@@ -90,6 +88,7 @@ import { AssetFormer } from '@/js/formers/AssetFormer'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { types } from '@/vue/modules/assets/shared/store/types'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 export default {
   name: 'asset-card',
@@ -165,6 +164,11 @@ export default {
       this.isAssetFormShown = false
       this.isDrawerShown = true
     },
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>

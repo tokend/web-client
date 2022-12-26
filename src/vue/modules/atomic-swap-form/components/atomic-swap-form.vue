@@ -60,17 +60,17 @@
           <readonly-field
             class="atomic-swap-form__price"
             :label="'atomic-swap-form.price' | globalize"
-            :value="{
+            :value="formatMoney({
               value: quoteAssetPrice,
               currency: form.quoteAsset,
-            } | formatMoney"
+            })"
           />
           <readonly-field
             :label="'atomic-swap-form.total-price' | globalize"
-            :value="{
+            :value="formatMoney({
               value: totalPrice,
               currency: form.quoteAsset,
-            } | formatMoney"
+            })"
           />
         </div>
       </div>
@@ -131,6 +131,7 @@ import {
   amountRange,
   required,
 } from '@validators'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 const EVENTS = {
   submitted: 'submitted',
@@ -267,6 +268,11 @@ export default {
         clearInterval(this.intervalId)
       }
     },
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>

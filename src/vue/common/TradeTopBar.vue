@@ -82,15 +82,13 @@
           v-if="formattedPairs.length && isLoaded"
           class="trade-asset-selector__balances-value"
         >
-          {{
-            // eslint-disable-next-line
-            { value: assetPairBalances.base, currency: assetPair.base } | formatMoney
-          }}
+          {{ formatMoney({
+            value: assetPairBalances.base, currency: assetPair.base
+          }) }}
           /
-          {{
-            // eslint-disable-next-line
-            { value: assetPairBalances.quote, currency: assetPair.quote } | formatMoney
-          }}
+          {{ formatMoney({
+            value:assetPairBalances.quote, currency: assetPair.quote
+          }) }}
         </p>
         <skeleton-loader
           v-else-if="!isLoaded"
@@ -153,6 +151,8 @@ import { vueRoutes } from '@/vue-router/routes'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
+
+import { formatMoney } from '@/js/helpers/money-helper'
 
 const EVENTS = {
   reloadTradeData: 'reload-trade-data',
@@ -286,6 +286,11 @@ export default {
       this.$emit(EVENTS.reloadTradeData)
       this.loadBalances()
     },
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>

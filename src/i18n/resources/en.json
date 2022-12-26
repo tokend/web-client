@@ -1113,7 +1113,7 @@
     "assets-list": {
       "update-asset-title": "Update asset",
       "details-title": "Asset details",
-      "list-item-balance-line": "Balance: {{value, money}}",
+      "list-item-balance-line": "Balance:",
       "no-balance-msg": "No balance"
     },
     "requests-page": {
