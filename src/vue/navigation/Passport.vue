@@ -11,7 +11,7 @@
         v-else
         class="passport__avatar passport__email-abbr-btn"
       >
-        {{ email | abbreviate }}
+        {{ abbreviate(email) }}
       </p>
     </button>
 
@@ -87,6 +87,7 @@ import { mapGetters, mapActions } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
 import { handleClickOutside } from '@/js/helpers/handle-click-outside'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { abbreviate } from '@/js/helpers/abbreviate'
 import PassportBalances from './Passport.Balances'
 
 export default {
@@ -193,6 +194,11 @@ export default {
       this.closeDropdown()
       await this.$router.push(vueRoutes.settings)
     },
+  },
+  setup () {
+    return {
+      abbreviate,
+    }
   },
 }
 </script>

@@ -9,7 +9,7 @@
     class="logo-viewer logo-viewer--abbr"
     :class="{ 'logo-viewer--dark' : darkMode }"
   >
-    {{ asset.code | abbreviate }}
+    {{ abbreviate(asset.code) }}
   </p>
 </template>
 
@@ -17,6 +17,7 @@
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
 import { documentsManager } from '@/api'
+import { abbreviate } from '@/js/helpers/abbreviate'
 
 export default {
   name: 'logo-viewer',
@@ -28,6 +29,11 @@ export default {
     url () {
       return documentsManager.getDocumentUrlByKey(this.asset.logoKey)
     },
+  },
+  setup () {
+    return {
+      abbreviate,
+    }
   },
 }
 </script>

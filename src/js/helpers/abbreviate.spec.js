@@ -1,6 +1,6 @@
 import { abbreviate } from './abbreviate'
 
-describe('abbreviate filter', () => {
+describe('abbreviate helper', () => {
   describe('transforms the given', () => {
     const testCases = [
       { input: 'account', expectedOutput: 'A' },

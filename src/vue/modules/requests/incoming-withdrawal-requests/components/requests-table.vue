@@ -41,16 +41,16 @@
               {{ request.assetCode }}
             </td>
 
-            <td :title="request.amount | formatMoney">
-              {{ request.amount | formatMoney }}
+            <td :title="formatMoney(request.amount)">
+              {{ formatMoney(request.amount) }}
             </td>
 
             <td>
               <request-state-viewer :request="request" />
             </td>
 
-            <td :title="request.createdAt | formatCalendar">
-              {{ request.createdAt | formatCalendar }}
+            <td :title="formatCalendar(request.createdAt)">
+              {{ formatCalendar(request.createdAt) }}
             </td>
 
             <td>
@@ -82,6 +82,8 @@ import EmailGetter from '@/vue/common/EmailGetter'
 import RequestStateViewer from '../../shared/components/request-state-viewer'
 import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
+import { formatMoney } from '@/js/helpers/money-helper'
+import { formatCalendar } from '@/js/helpers/date-helpers'
 
 const EVENTS = {
   select: 'select',
@@ -104,6 +106,12 @@ export default {
   data: _ => ({
     EVENTS,
   }),
+  setup () {
+    return {
+      formatMoney,
+      formatCalendar,
+    }
+  },
 }
 </script>
 

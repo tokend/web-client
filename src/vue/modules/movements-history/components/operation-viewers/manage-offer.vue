@@ -49,7 +49,7 @@
         {{ 'movements-history.base-amount-lbl' | globalize }}
       </td>
       <td class="attributes-viewer__table-cell">
-        {{ baseAmount | formatMoney }}
+        {{ formatMoney(baseAmount) }}
       </td>
     </tr>
     <tr class="attributes-viewer__table-row">
@@ -57,7 +57,7 @@
         {{ 'movements-history.quote-amount-lbl' | globalize }}
       </td>
       <td class="attributes-viewer__table-cell">
-        {{ quoteAmount | formatMoney }}
+        {{ formatMoney(quoteAmount) }}
       </td>
     </tr>
     <tr class="attributes-viewer__table-row">
@@ -65,7 +65,7 @@
         {{ 'movements-history.price-lbl' | globalize }}
       </td>
       <td class="attributes-viewer__table-cell">
-        {{ price | formatMoney }}
+        {{ formatMoney(price) }}
       </td>
     </tr>
     <tr class="attributes-viewer__table-row">
@@ -86,6 +86,7 @@
 
 <script>
 import { ManageOfferOp } from '../../wrappers/operation-details/manage-offer'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 export default {
   props: {
@@ -113,6 +114,11 @@ export default {
         value: this.operationDetails.price,
       }
     },
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>

@@ -21,7 +21,7 @@
         {{ 'movements-history.date-lbl' | globalize }}
       </td>
       <td class="attributes-viewer__table-cell">
-        {{ movement.appliedAt | formatCalendar }}
+        {{ formatCalendar(movement.appliedAt) }}
       </td>
     </tr>
   </tbody>
@@ -29,6 +29,7 @@
 
 <script>
 import { Movement } from '../wrappers/movement'
+import { formatCalendar } from '@/js/helpers/date-helpers'
 
 import TranslationFiltersMixin from '../mixins/translation-filters.mixin'
 
@@ -40,6 +41,11 @@ export default {
       type: Movement,
       required: true,
     },
+  },
+  setup () {
+    return {
+      formatCalendar,
+    }
   },
 }
 </script>

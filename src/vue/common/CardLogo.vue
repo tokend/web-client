@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { abbreviate } from '@/vue/filters/abbreviate'
+import { abbreviate } from '@/js/helpers/abbreviate'
 
 export default {
   name: 'card-logo',

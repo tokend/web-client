@@ -8,7 +8,7 @@
       v-for="(item, index) in filteredBalances"
       :key="index"
     >
-      {{ { value: item.balance, currency: item.asset.code } | formatMoney }}
+      {{ formatMoney({ value: item.balance, currency: item.asset.code }) }}
     </span>
 
     <router-link
@@ -25,6 +25,7 @@
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
+import { formatMoney } from '@/js/helpers/money-helper'
 
 const MAX_BALANCES_COUNT = 3
 const EVENTS = {
@@ -62,6 +63,11 @@ export default {
     showMoreBalances () {
       this.$emit(EVENTS.moreLinkFollowed)
     },
+  },
+  setup () {
+    return {
+      formatMoney,
+    }
   },
 }
 </script>
