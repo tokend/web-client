@@ -23,7 +23,7 @@
               v-if="currentAssetCode && !imgUrl"
               class="asset-selector__asset-code-abbr"
             >
-              {{ currentAssetCode | abbreviate }}
+              {{ abbreviate(currentAssetCode) }}
             </p>
           </div>
           <div>
@@ -121,6 +121,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
 import { formatMoney } from '@/js/helpers/money-helper'
+import { abbreviate } from '@/js/helpers/abbreviate'
 
 const EVENTS = {
   assetChange: 'asset-change',
@@ -218,6 +219,7 @@ export default {
   setup () {
     return {
       formatMoney,
+      abbreviate,
     }
   },
 }

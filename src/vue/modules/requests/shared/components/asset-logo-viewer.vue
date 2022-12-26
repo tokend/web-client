@@ -8,16 +8,23 @@
     v-else
     class="asset-logo-viewer asset-logo-viewer__code-abbr"
   >
-    {{ assetCode | abbreviate }}
+    {{ abbreviate(assetCode) }}
   </p>
 </template>
 
 <script>
+import { abbreviate } from '@/js/helpers/abbreviate'
+
 export default {
   name: 'asset-logo-viewer',
   props: {
     assetLogoUrl: { type: String, default: '' },
     assetCode: { type: String, required: true },
+  },
+  setup () {
+    return {
+      abbreviate,
+    }
   },
 }
 </script>

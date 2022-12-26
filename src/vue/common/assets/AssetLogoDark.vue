@@ -8,16 +8,23 @@
     v-else
     class="asset-logo-dark asset-logo-dark__code-abbr"
   >
-    {{ assetCode | abbreviate }}
+    {{ abbreviate(assetCode) }}
   </p>
 </template>
 
 <script>
+import { abbreviate } from '@/js/helpers/abbreviate'
+
 export default {
   name: 'asset-logo-dark',
   props: {
     logoUrl: { type: String, required: true },
     assetCode: { type: String, required: true },
+  },
+  setup () {
+    return {
+      abbreviate,
+    }
   },
 }
 </script>

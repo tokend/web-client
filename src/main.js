@@ -17,7 +17,6 @@ import { ripple } from '@/vue/directives/ripple'
 import { i18n, i18nComponent } from '@/i18n'
 import { globalize } from '@/vue/filters/globalize'
 import { globalizeCountry } from './vue/filters/globalizeCountry'
-import { abbreviate } from '@/vue/filters/abbreviate'
 import { ErrorTracker } from '@/js/helpers/error-tracker'
 import { vueRoutes } from './vue-router/routes'
 import { useBrowserUpdateBanner } from './browser-update'
@@ -45,7 +44,6 @@ async function init () {
   Vue.directive('ripple', ripple)
   Vue.filter('globalize', globalize)
   Vue.filter('globalizeCountry', globalizeCountry)
-  Vue.filter('abbreviate', abbreviate)
   Vue.component('i18n', i18nComponent)
   Vue.prototype.$config = config
   Vue.prototype.$routes = vueRoutes

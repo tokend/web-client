@@ -19,6 +19,7 @@ for further information about branching and tagging conventions.
 - Move formatDateDMYT to helper
 - Move formatCalendar to helper
 - Move formatCalendarInline to helper
+- Move abbreviate to helper
 
 ### Fixed
 - New version of vue: 2.7.14
