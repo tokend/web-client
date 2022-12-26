@@ -41,8 +41,8 @@
               <request-state-viewer :request="request" />
             </td>
 
-            <td :title="request.createdAt | formatCalendar">
-              {{ request.createdAt | formatCalendar }}
+            <td :title="formatCalendar(request.createdAt) ">
+              {{ formatCalendar(request.createdAt) }}
             </td>
           </tr>
         </tbody>
@@ -66,6 +66,7 @@ import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoader
 import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 
 import { formatMoney } from '@/js/helpers/money-helper'
+import { formatCalendar } from '@/js/helpers/date-helpers'
 
 const EVENTS = {
   select: 'select',
@@ -96,6 +97,7 @@ export default {
   setup () {
     return {
       formatMoney,
+      formatCalendar,
     }
   },
 }

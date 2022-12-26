@@ -45,12 +45,12 @@
               <request-state-viewer :request="request" />
             </td>
 
-            <td :title="request.createdAt | formatCalendar">
-              {{ request.createdAt | formatCalendar }}
+            <td :title="formatCalendar(request.createdAt)">
+              {{ formatCalendar(request.createdAt) }}
             </td>
 
-            <td :title="request.updatedAt | formatCalendar">
-              {{ request.updatedAt | formatCalendar }}
+            <td :title="formatCalendar(request.updatedAt)">
+              {{ formatCalendar(request.updatedAt) }}
             </td>
 
             <td>
@@ -83,6 +83,8 @@ import RequestStateViewer from '../../shared/components/request-state-viewer'
 import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 
+import { formatCalendar } from '@/js/helpers/date-helpers'
+
 const EVENTS = {
   select: 'select',
 }
@@ -109,6 +111,12 @@ export default {
   data: _ => ({
     EVENTS,
   }),
+
+  setup () {
+    return {
+      formatCalendar,
+    }
+  },
 }
 </script>
 

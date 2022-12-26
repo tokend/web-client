@@ -37,7 +37,7 @@
                 {{ 'sale-overview.start-time-title' | globalize }}
               </td>
               <td>
-                {{ sale.startTime | formatCalendar }}
+                {{ formatCalendar(sale.startTime) }}
               </td>
             </tr>
 
@@ -46,7 +46,7 @@
                 {{ 'sale-overview.close-time-title' | globalize }}
               </td>
               <td>
-                {{ sale.endTime | formatCalendar }}
+                {{ formatCalendar(sale.endTime) }}
               </td>
             </tr>
 
@@ -130,6 +130,7 @@ import { SaleRecord } from '@/js/records/entities/sale.record'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { formatMoney } from '@/js/helpers/money-helper'
+import { formatCalendar } from '@/js/helpers/date-helpers'
 
 export default {
   name: 'sale-overview',
@@ -176,6 +177,7 @@ export default {
   setup () {
     return {
       formatMoney,
+      formatCalendar,
     }
   },
 }

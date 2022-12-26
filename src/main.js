@@ -17,11 +17,6 @@ import { ripple } from '@/vue/directives/ripple'
 import { i18n, i18nComponent } from '@/i18n'
 import { globalize } from '@/vue/filters/globalize'
 import { globalizeCountry } from './vue/filters/globalizeCountry'
-import { formatDate } from '@/vue/filters/formatDate'
-import { formatCalendar } from '@/vue/filters/formatCalendar'
-import { formatCalendarInline } from '@/vue/filters/formatCalendarInline'
-import { formatDateDMY } from '@/vue/filters/formatDateDMY'
-import { formatDateDMYT } from '@/vue/filters/formatDateDMYT'
 import { abbreviate } from '@/vue/filters/abbreviate'
 import { ErrorTracker } from '@/js/helpers/error-tracker'
 import { vueRoutes } from './vue-router/routes'
@@ -50,11 +45,6 @@ async function init () {
   Vue.directive('ripple', ripple)
   Vue.filter('globalize', globalize)
   Vue.filter('globalizeCountry', globalizeCountry)
-  Vue.filter('formatDate', formatDate)
-  Vue.filter('formatDateDMY', formatDateDMY)
-  Vue.filter('formatDateDMYT', formatDateDMYT)
-  Vue.filter('formatCalendar', formatCalendar)
-  Vue.filter('formatCalendarInline', formatCalendarInline)
   Vue.filter('abbreviate', abbreviate)
   Vue.component('i18n', i18nComponent)
   Vue.prototype.$config = config

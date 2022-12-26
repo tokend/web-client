@@ -16,7 +16,7 @@
             {{ 'sale-overview.start-time-title' | globalize }}
           </td>
           <td>
-            {{ sale.startTime | formatCalendar }}
+            {{ formatCalendar(sale.startTime) }}
           </td>
         </tr>
 
@@ -25,7 +25,7 @@
             {{ 'sale-overview.close-time-title' | globalize }}
           </td>
           <td>
-            {{ sale.endTime | formatCalendar }}
+            {{ formatCalendar(sale.endTime) }}
           </td>
         </tr>
 
@@ -116,6 +116,7 @@
 import { SALE_TYPES } from '@tokend/js-sdk'
 import { SaleRecord } from '@/js/records/entities/sale.record'
 import { formatMoney } from '@/js/helpers/money-helper'
+import { formatCalendar } from '@/js/helpers/date-helpers'
 import EmailGetter from '@/vue/common/EmailGetter'
 
 export default {
@@ -137,6 +138,7 @@ export default {
   setup () {
     return {
       formatMoney,
+      formatCalendar,
     }
   },
 }

@@ -37,7 +37,7 @@
                 <td>{{ formatMoney(item.baseAmount) }}</td>
                 <td>{{ formatMoney(item.price) }}</td>
                 <td>{{ formatMoney(item.quoteAmount) }}</td>
-                <td>{{ item.createdAt | formatCalendar }}</td>
+                <td>{{ formatCalendar(item.createdAt) }}</td>
               </tr>
             </tbody>
             <empty-tbody-placeholder
@@ -63,6 +63,7 @@
 import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 import { formatMoney } from '@/js/helpers/money-helper'
+import { formatCalendar } from '@/js/helpers/date-helpers'
 
 export default {
   name: 'trade-history-renderer',
@@ -82,6 +83,7 @@ export default {
   setup () {
     return {
       formatMoney,
+      formatCalendar,
     }
   },
 }

@@ -21,9 +21,9 @@
       </td>
       <td
         class="movements-table-row__cell"
-        :title="movement.appliedAt | formatCalendar"
+        :title="formatCalendar(movement.appliedAt)"
       >
-        {{ movement.appliedAt | formatCalendar }}
+        {{ formatCalendar(movement.appliedAt) }}
       </td>
       <td
         class="movements-table-row__cell"
@@ -70,6 +70,7 @@ import MovementAttributesViewer from './movement-attributes-viewer'
 import MovementDirectionMark from './movement-direction-mark'
 import { MathUtil } from '@/js/utils'
 import { formatMoney } from '@/js/helpers/money-helper'
+import { formatCalendar } from '@/js/helpers/date-helpers'
 
 export default {
   name: 'movement-table-row',
@@ -112,6 +113,7 @@ export default {
   setup () {
     return {
       formatMoney,
+      formatCalendar,
     }
   },
 }

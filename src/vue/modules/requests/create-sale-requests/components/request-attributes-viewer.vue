@@ -21,14 +21,14 @@
             <td>
               {{ 'create-sale-requests.start-time-title' | globalize }}
             </td>
-            <td>{{ request.startTime | formatCalendar }}</td>
+            <td>{{ formatCalendar(request.startTime) }}</td>
           </tr>
           <tr>
             <td>
               {{ 'create-sale-requests.close-time-title' | globalize }}
             </td>
             <td>
-              {{ request.endTime | formatCalendar }}
+              {{ formatCalendar(request.endTime) }}
             </td>
           </tr>
           <tr>
@@ -96,6 +96,7 @@
 import { SALE_TYPES } from '@tokend/js-sdk'
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
 import { formatMoney } from '@/js/helpers/money-helper'
+import { formatCalendar } from '@/js/helpers/date-helpers'
 
 export default {
   name: 'request-attributes-viewer',
@@ -113,6 +114,7 @@ export default {
   setup () {
     return {
       formatMoney,
+      formatCalendar,
     }
   },
 }

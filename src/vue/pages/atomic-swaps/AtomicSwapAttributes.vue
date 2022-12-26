@@ -70,7 +70,7 @@
               {{ 'atomic-swap-attributes.created-key' | globalize }}
             </td>
             <td>
-              {{ atomicSwap.createdAt | formatDateDMYT }}
+              {{ formatDateDMYT(atomicSwap.createdAt) }}
             </td>
           </tr>
         </tbody>
@@ -125,6 +125,7 @@
 
 <script>
 import { AtomicSwapRecord } from '@/js/records/entities/atomic-swap.record'
+import { formatDateDMYT } from '@/js/helpers/date-helpers'
 import EmailGetter from '@/vue/common/EmailGetter'
 
 export default {
@@ -139,6 +140,12 @@ export default {
       type: AtomicSwapRecord,
       required: true,
     },
+  },
+
+  setup () {
+    return {
+      formatDateDMYT,
+    }
   },
 }
 </script>

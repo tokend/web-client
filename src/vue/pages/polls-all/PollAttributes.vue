@@ -29,7 +29,7 @@
               {{ 'poll-attributes.start-time-key' | globalize }}
             </td>
             <td>
-              {{ poll.startsAt | formatDateDMYT }}
+              {{ formatDateDMYT(poll.startsAt) }}
             </td>
           </tr>
 
@@ -38,7 +38,7 @@
               {{ 'poll-attributes.end-time-key' | globalize }}
             </td>
             <td>
-              {{ poll.endsAt | formatDateDMYT }}
+              {{ formatDateDMYT(poll.endsAt) }}
             </td>
           </tr>
 
@@ -95,6 +95,7 @@ import EmailGetter from '@/vue/common/EmailGetter'
 import { keyValues } from '@/key-values'
 import { defineComponent } from 'vue'
 import { formatNumber } from '@/js/helpers/number-helper'
+import { formatDateDMYT } from '@/js/helpers/date-helpers'
 
 export default defineComponent({
   components: {
@@ -151,6 +152,7 @@ export default defineComponent({
   setup () {
     return {
       formatNumber,
+      formatDateDMYT,
     }
   },
 })

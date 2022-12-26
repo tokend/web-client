@@ -47,8 +47,8 @@
                 <request-state-viewer :request="issuance" />
               </td>
 
-              <td :title="issuance.date | formatCalendar">
-                {{ issuance.date | formatCalendar }}
+              <td :title="formatCalendar(issuance.date)">
+                {{ formatCalendar(issuance.date) }}
               </td>
 
               <td :title="issuance.reference">
@@ -77,6 +77,7 @@ import RequestStateViewer from './request-state-viewer'
 import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 import { formatMoney } from '@/js/helpers/money-helper'
+import { formatCalendar } from '@/js/helpers/date-helpers'
 
 export default {
   name: 'issuanes-table',
@@ -100,6 +101,7 @@ export default {
   setup () {
     return {
       formatMoney,
+      formatCalendar,
     }
   },
 }

@@ -4,12 +4,12 @@
       <tbody>
         <tr>
           <td>{{ 'poll-requests.start-time-title' | globalize }}</td>
-          <td>{{ request.startTime | formatCalendar }}</td>
+          <td>{{ formatCalendar(request.startTime) }}</td>
         </tr>
 
         <tr>
           <td>{{ 'poll-requests.end-time-title' | globalize }}</td>
-          <td>{{ request.endTime | formatCalendar }}</td>
+          <td>{{ formatCalendar(request.endTime) }}</td>
         </tr>
 
         <tr>
@@ -56,6 +56,7 @@
 <script>
 import { PollRequest } from '../wrappers/poll-request'
 import { keyValues } from '@/key-values'
+import { formatCalendar } from '@/js/helpers/date-helpers'
 
 const QUESTION_MAX_LEN = 20
 
@@ -87,6 +88,11 @@ export default {
 
       return this.$options.filters.globalize(translationId)
     },
+  },
+  setup () {
+    return {
+      formatCalendar,
+    }
   },
 }
 </script>

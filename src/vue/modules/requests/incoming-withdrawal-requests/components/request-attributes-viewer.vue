@@ -9,7 +9,7 @@
 
         <tr>
           <td>{{ 'incoming-withdrawal-requests.created' | globalize }}</td>
-          <td>{{ request.createdAt | formatCalendar }}</td>
+          <td>{{ formatCalendar(request.createdAt) }}</td>
         </tr>
 
         <tr>
@@ -63,6 +63,7 @@ import EmailGetter from '@/vue/common/EmailGetter'
 
 import { IncomingWithdrawalRequest } from '../wrappers/incoming-withdrawal-request'
 import { formatMoney } from '@/js/helpers/money-helper'
+import { formatCalendar } from '@/js/helpers/date-helpers'
 
 export default {
   name: 'request-attributes-viewer',
@@ -75,6 +76,7 @@ export default {
   setup () {
     return {
       formatMoney,
+      formatCalendar,
     }
   },
 }

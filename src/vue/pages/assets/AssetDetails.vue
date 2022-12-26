@@ -197,7 +197,7 @@
               {{ 'asset-details.maturity-date' | globalize }}
             </td>
             <td>
-              {{ +asset.maturityDate | formatCalendar }}
+              {{ formatCalendar(+asset.maturityDate) }}
             </td>
           </tr>
           <tr v-if="asset.annualReturn">
@@ -303,6 +303,7 @@ import { ASSET_SUBTYPE, STELLAR_TYPES } from '@/js/const/asset-subtypes.const'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { formatMoney } from '@/js/helpers/money-helper'
+import { formatCalendar } from '@/js/helpers/date-helpers'
 
 const EVENTS = {
   balanceAdded: 'balance-added',
@@ -404,6 +405,7 @@ export default {
   setup () {
     return {
       formatMoney,
+      formatCalendar,
     }
   },
 }

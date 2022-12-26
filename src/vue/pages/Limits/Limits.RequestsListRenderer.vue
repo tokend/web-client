@@ -32,8 +32,8 @@
             v-for="(request, i) in requests"
             :request="request"
             :key="i">
-            <td :title="request.updatedAt | formatDate">
-              {{ request.updatedAt | formatDate }}
+            <td :title="formatDate(request.updatedAt)">
+              {{ formatDate(request.updatedAt) }}
             </td>
             <!-- eslint-disable-next-line -->
             <td :title="LIMITS_REQUEST_TYPE_TRANSLATION_ID[request.limitsRequestType] | globalize">
@@ -128,6 +128,7 @@ import {
   LIMITS_REQUEST_STATES_STR,
   LIMITS_REQUEST_TYPE,
 } from '@/js/const/limits.const'
+import { formatDate } from '@/js/helpers/date-helpers'
 
 const EVENTS = Object.freeze({
   requestsReloadAsk: 'requests-reload-ask',
@@ -184,6 +185,12 @@ export default {
       this.isDocumentsUploaderFormShown = true
       this.isDetailsDrawerShown = false
     },
+  },
+
+  setup () {
+    return {
+      formatDate,
+    }
   },
 }
 </script>

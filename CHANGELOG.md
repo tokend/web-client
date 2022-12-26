@@ -14,6 +14,11 @@ for further information about branching and tagging conventions.
 - Move formatInteger to formatNumber helper
 - Move cropAddress to text helper and rename to abbrCenter
 - Move formatMoney to helper
+- Move formatDate to helper
+- Move formatDateDMY to helper
+- Move formatDateDMYT to helper
+- Move formatCalendar to helper
+- Move formatCalendarInline to helper
 
 ### Fixed
 - New version of vue: 2.7.14

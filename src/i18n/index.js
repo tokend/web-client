@@ -9,13 +9,8 @@ import i18nextBrowserLanguageDetector from 'i18next-browser-languagedetector'
 
 // TODO: make i18n.language and i18n.languages responsive
 
-import moment from 'moment-timezone'
-
 import _isObject from 'lodash/isObject'
-import _get from 'lodash/get'
 import _merge from 'lodash/merge'
-
-import { MathUtil } from '@/js/utils'
 
 class I18n {
   constructor () {
@@ -165,33 +160,7 @@ class I18n {
       nonExplicitWhitelist: false,
       interpolation: {
         format: (param, format) => {
-          const lngConfig = this._i18nextInstance
-            .getResourceBundle(this.language, 'config')
-
           switch (format.toLowerCase()) {
-            case 'date':
-              return moment(param)
-                .format(_get(lngConfig, 'date.presets.datetime'))
-            case 'dmy':
-              return moment(param)
-                .format(_get(lngConfig, 'date.presets.dmy'))
-            case 'dmyt':
-              return moment(param)
-                .format(_get(lngConfig, 'date.presets.dmyt'))
-            case 'calendar':
-              return moment(param)
-                .calendar(null, _get(lngConfig, 'date.calendar'))
-            case 'calendar-inline':
-              return moment(param)
-                .calendar(null, _get(lngConfig, 'date.calendarInline'))
-            case 'money':
-              const value = (_isObject(param) ? param.value : param) || '0'
-              const defaultFormat =
-                _get(lngConfig, 'number.formats.amounts.default')
-              const result = MathUtil.format(value, defaultFormat)
-              return param.currency
-                ? result.concat(' ', param.currency)
-                : result
             default:
               console.warn(`Unknown format: ${format}, skipping…`)
               return param

@@ -42,7 +42,7 @@
               :key="`trade-open-offers-row-${i}`"
               @click="selectOffer(offer)">
               <td>{{ offer.id }}</td>
-              <td>{{ offer.createdAt | formatCalendar }}</td>
+              <td>{{ formatCalendar(offer.createdAt) }}</td>
               <td>
                 <template v-if="offer.isBuy">
                   {{ 'trade-open-offers.buy-lbl' | globalize }}
@@ -96,6 +96,7 @@ import { globalize } from '@/vue/filters/globalize'
 import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 import { TradeFormer } from '@/js/formers/TradeFormer'
 import { formatMoney } from '@/js/helpers/money-helper'
+import { formatCalendar } from '@/js/helpers/date-helpers'
 
 const EVENTS = {
   reloadOffers: 'reload-offers',
@@ -138,6 +139,7 @@ export default {
   setup () {
     return {
       formatMoney,
+      formatCalendar,
     }
   },
 }
