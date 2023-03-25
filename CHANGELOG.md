@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
-## [Unreleased]
+## [1.13.0] - 2022-03-25
 #### Added
 - Print error with meta in console
 
@@ -1274,7 +1274,7 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.13.0-rc.3...HEAD
+[1.13.0]: https://github.com/tokend/web-client/compare/1.13.0-rc.3...1.13.0
 [1.13.0-rc.3]: https://github.com/tokend/web-client/compare/1.13.0-rc.2...1.13.0-rc.3
 [1.13.0-rc.2]: https://github.com/tokend/web-client/compare/1.13.0-rc.1...1.13.0-rc.2
 [1.13.0-rc.1]: https://github.com/tokend/web-client/compare/1.13.0-rc.0...1.13.0-rc.1
