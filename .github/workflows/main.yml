@@ -1,0 +1,36 @@
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  converge:
+    name: Converge
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install werf
+        uses: werf/actions/install@v1.2
+
+      - name: Log in to registry
+        # This is where you will update the personal access token to GITHUB_TOKEN
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+
+      - name: Run echo
+        run: |
+          werf version
+          docker version
+          echo $GITHUB_REPOSITORY
+          echo $GITHUB_SHA
+      - name: Run Build
+        run: |
+          . $(werf ci-env github --as-file) 
+          werf build --save-build-report=true --build-report-path=images-report.json
+          docker pull $(cat images-report.json | jq -r .Images.web.DockerImageName)
+          docker tag $(cat images-report.json | jq -r .Images.web.DockerImageName) ghcr.io/$GITHUB_REPOSITORY:$GITHUB_SHA
+          docker push ghcr.io/$GITHUB_REPOSITORY:$GITHUB_SHA
